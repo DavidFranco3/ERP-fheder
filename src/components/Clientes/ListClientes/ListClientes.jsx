@@ -1,0 +1,331 @@
+import {useState, useEffect, useMemo} from 'react';
+import moment from "moment";
+import 'moment/locale/es';
+import { useHistory } from "react-router-dom";
+import {map} from "lodash";
+import { Badge, Button, Container } from "react-bootstrap";
+import EliminacionLogicaClientes from "../EliminacionLogica";
+import BasicModal from "../../Modal/BasicModal";
+import EliminacionFisicaClientes from "../EliminacionFisica";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@fortawesome/free-solid-svg-icons";
+import styled from 'styled-components';
+import DataTable  from 'react-data-table-component';
+import {estilos} from "../../../utils/tableStyled";
+
+function ListClientes(props) {
+    const { listClientes, history, location, setRefreshCheckLogin, rowsPerPage, setRowsPerPage, page, setPage, noTotalClientes } = props;
+
+    moment.locale("es");
+    //console.log(listClientes);
+
+    const enrutamiento = useHistory();
+
+    // Para ir hacia la ruta de modificacion
+    const irHaciaModificacion = (id) => {
+        enrutamiento.push(`/ModificacionClientes/${id}`);
+    }
+
+    // Para hacer uso del modal
+    const [showModal, setShowModal] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    //Para la eliminacion fisica de clientes
+    const eliminaClientes = (content) => {
+        setTitulosModal("Eliminando el cliente");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de clientes
+    const eliminaLogicaClientes = (content) => {
+        setTitulosModal("Deshabilitando cliente");
+        setContentModal(content);
+        setShowModal(true);
+    }
+    
+    //Para la eliminacion logica de clientes
+    const habilitaClientes = (content) => {
+        setTitulosModal("Habilitando cliente");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    const columns = [
+        {
+            name: 'Nombre',
+            selector: row => row.nombre + " " + row.apellidos,
+            sortable: true,
+            center: true,
+            reorder: true
+        },
+        {
+            name: 'RFC',
+            selector: row => row.rfc,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Correo',
+            selector: row => row.correo,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Telefono celular',
+            selector: row => row.telefonoCelular,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Estado',
+            sortable: false,
+            center: true,
+            reorder: false,
+            selector: row => row.estadoCliente === "true" ?
+                (
+                    <>
+                        <Badge
+                            bg="success" className="editar"
+                            onClick={() => {
+                                const dataCliente = {
+                                    id: row.id,
+                                    nombre: row.nombre,
+                                    apellidos: row.apellidos,
+                                    estadoCliente: row.estadoCliente
+                                }
+                                eliminaLogicaClientes(<EliminacionLogicaClientes dataCliente={dataCliente} setShowModal={setShowModal} history={history} />)
+                            }}
+                        >
+                            Activo
+                        </Badge>
+                    </>
+                )
+                :
+                (
+                    <>
+                        <Badge
+                            bg="danger"
+                            className="eliminar"
+                            onClick={() => {
+                                const dataCliente = {
+                                    id: row.id,
+                                    nombre: row.nombre,
+                                    apellidos: row.apellidos,
+                                    estadoCliente: row.estadoCliente
+                                }
+                                habilitaClientes(<EliminacionLogicaClientes dataCliente={dataCliente} setShowModal={setShowModal} history={history} />)
+                            }}
+                        >
+                            Inactivo
+                        </Badge>
+                    </>
+                )
+        },
+        {
+            name: 'Última modificación',
+            selector: row => moment(row.fechaActualizacion).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
+        }
+        ,
+        {
+            name: 'Acciones',
+            center: true,
+            reorder: false,
+            selector: row => (
+                <>
+                    <Badge
+                        bg="success"
+                        className="editar"
+                        onClick={() => {
+                            irHaciaModificacion(row.id)
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                    </Badge>
+                    <Badge
+                        bg="danger"
+                        className="eliminar"
+                        onClick={() => {
+                            const dataCliente = {
+                                id: row.id,
+                                nombre: row.nombre,
+                                apellidos: row.apellidos
+                            }
+                            eliminaClientes(<EliminacionFisicaClientes dataCliente={dataCliente} setShowModal={setShowModal} history={history} />)
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                    </Badge>
+                </>
+            )
+        }
+    ];
+
+    // Configurando animacion de carga
+    const [pending, setPending] = useState(true);
+    const [rows, setRows] = useState([]);
+
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setRows(listClientes);
+            setPending(false);
+        }, 2000);
+        return () => clearTimeout(timeout);
+    }, []);
+
+    const paginationComponentOptions = {
+        rowsPerPageText: 'Filas por página',
+        rangeSeparatorText: 'de'
+    };
+
+    // Procesa documento para descargar en csv
+    function convertArrayOfObjectsToCSV(array) {
+        let result;
+        const columnDelimiter = ',';
+        const lineDelimiter = '\n';
+        const keys = Object.keys(filteredItems[0]);
+        result = '';
+        result += keys.join(columnDelimiter);
+        result += lineDelimiter;
+        array.forEach(item => {
+            let ctr = 0;
+            keys.forEach(key => {
+                if (ctr > 0) result += columnDelimiter;
+                result += item[key];
+                ctr++;
+            });
+            result += lineDelimiter;
+        });
+        return result;
+    }
+
+    function downloadCSV(array) {
+        const link = document.createElement('a');
+        let csv = convertArrayOfObjectsToCSV(array);
+        if (csv == null) return;
+        const filename = 'Datos.csv';
+        if (!csv.match(/^data:text\/csv/i)) {
+            csv = `data:text/csv;charset=utf-8,${csv}`;
+        }
+        link.setAttribute('href', encodeURI(csv));
+        link.setAttribute('download', filename);
+        link.click();
+    }
+
+    const Export = ({ onExport }) => <Button onClick={e => onExport(e.target.value)}>Descargar CSV</Button>;
+
+    const descargaCSV = useMemo(() => <Export onExport={() => downloadCSV(filteredItems)} />, []);
+
+    const [filterText, setFilterText] = useState("");
+    const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
+
+
+
+    // Defino barra de busqueda
+    const ClearButton = styled(Button) ` 
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        height: 34px;
+        width: 32px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `;
+
+    const TextField = styled.input ` 
+        height: 32px;
+        border-radius: 3px;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border: 1px solid #e5e5e5;
+        padding: 0 32px 0 16px;
+      &:hover {
+        cursor: pointer;
+      }
+    `;
+
+
+    const filteredItems = listClientes.filter(
+        item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+    const  subHeaderComponentMemo = useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToogle(!resetPaginationToogle);
+                setFilterText('');
+            }
+        };
+
+        return (
+            <>
+                <TextField
+                    id="search"
+                    type="text"
+                    placeholder="Busqueda por nombre"
+                    aria-label="Search Input"
+                    value={filterText}
+                    onChange={e => setFilterText(e.target.value)}
+                />
+                <ClearButton type="button" onClick={handleClear}>
+                    X
+                </ClearButton>
+            </>
+        );
+    }, [filterText, resetPaginationToogle]);
+    
+    const handleChangePage = (page) => {
+        // console.log("Nueva pagina "+ newPage)
+        setPage(page);
+    };
+
+    const handleChangeRowsPerPage = (newPerPage) => {
+        // console.log("Registros por pagina "+ parseInt(event.target.value, 10))
+        setRowsPerPage(newPerPage)
+        //setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(1);
+    };
+
+    return (
+        <>
+            <Container fluid>
+            <DataTable
+                columns={columns}
+                    data={filteredItems}
+                    actions={descargaCSV}
+                    subHeader
+                    subHeaderComponent={subHeaderComponentMemo}
+                    progressPending={pending}
+                    paginationComponentOptions={paginationComponentOptions}
+                    paginationResetDefaultPage={resetPaginationToogle}
+                    customStyles={estilos}
+                    sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
+                    pagination
+                    paginationServer
+                    paginationTotalRows={noTotalClientes}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    onChangePage={handleChangePage}
+            />
+            </Container>
+
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
+        </>
+    );
+}
+
+export default ListClientes;

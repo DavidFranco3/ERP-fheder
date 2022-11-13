@@ -1,0 +1,1158 @@
+import { useEffect, useMemo, useState } from 'react';
+import LayoutPrincipal from "../../../layout/layoutPrincipal";
+import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
+import BasicModal from "../../Modal/BasicModal";
+import BuscarOV from "../BuscarOV";
+import { useHistory } from "react-router-dom";
+import "./RegistraRequerimientosPlaneacion.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { listarMatrizProductosActivos, obtenerMatrizProducto } from "../../../api/matrizProductos";
+import { map } from "lodash";
+import { listarAlmacenPT } from "../../../api/almacenPT";
+import { registraRequerimiento, obtenerNumeroRequerimiento, obtenerItemRequerimiento } from "../../../api/requerimientosPlaneacion";
+import { toast } from "react-toastify";
+import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
+
+function RegistraRequerimientosPlaneacion(props) {
+    const { setRefreshCheckLogin } = props;
+
+    // Para almacenar la informacion del formulario
+    const [formData, setFormData] = useState(initialFormData());
+
+    // Para almacenar la informacion del formulario
+    const [formDataPlaneacion, setFormDataPlaneacion] = useState(initialFormDataPlaneacionInitial());
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerMatrizProducto(almacenPT?.idProducto).then(response => {
+                const { data } = response;
+                // console.log(data)
+                // initialData
+
+                if (!formDataPlaneacion && data) {
+                    setFormDataPlaneacion(initialFormDataPlaneacion(data));
+                } else {
+                    const datosProductos = initialFormDataPlaneacion(data);
+                    setFormDataPlaneacion(datosProductos);
+                }
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formData.materiaPrima]);
+
+    // Para hacer uso del modal
+    const [showModal, setShowModal] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    // Para almacenar la OV
+    const [ordenVenta, setOrdenVenta] = useState("");
+    // Para almacenar el cliente de la OV
+    const [clienteOV, setClienteOV] = useState("");
+
+    const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
+    // Para la eliminacion fisica de usuarios
+    const buscarOV = (content) => {
+        setTitulosModal("Buscar orden de venta");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para definir el enrutamiento
+    const enrutamiento = useHistory()
+
+    // Define la ruta de registro
+    const rutaRegreso = () => {
+        enrutamiento.push("/RequerimientosPlaneacion")
+    }
+
+    // Para controlar la animacion
+    const [loading, setLoading] = useState(false);
+
+    // Para almacenar el listado de productos activos
+    const [listProductosActivos, setListProductosActivos] = useState(null);
+
+    // Para traer el listado de productos activos
+    useEffect(() => {
+        try {
+            listarMatrizProductosActivos().then(response => {
+                const { data } = response;
+                // console.log(data)
+
+                if (!listProductosActivos && data) {
+                    setListProductosActivos(formatModelMatrizProductos(data));
+                } else {
+                    const datosProductos = formatModelMatrizProductos(data);
+                    setListProductosActivos(datosProductos);
+                }
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
+    // Para almacenar el listado de materias primas
+    const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarAlmacenPT().then(response => {
+                const { data } = response;
+                // console.log(data)
+                if (!listMateriasPrimas && data) {
+                    setListMateriasPrimas(formatModelAlmacenPT(data));
+                } else {
+                    const datosProductos = formatModelAlmacenPT(data);
+                    setListMateriasPrimas(datosProductos);
+                }
+            }).catch(e => {
+                //console.log(e)
+            })
+        } catch (e) {
+            //console.log(e)
+        }
+    }, []);
+
+    // Para almacenar la materia prima seleccionada
+    const [almacenPT, setAlmacenPT] = useState([]);
+
+    const handleMateriaPrima = (articulo) => {
+        // console.log(articulo)
+        // {materiaprima?.folioMP + "/" + materiaprima?.nombre + "/" + materiaprima?.um + "/" + materiaprima?.existenciasOV + "/" + materiaprima?.existenciasStock + "/" + materiaprima?.existenciasTotales}
+        const temp = articulo.split("/")
+        // console.log(temp)
+
+        // console.log(dataTemp)
+        setAlmacenPT({
+            idProducto: temp[0],
+            folioAlmacen: temp[1],
+            folioMP: temp[2],
+            nombre: temp[3],
+            um: temp[4],
+            existenciasOV: temp[5],
+            existenciasStock: temp[6],
+            existenciasTotales: temp[7]
+        })
+    }
+
+    const [item, setItem] = useState("");
+
+    useEffect(() => {
+        try {
+            obtenerItemRequerimiento().then(response => {
+                const { data } = response;
+                // console.log(data)
+                const { item } = data;
+                setItem(item)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
+    const onSubmit = e => {
+        e.preventDefault();
+
+        if (!formData.semana) {
+            toast.warning("Completa el formulario");
+        } else {
+            //console.log("Continuar")
+            setLoading(true)
+
+            // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
+            obtenerNumeroRequerimiento().then(response => {
+                const { data } = response;
+                const dataTemp = {
+                    item: item,
+                    folio: data.noRequerimiento,
+                    requerimiento: {
+                        semana: formData.semana,
+                        producto: almacenPT.idProducto,
+                        um: almacenPT.um,
+                        almacenProductoTerminado: almacenPT.existenciasTotales,
+                        ordenVenta: listOVCargadas,
+                        totalProducir: totalProducir,
+                    },
+                    planeacion: {
+                        numeroMolde: formDataPlaneacion.noMolde,
+                        numeroCavidades: formDataPlaneacion.cavMolde,
+                        opcionesMaquinaria: {
+                            1: {
+                                numeroMaquina1: formData.numeroMaquina1,
+                                maquina1: formData.maquina1,
+                                ciclo1: formData.ciclo1,
+                                pieza1: formData.pieza1,
+                                bolsa1: formData.bolsa1,
+                            },
+                            2: {
+                                numeroMaquina2: formData.numeroMaquina2,
+                                maquina2: formData.maquina2,
+                                ciclo2: formData.ciclo2,
+                                pieza2: formData.pieza2,
+                                bolsa2: formData.bolsa2,
+                            },
+                            3: {
+                                numeroMaquina3: formData.numeroMaquina3,
+                                maquina3: formData.maquina3,
+                                ciclo3: formData.ciclo3,
+                                pieza3: formData.pieza3,
+                                bolsa3: formData.bolsa3,
+                            },
+                        },
+                    },
+                    bom: {
+                        material: formDataPlaneacion.descripcionMP,
+                        molido: formDataPlaneacion.porcentajeMolido,
+                        pesoPieza: formDataPlaneacion.pesoPiezas,
+                        pesoColada: formDataPlaneacion.pesoColada,
+                        kgMaterial: formData.kgMaterial,
+                        pigmento: formDataPlaneacion.descripcionPigmento,
+                        aplicacion: formDataPlaneacion.aplicacionGxKG,
+                        pigMb: formData.kgPIGMB,
+                        materialxTurno: formData.materialTurno,
+                        merma: formData.merma,
+                        empaque: formDataPlaneacion.descripcionBolsa,
+                        bolsasCajasUtilizar: formDataPlaneacion.noPiezasxEmpaque
+                    },
+                    estado: "true"
+                }
+                // console.log(dataTemp)
+                // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
+                // 
+                // Modificar el pedido creado recientemente
+                registraRequerimiento(dataTemp).then(response => {
+                    const { data: { mensaje, datos } } = response;
+                    // console.log(response)
+                    toast.success(mensaje)
+                    setLoading(false)
+                    rutaRegreso()
+                }).catch(e => {
+                    console.log(e)
+                })
+            }).catch(e => {
+                console.log(e)
+            })
+
+        }
+
+    }
+
+    const onChange = e => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataPlaneacion({ ...formDataPlaneacion, [e.target.name]: e.target.value })
+    }
+
+    const [listOVCargadas, setListOVCargadas] = useState([]);
+
+    const addItemsOV = () => {
+        const ordenVenta = document.getElementById("ordenVenta").value
+        const cantidadPedidaOV = document.getElementById("cantidadPedidaOV").value
+        const cantidadProducirOV = document.getElementById("cantidadProducirOV").value
+
+        if (!ordenVenta || !cantidadPedidaOV || !cantidadProducirOV) {
+            toast.warning("Completa la informacion de la orden de venta");
+        } else {
+            const dataTemp = {
+                ordenVenta: ordenVenta,
+                cantidadPedidaOV: cantidadPedidaOV,
+                cantidadProducirOV: cantidadProducirOV,
+            }
+            // console.log(dataTemp)
+
+            setListOVCargadas(
+                [...listOVCargadas, dataTemp]
+            );
+
+            // Actualizacion del tracking
+            LogTrackingActualizacion(ordenVenta, "En planeación", "2")
+
+            //setCargaProductos(initialFormDataProductos)
+            document.getElementById("ordenVenta").value = ""
+            document.getElementById("cantidadPedidaOV").value = ""
+            document.getElementById("cantidadProducirOV").value = ""
+            setOrdenVenta("")
+            setCantidadRequeridaOV("")
+        }
+    }
+
+    // Para limpiar el formulario de detalles de producto
+    const cancelarCargaOV = () => {
+        //setCargaProductos(initialFormDataProductos)
+        document.getElementById("ordenVenta").value = ""
+        document.getElementById("cantidadPedidaOV").value = ""
+        document.getElementById("cantidadProducirOV").value = ""
+    }
+
+    // Para eliminar productos del listado
+    const removeItemOV = (OV) => {
+        let newArray = listOVCargadas;
+        newArray.splice(newArray.findIndex(a => a.ordenVenta === ordenVenta.ordenVenta), 1);
+        setListOVCargadas([...newArray]);
+    }
+
+    const itemOV = listOVCargadas.length + 1;
+
+    const [listOCCargadas, setListOCCargadas] = useState([]);
+
+    const totalProducir =  (listOVCargadas.reduce((amount, item) => (amount + parseInt(item.cantidadProducirOV)), 0));
+
+    return (
+        <>
+            <LayoutPrincipal className="RegistroProduccion" paginaSeleccionada="Produccion" setRefreshCheckLogin={setRefreshCheckLogin}>
+                <Alert>
+                    <Row>
+                        <Col xs={12} md={8}>
+                            <h1>
+                                Requerimientos y planeación
+                            </h1>
+                        </Col>
+                        <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                    </Row>
+                </Alert>
+
+                <br />
+
+                <Container fluid>
+                    <div className="formularioDatos">
+                        <Form onChange={onChange} onSubmit={onSubmit}>
+
+                            <div className="datosGenerales">
+                                <Container fluid>
+                                    <br />
+                                    <div className="tituloSeccion">
+                                        <h4>
+                                            Requerimiento
+                                        </h4>
+                                    </div>
+
+                                    <Row className="mb-3">
+                                        <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                            <Form.Label align="center">
+                                                Semana
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                min="0"
+                                                placeholder="Semana"
+                                                name="semana"
+                                                defaultValue={formData.semana}
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formGridMateriaPrima" className="producto">
+                                            <Form.Label>
+                                                Producto
+                                            </Form.Label>
+                                            <Form.Control as="select"
+                                                onChange={(e) => {
+                                                    handleMateriaPrima(e.target.value)
+                                                }}
+                                                defaultValue={formData.materiaPrima}
+                                                name="materiaPrima"
+                                            >
+                                                <option>Elige una opción</option>
+                                                {map(listMateriasPrimas, (materiaprima, index) => (
+                                                    <option
+                                                        key={index}
+                                                        value={materiaprima?.idProducto + "/" + materiaprima?.folioAlmacen + "/" + materiaprima?.folioMP + "/" + materiaprima?.nombre + "/" + materiaprima?.um + "/" + materiaprima?.existenciasOV + "/" + materiaprima?.existenciasStock + "/" + materiaprima?.existenciasTotales}
+                                                    >
+                                                        {materiaprima?.nombre}
+                                                    </option>
+                                                ))}
+                                            </Form.Control>
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                UM
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                defaultValue={almacenPT?.um}
+                                                placeholder="UM"
+                                                name="um"
+                                                disabled
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                Almacen producto terminado
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                defaultValue={almacenPT?.existenciasTotales}
+                                                placeholder="Almacen producto terminado"
+                                                name="almacenPT"
+                                                disabled
+                                            />
+                                        </Form.Group>
+                                    </Row>
+
+                                    <Row className="mb-3">
+                                        <Col align="left">
+                                            <Button
+                                                variant="success"
+                                                className="agregar"
+                                                onClick={() => {
+                                                    buscarOV(
+                                                        <BuscarOV
+                                                            setOrdenVenta={setOrdenVenta}
+                                                            setClienteOV={setClienteOV}
+                                                            setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                            setShowModal={setShowModal}
+                                                        />)
+                                                }}
+                                            >
+                                                Orden venta
+                                            </Button>
+                                        </Col>
+                                    </Row>
+
+                                    <Row className="mb-3">
+                                        <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                            <Form.Label align="center">
+                                                ITEM
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="itemOV"
+                                                name="itemOV"
+                                                value={itemOV}
+                                                disabled
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formHorizontalNoParte">
+                                            <Form.Label align="center">
+                                                Orden de venta
+                                            </Form.Label>
+                                            <Form.Control
+                                                id="ordenVenta"
+                                                type="text"
+                                                placeholder="Orden de venta"
+                                                name="ordenVenta"
+                                                value={ordenVenta}
+                                                disabled
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                Cantidad pedida
+                                            </Form.Label>
+                                            <Form.Control
+                                                id="cantidadPedidaOV"
+                                                type="number"
+                                                min="0"
+                                                placeholder="Cantidad pedida"
+                                                name="cantidadPedidaVenta"
+                                                value={cantidadRequeridaOV}
+                                                disabled
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                Cantidad a producir
+                                            </Form.Label>
+                                            <Form.Control
+                                                id="cantidadProducirOV"
+                                                type="number"
+                                                placeholder="Cantidad a producir"
+                                                name="cantidadProducirVenta"
+                                            />
+                                        </Form.Group>
+
+                                        <Col sm="1">
+                                            <Form.Group as={Row} className="formGridCliente">
+                                                <Form.Label>
+                                                    &nbsp;
+                                                </Form.Label>
+
+                                                <Col>
+                                                    <Button
+                                                        variant="success"
+                                                        className="editar"
+                                                        onClick={() => {
+                                                            addItemsOV()
+                                                        }}
+                                                    >
+                                                        <FontAwesomeIcon icon={faCirclePlus} className="text-lg" />
+                                                    </Button>
+                                                </Col>
+                                                <Col>
+                                                    <Button
+                                                        variant="danger"
+                                                        className="editar"
+                                                        onClick={() => {
+                                                            cancelarCargaOV()
+                                                        }}
+                                                    >
+                                                        <FontAwesomeIcon icon={faX} className="text-lg" />
+                                                    </Button>
+                                                </Col>
+                                            </Form.Group>
+                                        </Col>
+
+                                    </Row>
+
+                                    <hr />
+
+                                    <Badge bg="secondary" className="tituloFormularioDetalles">
+                                        <h4>Listado de ordenes de ventas agregadas</h4>
+                                    </Badge>
+                                    <br />
+                                    <hr />
+                                    {/* Inicia tabla informativa del listado de articulos */}
+                                    <table className="responsive-tableRegistroVentas"
+                                    >
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Orden de venta</th>
+                                                <th scope="col">Cantidad pedida</th>
+                                                <th scope="col">Cantidad a producir</th>
+                                                <th scope="col">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                        </tfoot>
+                                        <tbody>
+                                            {map(listOVCargadas, (ordenVenta, index) => (
+                                                <tr key={index}>
+                                                    <th scope="row">
+                                                        {index + 1}
+                                                    </th>
+                                                    <td data-title="ordenVenta">
+                                                        {ordenVenta.ordenVenta}
+                                                    </td>
+                                                    <td data-title="cantidadPedidaOV">
+                                                        {ordenVenta.cantidadPedidaOV}
+                                                    </td>
+                                                    <td data-title="cantidadProducirOV">
+                                                        {ordenVenta.cantidadProducirOV}
+                                                    </td>
+                                                    <td data-title="Eliminar">
+                                                        <div
+                                                            className="eliminarProductoListado"
+                                                            onClick={() => {
+                                                                removeItemOV(ordenVenta)
+                                                            }}
+                                                        >
+                                                            ❌
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+
+                                    <Row className="mb-3">
+
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                Total a producir
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                placeholder="Total a producir"
+                                                name="totalProducir"
+                                                value={totalProducir}
+                                                disabled
+                                            />
+                                        </Form.Group>
+                                    </Row>
+
+                                </Container>
+                            </div>
+
+                            <br />
+
+
+                            <div className="datosPlaneacion">
+                                <Container fluid>
+                                    <br />
+                                    <div className="tituloSeccion">
+                                        <h4>
+                                            Planeación
+                                        </h4>
+                                    </div>
+
+                                    <Row className="mb-3">
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                No. Molde
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                placeholder="Numero de molde"
+                                                value={formDataPlaneacion.noMolde}
+                                                name="noMolde"
+                                                disabled
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                No. Cavidades
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                defaultValue={formDataPlaneacion.cavMolde}
+                                                placeholder="Numero de cavidades"
+                                                name="numeroCavidades"
+                                                disabled
+                                            />
+                                        </Form.Group>
+                                    </Row>
+
+                                    <Row className="mb-3">
+                                        <Col></Col>
+                                        <Col>
+                                            <Form.Label align="center">
+                                                No. Maquina
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Label align="center">
+                                                Maquina
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Label align="center">
+                                                Ciclo (seg)
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Label align="center">
+                                                Pieza/Turno
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Label align="center">
+                                                Piezas por bolsa o caja
+                                            </Form.Label>
+                                        </Col>
+                                    </Row>
+
+                                    <Row className="mb-3">
+                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                            <Col sm={2}>
+                                                <Form.Label align="center">
+                                                    Opcion 1
+                                                </Form.Label>
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="numeroMaquina1"
+                                                    defaultValue={formData.numeroMaquina1}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="maquina1"
+                                                    defaultValue={formData.maquina1}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="ciclo1"
+                                                    defaultValue={formData.ciclo1}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="pieza1"
+                                                    defaultValue={formData.pieza1}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="bolsa1"
+                                                    defaultValue={formData.bolsa1}
+                                                />
+                                            </Col>
+                                        </Form.Group>
+                                    </Row>
+
+                                    <Row className="mb-3">
+                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                            <Col sm={2}>
+                                                <Form.Label align="center">
+                                                    Opcion 2
+                                                </Form.Label>
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="numeroMaquina2"
+                                                    defaultValue={formData.numeroMaquina2}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="maquina2"
+                                                    defaultValue={formData.maquina2}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="ciclo2"
+                                                    defaultValue={formData.ciclo2}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="pieza2"
+                                                    defaultValue={formData.pieza2}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="bolsa2"
+                                                    defaultValue={formData.bolsa2}
+                                                />
+                                            </Col>
+                                        </Form.Group>
+                                    </Row>
+
+                                    <Row className="mb-3">
+                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                            <Col sm={2}>
+                                                <Form.Label align="center">
+                                                    Opcion 3
+                                                </Form.Label>
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="numeroMaquina3"
+                                                    defaultValue={formData.numeroMaquina3}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="maquina3"
+                                                    defaultValue={formData.maquina3}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="ciclo3"
+                                                    defaultValue={formData.ciclo3}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="pieza3"
+                                                    defaultValue={formData.pieza3}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    name="bolsa3"
+                                                    defaultValue={formData.bolsa3}
+                                                />
+                                            </Col>
+                                        </Form.Group>
+                                    </Row>
+
+                                </Container>
+                            </div>
+                            <br />
+
+                            <div className="datosBOM">
+                                <Container fluid>
+                                    <br />
+                                    <div className="tituloSeccion">
+                                        <h4>
+                                            BOM
+                                        </h4>
+                                    </div>
+                                    <Row className="mb-3">
+                                        <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                            <Form.Label align="center">
+                                                Material
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                defaultValue={formDataPlaneacion.descripcionMP}
+                                                placeholder="Material"
+                                                name="Material"
+                                                disabled
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formHorizontalNoParte">
+                                            <Form.Label align="center">
+                                                Molido
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Molido"
+                                                defaultValue={formDataPlaneacion.porcentajeMolido}
+                                                name="Molido"
+                                                disabled
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                Peso de la pieza (Kg)
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                defaultValue={formDataPlaneacion.pesoPiezas}
+                                                placeholder="Peso de la pieza"
+                                                name="pesoPieza"
+                                                disabled
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                Peso colada (Kg)
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                defaultValue={formDataPlaneacion.pesoColada}
+                                                placeholder="Peso colada"
+                                                name="pesoColada"
+                                                disabled
+                                            />
+                                        </Form.Group>
+                                    </Row>
+
+                                    <Row className="mb-3">
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                Empaque
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                defaultValue={formDataPlaneacion.descripcionBolsa}
+                                                placeholder="Empaque"
+                                                name="empaque"
+                                                disabled
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                Pigmento/MB
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Pigmento/MB"
+                                                defaultValue={formDataPlaneacion.descripcionPigmento}
+                                                name="Pigmento"
+                                                disabled
+                                            />
+                                        </Form.Group>
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                Aplicación (gr/kg)
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                defaultValue={formDataPlaneacion.aplicacionGxKG}
+                                                placeholder="Apliación (gr/kg)"
+                                                name="aplicacion"
+                                                disabled
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                Bolsas o cajas a utilizar
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                defaultValue={formDataPlaneacion.noPiezasxEmpaque}
+                                                placeholder="Bolsas o cajas a utilizar"
+                                                name="bolsasCajasUtilizar"
+                                                disabled
+                                            />
+                                        </Form.Group>
+                                    </Row>
+
+                                    <Row className="mb-3">
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                Material x turno
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Material x turno"
+                                                name="materialTurno"
+                                                defaultValue={formData.materialTurno}
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                Merma (%)
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                placeholder="merma"
+                                                name="merma"
+                                                defaultValue={formData.merma}
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                Kg de material
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                placeholder="Kg de material"
+                                                name="kgMaterial"
+                                                defaultValue={formData.kgMaterial}
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                            <Form.Label align="center">
+                                                Kg de PIG o MB
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                placeholder="Kg de PIG o MB"
+                                                name="kgPIGMB"
+                                                defaultValue={formData.kgPIGMB}
+                                            />
+                                        </Form.Group>
+                                    </Row>
+                                </Container>
+                            </div>
+
+                            <br />
+
+                            <Form.Group as={Row} className="botones">
+                                <Col>
+                                    <Button
+                                        type="submit"
+                                        variant="success"
+                                        className="registrar"
+                                    >
+                                        {!loading ? "Registrar" : <Spinner animation="border" />}
+                                    </Button>
+                                </Col>
+                                <Col>
+                                    <Button
+                                        variant="danger"
+                                        className="cancelar"
+                                        onClick={() => {
+                                            rutaRegreso()
+                                        }}
+                                    >
+                                        Cancelar
+                                    </Button>
+                                </Col>
+                            </Form.Group>
+
+                            <br />
+
+                        </Form>
+                    </div>
+                </Container>
+
+                <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                    {contentModal}
+                </BasicModal>
+            </LayoutPrincipal>
+        </>
+    );
+}
+
+function initialFormDataPlaneacion(data) {
+    return {
+        noInterno: data.noInterno,
+        cliente: data.cliente,
+        noMolde: data.datosMolde.noMolde,
+        cavMolde: data.datosMolde.cavMolde,
+        noParte: data.noParte,
+        descripcion: data.descripcion,
+        pesoPiezas: data.datosPieza.pesoPiezas,
+        pesoColada: data.datosPieza.pesoColada,
+        pesoTotalInyeccion: data.datosPieza.pesoTotalInyeccion,
+        porcentajeScrap: data.datosPieza.porcentajeScrap,
+        porcentajeMolido: data.datosPieza.porcentajeMolido,
+        descripcionMP: data.materiaPrima.descripcion,
+        descripcionPigmento: data.pigmentoMasterBach.descripcion,
+        aplicacionGxKG: data.pigmentoMasterBach.aplicacionGxKG,
+        proveedor: data.pigmentoMasterBach.proveedor,
+        tiempoCiclo: data.tiempoCiclo,
+        noOperadores: data.noOperadores,
+        piezasxHora: data.piezasxHora,
+        piezasxTurno: data.piezasxTurno,
+        descripcionBolsa: data.materialEmpaque.descripcionBolsa,
+        noPiezasxEmpaque: data.materialEmpaque.noPiezasxEmpaque,
+        opcionMaquinaria: data.opcionMaquinaria,
+        opcion1: data.opcionMaquinaria[0][1].opcion1,
+        tiempoCiclo1: data.opcionMaquinaria[0][1].tiempoCiclo1,
+        opcion2: data.opcionMaquinaria[0][2].opcion2,
+        tiempoCiclo2: data.opcionMaquinaria[0][2].tiempoCiclo2,
+        opcion3: data.opcionMaquinaria[0][3].opcion3,
+        tiempoCiclo3: data.opcionMaquinaria[0][3].tiempoCiclo3,
+        opcion4: data.opcionMaquinaria[0][4].opcion4,
+        tiempoCiclo4: data.opcionMaquinaria[0][4].tiempoCiclo4,
+        opcion5: data.opcionMaquinaria[0][5].opcion5,
+        tiempoCiclo5: data.opcionMaquinaria[0][5].tiempoCiclo5,
+        opcion6: data.opcionMaquinaria[0][6].opcion6,
+        tiempoCiclo6: data.opcionMaquinaria[0][6].tiempoCiclo6
+    }
+}
+
+function initialFormDataPlaneacionInitial() {
+    return {
+        noInterno: "",
+        cliente: "",
+        noMolde: "",
+        cavMolde: "",
+        noParte: "",
+        descripcion: "",
+        pesoPiezas: "",
+        pesoColada: "",
+        pesoTotalInyeccion: "",
+        porcentajeScrap: "",
+        porcentajeMolido: "",
+        descripcionMP: "",
+        descripcionPigmento: "",
+        aplicacionGxKG: "",
+        proveedor: "",
+        tiempoCiclo: "",
+        noOperadores: "",
+        piezasxHora: "",
+        piezasxTurno: "",
+        descripcionBolsa: "",
+        noPiezasxEmpaque: "",
+        opcionMaquinaria: "",
+        opcion1: "",
+        tiempoCiclo1: "",
+        opcion2: "",
+        tiempoCiclo2: "",
+        opcion3: "",
+        tiempoCiclo3: "",
+        opcion4: "",
+        tiempoCiclo4: "",
+        opcion5: "",
+        tiempoCiclo5: "",
+        opcion6: "",
+        tiempoCiclo6: ""
+    }
+}
+
+function initialFormData() {
+    return {
+        materiaPrima: "",
+        semana: "",
+        numeroMaquina1: "",
+        maquina1: "",
+        ciclo1: "",
+        pieza1: "",
+        bolsa1: "",
+        numeroMaquina2: "",
+        maquina2: "",
+        ciclo2: "",
+        pieza2: "",
+        bolsa2: "",
+        numeroMaquina3: "",
+        maquina3: "",
+        ciclo3: "",
+        pieza3: "",
+        bolsa3: "",
+        materialTurno: "",
+        merma: "",
+        kgMaterial: "",
+        kgPIGMB: ""
+    }
+}
+
+function formatModelAlmacenPT(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            idProducto: data.idProducto,
+            folioAlmacen: data.folioAlmacen,
+            folioMP: data.folioMP,
+            nombre: data.nombre,
+            descripcion: data.descripcion,
+            um: data.um,
+            movimientos: data.movimientos,
+            existenciasOV: data.existenciasOV,
+            existenciasStock: data.existenciasStock,
+            existenciasTotales: data.existenciasTotales,
+            estado: data.estado,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelMatrizProductos(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            noInterno: data.noInterno,
+            cliente: data.cliente,
+            datosMolde: data.datosMolde,
+            noParte: data.noParte,
+            descripcion: data.descripcion,
+            datosPieza: data.datosPieza,
+            materiaPrima: data.materiaPrima,
+            pigmentoMasterBach: data.pigmentoMasterBach,
+            tiempoCiclo: data.tiempoCiclo,
+            noOperadores: data.noOperadores,
+            piezasxHora: data.piezasxHora,
+            piezasxTurno: data.piezasxTurno,
+            materialEmpaque: data.materialEmpaque,
+            opcionMaquinaria: data.opcionMaquinaria,
+            estado: data.estado,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+export default RegistraRequerimientosPlaneacion;

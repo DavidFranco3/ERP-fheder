@@ -1,0 +1,17 @@
+@import "../../scss/index";
+
+.fade.alertLogsSistema.alert.alert-primary.show {
+  background-color: $background-alert !important;
+}
+
+.alertLogsSistema{
+  z-index: 2 !important;
+  position: fixed !important;
+  width: 100% !important;
+
+
+}
+
+.listadoLogs{
+  padding: 90px 5px 26px 5px;
+}

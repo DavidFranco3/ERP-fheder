@@ -1,0 +1,139 @@
+@import "../../../scss/index";
+
+html,
+body {
+  margin: 0;
+}
+
+#App {
+  font-family: sans-serif;
+
+  /* Give app full page to work with */
+  height: 100vh;
+}
+
+#page-wrap {
+  text-align: center;
+  color: $font-dark !important;
+  /* Prevent sidebar from showing a scrollbar on page */
+  overflow: auto;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+
+  /* Our sidebar item styling */
+  text-decoration: none;
+  //margin-bottom: 10px;
+  color: #d1d1d1;
+  transition: color 0.2s;
+}
+
+/* Change color on hover */
+.bm-item:hover {
+  color: white;
+}
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 30px;
+  height: 22px;
+  left: 19px;
+  top: 20px;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: $font-light !important;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #bdc3c7;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: $azul-fredher !important;
+  //background: #373a47;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+
+  .bm-item {
+    h2 a {
+      //margin-left: 15px;
+      font-size: 22px;
+      text-decoration: none;
+    }
+    h2:hover {
+      padding: 4px;
+      border: 1px #fff solid;
+      border-radius: 15px;
+    }
+
+    .menu-item {
+      text-align: center !important;
+      //margin-left: 25px;
+      h2:hover {
+        padding: 2px;
+        box-shadow: 0 1px 1px $border-dark inset, 0 0 4px $border-dark;
+        //border: 1px $border-dark solid;
+      }
+    }
+  }
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.dropdown .dropdown-menu
+{
+  color: #fff;
+  background-color: #373a47;
+  border-color: #fff;
+}
+
+.dropdown .dropdown-toggle::after {
+  display:none;
+}
+
+/* Para los link de navegacion*/
+.homePrincipal {
+  a {
+    color: $font-light !important;
+  }
+}
+.nav-link {
+  color: $font-light !important;
+}
+
+.sesion {
+  margin-top: 10px !important;
+  margin-left: -15px !important;
+}
+
+.desplegable {
+  color: $font-light !important;
+  font-size: 25px !important;
+  text-align: center !important;
+}

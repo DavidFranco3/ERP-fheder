@@ -1,0 +1,103 @@
+@import "../../../scss/index";
+
+.form-label {
+  color: $font-dark !important;
+}
+
+  // Encabezado
+  .encabezado {
+    margin-top: 10px !important;
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: groove !important;
+  }
+
+  // Datos de la pieza
+  .datosPieza {
+    margin-top: 10px !important;
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: dashed !important;
+
+    .tituloSeccion {
+      h4 {
+        color: $font-dark !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+      }
+    }
+  }
+
+  // Materia prima
+  .materiaPrima {
+    margin-top: 15px !important;
+
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: dashed !important;
+
+    .tituloSeccion {
+      h4 {
+        color: $font-dark !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+      }
+    }
+  }
+
+  // Pigmento master bach
+  .pigmentoMasterBach {
+    margin-top: 15px !important;
+
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: dashed !important;
+
+    .tituloSeccion {
+      h4 {
+        color: $font-dark !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+      }
+    }
+  }
+
+  // Material de empaque
+  .materialEmpaque {
+    margin-top: 15px !important;
+
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: dashed !important;
+
+    .tituloSeccion {
+      h4 {
+        color: $font-dark !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+      }
+    }
+  }
+
+  // Opciones de maquinaria
+  .opcionesMaquinaria {
+    margin-top: 15px !important;
+    margin-bottom: 30px !important;
+
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: groove !important;
+
+    .tituloSeccion {
+      h4 {
+        color: $font-dark !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+      }
+    }
+  }
+
+  // Botones de seleccion
+  .botones {
+    margin-bottom: 40px !important;
+  }

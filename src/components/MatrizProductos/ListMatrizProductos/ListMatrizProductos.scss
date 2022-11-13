@@ -1,0 +1,10 @@
+@import "../../../scss/index";
+
+.detalles {
+  svg {
+    width: 60px;
+    height: 30px;
+    color: $azul-fredher !important;
+    cursor: pointer !important;
+  }
+}

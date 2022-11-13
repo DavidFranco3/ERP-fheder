@@ -1,0 +1,97 @@
+@import "../../../scss/index";
+
+.agregar {
+      cursor: pointer !important;
+      margin-left: -5px !important;
+      width: 15%;
+      margin-right: 10px;
+    }
+    
+    .encabezado {
+    margin-top: 10px !important;
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: groove !important;
+  }
+  
+  .datosGenerales {
+    margin-top: 10px !important;
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: dashed !important;
+
+    .tituloSeccion {
+      h4 {
+        color: $font-dark !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+      }
+    }
+  }
+  
+  .datosEncabezado {
+    margin-top: 10px !important;
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: dashed !important;
+
+    .tituloSeccion {
+      h4 {
+        color: $font-dark !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+      }
+    }
+  }
+  
+  .datosHerramientas {
+    margin-top: 10px !important;
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: dashed !important;
+
+    .tituloSeccion {
+      h4 {
+        color: $font-dark !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+      }
+    }
+  }
+  
+  .datosEquipos {
+    margin-top: 10px !important;
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: dashed !important;
+
+    .tituloSeccion {
+      h4 {
+        color: $font-dark !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+      }
+    }
+  }
+  
+  .datosPasos {
+    margin-top: 10px !important;
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: dashed !important;
+
+    .tituloSeccion {
+      h4 {
+        color: $font-dark !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+      }
+    }
+  }
+  
+  .datosFinales {
+    margin-top: 10px !important;
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: groove !important;
+  }

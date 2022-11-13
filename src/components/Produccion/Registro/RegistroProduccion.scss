@@ -1,0 +1,76 @@
+@import "../../../scss/index";
+
+.agregar {
+      cursor: pointer !important;
+      margin-left: -5px !important;
+      width: 15%;
+      margin-right: 10px;
+    }
+    
+    // Datos de la pieza
+  .datosGenerales {
+    margin-top: 10px !important;
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: groove !important;
+
+    .tituloSeccion {
+      h4 {
+        color: $font-dark !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+      }
+    }
+  }
+  
+  .datosPlaneacion {
+    margin-top: 10px !important;
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: dashed !important;
+
+    .tituloSeccion {
+      h4 {
+        color: $font-dark !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+      }
+    }
+  }
+  
+  .datosBOM {
+    margin-top: 10px !important;
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: dashed !important;
+
+    .tituloSeccion {
+      h4 {
+        color: $font-dark !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+      }
+    }
+  }
+  
+  .datosResultado {
+    margin-top: 10px !important;
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: dashed !important;
+
+    .tituloSeccion {
+      h4 {
+        color: $font-dark !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+      }
+    }
+  }
+  
+  .observaciones {
+    margin-top: 10px !important;
+    border-color: $border-dark !important;
+    border-width: 3px !important;
+    border-style: groove !important;
+  }
