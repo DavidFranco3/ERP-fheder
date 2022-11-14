@@ -183,6 +183,7 @@ import RegistroCertificadoCalidad from "../components/CertificadosCalidad/Regist
 
 // Rutas para el reporte de produccion
 import RegistroReporteProduccion from "../components/ReporteProduccion/RegistroReporteProduccion";
+import ModificaReporteProduccion from "../components/ReporteProduccion/ModificaReporteProduccion";
 
 // Rutas para las carpetas de proceso
 import RegistroCarpetasProceso from "../components/CarpetasProceso/RegistroCarpetasProceso";
@@ -372,6 +373,11 @@ export default [
         path: "/RegistroReporteProduccion",
         exact: true,
         page: RegistroReporteProduccion
+    },
+    {
+        path: "/ModificaReporteProduccion/:id",
+        exact: true,
+        page: ModificaReporteProduccion
     },
     //
     {

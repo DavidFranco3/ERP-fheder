@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
-import { useHistory } from "react-router-dom";
-import "./RegistroReporteProduccion.scss";
+import { useHistory, useParams } from "react-router-dom";
+import "./ModificaReporteProduccion.scss";
 import NuevoRegistro from "../NuevoRegistro";
-import { registraReporteProducción, obtenerNumeroReporteProduccion } from "../../../api/reporteProduccion";
+import { registraReporteProducción, obtenerNumeroReporteProduccion, obtenerReporteProduccion, actualizaReporteProduccion } from "../../../api/reporteProduccion";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
@@ -14,10 +14,36 @@ import { map } from "lodash";
 function RegistroReporteProduccion(props) {
     const { setRefreshCheckLogin } = props;
 
+    const params = useParams();
+    const { id } = params
+
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
 
     const [listRegistros, setListRegistros] = useState([]);
+
+    useEffect(() => {
+        //
+        obtenerReporteProduccion(id).then(response => {
+            const { data } = response;
+            //console.log(data)
+            const { supervisor, turno, asistencias, faltas, fecha, registros, eficienciaGeneralMaquinas, observacionesTurno } = data;
+            const dataTemp = {
+                supervisor: supervisor,
+                turno: turno,
+                asistencias: asistencias,
+                faltas: faltas,
+                fecha: fecha,
+                eficienciaGeneralMaquinas: eficienciaGeneralMaquinas,
+                observacionesTurno: observacionesTurno
+            }
+            setFormData(valoresAlmacenados(dataTemp))
+            setListRegistros(registros)
+            // setFechaCreacion(fechaElaboracion)
+        }).catch(e => {
+            console.log(e)
+        })
+    }, []);
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -56,28 +82,25 @@ function RegistroReporteProduccion(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        if (!formData.fecha || !formData.asistencias || !formData.faltas || !formData.supervisor || !formData.turno || !formData.eficiencia || !formData.observaciones) {
+        if (!formData.fecha || !formData.asistencias || !formData.faltas || !formData.supervisor || !formData.turno || !formData.eficienciaGeneralMaquinas || !formData.observacionesTurno) {
             toast.warning("Completa el formulario");
         } else {
             //console.log("Continuar")
             setLoading(true)
 
             // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            obtenerNumeroReporteProduccion().then(response => {
-                const { data } = response;
                 const dataTemp = {
-                    folio: data.folio,
                     fecha: formData.fecha,
                     asistencias: formData.asistencias,
                     faltas: formData.faltas,
                     supervisor: formData.supervisor,
                     turno: formData.turno,
                     registros: listRegistros,
-                    eficienciaGeneralMaquinas: formData.eficiencia,
-                    observacionesTurno: formData.observaciones
+                    eficienciaGeneralMaquinas: formData.eficienciaGeneralMaquinas,
+                    observacionesTurno: formData.observacionesTurno
                 }
                 // Modificar el pedido creado recientemente
-                registraReporteProducción(dataTemp).then(response => {
+                actualizaReporteProduccion(id, dataTemp).then(response => {
                     const { data: { mensaje, datos } } = response;
                     // console.log(response)
                     toast.success(mensaje)
@@ -86,9 +109,6 @@ function RegistroReporteProduccion(props) {
                 }).catch(e => {
                     console.log(e)
                 })
-            }).catch(e => {
-                console.log(e)
-            })
         }
     }
 
@@ -291,8 +311,8 @@ function RegistroReporteProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="Eficiencia general de turno de todas las maquinas"
-                                            name="eficiencia"
-                                            defaultValue={formData.eficiencia}
+                                            name="eficienciaGeneralMaquinas"
+                                            defaultValue={formData.eficienciaGeneralMaquinas}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -309,8 +329,8 @@ function RegistroReporteProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="Observaciones generales del turno"
-                                            name="observaciones"
-                                            defaultValue={formData.observaciones}
+                                            name="observacionesTurno"
+                                            defaultValue={formData.observacionesTurno}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -323,7 +343,7 @@ function RegistroReporteProduccion(props) {
                                         variant="success"
                                         className="registrar"
                                     >
-                                        {!loading ? "Registrar" : <Spinner animation="border" />}
+                                        {!loading ? "Modificar" : <Spinner animation="border" />}
                                     </Button>
                                 </Col>
                                 <Col>
@@ -360,8 +380,20 @@ function initialFormData() {
         supervisor: "",
         asistencias: "",
         faltas: "",
-        eficiencia: "",
-        observaciones: ""
+        eficienciaGeneralMaquinas: "",
+        observacionesTurno: ""
+    }
+}
+
+function valoresAlmacenados(data) {
+    return {
+        fecha: data.fecha,
+        turno: data.turno,
+        supervisor: data.supervisor,
+        asistencias: data.asistencias,
+        faltas: data.faltas,
+        eficienciaGeneralMaquinas: data.eficienciaGeneralMaquinas,
+        observacionesTurno: data.observacionesTurno
     }
 }
 

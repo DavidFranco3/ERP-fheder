@@ -15,6 +15,8 @@ function AgregarRegistro(props) {
     }
 
     const addItems = () => {
+        setLoading(true);
+        
         const fecha = document.getElementById("fecha").value
         const acumulado = document.getElementById("acumulado").value
         const material = document.getElementById("material").value

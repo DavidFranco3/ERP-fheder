@@ -253,7 +253,7 @@ function RegistroProduccion(props) {
     const removeItemRegistro = (registro) => {
         let newArray = listRegistros;
         newArray.splice(newArray.findIndex(a => a.ID === registro.ID), 1);
-        setListResultados([...newArray]);
+        setListRegistros([...newArray]);
     }
 
     const [ordenVenta, setOrdenVenta] = useState("");
@@ -275,15 +275,15 @@ function RegistroProduccion(props) {
                             </h1>
                         </Col>
                         <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
+                            <Button
+                                className="btnRegistroVentas"
+                                onClick={() => {
+                                    rutaRegreso()
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                            </Button>
+                        </Col>
                     </Row>
                 </Alert>
 

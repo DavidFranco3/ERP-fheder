@@ -18,7 +18,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
 function ModificacionVentas(props) {
-    const { setRefreshCheckLogin } = props;
+    const { datos, setRefreshCheckLogin } = props;
 
     const enrutamiento = useHistory();
 
