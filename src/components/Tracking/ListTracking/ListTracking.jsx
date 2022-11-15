@@ -260,7 +260,7 @@ function ListTracking(props) {
 
     const columns = [
         {
-            name: "Item",
+            name: "ITEM",
             selector: row => row.folio,
             sortable: false,
             center: true,
@@ -341,7 +341,7 @@ function ListTracking(props) {
         const timeout = setTimeout(() => {
             setRows(listTracking);
             setPending(false);
-        }, 2000);
+        }, 0);
         return () => clearTimeout(timeout);
     }, []);
 

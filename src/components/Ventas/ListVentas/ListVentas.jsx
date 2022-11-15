@@ -234,7 +234,7 @@ function ListVentas(props) {
         const timeout = setTimeout(() => {
             setRows(listPedidosVenta);
             setPending(false);
-        }, 2000);
+        }, 0);
         return () => clearTimeout(timeout);
     }, []);
 

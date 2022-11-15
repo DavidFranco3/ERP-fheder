@@ -162,6 +162,7 @@ import RegistroDevoluciones from "../components/Devoluciones/RegistraDevolucione
 
 // Rutas para status de material
 import RegistroStatusMaterial from "../components/StatusMaterial/RegistraStatus";
+import ModificaStatusMaterial from "../components/StatusMaterial/ModificaStatus";
 
 // Rutas para la inspeccion de material
 import RegistroInspeccionPieza from "../components/InspeccionMaterial/RegistraInspeccionMaterial";
@@ -238,6 +239,11 @@ export default [
         path: "/RegistroStatusMaterial",
         exact: true,
         page: RegistroStatusMaterial
+    },
+    {
+        path: "/ModificaStatusMaterial/:id",
+        exact: true,
+        page: ModificaStatusMaterial
     },
     {
         path: "/RegistraAcusesRecibo",

@@ -177,7 +177,7 @@ function ListCalidad(props) {
         const timeout = setTimeout(() => {
             setRows(listInspeccion);
             setPending(false);
-        }, 2000);
+        }, 0);
         return () => clearTimeout(timeout);
     }, []);
 

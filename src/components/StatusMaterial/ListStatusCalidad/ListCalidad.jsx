@@ -44,8 +44,8 @@ function ListCalidad(props) {
     }
 
     // Para la modificacion de datos del pedido
-    const modificaPedidoVenta = (folio) => {
-        enrutamiento.push(`/ModificacionPedido/${folio}`);
+    const modificaPedidoVenta = (id) => {
+        enrutamiento.push(`/ModificaStatusMaterial/${id}`);
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
@@ -106,9 +106,9 @@ function ListCalidad(props) {
                     <Badge
                         bg="success"
                         className="editar"
-                        /*onClick={() => {
-                            modificaPedidoVenta(row.folio)
-                        }}*/
+                        onClick={() => {
+                            modificaPedidoVenta(row.id)
+                        }}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
                     </Badge>
@@ -141,7 +141,7 @@ function ListCalidad(props) {
         const timeout = setTimeout(() => {
             setRows(listStatus);
             setPending(false);
-        }, 2000);
+        }, 0);
         return () => clearTimeout(timeout);
     }, []);
 

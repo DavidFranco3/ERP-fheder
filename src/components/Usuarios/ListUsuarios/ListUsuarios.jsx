@@ -208,7 +208,7 @@ function ListUsuarios(props) {
         const timeout = setTimeout(() => {
             setRows(listUsuarios);
             setPending(false);
-        }, 2000);
+        }, 0);
         return () => clearTimeout(timeout);
     }, []);
 

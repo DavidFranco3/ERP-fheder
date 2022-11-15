@@ -184,7 +184,7 @@ function ListIntegracionVentasGastos(props) {
         const timeout = setTimeout(() => {
             setRows(listIntegraciones);
             setPending(false);
-        }, 2000);
+        }, 0);
         return () => clearTimeout(timeout);
     }, []);
 

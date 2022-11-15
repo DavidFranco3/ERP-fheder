@@ -483,7 +483,7 @@ function RegistraStatus(props) {
                                             required
                                         >
                                             <option>Elige una opción</option>
-                                            <option value="Aceptado">Etiqueta aceptado</option>
+                                            <option value="Aceptado">Aceptado</option>
                                             <option value="No Conforme">No conforme</option>
                                             <option value="Material Sospechoso">Material sospechoso</option>
                                         </Form.Control>
@@ -507,6 +507,7 @@ function RegistraStatus(props) {
                                                         type="date"
                                                         placeholder="Escribe la fecha"
                                                         name="fecha"
+                                                        defaultValue={formData.fecha}
                                                     />
                                                 </Col>
 
@@ -520,6 +521,7 @@ function RegistraStatus(props) {
                                                         type="text"
                                                         placeholder="Escribe el cliente o proveedor"
                                                         name="clienteProveedor"
+                                                        defaultValue={formData.clienteProveedor}
                                                     />
                                                 </Col>
                                             </Form.Group>
@@ -537,6 +539,7 @@ function RegistraStatus(props) {
                                                         type="text"
                                                         placeholder="Escribe el lote"
                                                         name="lote"
+                                                        defaultValue={formData.lote}
                                                     />
                                                 </Col>
 
@@ -550,6 +553,7 @@ function RegistraStatus(props) {
                                                         type="text"
                                                         placeholder="Escribe del que recibio"
                                                         name="recibio"
+                                                        defaultValue={formData.recibio}
                                                     />
                                                 </Col>
                                             </Form.Group>
@@ -567,6 +571,7 @@ function RegistraStatus(props) {
                                                         type="number"
                                                         placeholder="Escribe el turno"
                                                         name="turno"
+                                                        defaultValue={formData.turno}
                                                     />
                                                 </Col>
 
@@ -580,6 +585,7 @@ function RegistraStatus(props) {
                                                         type="text"
                                                         placeholder="Escribe la propiedad"
                                                         name="propiedad"
+                                                        defaultValue={formData.propiedad}
                                                     />
                                                 </Col>
                                             </Form.Group>
@@ -597,6 +603,7 @@ function RegistraStatus(props) {
                                                         type="text"
                                                         placeholder="Escribe lo que se libera"
                                                         name="liberacion"
+                                                        defaultValue={formData.liberacion}
                                                     />
                                                 </Col>
                                             </Form.Group>
@@ -614,6 +621,7 @@ function RegistraStatus(props) {
                                                         type="text"
                                                         placeholder="Escribe la descripción"
                                                         name="descripcion"
+                                                        defaultValue={formData.descripcion}
                                                     />
                                                 </Col>
                                             </Form.Group>
@@ -631,6 +639,7 @@ function RegistraStatus(props) {
                                                         type="text"
                                                         placeholder="Escribe los comentarios"
                                                         name="comentarios"
+                                                        defaultValue={formData.comentarios}
                                                     />
                                                 </Col>
                                             </Form.Group>

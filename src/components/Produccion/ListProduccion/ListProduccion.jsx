@@ -153,7 +153,7 @@ function ListProduccion(props) {
         const timeout = setTimeout(() => {
             setRows(listProduccion);
             setPending(false);
-        }, 2000);
+        }, 0);
         return () => clearTimeout(timeout);
     }, []);
 

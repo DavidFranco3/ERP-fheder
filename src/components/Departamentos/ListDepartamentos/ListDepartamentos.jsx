@@ -109,7 +109,7 @@ function ListDepartamentos(props) {
         const timeout = setTimeout(() => {
             setRows(listDepartamentos);
             setPending(false);
-        }, 2000);
+        }, 0);
         return () => clearTimeout(timeout);
     }, []);
 

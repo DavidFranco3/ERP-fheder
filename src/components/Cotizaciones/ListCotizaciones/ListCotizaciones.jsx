@@ -215,7 +215,7 @@ function ListCotizaciones(props) {
         const timeout = setTimeout(() => {
             setRows(listCotizaciones);
             setPending(false);
-        }, 2000);
+        }, 0);
         return () => clearTimeout(timeout);
     }, []);
 

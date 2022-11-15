@@ -120,7 +120,7 @@ function ListMateriasPrimas(props) {
         const timeout = setTimeout(() => {
             setRows(listMateriales);
             setPending(false);
-        }, 2000);
+        }, 0);
         return () => clearTimeout(timeout);
     }, []);
 

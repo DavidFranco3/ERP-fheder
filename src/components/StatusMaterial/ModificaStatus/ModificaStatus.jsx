@@ -3,10 +3,10 @@ import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstr
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import LayoutPrincipal from "../../../layout/layoutPrincipal";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import BuscarInspeccionCalidad from "../BuscarInspeccionCalidad";
 import BasicModal from "../../Modal/BasicModal";
-import { registraStatusMaterial, obtenerNumeroStatusMaterial, obtenerItemStatusMaterial } from "../../../api/statusMaterial";
+import { obtenerStatusMaterial, actualizaStatusMaterial } from "../../../api/statusMaterial";
 import { toast } from "react-toastify";
 
 function ModificaStatus(props) {
@@ -18,6 +18,54 @@ function ModificaStatus(props) {
     const rutaRegreso = () => {
         enrutamiento.push("/StatusMaterial")
     }
+
+    const params = useParams();
+    const { id } = params
+
+    useEffect(() => {
+        //
+        obtenerStatusMaterial(id).then(response => {
+            const { data } = response;
+            //console.log(data)
+            const { folioInspeccion, propiedadInspeccion, cantidadInspeccion, fechaInspeccion, tipoMaterialInspeccion, recibioInspeccion, loteInspeccion, nombreInspeccion, resultadoInspeccion, etiqueta, fecha, descripcionMaterial, rechazo, nombre, auditor, supervisor, descripcionDefecto, cantidad, tipoRechazo, correccion, clienteProveedor, lote, recibio, turno, propiedad, liberacion, descripcion, comentarios, condicion, observaciones } = data;
+            const dataTemp = {
+                folioInspeccion: folioInspeccion,
+                propiedadInspeccion: propiedadInspeccion,
+                cantidadInspeccion: cantidadInspeccion,
+                fechaInspeccion: fechaInspeccion,
+                tipoMaterialInspeccion: tipoMaterialInspeccion,
+                recibioInspeccion: recibioInspeccion,
+                loteInspeccion: loteInspeccion,
+                nombreInspeccion: nombreInspeccion,
+                resultadoInspeccion: resultadoInspeccion,
+                etiqueta: etiqueta,
+                fecha: fecha,
+                descripcionMaterial: descripcionMaterial,
+                rechazo: rechazo,
+                nombre: nombre,
+                auditor: auditor,
+                supervisor: supervisor,
+                descripcionDefecto: descripcionDefecto,
+                cantidad: cantidad,
+                tipoRechazo: tipoRechazo,
+                correccion: correccion,
+                clienteProveedor: clienteProveedor,
+                lote: lote,
+                recibio: recibio,
+                turno: turno,
+                propiedad: propiedad,
+                liberacion: liberacion,
+                descripcion: descripcion,
+                comentarios: comentarios,
+                condicion: condicion,
+                observaciones: observaciones
+            }
+            setFormData(valoresAlmacenados(dataTemp))
+            // setFechaCreacion(fechaElaboracion)
+        }).catch(e => {
+            console.log(e)
+        })
+    }, []);
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -63,24 +111,6 @@ function ModificaStatus(props) {
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
-    // Para almacenar el folio actual
-    const [itemActual, setItemActual] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerItemStatusMaterial().then(response => {
-                const { data } = response;
-                // console.log(data)
-                const { item } = data;
-                setItemActual(item)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
     const onSubmit = e => {
         e.preventDefault();
 
@@ -88,161 +118,138 @@ function ModificaStatus(props) {
         if (formData.etiqueta === "Aceptado") {
 
 
-            if (!folio || !formData.etiqueta || !formData.fecha || !formData.clienteProveedor || !formData.lote || !formData.recibio || !formData.turno || !formData.propiedad || !formData.liberacion || !formData.descripcion || !formData.comentarios) {
+            if (!formData.etiqueta || !formData.fecha || !formData.clienteProveedor || !formData.lote || !formData.recibio || !formData.turno || !formData.propiedad || !formData.liberacion || !formData.descripcion || !formData.comentarios) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
                 setLoading(true)
 
-                // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-                obtenerNumeroStatusMaterial().then(response => {
-                    const { data } = response;
+                const dataTemp = {
+                    folioInspeccion: folio == "" ? formData.folioInspeccion : folio,
+                    propiedadInspeccion: propiedad == "" ? formData.propiedadInspeccion : propiedad,
+                    cantidadInspeccion: cantidad == "" ? formData.cantidadInspeccion : cantidad,
+                    fechaInspeccion: fecha == "" ? formData.fechaInspeccion : fecha,
+                    tipoMaterialInspeccion: tipoMaterial == "" ? formData.tipoMaterialInspeccion : tipoMaterial,
+                    recibioInspeccion: recibio == "" ? formData.recibioInspeccion : recibio,
+                    loteInspeccion: lote == "" ? formData.loteInspeccion : lote,
+                    nombreInspeccion: nombre == "" ? formData.nombreInspeccion : nombre,
+                    resultadoInspeccion: resultadoFinal == "" ? formData.resultadoInspeccion : resultadoFinal,
+                    etiqueta: formData.etiqueta,
+                    fecha: formData.fecha,
+                    clienteProveedor: formData.clienteProveedor,
+                    lote: formData.lote,
+                    recibio: formData.recibio,
+                    turno: formData.turno,
+                    propiedad: formData.propiedad,
+                    liberacion: formData.liberacion,
+                    descripcion: formData.descripcion,
+                    comentarios: formData.comentarios
+                }
 
-                    const dataTemp = {
-                        item: itemActual,
-                        folio: data.noStatus,
-                        folioInspeccion: folio,
-                        propiedadInspeccion: propiedad,
-                        cantidadInspeccion: cantidad,
-                        fechaInspeccion: fecha,
-                        tipoMaterialInspeccion: tipoMaterial,
-                        recibioInspeccion: recibio,
-                        loteInspeccion: lote,
-                        nombreInspeccion: nombre,
-                        resultadoInspeccion: resultadoFinal,
-                        etiqueta: formData.etiqueta,
-                        fecha: formData.fecha,
-                        clienteProveedor: formData.clienteProveedor,
-                        lote: formData.lote,
-                        recibio: formData.recibio,
-                        turno: formData.turno,
-                        propiedad: formData.propiedad,
-                        liberacion: formData.liberacion,
-                        descripcion: formData.descripcion,
-                        comentarios: formData.comentarios
-                    }
-
-                    // Modificar el pedido creado recientemente
-                    registraStatusMaterial(dataTemp).then(response => {
-                        const { data: { mensaje, datos } } = response;
-                        // console.log(response)
-                        toast.success(mensaje)
-                        // Log acerca del registro inicial del tracking
-                        //LogsInformativos(`Se han registrado la orden de venta con folio ${data.noVenta}`, datos)
-                        // Registro inicial del tracking
-                        //LogTrackingRegistro(data.noVenta, clienteSeleccionado.id, formData.fechaElaboracion)
-                        setLoading(false)
-                        rutaRegreso()
-                    }).catch(e => {
-                        console.log(e)
-                    })
+                // Modificar el pedido creado recientemente
+                actualizaStatusMaterial(id, dataTemp).then(response => {
+                    const { data: { mensaje, datos } } = response;
+                    // console.log(response)
+                    toast.success(mensaje)
+                    // Log acerca del registro inicial del tracking
+                    //LogsInformativos(`Se han registrado la orden de venta con folio ${data.noVenta}`, datos)
+                    // Registro inicial del tracking
+                    //LogTrackingRegistro(data.noVenta, clienteSeleccionado.id, formData.fechaElaboracion)
+                    setLoading(false)
+                    rutaRegreso()
                 }).catch(e => {
                     console.log(e)
                 })
             }
         } else if (formData.etiqueta === "No Conforme") {
-            if (!folio || !formData.etiqueta || !formData.fecha || !formData.descripcionMaterial || !formData.rechazo || !formData.nombre || !formData.clienteProveedor || !formData.turno || !formData.auditor || !formData.supervisor || !formData.descripcionDefecto || !formData.cantidad || !formData.tipoRechazo || !formData.correccion || !formData.comentarios) {
+            if (!formData.etiqueta || !formData.fecha || !formData.descripcionMaterial || !formData.rechazo || !formData.nombre || !formData.clienteProveedor || !formData.turno || !formData.auditor || !formData.supervisor || !formData.descripcionDefecto || !formData.cantidad || !formData.tipoRechazo || !formData.correccion || !formData.comentarios) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
                 setLoading(true)
 
                 // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-                obtenerNumeroStatusMaterial().then(response => {
-                    const { data } = response;
 
-                    const dataTemp = {
-                        item: itemActual,
-                        folio: data.noStatus,
-                        folioInspeccion: folio,
-                        propiedadInspeccion: propiedad,
-                        cantidadInspeccion: cantidad,
-                        fechaInspeccion: fecha,
-                        tipoMaterialInspeccion: tipoMaterial,
-                        recibioInspeccion: recibio,
-                        loteInspeccion: lote,
-                        nombreInspeccion: nombre,
-                        resultadoInspeccion: resultadoFinal,
-                        etiqueta: formData.etiqueta,
-                        fecha: formData.fecha,
-                        descripcionMaterial: formData.descripcionMaterial,
-                        rechazo: formData.rechazo,
-                        nombre: formData.nombre,
-                        clienteProveedor: formData.clienteProveedor,
-                        turno: formData.turno,
-                        auditor: formData.auditor,
-                        supervisor: formData.supervisor,
-                        descripcionDefecto: formData.descripcionDefecto,
-                        cantidad: formData.cantidad,
-                        tipoRechazo: formData.tipoRechazo,
-                        correccion: formData.correccion,
-                        comentarios: formData.comentarios
-                    }
+                const dataTemp = {
+                    folioInspeccion: folio == "" ? formData.folioInspeccion : folio,
+                    propiedadInspeccion: propiedad == "" ? formData.propiedadInspeccion : propiedad,
+                    cantidadInspeccion: cantidad == "" ? formData.cantidadInspeccion : cantidad,
+                    fechaInspeccion: fecha == "" ? formData.fechaInspeccion : fecha,
+                    tipoMaterialInspeccion: tipoMaterial == "" ? formData.tipoMaterialInspeccion : tipoMaterial,
+                    recibioInspeccion: recibio == "" ? formData.recibioInspeccion : recibio,
+                    loteInspeccion: lote == "" ? formData.loteInspeccion : lote,
+                    nombreInspeccion: nombre == "" ? formData.nombreInspeccion : nombre,
+                    resultadoInspeccion: resultadoFinal == "" ? formData.resultadoInspeccion : resultadoFinal,
+                    etiqueta: formData.etiqueta,
+                    fecha: formData.fecha,
+                    descripcionMaterial: formData.descripcionMaterial,
+                    rechazo: formData.rechazo,
+                    nombre: formData.nombre,
+                    clienteProveedor: formData.clienteProveedor,
+                    turno: formData.turno,
+                    auditor: formData.auditor,
+                    supervisor: formData.supervisor,
+                    descripcionDefecto: formData.descripcionDefecto,
+                    cantidad: formData.cantidad,
+                    tipoRechazo: formData.tipoRechazo,
+                    correccion: formData.correccion,
+                    comentarios: formData.comentarios
+                }
 
-                    // Modificar el pedido creado recientemente
-                    registraStatusMaterial(dataTemp).then(response => {
-                        const { data: { mensaje, datos } } = response;
-                        // console.log(response)
-                        toast.success(mensaje)
-                        // Log acerca del registro inicial del tracking
-                        //LogsInformativos(`Se han registrado la orden de venta con folio ${data.noVenta}`, datos)
-                        // Registro inicial del tracking
-                        //LogTrackingRegistro(data.noVenta, clienteSeleccionado.id, formData.fechaElaboracion)
-                        setLoading(false)
-                        rutaRegreso()
-                    }).catch(e => {
-                        console.log(e)
-                    })
+                // Modificar el pedido creado recientemente
+                actualizaStatusMaterial(id, dataTemp).then(response => {
+                    const { data: { mensaje, datos } } = response;
+                    // console.log(response)
+                    toast.success(mensaje)
+                    // Log acerca del registro inicial del tracking
+                    //LogsInformativos(`Se han registrado la orden de venta con folio ${data.noVenta}`, datos)
+                    // Registro inicial del tracking
+                    //LogTrackingRegistro(data.noVenta, clienteSeleccionado.id, formData.fechaElaboracion)
+                    setLoading(false)
+                    rutaRegreso()
                 }).catch(e => {
                     console.log(e)
                 })
             }
 
         } else if (formData.etiqueta === "Material Sospechoso") {
-            if (!folio || !formData.etiqueta || !formData.fecha || !formData.turno || !formData.descripcionMaterial || !formData.auditor || !formData.condicion || !formData.observaciones) {
+            if (!formData.etiqueta || !formData.fecha || !formData.turno || !formData.descripcionMaterial || !formData.auditor || !formData.condicion || !formData.observaciones) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
                 setLoading(true)
                 // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-                obtenerNumeroStatusMaterial().then(response => {
-                    const { data } = response;
 
-                    const dataTemp = {
-                        item: itemActual,
-                        folio: data.noStatus,
-                        folioInspeccion: folio,
-                        propiedadInspeccion: propiedad,
-                        cantidadInspeccion: cantidad,
-                        fechaInspeccion: fecha,
-                        tipoMaterialInspeccion: tipoMaterial,
-                        recibioInspeccion: recibio,
-                        loteInspeccion: lote,
-                        nombreInspeccion: nombre,
-                        resultadoInspeccion: resultadoFinal,
-                        etiqueta: formData.etiqueta,
-                        fecha: formData.fecha,
-                        turno: formData.turno,
-                        descripcionMaterial: formData.descripcionMaterial,
-                        auditor: formData.auditor,
-                        condicion: formData.condicion,
-                        observaciones: formData.observaciones
-                    }
+                const dataTemp = {
+                    folioInspeccion: folio == "" ? formData.folioInspeccion : folio,
+                    propiedadInspeccion: propiedad == "" ? formData.propiedadInspeccion : propiedad,
+                    cantidadInspeccion: cantidad == "" ? formData.cantidadInspeccion : cantidad,
+                    fechaInspeccion: fecha == "" ? formData.fechaInspeccion : fecha,
+                    tipoMaterialInspeccion: tipoMaterial == "" ? formData.tipoMaterialInspeccion : tipoMaterial,
+                    recibioInspeccion: recibio == "" ? formData.recibioInspeccion : recibio,
+                    loteInspeccion: lote == "" ? formData.loteInspeccion : lote,
+                    nombreInspeccion: nombre == "" ? formData.nombreInspeccion : nombre,
+                    resultadoInspeccion: resultadoFinal == "" ? formData.resultadoInspeccion : resultadoFinal,
+                    etiqueta: formData.etiqueta,
+                    fecha: formData.fecha,
+                    turno: formData.turno,
+                    descripcionMaterial: formData.descripcionMaterial,
+                    auditor: formData.auditor,
+                    condicion: formData.condicion,
+                    observaciones: formData.observaciones
+                }
 
-                    // Modificar el pedido creado recientemente
-                    registraStatusMaterial(dataTemp).then(response => {
-                        const { data: { mensaje, datos } } = response;
-                        // console.log(response)
-                        toast.success(mensaje)
-                        // Log acerca del registro inicial del tracking
-                        //LogsInformativos(`Se han registrado la orden de venta con folio ${data.noVenta}`, datos)
-                        // Registro inicial del tracking
-                        //LogTrackingRegistro(data.noVenta, clienteSeleccionado.id, formData.fechaElaboracion)
-                        setLoading(false)
-                        rutaRegreso()
-                    }).catch(e => {
-                        console.log(e)
-                    })
+                // Modificar el pedido creado recientemente
+                actualizaStatusMaterial(id, dataTemp).then(response => {
+                    const { data: { mensaje, datos } } = response;
+                    // console.log(response)
+                    toast.success(mensaje)
+                    // Log acerca del registro inicial del tracking
+                    //LogsInformativos(`Se han registrado la orden de venta con folio ${data.noVenta}`, datos)
+                    // Registro inicial del tracking
+                    //LogTrackingRegistro(data.noVenta, clienteSeleccionado.id, formData.fechaElaboracion)
+                    setLoading(false)
+                    rutaRegreso()
                 }).catch(e => {
                     console.log(e)
                 })
@@ -254,6 +261,8 @@ function ModificaStatus(props) {
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
+
+    console.log(formData)
 
     return (
         <>
@@ -322,7 +331,7 @@ function ModificaStatus(props) {
                                             type="text"
                                             placeholder="Folio"
                                             name="folio"
-                                            value={folio}
+                                            value={folio == "" ? formData.folioInspeccion : folio}
                                             disabled
                                         />
                                     </Col>
@@ -337,7 +346,7 @@ function ModificaStatus(props) {
                                             type="text"
                                             placeholder="Propiedad"
                                             name="propiedadEncontrada"
-                                            value={propiedad}
+                                            value={propiedad == "" ? formData.propiedadInspeccion : propiedad}
                                             disabled
                                         />
                                     </Col>
@@ -352,7 +361,7 @@ function ModificaStatus(props) {
                                             type="text"
                                             placeholder="Cantidad"
                                             name="cantidad"
-                                            value={cantidad}
+                                            value={cantidad == "" ? formData.cantidadInspeccion : cantidad}
                                             disabled
                                         />
                                     </Col>
@@ -376,7 +385,7 @@ function ModificaStatus(props) {
                                             type="date"
                                             placeholder="Fecha"
                                             name="fechaEncontrada"
-                                            value={fecha}
+                                            value={fecha == "" ? formData.fechaInspeccion : fecha}
                                             disabled
                                         />
                                     </Col>
@@ -391,7 +400,7 @@ function ModificaStatus(props) {
                                             type="text"
                                             placeholder="Tipo de material"
                                             name="tipoMaterial"
-                                            value={tipoMaterial}
+                                            value={tipoMaterial == "" ? formData.tipoMaterialInspeccion : tipoMaterial}
                                             disabled
                                         />
                                     </Col>
@@ -406,7 +415,7 @@ function ModificaStatus(props) {
                                             type="text"
                                             placeholder="Recibio"
                                             name="recibio"
-                                            value={recibio}
+                                            value={recibio == "" ? formData.recibioInspeccion : recibio}
                                             disabled
                                         />
                                     </Col>
@@ -427,7 +436,7 @@ function ModificaStatus(props) {
                                             type="Text"
                                             placeholder="Lote"
                                             name="loteEncontrado"
-                                            value={lote}
+                                            value={lote == "" ? formData.loteInspeccion : lote}
                                             disabled
                                         />
                                     </Col>
@@ -442,7 +451,7 @@ function ModificaStatus(props) {
                                             type="text"
                                             placeholder="Nombre/Descripción"
                                             name="nombreDescripcion"
-                                            value={nombre}
+                                            value={nombre == "" ? formData.nombreInspeccion : nombre}
                                             disabled
                                         />
                                     </Col>
@@ -457,7 +466,7 @@ function ModificaStatus(props) {
                                             type="text"
                                             placeholder="Resultado de inspección final"
                                             name="resultado"
-                                            value={resultadoFinal}
+                                            value={resultadoFinal == "" ? formData.resultadoInspeccion : resultadoFinal}
                                             disabled
                                         />
                                     </Col>
@@ -483,9 +492,9 @@ function ModificaStatus(props) {
                                             required
                                         >
                                             <option>Elige una opción</option>
-                                            <option value="Aceptado">Etiqueta aceptado</option>
-                                            <option value="No Conforme">No conforme</option>
-                                            <option value="Material Sospechoso">Material sospechoso</option>
+                                            <option value="Aceptado" selected={formData.etiqueta == "Aceptado"}>Aceptado</option>
+                                            <option value="No Conforme" selected={formData.etiqueta == "No Conforme"}>No conforme</option>
+                                            <option value="Material Sospechoso" selected={formData.etiqueta == "Material Sospechoso"}>Material sospechoso</option>
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
@@ -507,6 +516,7 @@ function ModificaStatus(props) {
                                                         type="date"
                                                         placeholder="Escribe la fecha"
                                                         name="fecha"
+                                                        defaultValue={formData.fecha}
                                                     />
                                                 </Col>
 
@@ -520,6 +530,7 @@ function ModificaStatus(props) {
                                                         type="text"
                                                         placeholder="Escribe el cliente o proveedor"
                                                         name="clienteProveedor"
+                                                        defaultValue={formData.clienteProveedor}
                                                     />
                                                 </Col>
                                             </Form.Group>
@@ -537,6 +548,7 @@ function ModificaStatus(props) {
                                                         type="text"
                                                         placeholder="Escribe el lote"
                                                         name="lote"
+                                                        defaultValue={formData.lote}
                                                     />
                                                 </Col>
 
@@ -550,6 +562,7 @@ function ModificaStatus(props) {
                                                         type="text"
                                                         placeholder="Escribe del que recibio"
                                                         name="recibio"
+                                                        defaultValue={formData.recibio}
                                                     />
                                                 </Col>
                                             </Form.Group>
@@ -567,6 +580,7 @@ function ModificaStatus(props) {
                                                         type="number"
                                                         placeholder="Escribe el turno"
                                                         name="turno"
+                                                        defaultValue={formData.turno}
                                                     />
                                                 </Col>
 
@@ -580,6 +594,7 @@ function ModificaStatus(props) {
                                                         type="text"
                                                         placeholder="Escribe la propiedad"
                                                         name="propiedad"
+                                                        defaultValue={formData.propiedad}
                                                     />
                                                 </Col>
                                             </Form.Group>
@@ -597,6 +612,7 @@ function ModificaStatus(props) {
                                                         type="text"
                                                         placeholder="Escribe lo que se libera"
                                                         name="liberacion"
+                                                        defaultValue={formData.liberacion}
                                                     />
                                                 </Col>
                                             </Form.Group>
@@ -614,6 +630,7 @@ function ModificaStatus(props) {
                                                         type="text"
                                                         placeholder="Escribe la descripción"
                                                         name="descripcion"
+                                                        defaultValue={formData.descripcion}
                                                     />
                                                 </Col>
                                             </Form.Group>
@@ -631,6 +648,7 @@ function ModificaStatus(props) {
                                                         type="text"
                                                         placeholder="Escribe los comentarios"
                                                         name="comentarios"
+                                                        defaultValue={formData.comentarios}
                                                     />
                                                 </Col>
                                             </Form.Group>
@@ -695,6 +713,7 @@ function ModificaStatus(props) {
                                                         name="rechazo"
                                                         id="interno"
                                                         defaultValue={formData.rechazo}
+                                                        checked={formData.rechazo == "interno"}
                                                     />
                                                 </Col>
                                                 <Col sm={1}>
@@ -707,6 +726,7 @@ function ModificaStatus(props) {
                                                         name="rechazo"
                                                         id="externo"
                                                         defaultValue={formData.rechazo}
+                                                        checked={formData.rechazo == "externo"}
                                                     />
                                                 </Col>
                                             </Form.Group>
@@ -727,6 +747,7 @@ function ModificaStatus(props) {
                                                         name="nombre"
                                                         defaultValue={formData.nombre}
                                                         id="Proveedor"
+                                                        checked={formData.nombre == "proveedor"}
                                                     />
                                                 </Col>
                                                 <Col sm={1}>
@@ -739,6 +760,7 @@ function ModificaStatus(props) {
                                                         name="nombre"
                                                         defaultValue={formData.nombre}
                                                         id="Cliente"
+                                                        checked={formData.nombre == "cliente"}
                                                     />
                                                 </Col>
                                                 <Col sm="2">
@@ -857,6 +879,7 @@ function ModificaStatus(props) {
                                                         name="tipoRechazo"
                                                         id="moler"
                                                         defaultValue={formData.tipoRechazo}
+                                                        checked={formData.tipoRechazo == "moler"}
                                                     />
                                                 </Col>
                                                 <Col sm={1}>
@@ -869,6 +892,7 @@ function ModificaStatus(props) {
                                                         name="tipoRechazo"
                                                         id="retrabajar"
                                                         defaultValue={formData.tipoRechazo}
+                                                        checked={formData.tipoRechazo == "retrabajar"}
                                                     />
                                                 </Col>
                                                 <Col sm={1}>
@@ -881,6 +905,7 @@ function ModificaStatus(props) {
                                                         name="tipoRechazo"
                                                         id="consecion"
                                                         defaultValue={formData.tipoRechazo}
+                                                        checked={formData.tipoRechazo == "consecion"}
                                                     />
                                                 </Col>
                                                 <Col sm={1}>
@@ -893,6 +918,7 @@ function ModificaStatus(props) {
                                                         name="tipoRechazo"
                                                         id="otro"
                                                         defaultValue={formData.tipoRechazo}
+                                                        checked={formData.tipoRechazo == "otro"}
                                                     />
                                                 </Col>
                                                 <Col sm={1}>
@@ -905,6 +931,7 @@ function ModificaStatus(props) {
                                                         name="tipoRechazo"
                                                         id="reinspeccion"
                                                         defaultValue={formData.tipoRechazo}
+                                                        checked={formData.tipoRechazo == "re-inspeccion"}
                                                     />
                                                 </Col>
                                             </Form.Group>
@@ -1121,6 +1148,41 @@ function initialFormData() {
         tipoRechazo: "",
         correccion: "",
         condicion: ""
+    }
+}
+
+function valoresAlmacenados(data) {
+    return {
+        folioInspeccion: data.folioInspeccion,
+        propiedadInspeccion: data.propiedadInspeccion,
+        cantidadInspeccion: data.cantidadInspeccion,
+        fechaInspeccion: data.fechaInspeccion,
+        tipoMaterialInspeccion: data.tipoMaterialInspeccion,
+        recibioInspeccion: data.recibioInspeccion,
+        loteInspeccion: data.loteInspeccion,
+        nombreInspeccion: data.nombreInspeccion,
+        resultadoInspeccion: data.resultadoInspeccion,
+        etiqueta: data.etiqueta,
+        fecha: data.fecha,
+        descripcionMaterial: data.descripcionMaterial,
+        rechazo: data.rechazo,
+        nombre: data.nombre,
+        auditor: data.auditor,
+        supervisor: data.supervisor,
+        descripcionDefecto: data.descripcionDefecto,
+        cantidad: data.cantidad,
+        tipoRechazo: data.tipoRechazo,
+        correccion: data.correccion,
+        clienteProveedor: data.clienteProveedor,
+        lote: data.lote,
+        recibio: data.recibio,
+        turno: data.turno,
+        propiedad: data.propiedad,
+        liberacion: data.liberacion,
+        descripcion: data.descripcion,
+        comentarios: data.comentarios,
+        condicion: data.condicion,
+        observaciones: data.observaciones
     }
 }
 

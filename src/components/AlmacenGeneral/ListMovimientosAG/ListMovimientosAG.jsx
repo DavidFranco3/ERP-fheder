@@ -91,7 +91,7 @@ function ListMovimientosAg(props) {
         const timeout = setTimeout(() => {
             setRows(listMovimientos);
             setPending(false);
-        }, 2000);
+        }, 0);
         return () => clearTimeout(timeout);
     }, []);
 

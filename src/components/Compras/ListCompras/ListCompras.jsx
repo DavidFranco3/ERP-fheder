@@ -296,7 +296,7 @@ function ListCompras(props) {
         const timeout = setTimeout(() => {
             setRows(listCompras);
             setPending(false);
-        }, 2000);
+        }, 0);
         return () => clearTimeout(timeout);
     }, []);
 

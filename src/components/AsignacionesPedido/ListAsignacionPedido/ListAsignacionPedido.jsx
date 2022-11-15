@@ -215,7 +215,7 @@ function ListAsignacionPedido(props) {
         const timeout = setTimeout(() => {
             setRows(listAsignacionPedido);
             setPending(false);
-        }, 2000);
+        }, 0);
         return () => clearTimeout(timeout);
     }, []);
 

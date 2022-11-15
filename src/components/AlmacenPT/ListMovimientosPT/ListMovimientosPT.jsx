@@ -92,7 +92,7 @@ function ListMovimientosPt(props) {
         const timeout = setTimeout(() => {
             setRows(listMovimientosPT);
             setPending(false);
-        }, 2000);
+        }, 0);
         return () => clearTimeout(timeout);
     }, []);
 
