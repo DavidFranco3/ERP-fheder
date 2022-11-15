@@ -1,1 +1,1 @@
-export { default } from "./ModificaReporte"
+export { default } from "./ModificaStatus"

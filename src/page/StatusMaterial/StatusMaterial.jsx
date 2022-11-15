@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
 import LayoutPrincipal from "../../layout/layoutPrincipal";
-import BasicModal from "../../components/Modal/BasicModal";
-import RegistroNuevaEtiqueta from "../../components/StatusMaterial/RegistraEtiqueta";
 import { listarStatusMaterialPaginacion, totalStatusMaterial } from "../../api/statusMaterial";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -28,18 +26,6 @@ function StatusMaterial(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
-
-    // Para hacer uso del modal
-    const [showModal, setShowModal] = useState(false);
-    const [contentModal, setContentModal] = useState(null);
-    const [titulosModal, setTitulosModal] = useState(null);
-
-    // Para el registro en el almacen de mp
-    const nuevaEtiqueta = (content) => {
-        setTitulosModal("Nuevo etiqueta");
-        setContentModal(content);
-        setShowModal(true);
-    }
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory()
@@ -157,11 +143,6 @@ function StatusMaterial(props) {
                             </>
                         )
                 }
-
-                <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
-                    {contentModal}
-                </BasicModal>
-
             </LayoutPrincipal>
         </>
     );
