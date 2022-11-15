@@ -293,6 +293,19 @@ export const ENDPOINTActualizarRequerimiento = "/requerimientosPlaneacion/actual
 export const ENDPOINTObtenerDatosRequerimiento = "/requerimientosPlaneacion/obtenerDatosRequerimiento";
 export const ENDPOINTTotalRequerimiento = "/requerimientosPlaneacion/total";
 
+//Status de material
+export const ENDPOINTRegistroStatusMaterial = "/statusMaterial/registro";
+export const ENDPOINTListarStatusMaterial = "/statusMaterial/listar";
+export const ENDPOINTListarPaginandoStatusMaterial = "/statusMaterial/listarPaginando";
+export const ENDPOINTObtenerStatusMaterial = "/statusMaterial/obtener";
+export const ENDPOINTObtenerNoStatusMaterial = "/statusMaterial/obtenerNoStatus";
+export const ENDPOINTObtenerItemStatusMaterial = "/statusMaterial/obtenerItem";
+export const ENDPOINTEliminarStatusMaterial = "/statusMaterial/eliminar";
+export const ENDPOINTActualizarEstadoStatusMaterial = "/statusMaterial/actualizarEstado";
+export const ENDPOINTActualizarStatusMaterial = "/statusMaterial/actualizar";
+export const ENDPOINTObtenerDatosStatusMaterial = "/statusMaterial/obtenerDatosStatus";
+export const ENDPOINTTotalStatusMaterial = "/statusMaterial/total";
+
 //Produccion
 export const ENDPOINTRegistroProduccion = "/produccion/registro";
 export const ENDPOINTListarProduccion = "/produccion/listar";
