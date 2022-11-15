@@ -84,13 +84,16 @@ function RegistraStatus(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        if (!formData.etiqueta) {
-            toast.warning("Completa el formulario");
-        } else {
-            //console.log("Continuar")
-            setLoading(true)
 
-            if (formData.etiqueta === "Aceptado") {
+        if (formData.etiqueta === "Aceptado") {
+
+
+            if (!folio || !formData.etiqueta || !formData.fecha || !formData.clienteProveedor || !formData.lote || !formData.recibio || !formData.turno || !formData.propiedad || !formData.liberacion || !formData.descripcion || !formData.comentarios) {
+                toast.warning("Completa el formulario");
+            } else {
+                //console.log("Continuar")
+                setLoading(true)
+
                 // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
                 obtenerNumeroStatusMaterial().then(response => {
                     const { data } = response;
@@ -99,7 +102,7 @@ function RegistraStatus(props) {
                         item: itemActual,
                         folio: data.noStatus,
                         folioInspeccion: folio,
-                        propiedadInspeccion:propiedad,
+                        propiedadInspeccion: propiedad,
                         cantidadInspeccion: cantidad,
                         fechaInspeccion: fecha,
                         tipoMaterialInspeccion: tipoMaterial,
@@ -136,8 +139,14 @@ function RegistraStatus(props) {
                 }).catch(e => {
                     console.log(e)
                 })
+            }
+        } else if (formData.etiqueta === "No Conforme") {
+            if (!folio || !formData.etiqueta || !formData.fecha || !formData.descripcionMaterial || !formData.rechazo || !formData.nombre || !formData.clienteProveedor || !formData.turno || !formData.auditor || !formData.supervisor || !formData.descripcionDefecto || !formData.cantidad || !formData.tipoRechazo || !formData.correccion || !formData.comentarios) {
+                toast.warning("Completa el formulario");
+            } else {
+                //console.log("Continuar")
+                setLoading(true)
 
-            } else if (formData.etiqueta === "No Conforme") {
                 // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
                 obtenerNumeroStatusMaterial().then(response => {
                     const { data } = response;
@@ -146,7 +155,7 @@ function RegistraStatus(props) {
                         item: itemActual,
                         folio: data.noStatus,
                         folioInspeccion: folio,
-                        propiedadInspeccion:propiedad,
+                        propiedadInspeccion: propiedad,
                         cantidadInspeccion: cantidad,
                         fechaInspeccion: fecha,
                         tipoMaterialInspeccion: tipoMaterial,
@@ -187,8 +196,14 @@ function RegistraStatus(props) {
                 }).catch(e => {
                     console.log(e)
                 })
+            }
 
-            } else if (formData.etiqueta === "Material Sospechoso") {
+        } else if (formData.etiqueta === "Material Sospechoso") {
+            if (!folio || !formData.etiqueta || !formData.fecha || !formData.turno || !formData.descripcionMaterial || !formData.auditor || !formData.condicion || !formData.observaciones) {
+                toast.warning("Completa el formulario");
+            } else {
+                //console.log("Continuar")
+                setLoading(true)
                 // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
                 obtenerNumeroStatusMaterial().then(response => {
                     const { data } = response;
@@ -197,7 +212,7 @@ function RegistraStatus(props) {
                         item: itemActual,
                         folio: data.noStatus,
                         folioInspeccion: folio,
-                        propiedadInspeccion:propiedad,
+                        propiedadInspeccion: propiedad,
                         cantidadInspeccion: cantidad,
                         fechaInspeccion: fecha,
                         tipoMaterialInspeccion: tipoMaterial,
@@ -231,7 +246,6 @@ function RegistraStatus(props) {
                 }).catch(e => {
                     console.log(e)
                 })
-
             }
         }
 
