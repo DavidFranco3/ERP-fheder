@@ -321,7 +321,7 @@ function RegistraRequisiciones(props) {
                                     placeholder="Escribe aprobador"
                                     name="aprobo"
                                     defaultValue={formData.aprobo}
-                                    disabled={departamentoUsuario !== "Compras"}
+                                    //disabled={departamentoUsuario !== "Compras"}
                                 >
                                 </Form.Control>
                             </Form.Group>
@@ -334,7 +334,7 @@ function RegistraRequisiciones(props) {
                                     as="select"
                                     name="estado"
                                     defaultValue={formData.estado}
-                                    disabled={departamentoUsuario !== "Compras"}
+                                    //disabled={departamentoUsuario !== "Compras"}
                                 >
                                     <option >Elige</option>
                                     <option value="true">Aceptado</option>
@@ -354,7 +354,7 @@ function RegistraRequisiciones(props) {
                                     name="comentarios"
                                     defaultValue={formData.comentarios}
                                     style={{ height: '100px' }}
-                                    disabled={departamentoUsuario !== "Compras"}
+                                    //disabled={departamentoUsuario !== "Compras"}
                                 >
                                 </Form.Control>
                             </Form.Group>
