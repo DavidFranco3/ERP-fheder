@@ -602,27 +602,27 @@ function RegistroVentas(props) {
                                         <>
                                             <Form.Group as={Col} controlId="formGridPorcentaje scrap">
                                                 <Form.Label>
-                                                    Material
+                                                    Descripción
                                                 </Form.Label>
                                                 {
                                                     listProductosActivos ?
                                                         (
                                                             <>
                                                                 <Form.Control as="select"
-                                                                    id="material"
+                                                                    id="descripcion"
                                                                     onChange={(e) => {
                                                                         handleProducto(e.target.value)
                                                                     }}
-                                                                    defaultValue={cargaProductos.idProducto}
-                                                                    name="materiaPrima"
+                                                                    defaultValue={cargaProductos.item}
+                                                                    name="descripcion"
                                                                 >
                                                                     <option>Elige</option>
                                                                     {map(listProductosActivos, (producto, index) => (
                                                                         <option
                                                                             key={index}
-                                                                            value={parseInt(index + 1) + "/" + producto.id + "/" + producto.noInterno + "/" + producto.descripcion}
+                                                                            value={parseInt(index + 1) + "/" + producto.id + "/" + producto.noParte + "/" + producto.descripcion}
                                                                         >
-                                                                            {producto.noInterno}
+                                                                            {producto.descripcion}
                                                                         </option>
                                                                     ))}
                                                                 </Form.Control>
@@ -644,14 +644,14 @@ function RegistroVentas(props) {
 
                                 <Form.Group as={Col} controlId="formGridCliente">
                                     <Form.Label>
-                                        Descripcion
+                                        Numero de parte
                                     </Form.Label>
                                     <Form.Control
-                                        id="descripcion"
+                                        id="material"
                                         type="text"
                                         placeholder="Descripcion"
-                                        name="descripcion"
-                                        defaultValue={cargaProductos.item}
+                                        name="MateriaPrima"
+                                        defaultValue={cargaProductos.ID}
                                         disabled
                                     />
                                 </Form.Group>
@@ -677,7 +677,6 @@ function RegistroVentas(props) {
                                     <Form.Control
                                         id="um"
                                         as="select"
-                                        id="um"
                                         name="um"
                                         defaultValue={cargaProductos.um}
                                     >
@@ -770,8 +769,8 @@ function RegistroVentas(props) {
                                     <thead>
                                         <tr>
                                             <th scope="col">ITEM</th>
-                                            <th scope="col">Material</th>
-                                            <th scope="col">Descripcion</th>
+                                            <th scope="col">Descripción</th>
+                                            <th scope="col">Numero de parte</th>
                                             <th scope="col">Cantidad</th>
                                             <th scope="col">UM</th>
                                             <th scope="col">Precio unitario</th>
@@ -787,11 +786,11 @@ function RegistroVentas(props) {
                                                 <th scope="row">
                                                     {index + 1}
                                                 </th>
-                                                <td data-title="Material">
-                                                    {producto.ID}
-                                                </td>
                                                 <td data-title="Descripcion">
                                                     {producto.item}
+                                                </td>
+                                                <td data-title="Material">
+                                                    {producto.ID}
                                                 </td>
                                                 <td data-title="UM">
                                                     {producto.cantidad}

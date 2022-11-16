@@ -567,10 +567,7 @@ function ModificacionVentas(props) {
                                     <Form.Group as={Row} className="botonesPDF">
                                         <Col sm="3">
                                             <div
-                                                className="custom-input-file
-                            col-md-6
-                            col-sm-6
-                            col-xs-6">
+                                                className="custom-input-file col-md-6 col-sm-6 col-xs-6">
                                                 <Form.Control
                                                     type="file"
                                                     accept='.pdf, image/*'
@@ -614,7 +611,7 @@ function ModificacionVentas(props) {
                                         <>
                                             <Form.Group as={Col} controlId="formGridPorcentaje scrap">
                                                 <Form.Label>
-                                                    Material
+                                                    Descripción
                                                 </Form.Label>
                                                 {
                                                     listProductosActivos ?
@@ -625,16 +622,16 @@ function ModificacionVentas(props) {
                                                                     onChange={(e) => {
                                                                         handleProducto(e.target.value)
                                                                     }}
-                                                                    defaultValue={cargaProductos.idProducto}
+                                                                    defaultValue={cargaProductos.item}
                                                                     name="idProducto"
                                                                 >
                                                                     <option>Elige</option>
                                                                     {map(listProductosActivos, (producto, index) => (
                                                                         <option
                                                                             key={index}
-                                                                            value={parseInt(index + 1) + "/" + producto.id + "/" + producto.noInterno + "/" + producto.descripcion}
+                                                                            value={parseInt(index + 1) + "/" + producto.id + "/" + producto.noParte + "/" + producto.descripcion}
                                                                         >
-                                                                            {producto.noInterno}
+                                                                            {producto.descripcion}
                                                                         </option>
                                                                     ))}
                                                                 </Form.Control>
@@ -663,7 +660,7 @@ function ModificacionVentas(props) {
                                         type="text"
                                         placeholder="Descripcion"
                                         name="item"
-                                        value={cargaProductos.item}
+                                        value={cargaProductos.ID}
                                         disabled
                                     />
                                 </Form.Group>
@@ -780,8 +777,8 @@ function ModificacionVentas(props) {
                                     <thead>
                                         <tr>
                                             <th scope="col">ITEM</th>
-                                            <th scope="col">Material</th>
-                                            <th scope="col">Descripcion</th>
+                                            <th scope="col">Descripción</th>
+                                            <th scope="col">Numero de parte</th>
                                             <th scope="col">Cantidad</th>
                                             <th scope="col">UM</th>
                                             <th scope="col">Precio unitario</th>
@@ -797,11 +794,11 @@ function ModificacionVentas(props) {
                                                 <th scope="row">
                                                     {index + 1}
                                                 </th>
-                                                <td data-title="Material">
-                                                    {producto.ID}
-                                                </td>
                                                 <td data-title="Descripcion">
                                                     {producto.item}
+                                                </td>
+                                                <td data-title="Material">
+                                                    {producto.ID}
                                                 </td>
                                                 <td data-title="UM">
                                                     {producto.cantidad}
