@@ -83,6 +83,8 @@ function OrdenVenta(props) {
                                     <tbody>
                                     {map(datosOrdenVenta.productos, (datos, index) => (
                                         <>
+                                        { datosOrdenVenta.folio == ordenVenta ? (
+                                            <>
                                             <tr key={datos.item}>
                                                 <th>
                                                     {index + 1}
@@ -97,6 +99,8 @@ function OrdenVenta(props) {
                                                     {datos.um}
                                                 </td>
                                             </tr>
+                                            </>
+                                        ):(<></>)}
                                         </>
                                     ))}
                                     </tbody>
