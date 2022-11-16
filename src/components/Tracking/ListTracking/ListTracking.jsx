@@ -14,7 +14,8 @@ import Planeacion from "../Procesos/Planeacion";
 import Compras from "../Procesos/Compras";
 import Calidad from "../Procesos/Calidad";
 import Produccion from "../Procesos/Produccion";
-import Almacen from "../Procesos/Almacen";
+import AlmacenPT from "../Procesos/AlmacenPT";
+import AlmacenMP from "../Procesos/AlmacenMP";
 import Embarques from "../Procesos/Embarques";
 import Facturacion from "../Procesos/Facturacion";
 import CuentasxCobrar from "../Procesos/CuentasxCobrar";
@@ -106,6 +107,19 @@ function ListTracking(props) {
                             )
                         }
                     >
+                        Almacen MP
+                    </Tab>
+                    <Tab
+                        className={({ selected }) =>
+                            classNames(
+                                'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-zinc-900',
+                                'focus:outline-none ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:ring-2',
+                                selected
+                                    ? 'bg-white shadow'
+                                    : 'text-zinc-900 hover:bg-white/[0.8] hover:text-zinc-600'
+                            )
+                        }
+                    >
                         Producción
                     </Tab>
                     <Tab
@@ -119,7 +133,7 @@ function ListTracking(props) {
                             )
                         }
                     >
-                        Almacen
+                        Almacen PT
                     </Tab>
                     <Tab
                         className={({ selected }) =>
@@ -209,6 +223,16 @@ function ListTracking(props) {
                             'focus:outline-none ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:ring-2'
                         )}
                     >
+                        <AlmacenMP
+                            ordenVenta={data.ordenVenta}
+                        />
+                    </Tab.Panel>
+                    <Tab.Panel
+                        className={classNames(
+                            'rounded-xl bg-white p-3',
+                            'focus:outline-none ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:ring-2'
+                        )}
+                    >
                         <Produccion
                             ordenVenta={data.ordenVenta}
                         />
@@ -219,7 +243,7 @@ function ListTracking(props) {
                             'focus:outline-none ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:ring-2'
                         )}
                     >
-                        <Almacen
+                        <AlmacenPT
                             ordenVenta={data.ordenVenta}
                         />
                     </Tab.Panel>

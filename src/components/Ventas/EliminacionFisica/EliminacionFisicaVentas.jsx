@@ -5,6 +5,7 @@ import queryString from "query-string";
 import {Button, Col, Form, Row, Spinner, Alert} from "react-bootstrap";
 import {eliminaPedidoVenta} from "../../../api/pedidoVenta";
 import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { LogTrackingEliminacion } from "../../Tracking/Gestion/GestionTracking";
 
 function EliminacionFisicaVentas(props) {
     const { datosPedido, datos, setShowModal, history } = props;
@@ -36,6 +37,7 @@ function EliminacionFisicaVentas(props) {
                 // console.log(data)
                 toast.success(data.mensaje)
                 LogsInformativos(`Se ha eliminado la venta con el folio ${folio}`, datos)
+                LogTrackingEliminacion(folio)
                 setShowModal(false);
                 setLoading(false);
                 history.push({

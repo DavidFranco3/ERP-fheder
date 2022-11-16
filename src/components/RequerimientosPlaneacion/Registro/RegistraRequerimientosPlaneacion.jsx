@@ -389,7 +389,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={almacenPT?.um}
                                                 placeholder="UM"
                                                 name="um"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -402,7 +401,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={almacenPT?.existenciasTotales}
                                                 placeholder="Almacen producto terminado"
                                                 name="almacenPT"
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -577,7 +575,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 placeholder="Total a producir"
                                                 name="totalProducir"
                                                 value={totalProducir}
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -607,7 +604,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 placeholder="Numero de molde"
                                                 value={formDataPlaneacion.noMolde}
                                                 name="noMolde"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -620,7 +616,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={formDataPlaneacion.cavMolde}
                                                 placeholder="Numero de cavidades"
                                                 name="numeroCavidades"
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -811,7 +806,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={formDataPlaneacion.descripcionMP}
                                                 placeholder="Material"
                                                 name="Material"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -824,7 +818,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 placeholder="Molido"
                                                 defaultValue={formDataPlaneacion.porcentajeMolido}
                                                 name="Molido"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -837,7 +830,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={formDataPlaneacion.pesoPiezas}
                                                 placeholder="Peso de la pieza"
                                                 name="pesoPieza"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -850,7 +842,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={formDataPlaneacion.pesoColada}
                                                 placeholder="Peso colada"
                                                 name="pesoColada"
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -865,7 +856,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={formDataPlaneacion.descripcionBolsa}
                                                 placeholder="Empaque"
                                                 name="empaque"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -878,7 +868,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 placeholder="Pigmento/MB"
                                                 defaultValue={formDataPlaneacion.descripcionPigmento}
                                                 name="Pigmento"
-                                                disabled
                                             />
                                         </Form.Group>
                                         <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -890,7 +879,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={formDataPlaneacion.aplicacionGxKG}
                                                 placeholder="Apliación (gr/kg)"
                                                 name="aplicacion"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -903,7 +891,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={formDataPlaneacion.noPiezasxEmpaque}
                                                 placeholder="Bolsas o cajas a utilizar"
                                                 name="bolsasCajasUtilizar"
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>

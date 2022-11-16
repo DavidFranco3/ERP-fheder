@@ -16,9 +16,10 @@ function Graficador(props) {
     const datasetOrdenVenta = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
                     "rgb(46, 139, 87)",
+                    "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
@@ -30,6 +31,7 @@ function Graficador(props) {
                 ],
                 borderColor: [
                     "rgb(46, 139, 87)",
+                    "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
@@ -48,10 +50,11 @@ function Graficador(props) {
     const datasetPlaneacion = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
+                    "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
@@ -63,6 +66,7 @@ function Graficador(props) {
                 borderColor: [
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
+                    "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
@@ -80,11 +84,12 @@ function Graficador(props) {
     const datasetCompras = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
+                    "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
@@ -96,6 +101,7 @@ function Graficador(props) {
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
+                    "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
@@ -112,12 +118,13 @@ function Graficador(props) {
     const datasetCalidad = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
+                    "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
@@ -129,6 +136,7 @@ function Graficador(props) {
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
+                    "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
@@ -140,12 +148,47 @@ function Graficador(props) {
         ],
     }
 
+    // Dataset para almacen
+    const datasetAlmacenMP = {
+        datasets: [
+            {
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                backgroundColor: [
+                    "rgb(46, 139, 87)",
+                    "rgb(46, 139, 87)",
+                    "rgb(46, 139, 87)",
+                    "rgb(46, 139, 87)",
+                    "rgb(46, 139, 87)",
+                    "rgb(230, 230, 250)",
+                    "rgb(230, 230, 250)",
+                    "rgb(230, 230, 250)",
+                    "rgb(230, 230, 250)",
+                    "rgb(230, 230, 250)"
+                ],
+                borderColor: [
+                    "rgb(46, 139, 87)",
+                    "rgb(46, 139, 87)",
+                    "rgb(46, 139, 87)",
+                    "rgb(46, 139, 87)",
+                    "rgb(46, 139, 87)",
+                    "rgb(230, 230, 250)",
+                    "rgb(230, 230, 250)",
+                    "rgb(230, 230, 250)",
+                    "rgb(230, 230, 250)",
+                    ,"rgb(230, 230, 250)"
+                ],
+                borderWidth: 1,
+            },
+        ],
+    }
+
     // Dataset para en plan de envio
     const datasetProduccion = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
+                    "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
@@ -157,6 +200,7 @@ function Graficador(props) {
                     "rgb(230, 230, 250)"
                 ],
                 borderColor: [
+                    "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
@@ -173,11 +217,12 @@ function Graficador(props) {
     }
 
     // Dataset para en ruta de envio
-    const datasetAlmacen = {
+    const datasetAlmacenPT = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
+                    "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
@@ -189,6 +234,7 @@ function Graficador(props) {
                     "rgb(230, 230, 250)"
                 ],
                 borderColor: [
+                    "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
@@ -208,8 +254,9 @@ function Graficador(props) {
     const datasetEmbarques = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
+                    "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
@@ -221,6 +268,7 @@ function Graficador(props) {
                     "rgb(230, 230, 250)"
                 ],
                 borderColor: [
+                    "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
@@ -240,8 +288,9 @@ function Graficador(props) {
     const datasetFacturacion = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
+                    "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
@@ -253,6 +302,7 @@ function Graficador(props) {
                     "rgb(230, 230, 250)"
                 ],
                 borderColor: [
+                    "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
@@ -272,8 +322,9 @@ function Graficador(props) {
     const datasetCuentasCobrar = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
+                    "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
@@ -285,6 +336,7 @@ function Graficador(props) {
                     "rgb(46, 139, 87)",
                 ],
                 borderColor: [
+                    "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
                     "rgb(46, 139, 87)",
@@ -305,8 +357,9 @@ function Graficador(props) {
     const datasetCancelado = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
+                    "rgb(255, 0, 0)",
                     "rgb(255, 0, 0)",
                     "rgb(255, 0, 0)",
                     "rgb(255, 0, 0)",
@@ -318,6 +371,7 @@ function Graficador(props) {
                     "rgb(255, 0, 0)"
                 ],
                 borderColor: [
+                    "rgb(255, 0, 0)",
                     "rgb(255, 0, 0)",
                     "rgb(255, 0, 0)",
                     "rgb(255, 0, 0)",
@@ -338,7 +392,7 @@ function Graficador(props) {
     const datasetOrdenVentaCancelado = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
                     "rgb(255, 0, 0)",
                     "rgb(230, 230, 250)",
@@ -370,7 +424,7 @@ function Graficador(props) {
     const datasetPlaneacionCancelado = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
                     "rgb(255, 0, 0)",
                     "rgb(255, 0, 0)",
@@ -402,7 +456,7 @@ function Graficador(props) {
     const datasetComprasCancelado = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
                     "rgb(255, 0, 0)",
                     "rgb(255, 0, 0)",
@@ -434,7 +488,7 @@ function Graficador(props) {
     const datasetCalidadCancelado = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
                     "rgb(255, 0, 0)",
                     "rgb(255, 0, 0)",
@@ -466,7 +520,7 @@ function Graficador(props) {
     const datasetProduccionCancelado = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
                     "rgb(255, 0, 0)",
                     "rgb(255, 0, 0)",
@@ -498,7 +552,7 @@ function Graficador(props) {
     const datasetAlmacenCancelado = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
                     "rgb(255, 0, 0)",
                     "rgb(255, 0, 0)",
@@ -530,7 +584,7 @@ function Graficador(props) {
     const datasetEmbarquesCancelado = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
                     "rgb(255, 0, 0)",
                     "rgb(255, 0, 0)",
@@ -562,7 +616,7 @@ function Graficador(props) {
     const datasetFacturacionCancelado = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
                     "rgb(255, 0, 0)",
                     "rgb(255, 0, 0)",
@@ -594,7 +648,7 @@ function Graficador(props) {
     const datasetCuentasCobrarCancelado = {
         datasets: [
             {
-                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
+                data: [51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4, 51.4],
                 backgroundColor: [
                     "rgb(255, 0, 0)",
                     "rgb(255, 0, 0)",
@@ -625,7 +679,7 @@ function Graficador(props) {
     return (
         <>
             <Pie
-                data={indicador === "1" ? datasetOrdenVenta : indicador === "2" ? datasetPlaneacion : indicador === "3" ? datasetCompras : indicador === "4" ? datasetCalidad : indicador === "5" ? datasetProduccion : indicador === "6" ? datasetAlmacen : indicador === "7" ? datasetEmbarques : indicador === "8" ? datasetFacturacion : indicador === "9" ? datasetCuentasCobrar : datasetCancelado }
+                data={indicador === "1" ? datasetOrdenVenta : indicador === "2" ? datasetPlaneacion : indicador === "3" ? datasetCompras : indicador === "4" ? datasetCalidad : indicador === "5" ? datasetAlmacenMP : indicador === "6" ? datasetProduccion : indicador === "7" ?  datasetAlmacenPT : indicador === "8" ? datasetEmbarques : indicador === "9" ? datasetFacturacion : indicador === "10" ? datasetCuentasCobrar : datasetCancelado }
             />
         </>
     );

@@ -590,12 +590,16 @@ function ModificaStatus(props) {
                                                     </Form.Label>
                                                 </Col>
                                                 <Col sm="5">
-                                                    <Form.Control
-                                                        type="text"
-                                                        placeholder="Escribe la propiedad"
+                                                <Form.Control
+                                                        as="select"
                                                         name="propiedad"
                                                         defaultValue={formData.propiedad}
-                                                    />
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        <option value="Cliente" selected={formData.propiedad == "Cliente"}>Cliente</option>
+                                                        <option value="Proveedor" selected={formData.propiedad == "Proveedor"}>Proveedor</option>
+                                                        <option value="Fredher" selected={formData.propiedad == "Fredher"}>Fredher</option>
+                                                    </Form.Control>
                                                 </Col>
                                             </Form.Group>
                                         </Row>
@@ -608,12 +612,17 @@ function ModificaStatus(props) {
                                                     </Form.Label>
                                                 </Col>
                                                 <Col sm="3">
-                                                    <Form.Control
-                                                        type="text"
-                                                        placeholder="Escribe lo que se libera"
+                                                <Form.Control
+                                                        as="select"
                                                         name="liberacion"
                                                         defaultValue={formData.liberacion}
-                                                    />
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        <option value="Miscelaneos" selected={formData.liberacion == "Miscelaneos"}>Miscelaneos</option>
+                                                        <option value="Materia prima" selected={formData.liberacion == "Materia prima"}>Materia prima</option>
+                                                        <option value="Pigmento" selected={formData.liberacion == "Pigmento"}>Pigmento</option>
+                                                        <option value="Master Batch" selected={formData.liberacion == "Master Batch"}>Master Batch</option>
+                                                    </Form.Control>
                                                 </Col>
                                             </Form.Group>
                                         </Row>

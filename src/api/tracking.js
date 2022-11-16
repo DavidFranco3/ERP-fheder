@@ -100,7 +100,7 @@ export async function listarTrackingPaginado(pagina, limite) {
 }
 
 // Elimina tracking
-export async function eliminaPedidoVenta(id) {
+export async function eliminaPedidoVenta(ordenVenta) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -109,7 +109,7 @@ export async function eliminaPedidoVenta(id) {
         }
     };
 
-    return await axios.delete(API_HOST + ENDPOINTEliminarTracking + `/${id}`, config);
+    return await axios.delete(API_HOST + ENDPOINTEliminarTracking + `/${ordenVenta}`, config);
 }
 
 // Para actualizar el estado del tracking

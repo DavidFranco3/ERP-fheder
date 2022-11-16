@@ -1,4 +1,4 @@
-import {actualizaTracking, obtenerDatosTracking, obtenerNumeroTracking, registraTracking} from "../../../api/tracking";
+import {actualizaTracking, obtenerDatosTracking, obtenerNumeroTracking, registraTracking, eliminaPedidoVenta} from "../../../api/tracking";
 
 // Para el registro del tracking
 export function LogTrackingRegistro(ordenVenta, cliente, fechaElaboracion){
@@ -50,6 +50,23 @@ export function LogTrackingActualizacion (ordenVenta, status, indicador) {
                 // console.log("Actualización de saldo personal")
             }).catch(e => {
                 // console.log(e)
+            })
+            // Termina actualización de saldos de los socios
+
+    } catch (e) {
+        // console.log(e)
+    }
+}
+
+// Realiza la modificación de saldos al realizar un movimiento
+export function LogTrackingEliminacion (ordenVenta) {
+    try {
+            // Inicia actualización de saldos de los socios
+            eliminaPedidoVenta(ordenVenta).then(response => {
+                const { data } = response;
+                console.log("Actualización de saldo personal")
+            }).catch(e => {
+                console.log(e)
             })
             // Termina actualización de saldos de los socios
 

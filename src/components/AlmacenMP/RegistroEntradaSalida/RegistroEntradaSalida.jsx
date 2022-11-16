@@ -291,7 +291,7 @@ function RegistroEntradaSalida(props) {
             <div className="contenidoFormularioPrincipal">
                 <Form onChange={onChange} onSubmit={onSubmit}>
                     <Row className="mb-3">
-                        <Form.Group as={Col} controlId="formGridMateriaPrima" className="materiaPrima">
+                        <Form.Group as={Col} controlId="formGridMateriaPrima" className="materiaPrimaz">
                             <Form.Label>
                                 Selecciona
                             </Form.Label>

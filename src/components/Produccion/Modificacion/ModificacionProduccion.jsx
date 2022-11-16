@@ -307,7 +307,7 @@ function ModificacionProduccion(props) {
     const removeItemRegistro = (registro) => {
         let newArray = listRegistros;
         newArray.splice(newArray.findIndex(a => a.ID === registro.ID), 1);
-        setListResultados([...newArray]);
+        setListRegistros([...newArray]);
     }
 
     const [ordenVenta, setOrdenVenta] = useState("");
@@ -476,7 +476,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Orden de producción"
                                                 name="ordenProducción"
                                                 defaultValue={formData.folio}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -501,7 +500,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Numero de parte"
                                                 name="numeroParte"
                                                 value={producto == "" ? formData.noParte : producto.noParte}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -514,7 +512,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Numero de cavidades"
                                                 name="numeroCavidades"
                                                 defaultValue={producto == "" ? formData.noCavidades : producto.cavMolde}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -716,7 +713,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Material"
                                                 name="Material"
                                                 value={producto == "" ? formData.material : producto.material}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -729,7 +725,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Molido"
                                                 name="Molido"
                                                 value={producto == "" ? formData.molido : producto.molido}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -742,7 +737,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Peso de la pieza"
                                                 name="pesoPieza"
                                                 value={producto == "" ? formData.pesoPieza : producto.pesoPieza}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -755,7 +749,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Peso colada"
                                                 name="pesoColada"
                                                 value={producto == "" ? formData.pesoColada : producto.pesoColada}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -782,7 +775,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Pigmento/MB"
                                                 name="Pigmento"
                                                 value={producto == "" ? formData.pigmento : producto.pigmentoMb}
-                                                disabled
                                             />
                                         </Form.Group>
                                         <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -794,7 +786,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Apliación (gr/kg)"
                                                 name="aplicacion"
                                                 value={producto == "" ? formData.aplicacion : producto.aplicacionGxKG}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -845,7 +836,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Empaque"
                                                 name="empaque"
                                                 value={producto == "" ? formData.empaque : producto.empaque}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -858,7 +848,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Bolsas o cajas a utilizar"
                                                 name="bolsasCajasUtilizar"
                                                 value={producto == "" ? formData.bolsasCajasUtilizar : producto.bolsasCajasUtilizar}
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>

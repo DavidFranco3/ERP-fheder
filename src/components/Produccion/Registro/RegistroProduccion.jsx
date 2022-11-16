@@ -422,7 +422,6 @@ function RegistroProduccion(props) {
                                                 placeholder="Orden de producción"
                                                 name="ordenProducción"
                                                 defaultValue={folioActual}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -447,7 +446,6 @@ function RegistroProduccion(props) {
                                                 placeholder="Numero de parte"
                                                 name="numeroParte"
                                                 value={producto.noParte}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -460,7 +458,6 @@ function RegistroProduccion(props) {
                                                 placeholder="Numero de cavidades"
                                                 name="numeroCavidades"
                                                 defaultValue={producto.cavMolde}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -662,7 +659,6 @@ function RegistroProduccion(props) {
                                                 placeholder="Material"
                                                 name="Material"
                                                 value={producto.material}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -675,7 +671,6 @@ function RegistroProduccion(props) {
                                                 placeholder="Molido"
                                                 name="Molido"
                                                 value={producto.molido}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -688,7 +683,6 @@ function RegistroProduccion(props) {
                                                 placeholder="Peso de la pieza"
                                                 name="pesoPieza"
                                                 value={producto.pesoPieza}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -701,7 +695,6 @@ function RegistroProduccion(props) {
                                                 placeholder="Peso colada"
                                                 name="pesoColada"
                                                 value={producto.pesoColada}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -728,7 +721,6 @@ function RegistroProduccion(props) {
                                                 placeholder="Pigmento/MB"
                                                 name="Pigmento"
                                                 value={producto.pigmentoMb}
-                                                disabled
                                             />
                                         </Form.Group>
                                         <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -740,7 +732,6 @@ function RegistroProduccion(props) {
                                                 placeholder="Apliación (gr/kg)"
                                                 name="aplicacion"
                                                 value={producto.aplicacionGxKG}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -791,7 +782,6 @@ function RegistroProduccion(props) {
                                                 placeholder="Empaque"
                                                 name="empaque"
                                                 value={producto.empaque}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -804,7 +794,6 @@ function RegistroProduccion(props) {
                                                 placeholder="Bolsas o cajas a utilizar"
                                                 name="bolsasCajasUtilizar"
                                                 value={producto.bolsasCajasUtilizar}
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>

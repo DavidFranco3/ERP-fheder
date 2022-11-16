@@ -321,61 +321,7 @@ function ModificaRequisiciones(props) {
                                 </Form.Control>
                             </Form.Group>
                         </Row>
-
-                        <hr />
-                        <Badge bg="secondary" className="tituloFormularioDetalles">
-                            <h4>Para uso exclusivo del departamento de compras</h4>
-                        </Badge>
-
-                        <Row className="mb-3">
-                            <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
-                                <Form.Label>
-                                    Aprobo
-                                </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Escribe aprobador"
-                                    name="aprobo"
-                                    defaultValue={formData.aprobo}
-                                    //disabled={departamentoUsuario !== "Compras"}
-                                >
-                                </Form.Control>
-                            </Form.Group>
-
-                            <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
-                                <Form.Label>
-                                    Estado
-                                </Form.Label>
-                                <Form.Control
-                                    as="select"
-                                    name="estado"
-                                    defaultValue={formData.estado}
-                                    //disabled={departamentoUsuario !== "Compras"}
-                                >
-                                    <option >Elige</option>
-                                    <option value="true">Aceptado</option>
-                                    <option value="false">Rechazado</option>
-                                </Form.Control>
-                            </Form.Group>
-                        </Row>
-
-                        <Row className="mb-3">
-                            <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
-                                <Form.Label>
-                                    Comentarios
-                                </Form.Label>
-                                <Form.Control
-                                    as="textarea"
-                                    placeholder="Escribe el departamento"
-                                    name="comentarios"
-                                    defaultValue={formData.comentarios}
-                                    style={{ height: '100px' }}
-                                    //disabled={departamentoUsuario !== "Compras"}
-                                >
-                                </Form.Control>
-                            </Form.Group>
-                        </Row>
-
+                        
                         <hr />
                         <Badge bg="secondary" className="tituloFormularioDetalles">
                             <h4>A continuación, especifica los detalles del artículo y agregalo</h4>
@@ -570,6 +516,61 @@ function ModificaRequisiciones(props) {
                             </tbody>
                         </table>
                         {/* Termina tabla informativa del listado de articulos */}
+
+                        <hr />
+                        <Badge bg="secondary" className="tituloFormularioDetalles">
+                            <h4>Para uso exclusivo del departamento de compras</h4>
+                        </Badge>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
+                                <Form.Label>
+                                    Aprobo
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Escribe aprobador"
+                                    name="aprobo"
+                                    defaultValue={formData.aprobo}
+                                    //disabled={departamentoUsuario !== "Compras"}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
+                                <Form.Label>
+                                    Estado
+                                </Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    name="estado"
+                                    defaultValue={formData.estado}
+                                    //disabled={departamentoUsuario !== "Compras"}
+                                >
+                                    <option >Elige</option>
+                                    <option value="true">Aceptado</option>
+                                    <option value="false">Rechazado</option>
+                                </Form.Control>
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
+                                <Form.Label>
+                                    Comentarios
+                                </Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    placeholder="Escribe el departamento"
+                                    name="comentarios"
+                                    defaultValue={formData.comentarios}
+                                    style={{ height: '100px' }}
+                                    //disabled={departamentoUsuario !== "Compras"}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+                        </Row>
+
 
                         <Form.Group as={Row} className="botones">
                             <Col>

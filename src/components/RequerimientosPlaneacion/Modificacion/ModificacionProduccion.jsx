@@ -426,7 +426,6 @@ function ModificacionProduccion(props) {
                                                 defaultValue={almacenPT == "" ? informacionRequerimiento.um : almacenPT?.um}
                                                 placeholder="UM"
                                                 name="um"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -439,7 +438,6 @@ function ModificacionProduccion(props) {
                                                 defaultValue={almacenPT == "" ? informacionRequerimiento.almacenProductoTerminado : almacenPT?.existenciasTotales}
                                                 placeholder="Almacen producto terminado"
                                                 name="almacenPT"
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -644,7 +642,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Numero de molde"
                                                 value={almacenPT == "" ? informacionRequerimiento.numeroMolde : formDataPlaneacion.noMolde}
                                                 name="numeroMolde"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -657,7 +654,6 @@ function ModificacionProduccion(props) {
                                                 value={almacenPT == "" ? informacionRequerimiento.numeroCavidades : formDataPlaneacion.cavMolde}
                                                 placeholder="Numero de cavidades"
                                                 name="numeroCavidades"
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -848,7 +844,6 @@ function ModificacionProduccion(props) {
                                                 value={almacenPT == "" ? informacionRequerimiento.material : formDataPlaneacion.descripcionMP}
                                                 placeholder="Material"
                                                 name="material"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -861,7 +856,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Molido"
                                                 value={almacenPT == "" ? informacionRequerimiento.molido : formDataPlaneacion.porcentajeMolido}
                                                 name="molido"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -874,7 +868,6 @@ function ModificacionProduccion(props) {
                                                 value={almacenPT == "" ? informacionRequerimiento.pesoPieza : formDataPlaneacion.pesoPiezas}
                                                 placeholder="Peso de la pieza"
                                                 name="pesoPieza"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -887,7 +880,6 @@ function ModificacionProduccion(props) {
                                                 value={almacenPT == "" ? informacionRequerimiento.pesoColada : formDataPlaneacion.pesoColada}
                                                 placeholder="Peso colada"
                                                 name="pesoColada"
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -902,7 +894,6 @@ function ModificacionProduccion(props) {
                                                 value={almacenPT == "" ? informacionRequerimiento.empaque : formDataPlaneacion.descripcionBolsa}
                                                 placeholder="Empaque"
                                                 name="empaque"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -915,7 +906,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Pigmento/MB"
                                                 value={almacenPT == "" ? informacionRequerimiento.pigmento : formDataPlaneacion.descripcionPigmento}
                                                 name="Pigmento"
-                                                disabled
                                             />
                                         </Form.Group>
                                         <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -927,7 +917,6 @@ function ModificacionProduccion(props) {
                                                 defaultValue={almacenPT == "" ? informacionRequerimiento.aplicacion : formDataPlaneacion.aplicacionGxKG}
                                                 placeholder="Apliación (gr/kg)"
                                                 name="aplicacion"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -940,7 +929,6 @@ function ModificacionProduccion(props) {
                                                 value={almacenPT == "" ? informacionRequerimiento.bolsasCajasUtilizar : formDataPlaneacion.noPiezasxEmpaque}
                                                 placeholder="Bolsas o cajas a utilizar"
                                                 name="bolsasCajasUtilizar"
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>

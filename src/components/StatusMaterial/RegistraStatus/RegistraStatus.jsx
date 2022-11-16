@@ -581,12 +581,16 @@ function RegistraStatus(props) {
                                                     </Form.Label>
                                                 </Col>
                                                 <Col sm="5">
-                                                    <Form.Control
-                                                        type="text"
-                                                        placeholder="Escribe la propiedad"
+                                                <Form.Control
+                                                        as="select"
                                                         name="propiedad"
                                                         defaultValue={formData.propiedad}
-                                                    />
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        <option value="Cliente">Cliente</option>
+                                                        <option value="Proveedor">Proveedor</option>
+                                                        <option value="Fredher">Fredher</option>
+                                                    </Form.Control>
                                                 </Col>
                                             </Form.Group>
                                         </Row>
@@ -600,11 +604,16 @@ function RegistraStatus(props) {
                                                 </Col>
                                                 <Col sm="3">
                                                     <Form.Control
-                                                        type="text"
-                                                        placeholder="Escribe lo que se libera"
+                                                        as="select"
                                                         name="liberacion"
                                                         defaultValue={formData.liberacion}
-                                                    />
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        <option value="Miscelaneos">Miscelaneos</option>
+                                                        <option value="Materia prima">Materia prima</option>
+                                                        <option value="Pigmento">Pigmento</option>
+                                                        <option value="Master Batch">Master Batch</option>
+                                                    </Form.Control>
                                                 </Col>
                                             </Form.Group>
                                         </Row>
