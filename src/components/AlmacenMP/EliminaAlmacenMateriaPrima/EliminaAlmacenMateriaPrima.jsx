@@ -51,44 +51,7 @@ function EliminaAlmacenMateriaPrima(props) {
 
             <Form onSubmit={onSubmit}>
                 {/* ID proveedor, orden de venta */}
-                <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formGridFolioAlmacen">
-                        <Form.Label>
-                            Folio del almacen
-                        </Form.Label>
-                        <Form.Control
-                            type="text"
-                            defaultValue={folioAlmacen}
-                            disabled
-                        />
-                    </Form.Group>
-
-                    <Form.Group as={Col} controlId="formGridFolioMP">
-                        <Form.Label>
-                            Folio de la Materia Prima
-                        </Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="nombre"
-                            defaultValue={folioMP}
-                            disabled
-                        />
-                    </Form.Group>
-                </Row>
-
-                <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formGridFolio">
-                        <Form.Label>
-                            Nombre
-                        </Form.Label>
-                        <Form.Control
-                            type="text"
-                            defaultValue={nombre}
-                            disabled
-                        />
-                    </Form.Group>
-                </Row>
-
+                
                 {/* Botones de acciones */}
                 <Form.Group as={Row} className="botones">
                     <Row>
