@@ -4,17 +4,17 @@ import BasicModal from "../../Modal/BasicModal";
 import { useHistory } from "react-router-dom";
 import "./ListAlmacenMP.scss"
 import moment from "moment";
-import {Badge, Container} from "react-bootstrap";
+import { Badge, Container } from "react-bootstrap";
 import EliminaAlmacenMateriaPrima from "../EliminaAlmacenMateriaPrima";
 import FechaUltimaModificacion from "./fechaUltimaModificacion";
 import TipoUltimoMovimiento from "./TipoUltimoMovimiento";
 import CantidadUltimoMovimiento from "./CantidadUltimoMovimiento";
 import ModificarAlmacenMP from "../ModificarAlmacenMP";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@fortawesome/free-solid-svg-icons";
-import {estilos} from "../../../utils/tableStyled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
+import { estilos } from "../../../utils/tableStyled";
 import styled from 'styled-components';
-import DataTable  from 'react-data-table-component';
+import DataTable from 'react-data-table-component';
 
 function ListAlmacenMp(props) {
     const { listAlmacenMP, location, history, setRefreshCheckLogin, rowsPerPage, setRowsPerPage, page, setPage, noTotalAlmacenMP } = props;
@@ -59,193 +59,141 @@ function ListAlmacenMp(props) {
     }
 
 
-const columns = [
+    const columns = [
         {
-                    name: "Folio",
-                    selector: row => row.folioMP,
-                    sortable: false,
-                    center: true,
-                    reorder: false
-                },
-                {
-                    name: "Nombre",
-                    selector: row => row.nombre,
-                    sortable: false,
-                    center: true,
-                    reorder: false
-                },
-                {
-                    name: "Descripcion",
-                    selector: row => row.descripcion,
-                    sortable: false,
-                    center: true,
-                    reorder: false
-                },
-                {
-                    name: "UM",
-                    selector: row => row.um,
-                    sortable: false,
-                    center: true,
-                    reorder: false
-                },
-                {
-                    name: "Última modificación",
-                    selector: row => (
-                        <>
-                        {
-                            row.movimientos.length !== 0 ?
-                                (
-                                    <>
-                                        <FechaUltimaModificacion
-                                            folioMP={row.folioMP}
-                                        />
-                                    </>
-                                )
-                                :
-                                (
-                                    <>
-                                        No hay movimientos
-                                    </>
-                                )
-                        }
-                        </>
-                    ),
-                    sortable: false,
-                    center: true,
-                    reorder: false
-                },
-                {
-                    name: "Tipo",
-                    selector: row => (
-                            <>
-                                 {
-                            row.movimientos.length !== 0 ?
-                                (
-                                    <>
-                                        <TipoUltimoMovimiento
-                                            folioMP={row.folioMP}
-                                        />
-                                    </>
-                                )
-                                :
-                                (
-                                    <>
-                                        No hay movimientos
-                                    </>
-                                )
-                        }
-                            </>
-                        ),
-                    sortable: false,
-                    center: true,
-                    reorder: false
-                },
-                {
-                    name: "Cantidad",
-                    selector: row => (
-                            <>
-                                 {
-                            row.movimientos.length !== 0 ?
-                                (
-                                    <>
-                                        <CantidadUltimoMovimiento
-                                            folioMP={row.folioMP}
-                                        />
-                                    </>
-                                )
-                                :
-                                (
-                                    <>
-                                        No hay movimientos
-                                    </>
-                                )
-                        }
-                            </>
-                        ),
-                    sortable: false,
-                    center: true,
-                    reorder: false
-                },
-                {
-                    name: "Existencia para la OV",
-                    selector: row => row.existenciasOV,
-                    sortable: false,
-                    center: true,
-                    reorder: false
-                },
-                {
-                    name: "Existencia Stock",
-                    selector: row => row.existenciasStock,
-                    sortable: false,
-                    center: true,
-                    reorder: false
-                },
-                                {
-                    name: "Existencias Totales",
-                    selector: row => row.existenciasTotales,
-                    sortable: false,
-                    center: true,
-                    reorder: false
-                },
-                {
-                    name: 'Acciones',
-                    center: true,
-                    reorder: false,
-                    selector: row => (
-                        <>
-                            {
-                            row.movimientos.length !== 0 &&
-                                (
-                                    <>
-                                        <Badge
-                                            bg="info"
-                                            className="evaluacionProveedor"
-                                            onClick={() => {
-                                                irRutaverMovimientos(row.folioMP)
-                                            }}
-                                        >
-                                            <FontAwesomeIcon icon={faEye} className="text-lg" />
-                                        </Badge>
-                                    </>
-                                )
-                        }
-                        <Badge
-                            bg="success"
-                            className="editarProveedor"
-                            onClick={() => {
-                                modificarMateriasPrimas(
-                                    <ModificarAlmacenMP
-                                        datos={row}
-                                        setShowModal={setShowModal}
-                                        location={location}
-                                        history={history}
+            name: "ITEM",
+            selector: row => row.item,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Folio",
+            selector: row => row.folioAlmacen,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Referencia",
+            selector: row => row.referencia,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Materia prima",
+            selector: row => row.nombreMP,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "UM",
+            selector: row => row.um,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Lote",
+            selector: row => row.lote,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        /*{
+            name: "Última modificación",
+            selector: row => (
+                <>
+                    {
+                        row.movimientos.length !== 0 ?
+                            (
+                                <>
+                                    <FechaUltimaModificacion
+                                        folioMP={row.folioMP}
                                     />
-                                )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                        </Badge>
-                        <Badge
-                            bg="danger"
-                            className="eliminarProveedor"
-                            onClick={() => {
-                                eliminacionMateriasprimas(
-                                    <EliminaAlmacenMateriaPrima
-                                        datos={row}
-                                        setShowModal={setShowModal}
-                                        location={location}
-                                        history={history}
-                                    />
-                                )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                        </Badge>
-                        </>
-                    )
-                }
+                                </>
+                            )
+                            :
+                            (
+                                <>
+                                    No hay movimientos
+                                </>
+                            )
+                    }
+                </>
+            ),
+            sortable: false,
+            center: true,
+            reorder: false
+        },*/
+        {
+            name: "Existencia",
+            selector: row => row.cantidadExistencia,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Acciones',
+            center: true,
+            reorder: false,
+            selector: row => (
+                <>
+                    {
+                        row.movimientos.length !== 0 &&
+                        (
+                            <>
+                                <Badge
+                                    bg="info"
+                                    className="evaluacionProveedor"
+                                    onClick={() => {
+                                        irRutaverMovimientos(row.folioAlmacen)
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faEye} className="text-lg" />
+                                </Badge>
+                            </>
+                        )
+                    }
+                    <Badge
+                        bg="success"
+                        className="editarProveedor"
+                        onClick={() => {
+                            modificarMateriasPrimas(
+                                <ModificarAlmacenMP
+                                    datos={row}
+                                    setShowModal={setShowModal}
+                                    location={location}
+                                    history={history}
+                                />
+                            )
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                    </Badge>
+                    <Badge
+                        bg="danger"
+                        className="eliminarProveedor"
+                        onClick={() => {
+                            eliminacionMateriasprimas(
+                                <EliminaAlmacenMateriaPrima
+                                    datos={row}
+                                    setShowModal={setShowModal}
+                                    location={location}
+                                    history={history}
+                                />
+                            )
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                    </Badge>
+                </>
+            )
+        }
     ];
-    
+
     // Definiendo estilos para data table
     // Configurando animacion de carga
     const [pending, setPending] = useState(true);

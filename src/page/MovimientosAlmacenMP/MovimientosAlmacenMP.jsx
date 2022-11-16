@@ -21,15 +21,15 @@ function MovimientosAlmacenMp(props) {
 
     // Define le uso de los parametros
     const parametros = useParams()
-    const { folioMP } = parametros
-    console.log(folioMP)
+    const { folioAlmacen } = parametros
+    console.log(folioAlmacen)
 
     // Almacena los movimientos de la materia prima
     const [listMovimientosMP, setListMovimientosMP] = useState(null);
 
     useEffect(() => {
         try {
-            listarMovimientosAlmacenMP(folioMP).then(response => {
+            listarMovimientosAlmacenMP(folioAlmacen).then(response => {
                 const { data } = response;
                 //console.log(response)
                 // console.log(data)
@@ -55,7 +55,7 @@ function MovimientosAlmacenMp(props) {
 
     useEffect(() => {
         try {
-            obtenerDatosAlmacenMPFolio(folioMP).then(response => {
+            obtenerDatosAlmacenMPFolio(folioAlmacen).then(response => {
                 const { data } = response;
                 // console.log(data)
                 if (!infoMPAlmacen && data) {
@@ -127,15 +127,14 @@ function formatModelMovimientosAlmacenMP(data) {
     const dataTemp = []
     data.forEach(data => {
         dataTemp.push({
-            um: data.um,
             fecha: data.fecha,
+            materiaPrima: data.materiaPrima,
+            um: data.um,
             tipo: data.tipo,
-            descripcion: data.descripcion,
             referencia: data.referencia,
-            cantidad: data.cantidad,
-            existenciasOV: data.existenciasOV,
-            existenciasStock: data.existenciasStock,
-            existenciasTotales: data.existenciasTotales
+            ordenProduccion: data.ordenProduccion,
+            lote: data.lote,
+            cantidadExistencia: data.cantidadExistencia,
         });
     });
     return dataTemp;

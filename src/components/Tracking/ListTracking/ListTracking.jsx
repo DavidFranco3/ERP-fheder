@@ -332,7 +332,7 @@ function ListTracking(props) {
             reorder: false
         },
         {
-            name: "Status",
+            name: "Proceso",
             selector: row => row.status,
             sortable: false,
             center: true,
@@ -374,7 +374,7 @@ function ListTracking(props) {
         rangeSeparatorText: 'de'
     };
 
-    const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
+    const [resetPaginationToogle, setResetPaginationToogle] = useState(true);
 
     return (
         <>

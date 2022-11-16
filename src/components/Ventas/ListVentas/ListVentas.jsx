@@ -1,24 +1,26 @@
-import {useEffect, useMemo, useState} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import moment from "moment";
-import {Badge, Button, Container, Table} from "react-bootstrap";
-import {map} from "lodash";
+import { Badge, Button, Container, Table } from "react-bootstrap";
+import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaVentas from "../EliminacionFisica";
 import styled from 'styled-components';
-import DataTable  from 'react-data-table-component';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@fortawesome/free-solid-svg-icons";
+import DataTable from 'react-data-table-component';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./ListVentas.scss";
 import ClientesPedido from "./ClientesPedido";
-import {estilos} from "../../../utils/tableStyled";
+import { estilos } from "../../../utils/tableStyled";
 
 function ListVentas(props) {
     const { setRefreshCheckLogin, listPedidosVenta, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalVentas } = props;
 
+    const { folio } = listPedidosVenta
+
     const enrutamiento = useHistory();
-    
-       // Definicion de la paginacion
+
+    // Definicion de la paginacion
     const handlePageChange = (page) => {
         setPage(page)
     }
@@ -52,74 +54,87 @@ function ListVentas(props) {
     const vistaPrevia = () => {
         // enrutamiento.push("")
     }
-    
+
     // Definicion de tabla
-    const ExpandedComponent = () => (
+    /*const ExpandedComponent = ({ }) => (
         <>
             <Container fluid className="tablaProductos">
-            <div className="tituloSeccion">
-            <h4>Listado de productos del pedido de venta</h4>
-            </div>
-                                <table className="responsive-tableTrackingOV"
-                                >
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Productos</th>
-                                        <th scope="col">Cantidad</th>
-                                        <th scope="col">Unidad de medida</th>
-                                        <th scope="col">Precio</th>
-                                        <th scope="col">Subtotal</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {map(listPedidosVenta, (datos, index) => (
-                                        
-                                        <>
-                                        {map(datos.productos, (producto, indexProducto) => (
+                <div className="tituloSeccion">
+                    <h4>Listado de productos del pedido de venta {folioUtilizado}</h4>
+                </div>
+                <table className="responsive-tableTrackingOV"
+                >
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Productos</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Unidad de medida</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {map(listPedidosVenta, (datos, index) => (
+                            <>
+                                {
+                                    datos.folio == folioUtilizado ?
+                                        (
                                             <>
-                                            <tr key={producto.item}>
-                                                <th>
-                                                    {indexProducto + 1}
-                                                </th>
-                                                <td>
-                                                    {producto.item}
-                                                </td>
-                                                <td>
-                                                    {producto.cantidad}
-                                                </td>
-                                                <td>
-                                                    {producto.um}
-                                                </td>
-                                                <td>
+                                                {map(datos.productos, (producto, indexProducto) => (
                                                     <>
-                                                        {producto.precioUnitario ? new Intl.NumberFormat('es-MX', {
-                                                                style: "currency",
-                                                                currency: "MXN"
-                                                            }).format(producto.precioUnitario) : "No disponible"}
-                                                            {} MXN
+                                                        <tr key={producto.item}>
+                                                            <th>
+                                                                {indexProducto + 1}
+                                                            </th>
+                                                            <td>
+                                                                {producto.item}
+                                                            </td>
+                                                            <td>
+                                                                {producto.cantidad}
+                                                            </td>
+                                                            <td>
+                                                                {producto.um}
+                                                            </td>
+                                                            <td>
+                                                                <>
+                                                                    {producto.precioUnitario ? new Intl.NumberFormat('es-MX', {
+                                                                        style: "currency",
+                                                                        currency: "MXN"
+                                                                    }).format(producto.precioUnitario) : "No disponible"}
+                                                                    { } MXN
+                                                                </>
+                                                            </td>
+                                                            <td>
+                                                                <>
+                                                                    {producto.total ? new Intl.NumberFormat('es-MX', {
+                                                                        style: "currency",
+                                                                        currency: "MXN"
+                                                                    }).format(producto.total) : "No disponible"}
+                                                                    { } MXN
+                                                                </>
+                                                            </td>
+                                                        </tr>
                                                     </>
-                                                </td>
-                                                <td>
-                                                    <>
-                                                        {producto.total ? new Intl.NumberFormat('es-MX', {
-                                                                style: "currency",
-                                                                currency: "MXN"
-                                                            }).format(producto.total) : "No disponible"}
-                                                            {} MXN
-                                                    </>
-                                                </td>
-                                            </tr>
-                                        </>
-                                    ))}
-                                    </>
-                                     ))}
-                                    </tbody>
-                                </table>
-                            </Container>
+
+                                                ))}
+                                            </>
+                                        )
+                                        :
+                                        (
+                                            <>
+
+                                            </>
+                                        )
+                                }
+                            </>
+                        ))}
+                    </tbody>
+                </table>
+            </Container>
         </>
-    );
-    
+    );*/
+
     const columns = [
         {
             name: "Folio",
@@ -165,14 +180,14 @@ function ListVentas(props) {
         {
             name: "Total",
             selector: row => (
-                    <>
-                ${''}
-                        {new Intl.NumberFormat('es-MX', {
+                <>
+                    ${''}
+                    {new Intl.NumberFormat('es-MX', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
-                        }).format(row.total)} MXN    
+                    }).format(row.total)} MXN
                 </>
-        ),
+            ),
             sortable: false,
             center: true,
             reorder: false
@@ -180,7 +195,7 @@ function ListVentas(props) {
         {
             name: "Acciones",
             center: true,
-            reorder: true,
+            reorder: false,
             selector: row => (
                 <>
                     <Badge
@@ -222,12 +237,16 @@ function ListVentas(props) {
                     </Badge>
                 </>
             )
-        }
+        },
     ];
+
+    console.log(columns)
 
     // Configurando animacion de carga
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
+
+    console.log(rows.folio)
 
 
     useEffect(() => {
@@ -243,41 +262,12 @@ function ListVentas(props) {
         rangeSeparatorText: 'de'
     };
 
-    const [filterText, setFilterText] = useState("");
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
-
-    // Defino barra de busqueda
-    const ClearButton = styled(Button) ` 
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
-        height: 34px;
-        width: 32px;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    `;
-
-    const TextField = styled.input ` 
-        height: 32px;
-        border-radius: 3px;
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        border: 1px solid #e5e5e5;
-        padding: 0 32px 0 16px;
-      &:hover {
-        cursor: pointer;
-      }
-    `;
 
     return (
         <>
-        <Container fluid>
-            <DataTable
+            <Container fluid>
+                <DataTable
                     columns={columns}
                     // actions={descargaCSV}
                     data={listPedidosVenta}
@@ -293,8 +283,8 @@ function ListVentas(props) {
                     onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
-            />
-        </Container>
+                />
+            </Container>
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}

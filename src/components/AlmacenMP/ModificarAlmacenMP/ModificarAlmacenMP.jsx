@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 import "./ModificarAlmacenMP.scss"
-import {listarMateriaPrima} from "../../../api/materiaPrima";
-import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
-import {map} from "lodash";
-import {toast} from "react-toastify";
-import {actualizaEstadoAlmacenMP, obtenerFolioActualAlmacenMP, registroInicialAlmacenMP} from "../../../api/almacenMP";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { listarMateriaPrima } from "../../../api/materiaPrima";
+import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
+import { map } from "lodash";
+import { toast } from "react-toastify";
+import { actualizaExistenciasAlmacenMP, obtenerFolioActualAlmacenMP, registroInicialAlmacenMP } from "../../../api/almacenMP";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
+import { obtenerDatosInspeccion } from "../../../api/inspeccionMaterial";
 
 function ModificarAlmacenMp(props) {
     const { datos, setShowModal, location, history } = props;
-    const { id, nombre, folioMP, folioAlmacen, descripcion, um, estado } = datos;
+    const { id, nombreMP, referencia, um, lote } = datos;
 
     // Para controlar la animacion de carga
     const [loading, setLoading] = useState(false);
@@ -23,7 +24,7 @@ function ModificarAlmacenMp(props) {
             listarMateriaPrima().then(response => {
                 const { data } = response;
                 //console.log(data)
-                if(!listMateriasPrimas &&data) {
+                if (!listMateriasPrimas && data) {
                     setListMateriasPrimas(formatModelMateriasPrimas(data));
                 } else {
                     const datosProductos = formatModelMateriasPrimas(data);
@@ -49,19 +50,20 @@ function ModificarAlmacenMp(props) {
         e.preventDefault()
         setLoading(true)
 
-        if(!formData.descripcion || !formData.um || !formData.status){
+        if (formData.referencia.length < parseInt(4)) {
             toast.warning("Completa el formulario")
         } else {
             try {
                 const dataTemp = {
-                    descripcion: formData.descripcion,
-                    um: formData.um,
-                    estado: formData.status
+                    referencia: formData.referencia,
+                    nombreMP: materiaPrima == "" ? formData.nombreMP : materiaPrima,
+                    lote: lote == "" ? formData.lote : lote,
+                    um: unidadMedida == "" ? formData.um : unidadMedida,
                 }
 
                 // console.log(dataTemp)
                 setLoading(false)
-                actualizaEstadoAlmacenMP(id, dataTemp).then(response => {
+                actualizaExistenciasAlmacenMP(id, dataTemp).then(response => {
                     const { data } = response;
                     const { mensaje, datos } = data;
                     toast.success(mensaje)
@@ -84,77 +86,96 @@ function ModificarAlmacenMp(props) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
+    // Para almacenar la materia prima
+    const [materiaPrima, setMateriaPrima] = useState("");
+
+    // Para almacenar la unidad de medida
+    const [unidadMedida, setUnidadMedida] = useState("");
+
+    // Para almacenar el lote 
+    const [loteBuscado, setLoteBuscado] = useState("");
+
+    // Para almacenar el lote 
+    const [ordenVenta, setOrdenVenta] = useState("");
+
+    useEffect(() => {
+        try {
+
+            obtenerDatosInspeccion(formData.referencia).then(response => {
+                const { data } = response;
+                const { nombre, unidadMedida, lote, ordenVenta } = data;
+                setMateriaPrima(nombre);
+                setUnidadMedida(unidadMedida);
+                setLoteBuscado(lote);
+                setOrdenVenta(ordenVenta)
+
+            }).catch(e => {
+                console.log(e)
+            })
+
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formData.referencia]);
+
+
     return (
         <>
             <div className="contenidoFormularioPrincipal">
                 <Form onChange={onChange} onSubmit={onSubmit}>
-                <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formGridPorcentaje scrap">
-                        <Form.Label>
-                            Selecciona la materia prima
-                        </Form.Label>
-                        <Form.Control as="select"
-                                      defaultValue={formData.materiaPrima}
-                                      name="materiaPrima"
-                                      disabled
-                        >
-                            <option>Elige una opción</option>
-                            {map(listMateriasPrimas, (materiaprima, index) => (
-                                <option key={index} value={materiaprima?.folio + "/" + materiaprima?.descripcion} selected={nombre === materiaprima?.descripcion}>{ materiaprima?.folio + " -- " + materiaprima?.descripcion}</option>
-                            ))}
-                        </Form.Control>
-                    </Form.Group>
-
-                    <Form.Group as={Col} controlId="formHorizontalDescripcion">
-                        <Form.Label>
-                            Descripción
-                        </Form.Label>
+                    <Row className="mb-3">
+                        <Form.Group as={Col} controlId="formHorizontalDescripcion">
+                            <Form.Label>
+                                Referencia
+                            </Form.Label>
                             <Form.Control
-                                as="textarea"
-                                placeholder="Escribe la descripcion"
-                                name="descripcion"
-                                defaultValue={formData.descripcion}
-                                required
+                                type="text"
+                                placeholder="Escribe la referencia"
+                                name="referencia"
+                                defaultValue={formData.referencia}
                             />
-                    </Form.Group>
-                </Row>
-                
-                <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formHorizontalUnidadMedida" className="unidadMedidaMP">
-                        <Form.Label>
-                            Unidad de medida
-                        </Form.Label>
-                        <Col>
-                            <Form.Control
-                                as="select"
-                                name="um"
-                                defaultValue={formData.um}
-                            >
-                                <option >Elige....</option>
-                                <option value="KG">KG</option>
-                                <option value="Litros">Litros</option>
-                                <option value="Piezas">Pieza</option>
-                                <option value="Otros">Otros</option>
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
+                        </Form.Group>
+                    </Row>
 
-                    <Form.Group as={Col} controlId="formHorizontalStatus" className="status">
-                        <Form.Label>
-                            Status
-                        </Form.Label>
-                        <Col>
+                    <Row className="mb-3">
+                        <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                            <Form.Label>
+                                Materia prima
+                            </Form.Label>
                             <Form.Control
-                                as="select"
-                                name="status"
-                                defaultValue={formData.status}
-                            >
-                                <option >Elige....</option>
-                                <option value="Activo">Activo</option>
-                                <option value="Inactivo">Inactivo</option>
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
+                                type="text"
+                                placeholder="Escribe la materia prima"
+                                name="nombreMP"
+                                value={materiaPrima == "" ? formData.nombreMP : formData.referencia.length < parseInt(4) ? "" : materiaPrima}
+                                disabled
+                            />
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                            <Form.Label>
+                                U.M
+                            </Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Escribe la unidad de medida"
+                                name="um"
+                                value={unidadMedida == "" ? formData.um : formData.referencia.length < parseInt(4) ? "" : unidadMedida}
+                                disabled
+                            />
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                            <Form.Label>
+                                Lote
+                            </Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Escribe el lote"
+                                name="lote"
+                                value={lote == "" ? formData.lote : formData.referencia.length < parseInt(4) ? "" : lote}
+                                disabled
+                            />
+                        </Form.Group>
                     </Row>
 
                     <Form.Group as={Row} className="botones">
@@ -185,13 +206,14 @@ function ModificarAlmacenMp(props) {
     );
 }
 
-function initialFormData(datos){
-    const { descripcion, um, estado } = datos;
+function initialFormData(datos) {
+    const { referencia, nombreMP, lote, um } = datos;
 
     return {
-        descripcion: descripcion,
-        um: um,
-        status: estado
+        referencia: referencia,
+        nombreMP: nombreMP,
+        lote: lote,
+        um: um
     }
 }
 

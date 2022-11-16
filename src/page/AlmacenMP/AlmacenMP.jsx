@@ -2,7 +2,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { listarPaginacionAlmacenMP, totalMovimientosAlmacenMP} from "../../api/almacenMP";
+import { listarPaginacionAlmacenMP, totalMovimientosAlmacenMP } from "../../api/almacenMP";
 import ListAlmacenMP from "../../components/AlmacenMP/ListAlmacenMP";
 import { withRouter, useHistory } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
@@ -57,12 +57,12 @@ function AlmacenMp(props) {
                 setNoTotalAlmacenMP(data)
             })
 
-            if(page === 0) {
+            if (page === 0) {
                 setPage(1)
-                listarPaginacionAlmacenMP(page,rowsPerPage).then(response => {
+                listarPaginacionAlmacenMP(page, rowsPerPage).then(response => {
                     const { data } = response;
                     // console.log(data)
-                    if(!listAlmacenMP &&data) {
+                    if (!listAlmacenMP && data) {
                         setListAlmacenMP(formatModelAlmacenMP(data));
                     } else {
                         const datosUsuarios = formatModelAlmacenMP(data);
@@ -72,10 +72,10 @@ function AlmacenMp(props) {
                     console.log(e)
                 })
             } else {
-                listarPaginacionAlmacenMP(page,rowsPerPage).then(response => {
+                listarPaginacionAlmacenMP(page, rowsPerPage).then(response => {
                     const { data } = response;
                     // console.log(data)
-                    if(!listAlmacenMP &&data) {
+                    if (!listAlmacenMP && data) {
                         setListAlmacenMP(formatModelAlmacenMP(data));
                     } else {
                         const datosUsuarios = formatModelAlmacenMP(data);
@@ -207,15 +207,15 @@ function formatModelAlmacenMP(data) {
     data.forEach(data => {
         dataTemp.push({
             id: data._id,
+            item: data.item,
             folioAlmacen: data.folioAlmacen,
-            folioMP: data.folioMP,
-            nombre: data.nombre,
-            descripcion: data.descripcion,
+            referencia: data.referencia,
+            nombreMP: data.nombreMP,
             um: data.um,
+            lote: data.lote,
+            fecha: data.fecha,
             movimientos: data.movimientos,
-            existenciasOV: data.existenciasOV,
-            existenciasStock: data.existenciasStock,
-            existenciasTotales: data.existenciasTotales,
+            cantidadExistencia: data.cantidadExistencia,
             estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt

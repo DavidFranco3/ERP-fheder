@@ -40,47 +40,26 @@ function ListMovimientosMp(props) {
             reorder: false
         },
         {
-            name: 'Descripción',
-            selector: row => row.descripcion,
+            name: 'Lote',
+            selector: row => row.lote,
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Referencia',
-            selector: row => row.referencia,
+            selector: row => row.ordenProduccion,
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Cantidad',
-            selector: row => row.cantidad,
+            selector: row => row.cantidadExistencia,
             sortable: false,
             center: true,
             reorder: false
         },
-        {
-            name: 'Existencias para OV',
-            selector: row => row.existenciasOV,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Existencias stock',
-            selector: row => row.existenciasStock,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Existencias totales',
-            selector: row => row.existenciasTotales,
-            sortable: false,
-            center: true,
-            reorder: false
-        }
     ];
 
     // Configurando animacion de carga
@@ -99,8 +78,6 @@ function ListMovimientosMp(props) {
     const paginationComponentOptions = {
         rowsPerPageText: 'Filas por página',
         rangeSeparatorText: 'de',
-        selectAllRowsItem: true,
-        selectAllRowsItemText: 'Todos'
     };
     
        const [resetPaginationToogle, setResetPaginationToogle] = useState(false);

@@ -11,7 +11,8 @@ import {
     ENDPOINTActualizarEstadoAlmacenMP,
     ENDPOINTActualizaExistenciasAlmacenMP,
     ENDPOINTRegistraMovimientosAlmacenMP,
-    ENDPOINTTotalMovimientosAlmacenMP
+    ENDPOINTTotalMovimientosAlmacenMP,
+    ENDPOINTObtenerItemAlmacenMP
 } from "./endpoints";
 import axios from 'axios';
 import { getTokenApi } from "./auth";
@@ -39,6 +40,18 @@ export async function totalMovimientosAlmacenMP() {
         }
     };
     return await axios.get(API_HOST + ENDPOINTTotalMovimientosAlmacenMP, config);
+}
+
+// Para obtener el número de orden de compra actual
+export async function obtenerItem() {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTObtenerItemAlmacenMP, config);
 }
 
 // Registra Movimientos del almacen
@@ -103,7 +116,7 @@ export async function obtenerAlmacenMPID(id) {
 }
 
 // Obtener los datos de una materia prima segun el folio de la MP
-export async function obtenerDatosAlmacenMPFolio(folioMP) {
+export async function obtenerDatosAlmacenMPFolio(folioAlmacen) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -111,7 +124,7 @@ export async function obtenerDatosAlmacenMPFolio(folioMP) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTObtenerDatosFolioMPAlmacenMP + `/${folioMP}`, config);
+    return await axios.get(API_HOST + ENDPOINTObtenerDatosFolioMPAlmacenMP + `/${folioAlmacen}`, config);
 }
 
 // Listar todos los movimientos de una materia prima segun el folio de la mp

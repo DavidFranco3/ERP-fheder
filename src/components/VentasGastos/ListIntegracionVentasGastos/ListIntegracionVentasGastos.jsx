@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import moment from "moment";
-import { Badge, Button, Container, Table } from "react-bootstrap";
-import { map } from "lodash";
+import { Badge, Button, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionIntegracionVentasGastos from '../EliminacionIntegracionVentasGastos/EliminacionIntegracionVentasGastos';
 import ModificacionIntegracionVentasGastos from '../ModificacionIntegracionVentasGastos';

@@ -456,6 +456,7 @@ export const ENDPOINTTotalPlaneacion = "/planeacion/total"
 export const ENDPOINTRegistroInicialAlmacenMP = "/almacenMP/registroInicial"
 export const ENDPOINTListarAlmacenMP = "/almacenMP/listar"
 export const ENDPOINTObtenerFolioAlmacenMP = "/almacenMP/obtenerFolio"
+export const ENDPOINTObtenerItemAlmacenMP = "/almacenMP/obtenerItem";
 export const ENDPOINTListarPaginandoAlmacenMP = "/almacenMP/listarPaginando"
 export const ENDPOINTObtenerAlmacenMP = "/almacenMP/obtener"
 export const ENDPOINTObtenerDatosFolioMPAlmacenMP = "/almacenMP/obtenerDatosFolioMP"

@@ -543,7 +543,7 @@ export default [
         page: AlertasCalidad
     },
     {
-        path: "/MovimientosAlmacenMP/:folioMP",
+        path: "/MovimientosAlmacenMP/:folioAlmacen",
         exact: true,
         page: MovimientosAlmacenMP
     },
