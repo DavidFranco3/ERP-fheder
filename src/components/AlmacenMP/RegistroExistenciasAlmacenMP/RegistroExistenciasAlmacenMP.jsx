@@ -74,11 +74,33 @@ function RegistroExistenciasAlmacenMp(props) {
         }
     }, []);
 
+    // Almacenar el listado de materias primas
+    const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarMateriaPrima().then(response => {
+                const { data } = response;
+                //console.log(data)
+                if(!listMateriasPrimas &&data) {
+                    setListMateriasPrimas(formatModelMateriasPrimas(data));
+                } else {
+                    const datosProductos = formatModelMateriasPrimas(data);
+                    setListMateriasPrimas(datosProductos);
+                }
+            }).catch(e => {
+                //console.log(e)
+            })
+        } catch (e) {
+            //console.log(e)
+        }
+    }, []);
+
     const onSubmit = (e) => {
         e.preventDefault()
         // console.log(formData)
 
-        if(formData.referencia.length < parseInt(4)){
+        if(!formData.materiaPrima || !formData.unidadMedida){
             toast.warning("Completa el formulario")
         } else {
             setLoading(true)
@@ -94,22 +116,18 @@ function RegistroExistenciasAlmacenMp(props) {
                     const dataTemp = {
                         item: itemActual,
                         folioAlmacen: noAlmacen,
-                        referencia: formData.referencia,
-                        ordenVenta: ordenVenta,
-                        nombreMP: materiaPrima,
-                        um: unidadMedida,
-                        lote: lote,
+                        nombreMP: formData.materiaPrima,
+                        um: formData.unidadMedida,
+                        fecha: "",
                         cantidadExistencia: "0",
                         estado: "true"
                     }
 
                     // console.log(dataTemp)
-                    setLoading(false)
                     registroInicialAlmacenMP(dataTemp).then(response => {
                         const { data } = response;
                         const { mensaje, datos } = data;
                         toast.success(mensaje)
-                        setLoading(false)
                         LogsInformativos("Se ha registrado la materia en el almacen de MP", datos)
                         history.push({
                             search: queryString.stringify(""),
@@ -136,57 +154,36 @@ function RegistroExistenciasAlmacenMp(props) {
             <div className="contenidoFormularioPrincipal">
                 <Form onChange={onChange} onSubmit={onSubmit}>
                     <Row className="mb-3">
-                        <Form.Group as={Col} controlId="formHorizontalDescripcion">
-                            <Form.Label>
-                                Referencia
-                            </Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Escribe la referencia"
-                                name="referencia"
-                                defaultValue={formData.referencia}
-                            />
-                        </Form.Group>
-                    </Row>
+                    <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                        <Form.Label>
+                            Selecciona la materia prima
+                        </Form.Label>
+                        <Form.Control as="select"
+                                      defaultValue={formData.materiaPrima}
+                                      name="materiaPrima"
+                        >
+                            <option>Elige una opción</option>
+                            {map(listMateriasPrimas, (materiaprima, index) => (
+                                <option key={index} value={materiaprima?.descripcion}>{materiaprima?.descripcion}</option>
+                            ))}
+                        </Form.Control>
+                    </Form.Group>
 
-                    <Row className="mb-3">
-                        <Form.Group as={Col} controlId="formGridPorcentaje scrap">
-                            <Form.Label>
-                                Materia prima
-                            </Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Escribe la materia prima"
-                                name="materiaPrima"
-                                value={formData.referencia.length < parseInt(4) ? "" : materiaPrima}
-                                disabled
-                            />
-                        </Form.Group>
-
-                        <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                    <Form.Group as={Col} controlId="formGridPorcentaje scrap">
                             <Form.Label>
                                 U.M
                             </Form.Label>
                             <Form.Control
-                                type="text"
-                                placeholder="Escribe la unidad de medida"
+                                as="select"
                                 name="unidadMedida"
-                                value={formData.referencia.length < parseInt(4) ? "" : unidadMedida}
-                                disabled
-                            />
-                        </Form.Group>
-
-                        <Form.Group as={Col} controlId="formGridPorcentaje scrap">
-                            <Form.Label>
-                                Lote
-                            </Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Escribe el lote"
-                                name="lote"
-                                value={formData.referencia.length < parseInt(4) ? "" : lote}
-                                disabled
-                            />
+                                defaultValue={formData.unidadMedida}
+                            >
+                                <option >Elige....</option>
+                                <option value="KG">KG</option>
+                                <option value="Litros">Litros</option>
+                                <option value="Piezas">Pieza</option>
+                                <option value="Otros">Otros</option>
+                            </Form.Control>
                         </Form.Group>
                     </Row>
 
@@ -220,9 +217,25 @@ function RegistroExistenciasAlmacenMp(props) {
 
 function initialFormData() {
     return {
-        fecha: "",
-        referencia: ""
+        unidadMedida: "",
+        materiaPrima: ""
     }
+}
+
+function formatModelMateriasPrimas(data) {
+    // console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            folio: data.folio,
+            descripcion: data.descripcion,
+            tiempoespera: data.tiempoespera,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
 }
 
 export default RegistroExistenciasAlmacenMp;

@@ -75,13 +75,6 @@ function ListAlmacenMp(props) {
             reorder: false
         },
         {
-            name: "Referencia",
-            selector: row => row.referencia,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
             name: "Materia prima",
             selector: row => row.nombreMP,
             sortable: false,
@@ -96,24 +89,20 @@ function ListAlmacenMp(props) {
             reorder: false
         },
         {
-            name: "Lote",
-            selector: row => row.lote,
+            name: "Existencia",
+            selector: row => row.cantidadExistencia,
             sortable: false,
             center: true,
             reorder: false
         },
-        /*{
-            name: "Última modificación",
+        {
+            name: "Último movimiento",
             selector: row => (
                 <>
                     {
                         row.movimientos.length !== 0 ?
                             (
-                                <>
-                                    <FechaUltimaModificacion
-                                        folioMP={row.folioMP}
-                                    />
-                                </>
+                                moment(row.fecha).format('LL')
                             )
                             :
                             (
@@ -124,13 +113,6 @@ function ListAlmacenMp(props) {
                     }
                 </>
             ),
-            sortable: false,
-            center: true,
-            reorder: false
-        },*/
-        {
-            name: "Existencia",
-            selector: row => row.cantidadExistencia,
             sortable: false,
             center: true,
             reorder: false

@@ -48,7 +48,7 @@ function ListMovimientosMp(props) {
         },
         {
             name: 'Referencia',
-            selector: row => row.ordenProduccion,
+            selector: row => row.referencia,
             sortable: false,
             center: true,
             reorder: false
