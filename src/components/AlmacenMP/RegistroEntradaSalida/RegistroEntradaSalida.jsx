@@ -115,6 +115,7 @@ function RegistroEntradaSalida(props) {
                             referencia: formData.referencia,
                             ordenVenta: ordenVenta,
                             lote: lote,
+                            descripcion: formData.descripcion,
                             cantidadExistencia: formData.cantidad,
                         }
 
@@ -168,6 +169,7 @@ function RegistroEntradaSalida(props) {
                                 referencia: formData.referencia,
                                 ordenVenta: ordenVenta,
                                 lote: formData.lote,
+                                descripcion: formData.descripcion,
                                 cantidadExistencia: formData.cantidad,
                             }
 

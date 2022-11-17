@@ -134,6 +134,7 @@ function formatModelMovimientosAlmacenMP(data) {
             referencia: data.referencia,
             ordenProduccion: data.ordenProduccion,
             lote: data.lote,
+            descripcion: data.descripcion,
             cantidadExistencia: data.cantidadExistencia,
         });
     });

@@ -54,6 +54,13 @@ function ListMovimientosMp(props) {
             reorder: false
         },
         {
+            name: 'Descripción',
+            selector: row => row.descripcion,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
             name: 'Cantidad',
             selector: row => row.cantidadExistencia,
             sortable: false,
