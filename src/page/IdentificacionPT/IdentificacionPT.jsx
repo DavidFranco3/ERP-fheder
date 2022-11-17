@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react';
-import { Alert, Button, Col, Row } from "react-bootstrap";
+import { useState, useEffect, Suspense } from 'react';
+import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
 import LayoutPrincipal from "../../layout/layoutPrincipal";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroIdentificacionPT from "../../components/IdentificacionPT/RegistroIdentificacionPT";
+import Lottie from 'react-lottie-player';
+import AnimacionLoading from '../../assets/json/loading.json';
+import { listarEtiquetaPTPaginacion, totalEtiquetasPT } from "../../api/etiquetaIdentificacionPT";
+import ListEtiquetasPT from '../../components/IdentificacionPT/ListEtiquetasPT';
 
 function IdentificacionPT(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -33,6 +37,59 @@ function IdentificacionPT(props) {
     const rutaRegreso = () => {
         enrutamiento.push("/DashboardProduccion")
     }
+
+     // Para controlar la paginación
+     const [rowsPerPage, setRowsPerPage] = useState(10);
+     const [page, setPage] = useState(1);
+     const [noTotalEtiquetas, setNoTotalEtiquetas] = useState(0);
+
+     // Para almacenar el listado de compras realizadas
+    const [listEtiquetas, setListEtiquetas] = useState(null);
+
+    useEffect(() => {
+        try {
+            totalEtiquetasPT().then(response => {
+                const { data } = response;
+                setNoTotalEtiquetas(data)
+            }).catch(e => {
+                // console.log(e)
+            })
+
+            // listarOrdenesCompraPaginacion(pagina, limite)
+
+            if (page === 0) {
+                setPage(1)
+
+                listarEtiquetaPTPaginacion(page, rowsPerPage).then(response => {
+                    const { data } = response
+                    if (!listEtiquetas && data) {
+                        setListEtiquetas(formatModelEtiquetas(data));
+                    } else {
+                        const datosEtiquetas = formatModelEtiquetas(data);
+                        setListEtiquetas(datosEtiquetas);
+                    }
+                }).catch(e => {
+                    console.log(e)
+                })
+            } else {
+                listarEtiquetaPTPaginacion(page, rowsPerPage).then(response => {
+                    const { data } = response
+                    if (!listEtiquetas && data) {
+                        setListEtiquetas(formatModelEtiquetas(data));
+                    } else {
+                        const datosEtiquetas = formatModelEtiquetas(data);
+                        setListEtiquetas(datosEtiquetas);
+                    }
+                }).catch(e => {
+                    console.log(e)
+                })
+            }
+
+        } catch (e) {
+            console.log(e)
+        }
+    }, [location, page, rowsPerPage]);
+
 
     return (
         <>
@@ -70,12 +127,63 @@ function IdentificacionPT(props) {
                         </Col>
                     </Row>
                 </Alert>
+
+                {
+                    listEtiquetas ?
+                        (
+                            <>
+                                <Suspense fallback={<Spinner />}>
+                                    <ListEtiquetasPT
+                                        setRefreshCheckLogin={setRefreshCheckLogin}
+                                        listEtiquetas={listEtiquetas}
+                                        history={history}
+                                        location={location}
+                                        rowsPerPage={rowsPerPage}
+                                        setRowsPerPage={setRowsPerPage}
+                                        page={page}
+                                        setPage={setPage}
+                                        noTotalEtiquetas={noTotalEtiquetas}
+                                    />
+                                </Suspense>
+                            </>
+                        )
+                        :
+                        (
+                            <>
+                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                            </>
+                        )
+                }
+
                 <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                     {contentModal}
                 </BasicModal>
             </LayoutPrincipal>
         </>
     );
+}
+
+function formatModelEtiquetas(data) {
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            item: data.item,
+            folio: data.folio,
+            fecha: data.fecha,
+            descripcion: data.descripcion,
+            noParte: data.noParte,
+            noOrden: data.noOrden,
+            cantidad: data.cantidad,
+            turno: data.turno,
+            operador: data.operador,
+            supervisor: data.supervisor,
+            inspector: data.inspector,
+            fechaCreacion: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
 }
 
 export default withRouter(IdentificacionPT);

@@ -9,7 +9,7 @@ import "./RegistroProduccion.scss";
 import { map } from "lodash";
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { obtenerCliente } from "../../../api/clientes";
-import { obtenerNumeroProduccion, obtenerItemProduccion, registraProduccion } from "../../../api/produccion"
+import { obtenerNumeroProduccion, obtenerItemProduccion, registraProduccion } from "../../../api/produccion";
 import { toast } from "react-toastify";
 import BuscarOV from "../BuscarOV";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";

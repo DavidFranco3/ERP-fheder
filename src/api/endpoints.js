@@ -83,13 +83,26 @@ export const ENDPOINTRegistraEtiquetasPiezas = "/etiquetaPrimeraPieza/registro";
 export const ENDPOINTListarEtiquetasPiezas = "/etiquetaPrimeraPieza/listar";
 export const ENDPOINTObtenerEtiquetasPiezas = "/etiquetaPrimeraPieza/obtener";
 export const ENDPOINTObtenerItemEtiquetaspiezas = "/etiquetaPrimeraPieza/obtenerItem";
-export const ENDPOINTObtenerDatosEtiquetasPiezas = "/integracionVentasGastos/obtenerDatosPedido";
+export const ENDPOINTObtenerDatosEtiquetasPiezas = "/etiquetaPrimeraPieza/obtenerDatosPedido";
 export const ENDPOINTEliminarEtiquetasPiezas = "/etiquetaPrimeraPieza/eliminar";
 export const ENDPOINTActualizarEtiquetasPiezas = "/etiquetaPrimeraPieza/actualizar";
 export const ENDPOINTActualizarEstadoEtiquetasPiezas = "/etiquetaPrimeraPieza/actualizarEstado";
 export const ENDPOINTListarEtiquetasPiezasPaginacion = "/etiquetaPrimeraPieza/listarPaginando";
 export const ENDPOINTObtenerNoEtiquetaPieza = "/etiquetaPrimeraPieza/obtenerNoEtiqueta";
 export const ENDPOINTTotalEtiquetasPiezas = "/etiquetaPrimeraPieza/total";
+
+// etiqueta de identificacion PT
+export const ENDPOINTRegistraEtiquetaPT = "/etiquetaPT/registro";
+export const ENDPOINTListarEtiquetaPT = "/etiquetaPT/listar";
+export const ENDPOINTObtenerEtiquetaPT = "/etiquetaPT/obtener";
+export const ENDPOINTObtenerItemEtiquetaPT = "/etiquetaPT/obtenerItem";
+export const ENDPOINTObtenerDatosEtiquetaPT = "/etiquetaPT/obtenerDatosEtiquetaPT";
+export const ENDPOINTEliminarEtiquetaPT = "/etiquetaPT/eliminar";
+export const ENDPOINTActualizarEtiquetaPT = "/etiquetaPT/actualizar";
+export const ENDPOINTActualizarEstadoEtiquetaPT = "/etiquetaPT/actualizarEstado";
+export const ENDPOINTListarEtiquetaPTPaginacion = "/etiquetaPT/listarPaginando";
+export const ENDPOINTObtenerNoEtiquetaPT = "/etiquetaPT/obtenerNoEtiquetaPT";
+export const ENDPOINTTotalEtiquetaPT = "/etiquetaPT/total";
 
 // Asignacion de pedido
 export const ENDPOINTRegistraAsignacionPedido = "/asignacionPedido/registro";

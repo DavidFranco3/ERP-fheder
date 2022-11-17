@@ -8,7 +8,6 @@ import BuscarOV from "../BuscarOV";
 import BasicModal from "../../Modal/BasicModal";
 import { obtenerInspeccion, actualizaInspeccion } from "../../../api/inspeccionMaterial";
 import { toast } from "react-toastify";
-import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 
 function ModificaReporte(props) {
 

@@ -11,7 +11,8 @@ import {
     ENDPOINTEliminarAlmacenPT,
     ENDPOINTActualizarEstadoAlmacenPT,
     ENDPOINTRegistraMovimientosAlmacenPT,
-    ENDPOINTModificaExistenciasAlmacenPT
+    ENDPOINTModificaExistenciasAlmacenPT,
+    ENDPOINTObtenerItemAlmacenMP
 } from "./endpoints";
 import axios from 'axios';
 import { getTokenApi } from "./auth";

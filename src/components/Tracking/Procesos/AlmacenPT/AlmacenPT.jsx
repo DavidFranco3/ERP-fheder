@@ -48,9 +48,13 @@ function Almacen(props) {
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Producto</th>
-                            <th scope="col">En existencias de PT</th>
-                            <th scope="col">Última entrada</th>
+                            <th scope="col">Materia prima</th>
+                            <th scope="col">UM</th>
+                            <th scope="col">Fecha del movimiento</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Referencia</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Cantidad E/S</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,6 +78,18 @@ function Almacen(props) {
                                                             </td>
                                                             <td data-title="descripcion">
                                                                 {moment(productos.fecha).format('LL')}
+                                                            </td>
+                                                            <td data-title="um">
+                                                                {productos.tipo}
+                                                            </td>
+                                                            <td data-title="um">
+                                                                {productos.referencia}
+                                                            </td>
+                                                            <td data-title="um">
+                                                                {productos.descripcion}
+                                                            </td>
+                                                            <td data-title="um">
+                                                                {productos.cantidad}
                                                             </td>
                                                         </tr>
                                                     </>

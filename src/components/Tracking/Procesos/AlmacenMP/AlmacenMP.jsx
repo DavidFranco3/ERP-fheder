@@ -38,7 +38,7 @@ function Almacen(props) {
                     Pedido de venta: {ordenVenta}
                 </Col>
                 <Col>
-                    Existencias en Almacen de PT
+                   Movimientos en almacen MP
                 </Col>
             </Row>
 
@@ -54,7 +54,7 @@ function Almacen(props) {
                             <th scope="col">Tipo</th>
                             <th scope="col">Lote</th>
                             <th scope="col">Referencia</th>
-                            <th scope="col">Descripcion</th>
+                            <th scope="col">Descripción</th>
                             <th scope="col">Cantidad E/S</th>
                         </tr>
                     </thead>

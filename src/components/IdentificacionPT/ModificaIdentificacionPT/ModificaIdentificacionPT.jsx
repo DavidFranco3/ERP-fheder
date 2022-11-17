@@ -3,14 +3,17 @@ import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import { useHistory } from "react-router-dom";
-import "./RegistroIdentificacionPT.scss";
+import "./ModificaIdentificacionPT.scss";
 import { listarProduccion } from "../../../api/produccion";
-import { registraEtiquetaPT, obtenerNoEtiquetaPT, obtenerItemEtiquetaPT } from "../../../api/etiquetaIdentificacionPT";
+import { actualizaEtiquetaPT, obtenerEtiquetaPT } from "../../../api/etiquetaIdentificacionPT";
 import { map } from "lodash";
 import { toast } from "react-toastify";
+import queryString from "query-string";
 
-function RegistroIdentificacionPT(props) {
-    const { setShowModal } = props;
+function ModificaIdentificacionPT(props) {
+    const { history, setShowModal, data } = props;
+
+    const { id } = data;
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -20,22 +23,28 @@ function RegistroIdentificacionPT(props) {
         setShowModal(false)
     }
 
-    // Para almacenar el folio actual
-    const [folioActual, setFolioActual] = useState("");
-
     useEffect(() => {
-        try {
-            obtenerNoEtiquetaPT().then(response => {
-                const { data } = response;
-                // console.log(data)
-                const { noEtiqueta } = data;
-                setFolioActual(noEtiqueta)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
+        //
+        obtenerEtiquetaPT(id).then(response => {
+            const { data } = response;
+            //console.log(data)
+            const { fecha, descripcion, noParte, noOrden, cantidad, turno, operador, supervisor, inspector } = data;
+            const dataTemp = {
+                fecha: fecha,
+                descripcion: descripcion,
+                noParte: noParte,
+                noOrden: noOrden,
+                cantidad: cantidad,
+                turno: turno,
+                operador: operador,
+                supervisor: supervisor,
+                inspector: inspector
+            }
+            setFormData(valoresAlmacenados(dataTemp))
+            // setFechaCreacion(fechaElaboracion)
+        }).catch(e => {
             console.log(e)
-        }
+        })
     }, []);
 
     // Para almacenar el listado de productos activos
@@ -92,34 +101,30 @@ function RegistroIdentificacionPT(props) {
             setLoading(true)
 
             // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            obtenerItemEtiquetaPT().then(response => {
-                const { data } = response;
-                const dataTemp = {
-                    item: data.item,
-                    folio: folioActual,
-                    fecha: formData.fecha,
-                    descripcion: producto.descripcionProducto,
-                    noParte: producto.numeroParte,
-                    noOrden: producto.ordenProduccion,
-                    cantidad: formData.cantidad,
-                    turno: formData.turno,
-                    operador: formData.operador,
-                    supervisor: formData.supervisor,
-                    inspector: formData.inspector
-                }
-                // console.log(dataTemp)
-                // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
-                // 
-                // Modificar el pedido creado recientemente
-                registraEtiquetaPT(dataTemp).then(response => {
-                    const { data: { mensaje, datos } } = response;
+            const dataTemp = {
+                fecha: formData.fecha,
+                descripcion: producto == "" ? formData.descripcion : producto.descripcionProducto,
+                noParte: producto == "" ? formData.noParte : producto.numeroParte,
+                noOrden: producto == "" ? formData.noorden : producto.ordenProduccion,
+                cantidad: formData.cantidad,
+                turno: formData.turno,
+                operador: formData.operador,
+                supervisor: formData.supervisor,
+                inspector: formData.inspector
+            }
+            // console.log(dataTemp)
+            // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
+            // 
+            // Modificar el pedido creado recientemente
+            actualizaEtiquetaPT(id, dataTemp).then(response => {
+                const { data: { mensaje, datos } } = response;
 
-                    // console.log(response)
-                    toast.success(mensaje);
-                    setShowModal(false);
-                }).catch(e => {
-                    console.log(e)
-                })
+                // console.log(response)
+                toast.success(mensaje);
+                setShowModal(false);
+                history.push({
+                    search: queryString.stringify(""),
+                });
             }).catch(e => {
                 console.log(e)
             })
@@ -166,14 +171,14 @@ function RegistroIdentificacionPT(props) {
                                         onChange={(e) => {
                                             handleProducto(e.target.value)
                                         }}
-                                        defaultValue={formData.ordenProduccion}
-                                        name="ordenProduccion"
+                                        defaultValue={formData.noOrden}
+                                        name="noOrden"
                                     >
                                         <option>Elige</option>
                                         {map(listProduccion, (produccion, index) => (
                                             <option
                                                 key={index}
-                                                value={produccion.folio + "/" + produccion.generalidades.producto + "/" + produccion.generalidades.noParte}
+                                                value={produccion.folio + "/" + produccion.generalidades.producto + "/" + produccion.generalidades.noParte} selected={formData.noOrden == produccion.folio}
                                             >
                                                 {produccion.folio}
                                             </option>
@@ -195,7 +200,7 @@ function RegistroIdentificacionPT(props) {
                                         type="text"
                                         placeholder="Descripción del producto"
                                         name="descripcion"
-                                        value={producto.descripcionProducto}
+                                        value={producto == "" ? formData.descripcion : producto.descripcionProducto}
                                         disabled
                                     />
                                 </Col>
@@ -213,8 +218,8 @@ function RegistroIdentificacionPT(props) {
                                     <Form.Control
                                         type="number"
                                         placeholder="Numero de parte"
-                                        name="numeroParte"
-                                        value={producto.numeroParte}
+                                        name="noParte"
+                                        value={producto == "" ? formData.noParte : producto.numeroParte}
                                         disabled
                                     />
                                 </Col>
@@ -291,7 +296,7 @@ function RegistroIdentificacionPT(props) {
                                         type="text"
                                         placeholder="Supervisor"
                                         name="supervisor"
-                                        defaultvalue={formData.supervisor}
+                                        defaultValue={formData.supervisor}
                                     />
                                 </Col>
                             </Form.Group>
@@ -348,14 +353,29 @@ function RegistroIdentificacionPT(props) {
 function initialFormData() {
     return {
         fecha: "",
-        ordenProduccion: "",
         descripcion: "",
-        numeroParte: "",
+        noParte: "",
+        noOrden: "",
         cantidad: "",
         turno: "",
         operador: "",
         supervisor: "",
         inspector: ""
+    }
+}
+
+function valoresAlmacenados(data) {
+    const { fecha, descripcion, noParte, noOrden, cantidad, turno, operador, supervisor, inspector } = data;
+    return {
+        fecha: fecha,
+        descripcion: descripcion,
+        noParte: noParte,
+        noOrden: noOrden,
+        cantidad: cantidad,
+        turno: turno,
+        operador: operador,
+        supervisor: supervisor,
+        inspector: inspector
     }
 }
 
@@ -380,4 +400,4 @@ function formatModelProduccion(data) {
     return dataTemp;
 }
 
-export default RegistroIdentificacionPT;
+export default ModificaIdentificacionPT;
