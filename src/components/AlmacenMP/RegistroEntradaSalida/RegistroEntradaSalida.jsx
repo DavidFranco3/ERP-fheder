@@ -109,7 +109,7 @@ function RegistroEntradaSalida(props) {
 
                         const dataMovimiento = {
                             fecha: formData.fecha,
-                            materiaPrima: almacenMP.nombre,
+                            materiaPrima: almacenMP.nombreMP,
                             um: almacenMP.um,
                             tipo: formData.tipoOperacion,
                             referencia: formData.referencia,

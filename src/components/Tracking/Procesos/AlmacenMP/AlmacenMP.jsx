@@ -49,8 +49,13 @@ function Almacen(props) {
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Materia prima</th>
-                            <th scope="col">En existencias de MP</th>
-                            <th scope="col">Último movimiento</th>
+                            <th scope="col">UM</th>
+                            <th scope="col">Fecha del movimiento</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Lote</th>
+                            <th scope="col">Referencia</th>
+                            <th scope="col">Descripcion</th>
+                            <th scope="col">Cantidad E/S</th>
                         </tr>
                     </thead>
                     {<tbody>
@@ -70,10 +75,25 @@ function Almacen(props) {
                                                                 {materiaPrima.materiaPrima}
                                                             </td>
                                                             <td data-title="um">
-                                                                {materiaPrima.cantidadExistencia}
+                                                                {materiaPrima.um}
                                                             </td>
                                                             <td data-title="descripcion">
                                                                 {moment(materiaPrima.fecha).format('LL')}
+                                                            </td>
+                                                            <td data-title="um">
+                                                                {materiaPrima.tipo}
+                                                            </td>
+                                                            <td data-title="um">
+                                                                {materiaPrima.lote}
+                                                            </td>
+                                                            <td data-title="um">
+                                                                {materiaPrima.referencia}
+                                                            </td>
+                                                            <td data-title="um">
+                                                                {materiaPrima.descripcion}
+                                                            </td>
+                                                            <td data-title="um">
+                                                                {materiaPrima.cantidadExistencia}
                                                             </td>
                                                         </tr>
                                                     </>

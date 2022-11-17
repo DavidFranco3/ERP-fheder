@@ -19,6 +19,13 @@ function ListMovimientosMp(props) {
 
     const columns = [
         {
+            name: ' Materia prima',
+            selector: row => row.materiaPrima,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
             name: ' UM',
             selector: row => row.um,
             sortable: false,
