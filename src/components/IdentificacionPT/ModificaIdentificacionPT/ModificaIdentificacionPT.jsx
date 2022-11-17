@@ -258,9 +258,9 @@ function ModificaIdentificacionPT(props) {
                                         defaultValue={formData.turno}
                                     >
                                         <option >Elige</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
+                                        <option value="1" selected={formData.turno=="1"}>1</option>
+                                        <option value="2" selected={formData.turno=="2"}>2</option>
+                                        <option value="3" selected={formData.turno=="3"}>3</option>
                                     </Form.Control>
                                 </Col>
                             </Form.Group>
