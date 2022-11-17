@@ -224,7 +224,7 @@ function RegistroProduccion(props) {
                     const { data: { mensaje, datos } } = response;
 
                     // Actualizacion del tracking
-                    LogTrackingActualizacion(ordenVenta, "En produccion", "5")
+                    LogTrackingActualizacion(ordenVenta, "En produccion", "6")
                     // console.log(response)
                     toast.success(mensaje)
                     setLoading(false)

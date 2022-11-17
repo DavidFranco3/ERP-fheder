@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import BuscarOV from "../BuscarOV";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 
 function ModificacionProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -281,6 +282,8 @@ function ModificacionProduccion(props) {
             // Modificar el pedido creado recientemente
             actualizaProduccion(id, dataTemp).then(response => {
                 const { data: { mensaje, datos } } = response;
+
+                LogTrackingActualizacion(ordenVenta == "" ? formData.ordenVenta : ordenVenta, "En produccion", "6")
                 // console.log(response)
                 toast.success(mensaje)
                 setLoading(false)

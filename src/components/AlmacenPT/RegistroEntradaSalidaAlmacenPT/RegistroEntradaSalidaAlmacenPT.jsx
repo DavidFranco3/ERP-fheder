@@ -144,7 +144,7 @@ function RegistroEntradaSalidaAlmacenPt(props) {
                                 //console.log(response)
 
                                 // Actualizacion del tracking
-                                LogTrackingActualizacion(formData.referencia, "En almacen de producto terminado", "6")
+                                LogTrackingActualizacion(formData.referencia, "En almacen de producto terminado", "7")
                                 const { mensaje, datos } = data;
                                 toast.success(mensaje)
                                 setLoading(false)

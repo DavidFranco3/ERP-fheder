@@ -129,14 +129,6 @@ function AlmacenPt(props) {
                             <Button
                                 className="btnRegistroVentas"
                                 onClick={() => {
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Reporte
-                            </Button>
-
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
                                     rutaRegreso()
                                 }}
                             >

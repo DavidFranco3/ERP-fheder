@@ -46,8 +46,6 @@ function ModificarAlmacenMp(props) {
     // Para almacenar los datos del formulario
     const [formData, setFormData] = useState(initialFormData(datos));
 
-    console.log(formData)
-
     const onSubmit = (e) => {
         e.preventDefault()
         

@@ -175,7 +175,7 @@ function Graficador(props) {
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
                     "rgb(230, 230, 250)",
-                    ,"rgb(230, 230, 250)"
+                    "rgb(230, 230, 250)"
                 ],
                 borderWidth: 1,
             },

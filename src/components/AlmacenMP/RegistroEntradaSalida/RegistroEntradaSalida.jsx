@@ -16,6 +16,7 @@ import queryString from "query-string";
 import { listarProduccion } from "../../../api/produccion";
 import { obtenerDatosInspeccion } from "../../../api/inspeccionMaterial";
 import { obtenerDatosProduccion } from "../../../api/produccion";
+import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 
 function RegistroEntradaSalida(props) {
     const { setShowModal, location, history } = props;
@@ -108,7 +109,7 @@ function RegistroEntradaSalida(props) {
 
                         const dataMovimiento = {
                             fecha: formData.fecha,
-                            materiaPrima: almacenMP.materiaPrima,
+                            materiaPrima: almacenMP.nombre,
                             um: almacenMP.um,
                             tipo: formData.tipoOperacion,
                             referencia: formData.referencia,
@@ -134,6 +135,8 @@ function RegistroEntradaSalida(props) {
                             const { _id } = data;
                             registraMovimientosAlmacenMP(_id, dataTempFinal).then(response => {
                                 const { data } = response;
+
+                                LogTrackingActualizacion(ordenVenta, "En almacen de materia prima", "5")
                                 //console.log(response)
                                 const { mensaje, datos } = data;
                                 toast.success(mensaje)
@@ -159,7 +162,7 @@ function RegistroEntradaSalida(props) {
 
                             const dataMovimientoSalida = {
                                 fecha: formData.fecha,
-                                materiaPrima: almacenMP.materiaPrima,
+                                materiaPrima: almacenMP.nombreMP,
                                 um: almacenMP.um,
                                 tipo: formData.tipoOperacion,
                                 referencia: formData.referencia,
@@ -183,6 +186,9 @@ function RegistroEntradaSalida(props) {
                                 const { _id } = data;
                                 registraMovimientosAlmacenMP(_id, dataTempFinal).then(response => {
                                     const { data } = response;
+
+                                    LogTrackingActualizacion(ordenVenta, "En almacen de materia prima", "5")
+
                                     const { mensaje, datos } = data;
                                     toast.success(mensaje)
                                     setLoading(false)

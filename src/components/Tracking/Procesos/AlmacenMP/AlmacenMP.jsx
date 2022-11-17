@@ -48,32 +48,32 @@ function Almacen(props) {
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Producto</th>
-                            <th scope="col">En existencias de PT</th>
-                            <th scope="col">Última entrada</th>
+                            <th scope="col">Materia prima</th>
+                            <th scope="col">En existencias de MP</th>
+                            <th scope="col">Último movimiento</th>
                         </tr>
                     </thead>
-                    {/*<tbody>
+                    {<tbody>
                         {map(listMateriasPrimas, (producto, index) => (
                             <>
-                                {map(producto.movimientos, (productos, indexProducto) => (
+                                {map(producto.movimientos, (materiaPrima, indexMateria) => (
                                     <>
                                         {
-                                            productos.referencia == ordenVenta ?
+                                            materiaPrima.ordenVenta == ordenVenta ?
                                                 (
                                                     <>
-                                                        <tr key={productos.referencia}>
+                                                        <tr key={materiaPrima.referencia}>
                                                             <th>
-                                                                {indexProducto + 1}
+                                                                {indexMateria + 1}
                                                             </th>
                                                             <td data-title="cantidad">
-                                                                {productos.materiaPrima}
+                                                                {materiaPrima.materiaPrima}
                                                             </td>
                                                             <td data-title="um">
-                                                                {productos.existenciasTotales}
+                                                                {materiaPrima.cantidadExistencia}
                                                             </td>
                                                             <td data-title="descripcion">
-                                                                {moment(productos.fecha).format('LL')}
+                                                                {moment(materiaPrima.fecha).format('LL')}
                                                             </td>
                                                         </tr>
                                                     </>
@@ -89,7 +89,7 @@ function Almacen(props) {
                                 ))}
                             </>
                         ))}
-                                    </tbody>*/}
+                    </tbody>}
                 </table>
             </Container>
         </>
