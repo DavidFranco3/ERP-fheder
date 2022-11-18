@@ -87,7 +87,7 @@ export async function listarInspeccionPieza(params) {
 }
 
 // Listar los pedidos de venta paginandolos
-export async function listarPedidosInspeccionPieza(pagina, limite) {
+export async function listarInspeccionPiezaPaginacion(pagina, limite) {
     const config = {
         headers: {
             'Accept': 'application/json',

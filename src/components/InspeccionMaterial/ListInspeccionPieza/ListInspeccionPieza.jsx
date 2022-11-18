@@ -4,19 +4,19 @@ import moment from "moment";
 import { Badge, Button, Container } from "react-bootstrap";
 import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
-import EliminacionEtiquetasPrimeraPieza from "../EliminacionEtiquetasPrimeraPieza";
-import ModificacionEtiquetaPrimeraPieza from "../ModificacionEtiquetaPrimeraPieza";
+import EliminacionFisicaInspeccion from '../EliminacionFisica';
+//import ModificacionEtiquetaPrimeraPieza from "../ModificacionEtiquetaPrimeraPieza";
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faArrowPointer } from "@fortawesome/free-solid-svg-icons";
-import "./ListEtiquetasPrimeraPieza.scss";
-import ClienteAsignado from "./ClienteAsignado";
-import ProductoAsignado from "./ProductoAsignado"
+import "./ListInspeccionPieza.scss";
+//import ClienteAsignado from "./ClienteAsignado";
+//import ProductoAsignado from "./ProductoAsignado"
 import { estilos } from "../../../utils/tableStyled";
 
-function ListEtiquetasPrimeraPieza(props) {
-    const { setRefreshCheckLogin, listEtiquetas, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalEtiquetas } = props;
+function ListInspeccionPieza(props) {
+    const { setRefreshCheckLogin, listInspeccion, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalInspeccion } = props;
 
     const enrutamiento = useHistory();
 
@@ -39,7 +39,7 @@ function ListEtiquetasPrimeraPieza(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Para la eliminacion fisica de usuarios
-    const eliminacionEtiqueta = (content) => {
+    const eliminacionInspeccion = (content) => {
         setTitulosModal("Eliminar");
         setContentModal(content);
         setShowModal(true);
@@ -66,8 +66,22 @@ function ListEtiquetasPrimeraPieza(props) {
             reorder: false
         },
         {
-            name: "Fecha",
-            selector: row => moment(row.fecha).format('LL'),
+            name: "Fecha de elaboración",
+            selector: row => moment(row.fechaElaboracion).format('LL'),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "No. O.P",
+            selector: row => row.noOP,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Fecha de. arranque",
+            selector: row => moment(row.fechaArranqueMaquina).format('LL'),
             sortable: false,
             center: true,
             reorder: false
@@ -80,69 +94,36 @@ function ListEtiquetasPrimeraPieza(props) {
             reorder: false
         },
         {
-            name: "Producto",
-            selector: row => (
-                <>
-                    <ProductoAsignado
-                        id={row.descripcionProducto}
-                    />
-                </>
-            ),
+            name: "Descripción del producto",
+            selector: row => row.descripcionPieza,
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: "Cliente",
-            selector: row => (
-                <>
-                    <ClienteAsignado
-                        id={row.cliente}
-                    />
-                </>
-            ),
+            selector: row => row.cliente,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Peso",
-            selector: row => row.peso,
+            name: "Material",
+            selector: row => row.material,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Turno",
-            selector: row => row.turno,
+            name: "Cantidad lote",
+            selector: row => row.cantidadLote,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "No. Cavidades",
-            selector: row => row.noCavidades,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: "Inspector",
-            selector: row => row.inspector,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: "Supervisor",
-            selector: row => row.supervisor,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: "Ultima modificacion",
-            selector: row => moment(row.fechaActualizacion).format('LL'),
+            name: "Status",
+            selector: row => row.status,
             sortable: false,
             center: true,
             reorder: false
@@ -153,17 +134,23 @@ function ListEtiquetasPrimeraPieza(props) {
             reorder: true,
             selector: row => (
                 <>
+                <Badge
+                        bg="info"
+                        className="evaluacionProveedor"
+                    >
+                        <FontAwesomeIcon icon={faEye} className="text-lg" />
+                    </Badge>
                     <Badge
                         bg="success"
                         className="editar"
-                        onClick={() => {
+                        /*onClick={() => {
                             modificacionEtiqueta(
                                 <ModificacionEtiquetaPrimeraPieza
                                     data={row}
                                     setShowModal={setShowModal}
                                     history={history}
                                 />)
-                        }}
+                        }}*/
                     >
                         <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
                     </Badge>
@@ -171,8 +158,8 @@ function ListEtiquetasPrimeraPieza(props) {
                         bg="danger"
                         className="eliminar"
                         onClick={() => {
-                            eliminacionEtiqueta(
-                                <EliminacionEtiquetasPrimeraPieza
+                            eliminacionInspeccion(
+                                <EliminacionFisicaInspeccion
                                     data={row}
                                     setShowModal={setShowModal}
                                     history={history}
@@ -193,7 +180,7 @@ function ListEtiquetasPrimeraPieza(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listEtiquetas);
+            setRows(listInspeccion);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -212,7 +199,7 @@ function ListEtiquetasPrimeraPieza(props) {
                 <DataTable
                     columns={columns}
                     // actions={descargaCSV}
-                    data={listEtiquetas}
+                    data={listInspeccion}
                     // expandableRows
                     // expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}
@@ -220,7 +207,7 @@ function ListEtiquetasPrimeraPieza(props) {
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
                     paginationServer
-                    paginationTotalRows={noTotalEtiquetas}
+                    paginationTotalRows={noTotalInspeccion}
                     onChangeRowsPerPage={handlePerRowsChange}
                     onChangePage={handlePageChange}
                     customStyles={estilos}
@@ -235,4 +222,4 @@ function ListEtiquetasPrimeraPieza(props) {
     );
 }
 
-export default ListEtiquetasPrimeraPieza;
+export default ListInspeccionPieza;
