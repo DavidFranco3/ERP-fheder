@@ -1,7 +1,7 @@
 @import "../../../scss/index";
 
 .turno {
-    border-color: $font-dark;
+    border-color: $tonalidad-gris;
     width: 100%;
   }
   
@@ -9,4 +9,5 @@
     border-color: $font-dark;
     width: 100%;
     heigh: 10%;
+    cursor: pointer;
   }

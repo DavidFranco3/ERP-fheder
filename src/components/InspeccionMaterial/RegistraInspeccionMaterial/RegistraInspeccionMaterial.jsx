@@ -33,6 +33,39 @@ function RegistraInspeccionMaterial(props) {
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
+    // Para controlar el estado de los botones de turno
+    const [turno, setTurno] = useState("0");
+
+    // Para Controlar la columna de primera revision
+    const [revision1, setRevision1] = useState(0);
+
+    // Para Controlar la columna de segunda revision
+    const [revision2, setRevision2] = useState("0");
+
+    // Para Controlar la columna de tercera revision
+    const [revision3, setRevision3] = useState("0");
+
+    // Para Controlar la columna de cuarta revision
+    const [revision4, setRevision4] = useState("0");
+
+    // Para Controlar la columna de quinta revision
+    const [revision5, setRevision5] = useState("0");
+
+    // Para Controlar la columna de sexta revision
+    const [revision6, setRevision6] = useState("0");
+
+    // Para Controlar la columna de septima revision
+    const [revision7, setRevision7] = useState("0");
+
+    // Para Controlar la columna de octava revision
+    const [revision8, setRevision8] = useState("0");
+
+    // Para Controlar la columna de novena revision
+    const [revision9, setRevision9] = useState("0");
+
+    // Para Controlar la columna de decima revision
+    const [revision10, setRevision10] = useState("0");
+
     return (
         <>
             <LayoutPrincipal>
@@ -223,16 +256,22 @@ function RegistraInspeccionMaterial(props) {
                                 <Form.Group as={Row} className="botones">
                                     <Col>
                                         <Button
-                                            variant="light"
+                                            variant={turno != "1" ? "light" : "dark"}
                                             className="turno"
+                                            onClick={() => {
+                                                setTurno("1");
+                                            }}
                                         >
                                             Turno 1
                                         </Button>
                                     </Col>
                                     <Col>
                                         <Button
-                                            variant="light"
+                                            variant={turno != "2" ? "light" : "dark"}
                                             className="turno"
+                                            onClick={() => {
+                                                setTurno("2");
+                                            }}
                                         >
                                             Turno 2
                                         </Button>
@@ -274,87 +313,117 @@ function RegistraInspeccionMaterial(props) {
                                     </Row>
 
                                     <Row className="mb-3">
-                                        <Form.Group as={Row} className="botones">
+                                        <Form.Group as={Row}>
                                             <Col sm="2">
                                             </Col>
                                             <Col>
                                                 <Badge
-                                                    bg="success"
+                                                    bg={revision1 == 0 ? "success" : revision1 == 1 ? "warning" : "secondary"}
                                                     className="boton"
+                                                    onClick={() => {
+                                                        setRevision1(revision1 + 1);
+                                                    }}
                                                 >
-                                                    Iniciar
+                                                    {revision1 == 0 ? "Iniciar" : revision1 == 1 ? "Guardar" : "Finalizado"}
                                                 </Badge>
                                             </Col>
                                             <Col>
                                                 <Badge
-                                                    bg="success"
+                                                    bg={revision2 == 0 ? "success" : revision2 == 1 ? "warning" : "secondary"}
                                                     className="boton"
+                                                    onClick={() => {
+                                                        setRevision2(revision2 + 1);
+                                                    }}
                                                 >
-                                                    Iniciar
+                                                    {revision2 == 0 ? "Iniciar" : revision2 == 1 ? "Guardar" : "Finalizado"}
                                                 </Badge>
                                             </Col>
                                             <Col>
                                                 <Badge
-                                                    bg="success"
+                                                    bg={revision3 == 0 ? "success" : revision3 == 1 ? "warning" : "secondary"}
                                                     className="boton"
+                                                    onClick={() => {
+                                                        setRevision3(revision3 + 1);
+                                                    }}
                                                 >
-                                                    Iniciar
+                                                    {revision3 == 0 ? "Iniciar" : revision3 == 1 ? "Guardar" : "Finalizado"}
                                                 </Badge>
                                             </Col>
                                             <Col>
                                                 <Badge
-                                                    bg="success"
+                                                    bg={revision4 == 0 ? "success" : revision4 == 1 ? "warning" : "secondary"}
                                                     className="boton"
+                                                    onClick={() => {
+                                                        setRevision4(revision4 + 1);
+                                                    }}
                                                 >
-                                                    Iniciar
+                                                    {revision4 == 0 ? "Iniciar" : revision4 == 1 ? "Guardar" : "Finalizado"}
                                                 </Badge>
                                             </Col>
                                             <Col>
                                                 <Badge
-                                                    bg="success"
+                                                    bg={revision5 == 0 ? "success" : revision5 == 1 ? "warning" : "secondary"}
                                                     className="boton"
+                                                    onClick={() => {
+                                                        setRevision5(revision5 + 1);
+                                                    }}
                                                 >
-                                                    Iniciar
+                                                    {revision5 == 0 ? "Iniciar" : revision5 == 1 ? "Guardar" : "Finalizado"}
                                                 </Badge>
                                             </Col>
                                             <Col>
                                                 <Badge
-                                                    bg="success"
+                                                    bg={revision6 == 0 ? "success" : revision6 == 1 ? "warning" : "secondary"}
                                                     className="boton"
+                                                    onClick={() => {
+                                                        setRevision6(revision6 + 1);
+                                                    }}
                                                 >
-                                                    Iniciar
+                                                    {revision6 == 0 ? "Iniciar" : revision6 == 1 ? "Guardar" : "Finalizado"}
                                                 </Badge>
                                             </Col>
                                             <Col>
                                                 <Badge
-                                                    bg="success"
+                                                    bg={revision7 == 0 ? "success" : revision7 == 1 ? "warning" : "secondary"}
                                                     className="boton"
+                                                    onClick={() => {
+                                                        setRevision7(revision7 + 1);
+                                                    }}
                                                 >
-                                                    Iniciar
+                                                    {revision7 == 0 ? "Iniciar" : revision7 == 1 ? "Guardar" : "Finalizado"}
                                                 </Badge>
                                             </Col>
                                             <Col>
                                                 <Badge
-                                                    bg="success"
+                                                    bg={revision8 == 0 ? "success" : revision8 == 1 ? "warning" : "secondary"}
                                                     className="boton"
+                                                    onClick={() => {
+                                                        setRevision8(revision8 + 1);
+                                                    }}
                                                 >
-                                                    Iniciar
+                                                    {revision8 == 0 ? "Iniciar" : revision8 == 1 ? "Guardar" : "Finalizado"}
                                                 </Badge>
                                             </Col>
                                             <Col>
                                                 <Badge
-                                                    bg="success"
+                                                    bg={revision9 == 0 ? "success" : revision9 == 1 ? "warning" : "secondary"}
                                                     className="boton"
+                                                    onClick={() => {
+                                                        setRevision9(revision9 + 1);
+                                                    }}
                                                 >
-                                                    Iniciar
+                                                    {revision9 == 0 ? "Iniciar" : revision9 == 1 ? "Guardar" : "Finalizado"}
                                                 </Badge>
                                             </Col>
                                             <Col>
                                                 <Badge
-                                                    bg="success"
+                                                    bg={revision10 == 0 ? "success" : revision10 == 1 ? "warning" : "secondary"}
                                                     className="boton"
+                                                    onClick={() => {
+                                                        setRevision10(revision10 + 1);
+                                                    }}
                                                 >
-                                                    Iniciar
+                                                    {revision10 == 0 ? "Iniciar" : revision10 == 1 ? "Guardar" : "Finalizado"}
                                                 </Badge>
                                             </Col>
                                         </Form.Group>
@@ -371,6 +440,7 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision1 != 1}
                                                 />
                                             </Col>
 
@@ -378,12 +448,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision2 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision3 != 1}
                                                 />
                                             </Col>
 
@@ -391,12 +463,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision4 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision5 != 1}
                                                 />
                                             </Col>
 
@@ -404,12 +478,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision6 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision7 != 1}
                                                 />
                                             </Col>
 
@@ -417,12 +493,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision8 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision9 != 1}
                                                 />
                                             </Col>
 
@@ -430,6 +508,7 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision10 != 1}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -446,6 +525,7 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision1 != 1}
                                                 />
                                             </Col>
 
@@ -453,12 +533,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision2 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision3 != 1}
                                                 />
                                             </Col>
 
@@ -466,12 +548,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision4 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision5 != 1}
                                                 />
                                             </Col>
 
@@ -479,12 +563,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision6 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision7 != 1}
                                                 />
                                             </Col>
 
@@ -492,12 +578,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision8 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision9 != 1}
                                                 />
                                             </Col>
 
@@ -505,6 +593,7 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision10 != 1}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -521,7 +610,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision1 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -529,7 +620,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision2 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -537,7 +630,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision3 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -545,7 +640,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision4 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -553,7 +650,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision5 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -561,7 +660,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision6 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -569,7 +670,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision7 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -577,7 +680,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision8 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -585,7 +690,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision9 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -593,7 +700,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision10 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -612,7 +721,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision1 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -620,7 +731,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision2 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -628,7 +741,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision3 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -636,7 +751,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision4 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -644,7 +761,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision5 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -652,7 +771,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision6 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -660,7 +781,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision7 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -668,7 +791,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision8 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -676,7 +801,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision9 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -684,7 +811,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision10 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -703,7 +832,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision1 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -711,7 +842,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision2 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -719,7 +852,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision3 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -727,7 +862,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision4 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -735,7 +872,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision5 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -743,7 +882,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision6 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -751,7 +892,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision7 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -759,7 +902,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision8 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -767,7 +912,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision9 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -775,7 +922,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision10 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -794,7 +943,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision1 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -802,7 +953,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision2 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -810,7 +963,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision3 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -818,7 +973,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision4 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -826,7 +983,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision5 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -834,7 +993,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision6 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -842,7 +1003,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision7 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -850,7 +1013,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision8 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -858,7 +1023,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision9 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -866,7 +1033,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision10 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -885,7 +1054,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision1 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -893,7 +1064,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision2 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -901,7 +1074,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision3 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -909,7 +1084,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision4 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -917,7 +1094,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision5 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -925,7 +1104,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision6 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -933,7 +1114,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision7 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -941,7 +1124,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision8 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -949,7 +1134,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision9 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -957,7 +1144,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision10 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -976,7 +1165,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision1 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -984,7 +1175,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision2 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -992,7 +1185,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision3 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1000,7 +1195,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision4 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1008,7 +1205,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision5 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1016,7 +1215,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision6 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1024,7 +1225,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision7 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1032,7 +1235,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision8 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1040,7 +1245,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision9 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1048,7 +1255,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision10 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1067,7 +1276,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision1 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1075,7 +1286,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision2 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1083,7 +1296,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision3 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1091,7 +1306,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision4 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1099,7 +1316,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision5 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1107,7 +1326,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision6 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1115,7 +1336,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision7 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1123,7 +1346,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision8 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1131,7 +1356,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision9 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1139,7 +1366,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision10 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1158,7 +1387,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision1 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1166,7 +1397,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision2 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1174,7 +1407,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision3 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1182,7 +1417,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision4 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1190,7 +1427,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision5 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1198,7 +1437,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision6 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1206,7 +1447,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision7 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1214,7 +1457,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision8 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1222,7 +1467,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision9 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1230,7 +1477,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision10 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1249,7 +1498,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision1 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1257,7 +1508,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision2 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1265,7 +1518,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision3 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1273,7 +1528,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision4 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1281,7 +1538,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision5 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1289,7 +1548,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision6 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1297,7 +1558,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision7 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1305,7 +1568,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision8 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1313,7 +1578,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision9 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1321,7 +1588,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision10 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1340,7 +1609,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision1 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1348,7 +1619,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision2 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1356,7 +1629,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision3 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1364,7 +1639,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision4 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1372,7 +1649,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision5 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1380,7 +1659,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision6 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1388,7 +1669,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision7 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1396,7 +1679,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision8 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1404,7 +1689,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision9 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1412,7 +1699,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision10 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1431,7 +1720,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision1 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1439,7 +1730,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision2 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1447,7 +1740,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision3 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1455,7 +1750,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision4 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1463,7 +1760,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision5 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1471,7 +1770,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision6 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1479,7 +1780,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision7 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1487,7 +1790,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision8 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1495,7 +1800,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision9 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1503,7 +1810,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision10 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1522,7 +1831,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision1 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1530,7 +1841,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision2 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1538,7 +1851,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision3 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1546,7 +1861,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision4 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1554,7 +1871,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision5 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1562,7 +1881,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision6 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1570,7 +1891,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision7 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1578,7 +1901,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision8 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1586,7 +1911,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision9 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1594,7 +1921,9 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="numeroMaquina"
-                                                ><option></option>
+                                                    disabled={revision10 != 1}
+                                                >
+                                                    <option></option>
                                                     <option value="ok">OK</option>
                                                     <option value="noOK">NO OK</option></Form.Control>
                                             </Col>
@@ -1613,6 +1942,7 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision1 != 1}
                                                 />
                                             </Col>
 
@@ -1620,12 +1950,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision2 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision3 != 1}
                                                 />
                                             </Col>
 
@@ -1633,12 +1965,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision4 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision5 != 1}
                                                 />
                                             </Col>
 
@@ -1646,12 +1980,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision6 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision7 != 1}
                                                 />
                                             </Col>
 
@@ -1659,12 +1995,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision8 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision9 != 1}
                                                 />
                                             </Col>
 
@@ -1672,6 +2010,7 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision10 != 1}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -1688,6 +2027,7 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision1 != 1}
                                                 />
                                             </Col>
 
@@ -1695,12 +2035,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision2 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision3 != 1}
                                                 />
                                             </Col>
 
@@ -1708,12 +2050,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision4 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision5 != 1}
                                                 />
                                             </Col>
 
@@ -1721,12 +2065,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision6 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision7 != 1}
                                                 />
                                             </Col>
 
@@ -1734,12 +2080,14 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision8 != 1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina"
+                                                    disabled={revision9 != 1}
                                                 />
                                             </Col>
 
@@ -1747,6 +2095,7 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="cantidadLote"
+                                                    disabled={revision10 != 1}
                                                 />
                                             </Col>
                                         </Form.Group>

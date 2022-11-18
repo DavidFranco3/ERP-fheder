@@ -53,6 +53,18 @@ export const ENDPOINTListarPedidoVentaPaginacion = "/ventas/listarPaginando";
 export const ENDPOINTObtenerNoPedidoVenta = "/ventas/obtenerNoVenta";
 export const ENDPOINTTotalPedidoVenta = "/ventas/total";
 
+// Inspeccion de pieza
+export const ENDPOINTRegistraInspeccionPieza = "/inspeccionPieza/registro";
+export const ENDPOINTListarInspeccionPieza = "/inspeccionPieza/listar";
+export const ENDPOINTObtenerInspeccionPieza = "/inspeccionPieza/obtener";
+export const ENDPOINTObtenerDatosInspeccionPieza = "/inspeccionPieza/obtenerDatosInspeccion";
+export const ENDPOINTEliminarInspeccionPieza = "/inspeccionPieza/eliminar";
+export const ENDPOINTActualizarInspeccionPieza = "/inspeccionPieza/actualizar";
+export const ENDPOINTActualizarEstadoInspeccionPieza = "/inspeccionPieza/actualizarEstado";
+export const ENDPOINTListarInspeccionPiezaPaginacion = "/inspeccionPieza/listarPaginando";
+export const ENDPOINTObtenerNoInspeccionPieza = "/inspeccionPieza/obtenerNoInspeccion";
+export const ENDPOINTTotalInspeccionPieza= "/inspeccionPieza/total";
+
 // Meses
 export const ENDPOINTRegistraMes = "/mes/registro";
 export const ENDPOINTListarMeses = "/mes/listar";
