@@ -99,7 +99,7 @@ export async function listarPedidosInspeccionPieza(pagina, limite) {
 }
 
 // Elimina pedido fisicamente de la bd
-export async function ENDPOINTEliminarInspeccionPieza(id) {
+export async function EliminaInspeccionPieza(id) {
     const config = {
         headers: {
             'Accept': 'application/json',
