@@ -49,7 +49,7 @@ function EliminaProveedores(props) {
             </Alert>
             
                 {/* ID proveedor, nombre/servicio */}
-                <Row className="mb-3">
+                <Row>
                     <Form.Group as={Col} controlId="formGridFolio">
                         <Form.Label>
                             Folio
@@ -73,8 +73,6 @@ function EliminaProveedores(props) {
                             disabled
                         />
                     </Form.Group>
-
-
                 </Row>
 
                 {/* Botones de acciones */}

@@ -7,7 +7,7 @@ import {Button, Form, Spinner, Alert, Row, Col} from "react-bootstrap";
 
 function EliminacionFisicaCompras(props) {
     const { data, setShowModal, history } = props;
-    const { id, folio } = data;
+    const { id, folio, fechaEntrega, autoriza, total } = data;
 
     //console.log(data)
     
@@ -52,6 +52,54 @@ function EliminacionFisicaCompras(props) {
                     Esta acción eliminara del sistema la compra.
                 </p>
             </Alert>
+
+            <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Folio
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={folio}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            fecha de entrega
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={fechaEntrega}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <br/>
+
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Autoriza
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={autoriza}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Total
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={total}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
             
                 <Form.Group as={Row} className="botones">
                         <Col>

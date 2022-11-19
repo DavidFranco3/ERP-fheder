@@ -219,14 +219,9 @@ function ListVentas(props) {
                         bg="danger"
                         className="eliminar"
                         onClick={() => {
-                            const datosPedido = {
-                                id: row.id,
-                                folio: row.folio
-                            }
 
                             eliminaPedidoVenta(
                                 <EliminacionFisicaVentas
-                                    datosPedido={datosPedido}
                                     datos={row}
                                     setShowModal={setShowModal}
                                     history={history}

@@ -179,7 +179,7 @@ function formatModelPedidosventa(data) {
         dataTemp.push({
             id: data._id,
             folio: data.folio,
-            fechaPedido: data.fechaElaboracion,
+            fechaElaboracion: data.fechaElaboracion,
             fechaEntrega: data.fechaEntrega,
             cliente: data.cliente,
             condicionesPago: data.condicionesPago,

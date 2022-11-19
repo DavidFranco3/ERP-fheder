@@ -1,26 +1,22 @@
 import { useState, useEffect } from 'react';
-import {eliminaUsuario} from "../../../api/usuarios";
-import {toast} from "react-toastify";
+import { eliminaUsuario } from "../../../api/usuarios";
+import { toast } from "react-toastify";
 import queryString from "query-string";
-import {Button, Col, Form, Row, Spinner, Alert} from "react-bootstrap";
-import {eliminaPedidoVenta} from "../../../api/pedidoVenta";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
+import { eliminaPedidoVenta } from "../../../api/pedidoVenta";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingEliminacion } from "../../Tracking/Gestion/GestionTracking";
 
 function EliminacionFisicaVentas(props) {
-    const { datosPedido, datos, setShowModal, history } = props;
-    const { id, folio, fechaElaboracion,  } = datosPedido;
+    const { datos, setShowModal, history } = props;
+    const { id, folio, condicionesPago, numeroPedido, fechaElaboracion, } = datos;
 
     //console.log(datosPedido)
-    
+
     // Para cancelar la actualizacion
     const cancelarEliminacion = () => {
         setShowModal(false)
     }
-
-
-    // Para almacenar datos del formulario
-    const [formData, setFormData] = useState(initialFormData(datosPedido));
 
     // Para determinar el uso de la animacion
     const [loading, setLoading] = useState(false);
@@ -49,55 +45,90 @@ function EliminacionFisicaVentas(props) {
         }
     }
 
-    const onChange = e => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
 
     return (
         <>
-            <Form onSubmit={onSubmit} onChange={onChange}>
-            
-            <Alert variant="danger">
-                <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
-                <p className="mensaje">
-                    Esta acción eliminara del sistema la venta.
-                </p>
-            </Alert>
-            
-                <Form.Group as={Row} className="botones">
-                        <Col>
-                            <Button
-                                type="submit"
-                                variant="success"
-                                className="registrar"
-                            >
-                                {!loading ? "Eliminar" : <Spinner animation="border" />}
-                            </Button>
-                        </Col>
-                        <Col>
-                            <Button
-                                variant="danger"
-                                className="cancelar"
-                                onClick={() => {
-                                    cancelarEliminacion()
-                                }}
-                            >
-                                Cancelar
-                            </Button>
-                        </Col>
+            <Form onSubmit={onSubmit}>
+
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción eliminara del sistema la venta.
+                    </p>
+                </Alert>
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Folio
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={folio}
+                            disabled
+                        />
                     </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            condiciones de pago
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={condicionesPago}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <br/>
+
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Numero de pedido
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={numeroPedido}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Fecha de elaboracion
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={fechaElaboracion}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <Form.Group as={Row} className="botones">
+                    <Col>
+                        <Button
+                            type="submit"
+                            variant="success"
+                            className="registrar"
+                        >
+                            {!loading ? "Eliminar" : <Spinner animation="border" />}
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button
+                            variant="danger"
+                            className="cancelar"
+                            onClick={() => {
+                                cancelarEliminacion()
+                            }}
+                        >
+                            Cancelar
+                        </Button>
+                    </Col>
+                </Form.Group>
             </Form>
         </>
     );
-}
-
-function initialFormData(data) {
-    const { nombre, apellidos  } = data;
-
-    return {
-        nombre: nombre,
-        apellidos: apellidos
-    }
 }
 
 export default EliminacionFisicaVentas;

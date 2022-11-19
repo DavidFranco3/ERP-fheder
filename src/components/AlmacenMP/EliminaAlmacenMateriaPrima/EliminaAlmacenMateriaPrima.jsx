@@ -5,11 +5,12 @@ import {eliminaAlmacenMP} from "../../../api/almacenMP";
 import {toast} from "react-toastify";
 import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
+import { useRouteMatch } from 'react-router-dom';
 
 function EliminaAlmacenMateriaPrima(props) {
     const { datos, setShowModal, location, history } = props;
     // console.log(datos)
-    const { id, folioAlmacen, folioMP, nombre, descripcion } = datos;
+    const { id, folioAlmacen, nombreMP, um, cantidadExistencia  } = datos;
 
     // Para controlar la animacion de carga
     const [loading, setLoading] = useState(false);
@@ -27,7 +28,7 @@ function EliminaAlmacenMateriaPrima(props) {
                 const { data } = response;
                 toast.success(data.mensaje)
                 setLoading(false)
-                LogsInformativos(`Se ha eliminado del almacen de materia prima el articulo con folio ${folioMP}`, datos)
+                LogsInformativos(`Se ha eliminado del almacen de materia prima el articulo con folio ${folioAlmacen}`, datos)
                 history.push({
                     search: queryString.stringify(""),
                 });
@@ -51,6 +52,54 @@ function EliminaAlmacenMateriaPrima(props) {
 
             <Form onSubmit={onSubmit}>
                 {/* ID proveedor, orden de venta */}
+
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Folio
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={folioAlmacen}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Materia prima
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={nombreMP}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <br/>
+
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            UM
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={um}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Existencia
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={cantidadExistencia}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
                 
                 {/* Botones de acciones */}
                 <Form.Group as={Row} className="botones">
@@ -67,7 +116,7 @@ function EliminaAlmacenMateriaPrima(props) {
                         <Col>
                             <Button
                                 variant="danger"
-                                className="registrar"
+                                className="cancelar"
                                 onClick={() => {
                                     cierraModal()
                                 }}
