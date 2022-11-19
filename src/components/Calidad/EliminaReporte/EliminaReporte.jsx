@@ -7,7 +7,7 @@ import {Button, Form, Spinner, Alert, Row, Col} from "react-bootstrap";
 
 function EliminaReporte(props) {
     const { data, setShowModal, history } = props;
-    const { id, folio } = data;
+    const { id, folio, lote, propiedad, tipoMaterial } = data;
 
     //console.log(data)
     
@@ -52,6 +52,54 @@ function EliminaReporte(props) {
                     Esta acción eliminara del sistema la compra.
                 </p>
             </Alert>
+
+            <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Folio
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={folio}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Lote
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={lote}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <br />
+
+                <Row>
+                <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Propiedad
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={propiedad}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Tipo material
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={tipoMaterial}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
             
                 <Form.Group as={Row} className="botones">
                         <Col>

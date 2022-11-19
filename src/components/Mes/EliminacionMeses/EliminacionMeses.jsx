@@ -7,7 +7,7 @@ import { Button, Form, Spinner, Alert, Row, Col } from "react-bootstrap";
 
 function EliminacionMeses(props) {
     const { data, setShowModal, history } = props;
-    const { id, folio } = data;
+    const { id, folio, mes, dias, noMaquinas} = data;
 
     //console.log(data)
 
@@ -52,6 +52,54 @@ function EliminacionMeses(props) {
                         Esta acción eliminara el mes.
                     </p>
                 </Alert>
+
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Folio
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={folio}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Mes
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={mes}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <br />
+
+                <Row>
+                <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Dias del mes
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={dias}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Numero de maquinas
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={noMaquinas}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
 
                 <Form.Group as={Row} className="botones">
                     <Col>

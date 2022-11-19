@@ -8,7 +8,7 @@ import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function EliminacionFisicaProduccion(props) {
     const { datos, setShowModal, history } = props;
-    const { id, folio } = datos;
+    const { id, folio, fecha, supervisor, asistencias } = datos;
 
     //console.log(datosPedido)
 
@@ -60,6 +60,54 @@ function EliminacionFisicaProduccion(props) {
                         Esta acción eliminara del sistema la produccion.
                     </p>
                 </Alert>
+
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Folio
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={folio}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Fecha
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={fecha}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <br />
+
+                <Row>
+                <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Supervisor
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={supervisor}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Asistencias
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={asistencias}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
 
                 <Form.Group as={Row} className="botones">
                     <Col>

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
-import {toast} from "react-toastify";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { toast } from "react-toastify";
 import queryString from "query-string";
-import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
-import {cambiaEstadoProductosMatriz} from "../../../api/matrizProductos";
+import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
+import { cambiaEstadoProductosMatriz } from "../../../api/matrizProductos";
 
 function EstadoMatrizProductos(props) {
     const { dataProducto, location, history, setShowModal } = props;
@@ -12,23 +12,28 @@ function EstadoMatrizProductos(props) {
     // Para determinar el uso de la animacion
     const [loading, setLoading] = useState(false);
 
+    // Para cancelar la actualizacion
+    const cancelarEliminacion = () => {
+        setShowModal(false)
+    }
+
     const onSubmit = e => {
         e.preventDefault()
         setLoading(true)
 
         try {
             const dataTemp = {
-                estado: estado === "true"  ? "false" : "true"
+                estado: estado === "true" ? "false" : "true"
             }
             cambiaEstadoProductosMatriz(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if(dataTemp.estado === "true") {
-                    LogsInformativos("El producto de la matriz con no. interno "+ noInterno +  " cambio su estado a activo", dataProducto)
+                if (dataTemp.estado === "true") {
+                    LogsInformativos("El producto de la matriz con no. interno " + noInterno + " cambio su estado a activo", dataProducto)
                     toast.success("Producto cambio a estado activo");
                 }
-                if(dataTemp.estado === "false") {
-                    LogsInformativos("El producto de la matriz con no. interno "+ noInterno +  " cambio su estado a obsoleto", dataProducto)
+                if (dataTemp.estado === "false") {
+                    LogsInformativos("El producto de la matriz con no. interno " + noInterno + " cambio su estado a obsoleto", dataProducto)
                     toast.success("Producto cambio a estado obsoleto");
                 }
                 setLoading(false);
@@ -47,21 +52,70 @@ function EstadoMatrizProductos(props) {
     return (
         <>
             <Form onSubmit={onSubmit}>
-                <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formGridNombre">
-                        <Form.Label>Desea cambiar el estado del producto</Form.Label>
-                        <Form.Control type="text"
-                                      name="nombre"
-                                      disabled={true}
-                                      defaultValue={"#" + noInterno + " " + descripcion}
+                {estado == "true" ? (
+                    <>
+                        <Alert variant="danger">
+                            <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                            <p className="mensaje">
+                                Esta acción deshabilitara del sistema el producto.
+                            </p>
+                        </Alert>
+                    </>
+                ) : (
+                    <>
+                        <Alert variant="success">
+                            <Alert.Heading>Atención! Acción constructiva!</Alert.Heading>
+                            <p className="mensaje">
+                                Esta acción activara en el sistema el producto.
+                            </p>
+                        </Alert>
+                    </>
+                )
+                }
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Numero interno
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={noInterno}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Descripcion
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={descripcion}
+                            disabled
                         />
                     </Form.Group>
                 </Row>
 
-                <Form.Group className="btnEliminar">
-                    <Button variant="primary" type="submit">
-                        {!loading ? (estado === "true" ? "¿Desea cambiar a obsoleto el producto?" : "¿Desea cambiar a activo el producto?") : <Spinner animation="border" />}
-                    </Button>
+                <Form.Group as={Row} className="botones">
+                    <Col>
+                        <Button
+                            type="submit"
+                            variant="success"
+                            className="registrar"
+                        >
+                            {!loading ? estado == "true" ? "Desactivar" : "Activar" : <Spinner animation="border" />}
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button
+                            variant="danger"
+                            className="cancelar"
+                            onClick={() => {
+                                cancelarEliminacion()
+                            }}
+                        >
+                            Cancelar
+                        </Button>
+                    </Col>
                 </Form.Group>
             </Form>
         </>

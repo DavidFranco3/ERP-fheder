@@ -7,7 +7,7 @@ import {Button, Form, Spinner, Alert, Row, Col} from "react-bootstrap";
 
 function EliminacionEtiquetasPrimeraPieza(props) {
     const { data, setShowModal, history } = props;
-    const { id } = data;
+    const { id, folio, noMaquina, turno, inspector } = data;
 
     //console.log(data)
     
@@ -52,6 +52,54 @@ function EliminacionEtiquetasPrimeraPieza(props) {
                     Esta acción eliminara la etiqueta de primeraPieza.
                 </p>
             </Alert>
+
+            <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Folio
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={folio}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Numero de maquina
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={noMaquina}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <br />
+
+                <Row>
+                <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Turno
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={turno}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Inspector
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={inspector}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
             
                 <Form.Group as={Row} className="botones">
                         <Col>

@@ -73,11 +73,7 @@ function ListDepartamentos(props) {
                         bg="success"
                         className="editar"
                         onClick={() => {
-                            const dataDepto = {
-                                id: row.id,
-                                nombre: row.nombre
-                            }
-                            modificaDepartamentos(<ModificacionDepartamentos dataDepto={dataDepto} setShowModal={setShowModal} history={history} />)
+                            modificaDepartamentos(<ModificacionDepartamentos dataDepto={row} setShowModal={setShowModal} history={history} />)
                         }}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
@@ -86,11 +82,7 @@ function ListDepartamentos(props) {
                         bg="danger"
                         className="eliminar"
                         onClick={() => {
-                            const dataDepto = {
-                                id: row.id,
-                                nombre: row.nombre
-                            }
-                            eliminaDepartamentos(<EliminacionFisicaDepartamentos dataDepto={dataDepto} setShowModal={setShowModal} history={history} />)
+                            eliminaDepartamentos(<EliminacionFisicaDepartamentos dataDepto={row} setShowModal={setShowModal} history={history} />)
                         }}
                     >
                         <FontAwesomeIcon icon={faTrashCan} className="text-lg" />

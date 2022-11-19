@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 
 import "./RegistroDepartamentos.scss";
-import {size, values} from "lodash";
-import {toast} from "react-toastify";
-import {registraDepartamento} from "../../../api/departamentos";
+import { size, values } from "lodash";
+import { toast } from "react-toastify";
+import { registraDepartamento } from "../../../api/departamentos";
 import queryString from "query-string";
 
 function RegistroDepartamentos(props) {
@@ -18,17 +18,19 @@ function RegistroDepartamentos(props) {
     // Para determinar el uso de la animacion
     const [loading, setLoading] = useState(false);
 
+    // Para cancelar la actualizacion
+    const cancelarEliminacion = () => {
+        setShowModal(false)
+    }
+
+    // Para cancelar la actualizacion
+    const cancelarRegistro = () => {
+        setShowModal(false)
+    }
+
     const onSubmit = e => {
         e.preventDefault();
-
-        //console.log(formData);
-        let validCount = 0;
-        values(formData).some(value => {
-            value && validCount++;
-            return null;
-        });
-
-        if(size(formData) !== validCount) {
+        if (!formData.nombre) {
             toast.warning("Completa el formulario")
         } else {
             setLoading(true);
@@ -61,16 +63,33 @@ function RegistroDepartamentos(props) {
                     <Form.Group as={Col} controlId="formGridNombre">
                         <Form.Label>Nombre del departamento</Form.Label>
                         <Form.Control type="text"
-                                      name="nombre"
-                                      defaultValue={formData.nombre}
+                            name="nombre"
+                            defaultValue={formData.nombre}
                         />
                     </Form.Group>
                 </Row>
 
-                <Form.Group className="btnRegistro">
-                    <Button variant="primary" type="submit">
-                        {!loading ? "Registro" : <Spinner animation="border" />}
-                    </Button>
+                <Form.Group as={Row} className="botones">
+                    <Col>
+                        <Button
+                            type="submit"
+                            variant="success"
+                            className="registrar"
+                        >
+                            {!loading ? "Registrar" : <Spinner animation="border" />}
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button
+                            variant="danger"
+                            className="cancelar"
+                            onClick={() => {
+                                cancelarRegistro()
+                            }}
+                        >
+                            Cancelar
+                        </Button>
+                    </Col>
                 </Form.Group>
             </Form>
         </>

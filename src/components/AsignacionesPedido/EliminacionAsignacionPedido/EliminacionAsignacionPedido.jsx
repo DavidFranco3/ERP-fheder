@@ -7,7 +7,7 @@ import {Button, Form, Spinner, Alert, Row, Col} from "react-bootstrap";
 
 function EliminacionAsignacionPedido(props) {
     const { data, setShowModal, history } = props;
-    const { id, folio } = data;
+    const { id, folio, fechaPedido, fechaEntrega, um } = data;
 
     //console.log(data)
     
@@ -52,6 +52,54 @@ function EliminacionAsignacionPedido(props) {
                     Esta acción eliminara la asignacion del pedido.
                 </p>
             </Alert>
+
+            <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Folio
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={folio}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            UM
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={um}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <br />
+
+                <Row>
+                <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Fecha de pedido
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={fechaPedido}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Fecha de entrega
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={fechaEntrega}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
             
                 <Form.Group as={Row} className="botones">
                         <Col>

@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
-import {deshabilitaUsuario} from "../../../api/usuarios";
-import {toast} from "react-toastify";
+import { deshabilitaUsuario } from "../../../api/usuarios";
+import { toast } from "react-toastify";
 import queryString from "query-string";
-import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
-import {deshabilitaCliente} from "../../../api/clientes";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
+import { deshabilitaCliente } from "../../../api/clientes";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function EliminacionLogicaClientes(props) {
     const { history, dataCliente, setShowModal } = props;
     const { id, nombre, apellidos, estadoCliente } = dataCliente;
 
     //console.log(dataUsuario)
-    
+
     // Para cancelar el registro
     const cancelar = () => {
         setShowModal(false)
@@ -37,11 +37,11 @@ function EliminacionLogicaClientes(props) {
             deshabilitaCliente(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if(dataTemp.estadoCliente === "true") {
+                if (dataTemp.estadoCliente === "true") {
                     LogsInformativos("El cliente " + formData.nombre + " " + formData.apellidos + " se habilito", dataCliente)
                     toast.success("Cliente habilitado");
                 }
-                if(dataTemp.estadoCliente === "false") {
+                if (dataTemp.estadoCliente === "false") {
                     LogsInformativos("El cliente " + formData.nombre + " " + formData.apellidos + " se inhabilito", dataCliente)
                     toast.success("Cliente deshabilitado");
                 }
@@ -63,34 +63,95 @@ function EliminacionLogicaClientes(props) {
     return (
         <>
             <Form onSubmit={onSubmit} onChange={onChange}>
-                <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formGridNombre">
-                        <Form.Label>Nombre</Form.Label>
-                        <Form.Control type="text"
-                                      name="nombre"
-                                      disabled={true}
-                                      defaultValue={formData.nombre + " " + formData.apellidos}
+                {estadoCliente == "true" ?
+                    (
+                        <>
+                            <Alert variant="danger">
+                                <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                                <p className="mensaje">
+                                    Esta acción deshabilitara en el sistema al cliente.
+                                </p>
+                            </Alert>
+                        </>
+                    ) : (
+                        <>
+                            <Alert variant="success">
+                                <Alert.Heading>Atención! Acción constructiva!</Alert.Heading>
+                                <p className="mensaje">
+                                    Esta acción habilitara en el sistema al cliente.
+                                </p>
+                            </Alert>
+                        </>)
+                }
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Nombre
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={formData.nombre + " " + formData.apellidos}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Telefono celular
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={formData.telefonoCelular}
+                            disabled
                         />
                     </Form.Group>
                 </Row>
 
-                <Form.Group as={Row} className="btnEliminar">
-                <Col>
-                    <Button variant="success" type="submit">
-                        {!loading ? (estadoCliente === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
-                    </Button>
-                </Col>
-                <Col>
-                            <Button
-                                variant="danger"
-                                className="cancelar"
-                                onClick={() => {
-                                    cancelar()
-                                }}
-                            >
-                                Cancelar
-                            </Button>
-                        </Col>
+                <br />
+
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            RFC
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={formData.rfc}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Correo
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={formData.correo}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <Form.Group as={Row} className="botones">
+                    <Col>
+                        <Button
+                            variant="success"
+                            type="submit"
+                            className='registrar'
+                        >
+                            {!loading ? (estadoCliente === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button
+                            variant="danger"
+                            className="cancelar"
+                            onClick={() => {
+                                cancelar()
+                            }}
+                        >
+                            Cancelar
+                        </Button>
+                    </Col>
                 </Form.Group>
             </Form>
         </>
@@ -98,11 +159,14 @@ function EliminacionLogicaClientes(props) {
 }
 
 function initialFormData(data) {
-    const { nombre, apellidos  } = data;
+    const { nombre, apellidos, telefonoCelular, rfc, correo } = data;
 
     return {
         nombre: nombre,
-        apellidos: apellidos
+        apellidos: apellidos,
+        telefonoCelular: telefonoCelular,
+        rfc: rfc,
+        correo: correo
     }
 }
 

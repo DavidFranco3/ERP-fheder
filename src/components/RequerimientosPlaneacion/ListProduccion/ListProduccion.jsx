@@ -122,14 +122,8 @@ function ListProduccion(props) {
                         bg="danger"
                         className="eliminar"
                         onClick={() => {
-                            const datosPedido = {
-                                id: row.id,
-                                folio: row.folio
-                            }
-
                             eliminaPlaneacion(
                                 <EliminacionFisicaPlaneacion
-                                    datosPedido={datosPedido}
                                     datos={row}
                                     setShowModal={setShowModal}
                                     history={history}

@@ -7,8 +7,8 @@ import {eliminaRequerimiento} from "../../../api/requerimientosPlaneacion";
 import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
 
 function EliminacionFisicaProduccion(props) {
-    const { datosPedido, datos, setShowModal, history } = props;
-    const { id, folio, fechaElaboracion,  } = datosPedido;
+    const { datos, setShowModal, history } = props;
+    const { id, folio, requerimiento,  } = datos
 
     //console.log(datosPedido)
     
@@ -16,10 +16,6 @@ function EliminacionFisicaProduccion(props) {
     const cancelarEliminacion = () => {
         setShowModal(false)
     }
-
-
-    // Para almacenar datos del formulario
-    const [formData, setFormData] = useState(initialFormData(datosPedido));
 
     // Para determinar el uso de la animacion
     const [loading, setLoading] = useState(false);
@@ -47,13 +43,9 @@ function EliminacionFisicaProduccion(props) {
         }
     }
 
-    const onChange = e => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
     return (
         <>
-            <Form onSubmit={onSubmit} onChange={onChange}>
+            <Form onSubmit={onSubmit}>
             
             <Alert variant="danger">
                 <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
@@ -61,6 +53,39 @@ function EliminacionFisicaProduccion(props) {
                     Esta acción eliminara del sistema el requerimiento.
                 </p>
             </Alert>
+
+            <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                           Folio
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={folio}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Semana
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={requerimiento.semana}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Total a producir
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={requerimiento.totalProducir}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
             
                 <Form.Group as={Row} className="botones">
                         <Col>

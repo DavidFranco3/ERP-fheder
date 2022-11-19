@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react';
-import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
-import {toast} from "react-toastify";
+import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { toast } from "react-toastify";
 import queryString from "query-string";
-import {eliminaProductosMatriz} from "../../../api/matrizProductos";
+import { eliminaProductosMatriz } from "../../../api/matrizProductos";
 
 function EliminaMatrizProductos(props) {
     const { dataProducto, location, setShowModal, history } = props;
     const { id, noInterno, descripcion } = dataProducto;
 
     const [loading, setLoading] = useState(false);
+
+    // Para cancelar la actualizacion
+    const cancelarEliminacion = () => {
+        setShowModal(false)
+    }
 
     const onSubmit = e => {
         e.preventDefault()
@@ -36,21 +41,56 @@ function EliminaMatrizProductos(props) {
     return (
         <>
             <Form onSubmit={onSubmit}>
-                <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formGridNombre">
-                        <Form.Label>Datos del producto</Form.Label>
-                        <Form.Control type="text"
-                                      name="nombre"
-                                      disabled={true}
-                                      defaultValue={"# " + noInterno + " , " + descripcion}
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción eliminara del sistema el producto.
+                    </p>
+                </Alert>
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Numero interno
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={noInterno}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Descripcion
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={descripcion}
+                            disabled
                         />
                     </Form.Group>
                 </Row>
 
-                <Form.Group className="btnEliminar">
-                    <Button variant="primary" type="submit">
-                        {!loading ? "¿Desea eliminar el producto?" : <Spinner animation="border" />}
-                    </Button>
+                <Form.Group as={Row} className="botones">
+                    <Col>
+                        <Button
+                            type="submit"
+                            variant="success"
+                            className="registrar"
+                        >
+                            {!loading ? "Eliminar" : <Spinner animation="border" />}
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button
+                            variant="danger"
+                            className="cancelar"
+                            onClick={() => {
+                                cancelarEliminacion()
+                            }}
+                        >
+                            Cancelar
+                        </Button>
+                    </Col>
                 </Form.Group>
             </Form>
         </>

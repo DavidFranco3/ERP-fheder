@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { eliminaMateriaPrima } from "../../../api/materiaPrima";
-import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
+import {Button, Col, Form, Row, Spinner, Alert} from "react-bootstrap";
 import {toast} from "react-toastify";
 import queryString from "query-string";
 import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
@@ -11,6 +11,11 @@ function EliminaMateriasPrimas(props) {
 
     // Para controlar la animacion de carga
     const [loading, setLoading] = useState(false);
+
+    // Para cancelar la actualizacion
+    const cancelarEliminacion = () => {
+        setShowModal(false)
+    }
 
     const onSubmit = e => {
         e.preventDefault()
@@ -38,24 +43,28 @@ function EliminaMateriasPrimas(props) {
         <>
             <div className="formularioDatos">
                 <Form onSubmit={onSubmit}>
-                    <Form.Group as={Row} controlId="formHorizontalDescripcion">
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción eliminara del sistema la materia prima.
+                    </p>
+                </Alert>
+                    <Row>
+                    <Form.Group as={Col} controlId="formHorizontalDescripcion">
                         <Form.Label>
                             Folio
                         </Form.Label>
-                        <Col>
                             <Form.Control
                                 type="text"
                                 defaultValue={folio}
                                 disabled
                             />
-                        </Col>
                     </Form.Group>
 
-                    <Form.Group as={Row} controlId="formHorizontalDescripcion">
+                    <Form.Group as={Col} controlId="formHorizontalDescripcion">
                         <Form.Label>
                             Descripción
                         </Form.Label>
-                        <Col>
                             <Form.Control
                                 type="text"
                                 placeholder="Escribe la descripcion"
@@ -63,18 +72,31 @@ function EliminaMateriasPrimas(props) {
                                 defaultValue={descripcion}
                                 disabled
                             />
-                        </Col>
                     </Form.Group>
+                    </Row>
 
                     <Form.Group as={Row} className="botones">
+                    <Col>
                         <Button
                             type="submit"
                             variant="success"
                             className="registrar"
                         >
-                            {!loading ? "¿Desea eliminar el material?" : <Spinner animation="border" />}
+                            {!loading ? "Eliminar" : <Spinner animation="border" />}
                         </Button>
-                    </Form.Group>
+                    </Col>
+                    <Col>
+                        <Button
+                            variant="danger"
+                            className="cancelar"
+                            onClick={() => {
+                                cancelarEliminacion()
+                            }}
+                        >
+                            Cancelar
+                        </Button>
+                    </Col>
+                </Form.Group>
                 </Form>
             </div>
         </>

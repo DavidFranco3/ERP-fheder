@@ -1,17 +1,17 @@
-import {useState, useEffect, useMemo} from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import moment from "moment";
 import 'moment/locale/es';
 import { useHistory } from "react-router-dom";
-import {map} from "lodash";
+import { map } from "lodash";
 import { Badge, Button, Container } from "react-bootstrap";
 import EliminacionLogicaClientes from "../EliminacionLogica";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaClientes from "../EliminacionFisica";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
-import DataTable  from 'react-data-table-component';
-import {estilos} from "../../../utils/tableStyled";
+import DataTable from 'react-data-table-component';
+import { estilos } from "../../../utils/tableStyled";
 
 function ListClientes(props) {
     const { listClientes, history, location, setRefreshCheckLogin, rowsPerPage, setRowsPerPage, page, setPage, noTotalClientes } = props;
@@ -44,7 +44,7 @@ function ListClientes(props) {
         setContentModal(content);
         setShowModal(true);
     }
-    
+
     //Para la eliminacion logica de clientes
     const habilitaClientes = (content) => {
         setTitulosModal("Habilitando cliente");
@@ -92,13 +92,13 @@ function ListClientes(props) {
                         <Badge
                             bg="success" className="editar"
                             onClick={() => {
-                                const dataCliente = {
-                                    id: row.id,
-                                    nombre: row.nombre,
-                                    apellidos: row.apellidos,
-                                    estadoCliente: row.estadoCliente
-                                }
-                                eliminaLogicaClientes(<EliminacionLogicaClientes dataCliente={dataCliente} setShowModal={setShowModal} history={history} />)
+                                eliminaLogicaClientes(
+                                    <EliminacionLogicaClientes
+                                        dataCliente={row}
+                                        setShowModal={setShowModal}
+                                        history={history}
+                                    />
+                                )
                             }}
                         >
                             Activo
@@ -112,13 +112,13 @@ function ListClientes(props) {
                             bg="danger"
                             className="eliminar"
                             onClick={() => {
-                                const dataCliente = {
-                                    id: row.id,
-                                    nombre: row.nombre,
-                                    apellidos: row.apellidos,
-                                    estadoCliente: row.estadoCliente
-                                }
-                                habilitaClientes(<EliminacionLogicaClientes dataCliente={dataCliente} setShowModal={setShowModal} history={history} />)
+                                habilitaClientes(
+                                    <EliminacionLogicaClientes
+                                        dataCliente={row}
+                                        setShowModal={setShowModal}
+                                        history={history}
+                                    />
+                                )
                             }}
                         >
                             Inactivo
@@ -153,12 +153,12 @@ function ListClientes(props) {
                         bg="danger"
                         className="eliminar"
                         onClick={() => {
-                            const dataCliente = {
-                                id: row.id,
-                                nombre: row.nombre,
-                                apellidos: row.apellidos
-                            }
-                            eliminaClientes(<EliminacionFisicaClientes dataCliente={dataCliente} setShowModal={setShowModal} history={history} />)
+                            eliminaClientes(<EliminacionFisicaClientes
+                                dataCliente={row}
+                                setShowModal={setShowModal}
+                                history={history}
+                            />
+                            )
                         }}
                     >
                         <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
@@ -230,7 +230,7 @@ function ListClientes(props) {
 
 
     // Defino barra de busqueda
-    const ClearButton = styled(Button) ` 
+    const ClearButton = styled(Button)` 
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
         border-top-right-radius: 5px;
@@ -243,7 +243,7 @@ function ListClientes(props) {
         justify-content: center;
     `;
 
-    const TextField = styled.input ` 
+    const TextField = styled.input` 
         height: 32px;
         border-radius: 3px;
         border-top-left-radius: 5px;
@@ -262,7 +262,7 @@ function ListClientes(props) {
         item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase())
     );
 
-    const  subHeaderComponentMemo = useMemo(() => {
+    const subHeaderComponentMemo = useMemo(() => {
         const handleClear = () => {
             if (filterText) {
                 setResetPaginationToogle(!resetPaginationToogle);
@@ -286,7 +286,7 @@ function ListClientes(props) {
             </>
         );
     }, [filterText, resetPaginationToogle]);
-    
+
     const handleChangePage = (page) => {
         // console.log("Nueva pagina "+ newPage)
         setPage(page);
@@ -302,8 +302,8 @@ function ListClientes(props) {
     return (
         <>
             <Container fluid>
-            <DataTable
-                columns={columns}
+                <DataTable
+                    columns={columns}
                     data={filteredItems}
                     actions={descargaCSV}
                     subHeader
@@ -318,7 +318,7 @@ function ListClientes(props) {
                     paginationTotalRows={noTotalClientes}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                     onChangePage={handleChangePage}
-            />
+                />
             </Container>
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>

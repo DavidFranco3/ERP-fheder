@@ -1,22 +1,22 @@
-import {useState, useEffect, useMemo} from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 import 'moment/locale/es';
 
 import "./ListUsuarios.scss"
-import {Badge, Button, Container, Navbar, Table} from "react-bootstrap";
-import {map} from "lodash";
+import { Badge, Button, Container, Navbar, Table } from "react-bootstrap";
+import { map } from "lodash";
 import EliminacionLogicaUsuarios from "../EliminacionLogica";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaUsuarios from "../EliminacionFisica";
 
 import DataTable, { ExpanderComponentProps } from 'react-data-table-component';
 import styled from 'styled-components';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import TableRow from "@mui/material/TableRow";
-import {estilos} from "../../../utils/tableStyled";
-import {exportCSVFile} from "../../../utils/exportCSV";
+import { estilos } from "../../../utils/tableStyled";
+import { exportCSVFile } from "../../../utils/exportCSV";
 
 function ListUsuarios(props) {
     const { listUsuarios, history, location, setRefreshCheckLogin, rowsPerPage, setRowsPerPage, page, setPage, noTotalUsuarios } = props;
@@ -45,7 +45,7 @@ function ListUsuarios(props) {
         setContentModal(content);
         setShowModal(true);
     }
-    
+
     //Para la eliminacion logica de usuarios
     const habilitaUsuarios = (content) => {
         setTitulosModal("Habilitando usuario");
@@ -130,13 +130,12 @@ function ListUsuarios(props) {
                                 bg="success"
                                 className="editar"
                                 onClick={() => {
-                                    const dataUsuario = {
-                                        id: row.id,
-                                        nombre: row.nombre,
-                                        apellidos: row.apellidos,
-                                        estadoUsuario: row.estadoUsuario
-                                    }
-                                    eliminaLogicaUsuarios(<EliminacionLogicaUsuarios dataUsuario={dataUsuario} setShowModal={setShowModal} history={history} />)
+                                    eliminaLogicaUsuarios(
+                                        <EliminacionLogicaUsuarios
+                                            dataUsuario={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
                                 }}
                             >
                                 Activo
@@ -150,13 +149,13 @@ function ListUsuarios(props) {
                                 bg="danger"
                                 className="eliminar"
                                 onClick={() => {
-                                    const dataUsuario = {
-                                        id: row.id,
-                                        nombre: row.nombre,
-                                        apellidos: row.apellidos,
-                                        estadoUsuario: row.estadoUsuario
-                                    }
-                                    habilitaUsuarios(<EliminacionLogicaUsuarios dataUsuario={dataUsuario} setShowModal={setShowModal} history={history} />)
+                                    habilitaUsuarios(
+                                        <EliminacionLogicaUsuarios
+                                            dataUsuario={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
                                 }}
                             >
                                 Inactivo
@@ -183,13 +182,11 @@ function ListUsuarios(props) {
                         bg="danger"
                         className="eliminar"
                         onClick={() => {
-                            const dataUsuario = {
-                                id: row.id,
-                                nombre: row.nombre,
-                                apellidos: row.apellidos,
-                                estadoUsuario: row.estadoUsuario
-                            }
-                            eliminaUsuarios(<EliminacionFisicaUsuarios dataUsuario={dataUsuario} setShowModal={setShowModal} history={history} />)
+                            eliminaUsuarios(
+                                <EliminacionFisicaUsuarios dataUsuario={row}
+                                    setShowModal={setShowModal}
+                                    history={history}
+                                />)
                         }}
                     >
                         <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
@@ -220,34 +217,34 @@ function ListUsuarios(props) {
     const Export = ({ onExport }) => (
         <>
             <Button onClick={
-            e => onExport(e.target.value)
+                e => onExport(e.target.value)
             }>Descargar CSV</Button>
         </>
     );
-    
+
     const headers = {
-            id: "ID",
-            nombre: "Nombre",
-            apellidos: "Apellidos",
-            curp: "CURP",
-            nss: "NSS",
-            rfc: "RFC",
-            telefonoCelular: "Telefono celular",
-            telefonoFijo: "Telefono fijo",
-            calle: "Calle",
-            numeroExterior: "Numero exterior",
-            numeroInterior: "Numero interior",
-            colonia: "Colonia",
-            municipio: "Municipio",
-            estado: "Estado",
-            pais: "Pais",
-            departamento: "Departamento",
-            correo: "Correo",
-            password: "Contraseña",
-            foto: "foto",
-            estadoUsuario: "Estado Usuario",
-            fechaCreacion: "Fecha de registro",
-            fechaActualizacion: "Fecha actualizcion"
+        id: "ID",
+        nombre: "Nombre",
+        apellidos: "Apellidos",
+        curp: "CURP",
+        nss: "NSS",
+        rfc: "RFC",
+        telefonoCelular: "Telefono celular",
+        telefonoFijo: "Telefono fijo",
+        calle: "Calle",
+        numeroExterior: "Numero exterior",
+        numeroInterior: "Numero interior",
+        colonia: "Colonia",
+        municipio: "Municipio",
+        estado: "Estado",
+        pais: "Pais",
+        departamento: "Departamento",
+        correo: "Correo",
+        password: "Contraseña",
+        foto: "foto",
+        estadoUsuario: "Estado Usuario",
+        fechaCreacion: "Fecha de registro",
+        fechaActualizacion: "Fecha actualizcion"
     };
 
     const descargaCSV = useMemo(() => <Export onExport={() => exportCSVFile(headers, listUsuarios, "USUARIOS")} />, []);
@@ -258,7 +255,7 @@ function ListUsuarios(props) {
 
 
     // Defino barra de busqueda
-    const ClearButton = styled(Button) ` 
+    const ClearButton = styled(Button)` 
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
         border-top-right-radius: 5px;
@@ -271,7 +268,7 @@ function ListUsuarios(props) {
         justify-content: center;
     `;
 
-    const TextField = styled.input ` 
+    const TextField = styled.input` 
         height: 32px;
         border-radius: 3px;
         border-top-left-radius: 5px;
@@ -290,7 +287,7 @@ function ListUsuarios(props) {
         item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase())
     );
 
-    const  subHeaderComponentMemo = useMemo(() => {
+    const subHeaderComponentMemo = useMemo(() => {
         const handleClear = () => {
             if (filterText) {
                 setResetPaginationToogle(!resetPaginationToogle);
@@ -314,7 +311,7 @@ function ListUsuarios(props) {
             </>
         );
     }, [filterText, resetPaginationToogle]);
-    
+
     const handleChangePage = (page) => {
         // console.log("Nueva pagina "+ newPage)
         setPage(page);
@@ -329,9 +326,9 @@ function ListUsuarios(props) {
 
     return (
         <>
-        <Container fluid>
-            <DataTable
-                columns={columns}
+            <Container fluid>
+                <DataTable
+                    columns={columns}
                     data={filteredItems}
                     actions={descargaCSV}
                     subHeader
@@ -346,7 +343,7 @@ function ListUsuarios(props) {
                     paginationTotalRows={noTotalUsuarios}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                     onChangePage={handleChangePage}
-            />
+                />
             </Container>
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
