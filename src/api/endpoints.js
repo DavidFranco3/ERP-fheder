@@ -94,7 +94,7 @@ export const ENDPOINTTotalIntegraciones = "/integracionVentasGastos/total";
 export const ENDPOINTRegistraEtiquetasPiezas = "/etiquetaPrimeraPieza/registro";
 export const ENDPOINTListarEtiquetasPiezas = "/etiquetaPrimeraPieza/listar";
 export const ENDPOINTObtenerEtiquetasPiezas = "/etiquetaPrimeraPieza/obtener";
-export const ENDPOINTObtenerItemEtiquetaspiezas = "/etiquetaPrimeraPieza/obtenerItem";
+export const ENDPOINTObtenerItemEtiquetasPiezas = "/etiquetaPrimeraPieza/obtenerItem";
 export const ENDPOINTObtenerDatosEtiquetasPiezas = "/etiquetaPrimeraPieza/obtenerDatosPedido";
 export const ENDPOINTEliminarEtiquetasPiezas = "/etiquetaPrimeraPieza/eliminar";
 export const ENDPOINTActualizarEtiquetasPiezas = "/etiquetaPrimeraPieza/actualizar";
@@ -102,6 +102,19 @@ export const ENDPOINTActualizarEstadoEtiquetasPiezas = "/etiquetaPrimeraPieza/ac
 export const ENDPOINTListarEtiquetasPiezasPaginacion = "/etiquetaPrimeraPieza/listarPaginando";
 export const ENDPOINTObtenerNoEtiquetaPieza = "/etiquetaPrimeraPieza/obtenerNoEtiqueta";
 export const ENDPOINTTotalEtiquetasPiezas = "/etiquetaPrimeraPieza/total";
+
+// etiqueta de molido
+export const ENDPOINTRegistraEtiquetaMolido = "/etiquetaMolido/registro";
+export const ENDPOINTListarEtiquetaMolido = "/etiquetaMolido/listar";
+export const ENDPOINTObtenerEtiquetaMolido = "/etiquetaMolido/obtener";
+export const ENDPOINTObtenerItemEtiquetaMolido = "/etiquetaMolido/obtenerItem";
+export const ENDPOINTObtenerDatosEtiquetaMolido = "/etiquetaMolido/obtenerDatosEtiqueta";
+export const ENDPOINTEliminarEtiquetaMolido = "/etiquetaMolido/eliminar";
+export const ENDPOINTActualizarEtiquetaMolido = "/etiquetaMolido/actualizar";
+export const ENDPOINTActualizarEstadoEtiquetaMolido = "/etiquetaMolido/actualizarEstado";
+export const ENDPOINTListarEtiquetaMolidoPaginacion = "/etiquetaMolido/listarPaginando";
+export const ENDPOINTObtenerNoEtiquetaMolido = "/etiquetaMolido/obtenerNoEtiqueta";
+export const ENDPOINTTotalEtiquetaMolido = "/etiquetaMolido/total";
 
 // etiqueta de identificacion PT
 export const ENDPOINTRegistraEtiquetaPT = "/etiquetaPT/registro";

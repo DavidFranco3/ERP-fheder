@@ -4,18 +4,16 @@ import moment from "moment";
 import { Badge, Button, Container } from "react-bootstrap";
 import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
-import EliminacionEtiquetasPrimeraPieza from "../EliminacionEtiquetasPrimeraPieza";
-import ModificacionEtiquetaPrimeraPieza from "../ModificacionEtiquetaPrimeraPieza";
+import EliminacionEtiquetaMolido from '../EliminacionEtiquetaMolido';
+import ModificaMaterialMolido from '../ModificaMaterialMolido';
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faArrowPointer } from "@fortawesome/free-solid-svg-icons";
-import "./ListEtiquetasPrimeraPieza.scss";
-import ClienteAsignado from "./ClienteAsignado";
-import ProductoAsignado from "./ProductoAsignado"
+import "./ListEtiquetaMolido.scss";
 import { estilos } from "../../../utils/tableStyled";
 
-function ListEtiquetasPrimeraPieza(props) {
+function ListEtiquetaMolido(props) {
     const { setRefreshCheckLogin, listEtiquetas, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalEtiquetas } = props;
 
     const enrutamiento = useHistory();
@@ -59,6 +57,13 @@ function ListEtiquetasPrimeraPieza(props) {
 
     const columns = [
         {
+            name: "ITEM",
+            selector: row => row.item,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
             name: "Folio",
             selector: row => row.folio,
             sortable: false,
@@ -73,46 +78,6 @@ function ListEtiquetasPrimeraPieza(props) {
             reorder: false
         },
         {
-            name: "No. Maquina",
-            selector: row => row.noMaquina,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: "Producto",
-            selector: row => (
-                <>
-                    <ProductoAsignado
-                        id={row.descripcionProducto}
-                    />
-                </>
-            ),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: "Cliente",
-            selector: row => (
-                <>
-                    <ClienteAsignado
-                        id={row.cliente}
-                    />
-                </>
-            ),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: "Peso",
-            selector: row => row.peso,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
             name: "Turno",
             selector: row => row.turno,
             sortable: false,
@@ -120,29 +85,29 @@ function ListEtiquetasPrimeraPieza(props) {
             reorder: false
         },
         {
-            name: "No. Cavidades",
-            selector: row => row.noCavidades,
+            name: "Descripcion del material",
+            selector: row => row.descripcion,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Inspector",
-            selector: row => row.inspector,
+            name: "Color",
+            selector: row => row.color,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Supervisor",
-            selector: row => row.supervisor,
+            name: "Peso (KG)",
+            selector: row => row.peso,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Ultima modificacion",
-            selector: row => moment(row.fechaActualizacion).format('LL'),
+            name: "Nombre molinero",
+            selector: row => row.nombreMolinero,
             sortable: false,
             center: true,
             reorder: false
@@ -166,7 +131,7 @@ function ListEtiquetasPrimeraPieza(props) {
                         className="editar"
                         onClick={() => {
                             modificacionEtiqueta(
-                                <ModificacionEtiquetaPrimeraPieza
+                                <ModificaMaterialMolido
                                     data={row}
                                     setShowModal={setShowModal}
                                     history={history}
@@ -180,7 +145,7 @@ function ListEtiquetasPrimeraPieza(props) {
                         className="eliminar"
                         onClick={() => {
                             eliminacionEtiqueta(
-                                <EliminacionEtiquetasPrimeraPieza
+                                <EliminacionEtiquetaMolido
                                     data={row}
                                     setShowModal={setShowModal}
                                     history={history}
@@ -243,4 +208,4 @@ function ListEtiquetasPrimeraPieza(props) {
     );
 }
 
-export default ListEtiquetasPrimeraPieza;
+export default ListEtiquetaMolido;

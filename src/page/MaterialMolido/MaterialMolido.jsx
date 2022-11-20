@@ -1,11 +1,17 @@
-import { useState, useEffect } from 'react';
-import { Alert, Button, Col, Row } from "react-bootstrap";
+import { useState, useEffect, Suspense } from 'react';
+import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
 import LayoutPrincipal from "../../layout/layoutPrincipal";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroMaterialMolido from "../../components/MaterialMolido/RegistroMaterialMolido";
+import ListEtiquetaMolido from '../../components/MaterialMolido/ListEtiquetaMolido';
+import { listarEtiquetaMolidoPaginacion, totalEtiquetaMolido } from "../../api/etiquetaMolido";
+import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { toast } from "react-toastify";
+import Lottie from 'react-lottie-player';
+import AnimacionLoading from '../../assets/json/loading.json';
 
 function MaterialMolido(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -33,6 +39,67 @@ function MaterialMolido(props) {
     const rutaRegreso = () => {
         enrutamiento.push("/DashboardProduccion")
     }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
+
+    // Para controlar la paginación
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [page, setPage] = useState(1);
+    const [noTotalEtiquetas, setNoTotalEtiquetas] = useState(0);
+
+    // Para almacenar la lista de las integraciones de ventas y gastos
+    const [listEtiquetas, setListEtiquetas] = useState(null);
+
+    useEffect(() => {
+        try {
+            totalEtiquetaMolido().then(response => {
+                const { data } = response;
+                setNoTotalEtiquetas(data)
+            })
+
+            // listarOrdenesCompraPaginacion(page, rowsPerPage)
+            if (page === 0) {
+                setPage(1)
+                listarEtiquetaMolidoPaginacion(page, rowsPerPage).then(response => {
+                    const { data } = response;
+                    if (!listEtiquetas && data) {
+                        setListEtiquetas(formatModelEtiquetaMolido(data));
+                    } else {
+                        const datosEtiqueta = formatModelEtiquetaMolido(data);
+                        setListEtiquetas(datosEtiqueta);
+                    }
+                }).catch(e => {
+                    console.log(e)
+                })
+            } else {
+                listarEtiquetaMolidoPaginacion(page, rowsPerPage).then(response => {
+                    const { data } = response;
+                    if (!listEtiquetas && data) {
+                        setListEtiquetas(formatModelEtiquetaMolido(data));
+                    } else {
+                        const datosEtiqueta = formatModelEtiquetaMolido(data);
+                        setListEtiquetas(datosEtiqueta);
+                    }
+                }).catch(e => {
+                    console.log(e)
+                })
+            }
+
+        } catch (e) {
+            console.log(e)
+        }
+    }, [location, page, rowsPerPage]);
 
     return (
         <>
@@ -70,12 +137,61 @@ function MaterialMolido(props) {
                         </Col>
                     </Row>
                 </Alert>
+
+                {
+                    listEtiquetas ?
+                        (
+                            <>
+                            <Suspense fallback={<Spinner />}>
+                               <ListEtiquetaMolido
+                                   listEtiquetas={listEtiquetas}
+                                   location={location}
+                                   history={history}
+                                   setRefreshCheckLogin={setRefreshCheckLogin}
+                                   rowsPerPage={rowsPerPage}
+                                   setRowsPerPage={setRowsPerPage}
+                                   page={page}
+                                   setPage={setPage}
+                                   noTotalEtiquetas={noTotalEtiquetas}
+                               />
+                            </Suspense>
+                            </>
+                        )
+                        :
+                        (
+                            <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                            </>
+                        )
+                }
+
                 <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                     {contentModal}
                 </BasicModal>
             </LayoutPrincipal>
         </>
     );
+}
+
+function formatModelEtiquetaMolido(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            item: data.item,
+            folio: data.folio,
+            fecha: data.fecha,
+            turno: data.turno,
+            descripcion: data.descripcion,
+            color: data.color,
+            peso: data.peso,
+            nombreMolinero: data.nombreMolinero,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
 }
 
 export default withRouter(MaterialMolido);

@@ -1,22 +1,22 @@
 import { API_HOST } from "../utils/constants";
 import {
-    ENDPOINTRegistraEtiquetasPiezas,
-    ENDPOINTListarEtiquetasPiezas,
-    ENDPOINTObtenerEtiquetasPiezas,
-    ENDPOINTObtenerItemEtiquetasPiezas,
-    ENDPOINTObtenerDatosEtiquetasPiezas,
-    ENDPOINTEliminarEtiquetasPiezas,
-    ENDPOINTActualizarEtiquetasPiezas,
-    ENDPOINTActualizarEstadoEtiquetasPiezas,
-    ENDPOINTListarEtiquetasPiezasPaginacion,
-    ENDPOINTObtenerNoEtiquetaPieza,
-    ENDPOINTTotalEtiquetasPiezas,
+    ENDPOINTRegistraEtiquetaMolido,
+    ENDPOINTListarEtiquetaMolido,
+    ENDPOINTObtenerEtiquetaMolido,
+    ENDPOINTObtenerItemEtiquetaMolido,
+    ENDPOINTObtenerDatosEtiquetaMolido,
+    ENDPOINTEliminarEtiquetaMolido,
+    ENDPOINTActualizarEtiquetaMolido,
+    ENDPOINTActualizarEstadoEtiquetaMolido,
+    ENDPOINTListarEtiquetaMolidoPaginacion,
+    ENDPOINTObtenerNoEtiquetaMolido,
+    ENDPOINTTotalEtiquetaMolido,
 } from "./endpoints";
 import axios from 'axios';
 import { getTokenApi } from "./auth";
 
 // Registra pedidos de venta
-export async function registraEtiquetaPieza(data) {
+export async function registraEtiquetaMolido(data) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -25,10 +25,10 @@ export async function registraEtiquetaPieza(data) {
         }
     };
 
-    return await axios.post(API_HOST + ENDPOINTRegistraEtiquetasPiezas, data, config);
+    return await axios.post(API_HOST + ENDPOINTRegistraEtiquetaMolido, data, config);
 }
 
-export async function totalEtiquetasPiezas() {
+export async function totalEtiquetaMolido() {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -36,10 +36,10 @@ export async function totalEtiquetasPiezas() {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTTotalEtiquetasPiezas, config);
+    return await axios.get(API_HOST + ENDPOINTTotalEtiquetaMolido, config);
 }
 
-export async function obtenerItemEtiquetasPiezas() {
+export async function obtenerItemEtiquetaMolido() {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -47,11 +47,11 @@ export async function obtenerItemEtiquetasPiezas() {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTObtenerItemEtiquetasPiezas, config);
+    return await axios.get(API_HOST + ENDPOINTObtenerItemEtiquetaMolido, config);
 }
 
 // Para obtener todos los datos del pedido
-export async function obtenerEtiquetasPiezas(params) {
+export async function obtenerEtiquetaMolido(params) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -59,11 +59,11 @@ export async function obtenerEtiquetasPiezas(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTObtenerEtiquetasPiezas + `/${params}`, config);
+    return await axios.get(API_HOST + ENDPOINTObtenerEtiquetaMolido + `/${params}`, config);
 }
 
 // Para obtener los datos del pedido de venta segun el folio
-export async function obtenerDatosEtiquetasPiezas(factura) {
+export async function obtenerDatosEtiquetaMolido(factura) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -71,7 +71,7 @@ export async function obtenerDatosEtiquetasPiezas(factura) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTObtenerDatosEtiquetasPiezas + `/${factura}`, config);
+    return await axios.get(API_HOST + ENDPOINTObtenerDatosEtiquetaMolido + `/${factura}`, config);
 }
 
 // Para obtener el numero de pedido de venta actual
@@ -83,11 +83,11 @@ export async function obtenerNoEtiqueta(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTObtenerNoEtiquetaPieza, config);
+    return await axios.get(API_HOST + ENDPOINTObtenerNoEtiquetaMolido, config);
 }
 
 // Para listar todos los pedidos
-export async function listarEtiquetasPiezas(params) {
+export async function listarEtiquetaMolido(params) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -95,11 +95,11 @@ export async function listarEtiquetasPiezas(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarEtiquetasPiezas, config);
+    return await axios.get(API_HOST + ENDPOINTListarEtiquetaMolido, config);
 }
 
 // Listar los pedidos de venta paginandolos
-export async function listarEtiquetasPiezasPaginacion(pagina, limite) {
+export async function listarEtiquetaMolidoPaginacion(pagina, limite) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -107,11 +107,11 @@ export async function listarEtiquetasPiezasPaginacion(pagina, limite) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarEtiquetasPiezasPaginacion + `/?pagina=${pagina}&&limite=${limite}`, config);
+    return await axios.get(API_HOST + ENDPOINTListarEtiquetaMolidoPaginacion + `/?pagina=${pagina}&&limite=${limite}`, config);
 }
 
 // Elimina pedido fisicamente de la bd
-export async function eliminaEtiquetasPiezas(id) {
+export async function eliminaEtiquetaMolido(id) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -120,11 +120,11 @@ export async function eliminaEtiquetasPiezas(id) {
         }
     };
 
-    return await axios.delete(API_HOST + ENDPOINTEliminarEtiquetasPiezas + `/${id}`, config);
+    return await axios.delete(API_HOST + ENDPOINTEliminarEtiquetaMolido + `/${id}`, config);
 }
 
 // Para actualizar el estado del pedido de venta -- ENDPOINTActualizarEstadoPedidoVenta
-export async function actualizaEstadoEtiquetasPiezas(id, data) {
+export async function actualizaEstadoEtiquetaMolido(id, data) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -133,11 +133,11 @@ export async function actualizaEstadoEtiquetasPiezas(id, data) {
         }
     };
 
-    return await axios.put(API_HOST + ENDPOINTActualizarEstadoEtiquetasPiezas + `/${id}`, data, config);
+    return await axios.put(API_HOST + ENDPOINTActualizarEstadoEtiquetaMolido + `/${id}`, data, config);
 }
 
 // Modifica datos del departamentos
-export async function actualizaEtiquetasPiezas(id, data) {
+export async function actualizaEtiquetaMolido(id, data) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -146,5 +146,5 @@ export async function actualizaEtiquetasPiezas(id, data) {
         }
     };
 
-    return await axios.put(API_HOST + ENDPOINTActualizarEtiquetasPiezas + `/${id}`, data, config);
+    return await axios.put(API_HOST + ENDPOINTActualizarEtiquetaMolido + `/${id}`, data, config);
 }

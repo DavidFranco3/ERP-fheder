@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Spinner } from "react-bootstrap";
-import "./RegistroMaterialMolido.scss";
-import { registraEtiquetaMolido, obtenerItemEtiquetaMolido, obtenerNoEtiqueta } from '../../../api/etiquetaMolido'
+import "./ModificaMaterialMolido.scss";
+import { actualizaEtiquetaMolido, obtenerEtiquetaMolido } from '../../../api/etiquetaMolido'
 import queryString from "query-string";
 import { toast } from "react-toastify";
 
-function RegistraMaterialMolido(props) {
-    const { setShowModal, history } = props;
+function ModificaMaterialMolido(props) {
+    const { data, setShowModal, history } = props;
+
+    const {id} = data;
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -19,16 +21,19 @@ function RegistraMaterialMolido(props) {
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
-    // Para almacenar el folio actual
-    const [folioActual, setFolioActual] = useState("");
-
     useEffect(() => {
         try {
-            obtenerNoEtiqueta().then(response => {
+            obtenerEtiquetaMolido(id).then(response => {
                 const { data } = response;
                 // console.log(data)
-                const { noEtiqueta } = data;
-                setFolioActual(noEtiqueta)
+                // initialData
+
+                if (!formData && data) {
+                    setFormData(valoresAlmacenados(data));
+                } else {
+                    const datosEtiqueta = valoresAlmacenados(data);
+                    setFormData(datosEtiqueta);
+                }
             }).catch(e => {
                 console.log(e)
             })
@@ -46,13 +51,7 @@ function RegistraMaterialMolido(props) {
 
             setLoading(true)
             // Realiza registro de la aportación
-            obtenerItemEtiquetaMolido().then(response => {
-                const { data } = response;
-                const { item } = data;
-
                 const dataTemp = {
-                    item: item,
-                    folio: folioActual,
                     fecha: formData.fecha,
                     turno: formData.turno,
                     descripcion: formData.descripcion,
@@ -61,7 +60,7 @@ function RegistraMaterialMolido(props) {
                     nombreMolinero: formData.molinero
                 }
 
-                registraEtiquetaMolido(dataTemp).then(response => {
+                actualizaEtiquetaMolido(id, dataTemp).then(response => {
                     const { data } = response;
 
                     toast.success(data.mensaje)
@@ -76,10 +75,6 @@ function RegistraMaterialMolido(props) {
                 }).catch(e => {
                     console.log(e)
                 })
-
-            }).catch(e => {
-                console.log(e)
-            })
         }
     }
 
@@ -124,8 +119,8 @@ function RegistraMaterialMolido(props) {
                                         defaultValue={formData.turno}
                                     >
                                         <option >Elige....</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
+                                        <option value="1" selected={formData.turno == "1"}>1</option>
+                                        <option value="2" selected={formData.turno == "2"}>2</option>
                                     </Form.Control>
                                 </Col>
                             </Form.Group>
@@ -244,4 +239,15 @@ function initialFormData() {
     }
 }
 
-export default RegistraMaterialMolido;
+function valoresAlmacenados(data) {
+    return {
+        fecha: data.fecha,
+        turno: data.turno,
+        descripcion: data.descripcion,
+        color: data.color,
+        peso: data.peso,
+        molinero: data.nombreMolinero
+    }
+}
+
+export default ModificaMaterialMolido;

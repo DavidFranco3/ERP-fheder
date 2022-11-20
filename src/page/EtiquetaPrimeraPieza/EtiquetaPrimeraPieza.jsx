@@ -6,7 +6,6 @@ import { useHistory, withRouter } from "react-router-dom";
 import LayoutPrincipal from "../../layout/layoutPrincipal";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroPrimeraPieza from "../../components/EtiquetaPrimeraPieza/RegistraPrimeraPieza";
-import ListEiquetasPrimeraPieza from "../../components/EtiquetaPrimeraPieza/ListEtiquetasPrimeraPieza"
 import { listarEtiquetasPiezasPaginacion, totalEtiquetasPiezas } from "../../api/etiquetaPrimeraPieza";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
 import { toast } from "react-toastify";
@@ -69,7 +68,7 @@ function EtiquetaPrimeraPieza(props) {
                         setListEtiquetas(datosVentas);
                     }
                 }).catch(e => {
-                    // console.log(e)
+                    console.log(e)
                 })
             } else {
                 listarEtiquetasPiezasPaginacion(page, rowsPerPage).then(response => {
@@ -81,7 +80,7 @@ function EtiquetaPrimeraPieza(props) {
                         setListEtiquetas(datosVentas);
                     }
                 }).catch(e => {
-                    // console.log(e)
+                    console.log(e)
                 })
             }
 

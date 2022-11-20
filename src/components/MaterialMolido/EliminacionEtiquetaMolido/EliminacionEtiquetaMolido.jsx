@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import {eliminaEtiquetasPiezas} from "../../../api/etiquetaPrimeraPieza";
+import {eliminaEtiquetaMolido} from "../../../api/etiquetaMolido";
 import {toast} from "react-toastify";
 import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
 import {Button, Form, Spinner, Alert, Row, Col} from "react-bootstrap";
 
-function EliminacionEtiquetasPrimeraPieza(props) {
+function EliminacionEtiquetaMolido(props) {
     const { data, setShowModal, history } = props;
-    const { id, folio, noMaquina, turno, inspector } = data;
+    const { id, folio, descripcion, color, nombreMolinero } = data;
 
     //console.log(data)
     
@@ -24,7 +24,7 @@ function EliminacionEtiquetasPrimeraPieza(props) {
         setLoading(true)
 
         try {
-           eliminaEtiquetasPiezas(id).then(response => {
+           eliminaEtiquetaMolido(id).then(response => {
                 const { data } = response;
                 // console.log(data)
                 toast.success(data.mensaje)
@@ -49,7 +49,7 @@ function EliminacionEtiquetasPrimeraPieza(props) {
             <Alert variant="danger">
                 <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
                 <p className="mensaje">
-                    Esta acción eliminara la etiqueta de primera pieza.
+                    Esta acción eliminara la etiqueta de material molido.
                 </p>
             </Alert>
 
@@ -66,11 +66,11 @@ function EliminacionEtiquetasPrimeraPieza(props) {
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Numero de maquina
+                            Descripcion del material
                         </Form.Label>
                         <Form.Control
                             type="text"
-                            value={noMaquina}
+                            value={descripcion}
                             disabled
                         />
                     </Form.Group>
@@ -81,21 +81,21 @@ function EliminacionEtiquetasPrimeraPieza(props) {
                 <Row>
                 <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Turno
+                            Color
                         </Form.Label>
                         <Form.Control
                             type="text"
-                            value={turno}
+                            value={color}
                             disabled
                         />
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Inspector
+                            Molinero
                         </Form.Label>
                         <Form.Control
                             type="text"
-                            value={inspector}
+                            value={nombreMolinero}
                             disabled
                         />
                     </Form.Group>
@@ -128,4 +128,4 @@ function EliminacionEtiquetasPrimeraPieza(props) {
     );
 }
 
-export default EliminacionEtiquetasPrimeraPieza;
+export default EliminacionEtiquetaMolido;

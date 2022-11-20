@@ -107,14 +107,14 @@ function RegistraReporte(props) {
                 registraEtiquetaPieza(dataTemp).then(response => {
                     const { data } = response;
 
-                    toast.success('Etiqueta de primera pieza registrada')
+                    toast.success(data.mensaje)
                     setTimeout(() => {
                         setLoading(false)
                         history.push({
                             search: queryString.stringify(""),
                         });
                         setShowModal(false)
-                    }, 2000)
+                    }, 0)
 
                 }).catch(e => {
                     console.log(e)
