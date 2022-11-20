@@ -26,7 +26,7 @@ function EliminacionLogicaInspecciones(props) {
     const onSubmit = e => {
         e.preventDefault();
         if (!formData.motivoCancelacion) {
-            toast.warning("Debes especificar el motivo de la cancelacion");
+            toast.warning("Especifica el motivo de la cancelacion");
         } else {
         setLoading(true);
 
