@@ -66,15 +66,9 @@ function ListMateriasPrimas(props) {
                                 bg="success"
                                 className="editar"
                                 onClick={() => {
-                                    const dataMaterial = {
-                                        id: row.id,
-                                        folio: row.folio,
-                                        descripcion: row.descripcion,
-                                        tiempoespera: row.tiempoespera
-                                    }
                                     cambiaInformacionMaterial(
                                         <ModificaMateriasPrimas
-                                            dataMateriaPrima={dataMaterial}
+                                            dataMateriaPrima={row}
                                             location={location}
                                             history={history}
                                             setShowModal={setShowModal}
@@ -88,15 +82,9 @@ function ListMateriasPrimas(props) {
                                 bg="danger"
                                 className="eliminar"
                                 onClick={() => {
-                                    const dataMaterial = {
-                                        id: row.id,
-                                        folio: row.folio,
-                                        descripcion: row.descripcion,
-                                        tiempoespera: row.tiempoespera
-                                    }
                                     eliminaMaterial(
                                         <EliminaMateriasPrimas
-                                            dataMaterial={dataMaterial}
+                                            dataMaterial={row}
                                             location={location}
                                             history={history}
                                             setShowModal={setShowModal}

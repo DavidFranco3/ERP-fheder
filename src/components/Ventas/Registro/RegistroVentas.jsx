@@ -282,7 +282,7 @@ function RegistroVentas(props) {
             );
 
             setCargaProductos(initialFormDataProductos)
-            document.getElementById("material").value = "Elige"
+            document.getElementById("descripcion").value = "Elige"
             document.getElementById("cantidad").value = ""
             document.getElementById("um").value = "Elige"
             document.getElementById("precioUnitario").value = ""
@@ -293,7 +293,7 @@ function RegistroVentas(props) {
     // Para limpiar el formulario de detalles de producto
     const cancelarCargaProducto = () => {
         setCargaProductos(initialFormDataProductos)
-        document.getElementById("material").value = "Elige"
+        document.getElementById("descripcion").value = "Elige"
         document.getElementById("cantidad").value = ""
         document.getElementById("um").value = "Elige"
         document.getElementById("precioUnitario").value = ""
@@ -303,7 +303,7 @@ function RegistroVentas(props) {
     // Para eliminar productos del listado
     const removeItem = (producto) => {
         let newArray = listProductosCargados;
-        newArray.splice(newArray.findIndex(a => a.ID === producto.ID), 1);
+        newArray.splice(newArray.findIndex(a => a.item === producto.item), 1);
         setListProductosCargados([...newArray]);
     }
 

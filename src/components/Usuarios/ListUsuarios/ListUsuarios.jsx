@@ -183,7 +183,8 @@ function ListUsuarios(props) {
                         className="eliminar"
                         onClick={() => {
                             eliminaUsuarios(
-                                <EliminacionFisicaUsuarios dataUsuario={row}
+                                <EliminacionFisicaUsuarios
+                                    dataUsuario={row}
                                     setShowModal={setShowModal}
                                     history={history}
                                 />)

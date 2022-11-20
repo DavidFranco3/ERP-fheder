@@ -5,6 +5,7 @@ import { Badge, Button, Container } from "react-bootstrap";
 import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaInspeccion from '../EliminacionFisica';
+import EliminacionLogicaInspecciones from '../EliminacionLogica';
 //import ModificacionEtiquetaPrimeraPieza from "../ModificacionEtiquetaPrimeraPieza";
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
@@ -41,6 +42,13 @@ function ListInspeccionPieza(props) {
     // Para la eliminacion fisica de usuarios
     const eliminacionInspeccion = (content) => {
         setTitulosModal("Eliminar");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const cancelacionInspeccion = (content) => {
+        setTitulosModal("Cancelando");
         setContentModal(content);
         setShowModal(true);
     }
@@ -123,7 +131,43 @@ function ListInspeccionPieza(props) {
         },
         {
             name: "Status",
-            selector: row => row.status,
+            selector: row => row.status === "Activo" ?
+                (
+                    <>
+                        <Badge
+                            bg="success" className="activo"
+                            onClick={() => {
+                                cancelacionInspeccion(
+                                    <EliminacionLogicaInspecciones
+                                        data={row}
+                                        location={location}
+                                        history={history}
+                                        setShowModal={setShowModal}
+                                    />
+                                )
+                            }}
+                        >
+                            Activo
+                        </Badge>
+                    </>
+                )
+                :
+                (
+                    <>
+                        <Badge
+                            bg="danger" className="obsoleto"
+                        >
+                            Cancelado
+                        </Badge>
+                    </>
+                ),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Motivo cancelacion",
+            selector: row => row.motivoCancelacion == "" ? "N/A" : row.motivoCancelacion,
             sortable: false,
             center: true,
             reorder: false
@@ -139,20 +183,6 @@ function ListInspeccionPieza(props) {
                         className="evaluacionProveedor"
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="success"
-                        className="editar"
-                        /*onClick={() => {
-                            modificacionEtiqueta(
-                                <ModificacionEtiquetaPrimeraPieza
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}*/
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
                     </Badge>
                     <Badge
                         bg="danger"

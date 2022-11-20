@@ -219,7 +219,6 @@ function ListVentas(props) {
                         bg="danger"
                         className="eliminar"
                         onClick={() => {
-
                             eliminaPedidoVenta(
                                 <EliminacionFisicaVentas
                                     datos={row}

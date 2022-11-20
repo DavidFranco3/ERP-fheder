@@ -96,15 +96,9 @@ function ListProductos(props) {
                                 <Badge
                                     bg="success" className="activo"
                                     onClick={() => {
-                                        const dataProducto = {
-                                            id: row.id,
-                                            noInterno: row.noInterno,
-                                            descripcion: row.descripcion,
-                                            estado: row.estado
-                                        }
                                         cambiaEstadoProducto(
                                             <EstadoProducto
-                                                dataProducto={dataProducto}
+                                                dataProducto={row}
                                                 location={location}
                                                 history={history}
                                                 setShowModal={setShowModal}
@@ -122,15 +116,9 @@ function ListProductos(props) {
                                 <Badge
                                     bg="warning" className="obsoleto"
                                     onClick={() => {
-                                        const dataProducto = {
-                                            id: row.id,
-                                            noInterno: row.noInterno,
-                                            descripcion: row.descripcion,
-                                            estado: row.estado
-                                        }
                                         cambiaEstadoProducto(
                                             <EstadoProducto
-                                                dataProducto={dataProducto}
+                                                dataProducto={row}
                                                 location={location}
                                                 history={history}
                                                 setShowModal={setShowModal}
@@ -165,15 +153,9 @@ function ListProductos(props) {
                                 bg="danger"
                                 className="eliminar"
                                 onClick={() => {
-                                    const dataProducto = {
-                                        id: row.id,
-                                        noInterno: row.noInterno,
-                                        descripcion: row.descripcion,
-                                        estado: row.estado
-                                    }
                                     eliminaProducto(
                                         <EliminaProductos
-                                            dataProducto={dataProducto}
+                                            dataProducto={row}
                                             location={location}
                                             setShowModal={setShowModal}
                                             history={history}

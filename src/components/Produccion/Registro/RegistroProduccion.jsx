@@ -245,14 +245,14 @@ function RegistroProduccion(props) {
     // Para eliminar productos del listado
     const removeItemResultado = (resultado) => {
         let newArray = listResultados;
-        newArray.splice(newArray.findIndex(a => a.ID === resultado.ID), 1);
+        newArray.splice(newArray.findIndex(a => a.acumulado === resultado.acumulado), 1);
         setListResultados([...newArray]);
     }
 
     // Para eliminar productos del listado
     const removeItemRegistro = (registro) => {
         let newArray = listRegistros;
-        newArray.splice(newArray.findIndex(a => a.ID === registro.ID), 1);
+        newArray.splice(newArray.findIndex(a => a.acumulado === registro.acumulado), 1);
         setListRegistros([...newArray]);
     }
 

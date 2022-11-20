@@ -117,7 +117,7 @@ function ModificacionCompras(props) {
             document.getElementById("descripcion").value = ""
             document.getElementById("precio").value = "0"
             setTotalUnitario(0)
-            document.getElementById("referencia").value = ""
+            document.getElementById("referencia").value = "Elige"
         }
     }
 
@@ -129,7 +129,7 @@ function ModificacionCompras(props) {
         document.getElementById("descripcion").value = ""
         document.getElementById("precio").value = "0"
         setTotalUnitario(0)
-        document.getElementById("referencia").value = ""
+        document.getElementById("referencia").value = "Elige"
     }
 
     // Para eliminar productos del listado
@@ -436,11 +436,15 @@ function ModificacionCompras(props) {
                                 </Form.Label>
                                 <Form.Control
                                     id="referencia"
-                                    type="text"
-                                    placeholder="Escribe la referencia"
-                                    name="referencia"
+                                    as="select"
                                     defaultValue={formDataArticulos.referencia}
-                                />
+                                    name="referencia"
+                                >
+                                    <option>Elige</option>
+                                    {map(listOrdenesVenta, (venta, index) => (
+                                        <option key={index} value={venta?.folio}>{venta?.folio}</option>
+                                    ))}*
+                                </Form.Control>
                             </Form.Group>
 
                             <Col sm="1">

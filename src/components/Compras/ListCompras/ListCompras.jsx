@@ -266,11 +266,6 @@ function ListCompras(props) {
                         bg="danger"
                         className="eliminarProveedor"
                         onClick={() => {
-                            const dataTemp = {
-                                id: row.id,
-                                folio: row.folio,
-                                nombre: row.nombre
-                            }
                             eliminacionCompra(
                                 <EliminacionFisicaCompras
                                     data={row}

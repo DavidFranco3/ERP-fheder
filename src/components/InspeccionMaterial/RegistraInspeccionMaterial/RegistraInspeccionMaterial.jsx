@@ -12,6 +12,7 @@ import { obtenerCliente } from "../../../api/clientes";
 import { obtenerNumeroInspeccionPieza, registraInspeccionPieza } from "../../../api/inspeccionPieza";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import moment from "moment";
 
 function RegistraInspeccionMaterial(props) {
 
@@ -117,7 +118,7 @@ function RegistraInspeccionMaterial(props) {
         e.preventDefault()
 
 
-        if (!formData.fechaElaboracion || !formData.ordenProduccion || turno=="0" || !formData.fechaArranque || !formData.numeroMaquina || !formData.cantidadLote) {
+        if (!formData.fechaElaboracion || !formData.ordenProduccion || turno == "0" || !formData.fechaArranque || !formData.numeroMaquina || !formData.cantidadLote) {
             toast.warning("Completa el formulario");
         } else {
             //console.log(formData)
@@ -141,8 +142,8 @@ function RegistraInspeccionMaterial(props) {
                             operador: formData.operador,
                             revisiones: {
                                 1: {
-                                    revision1: formData.revision1,
-                                    hora1: formData.hora1,
+                                    revision1: "1",
+                                    hora1: hora,
                                     tono1: formData.tono1,
                                     contaminacion1: formData.contaminacion1,
                                     rebanada1: formData.rebanada1,
@@ -160,8 +161,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion1: motivoCancelacion1
                                 },
                                 2: {
-                                    revision2: formData.revision2,
-                                    hora2: formData.hora2,
+                                    revision2: "2",
+                                    hora2: hora,
                                     tono2: formData.tono2,
                                     contaminacion2: formData.contaminacion2,
                                     rebanada2: formData.rebanada2,
@@ -179,8 +180,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion2: motivoCancelacion2
                                 },
                                 3: {
-                                    revision3: formData.revision3,
-                                    hora3: formData.hora3,
+                                    revision3: "3",
+                                    hora3: hora,
                                     tono3: formData.tono3,
                                     contaminacion3: formData.contaminacion3,
                                     rebanada3: formData.rebanada3,
@@ -198,8 +199,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion3: motivoCancelacion3
                                 },
                                 4: {
-                                    revision4: formData.revision4,
-                                    hora4: formData.hora4,
+                                    revision4: "4",
+                                    hora4: hora,
                                     tono4: formData.tono4,
                                     contaminacion4: formData.contaminacion4,
                                     rebanada4: formData.rebanada4,
@@ -217,8 +218,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion4: motivoCancelacion4
                                 },
                                 5: {
-                                    revision5: formData.revision5,
-                                    hora5: formData.hora5,
+                                    revision5: "5",
+                                    hora5: hora,
                                     tono5: formData.tono5,
                                     contaminacion5: formData.contaminacion5,
                                     rebanada5: formData.rebanada5,
@@ -236,8 +237,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion5: motivoCancelacion5
                                 },
                                 6: {
-                                    revision6: formData.revision6,
-                                    hora6: formData.hora6,
+                                    revision6: "6",
+                                    hora6: hora,
                                     tono6: formData.tono6,
                                     contaminacion6: formData.contaminacion6,
                                     rebanada6: formData.rebanada6,
@@ -255,8 +256,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion6: motivoCancelacion6
                                 },
                                 7: {
-                                    revision7: formData.revision7,
-                                    hora7: formData.hora7,
+                                    revision7: "7",
+                                    hora7: hora,
                                     tono7: formData.tono7,
                                     contaminacion7: formData.contaminacion7,
                                     rebanada7: formData.rebanada7,
@@ -274,8 +275,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion7: motivoCancelacion7
                                 },
                                 8: {
-                                    revision8: formData.revision8,
-                                    hora8: formData.hora8,
+                                    revision8: "8",
+                                    hora8: hora,
                                     tono8: formData.tono8,
                                     contaminacion8: formData.contaminacion8,
                                     rebanada8: formData.rebanada8,
@@ -293,8 +294,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion8: motivoCancelacion8
                                 },
                                 9: {
-                                    revision9: formData.revision9,
-                                    hora9: formData.hora9,
+                                    revision9: "9",
+                                    hora9: hora,
                                     tono9: formData.tono9,
                                     contaminacion9: formData.contaminacion9,
                                     rebanada9: formData.rebanada9,
@@ -312,8 +313,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion9: motivoCancelacion9
                                 },
                                 10: {
-                                    revision10: formData.revision10,
-                                    hora10: formData.hora10,
+                                    revision10: "10",
+                                    hora10: hora,
                                     tono10: formData.tono10,
                                     contaminacion10: formData.contaminacion10,
                                     rebanada10: formData.rebanada10,
@@ -332,7 +333,8 @@ function RegistraInspeccionMaterial(props) {
                                 },
                             }
                         },
-                        status: "Activo"
+                        status: "Activo",
+                        motivoCancelacion: "",
                     }
 
                     //console.log(dataTemp)
@@ -370,8 +372,8 @@ function RegistraInspeccionMaterial(props) {
                             operador: formData.operador,
                             revisiones: {
                                 1: {
-                                    revision1: formData.revision1,
-                                    hora1: formData.hora1,
+                                    revision1: "1",
+                                    hora1: hora,
                                     tono1: formData.tono1,
                                     contaminacion1: formData.contaminacion1,
                                     rebanada1: formData.rebanada1,
@@ -389,8 +391,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion1: motivoCancelacion1
                                 },
                                 2: {
-                                    revision2: formData.revision2,
-                                    hora2: formData.hora2,
+                                    revision2: "2",
+                                    hora2: hora,
                                     tono2: formData.tono2,
                                     contaminacion2: formData.contaminacion2,
                                     rebanada2: formData.rebanada2,
@@ -408,8 +410,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion2: motivoCancelacion2
                                 },
                                 3: {
-                                    revision3: formData.revision3,
-                                    hora3: formData.hora3,
+                                    revision3: "3",
+                                    hora3: hora,
                                     tono3: formData.tono3,
                                     contaminacion3: formData.contaminacion3,
                                     rebanada3: formData.rebanada3,
@@ -427,8 +429,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion3: motivoCancelacion3
                                 },
                                 4: {
-                                    revision4: formData.revision4,
-                                    hora4: formData.hora4,
+                                    revision4: "4",
+                                    hora4: hora,
                                     tono4: formData.tono4,
                                     contaminacion4: formData.contaminacion4,
                                     rebanada4: formData.rebanada4,
@@ -446,8 +448,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion4: motivoCancelacion4
                                 },
                                 5: {
-                                    revision5: formData.revision5,
-                                    hora5: formData.hora5,
+                                    revision5: "5",
+                                    hora5: hora,
                                     tono5: formData.tono5,
                                     contaminacion5: formData.contaminacion5,
                                     rebanada5: formData.rebanada5,
@@ -465,8 +467,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion5: motivoCancelacion5
                                 },
                                 6: {
-                                    revision6: formData.revision6,
-                                    hora6: formData.hora6,
+                                    revision6: "6",
+                                    hora6: hora,
                                     tono6: formData.tono6,
                                     contaminacion6: formData.contaminacion6,
                                     rebanada6: formData.rebanada6,
@@ -484,8 +486,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion6: motivoCancelacion6
                                 },
                                 7: {
-                                    revision7: formData.revision7,
-                                    hora7: formData.hora7,
+                                    revision7: "7",
+                                    hora7: hora,
                                     tono7: formData.tono7,
                                     contaminacion7: formData.contaminacion7,
                                     rebanada7: formData.rebanada7,
@@ -503,8 +505,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion7: motivoCancelacion7
                                 },
                                 8: {
-                                    revision8: formData.revision8,
-                                    hora8: formData.hora8,
+                                    revision8: "8",
+                                    hora8: hora,
                                     tono8: formData.tono8,
                                     contaminacion8: formData.contaminacion8,
                                     rebanada8: formData.rebanada8,
@@ -522,8 +524,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion8: motivoCancelacion8
                                 },
                                 9: {
-                                    revision9: formData.revision9,
-                                    hora9: formData.hora9,
+                                    revision9: "9",
+                                    hora9: hora,
                                     tono9: formData.tono9,
                                     contaminacion9: formData.contaminacion9,
                                     rebanada9: formData.rebanada9,
@@ -541,8 +543,8 @@ function RegistraInspeccionMaterial(props) {
                                     motivoCancelacion9: motivoCancelacion9
                                 },
                                 10: {
-                                    revision10: formData.revision10,
-                                    hora10: formData.hora10,
+                                    revision10: "10",
+                                    hora10: hora,
                                     tono10: formData.tono10,
                                     contaminacion10: formData.contaminacion10,
                                     rebanada10: formData.rebanada10,
@@ -561,6 +563,7 @@ function RegistraInspeccionMaterial(props) {
                                 },
                             }
                         },
+                        motivoCancelacion: "",
                         status: "Activo"
                     }
 
@@ -622,6 +625,10 @@ function RegistraInspeccionMaterial(props) {
 
     // Para guardar el motivo de la decima revision
     const [motivoCancelacion10, setMotivoCancelacion10] = useState("");
+
+    const hoy = new Date();
+
+    const hora = hoy.getHours() + ':' + hoy.getMinutes();
 
     return (
         <>
@@ -1119,8 +1126,8 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="revision1"
-                                                    defaultValue={formData.revision1}
-                                                    disabled={revision1 != 1}
+                                                    value={1}
+                                                    disabled
                                                 />
                                             </Col>
 
@@ -1128,16 +1135,16 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="revision2"
-                                                    defaultValue={formData.revision2}
-                                                    disabled={revision2 != 1}
+                                                    value={2}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="revision3"
-                                                    defaultValue={formData.revision3}
-                                                    disabled={revision3 != 1}
+                                                    value={3}
+                                                    disabled
                                                 />
                                             </Col>
 
@@ -1145,16 +1152,16 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="revision4"
-                                                    defaultValue={formData.revision4}
-                                                    disabled={revision4 != 1}
+                                                    value={4}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="revision5"
-                                                    defaultValue={formData.revision5}
-                                                    disabled={revision5 != 1}
+                                                    value={5}
+                                                    disabled
                                                 />
                                             </Col>
 
@@ -1162,16 +1169,16 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="revision6"
-                                                    defaultValue={formData.revision6}
-                                                    disabled={revision6 != 1}
+                                                    value={6}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="revision7"
-                                                    defaultValue={formData.revision7}
-                                                    disabled={revision7 != 1}
+                                                    defaultValue={7}
+                                                    disabled
                                                 />
                                             </Col>
 
@@ -1179,16 +1186,16 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="revision8"
-                                                    defaultValue={formData.revision8}
-                                                    disabled={revision8 != 1}
+                                                    defaultValue={8}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="revision9"
-                                                    defaultValue={formData.revision9}
-                                                    disabled={revision9 != 1}
+                                                    defaultValue={9}
+                                                    disabled
                                                 />
                                             </Col>
 
@@ -1196,8 +1203,8 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="revision10"
-                                                    defaultValue={formData.revision10}
-                                                    disabled={revision10 != 1}
+                                                    defaultValue={10}
+                                                    disabled
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -1214,8 +1221,8 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="hora1"
-                                                    defaultValue={formData.hora1}
-                                                    disabled={revision1 != 1}
+                                                    value={hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+                                                    disabled
                                                 />
                                             </Col>
 
@@ -1223,16 +1230,16 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="hora2"
-                                                    defaultValue={formData.hora2}
-                                                    disabled={revision2 != 1}
+                                                    value={hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="hora3"
-                                                    defaultValue={formData.hora3}
-                                                    disabled={revision3 != 1}
+                                                    value={hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+                                                    disabled
                                                 />
                                             </Col>
 
@@ -1240,16 +1247,16 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="hora4"
-                                                    defaultValue={formData.hora4}
-                                                    disabled={revision4 != 1}
+                                                    value={hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="hora5"
-                                                    defaultValue={formData.hora5}
-                                                    disabled={revision5 != 1}
+                                                    value={hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+                                                    disabled
                                                 />
                                             </Col>
 
@@ -1257,16 +1264,16 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="hora6"
-                                                    defaultValue={formData.hora6}
-                                                    disabled={revision6 != 1}
+                                                    value={hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="hora7"
-                                                    defaultValue={formData.hora7}
-                                                    disabled={revision7 != 1}
+                                                    value={hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+                                                    disabled
                                                 />
                                             </Col>
 
@@ -1274,16 +1281,16 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="hora8"
-                                                    defaultValue={formData.hora8}
-                                                    disabled={revision8 != 1}
+                                                    value={hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="hora9"
-                                                    defaultValue={formData.hora9}
-                                                    disabled={revision9 != 1}
+                                                    value={hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+                                                    disabled
                                                 />
                                             </Col>
 
@@ -1291,8 +1298,8 @@ function RegistraInspeccionMaterial(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="hora10"
-                                                    defaultValue={formData.hora10}
-                                                    disabled={revision10 != 1}
+                                                    value={hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+                                                    disabled
                                                 />
                                             </Col>
                                         </Form.Group>

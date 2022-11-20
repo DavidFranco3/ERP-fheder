@@ -154,15 +154,9 @@ function ListProveedores(props) {
                             bg="success"
                             className="editarProveedor"
                             onClick={() => {
-                                const dataTemp = {
-                                    id: row.id,
-                                    folio: row.folio,
-                                    nombre: row.nombre,
-                                    estado: row.estado
-                                }
                                 cambiarStatusProveedor(
                                     <EstadoProveedor
-                                        dataProveedor={dataTemp}
+                                        dataProveedor={row}
                                         setShowModal={setShowModal}
                                         history={history}
                                     />
@@ -180,15 +174,9 @@ function ListProveedores(props) {
                             bg="warning"
                             className="editarProveedor"
                             onClick={() => {
-                                const dataTemp = {
-                                    id: row.id,
-                                    folio: row.folio,
-                                    nombre: row.nombre,
-                                    estado: row.estado
-                                }
                                 cambiarStatusProveedor(
                                     <EstadoProveedor
-                                        dataProveedor={dataTemp}
+                                        dataProveedor={row}
                                         setShowModal={setShowModal}
                                         history={history}
                                     />
@@ -219,25 +207,9 @@ function ListProveedores(props) {
                         bg="success"
                         className="editarProveedor"
                         onClick={() => {
-                            const dataTemp = {
-                                id: row.id,
-                                folio: row.folio,
-                                nombre: row.nombre,
-                                tipo: row.tipo,
-                                productoServicio: row.productoServicio,
-                                categoria: row.categoria,
-                                personalContacto: row.personalContacto,
-                                telefono: row.telefono,
-                                correo: row.correo,
-                                tiempoCredito: row.tiempoCredito,
-                                tiempoRespuesta: row.tiempoRespuesta,
-                                lugarRecoleccion: row.lugarRecoleccion,
-                                horario: row.horario,
-                                comentarios: row.comentarios
-                            }
                             modificacionProveedor(
                                 <ModificaProveedores
-                                    dataProveedor={dataTemp}
+                                    dataProveedor={row}
                                     history={history}
                                     setShowModal={setShowModal}
                                 />
@@ -250,14 +222,9 @@ function ListProveedores(props) {
                         bg="danger"
                         className="eliminarProveedor"
                         onClick={() => {
-                            const dataTemp = {
-                                id: row.id,
-                                folio: row.folio,
-                                nombre: row.nombre
-                            }
                             eliminacionProveedor(
                                 <EliminaProveedores
-                                    dataProveedor={dataTemp}
+                                    dataProveedor={row}
                                     history={history}
                                     setShowModal={setShowModal}
                                 />

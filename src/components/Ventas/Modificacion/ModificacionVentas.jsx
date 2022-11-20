@@ -264,7 +264,7 @@ function ModificacionVentas(props) {
     }
 
     const addItems = () => {
-        const material = document.getElementById("material").value
+        const material = document.getElementById("descripcion").value
         const cantidad = document.getElementById("cantidad").value
         const um = document.getElementById("um").value
         const precioUnitario = document.getElementById("precioUnitario").value
@@ -290,7 +290,7 @@ function ModificacionVentas(props) {
             );
 
             setCargaProductos(initialFormDataProductos)
-            document.getElementById("material").value = "Elige"
+            document.getElementById("descripcion").value = "Elige"
             document.getElementById("cantidad").value = ""
             document.getElementById("um").value = "Elige"
             document.getElementById("precioUnitario").value = ""
@@ -311,7 +311,7 @@ function ModificacionVentas(props) {
     // Para eliminar productos del listado
     const removeItem = (producto) => {
         let newArray = listProductosCargados;
-        newArray.splice(newArray.findIndex(a => a.ID === producto.ID), 1);
+        newArray.splice(newArray.findIndex(a => a.item === producto.item), 1);
         setListProductosCargados([...newArray]);
     }
 
@@ -653,7 +653,7 @@ function ModificacionVentas(props) {
 
                                 <Form.Group as={Col} controlId="formGridCliente">
                                     <Form.Label>
-                                        Descripcion
+                                        Numero de parte
                                     </Form.Label>
                                     <Form.Control
                                         id="descripcion"

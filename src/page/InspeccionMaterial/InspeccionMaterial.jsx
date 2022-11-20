@@ -169,6 +169,7 @@ function formatModelInspeccion(data) {
             turno1: data.turno1,
             turno2: data.turno2,
             status: data.status,
+            motivoCancelacion: data.motivoCancelacion,
             fechaCreacion: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

@@ -21,7 +21,7 @@ function BasicModal(props) {
             <ModalHeader>
                 <h2>{title}</h2>
                 <Modal.Title>
-                    <FontAwesomeIcon icon={faTimesCircle} onClick={() => setShow(false)}/>
+                    {/*<FontAwesomeIcon icon={faTimesCircle} onClick={() => setShow(false)}/>*/}
                 </Modal.Title>
             </ModalHeader>
             <Modal.Body>

@@ -113,13 +113,7 @@ function ListCotizaciones(props) {
                                 bg="success"
                                 className="editar"
                                 onClick={() => {
-                                    const dataCotizacion = {
-                                        id: row.id,
-                                        cliente: row.cliente,
-                                        vendedor: row.vendedor,
-                                        status: row.status
-                                    }
-                                    eliminaLogicaCotizaciones(<EliminacionLogicaCotizaciones dataCotizacion={dataCotizacion} setShowModal={setShowModal} history={history} />)
+                                    eliminaLogicaCotizaciones(<EliminacionLogicaCotizaciones dataCotizacion={row} setShowModal={setShowModal} history={history} />)
                                 }}
                             >
                                 Activo
@@ -133,13 +127,7 @@ function ListCotizaciones(props) {
                                 bg="danger"
                                 className="eliminar"
                                 onClick={() => {
-                                    const dataCotizacion = {
-                                        id: row.id,
-                                        cliente: row.cliente,
-                                        vendedor: row.vendedor,
-                                        status: row.status
-                                    }
-                                    habilitaCotizaciones(<EliminacionLogicaCotizaciones dataCotizacion={dataCotizacion} setShowModal={setShowModal} history={history} />)
+                                    habilitaCotizaciones(<EliminacionLogicaCotizaciones dataCotizacion={row} setShowModal={setShowModal} history={history} />)
                                 }}
                             >
                                 Inactivo
@@ -183,15 +171,9 @@ function ListCotizaciones(props) {
                         bg="danger"
                         className="eliminar"
                         onClick={() => {
-                            const datosCotizacion = {
-                                id: row.id,
-                                folio: row.folio,
-                                cliente: row.cliente,
-                                vendedor: row.vendedor
-                            }
                             eliminaCotizacion(
                                 <EliminaCotizaciones
-                                    datosCotizacion={datosCotizacion}
+                                    datosCotizacion={row}
                                     location={location}
                                     history={history}
                                     setShowModal={setShowModal}
