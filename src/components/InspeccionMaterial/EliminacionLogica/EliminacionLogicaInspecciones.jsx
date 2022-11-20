@@ -25,7 +25,9 @@ function EliminacionLogicaInspecciones(props) {
 
     const onSubmit = e => {
         e.preventDefault();
-
+        if (!formData.motivoCancelacion) {
+            toast.warning("Debes especificar el motivo de la cancelacion");
+        } else {
         setLoading(true);
 
         const dataTemp = {
@@ -39,7 +41,7 @@ function EliminacionLogicaInspecciones(props) {
                 const { data } = response;
                 //console.log(data)
                 if (status === "Activo") {
-                    toast.success("Inspeccion habilitada");
+                    toast.success("Inspeccion cancelada");
                     LogsInformativos("Se ha activado la inspeccion " + folio)
                 }
                 if (dataTemp.estadoUsuario === "Cancelado") {
@@ -55,6 +57,7 @@ function EliminacionLogicaInspecciones(props) {
         } catch (e) {
             console.log(e)
         }
+    }
     }
 
     const onChange = e => {
