@@ -53,11 +53,9 @@ function ListInspeccionPieza(props) {
         setShowModal(true);
     }
 
-    // Para la eliminacion fisica de usuarios
-    const modificacionEtiqueta = (content) => {
-        setTitulosModal("Modificar");
-        setContentModal(content);
-        setShowModal(true);
+    // Para la modificacion de la inspeccion
+    const modificaInspeccion = (id) => {
+        enrutamiento.push(`/ModificaInspeccionPieza/${id}`);
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
@@ -178,12 +176,25 @@ function ListInspeccionPieza(props) {
             reorder: true,
             selector: row => (
                 <>
-                <Badge
+                    <Badge
                         bg="info"
                         className="evaluacionProveedor"
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />
                     </Badge>
+
+                    {row.status != "Cancelado" &&
+                        (
+                            <Badge
+                                bg="success"
+                                className="editar"
+                                onClick={() => {
+                                    modificaInspeccion(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                        )}
                     <Badge
                         bg="danger"
                         className="eliminar"

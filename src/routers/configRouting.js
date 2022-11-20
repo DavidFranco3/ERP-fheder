@@ -166,6 +166,7 @@ import ModificaStatusMaterial from "../components/StatusMaterial/ModificaStatus"
 
 // Rutas para la inspeccion de material
 import RegistroInspeccionPieza from "../components/InspeccionMaterial/RegistraInspeccionMaterial";
+import ModificaInspeccionPieza from "../components/InspeccionMaterial/ModificaInspeccionMaterial";
 
 // Rutas para la alerta de calidad
 import RegistroAlertasCalidad from "../components/AlertasCalidad/RegistraAlertasCalidad";
@@ -229,6 +230,11 @@ export default [
         path: "/RegistraInspeccionPieza",
         exact: true,
         page: RegistroInspeccionPieza
+    },
+    {
+        path: "/ModificaInspeccionPieza/:id",
+        exact: true,
+        page: ModificaInspeccionPieza
     },
     {
         path: "/RegistraDevoluciones",

@@ -3,28 +3,30 @@ import { Alert, Button, Col, Form, Row, Container, Spinner, Badge } from "react-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import LayoutPrincipal from "../../../layout/layoutPrincipal";
-import { useHistory } from "react-router-dom";
-import "./RegistraInspeccionMaterial.scss";
+import { useHistory, useParams } from "react-router-dom";
+import "./ModificaInspeccionMaterial.scss";
 import BasicModal from "../../Modal/BasicModal";
 import CancelacionInspeccion from "../CancelacionInspeccion";
 import { obtenerDatosProduccion } from "../../../api/produccion";
 import { obtenerCliente } from "../../../api/clientes";
-import { obtenerNumeroInspeccionPieza, registraInspeccionPieza } from "../../../api/inspeccionPieza";
+import { obtenerInspeccionPieza, actualizaInspeccionPieza } from "../../../api/inspeccionPieza";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import moment from "moment";
 
-function RegistraInspeccionMaterial(props) {
+function ModificaInspeccionMaterial(props) {
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useHistory();
+
+    const params = useParams();
+    const { id } = params
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/InspeccionPieza")
+        enrutamiento.push("/InspeccionPieza");
     }
 
     // Para hacer uso del modal
@@ -114,6 +116,91 @@ function RegistraInspeccionMaterial(props) {
     // Para Controlar la columna de decima revision
     const [revision10, setRevision10] = useState(0);
 
+    useEffect(() => {
+        try {
+            obtenerInspeccionPieza(id).then(response => {
+                const { data } = response;
+                // console.log(data)
+                // initialData
+
+                if (!formData && data) {
+                    setFormData(valoresAlmacenados(data));
+                    setTurno(data.revisiones.turno);
+                    setRevision1(data.revisiones.revisiones[0][1].estado);
+                    setRevision2(data.revisiones.revisiones[0][2].estado);
+                    setRevision3(data.revisiones.revisiones[0][3].estado);
+                    setRevision4(data.revisiones.revisiones[0][4].estado);
+                    setRevision5(data.revisiones.revisiones[0][5].estado);
+                    setRevision6(data.revisiones.revisiones[0][6].estado);
+                    setRevision7(data.revisiones.revisiones[0][7].estado);
+                    setRevision8(data.revisiones.revisiones[0][8].estado);
+                    setRevision9(data.revisiones.revisiones[0][9].estado);
+                    setRevision10(data.revisiones.revisiones[0][10].estado);
+                    setHora1(data.revisiones.revisiones[0][1].hora1);
+                    setHora2(data.revisiones.revisiones[0][2].hora2);
+                    setHora3(data.revisiones.revisiones[0][3].hora3);
+                    setHora4(data.revisiones.revisiones[0][4].hora4);
+                    setHora5(data.revisiones.revisiones[0][5].hora5);
+                    setHora6(data.revisiones.revisiones[0][6].hora6);
+                    setHora7(data.revisiones.revisiones[0][7].hora7);
+                    setHora8(data.revisiones.revisiones[0][8].hora8);
+                    setHora9(data.revisiones.revisiones[0][9].hora9);
+                    setHora10(data.revisiones.revisiones[0][10].hora10);
+                    setMotivoCancelacion1(data.revisiones.revisiones[0][1].motivoCancelacion1);
+                    setMotivoCancelacion2(data.revisiones.revisiones[0][2].motivoCancelacion2);
+                    setMotivoCancelacion3(data.revisiones.revisiones[0][3].motivoCancelacion3);
+                    setMotivoCancelacion4(data.revisiones.revisiones[0][4].motivoCancelacion4);
+                    setMotivoCancelacion5(data.revisiones.revisiones[0][5].motivoCancelacion5);
+                    setMotivoCancelacion6(data.revisiones.revisiones[0][6].motivoCancelacion6);
+                    setMotivoCancelacion7(data.revisiones.revisiones[0][7].motivoCancelacion7);
+                    setMotivoCancelacion8(data.revisiones.revisiones[0][8].motivoCancelacion8);
+                    setMotivoCancelacion9(data.revisiones.revisiones[0][9].motivoCancelacion9);
+                    setMotivoCancelacion10(data.revisiones.revisiones[0][10].motivoCancelacion10);
+                } else {
+                    const datosInspeccion = valoresAlmacenados(data);
+                    setFormData(datosInspeccion);
+                    setTurno(data.revisiones.turno);
+                    setRevision1(data.revisiones.revisiones[0][1].estado);
+                    setRevision2(data.revisiones.revisiones[0][2].estado);
+                    setRevision3(data.revisiones.revisiones[0][3].estado);
+                    setRevision4(data.revisiones.revisiones[0][4].estado);
+                    setRevision5(data.revisiones.revisiones[0][5].estado);
+                    setRevision6(data.revisiones.revisiones[0][6].estado);
+                    setRevision7(data.revisiones.revisiones[0][7].estado);
+                    setRevision8(data.revisiones.revisiones[0][8].estado);
+                    setRevision9(data.revisiones.revisiones[0][9].estado);
+                    setRevision10(data.revisiones.revisiones[0][10].estado);
+                    setHora1(data.revisiones.revisiones[0][1].hora1);
+                    setHora2(data.revisiones.revisiones[0][2].hora2);
+                    setHora3(data.revisiones.revisiones[0][3].hora3);
+                    setHora4(data.revisiones.revisiones[0][4].hora4);
+                    setHora5(data.revisiones.revisiones[0][5].hora5);
+                    setHora6(data.revisiones.revisiones[0][6].hora6);
+                    setHora7(data.revisiones.revisiones[0][7].hora7);
+                    setHora8(data.revisiones.revisiones[0][8].hora8);
+                    setHora9(data.revisiones.revisiones[0][9].hora9);
+                    setHora10(data.revisiones.revisiones[0][10].hora10);
+                    setMotivoCancelacion1(data.revisiones.revisiones[0][1].motivoCancelacion1);
+                    setMotivoCancelacion2(data.revisiones.revisiones[0][2].motivoCancelacion2);
+                    setMotivoCancelacion3(data.revisiones.revisiones[0][3].motivoCancelacion3);
+                    setMotivoCancelacion4(data.revisiones.revisiones[0][4].motivoCancelacion4);
+                    setMotivoCancelacion5(data.revisiones.revisiones[0][5].motivoCancelacion5);
+                    setMotivoCancelacion6(data.revisiones.revisiones[0][6].motivoCancelacion6);
+                    setMotivoCancelacion7(data.revisiones.revisiones[0][7].motivoCancelacion7);
+                    setMotivoCancelacion8(data.revisiones.revisiones[0][8].motivoCancelacion8);
+                    setMotivoCancelacion9(data.revisiones.revisiones[0][9].motivoCancelacion9);
+                    setMotivoCancelacion10(data.revisiones.revisiones[0][10].motivoCancelacion10);
+                }
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
+    console.log(formData)
+
     const onSubmit = e => {
         e.preventDefault()
 
@@ -123,251 +210,246 @@ function RegistraInspeccionMaterial(props) {
         } else {
             //console.log(formData)
             setLoading(true)
-            obtenerNumeroInspeccionPieza().then(response => {
-                const { data } = response;
-                const dataTemp = {
-                    folio: data.noInspeccion,
-                    fechaElaboracion: formData.fechaElaboracion,
-                    noOP: formData.ordenProduccion,
-                    fechaArranqueMaquina: formData.fechaArranque,
-                    noMaquina: formData.numeroMaquina,
-                    cliente: nombreCliente,
-                    descripcionPieza: producto,
-                    noParte: numeroParte,
-                    material: material,
-                    cantidadLote: formData.cantidadLote,
+            const dataTemp = {
+                fechaElaboracion: formData.fechaElaboracion,
+                noOP: formData.ordenProduccion,
+                fechaArranqueMaquina: formData.fechaArranque,
+                noMaquina: formData.numeroMaquina,
+                cliente: nombreCliente,
+                descripcionPieza: producto,
+                noParte: numeroParte,
+                material: material,
+                cantidadLote: formData.cantidadLote,
+                revisiones: {
+                    elaboro: formData.elaboro,
+                    operador: formData.operador,
+                    turno: turno,
                     revisiones: {
-                        elaboro: formData.elaboro,
-                        operador: formData.operador,
-                        turno: turno,
-                        revisiones: {
-                            1: {
-                                revision1: "1",
-                                hora1: hora1,
-                                tono1: formData.tono1,
-                                contaminacion1: formData.contaminacion1,
-                                rebanada1: formData.rebanada1,
-                                rafaga1: formData.rafaga1,
-                                rechupe1: formData.rechupe1,
-                                piezaCompleta1: formData.piezaCompleta1,
-                                grietas1: formData.grietas1,
-                                inyeccion1: formData.inyeccion1,
-                                consistencia1: formData.consistencia1,
-                                funcionalidad1: formData.funcionalidad1,
-                                empaque1: formData.empaque1,
-                                otros1: formData.otros1,
-                                piezasRevisadas1: formData.piezasRevisadas1,
-                                cantidadPiezas1: formData.cantidadPiezas1,
-                                estado: revision1,
-                                motivoCancelacion1: motivoCancelacion1
-                            },
-                            2: {
-                                revision2: "2",
-                                hora2: hora2,
-                                tono2: formData.tono2,
-                                contaminacion2: formData.contaminacion2,
-                                rebanada2: formData.rebanada2,
-                                rafaga2: formData.rafaga2,
-                                rechupe2: formData.rechupe2,
-                                piezaCompleta2: formData.piezaCompleta2,
-                                grietas2: formData.grietas2,
-                                inyeccion2: formData.inyeccion2,
-                                consistencia2: formData.consistencia2,
-                                funcionalidad2: formData.funcionalidad2,
-                                empaque2: formData.empaque2,
-                                otros2: formData.otros2,
-                                piezasRevisadas2: formData.piezasRevisadas2,
-                                cantidadPiezas2: formData.cantidadPiezas2,
-                                estado: revision2,
-                                motivoCancelacion2: motivoCancelacion2
-                            },
-                            3: {
-                                revision3: "3",
-                                hora3: hora3,
-                                tono3: formData.tono3,
-                                contaminacion3: formData.contaminacion3,
-                                rebanada3: formData.rebanada3,
-                                rafaga3: formData.rafaga3,
-                                rechupe3: formData.rechupe3,
-                                piezaCompleta3: formData.piezaCompleta3,
-                                grietas3: formData.grietas3,
-                                inyeccion3: formData.inyeccion3,
-                                consistencia3: formData.consistencia3,
-                                funcionalidad3: formData.funcionalidad3,
-                                empaque3: formData.empaque3,
-                                otros3: formData.otros3,
-                                piezasRevisadas3: formData.piezasRevisadas3,
-                                cantidadPiezas3: formData.cantidadPiezas3,
-                                estado: revision3,
-                                motivoCancelacion3: motivoCancelacion3
-                            },
-                            4: {
-                                revision4: "4",
-                                hora4: hora4,
-                                tono4: formData.tono4,
-                                contaminacion4: formData.contaminacion4,
-                                rebanada4: formData.rebanada4,
-                                rafaga4: formData.rafaga4,
-                                rechupe4: formData.rechupe4,
-                                piezaCompleta4: formData.piezaCompleta4,
-                                grietas4: formData.grietas4,
-                                inyeccion4: formData.inyeccion4,
-                                consistencia4: formData.consistencia4,
-                                funcionalidad4: formData.funcionalidad4,
-                                empaque4: formData.empaque4,
-                                otros4: formData.otros4,
-                                piezasRevisadas4: formData.piezasRevisadas4,
-                                cantidadPiezas4: formData.cantidadPiezas4,
-                                estado: revision4,
-                                motivoCancelacion4: motivoCancelacion4
-                            },
-                            5: {
-                                revision5: "5",
-                                hora5: hora5,
-                                tono5: formData.tono5,
-                                contaminacion5: formData.contaminacion5,
-                                rebanada5: formData.rebanada5,
-                                rafaga5: formData.rafaga5,
-                                rechupe5: formData.rechupe5,
-                                piezaCompleta5: formData.piezaCompleta5,
-                                grietas5: formData.grietas5,
-                                inyeccion5: formData.inyeccion5,
-                                consistencia5: formData.consistencia5,
-                                funcionalidad5: formData.funcionalidad5,
-                                empaque5: formData.empaque5,
-                                otros5: formData.otros5,
-                                piezasRevisadas5: formData.piezasRevisadas5,
-                                cantidadPiezas5: formData.cantidadPiezas5,
-                                estado: revision5,
-                                motivoCancelacion5: motivoCancelacion5
-                            },
-                            6: {
-                                revision6: "6",
-                                hora6: hora6,
-                                tono6: formData.tono6,
-                                contaminacion6: formData.contaminacion6,
-                                rebanada6: formData.rebanada6,
-                                rafaga6: formData.rafaga6,
-                                rechupe6: formData.rechupe6,
-                                piezaCompleta6: formData.piezaCompleta6,
-                                grietas6: formData.grietas6,
-                                inyeccion6: formData.inyeccion6,
-                                consistencia6: formData.consistencia6,
-                                funcionalidad6: formData.funcionalidad6,
-                                empaque6: formData.empaque6,
-                                otros6: formData.otros6,
-                                piezasRevisadas6: formData.piezasRevisadas6,
-                                cantidadPiezas6: formData.cantidadPiezas6,
-                                estado: revision6,
-                                motivoCancelacion6: motivoCancelacion6
-                            },
-                            7: {
-                                revision7: "7",
-                                hora7: hora7,
-                                tono7: formData.tono7,
-                                contaminacion7: formData.contaminacion7,
-                                rebanada7: formData.rebanada7,
-                                rafaga7: formData.rafaga7,
-                                rechupe7: formData.rechupe7,
-                                piezaCompleta7: formData.piezaCompleta7,
-                                grietas7: formData.grietas7,
-                                inyeccion7: formData.inyeccion7,
-                                consistencia7: formData.consistencia7,
-                                funcionalidad7: formData.funcionalidad7,
-                                empaque7: formData.empaque7,
-                                otros7: formData.otros7,
-                                piezasRevisadas7: formData.piezasRevisadas7,
-                                cantidadPiezas7: formData.cantidadPiezas7,
-                                estado: revision7,
-                                motivoCancelacion7: motivoCancelacion7
-                            },
-                            8: {
-                                revision8: "8",
-                                hora8: hora8,
-                                tono8: formData.tono8,
-                                contaminacion8: formData.contaminacion8,
-                                rebanada8: formData.rebanada8,
-                                rafaga8: formData.rafaga8,
-                                rechupe8: formData.rechupe8,
-                                piezaCompleta8: formData.piezaCompleta8,
-                                grietas8: formData.grietas8,
-                                inyeccion8: formData.inyeccion8,
-                                consistencia8: formData.consistencia8,
-                                funcionalidad8: formData.funcionalidad8,
-                                empaque8: formData.empaque8,
-                                otros8: formData.otros8,
-                                piezasRevisadas8: formData.piezasRevisadas8,
-                                cantidadPiezas8: formData.cantidadPiezas8,
-                                estado: revision8,
-                                motivoCancelacion8: motivoCancelacion8
-                            },
-                            9: {
-                                revision9: "9",
-                                hora9: hora9,
-                                tono9: formData.tono9,
-                                contaminacion9: formData.contaminacion9,
-                                rebanada9: formData.rebanada9,
-                                rafaga9: formData.rafaga9,
-                                rechupe9: formData.rechupe9,
-                                piezaCompleta9: formData.piezaCompleta9,
-                                grietas9: formData.grietas9,
-                                inyeccion9: formData.inyeccion9,
-                                consistencia9: formData.consistencia9,
-                                funcionalidad9: formData.funcionalidad9,
-                                empaque9: formData.empaque9,
-                                otros9: formData.otros9,
-                                piezasRevisadas9: formData.piezasRevisadas9,
-                                cantidadPiezas9: formData.cantidadPiezas9,
-                                estado: revision9,
-                                motivoCancelacion9: motivoCancelacion9
-                            },
-                            10: {
-                                revision10: "10",
-                                hora10: hora10,
-                                tono10: formData.tono10,
-                                contaminacion10: formData.contaminacion10,
-                                rebanada10: formData.rebanada10,
-                                rafaga10: formData.rafaga10,
-                                rechupe10: formData.rechupe10,
-                                piezaCompleta10: formData.piezaCompleta10,
-                                grietas10: formData.grietas10,
-                                inyeccion10: formData.inyeccion10,
-                                consistencia10: formData.consistencia10,
-                                funcionalidad10: formData.funcionalidad10,
-                                empaque10: formData.empaque10,
-                                otros10: formData.otros10,
-                                piezasRevisadas10: formData.piezasRevisadas10,
-                                cantidadPiezas10: formData.cantidadPiezas10,
-                                estado: revision10,
-                                motivoCancelacion10: motivoCancelacion10
-                            },
-                        }
-                    },
-                    status: "Activo",
-                    motivoCancelacion: "",
-                }
+                        1: {
+                            revision1: "1",
+                            hora1: hora1,
+                            tono1: formData.tono1,
+                            contaminacion1: formData.contaminacion1,
+                            rebanada1: formData.rebanada1,
+                            rafaga1: formData.rafaga1,
+                            rechupe1: formData.rechupe1,
+                            piezaCompleta1: formData.piezaCompleta1,
+                            grietas1: formData.grietas1,
+                            inyeccion1: formData.inyeccion1,
+                            consistencia1: formData.consistencia1,
+                            funcionalidad1: formData.funcionalidad1,
+                            empaque1: formData.empaque1,
+                            otros1: formData.otros1,
+                            piezasRevisadas1: formData.piezasRevisadas1,
+                            cantidadPiezas1: formData.cantidadPiezas1,
+                            estado: revision1,
+                            motivoCancelacion1: motivoCancelacion1
+                        },
+                        2: {
+                            revision2: "2",
+                            hora2: hora2,
+                            tono2: formData.tono2,
+                            contaminacion2: formData.contaminacion2,
+                            rebanada2: formData.rebanada2,
+                            rafaga2: formData.rafaga2,
+                            rechupe2: formData.rechupe2,
+                            piezaCompleta2: formData.piezaCompleta2,
+                            grietas2: formData.grietas2,
+                            inyeccion2: formData.inyeccion2,
+                            consistencia2: formData.consistencia2,
+                            funcionalidad2: formData.funcionalidad2,
+                            empaque2: formData.empaque2,
+                            otros2: formData.otros2,
+                            piezasRevisadas2: formData.piezasRevisadas2,
+                            cantidadPiezas2: formData.cantidadPiezas2,
+                            estado: revision2,
+                            motivoCancelacion2: motivoCancelacion2
+                        },
+                        3: {
+                            revision3: "3",
+                            hora3: hora3,
+                            tono3: formData.tono3,
+                            contaminacion3: formData.contaminacion3,
+                            rebanada3: formData.rebanada3,
+                            rafaga3: formData.rafaga3,
+                            rechupe3: formData.rechupe3,
+                            piezaCompleta3: formData.piezaCompleta3,
+                            grietas3: formData.grietas3,
+                            inyeccion3: formData.inyeccion3,
+                            consistencia3: formData.consistencia3,
+                            funcionalidad3: formData.funcionalidad3,
+                            empaque3: formData.empaque3,
+                            otros3: formData.otros3,
+                            piezasRevisadas3: formData.piezasRevisadas3,
+                            cantidadPiezas3: formData.cantidadPiezas3,
+                            estado: revision3,
+                            motivoCancelacion3: motivoCancelacion3
+                        },
+                        4: {
+                            revision4: "4",
+                            hora4: hora4,
+                            tono4: formData.tono4,
+                            contaminacion4: formData.contaminacion4,
+                            rebanada4: formData.rebanada4,
+                            rafaga4: formData.rafaga4,
+                            rechupe4: formData.rechupe4,
+                            piezaCompleta4: formData.piezaCompleta4,
+                            grietas4: formData.grietas4,
+                            inyeccion4: formData.inyeccion4,
+                            consistencia4: formData.consistencia4,
+                            funcionalidad4: formData.funcionalidad4,
+                            empaque4: formData.empaque4,
+                            otros4: formData.otros4,
+                            piezasRevisadas4: formData.piezasRevisadas4,
+                            cantidadPiezas4: formData.cantidadPiezas4,
+                            estado: revision4,
+                            motivoCancelacion4: motivoCancelacion4
+                        },
+                        5: {
+                            revision5: "5",
+                            hora5: hora5,
+                            tono5: formData.tono5,
+                            contaminacion5: formData.contaminacion5,
+                            rebanada5: formData.rebanada5,
+                            rafaga5: formData.rafaga5,
+                            rechupe5: formData.rechupe5,
+                            piezaCompleta5: formData.piezaCompleta5,
+                            grietas5: formData.grietas5,
+                            inyeccion5: formData.inyeccion5,
+                            consistencia5: formData.consistencia5,
+                            funcionalidad5: formData.funcionalidad5,
+                            empaque5: formData.empaque5,
+                            otros5: formData.otros5,
+                            piezasRevisadas5: formData.piezasRevisadas5,
+                            cantidadPiezas5: formData.cantidadPiezas5,
+                            estado: revision5,
+                            motivoCancelacion5: motivoCancelacion5
+                        },
+                        6: {
+                            revision6: "6",
+                            hora6: hora6,
+                            tono6: formData.tono6,
+                            contaminacion6: formData.contaminacion6,
+                            rebanada6: formData.rebanada6,
+                            rafaga6: formData.rafaga6,
+                            rechupe6: formData.rechupe6,
+                            piezaCompleta6: formData.piezaCompleta6,
+                            grietas6: formData.grietas6,
+                            inyeccion6: formData.inyeccion6,
+                            consistencia6: formData.consistencia6,
+                            funcionalidad6: formData.funcionalidad6,
+                            empaque6: formData.empaque6,
+                            otros6: formData.otros6,
+                            piezasRevisadas6: formData.piezasRevisadas6,
+                            cantidadPiezas6: formData.cantidadPiezas6,
+                            estado: revision6,
+                            motivoCancelacion6: motivoCancelacion6
+                        },
+                        7: {
+                            revision7: "7",
+                            hora7: hora7,
+                            tono7: formData.tono7,
+                            contaminacion7: formData.contaminacion7,
+                            rebanada7: formData.rebanada7,
+                            rafaga7: formData.rafaga7,
+                            rechupe7: formData.rechupe7,
+                            piezaCompleta7: formData.piezaCompleta7,
+                            grietas7: formData.grietas7,
+                            inyeccion7: formData.inyeccion7,
+                            consistencia7: formData.consistencia7,
+                            funcionalidad7: formData.funcionalidad7,
+                            empaque7: formData.empaque7,
+                            otros7: formData.otros7,
+                            piezasRevisadas7: formData.piezasRevisadas7,
+                            cantidadPiezas7: formData.cantidadPiezas7,
+                            estado: revision7,
+                            motivoCancelacion7: motivoCancelacion7
+                        },
+                        8: {
+                            revision8: "8",
+                            hora8: hora8,
+                            tono8: formData.tono8,
+                            contaminacion8: formData.contaminacion8,
+                            rebanada8: formData.rebanada8,
+                            rafaga8: formData.rafaga8,
+                            rechupe8: formData.rechupe8,
+                            piezaCompleta8: formData.piezaCompleta8,
+                            grietas8: formData.grietas8,
+                            inyeccion8: formData.inyeccion8,
+                            consistencia8: formData.consistencia8,
+                            funcionalidad8: formData.funcionalidad8,
+                            empaque8: formData.empaque8,
+                            otros8: formData.otros8,
+                            piezasRevisadas8: formData.piezasRevisadas8,
+                            cantidadPiezas8: formData.cantidadPiezas8,
+                            estado: revision8,
+                            motivoCancelacion8: motivoCancelacion8
+                        },
+                        9: {
+                            revision9: "9",
+                            hora9: hora9,
+                            tono9: formData.tono9,
+                            contaminacion9: formData.contaminacion9,
+                            rebanada9: formData.rebanada9,
+                            rafaga9: formData.rafaga9,
+                            rechupe9: formData.rechupe9,
+                            piezaCompleta9: formData.piezaCompleta9,
+                            grietas9: formData.grietas9,
+                            inyeccion9: formData.inyeccion9,
+                            consistencia9: formData.consistencia9,
+                            funcionalidad9: formData.funcionalidad9,
+                            empaque9: formData.empaque9,
+                            otros9: formData.otros9,
+                            piezasRevisadas9: formData.piezasRevisadas9,
+                            cantidadPiezas9: formData.cantidadPiezas9,
+                            estado: revision9,
+                            motivoCancelacion9: motivoCancelacion9
+                        },
+                        10: {
+                            revision10: "10",
+                            hora10: hora10,
+                            tono10: formData.tono10,
+                            contaminacion10: formData.contaminacion10,
+                            rebanada10: formData.rebanada10,
+                            rafaga10: formData.rafaga10,
+                            rechupe10: formData.rechupe10,
+                            piezaCompleta10: formData.piezaCompleta10,
+                            grietas10: formData.grietas10,
+                            inyeccion10: formData.inyeccion10,
+                            consistencia10: formData.consistencia10,
+                            funcionalidad10: formData.funcionalidad10,
+                            empaque10: formData.empaque10,
+                            otros10: formData.otros10,
+                            piezasRevisadas10: formData.piezasRevisadas10,
+                            cantidadPiezas10: formData.cantidadPiezas10,
+                            estado: revision10,
+                            motivoCancelacion10: motivoCancelacion10
+                        },
+                    }
+                },
+                status: "Activo",
+                motivoCancelacion: "",
+            }
 
-                //console.log(dataTemp)
-                try {
-                    registraInspeccionPieza(dataTemp).then(response => {
-                        const { data } = response;
-                        LogsInformativos("Inspeccion de pieza realizada ", dataTemp)
-                        setLoading(false)
-                        toast.success(data.mensaje)
-                        rutaRegreso()
-                    }).catch(e => {
-                        console.log(e)
-                        if (e.message === 'Network Error') {
-                            //console.log("No hay internet")
-                            toast.error("Conexión al servidor no disponible");
-                        }
-                    })
-                } catch (e) {
+            //console.log(dataTemp)
+            try {
+                actualizaInspeccionPieza(id, dataTemp).then(response => {
+                    const { data } = response;
+                    LogsInformativos("Inspeccion de pieza realizada ", dataTemp)
+                    setLoading(false)
+                    toast.success(data.mensaje)
+                    rutaRegreso()
+                }).catch(e => {
                     console.log(e)
-                }
-            }).catch(e => {
+                    if (e.message === 'Network Error') {
+                        //console.log("No hay internet")
+                        toast.error("Conexión al servidor no disponible");
+                    }
+                })
+            } catch (e) {
                 console.log(e)
-            })
+            }
+
         }
     }
 
@@ -1179,8 +1261,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision1 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.tono1=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.tono1=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1190,8 +1272,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision2 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.tono2=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.tono2=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1201,8 +1283,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision3 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.tono3=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.tono3=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1212,8 +1294,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision4 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.tono4=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.tono4=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1223,8 +1305,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision5 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.tono5=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.tono5=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1234,8 +1316,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision6 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.tono6=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.tono6=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1245,8 +1327,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision7 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.tono7=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.tono7=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1256,8 +1338,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision8 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.tono8=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.tono8=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1267,8 +1349,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision9 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.tono9=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.tono9=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1278,8 +1360,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision10 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.tono10=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.tono10=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
 
                                         </Form.Group>
@@ -1300,8 +1382,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision1 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.contaminacion1=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.contaminacion1=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1311,8 +1393,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision2 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.contaminacion2=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.contaminacion2=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1322,8 +1404,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision3 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.contaminacion3=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.contaminacion3=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1333,8 +1415,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision4 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.contaminacion4=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.contaminacion4=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1344,8 +1426,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision5 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.contaminacion5=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.contaminacion5=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1355,8 +1437,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision6 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.contaminacion6=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.contaminacion6=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1366,8 +1448,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision7 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.contaminacion7=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.contaminacion7=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1377,8 +1459,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision8 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.contaminacion8=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.contaminacion8=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1388,8 +1470,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision9 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.contaminacion9=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.contaminacion9=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1399,8 +1481,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision10 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.contaminacion10=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.contaminacion10=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
 
                                         </Form.Group>
@@ -1421,8 +1503,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision1 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rebanada1=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rebanada1=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1432,8 +1514,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision2 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rebanada2=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rebanada2=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1443,8 +1525,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision3 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rebanada3=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rebanada3=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1454,8 +1536,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision4 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rebanada4=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rebanada4=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1465,8 +1547,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision5 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rebanada5=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rebanada5=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1476,8 +1558,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision6 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rebanada6=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rebanada6=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1487,8 +1569,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision7 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rebanada7=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rebanada7=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1498,8 +1580,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision8 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rebanada8=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rebanada8=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1509,8 +1591,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision9 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rebanada9=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rebanada9=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1520,10 +1602,9 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision10 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rebanada10=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rebanada10=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
-
                                         </Form.Group>
                                     </Row>
 
@@ -1542,8 +1623,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision1 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rafaga1=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rafaga1=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1553,8 +1634,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision2 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rafaga2=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rafaga2=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1564,8 +1645,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision3 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rafaga3=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rafaga3=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1575,8 +1656,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision4 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rafaga4=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rafaga4=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1586,8 +1667,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision5 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rafaga5=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rafaga5=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1597,8 +1678,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision6 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rafaga6=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rafaga6=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1608,8 +1689,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision7 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rafaga7=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rafaga7=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1619,8 +1700,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision8 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rafaga8=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rafaga8=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1630,8 +1711,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision9 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rafaga9=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rafaga9=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1641,8 +1722,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision10 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rafaga10=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rafaga10=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
 
                                         </Form.Group>
@@ -1663,8 +1744,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision1 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rechupe1=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rechupe1=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1674,8 +1755,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision2 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rechupe2=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rechupe2=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1685,8 +1766,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision3 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rechupe3=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rechupe3=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1696,8 +1777,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision4 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rechupe4=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rechupe4=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1707,8 +1788,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision5 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rechupe5=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rechupe5=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1718,8 +1799,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision6 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rechupe6=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rechupe6=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1729,8 +1810,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision7 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rechupe7=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rechupe7=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1740,8 +1821,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision8 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rechupe8=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rechupe8=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1751,8 +1832,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision9 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rechupe9=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rechupe9=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1762,8 +1843,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision10 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.rechupe10=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.rechupe10=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
 
                                         </Form.Group>
@@ -1784,8 +1865,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision1 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.piezaCompleta1=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.piezaCompleta1=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1795,8 +1876,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision2 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.piezaCompleta2=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.piezaCompleta2=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1806,8 +1887,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision3 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.piezaCompleta3=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.piezaCompleta3=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1817,8 +1898,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision4 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.piezaCompleta4=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.piezaCompleta4=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1828,8 +1909,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision5 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.piezaCompleta5=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.piezaCompleta5=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1839,8 +1920,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision6 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.piezaCompleta6=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.piezaCompleta6=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1850,8 +1931,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision7 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.piezaCompleta7=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.piezaCompleta7=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1861,8 +1942,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision8 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.piezaCompleta8=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.piezaCompleta8=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1872,8 +1953,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision9 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.piezaCompleta9=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.piezaCompleta9=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1883,8 +1964,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision10 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.piezaCompleta10=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.piezaCompleta10=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
 
                                         </Form.Group>
@@ -1905,8 +1986,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision1 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.grietas1=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.grietas1=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1916,8 +1997,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision2 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.grietas2=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.grietas2=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1927,8 +2008,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision3 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.grietas3=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.grietas3=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1938,8 +2019,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision4 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.grietas4=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.grietas4=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1949,8 +2030,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision5 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.grietas5=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.grietas5=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1960,8 +2041,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision6 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.grietas6=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.grietas6=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1971,8 +2052,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision7 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.grietas7=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.grietas7=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1982,8 +2063,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision8 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.grietas8=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.grietas8=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -1993,8 +2074,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision9 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.grietas9=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.grietas9=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2004,8 +2085,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision10 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.grietas10=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.grietas10=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
 
                                         </Form.Group>
@@ -2026,8 +2107,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision1 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.inyeccion1=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.inyeccion1=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2037,8 +2118,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision2 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.inyeccion2=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.inyeccion2=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2048,8 +2129,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision3 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.inyeccion3=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.inyeccion3=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2059,8 +2140,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision4 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.inyeccion4=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.inyeccion4=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2070,8 +2151,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision5 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.inyeccion5=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.inyeccion5=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2081,8 +2162,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision6 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.inyeccion6=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.inyeccion6=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2092,8 +2173,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision7 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.inyeccion7=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.inyeccion7=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2103,8 +2184,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision8 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.inyeccion8=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.inyeccion8=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2114,8 +2195,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision9 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.inyeccion9=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.inyeccion9=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2125,8 +2206,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision10 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.inyeccion10=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.inyeccion10=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
 
                                         </Form.Group>
@@ -2147,8 +2228,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision1 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.consistencia1=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.consistencia1=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2158,8 +2239,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision2 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.consistencia2=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.consistencia2=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2169,8 +2250,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision3 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.consistencia3=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.consistencia3=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2180,8 +2261,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision4 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.consistencia4=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.consistencia4=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2191,8 +2272,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision5 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.consistencia5=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.consistencia5=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2202,8 +2283,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision6 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.consistencia6=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.consistencia6=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2213,8 +2294,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision7 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.consistencia7=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.consistencia7=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2224,8 +2305,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision8 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.consistencia8=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.consistencia8=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2235,8 +2316,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision9 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.consistencia9=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.consistencia9=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2246,8 +2327,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision10 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.consistencia10=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.consistencia10=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
 
                                         </Form.Group>
@@ -2268,8 +2349,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision1 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.funcionalidad1=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.funcionalidad1=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2279,8 +2360,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision2 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.funcionalidad2=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.funcionalidad2=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2290,8 +2371,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision3 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.funcionalidad3=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.funcionalidad3=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2301,8 +2382,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision4 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.funcionalidad4=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.funcionalidad4=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2312,8 +2393,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision5 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.funcionalidad5=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.funcionalidad5=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2323,8 +2404,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision6 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.funcionalidad6=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.funcionalidad6=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2334,8 +2415,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision7 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.funcionalidad7=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.funcionalidad7=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2345,8 +2426,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision8 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.funcionalidad8=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.funcionalidad8=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2356,8 +2437,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision9 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.funcionalidad9=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.funcionalidad9=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2367,8 +2448,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision10 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.funcionalidad10=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.funcionalidad10=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
 
                                         </Form.Group>
@@ -2389,8 +2470,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision1 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.empaque1=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.empaque1=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2400,8 +2481,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision2 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.empaque2=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.empaque2=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2411,8 +2492,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision3 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.empaque3=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.empaque3=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2422,8 +2503,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision4 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.empaque4=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.empaque4=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2433,8 +2514,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision5 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.empaque5=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.empaque5=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2444,8 +2525,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision6 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.empaque6=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.empaque6=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2455,8 +2536,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision7 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.empaque7=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.empaque7=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2466,8 +2547,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision8 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.empaque8=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.empaque8=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2477,8 +2558,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision9 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.empaque9=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.empaque9=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2488,8 +2569,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision10 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.empaque10=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.empaque10=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
 
                                         </Form.Group>
@@ -2510,8 +2591,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision1 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.otros1=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.otros1=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2521,8 +2602,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision2 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.otros2=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.otros2=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2532,8 +2613,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision3 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.otros3=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.otros3=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2543,8 +2624,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision4 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.otros4=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.otros4=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2554,8 +2635,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision5 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.otros5=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.otros5=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2565,8 +2646,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision6 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.otros6=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.otros6=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2576,8 +2657,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision7 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.otros7=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.otros7=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2587,8 +2668,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision8 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.otros8=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.otros8=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2598,8 +2679,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision9 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.otros9=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.otros9=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
                                             <Col>
                                                 <Form.Control
@@ -2609,8 +2690,8 @@ function RegistraInspeccionMaterial(props) {
                                                     disabled={revision10 != 1}
                                                 >
                                                     <option></option>
-                                                    <option value="ok">OK</option>
-                                                    <option value="noOK">NO OK</option></Form.Control>
+                                                    <option value="ok" selected={formData.otros10=="ok"}>OK</option>
+                                                    <option value="noOK" selected={formData.otros10=="noOK"}>NO OK</option></Form.Control>
                                             </Col>
 
                                         </Form.Group>
@@ -2815,7 +2896,7 @@ function RegistraInspeccionMaterial(props) {
                                         variant="success"
                                         className="registrar"
                                     >
-                                        {!loading ? "Registrar" : <Spinner animation="border" />}
+                                        {!loading ? "Actualizar" : <Spinner animation="border" />}
                                     </Button>
                                 </Col>
                                 <Col>
@@ -3019,7 +3100,165 @@ function initialFormData() {
         cantidadPiezas8: "",
         cantidadPiezas9: "",
         cantidadPiezas10: "",
+        turno: "",
     }
 }
 
-export default RegistraInspeccionMaterial;
+function valoresAlmacenados(data) {
+    return {
+        fechaElaboracion: data.fechaElaboracion,
+        producto: data.descripcionPieza,
+        ordenProduccion: data.noOP,
+        numeroParte: data.noParte,
+        fechaArranque: data.fechaArranqueMaquina,
+        material: data.material,
+        numeroMaquina: data.noMaquina,
+        cantidadLote: data.cantidadLote,
+        nombreCliente: data.cliente,
+        elaboro: data.revisiones.elaboro,
+        operador: data.revisiones.operador,
+        turno: data.revisiones.turno,
+        tono1: data.revisiones.revisiones[0][1].tono1,
+        contaminacion1: data.revisiones.revisiones[0][1].contaminacion1,
+        rebanada1: data.revisiones.revisiones[0][1].rebanada1,
+        rafaga1: data.revisiones.revisiones[0][1].rafaga1,
+        rechupe1: data.revisiones.revisiones[0][1].rechupe1,
+        piezaCompleta1: data.revisiones.revisiones[0][1].piezaCompleta1,
+        grietas1: data.revisiones.revisiones[0][1].grietas1,
+        inyeccion1: data.revisiones.revisiones[0][1].inyeccion1,
+        consistencia1: data.revisiones.revisiones[0][1].consistencia1,
+        funcionalidad1: data.revisiones.revisiones[0][1].funcionalidad1,
+        empaque1: data.revisiones.revisiones[0][1].empaque1,
+        otros1: data.revisiones.revisiones[0][1].otros1,
+        piezasRevisadas1: data.revisiones.revisiones[0][1].piezasRevisadas1,
+        cantidadPiezas1: data.revisiones.revisiones[0][1].cantidadPiezas1,
+        tono2: data.revisiones.revisiones[0][2].tono2,
+        contaminacion2: data.revisiones.revisiones[0][2].contaminacion2,
+        rebanada2: data.revisiones.revisiones[0][2].rebanada2,
+        rafaga2: data.revisiones.revisiones[0][2].rafaga2,
+        rechupe2: data.revisiones.revisiones[0][2].rechupe2,
+        piezaCompleta2: data.revisiones.revisiones[0][2].piezaCompleta2,
+        grietas2: data.revisiones.revisiones[0][2].grietas2,
+        inyeccion2: data.revisiones.revisiones[0][2].inyeccion2,
+        consistencia2: data.revisiones.revisiones[0][2].consistencia2,
+        funcionalidad2: data.revisiones.revisiones[0][2].funcionalidad2,
+        empaque2: data.revisiones.revisiones[0][2].empaque2,
+        otros2: data.revisiones.revisiones[0][2].otros2,
+        piezasRevisadas2: data.revisiones.revisiones[0][2].piezasRevisadas2,
+        cantidadPiezas2: data.revisiones.revisiones[0][2].cantidadPiezas2,
+        tono3: data.revisiones.revisiones[0][3].tono3,
+        contaminacion3: data.revisiones.revisiones[0][3].contaminacion3,
+        rebanada3: data.revisiones.revisiones[0][3].rebanada3,
+        rafaga3: data.revisiones.revisiones[0][3].rafaga3,
+        rechupe3: data.revisiones.revisiones[0][3].rechupe3,
+        piezaCompleta3: data.revisiones.revisiones[0][3].piezaCompleta3,
+        grietas3: data.revisiones.revisiones[0][3].grietas3,
+        inyeccion3: data.revisiones.revisiones[0][3].inyeccion3,
+        consistencia3: data.revisiones.revisiones[0][3].consistencia3,
+        funcionalidad3: data.revisiones.revisiones[0][3].funcionalidad3,
+        empaque3: data.revisiones.revisiones[0][3].empaque3,
+        otros3: data.revisiones.revisiones[0][3].otros3,
+        piezasRevisadas3: data.revisiones.revisiones[0][3].piezasRevisadas3,
+        cantidadPiezas3: data.revisiones.revisiones[0][3].cantidadPiezas3,
+        tono4: data.revisiones.revisiones[0][4].tono4,
+        contaminacion4: data.revisiones.revisiones[0][4].contaminacion4,
+        rebanada4: data.revisiones.revisiones[0][4].rebanada4,
+        rafaga4: data.revisiones.revisiones[0][4].rafaga4,
+        rechupe4: data.revisiones.revisiones[0][4].rechupe4,
+        piezaCompleta4: data.revisiones.revisiones[0][4].piezaCompleta4,
+        grietas4: data.revisiones.revisiones[0][4].grietas4,
+        inyeccion4: data.revisiones.revisiones[0][4].inyeccion4,
+        consistencia4: data.revisiones.revisiones[0][4].consistencia4,
+        funcionalidad4: data.revisiones.revisiones[0][4].funcionalidad4,
+        empaque4: data.revisiones.revisiones[0][4].empaque4,
+        otros4: data.revisiones.revisiones[0][4].otros4,
+        piezasRevisadas4: data.revisiones.revisiones[0][4].piezasRevisadas4,
+        cantidadPiezas4: data.revisiones.revisiones[0][4].cantidadPiezas4,
+        tono5: data.revisiones.revisiones[0][5].tono5,
+        contaminacion5: data.revisiones.revisiones[0][5].contaminacion5,
+        rebanada5: data.revisiones.revisiones[0][5].rebanada5,
+        rafaga5: data.revisiones.revisiones[0][5].rafaga5,
+        rechupe5: data.revisiones.revisiones[0][5].rechupe5,
+        piezaCompleta5: data.revisiones.revisiones[0][5].piezaCompleta5,
+        grietas5: data.revisiones.revisiones[0][5].grietas5,
+        inyeccion5: data.revisiones.revisiones[0][5].inyeccion5,
+        consistencia5: data.revisiones.revisiones[0][5].consistencia5,
+        funcionalidad5: data.revisiones.revisiones[0][5].funcionalidad5,
+        empaque5: data.revisiones.revisiones[0][5].empaque5,
+        otros5: data.revisiones.revisiones[0][5].otros5,
+        piezasRevisadas5: data.revisiones.revisiones[0][5].piezasRevisadas5,
+        cantidadPiezas5: data.revisiones.revisiones[0][5].cantidadPiezas5,
+        tono6: data.revisiones.revisiones[0][6].tono6,
+        contaminacion6: data.revisiones.revisiones[0][6].contaminacion6,
+        rebanada6: data.revisiones.revisiones[0][6].rebanada6,
+        rafaga6: data.revisiones.revisiones[0][6].rafaga6,
+        rechupe6: data.revisiones.revisiones[0][6].rechupe6,
+        piezaCompleta6: data.revisiones.revisiones[0][6].piezaCompleta6,
+        grietas6: data.revisiones.revisiones[0][6].grietas6,
+        inyeccion6: data.revisiones.revisiones[0][6].inyeccion6,
+        consistencia6: data.revisiones.revisiones[0][6].consistencia6,
+        funcionalidad6: data.revisiones.revisiones[0][6].funcionalidad6,
+        empaque6: data.revisiones.revisiones[0][6].empaque6,
+        otros6: data.revisiones.revisiones[0][6].otros6,
+        piezasRevisadas6: data.revisiones.revisiones[0][6].piezasRevisadas6,
+        cantidadPiezas6: data.revisiones.revisiones[0][6].cantidadPiezas6,
+        tono7: data.revisiones.revisiones[0][7].tono7,
+        contaminacion7: data.revisiones.revisiones[0][7].contaminacion7,
+        rebanada7: data.revisiones.revisiones[0][7].rebanada7,
+        rafaga7: data.revisiones.revisiones[0][7].rafaga7,
+        rechupe7: data.revisiones.revisiones[0][7].rechupe7,
+        piezaCompleta7: data.revisiones.revisiones[0][7].piezaCompleta7,
+        grietas7: data.revisiones.revisiones[0][7].grietas7,
+        inyeccion7: data.revisiones.revisiones[0][7].inyeccion7,
+        consistencia7: data.revisiones.revisiones[0][7].consistencia7,
+        funcionalidad7: data.revisiones.revisiones[0][7].funcionalidad7,
+        empaque7: data.revisiones.revisiones[0][7].empaque7,
+        otros7: data.revisiones.revisiones[0][7].otros7,
+        piezasRevisadas7: data.revisiones.revisiones[0][7].piezasRevisadas7,
+        cantidadPiezas7: data.revisiones.revisiones[0][7].cantidadPiezas7,
+        tono8: data.revisiones.revisiones[0][8].tono8,
+        contaminacion8: data.revisiones.revisiones[0][8].contaminacion8,
+        rebanada8: data.revisiones.revisiones[0][8].rebanada8,
+        rafaga8: data.revisiones.revisiones[0][8].rafaga8,
+        rechupe8: data.revisiones.revisiones[0][8].rechupe8,
+        piezaCompleta8: data.revisiones.revisiones[0][8].piezaCompleta8,
+        grietas8: data.revisiones.revisiones[0][8].grietas8,
+        inyeccion8: data.revisiones.revisiones[0][8].inyeccion8,
+        consistencia8: data.revisiones.revisiones[0][8].consistencia8,
+        funcionalidad8: data.revisiones.revisiones[0][8].funcionalidad8,
+        empaque8: data.revisiones.revisiones[0][8].empaque8,
+        otros8: data.revisiones.revisiones[0][8].otros8,
+        piezasRevisadas8: data.revisiones.revisiones[0][8].piezasRevisadas8,
+        cantidadPiezas8: data.revisiones.revisiones[0][8].cantidadPiezas8,
+        tono9: data.revisiones.revisiones[0][9].tono9,
+        contaminacion9: data.revisiones.revisiones[0][9].contaminacion9,
+        rebanada9: data.revisiones.revisiones[0][9].rebanada9,
+        rafaga9: data.revisiones.revisiones[0][9].rafaga9,
+        rechupe9: data.revisiones.revisiones[0][9].rechupe9,
+        piezaCompleta9: data.revisiones.revisiones[0][9].piezaCompleta9,
+        grietas9: data.revisiones.revisiones[0][9].grietas9,
+        inyeccion9: data.revisiones.revisiones[0][9].inyeccion9,
+        consistencia9: data.revisiones.revisiones[0][9].consistencia9,
+        funcionalidad9: data.revisiones.revisiones[0][9].funcionalidad9,
+        empaque9: data.revisiones.revisiones[0][9].empaque9,
+        otros9: data.revisiones.revisiones[0][9].otros9,
+        piezasRevisadas9: data.revisiones.revisiones[0][9].piezasRevisadas9,
+        cantidadPiezas9: data.revisiones.revisiones[0][9].cantidadPiezas9,
+        tono10: data.revisiones.revisiones[0][10].tono10,
+        contaminacion10: data.revisiones.revisiones[0][10].contaminacion10,
+        rebanada10: data.revisiones.revisiones[0][10].rebanada10,
+        rafaga10: data.revisiones.revisiones[0][10].rafaga10,
+        rechupe10: data.revisiones.revisiones[0][10].rechupe10,
+        piezaCompleta10: data.revisiones.revisiones[0][10].piezaCompleta10,
+        grietas10: data.revisiones.revisiones[0][10].grietas10,
+        inyeccion10: data.revisiones.revisiones[0][10].inyeccion10,
+        consistencia10: data.revisiones.revisiones[0][10].consistencia10,
+        funcionalidad10: data.revisiones.revisiones[0][10].funcionalidad10,
+        empaque10: data.revisiones.revisiones[0][10].empaque10,
+        otros10: data.revisiones.revisiones[0][10].otros10,
+        piezasRevisadas10: data.revisiones.revisiones[0][10].piezasRevisadas10,
+        cantidadPiezas10: data.revisiones.revisiones[0][10].cantidadPiezas10,
+    }
+}
+
+export default ModificaInspeccionMaterial;
