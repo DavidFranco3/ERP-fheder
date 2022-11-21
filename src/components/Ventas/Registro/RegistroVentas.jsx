@@ -217,9 +217,7 @@ function RegistroVentas(props) {
             }).catch(e => {
                 console.log(e)
             })
-
         }
-
     }
 
     const onChange = e => {

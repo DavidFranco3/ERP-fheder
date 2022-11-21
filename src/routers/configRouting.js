@@ -176,6 +176,7 @@ import RegistroNoConformidad from "../components/NoConformidad/RegistraNoConform
 
 // Rutas para la Liberación de productos y procesos
 import RegistroLiberacionProductoProceso from "../components/LiberacionProductoProceso/RegistraLiberacionProductoProceso";
+import ModificaLiberacionProductoProceso from "../components/LiberacionProductoProceso/ModificaLiberacionProductoProceso";
 
 // Rutas para la ficha tecnica
 import RegistroFichaTecnica from "../components/FichaTecnica/RegistraFichaTecnica";
@@ -330,6 +331,11 @@ export default [
         path: "/RegistroLiberacionProductoProceso",
         exact: true,
         page: RegistroLiberacionProductoProceso
+    },
+    {
+        path: "/ModificaLiberacionProductoProceso/:id",
+        exact: true,
+        page: ModificaLiberacionProductoProceso
     },
     {
         path: "/ModificacionUsuarios/:id",

@@ -199,8 +199,6 @@ function ModificaInspeccionMaterial(props) {
         }
     }, []);
 
-    console.log(formData)
-
     const onSubmit = e => {
         e.preventDefault()
 

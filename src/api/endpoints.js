@@ -344,6 +344,19 @@ export const ENDPOINTActualizarStatusMaterial = "/statusMaterial/actualizar";
 export const ENDPOINTObtenerDatosStatusMaterial = "/statusMaterial/obtenerDatosStatus";
 export const ENDPOINTTotalStatusMaterial = "/statusMaterial/total";
 
+//Liberacion de producto y proceso
+export const ENDPOINTRegistroLiberacionProducto = "/liberacionProductoProceso/registro";
+export const ENDPOINTListarLiberacionProducto = "/liberacionProductoProceso/listar";
+export const ENDPOINTListarPaginandoLiberacionProducto = "/liberacionProductoProceso/listarPaginando";
+export const ENDPOINTObtenerLiberacionProducto = "/liberacionProductoProceso/obtener";
+export const ENDPOINTObtenerNoLiberacionProducto = "/liberacionProductoProceso/obtenerNoLiberacion";
+export const ENDPOINTObtenerItemLiberacionProducto = "/liberacionProductoProceso/obtenerItem";
+export const ENDPOINTEliminarLiberacionProducto = "/liberacionProductoProceso/eliminar";
+export const ENDPOINTActualizarEstadoLiberacionProducto = "/liberacionProductoProceso/actualizarEstado";
+export const ENDPOINTActualizarLiberacionProducto = "/liberacionProductoProceso/actualizar";
+export const ENDPOINTObtenerDatosLiberacionProducto = "/liberacionProductoProceso/obtenerDatosLiberacion";
+export const ENDPOINTTotalLiberacionProducto = "/liberacionProductoProceso/total";
+
 //Produccion
 export const ENDPOINTRegistroProduccion = "/produccion/registro";
 export const ENDPOINTListarProduccion = "/produccion/listar";

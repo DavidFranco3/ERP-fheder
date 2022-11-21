@@ -3,8 +3,8 @@ import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstr
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import LayoutPrincipal from "../../../layout/layoutPrincipal";
-import { useHistory } from "react-router-dom";
-import { registraLiberacionProducto, obtenerNumeroLiberacionProducto, obtenerItemLiberacionProducto } from "../../../api/liberacionProductoProceso";
+import { useHistory, useParams } from "react-router-dom";
+import { obtenerLiberacionProducto, actualizaLiberacionProducto } from "../../../api/liberacionProductoProceso";
 import { toast } from "react-toastify";
 import { listarClientes } from "../../../api/clientes";
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
@@ -15,6 +15,9 @@ function RegistraLiberacionProductoProceso(props) {
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory();
+
+    const params = useParams();
+    const { id } = params
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -97,16 +100,27 @@ function RegistraLiberacionProductoProceso(props) {
         })
     }
 
-    // Para almacenar el folio actual
-    const [folioActual, setFolioActual] = useState("");
-
     useEffect(() => {
         try {
-            obtenerNumeroLiberacionProducto().then(response => {
+            obtenerLiberacionProducto(id).then(response => {
                 const { data } = response;
                 // console.log(data)
-                const { noLiberacion } = data;
-                setFolioActual(noLiberacion)
+                // initialData
+
+                if (!formData && data) {
+                    setFormData(valoresAlmacenados(data));
+                    setProductoSeleccionado({
+                        noParte: data.noParteMolde,
+                        descripcion: data.descripcionPieza
+                    })
+                } else {
+                    const datosLiberacion = valoresAlmacenados(data);
+                    setFormData(datosLiberacion);
+                    setProductoSeleccionado({
+                        noParte: data.noParteMolde,
+                        descripcion: data.descripcionPieza
+                    })
+                }
             }).catch(e => {
                 console.log(e)
             })
@@ -114,6 +128,10 @@ function RegistraLiberacionProductoProceso(props) {
             console.log(e)
         }
     }, []);
+
+    console.log(formData)
+    console.log(productoSeleccionado)
+    console.log(id)
 
     const onSubmit = e => {
         e.preventDefault();
@@ -125,105 +143,97 @@ function RegistraLiberacionProductoProceso(props) {
             setLoading(true)
 
             // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            obtenerItemLiberacionProducto().then(response => {
-                const { data } = response;
-                const dataTemp = {
-                    item: data.item,
-                    folio: folioActual,
-                    cliente: formData.cliente,
-                    descripcionPieza: productoSeleccionado.descripcion,
-                    noParteMolde: productoSeleccionado.noParte,
-                    procesoRealizado: formData.proceso,
-                    fechaElaboracion: formData.fechaElaboracion,
-                    fechaArranqueMolde: formData.fechaArranque,
-                    noMaquina: formData.noMaquina,
-                    hojaLiberacion: formData.hojaLiberacion,
-                    elaboro: formData.elaboro,
-                    turno: formData.turno,
-                    proceso: {
-                        1: {
-                            proceso: formData.proceso1,
-                            observaciones: formData.observacionesProceso1
-                        },
-                        2: {
-                            proceso: formData.proceso2,
-                            observaciones: formData.observacionesProceso2
-                        },
-                        3: {
-                            proceso: formData.proceso3,
-                            observaciones: formData.observacionesProceso3
-                        },
-                        4: {
-                            proceso: formData.proceso4,
-                            observaciones: formData.observacionesProceso4
-                        },
-                        5: {
-                            proceso: formData.proceso5,
-                            observaciones: formData.observacionesProceso5
-                        },
-                        6: {
-                            proceso: formData.proceso6,
-                            observaciones: formData.observacionesProceso6
-                        },
-                        7: {
-                            proceso: formData.proceso7,
-                            observaciones: formData.observacionesProceso7
-                        },
+            const dataTemp = {
+                cliente: formData.cliente,
+                descripcionPieza: productoSeleccionado.descripcion,
+                noParteMolde: productoSeleccionado.noParte,
+                procesoRealizado: formData.proceso,
+                fechaElaboracion: formData.fechaElaboracion,
+                fechaArranqueMolde: formData.fechaArranque,
+                noMaquina: formData.noMaquina,
+                hojaLiberacion: formData.hojaLiberacion,
+                elaboro: formData.elaboro,
+                turno: formData.turno,
+                proceso: {
+                    1: {
+                        proceso: formData.proceso1,
+                        observaciones: formData.observacionesProceso1
                     },
-                    producto: {
-                        1: {
-                            producto: formData.producto1,
-                            observaciones: formData.observacionesProducto1
-                        },
-                        2: {
-                            producto: formData.producto2,
-                            observaciones: formData.observacionesProducto2
-                        },
-                        3: {
-                            producto: formData.producto3,
-                            observaciones: formData.observacionesProducto3
-                        },
-                        4: {
-                            producto: formData.producto4,
-                            observaciones: formData.observacionesProducto4
-                        },
-                        5: {
-                            producto: formData.producto5,
-                            observaciones: formData.observacionesProducto5
-                        },
-                        6: {
-                            producto: formData.producto6,
-                            observaciones: formData.observacionesProducto6
-                        },
-                        7: {
-                            producto: formData.producto7,
-                            observaciones: formData.observacionesProducto7
-                        },
-                        8: {
-                            producto: formData.producto8,
-                            observaciones: formData.observacionesProducto8
-                        },
+                    2: {
+                        proceso: formData.proceso2,
+                        observaciones: formData.observacionesProceso2
                     },
-                    observaciones: formData.observaciones
-                }
-                // console.log(dataTemp)
+                    3: {
+                        proceso: formData.proceso3,
+                        observaciones: formData.observacionesProceso3
+                    },
+                    4: {
+                        proceso: formData.proceso4,
+                        observaciones: formData.observacionesProceso4
+                    },
+                    5: {
+                        proceso: formData.proceso5,
+                        observaciones: formData.observacionesProceso5
+                    },
+                    6: {
+                        proceso: formData.proceso6,
+                        observaciones: formData.observacionesProceso6
+                    },
+                    7: {
+                        proceso: formData.proceso7,
+                        observaciones: formData.observacionesProceso7
+                    },
+                },
+                producto: {
+                    1: {
+                        producto: formData.producto1,
+                        observaciones: formData.observacionesProducto1
+                    },
+                    2: {
+                        producto: formData.producto2,
+                        observaciones: formData.observacionesProducto2
+                    },
+                    3: {
+                        producto: formData.producto3,
+                        observaciones: formData.observacionesProducto3
+                    },
+                    4: {
+                        producto: formData.producto4,
+                        observaciones: formData.observacionesProducto4
+                    },
+                    5: {
+                        producto: formData.producto5,
+                        observaciones: formData.observacionesProducto5
+                    },
+                    6: {
+                        producto: formData.producto6,
+                        observaciones: formData.observacionesProducto6
+                    },
+                    7: {
+                        producto: formData.producto7,
+                        observaciones: formData.observacionesProducto7
+                    },
+                    8: {
+                        producto: formData.producto8,
+                        observaciones: formData.observacionesProducto8
+                    },
+                },
+                observaciones: formData.observaciones
+            }
+            // console.log(dataTemp)
 
-                // Modificar el pedido creado recientemente
-                registraLiberacionProducto(dataTemp).then(response => {
-                    const { data: { mensaje, datos } } = response;
-                    // console.log(response)
-                    toast.success(mensaje)
-                    // Log acerca del registro inicial del tracking
-                    LogsInformativos(`Se han registrado la liberacion de producto y proceso ${data.noliberacion}`, datos)
-                    // Registro inicial del tracking
-                    rutaRegreso()
-                }).catch(e => {
-                    console.log(e)
-                })
+            // Modificar el pedido creado recientemente
+            actualizaLiberacionProducto(id, dataTemp).then(response => {
+                const { data: { mensaje, datos } } = response;
+                // console.log(response)
+                toast.success(mensaje)
+                // Log acerca del registro inicial del tracking
+                LogsInformativos(`Se ha actualizado la liberacion de producto y proceso ${id}`, datos)
+                // Registro inicial del tracking
+                rutaRegreso()
             }).catch(e => {
                 console.log(e)
             })
-
         }
 
     }
@@ -277,7 +287,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                 >
                                                     <option>Elige una opción</option>
                                                     {map(listClientes, (cliente, index) => (
-                                                        <option key={index} value={cliente?.nombre + " " + cliente.apellidos}>{cliente?.nombre + " " + cliente.apellidos}</option>
+                                                        <option key={index} value={cliente?.nombre + " " + cliente.apellidos} selected={formData.cliente == cliente?.nombre + " " + cliente.apellidos}>{cliente?.nombre + " " + cliente.apellidos}</option>
                                                     ))}
                                                 </Form.Control>
                                             </Col>
@@ -318,7 +328,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     {map(listProductosActivos, (producto, index) => (
                                                         <option
                                                             key={index}
-                                                            value={producto.noParte + "/" + producto.descripcion}
+                                                            value={producto.noParte + "/" + producto.descripcion} selected={productoSeleccionado.descripcion == producto?.descripcion}
                                                         >
                                                             {producto.descripcion}
                                                         </option>
@@ -435,8 +445,8 @@ function RegistraLiberacionProductoProceso(props) {
                                                     defaultValue={formData.turno}
                                                 >
                                                     <option >Elige....</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
+                                                    <option value="1" selected={formData.turno=="1"}>1</option>
+                                                    <option value="2" selected={formData.turno=="2"}>2</option>
                                                 </Form.Control>
                                             </Col>
                                         </Form.Group>
@@ -468,6 +478,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="proceso1"
                                                     id="si"
                                                     defaultValue={formData.proceso1}
+                                                    checked={formData.proceso1=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -478,6 +489,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="proceso1"
                                                     id="no"
                                                     defaultValue={formData.proceso1}
+                                                    checked={formData.proceso1=="no"}
                                                 />
                                             </Col>
 
@@ -489,7 +501,7 @@ function RegistraLiberacionProductoProceso(props) {
                                             <Col>
                                                 <Form.Control
                                                     type="text"
-                                                    placeholder="ObservacionesProceso"
+                                                    placeholder="Observaciones"
                                                     name="observacionesProceso1"
                                                     defaultValue={formData.observacionesProceso1}
                                                 />
@@ -512,6 +524,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="proceso2"
                                                     id="si"
                                                     defaultValue={formData.proceso2}
+                                                    checked={formData.proceso2=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -522,6 +535,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="proceso2"
                                                     id="no"
                                                     defaultValue={formData.proceso2}
+                                                    checked={formData.proceso2=="no"}
                                                 />
                                             </Col>
 
@@ -556,6 +570,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="proceso3"
                                                     id="si"
                                                     defaultValue={formData.proceso3}
+                                                    checked={formData.proceso3=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -566,6 +581,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="proceso3"
                                                     id="no"
                                                     defaultValue={formData.proceso3}
+                                                    checked={formData.proceso3=="no"}
                                                 />
                                             </Col>
 
@@ -600,6 +616,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="proceso4"
                                                     id="si"
                                                     defaultValue={formData.proceso4}
+                                                    checked={formData.proceso4=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -610,6 +627,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="proceso4"
                                                     id="no"
                                                     defaultValue={formData.proceso4}
+                                                    checked={formData.proceso4=="no"}
                                                 />
                                             </Col>
 
@@ -644,6 +662,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="proceso5"
                                                     id="si"
                                                     defaultValue={formData.proceso5}
+                                                    checked={formData.proceso5=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -654,6 +673,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="proceso5"
                                                     id="no"
                                                     defaultValue={formData.proceso5}
+                                                    checked={formData.proceso5=="no"}
                                                 />
                                             </Col>
 
@@ -688,6 +708,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="proceso6"
                                                     id="si"
                                                     defaultValue={formData.proceso6}
+                                                    checked={formData.proceso6=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -698,6 +719,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="proceso6"
                                                     id="no"
                                                     defaultValue={formData.proceso6}
+                                                    checked={formData.proceso6=="no"}
                                                 />
                                             </Col>
 
@@ -732,6 +754,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="proceso7"
                                                     id="si"
                                                     defaultValue={formData.proceso7}
+                                                    checked={formData.proceso7=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -742,6 +765,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="proceso7"
                                                     id="no"
                                                     defaultValue={formData.proceso7}
+                                                    checked={formData.proceso7=="no"}
                                                 />
                                             </Col>
 
@@ -788,6 +812,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto1"
                                                     id="si"
                                                     defaultValue={formData.producto1}
+                                                    checked={formData.producto1=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -798,6 +823,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto1"
                                                     id="no"
                                                     defaultValue={formData.producto1}
+                                                    checked={formData.producto1=="no"}
                                                 />
                                             </Col>
 
@@ -832,6 +858,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto2"
                                                     id="si"
                                                     defaultValue={formData.producto2}
+                                                    checked={formData.producto2=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -842,6 +869,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto2"
                                                     id="no"
                                                     defaultValue={formData.producto2}
+                                                    checked={formData.producto2=="no"}
                                                 />
                                             </Col>
 
@@ -876,6 +904,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto3"
                                                     id="si"
                                                     defaultValue={formData.producto3}
+                                                    checked={formData.producto3=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -886,6 +915,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto3"
                                                     id="no"
                                                     defaultValue={formData.producto3}
+                                                    checked={formData.producto3=="no"}
                                                 />
                                             </Col>
 
@@ -920,6 +950,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto4"
                                                     id="si"
                                                     defaultValue={formData.producto4}
+                                                    checked={formData.producto4=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -930,6 +961,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto4"
                                                     id="no"
                                                     defaultValue={formData.producto4}
+                                                    checked={formData.producto4=="no"}
                                                 />
                                             </Col>
 
@@ -964,6 +996,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto5"
                                                     id="si"
                                                     defaultValue={formData.producto5}
+                                                    checked={formData.producto5=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -974,6 +1007,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto5"
                                                     id="no"
                                                     defaultValue={formData.producto5}
+                                                    checked={formData.producto5=="no"}
                                                 />
                                             </Col>
 
@@ -1008,6 +1042,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto6"
                                                     id="si"
                                                     defaultValue={formData.producto6}
+                                                    checked={formData.producto6=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -1018,6 +1053,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto6"
                                                     id="no"
                                                     defaultValue={formData.producto6}
+                                                    checked={formData.producto6=="no"}
                                                 />
                                             </Col>
 
@@ -1052,6 +1088,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto7"
                                                     id="si"
                                                     defaultValue={formData.producto7}
+                                                    checked={formData.producto7=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -1062,6 +1099,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto7"
                                                     id="no"
                                                     defaultValue={formData.producto7}
+                                                    checked={formData.producto7=="no"}
                                                 />
                                             </Col>
 
@@ -1096,6 +1134,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto8"
                                                     id="si"
                                                     defaultValue={formData.producto8}
+                                                    checked={formData.producto8=="si"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -1106,6 +1145,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                     name="producto8"
                                                     id="no"
                                                     defaultValue={formData.producto8}
+                                                    checked={formData.producto8=="no"}
                                                 />
                                             </Col>
 
@@ -1225,6 +1265,52 @@ function initialFormData() {
         producto8: "",
         observacionesProducto8: "",
         observaciones: ""
+    }
+}
+
+function valoresAlmacenados(data) {
+    return {
+        cliente: data.cliente,
+        fechaArranque: data.fechaArranqueMolde,
+        descripcion: data.descripcionPieza,
+        noMaquina: data.noMaquina,
+        noParte: data.noParteMolde,
+        hojaLiberacion: data.hojaLiberacion,
+        proceso: data.procesoRealizado,
+        elaboro: data.elaboro,
+        fechaElaboracion: data.fechaElaboracion,
+        turno: data.turno,
+        proceso1: data.proceso[0][1].proceso,
+        observacionesProceso1: data.proceso[0][1].observaciones,
+        proceso2: data.proceso[0][2].proceso,
+        observacionesProceso2: data.proceso[0][2].observaciones,
+        proceso3: data.proceso[0][3].proceso,
+        observacionesProceso3: data.proceso[0][3].observaciones,
+        proceso4: data.proceso[0][4].proceso,
+        observacionesProceso4: data.proceso[0][4].observaciones,
+        proceso5: data.proceso[0][5].proceso,
+        observacionesProceso5: data.proceso[0][5].observaciones,
+        proceso6: data.proceso[0][6].proceso,
+        observacionesProceso6: data.proceso[0][6].observaciones,
+        proceso7: data.proceso[0][7].proceso,
+        observacionesProceso7: data.proceso[0][7].observaciones,
+        producto1: data.producto[0][1].producto,
+        observacionesProducto1: data.producto[0][1].observaciones,
+        producto2: data.producto[0][2].producto,
+        observacionesProducto2: data.producto[0][2].observaciones,
+        producto3: data.producto[0][3].producto,
+        observacionesProducto3: data.producto[0][3].observaciones,
+        producto4: data.producto[0][4].producto,
+        observacionesProducto4: data.producto[0][4].observaciones,
+        producto5: data.producto[0][5].producto,
+        observacionesProducto5: data.producto[0][5].observaciones,
+        producto6: data.producto[0][6].producto,
+        observacionesProducto6: data.producto[0][6].observaciones,
+        producto7: data.producto[0][7].producto,
+        observacionesProducto7: data.producto[0][7].observaciones,
+        producto8: data.producto[0][8].producto,
+        observacionesProducto8: data.producto[0][8].observaciones,
+        observaciones: data.observaciones
     }
 }
 
