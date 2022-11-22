@@ -575,6 +575,7 @@ function RegistraInspeccionMaterial(props) {
                             },
                         }
                     },
+                    observaciones: formData.observaciones,
                     status: "Activo",
                     motivoCancelacion: "",
                 }
@@ -5257,6 +5258,29 @@ function RegistraInspeccionMaterial(props) {
                                 </Container>
                             </div>
 
+                            <div className="encabezado">
+                                <Container fluid>
+                                    <br />
+                                    <Row className="mb-3">
+                                        <Form.Group as={Row} controlId="formGridCantidad" className="cantidad">
+                                            <Col sm="1">
+                                                <Form.Label>
+                                                    Observaciones
+                                                </Form.Label>
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    placeholder="Observaciones"
+                                                    name="observaciones"
+                                                    defaultValue={formData.observaciones}
+                                                />
+                                            </Col>
+                                        </Form.Group>
+                                    </Row>
+                                </Container>
+                            </div>
+
                             <Form.Group as={Row} className="botones">
                                 <Col>
                                     <Button
@@ -5631,6 +5655,7 @@ function initialFormData() {
         cantidadPiezas81: "",
         cantidadPiezas91: "",
         cantidadPiezas101: "",
+        observaciones: "",
     }
 }
 

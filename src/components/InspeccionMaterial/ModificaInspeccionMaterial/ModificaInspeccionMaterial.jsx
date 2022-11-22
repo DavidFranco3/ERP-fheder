@@ -715,6 +715,7 @@ function ModificaInspeccionMaterial(props) {
                         },
                     }
                 },
+                observaciones: formData.observaciones,
                 status: "Activo",
                 motivoCancelacion: "",
             }
@@ -5392,6 +5393,29 @@ function ModificaInspeccionMaterial(props) {
                                 </Container>
                             </div>
 
+                            <div className="encabezado">
+                                <Container fluid>
+                                    <br />
+                                    <Row className="mb-3">
+                                        <Form.Group as={Row} controlId="formGridCantidad" className="cantidad">
+                                            <Col sm="1">
+                                                <Form.Label>
+                                                    Observaciones
+                                                </Form.Label>
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    type="text"
+                                                    placeholder="Observaciones"
+                                                    name="observaciones"
+                                                    defaultValue={formData.observaciones}
+                                                />
+                                            </Col>
+                                        </Form.Group>
+                                    </Row>
+                                </Container>
+                            </div>
+
                             <Form.Group as={Row} className="botones">
                                 <Col>
                                     <Button
@@ -5766,6 +5790,8 @@ function initialFormData() {
         cantidadPiezas81: "",
         cantidadPiezas91: "",
         cantidadPiezas101: "",
+
+        observaciones: "",
     }
 }
 
@@ -6065,6 +6091,8 @@ function valoresAlmacenados(data) {
         otros101: data.turno2.revisiones[0][10].otros10,
         piezasRevisadas101: data.turno2.revisiones[0][10].piezasRevisadas10,
         cantidadPiezas101: data.turno2.revisiones[0][10].cantidadPiezas10,
+
+        observaciones: data.observaciones,
     }
 }
 
