@@ -1,0 +1,130 @@
+import { useState, useEffect } from 'react';
+import { eliminaMaquina } from "../../../api/maquinas";
+import { toast } from "react-toastify";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import queryString from "query-string";
+import { Button, Form, Spinner, Alert, Row, Col } from "react-bootstrap";
+
+function EliminacionFisicaMaquinas(props) {
+    const { data, setShowModal, history } = props;
+    const { id, numeroMaquina, marca, tonelaje, lugar } = data;
+
+    //console.log(data)
+
+    // Para cancelar la actualizacion
+    const cancelarEliminacion = () => {
+        setShowModal(false)
+    }
+
+    // Para controlar la animacion de carga
+    const [loading, setLoading] = useState(false);
+
+    const onSubmit = (e) => {
+        e.preventDefault()
+        setLoading(true)
+
+        try {
+            eliminaMaquina(id).then(response => {
+                const { data } = response;
+                // console.log(data)
+                toast.success(data.mensaje)
+                LogsInformativos(`Se ha eliminado la maquina con el numero ${numeroMaquina}`, data)
+                setShowModal(false);
+                history.push({
+                    search: queryString.stringify(""),
+                });
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    return (
+        <>
+            <Form onSubmit={onSubmit}>
+
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción eliminara del sistema la maquina.
+                    </p>
+                </Alert>
+
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Numero de maquina
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={numeroMaquina}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Marca
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={marca}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <br/>
+
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Tonelaje
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={tonelaje}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Lugar donde se encuentra
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={lugar}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <Form.Group as={Row} className="botones">
+                    <Col>
+                        <Button
+                            type="submit"
+                            variant="success"
+                            className="registrar"
+                        >
+                            {!loading ? "Eliminar" : <Spinner animation="border" />}
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button
+                            variant="danger"
+                            className="cancelar"
+                            onClick={() => {
+                                cancelarEliminacion()
+                            }}
+                        >
+                            Cancelar
+                        </Button>
+                    </Col>
+                </Form.Group>
+            </Form>
+        </>
+    );
+}
+
+export default EliminacionFisicaMaquinas;

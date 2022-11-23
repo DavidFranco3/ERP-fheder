@@ -153,6 +153,17 @@ export const ENDPOINTActualizarMateriaPrima = "/materiasPrimas/actualizar";
 export const ENDPOINTObtenerFolioActualMateriaPrima = "/materiasPrimas/obtenerFolio"
 export const ENDPOINTTotalMateriaPrima = "/materiasPrimas/total";
 
+// Maquinas
+export const ENDPOINTRegistraMaquina = "/maquinas/registro";
+export const ENDPOINTListarMaquina = "/maquinas/listar";
+export const ENDPOINTListarPaginandoMaquina = "/maquinas/listarPaginando";
+export const ENDPOINTObtenerMaquina = "/maquinas/obtener";
+export const ENDPOINTObtenerDatosMaquina = "/maquinas/obtenerPorNumero"
+export const ENDPOINTEliminarMaquina = "/maquinas/eliminar";
+export const ENDPOINTActualizarMaquina = "/maquinas/actualizar";
+export const ENDPOINTTotalMaquina = "/maquinas/total";
+export const ENDPOINTActualizarEstadoMaquina = "/maquinas/actualizarEstado";
+
 // Catalogo de productos
 export const ENDPOINTRegistraCatalogoProductos = "/catalogoProductos/registro";
 export const ENDPOINTListarCatalogoProductos = "/catalogoProductos/listar";

@@ -36,6 +36,7 @@ import CertificadosCalidad from "../page/CertificadosCalidad";
 import AsignacionPedido from "../page/AsignacionPedido";
 import Mes from "../page/Mes";
 import Maquinaria from "../page/Maquinaria";
+import Maquinas from "../page/Maquinas";
 import ReporteProduccion from "../page/ReporteProduccion";
 import IdentificacionPT from "../page/IdentificacionPT";
 import MaterialMolido from "../page/MaterialMolido";
@@ -779,6 +780,11 @@ export default [
         path: "/Maquinaria",
         exact: true,
         page: Maquinaria
+    },
+    {
+        path: "/Maquinas",
+        exact: true,
+        page: Maquinas
     },
     {
         path: "/ReporteProduccion",

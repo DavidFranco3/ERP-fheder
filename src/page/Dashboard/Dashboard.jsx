@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers } from "@fortawesome/free-solid-svg-icons";
 // Importacion de imagenes para los iconos de los menus
 import LogoVentas from "../../assets/png/principales/ventas.png";
+import LogoMaquinas from "../../assets/png/principales/maquinas.png";
 import LogoClientes from "../../assets/png/principales/clientes.png";
 import LogoCompras from "../../assets/png/principales/compras.png";
 import LogoFacturacion from "../../assets/png/principales/facturacion.png";
@@ -84,9 +85,9 @@ function Dashboard(props) {
                         title={'Compras'}
                     />
                     <ItemCard
-                        path={'/DashboardProductos'}
-                        logo={LogoProductos}
-                        title={'Productos'}
+                        path={'/Maquinas'}
+                        logo={LogoMaquinas}
+                        title={'Maquinas'}
                     />
                     <ItemCard
                         path={'/DashboardAlmacenes'}
