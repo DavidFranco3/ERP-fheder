@@ -3,35 +3,39 @@ import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstr
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import LayoutPrincipal from "../../../layout/layoutPrincipal";
-import { useHistory } from "react-router-dom";
-import { registraCertificado, obtenerNumeroCertificado, obtenerItemCertificado } from "../../../api/certificadosCalidad";
+import { useHistory, useParams } from "react-router-dom";
+import { obtenerCertificado, actualizaCertificado } from "../../../api/certificadosCalidad";
 import { toast } from "react-toastify";
 
-function RegistraReporte(props) {
+function ModificaCertificado(props) {
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+    const params = useParams();
+    const { id } = params
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory()
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/CertificadosCalidad")
+        enrutamiento.push("/CertificadosCalidad");
     }
-
-    // Para controlar la animacion
-    const [loading, setLoading] = useState(false);
-
-    const [item, setItem] = useState("");
 
     useEffect(() => {
         try {
-            obtenerItemCertificado().then(response => {
+            obtenerCertificado(id).then(response => {
                 const { data } = response;
                 // console.log(data)
-                const { item } = data;
-                setItem(item)
+                // initialData
+
+                if (!formData && data) {
+                    setFormData(valoresAlmacenados(data));
+                } else {
+                    const datosInspeccion = valoresAlmacenados(data);
+                    setFormData(datosInspeccion);
+                }
             }).catch(e => {
                 console.log(e)
             })
@@ -39,6 +43,9 @@ function RegistraReporte(props) {
             console.log(e)
         }
     }, []);
+
+    // Para controlar la animacion
+    const [loading, setLoading] = useState(false);
 
     const onSubmit = e => {
         e.preventDefault();
@@ -50,18 +57,14 @@ function RegistraReporte(props) {
             setLoading(true)
 
             // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            obtenerNumeroCertificado().then(response => {
-                const { data } = response;
                 const dataTemp = {
-                    item: item,
-                    folio: data.noCertificado,
                     fecha: formData.fecha,
                     noOrdenInterna: formData.ordenInterna,
                     tamañoLote: formData.tamañoLote,
                     cliente: formData.cliente,
                     descripcion: formData.descripcion,
                     numeroParte: formData.numeroParte,
-                    especificacionInforme: formData.especificacion,
+                    especificacionInforme: formData.especificacicon,
                     revisionAtributos: { 
                         1: {
                             condicion: formData.completas,
@@ -180,7 +183,7 @@ function RegistraReporte(props) {
                 // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
                 // 
                 // Modificar el pedido creado recientemente
-                registraCertificado(dataTemp).then(response => {
+                actualizaCertificado(id, dataTemp).then(response => {
                     const { data: { mensaje, datos } } = response;
                     // console.log(response)
                     toast.success(mensaje)
@@ -189,9 +192,6 @@ function RegistraReporte(props) {
                 }).catch(e => {
                     console.log(e)
                 })
-            }).catch(e => {
-                console.log(e)
-            })
         }
     }
 
@@ -317,7 +317,7 @@ function RegistraReporte(props) {
                                                     type="text"
                                                     placeholder="Especificacion del informe"
                                                     name="especificacion"
-                                                    defaultValue={formData.especificacion}
+                                                    defaultValue={formData.especificacicon}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -366,6 +366,7 @@ function RegistraReporte(props) {
                                                     label="OK"
                                                     name="completas"
                                                     defaultValue={formData.completas}
+                                                    checked={formData.completas=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -376,6 +377,7 @@ function RegistraReporte(props) {
                                                     label="NO OK"
                                                     name="completas"
                                                     defaultValue={formData.completas}
+                                                    checked={formData.completas=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -410,6 +412,7 @@ function RegistraReporte(props) {
                                                     label="OK"
                                                     name="arillo"
                                                     defaultValue={formData.arillo}
+                                                    checked={formData.arillo=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -420,6 +423,7 @@ function RegistraReporte(props) {
                                                     label="NO OK"
                                                     name="arillo"
                                                     defaultValue={formData.arillo}
+                                                    checked={formData.arillo=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -454,6 +458,7 @@ function RegistraReporte(props) {
                                                     label="OK"
                                                     name="rechupe"
                                                     defaultValue={formData.rechupe}
+                                                    checked={formData.rechupe=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -464,6 +469,7 @@ function RegistraReporte(props) {
                                                     label="NO OK"
                                                     name="rechupe"
                                                     defaultValue={formData.rechupe}
+                                                    checked={formData.rechupe=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -498,6 +504,7 @@ function RegistraReporte(props) {
                                                     label="OK"
                                                     name="rebaba"
                                                     defaultValue={formData.rebaba}
+                                                    checked={formData.rebaba=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -508,6 +515,7 @@ function RegistraReporte(props) {
                                                     label="NO OK"
                                                     name="rebaba"
                                                     defaultValue={formData.rebaba}
+                                                    checked={formData.rebaba=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -542,6 +550,7 @@ function RegistraReporte(props) {
                                                     label="OK"
                                                     name="tono"
                                                     defaultValue={formData.tono}
+                                                    checked={formData.tono=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -552,6 +561,7 @@ function RegistraReporte(props) {
                                                     label="NO OK"
                                                     name="tono"
                                                     defaultValue={formData.tono}
+                                                    checked={formData.tono=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -586,6 +596,7 @@ function RegistraReporte(props) {
                                                     label="OK"
                                                     name="rafaga"
                                                     defaultValue={formData.rafaga}
+                                                    checked={formData.rafaga=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -596,6 +607,7 @@ function RegistraReporte(props) {
                                                     label="NO OK"
                                                     name="rafaga"
                                                     defaultValue={formData.rafaga}
+                                                    checked={formData.rafaga=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -630,6 +642,7 @@ function RegistraReporte(props) {
                                                     label="OK"
                                                     name="contaminacion"
                                                     defaultValue={formData.contaminacion}
+                                                    checked={formData.contaminacion=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -640,6 +653,7 @@ function RegistraReporte(props) {
                                                     label="NO OK"
                                                     name="contaminacion"
                                                     defaultValue={formData.contaminacion}
+                                                    checked={formData.contaminacion=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -674,6 +688,7 @@ function RegistraReporte(props) {
                                                     label="OK"
                                                     name="ensamble"
                                                     defaultValue={formData.ensamble}
+                                                    checked={formData.ensamble=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -684,6 +699,7 @@ function RegistraReporte(props) {
                                                     label="NO OK"
                                                     name="ensamble"
                                                     defaultValue={formData.ensamble}
+                                                    checked={formData.ensamble=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -718,6 +734,7 @@ function RegistraReporte(props) {
                                                     label="OK"
                                                     name="ensamblar"
                                                     defaultValue={formData.ensamblar}
+                                                    checked={formData.ensamblar=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -728,6 +745,7 @@ function RegistraReporte(props) {
                                                     label="NO OK"
                                                     name="ensamblar"
                                                     defaultValue={formData.ensamblar}
+                                                    checked={formData.ensamblar=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -762,6 +780,7 @@ function RegistraReporte(props) {
                                                     label="OK"
                                                     name="etiqueta"
                                                     defaultValue={formData.etiqueta}
+                                                    checked={formData.etiqueta=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -772,6 +791,7 @@ function RegistraReporte(props) {
                                                     label="NO OK"
                                                     name="etiqueta"
                                                     defaultValue={formData.etiqueta}
+                                                    checked={formData.etiqueta=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -900,6 +920,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon1"
                                                     defaultValue={formData.renglon1}
+                                                    checked={formData.renglon1=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -909,6 +930,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon1"
                                                     defaultValue={formData.renglon1}
+                                                    checked={formData.renglon1=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -963,6 +985,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon2"
                                                     defaultValue={formData.renglon2}
+                                                    checked={formData.renglon2=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -972,6 +995,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon2"
                                                     defaultValue={formData.renglon2}
+                                                    checked={formData.renglon2=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -1026,6 +1050,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon3"
                                                     defaultValue={formData.renglon3}
+                                                    checked={formData.renglon3=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -1035,6 +1060,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon3"
                                                     defaultValue={formData.renglon3}
+                                                    checked={formData.renglon3=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -1089,6 +1115,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon4"
                                                     defaultValue={formData.renglon4}
+                                                    checked={formData.renglon4=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -1098,6 +1125,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon4"
                                                     defaultValue={formData.renglon4}
+                                                    checked={formData.renglon4=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -1152,6 +1180,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon5"
                                                     defaultValue={formData.renglon5}
+                                                    checked={formData.renglon5=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -1161,6 +1190,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon5"
                                                     defaultValue={formData.renglon5}
+                                                    checked={formData.renglon5=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -1215,6 +1245,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon6"
                                                     defaultValue={formData.renglon6}
+                                                    checked={formData.renglon6=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -1224,6 +1255,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon6"
                                                     defaultValue={formData.renglon6}
+                                                    checked={formData.renglon6=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -1278,6 +1310,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon7"
                                                     defaultValue={formData.renglon7}
+                                                    checked={formData.renglon7=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -1287,6 +1320,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon7"
                                                     defaultValue={formData.renglon7}
+                                                    checked={formData.renglon7=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -1341,6 +1375,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon8"
                                                     defaultValue={formData.renglon8}
+                                                    checked={formData.renglon8=="si"}
                                                     id="si"
                                                 />
                                             </Col>
@@ -1350,6 +1385,7 @@ function RegistraReporte(props) {
                                                     type="radio"
                                                     name="renglon8"
                                                     defaultValue={formData.renglon8}
+                                                    checked={formData.renglon8=="no"}
                                                     id="no"
                                                 />
                                             </Col>
@@ -1495,7 +1531,7 @@ function initialFormData() {
         ordenInterna: "",
         numeroParte: "",
         tamañoLote: "",
-        especificacion: "",
+        especificacicon: "",
         cliente: "",
         completas: "",
         observacion1: "",
@@ -1573,4 +1609,89 @@ function initialFormData() {
     }
 }
 
-export default RegistraReporte;
+function valoresAlmacenados(data) {
+    return {
+        fecha: data.fecha,
+        descripcion: data.descripcion,
+        ordenInterna: data.noOrdenInterna,
+        numeroParte: data.numeroParte,
+        tamañoLote: data.tamañoLote,
+        especificacicon: data.especificacionInforme,
+        cliente: data.cliente,
+        completas: data.revisionAtributos[0][1].condicion,
+        observacion1: data.revisionAtributos[0][1].observacion,
+        arillo: data.revisionAtributos[0][2].condicion,
+        observacion2: data.revisionAtributos[0][2].observacion,
+        rechupe: data.revisionAtributos[0][3].condicion,
+        observacion3: data.revisionAtributos[0][3].observacion,
+        rebaba: data.revisionAtributos[0][4].condicion,
+        observacion4: data.revisionAtributos[0][4].observacion,
+        tono: data.revisionAtributos[0][5].condicion,
+        observacion5: data.revisionAtributos[0][5].observacion,
+        rafaga: data.revisionAtributos[0][6].condicion,
+        observacion6: data.revisionAtributos[0][6].observacion,
+        contaminacion: data.revisionAtributos[0][7].condicion,
+        observacion7: data.revisionAtributos[0][7].observacion,
+        ensamble: data.revisionAtributos[0][8].condicion,
+        observacion8: data.revisionAtributos[0][8].observacion,
+        ensamblar: data.revisionAtributos[0][9].condicion,
+        observacion9: data.revisionAtributos[0][9].observacion,
+        etiqueta: data.revisionAtributos[0][10].condicion,
+        observacion10: data.revisionAtributos[0][10].observacion,
+        hilos1: data.resultadoDimensional[0][1].especificacion,
+        hilos2: data.resultadoDimensional[0][1].tolerancia,
+        hilos3: data.resultadoDimensional[0][1].max,
+        hilos4: data.resultadoDimensional[0][1].min,
+        hilos5: data.resultadoDimensional[0][1].resultado,
+        sobre1: data.resultadoDimensional[0][2].especificacion,
+        sobre2: data.resultadoDimensional[0][2].tolerancia,
+        sobre3: data.resultadoDimensional[0][2].max,
+        sobre4: data.resultadoDimensional[0][2].min,
+        sobre5: data.resultadoDimensional[0][2].resultado,
+        interior1: data.resultadoDimensional[0][3].especificacion,
+        interior2: data.resultadoDimensional[0][3].tolerancia,
+        interior3: data.resultadoDimensional[0][3].max,
+        interior4: data.resultadoDimensional[0][3].min,
+        interior5: data.resultadoDimensional[0][3].resultado,
+        arillo1: data.resultadoDimensional[0][4].especificacion,
+        arillo2: data.resultadoDimensional[0][4].tolerancia,
+        arillo3: data.resultadoDimensional[0][4].max,
+        arillo4: data.resultadoDimensional[0][4].min,
+        arillo5: data.resultadoDimensional[0][4].resultado,
+        sello1: data.resultadoDimensional[0][5].especificacion,
+        sello2: data.resultadoDimensional[0][5].tolerancia,
+        sello3: data.resultadoDimensional[0][5].max,
+        sello4: data.resultadoDimensional[0][5].min,
+        sello5: data.resultadoDimensional[0][5].resultado,
+        diametro1: data.resultadoDimensional[0][6].especificacion,
+        diametro2: data.resultadoDimensional[0][6].tolerancia,
+        diametro3: data.resultadoDimensional[0][6].max,
+        diametro4: data.resultadoDimensional[0][6].min,
+        diametro5: data.resultadoDimensional[0][6].resultado,
+        boquilla1: data.resultadoDimensional[0][7].especificacion,
+        boquilla2: data.resultadoDimensional[0][7].tolerancia,
+        boquilla3: data.resultadoDimensional[0][7].max,
+        boquilla4: data.resultadoDimensional[0][7].min,
+        boquilla5: data.resultadoDimensional[0][7].resultado,
+        altura1: data.resultadoDimensional[0][8].especificacion,
+        altura2: data.resultadoDimensional[0][8].tolerancia,
+        altura3: data.resultadoDimensional[0][8].max,
+        altura4: data.resultadoDimensional[0][8].min,
+        altura5: data.resultadoDimensional[0][8].resultado,
+        renglon1: data.resultadoDimensional[0][1].cota,
+        renglon2: data.resultadoDimensional[0][2].cota,
+        renglon3: data.resultadoDimensional[0][3].cota,
+        renglon4: data.resultadoDimensional[0][4].cota,
+        renglon5: data.resultadoDimensional[0][5].cota,
+        renglon6: data.resultadoDimensional[0][6].cota,
+        renglon7: data.resultadoDimensional[0][7].cota,
+        renglon8: data.resultadoDimensional[0][8].cota,
+        observaciones: data.observacionesResultados,
+        medicion: data.equipoMedicion,
+        referencia: data.referencia,
+        realizo: data.realizo,
+        correo: data.correo,
+    }
+}
+
+export default ModificaCertificado;

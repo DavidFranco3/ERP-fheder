@@ -241,9 +241,7 @@ function RegistraRequerimientosPlaneacion(props) {
             }).catch(e => {
                 console.log(e)
             })
-
         }
-
     }
 
     const onChange = e => {

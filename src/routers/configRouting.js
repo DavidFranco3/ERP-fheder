@@ -183,6 +183,7 @@ import RegistroFichaTecnica from "../components/FichaTecnica/RegistraFichaTecnic
 
 // Rutas para el certificado de calidad
 import RegistroCertificadoCalidad from "../components/CertificadosCalidad/RegistraCertificado";
+import ModificaCertificadoCalidad from "../components/CertificadosCalidad/ModificaCertificado";
 
 // Rutas para el reporte de produccion
 import RegistroReporteProduccion from "../components/ReporteProduccion/RegistroReporteProduccion";
@@ -261,6 +262,11 @@ export default [
         path: "/RegistroCertificadoCalidad",
         exact: true,
         page: RegistroCertificadoCalidad
+    },
+    {
+        path: "/ModificaCertificadoCalidad/:id",
+        exact: true,
+        page: ModificaCertificadoCalidad
     },
     {
         path: "/RegistroMaquinasMantenimientos",

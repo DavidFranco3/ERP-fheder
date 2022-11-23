@@ -331,6 +331,19 @@ export const ENDPOINTActualizarRequerimiento = "/requerimientosPlaneacion/actual
 export const ENDPOINTObtenerDatosRequerimiento = "/requerimientosPlaneacion/obtenerDatosRequerimiento";
 export const ENDPOINTTotalRequerimiento = "/requerimientosPlaneacion/total";
 
+//Certificados de calidad
+export const ENDPOINTRegistroCertificado = "/certificadosCalidad/registro";
+export const ENDPOINTListarCertificado = "/certificadosCalidad/listar";
+export const ENDPOINTListarPaginandoCertificado = "/certificadosCalidad/listarPaginando";
+export const ENDPOINTObtenerCertificado = "/certificadosCalidad/obtener";
+export const ENDPOINTObtenerNoCertificado = "/certificadosCalidad/obtenerNoCertificado";
+export const ENDPOINTObtenerItemCertificado = "/certificadosCalidad/obtenerItem";
+export const ENDPOINTEliminarCertificado = "/certificadosCalidad/eliminar";
+export const ENDPOINTActualizarEstadoCertificado = "/certificadosCalidad/actualizarEstado";
+export const ENDPOINTActualizarCertificado = "/certificadosCalidad/actualizar";
+export const ENDPOINTObtenerDatosCertificado = "/certificadosCalidad/obtenerDatosCertificado";
+export const ENDPOINTTotalCertificado = "/certificadosCalidad/total";
+
 //Status de material
 export const ENDPOINTRegistroStatusMaterial = "/statusMaterial/registro";
 export const ENDPOINTListarStatusMaterial = "/statusMaterial/listar";
