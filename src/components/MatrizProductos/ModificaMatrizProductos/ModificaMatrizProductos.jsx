@@ -36,7 +36,7 @@ function ModificaMatrizProductos(props) {
     const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
 
     // para almacenar los datos del formulario
-    const [formData, setFormData] = useState(null);
+    const [formData, setFormData] = useState(initialFormData());
 
     // para almacenar el listado de porveedores
     const [listProveedores, setListProveedores] = useState(null);
@@ -62,9 +62,9 @@ function ModificaMatrizProductos(props) {
                 // initialData
 
                 if (!formData && data) {
-                    setFormData(initialFormData(data));
+                    setFormData(valoresAlmacenados(data));
                 } else {
-                    const datosProductos = initialFormData(data);
+                    const datosProductos = valoresAlmacenados(data);
                     setFormData(datosProductos);
                 }
             }).catch(e => {
@@ -166,6 +166,7 @@ function ModificaMatrizProductos(props) {
                 },
                 noParte: formData.noParte,
                 descripcion: formData.descripcion,
+                precioVenta: formData.precioVenta,
                 datosPieza: {
                     pesoPiezas: formData.pesoPiezas,
                     pesoColada: formData.pesoColada,
@@ -243,6 +244,19 @@ function ModificaMatrizProductos(props) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
+    // Para obtener el peso de la inyeccion
+    const inyeccion = parseFloat(formData.pesoPiezas) + (parseFloat(formData.pesoColada) / parseFloat(formData.cavMolde)) * parseFloat(formData.cavMolde);
+
+    // Para obtener el porcentaje de molido
+    const molido = ((parseFloat(formData.pesoColada) / parseFloat(formData.cavMolde)) / parseFloat(formData.pesoPiezas)) * 100;
+
+    // Para obtener el total de piezas por hora
+    const piezasHora = (3600 / (parseFloat(formData.tiempoCiclo))) * formData.cavMolde;
+    console.log(piezasHora)
+
+    // Para obtener el total de piezas por turno
+    const piezasTurno = (12 * parseFloat(piezasHora));
+
     return (
         <>
             <LayoutPrincipal>
@@ -254,15 +268,15 @@ function ModificaMatrizProductos(props) {
                             </h1>
                         </Col>
                         <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            onClick={() => {
-                                rutaRegresoProductos()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
+                            <Button
+                                className="btnRegistroVentas"
+                                onClick={() => {
+                                    rutaRegresoProductos()
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                            </Button>
+                        </Col>
                     </Row>
                 </Alert>
 
@@ -379,6 +393,26 @@ function ModificaMatrizProductos(props) {
                                                             </Col>
                                                         </Form.Group>
                                                     </Row>
+
+                                                    <Row className="mb-3">
+                                                        <Form.Group as={Row} controlId="formGridNumeroParte">
+                                                            <Col sm="2">
+                                                                <Form.Label>
+                                                                    Precio de venta
+                                                                </Form.Label>
+                                                            </Col>
+                                                            <Col sm="4">
+                                                                <Form.Control
+                                                                    type="number"
+                                                                    step="0.000001"
+                                                                    min="0"
+                                                                    placeholder="Escribe el precio de venta"
+                                                                    name="precioVenta"
+                                                                    defaultValue={formData.precioVenta}
+                                                                />
+                                                            </Col>
+                                                        </Form.Group>
+                                                    </Row>
                                                 </Container>
                                             </div>
 
@@ -441,7 +475,8 @@ function ModificaMatrizProductos(props) {
                                                                     min="0"
                                                                     placeholder="Escribe el peso"
                                                                     name="pesoTotalInyeccion"
-                                                                    defaultValue={formData.pesoTotalInyeccion}
+                                                                    value={formData.pesoPiezas == "" ? 0 : formData.pesoColada == "" ? 0 : formData.cavMolde == "" ? 0 : inyeccion.toFixed(2)}
+                                                                    disabled
                                                                 />
                                                             </Col>
 
@@ -477,7 +512,8 @@ function ModificaMatrizProductos(props) {
                                                                     min="0"
                                                                     placeholder="Escribe el porcentaje"
                                                                     name="porcentajeMolido"
-                                                                    defaultValue={formData.porcentajeMolido}
+                                                                    value={formData.pesoPiezas == "" ? 0 : formData.pesoColada == "" ? 0 : formData.cavMolde == "" ? 0 : molido > 100 ? molido.toFixed(0) : molido.toFixed(2)}
+                                                                    disabled
                                                                 />
                                                             </Col>
                                                         </Form.Group>
@@ -613,7 +649,8 @@ function ModificaMatrizProductos(props) {
                                                                     min="0"
                                                                     placeholder="Escribe el numero de piezas"
                                                                     name="piezasxHora"
-                                                                    defaultValue={formData.piezasxHora}
+                                                                    value={formData.tiempoCiclo == "" ? 0 : formData.cavMolde == "" ? 0 : piezasHora.toFixed(2)}
+                                                                    disabled
                                                                 />
                                                             </Col>
                                                             <Col sm="1">
@@ -627,7 +664,8 @@ function ModificaMatrizProductos(props) {
                                                                     min="0"
                                                                     placeholder="Escribe el numero de piezas"
                                                                     name="piezasxTurno"
-                                                                    defaultValue={formData.piezasxTurno}
+                                                                    value={formData.tiempoCiclo == "" ? 0 : formData.cavMolde == "" ? 0 : piezasTurno.toFixed(2)}
+                                                                    disabled
                                                                 />
                                                             </Col>
                                                         </Form.Group>
@@ -952,12 +990,52 @@ function ModificaMatrizProductos(props) {
 
 function initialFormData(data) {
     return {
+        noInterno: "",
+        cliente: "",
+        noMolde: "",
+        cavMolde: "",
+        noParte: "",
+        descripcion: "",
+        precioVenta: "",
+        pesoPiezas: "",
+        pesoColada: "",
+        pesoTotalInyeccion: "",
+        porcentajeScrap: "",
+        porcentajeMolido: "",
+        descripcionMP: "",
+        descripcionPigmento: "",
+        aplicacionGxKG: "",
+        proveedor: "",
+        tiempoCiclo: "",
+        noOperadores: "",
+        piezasxHora: "",
+        piezasxTurno: "",
+        descripcionBolsa: "",
+        noPiezasxEmpaque: "",
+        opcion1: "",
+        tiempoCiclo1: "",
+        opcion2: "",
+        tiempoCiclo2: "",
+        opcion3: "",
+        tiempoCiclo3: "",
+        opcion4: "",
+        tiempoCiclo4: "",
+        opcion5: "",
+        tiempoCiclo5: "",
+        opcion6: "",
+        tiempoCiclo6: ""
+    }
+}
+
+function valoresAlmacenados(data) {
+    return {
         noInterno: data.noInterno,
         cliente: data.cliente,
         noMolde: data.datosMolde.noMolde,
         cavMolde: data.datosMolde.cavMolde,
         noParte: data.noParte,
         descripcion: data.descripcion,
+        precioVenta: data.precioVenta,
         pesoPiezas: data.datosPieza.pesoPiezas,
         pesoColada: data.datosPieza.pesoColada,
         pesoTotalInyeccion: data.datosPieza.pesoTotalInyeccion,
