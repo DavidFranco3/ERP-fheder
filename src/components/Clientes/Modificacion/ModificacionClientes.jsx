@@ -1,16 +1,16 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import LayoutPrincipal from "../../../layout/layoutPrincipal";
-import {useHistory, useParams} from "react-router-dom";
-import {listarDepartamento} from "../../../api/departamentos";
-import {actualizaUsuario, obtenerUsuario} from "../../../api/usuarios";
-import {toast} from "react-toastify";
-import {isCurpValid, isEmailValid, isRFCValid} from "../../../utils/validations";
+import { useHistory, useParams } from "react-router-dom";
+import { listarDepartamento } from "../../../api/departamentos";
+import { actualizaUsuario, obtenerUsuario } from "../../../api/usuarios";
+import { toast } from "react-toastify";
+import { isCurpValid, isEmailValid, isRFCValid } from "../../../utils/validations";
 import Dropzone from "../../Dropzone";
-import {Button, Col, Form, Row, Spinner, Container} from "react-bootstrap";
-import {map} from "lodash";
-import {actualizaCliente, obtenerCliente, registraClientes} from "../../../api/clientes";
-import {subeArchivosCloudinary} from "../../../api/cloudinary";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
+import { map } from "lodash";
+import { actualizaCliente, obtenerCliente, registraClientes } from "../../../api/clientes";
+import { subeArchivosCloudinary } from "../../../api/cloudinary";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function ModificacionClientes(props) {
     const { setRefreshCheckLogin } = props;
@@ -48,7 +48,7 @@ function ModificacionClientes(props) {
 
             }).catch((e) => {
                 //console.log(e)
-                if(e.message == 'Network Error') {
+                if (e.message == 'Network Error') {
                     //console.log("No hay internet")
                     toast.error("Conexión a Internet no Disponible");
                     enrutamiento.push("/Clientes");
@@ -69,126 +69,46 @@ function ModificacionClientes(props) {
         //console.log(fotoUsuario)
 
         try {
-            if(fotoUsuario) {
-                // Almacenamiento de la foto
-                subeArchivosCloudinary(fotoUsuario, "fotoCliente").then(response => {
+            const dataTempFinal = {
+                nombre: formData.nombre,
+                direccion: {
+                    calle: formData.calle,
+                    numeroExterior: formData.numeroExterior,
+                    numeroInterior: formData.numeroInterior,
+                    colonia: formData.colonia,
+                    municipio: formData.municipio,
+                    estado: formData.estado,
+                },
+                correo: formData.correo,
+                telefonoCelular: formData.telefonoCelular,
+                telefonoFijo: formData.telefonoFijo,
+                estadoCliente: "true"
+            }
+            setLoading(true);
+
+            try {
+                actualizaCliente(params.id, dataTempFinal).then(response => {
                     const { data } = response;
-                    const { secure_url } = data;
-
-                    const dataTempFinal = {
-                        nombre: formData.nombre,
-                        apellidos: formData.apellidos,
-                        razonSocial: "",
-                        rfc: formData.rfc,
-                        direccion : {
-                            calle: formData.calle,
-                            numeroExterior: formData.numeroExterior,
-                            numeroInterior: formData.numeroInterior,
-                            colonia: formData.colonia,
-                            municipio: formData.municipio,
-                            estado: formData.estado,
-                            pais: formData.pais,
-                        },
-                        tipo: formData.tipo,
-                        correo: formData.correo,
-                        foto: secure_url,
-                        telefonoCelular: formData.telefonoCelular,
-                        telefonoFijo: formData.telefonoFijo,
-                        estadoCliente: "true"
-                    }
-
-                    if(!isEmailValid(dataTempFinal.correo)) {
-                        toast.warning("Debes escribir un correo valido");
-                    } else if(!isRFCValid(dataTempFinal.rfc)) {
-                        toast.warning("Debes escribir un RFC valido");
-                    } else {
-                        setLoading(true);
-
-                        try {
-                            actualizaCliente(params.id, dataTempFinal).then(response => {
-                                const { data } = response;
-                                LogsInformativos("Los datos del cliente "+ dataTempFinal.nombre + " " + dataTempFinal.apellidos + " fueron modificados")
-                                toast.success(data.mensaje)
-                                setLoading(false);
-                                enrutamiento.push("/Clientes");
-                            }).catch(e => {
-                                console.log(e)
-                                if(e.message === 'Network Error') {
-                                    //console.log("No hay internet")
-                                    toast.error("Conexión al servidor no disponible");
-                                    setLoading(false);
-                                } else {
-                                    if(e.response && e.response.status === 401) {
-                                        const { mensaje } = e.response.data;
-                                        toast.error(mensaje);
-                                        setLoading(false);
-                                    }
-                                }
-                            })
-                        } catch (e) {
-                            console.log(e)
-                        }
-                    }
-
+                    LogsInformativos("Los datos del cliente " + dataTempFinal.nombre + " " + dataTempFinal.apellidos + " fueron modificados")
+                    toast.success(data.mensaje)
+                    setLoading(false);
+                    enrutamiento.push("/Clientes");
                 }).catch(e => {
                     console.log(e)
-                })
-            } else {
-                // Almacenamiento normal sin foto
-                const dataTempFinal = {
-                    nombre: formData.nombre,
-                    apellidos: formData.apellidos,
-                    razonSocial: "",
-                    rfc: formData.rfc,
-                    direccion : {
-                        calle: formData.calle,
-                        numeroExterior: formData.numeroExterior,
-                        numeroInterior: formData.numeroInterior,
-                        colonia: formData.colonia,
-                        municipio: formData.municipio,
-                        estado: formData.estado,
-                        pais: formData.pais,
-                    },
-                    tipo: formData.tipo,
-                    correo: formData.correo,
-                    telefonoCelular: formData.telefonoCelular,
-                    telefonoFijo: formData.telefonoFijo,
-                    estadoCliente: "true"
-                }
-                // console.log(dataTempFinal)
-
-                if(!isEmailValid(dataTempFinal.correo)) {
-                    toast.warning("Debes escribir un correo valido");
-                } else if(!isRFCValid(dataTempFinal.rfc)) {
-                    toast.warning("Debes escribir un RFC valido");
-                } else {
-                    setLoading(true);
-
-                    try {
-                        actualizaCliente(params.id, dataTempFinal).then(response => {
-                            const { data } = response;
-                            LogsInformativos("Los datos del cliente "+ dataTempFinal.nombre + " " + dataTempFinal.apellidos + " fueron modificados")
-                            toast.success(data.mensaje)
+                    if (e.message === 'Network Error') {
+                        //console.log("No hay internet")
+                        toast.error("Conexión al servidor no disponible");
+                        setLoading(false);
+                    } else {
+                        if (e.response && e.response.status === 401) {
+                            const { mensaje } = e.response.data;
+                            toast.error(mensaje);
                             setLoading(false);
-                            enrutamiento.push("/Clientes");
-                        }).catch(e => {
-                            console.log(e)
-                            if(e.message === 'Network Error') {
-                                //console.log("No hay internet")
-                                toast.error("Conexión al servidor no disponible");
-                                setLoading(false);
-                            } else {
-                                if(e.response && e.response.status === 401) {
-                                    const { mensaje } = e.response.data;
-                                    toast.error(mensaje);
-                                    setLoading(false);
-                                }
-                            }
-                        })
-                    } catch (e) {
-                        console.log(e)
+                        }
                     }
-                }
+                })
+            } catch (e) {
+                console.log(e)
             }
         } catch (e) {
             // console.log(e)
@@ -203,56 +123,34 @@ function ModificacionClientes(props) {
         <>
             <LayoutPrincipal className="ModificacionClientes" paginaSeleccionada="Clientes" setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Container fluid>
-                    <div className="subeFotoPerfil">
-                        <h4 className="textoFotoPerfil">Sube la foto de perfil</h4>
-                        <div className="fotoPerfil">
-                            <Dropzone
-                                setImagen={setFotoUsuario}
-                            />
-                        </div>
-                    </div>
+                    <br /><br />
 
                     <div className="formularioDatos">
                         <Form onChange={onChange} onSubmit={onSubmit}>
-                           <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formHorizontalNombre">
-                                <Form.Label>
-                                    Nombre
-                                </Form.Label>
+                            <Row className="mb-3">
+                                <Form.Group as={Col} controlId="formHorizontalNombre">
+                                    <Form.Label>
+                                        Nombre
+                                    </Form.Label>
                                     <Form.Control
                                         type="text"
                                         placeholder="Escribe el nombre"
                                         name="nombre"
                                         defaultValue={formData.nombre}
-                                        required
                                     />
-                            </Form.Group>
+                                </Form.Group>
 
-                            <Form.Group as={Col} controlId="formHorizontalApellidos">
-                                <Form.Label>
-                                    Apellidos
-                                </Form.Label>
+                                <Form.Group as={Col} controlId="formGridCorreo">
+                                    <Form.Label>
+                                        Correo
+                                    </Form.Label>
                                     <Form.Control
                                         type="text"
-                                        placeholder="Escribe los apellidos"
-                                        name="apellidos"
-                                        defaultValue={formData.apellidos}
-                                        required
+                                        placeholder="Correo electronico"
+                                        name="correo"
+                                        defaultValue={formData.correo}
                                     />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formHorizontalRFC">
-                                <Form.Label>
-                                    RFC
-                                </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Escribe el rfc"
-                                        name="rfc"
-                                        defaultValue={formData.rfc}
-                                        required
-                                    />
-                            </Form.Group>
+                                </Form.Group>
                             </Row>
 
                             <Row className="mb-3">
@@ -265,7 +163,6 @@ function ModificacionClientes(props) {
                                         placeholder="Telefono celular"
                                         name="telefonoCelular"
                                         defaultValue={formData.telefonoCelular}
-                                        required
                                     />
                                 </Form.Group>
 
@@ -281,23 +178,22 @@ function ModificacionClientes(props) {
                                     />
                                 </Form.Group>
                             </Row>
-                            
-                        <Row className="mb-3">
-                            <Form.Label>
-                                Datos del domicilio
-                            </Form.Label>
-                            <Form.Group as={Col} controlId="formHorizontalCalle">
+
+                            <Row className="mb-3">
                                 <Form.Label>
-                                    Calle
+                                    Datos del domicilio
                                 </Form.Label>
+                                <Form.Group as={Col} controlId="formHorizontalCalle">
+                                    <Form.Label>
+                                        Calle
+                                    </Form.Label>
                                     <Form.Control
                                         type="text"
                                         placeholder="Escribe la calle"
                                         name="calle"
                                         defaultValue={formData.calle}
-                                        required
                                     />
-                            </Form.Group>
+                                </Form.Group>
 
                                 <Form.Group as={Col} controlId="formGridNumeroExterior">
                                     <Form.Label>
@@ -308,7 +204,6 @@ function ModificacionClientes(props) {
                                         placeholder="Numero exterior"
                                         name="numeroExterior"
                                         defaultValue={formData.numeroExterior}
-                                        required
                                     />
                                 </Form.Group>
 
@@ -332,9 +227,8 @@ function ModificacionClientes(props) {
                                     </Form.Label>
 
                                     <Form.Control as="select"
-                                                  defaultValue={formData.estado}
-                                                  name="estado"
-                                                  required
+                                        defaultValue={formData.estado}
+                                        name="estado"
                                     >
                                         <option>Elige una opción</option>
                                         <option value="Aguascalientes" selected={formData.estado === ""}>Aguascalientes</option>
@@ -381,10 +275,9 @@ function ModificacionClientes(props) {
                                         placeholder="Municipio"
                                         name="municipio"
                                         defaultValue={formData.municipio}
-                                        required
                                     />
                                 </Form.Group>
-                                
+
                                 <Form.Group as={Col} controlId="formGridColonia">
                                     <Form.Label>
                                         Colonia
@@ -394,56 +287,9 @@ function ModificacionClientes(props) {
                                         placeholder="Colonia"
                                         name="colonia"
                                         defaultValue={formData.colonia}
-                                        required
                                     />
                                 </Form.Group>
                             </Row>
-
-                            {/**/}
-                            <Row className="mb-3">
-                                <Form.Group as={Col} controlId="formGridPais">
-                                    <Form.Label>
-                                        Pais
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Pais"
-                                        name="pais"
-                                        defaultValue={formData.pais}
-                                        required
-                                    />
-                                </Form.Group>
-                            
-                                <Form.Group as={Col} controlId="formGridCorreo">
-                                    <Form.Label>
-                                        Correo
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Correo electronico"
-                                        name="correo"
-                                        defaultValue={formData.correo}
-                                        required
-                                    />
-                                </Form.Group>
-
-                                <Form.Group as={Col} controlId="formGridTelefonoFijo">
-                                    <Form.Label>
-                                        Tipo de usuario
-                                    </Form.Label>
-                                    <Form.Control
-                                        as="select"
-                                        defaultValue={formData.tipo}
-                                        name="tipo"
-                                        required
-                                    >
-                                        <option>Elige una opción</option>
-                                        <option value="interno">Interno</option>
-                                        <option value="externo">Externo</option>
-                                    </Form.Control>
-                                </Form.Group>
-                            </Row>
-                            {/**/}
 
                             <Form.Group as={Row} className="botones">
                                 <Row>
