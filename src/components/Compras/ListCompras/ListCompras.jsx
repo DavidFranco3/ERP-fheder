@@ -13,6 +13,7 @@ import { estilos } from "../../../utils/tableStyled";
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { map } from "lodash";
+import ListProductosCompras from '../ListProductosCompras';
 
 function ListCompras(props) {
     const { setRefreshCheckLogin, listCompras, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalComprasDepto } = props;
@@ -53,74 +54,11 @@ function ListCompras(props) {
         enrutamiento.push(`/ModificacionCompras/${folio}`)
     }
 
-
-    // Definicion de tabla
-    const ExpandedComponent = () => (
-        <>
-            <Container fluid className="tablaProductos">
-                <div className="tituloSeccion">
-                    <h4>Listado de productos de la orden de compra</h4>
-                </div>
-                <table className="responsive-tableTrackingOV"
-                >
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Productos</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Unidad de medida</th>
-                            <th scope="col">Precio</th>
-                            <th scope="col">Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {map(listCompras, (datos, index) => (
-
-                            <>
-                                {map(datos.productos, (producto, indexProducto) => (
-                                    <>
-                                        <tr key={producto.descripcion}>
-                                            <th>
-                                                {indexProducto + 1}
-                                            </th>
-                                            <td>
-                                                {producto.descripcion}
-                                            </td>
-                                            <td>
-                                                {producto.cantidad}
-                                            </td>
-                                            <td>
-                                                {producto.um}
-                                            </td>
-                                            <td>
-                                                <>
-                                                    {producto.precio ? new Intl.NumberFormat('es-MX', {
-                                                        style: "currency",
-                                                        currency: "MXN"
-                                                    }).format(producto.precio) : "No disponible"}
-                                                    { } MXN
-                                                </>
-                                            </td>
-                                            <td>
-                                                <>
-                                                    {producto.subtotal ? new Intl.NumberFormat('es-MX', {
-                                                        style: "currency",
-                                                        currency: "MXN"
-                                                    }).format(producto.subtotal) : "No disponible"}
-                                                    { } MXN
-                                                </>
-                                            </td>
-                                        </tr>
-                                    </>
-                                ))}
-                            </>
-                        ))}
-                    </tbody>
-                </table>
-            </Container>
-        </>
+    const ExpandedComponent = ({ data }) => (
+        <ListProductosCompras
+            ordenCompra={data.folio}
+        />
     );
-
 
     const columns = [
         {
@@ -300,46 +238,16 @@ function ListCompras(props) {
         rangeSeparatorText: 'de'
     };
 
-    const [filterText, setFilterText] = useState("");
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
-
-    // Defino barra de busqueda
-    const ClearButton = styled(Button)` 
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
-        height: 34px;
-        width: 32px;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    `;
-
-    const TextField = styled.input` 
-        height: 32px;
-        border-radius: 3px;
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        border: 1px solid #e5e5e5;
-        padding: 0 32px 0 16px;
-      &:hover {
-        cursor: pointer;
-      }
-    `;
 
     return (
         <>
             <Container fluid>
                 <DataTable
                     columns={columns}
-                    // actions={descargaCSV}
                     data={listCompras}
-                    //expandableRows
-                    //expandableRowsComponent={ExpandedComponent}
+                    expandableRows
+                    expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}

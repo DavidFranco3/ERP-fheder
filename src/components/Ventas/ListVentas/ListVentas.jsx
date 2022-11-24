@@ -12,6 +12,7 @@ import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from 
 import "./ListVentas.scss";
 import ClientesPedido from "./ClientesPedido";
 import { estilos } from "../../../utils/tableStyled";
+import ListProductosVentas from '../ListProductosVentas';
 
 function ListVentas(props) {
     const { setRefreshCheckLogin, listPedidosVenta, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalVentas } = props;
@@ -55,85 +56,11 @@ function ListVentas(props) {
         // enrutamiento.push("")
     }
 
-    // Definicion de tabla
-    /*const ExpandedComponent = ({ }) => (
-        <>
-            <Container fluid className="tablaProductos">
-                <div className="tituloSeccion">
-                    <h4>Listado de productos del pedido de venta {folioUtilizado}</h4>
-                </div>
-                <table className="responsive-tableTrackingOV"
-                >
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Productos</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Unidad de medida</th>
-                            <th scope="col">Precio</th>
-                            <th scope="col">Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {map(listPedidosVenta, (datos, index) => (
-                            <>
-                                {
-                                    datos.folio == folioUtilizado ?
-                                        (
-                                            <>
-                                                {map(datos.productos, (producto, indexProducto) => (
-                                                    <>
-                                                        <tr key={producto.item}>
-                                                            <th>
-                                                                {indexProducto + 1}
-                                                            </th>
-                                                            <td>
-                                                                {producto.item}
-                                                            </td>
-                                                            <td>
-                                                                {producto.cantidad}
-                                                            </td>
-                                                            <td>
-                                                                {producto.um}
-                                                            </td>
-                                                            <td>
-                                                                <>
-                                                                    {producto.precioUnitario ? new Intl.NumberFormat('es-MX', {
-                                                                        style: "currency",
-                                                                        currency: "MXN"
-                                                                    }).format(producto.precioUnitario) : "No disponible"}
-                                                                    { } MXN
-                                                                </>
-                                                            </td>
-                                                            <td>
-                                                                <>
-                                                                    {producto.total ? new Intl.NumberFormat('es-MX', {
-                                                                        style: "currency",
-                                                                        currency: "MXN"
-                                                                    }).format(producto.total) : "No disponible"}
-                                                                    { } MXN
-                                                                </>
-                                                            </td>
-                                                        </tr>
-                                                    </>
-
-                                                ))}
-                                            </>
-                                        )
-                                        :
-                                        (
-                                            <>
-
-                                            </>
-                                        )
-                                }
-                            </>
-                        ))}
-                    </tbody>
-                </table>
-            </Container>
-        </>
-    );*/
+    const ExpandedComponent = ({ data }) => (
+        <ListProductosVentas
+            ordenVenta={data.folio}
+        />
+    );
 
     const columns = [
         {
@@ -263,10 +190,9 @@ function ListVentas(props) {
             <Container fluid>
                 <DataTable
                     columns={columns}
-                    // actions={descargaCSV}
                     data={listPedidosVenta}
-                    //expandableRows
-                    //expandableRowsComponent={ExpandedComponent}
+                    expandableRows
+                    expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
