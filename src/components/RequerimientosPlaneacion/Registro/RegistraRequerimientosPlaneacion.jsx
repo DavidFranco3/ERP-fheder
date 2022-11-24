@@ -379,21 +379,21 @@ function RegistraRequerimientosPlaneacion(props) {
 
     const [listOCCargadas, setListOCCargadas] = useState([]);
 
-    const totalProducir = (listOVCargadas.reduce((amount, item) => (amount + parseInt(item.cantidadProducirOV)), 0));
+    let totalProducir = (listOVCargadas.reduce((amount, item) => (amount + parseInt(item.cantidadProducirOV)), 0));
 
-    const kgMaterial = (parseFloat(formDataPlaneacion.pesoPiezas) + (parseFloat(formDataPlaneacion.pesoColada) / parseFloat(formDataPlaneacion.cavMolde)) * parseFloat(totalProducir)) * (1 + parseFloat((formDataPlaneacion.porcentajeScrap / 100)));
+    let kgMaterial = (formDataPlaneacion.pesoPiezas + (formDataPlaneacion.pesoColada / formDataPlaneacion.cavMolde) * totalProducir) * (1 + (formDataPlaneacion.porcentajeScrap / 100));
 
-    const materialTurno = (((formDataPlaneacion.pesoColada / formDataPlaneacion.cavMolde) + formDataPlaneacion.pesoPiezas) * formDataPlaneacion.piezasxTurno) * (1 + (formDataPlaneacion.porcentajeScrap));
+    let materialTurno = (((formDataPlaneacion.pesoColada / formDataPlaneacion.cavMolde) + formDataPlaneacion.pesoPiezas) * formDataPlaneacion.piezasxTurno) * (1 + (formDataPlaneacion.porcentajeScrap / 100));
 
-    const pigMB = (formDataPlaneacion.aplicacionGxKG * kgMaterial) / 1000;
+    let pigMB = (formDataPlaneacion.aplicacionGxKG * kgMaterial) / 1000;
 
-    const bolsasCajasUtilizar = (totalProducir / formDataPlaneacion.noPiezasxEmpaque);
+    let bolsasCajasUtilizar = (totalProducir / formDataPlaneacion.noPiezasxEmpaque);
 
-    const piezasTurno1 = (((3600 / formDataPlaneacion.tiempoCiclo1) * formDataPlaneacion.cavMolde) * 12);
+    let piezasTurno1 = (((3600 / formDataPlaneacion.tiempoCiclo1) * formDataPlaneacion.cavMolde) * 12);
 
-    const piezasTurno2 = (((3600 / formDataPlaneacion.tiempoCiclo2) * formDataPlaneacion.cavMolde) * 12);
+    let piezasTurno2 = (((3600 / formDataPlaneacion.tiempoCiclo2) * formDataPlaneacion.cavMolde) * 12);
 
-    const piezasTurno3 = (((3600 / formDataPlaneacion.tiempoCiclo3) * formDataPlaneacion.cavMolde) * 12);
+    let piezasTurno3 = (((3600 / formDataPlaneacion.tiempoCiclo3) * formDataPlaneacion.cavMolde) * 12);
 
     return (
         <>
@@ -1005,7 +1005,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="number"
-                                                value={bolsasCajasUtilizar.toFixed(2)}
+                                                value={Math.ceil(bolsasCajasUtilizar)}
                                                 placeholder="Bolsas o cajas a utilizar"
                                                 name="bolsasCajasUtilizar"
                                                 disabled
@@ -1022,7 +1022,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 type="text"
                                                 placeholder="Material x turno"
                                                 name="materialTurno"
-                                                value={materialTurno.toFixed(2)}
+                                                value={materialTurno.toFixed(3)}
                                                 disabled
                                             />
                                         </Form.Group>
