@@ -192,7 +192,7 @@ function RegistraMatrizProductos(props) {
                     },
                     5: {
                         opcion5: formData.opcion5,
-                        tiempoCiclo5: formData.tiempoCiclo15== "" ? formData.tiempoCiclo : formData.tiempoCiclo5
+                        tiempoCiclo5: formData.tiempoCiclo5== "" ? formData.tiempoCiclo : formData.tiempoCiclo5
                     },
                     6: {
                         opcion6: formData.opcion6,
@@ -228,7 +228,7 @@ function RegistraMatrizProductos(props) {
     }
 
     // Para obtener el peso de la inyeccion
-    const inyeccion = parseFloat(formData.pesoPiezas) + (parseFloat(formData.pesoColada) / parseFloat(formData.cavMolde)) * parseFloat(formData.cavMolde);
+    const inyeccion = (parseFloat(formData.pesoPiezas) + (parseFloat(formData.pesoColada) / parseFloat(formData.cavMolde))) * parseFloat(formData.cavMolde);
 
     // Para obtener el porcentaje de molido
     const molido = ((parseFloat(formData.pesoColada) / parseFloat(formData.cavMolde)) / parseFloat(formData.pesoPiezas)) * 100;
