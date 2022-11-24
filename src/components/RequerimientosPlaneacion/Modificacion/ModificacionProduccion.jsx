@@ -733,7 +733,7 @@ function ModificacionProduccion(props) {
                                                 No. Molde
                                             </Form.Label>
                                             <Form.Control
-                                                type="number"
+                                                type="text"
                                                 placeholder="Numero de molde"
                                                 value={formDataPlaneacion.noMolde}
                                                 name="noMolde"
