@@ -9,9 +9,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { listarMatrizProductosActivos, obtenerMatrizProducto } from "../../../api/matrizProductos";
 import { map } from "lodash";
-import { listarAlmacenPT } from "../../../api/almacenPT";
+import { listarAlmacenPT, obtenerDatosAlmacenPT } from "../../../api/almacenPT";
 import { obtenerRequerimiento, actualizaRequerimiento } from "../../../api/requerimientosPlaneacion";
 import { toast } from "react-toastify";
+import { obtenerMaquina } from "../../../api/maquinas";
 
 function ModificacionProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -139,7 +140,84 @@ function ModificacionProduccion(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [informacionRequerimiento.producto]);
+    }, []);
+
+    const [unidadMedida, setUnidadMedida] = useState("Piezas");
+
+    const [cantidad, setCantidad] = useState("0");
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerDatosAlmacenPT(formDataPlaneacion.noInterno).then(response => {
+                const { data } = response;
+                setUnidadMedida(data.um);
+                setCantidad(data.existenciasTotales)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.noInterno]);
+
+
+    const [numeroMaquina1, setNumeroMaquina1] = useState("");
+
+    const [nombreMaquina1, setNombreMaquina1] = useState("");
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerMaquina(formDataPlaneacion.opcion1).then(response => {
+                const { data } = response;
+                setNumeroMaquina1(data.numeroMaquina);
+                setNombreMaquina1(data.marca)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.opcion1]);
+
+    const [numeroMaquina2, setNumeroMaquina2] = useState("");
+
+    const [nombreMaquina2, setNombreMaquina2] = useState("");
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerMaquina(formDataPlaneacion.opcion2).then(response => {
+                const { data } = response;
+                setNumeroMaquina2(data.numeroMaquina);
+                setNombreMaquina2(data.marca)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.opcion2]);
+
+    const [numeroMaquina3, setNumeroMaquina3] = useState("");
+
+    const [nombreMaquina3, setNombreMaquina3] = useState("");
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerMaquina(formDataPlaneacion.opcion3).then(response => {
+                const { data } = response;
+                setNumeroMaquina3(data.numeroMaquina);
+                setNombreMaquina3(data.marca)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.opcion3]);
 
     // Para almacenar el listado de materias primas
     const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
@@ -197,52 +275,52 @@ function ModificacionProduccion(props) {
             const dataTemp = {
                 requerimiento: {
                     semana: informacionRequerimiento.semana,
-                    producto: almacenPT == "" ? informacionRequerimiento.producto : almacenPT.idProducto,
-                    um: almacenPT == "" ? informacionRequerimiento.um : almacenPT.um,
-                    almacenProductoTerminado: almacenPT == "" ? informacionRequerimiento.almacenProductoTerminado : almacenPT.existenciasTotales,
+                    producto: informacionRequerimiento.producto,
+                    um: unidadMedida,
+                    almacenProductoTerminado: cantidad,
                     ordenVenta: listOVCargadas,
                     totalProducir: totalProducir,
                 },
                 planeacion: {
-                    numeroMolde: almacenPT == "" ? informacionRequerimiento.numeroMolde : formDataPlaneacion.noMolde,
-                    numeroCavidades: almacenPT == "" ? informacionRequerimiento.numeroCavidades : formDataPlaneacion.cavMolde,
+                    numeroMolde: formDataPlaneacion.noMolde,
+                    numeroCavidades: formDataPlaneacion.cavMolde,
                     opcionesMaquinaria: {
                         1: {
-                            numeroMaquina1: informacionRequerimiento.numeroMaquina1,
-                            maquina1: informacionRequerimiento.maquina1,
-                            ciclo1: informacionRequerimiento.ciclo1,
-                            pieza1: informacionRequerimiento.pieza1,
-                            bolsa1: informacionRequerimiento.bolsa1,
+                            numeroMaquina1: numeroMaquina1,
+                            maquina1: nombreMaquina1,
+                            ciclo1: formDataPlaneacion.tiempoCiclo1,
+                            pieza1: piezasTurno1,
+                            bolsa1: formDataPlaneacion.noPiezasxEmpaque,
                         },
                         2: {
-                            numeroMaquina2: informacionRequerimiento.numeroMaquina2,
-                            maquina2: informacionRequerimiento.maquina2,
-                            ciclo2: informacionRequerimiento.ciclo2,
-                            pieza2: informacionRequerimiento.pieza2,
-                            bolsa2: informacionRequerimiento.bolsa2,
+                            numeroMaquina2: numeroMaquina2,
+                            maquina2: nombreMaquina2,
+                            ciclo2: formDataPlaneacion.tiempoCiclo2,
+                            pieza2: piezasTurno2,
+                            bolsa2: formDataPlaneacion.noPiezasxEmpaque,
                         },
                         3: {
-                            numeroMaquina3: informacionRequerimiento.numeroMaquina3,
-                            maquina3: informacionRequerimiento.maquina3,
-                            ciclo3: informacionRequerimiento.ciclo3,
-                            pieza3: informacionRequerimiento.pieza3,
-                            bolsa3: informacionRequerimiento.bolsa3,
+                            numeroMaquina3: numeroMaquina3,
+                            maquina3: nombreMaquina3,
+                            ciclo3: formDataPlaneacion.tiempoCiclo3,
+                            pieza3: piezasTurno3,
+                            bolsa3: formDataPlaneacion.noPiezasxEmpaque,
                         },
                     },
                 },
                 bom: {
-                    material: almacenPT == "" ? informacionRequerimiento.material : formDataPlaneacion.descripcionMP,
-                    molido: almacenPT == "" ? informacionRequerimiento.molido : formDataPlaneacion.porcentajeMolido,
-                    pesoPieza: almacenPT == "" ? informacionRequerimiento.pesoPieza : formDataPlaneacion.pesoPiezas,
-                    pesoColada: almacenPT == "" ? informacionRequerimiento.pesoColada : formDataPlaneacion.pesoColada,
-                    kgMaterial: informacionRequerimiento.kgMaterial,
-                    pigmento: almacenPT == "" ? informacionRequerimiento.pigmento : formDataPlaneacion.descripcionPigmento,
-                    aplicacion: almacenPT == "" ? informacionRequerimiento.aplicacion : formDataPlaneacion.aplicacionGxKG,
-                    pigMb: informacionRequerimiento.pigMb,
-                    materialxTurno: informacionRequerimiento.materialxTurno,
-                    merma: informacionRequerimiento.merma,
-                    empaque: almacenPT == "" ? informacionRequerimiento.empaque : formDataPlaneacion.descripcionBolsa,
-                    bolsasCajasUtilizar: almacenPT == "" ? informacionRequerimiento.bolsasCajasUtilizar : formDataPlaneacion.noPiezasxEmpaque
+                    material: formDataPlaneacion.descripcionMP,
+                    molido: formDataPlaneacion.porcentajeMolido,
+                    pesoPieza: formDataPlaneacion.pesoPiezas,
+                    pesoColada: formDataPlaneacion.pesoColada,
+                    kgMaterial: kgMaterial,
+                    pigmento: formDataPlaneacion.descripcionPigmento,
+                    aplicacion: formDataPlaneacion.aplicacionGxKG,
+                    pigMb: pigMB,
+                    materialxTurno: materialTurno,
+                    merma: formDataPlaneacion.porcentajeScrap,
+                    empaque: formDataPlaneacion.descripcionBolsa,
+                    bolsasCajasUtilizar: bolsasCajasUtilizar
                 },
                 estado: "true"
             }
@@ -320,10 +398,24 @@ function ModificacionProduccion(props) {
 
     const totalProducir = (listOVCargadas.reduce((amount, item) => (amount + parseInt(item.cantidadProducirOV)), 0));
 
+    const kgMaterial = (parseFloat(formDataPlaneacion.pesoPiezas) + (parseFloat(formDataPlaneacion.pesoColada) / parseFloat(formDataPlaneacion.cavMolde)) * parseFloat(totalProducir)) * (1 + parseFloat((formDataPlaneacion.porcentajeScrap / 100)));
+
+    const materialTurno = (((formDataPlaneacion.pesoColada / formDataPlaneacion.cavMolde) + formDataPlaneacion.pesoPiezas) * formDataPlaneacion.piezasxTurno) * (1 + (formDataPlaneacion.porcentajeScrap));
+
+    const pigMB = (formDataPlaneacion.aplicacionGxKG * kgMaterial) / 1000;
+
+    const bolsasCajasUtilizar = (totalProducir / formDataPlaneacion.noPiezasxEmpaque);
+
+    const piezasTurno1 = (((3600 / formDataPlaneacion.tiempoCiclo1) * formDataPlaneacion.cavMolde) * 12);
+
+    const piezasTurno2 = (((3600 / formDataPlaneacion.tiempoCiclo2) * formDataPlaneacion.cavMolde) * 12);
+
+    const piezasTurno3 = (((3600 / formDataPlaneacion.tiempoCiclo3) * formDataPlaneacion.cavMolde) * 12);
+
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
         try {
-            obtenerMatrizProducto(almacenPT?.idProducto).then(response => {
+            obtenerMatrizProducto(informacionRequerimiento.producto).then(response => {
                 const { data } = response;
                 // console.log(data)
                 // initialData
@@ -340,7 +432,7 @@ function ModificacionProduccion(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [almacenPT]);
+    }, [informacionRequerimiento.producto]);
 
     return (
         <>
@@ -403,15 +495,16 @@ function ModificacionProduccion(props) {
                                                     handleMateriaPrima(e.target.value)
                                                 }}
                                                 defaultValue={informacionRequerimiento.producto}
-                                                name="materiaPrima"
+                                                name="producto"
                                             >
                                                 <option>Elige una opción</option>
-                                                {map(listMateriasPrimas, (materiaprima, index) => (
+                                                {map(listProductosActivos, (producto, index) => (
                                                     <option
                                                         key={index}
-                                                        value={materiaprima?.idProducto + "/" + materiaprima?.folioAlmacen + "/" + materiaprima?.folioMP + "/" + materiaprima?.nombre + "/" + materiaprima?.um + "/" + materiaprima?.existenciasOV + "/" + materiaprima?.existenciasStock + "/" + materiaprima?.existenciasTotales} selected={materiaprima?.idProducto === informacionRequerimiento.producto}
+                                                        value={producto?.id}
+                                                        selected={producto?.id == informacionRequerimiento.producto}
                                                     >
-                                                        {materiaprima?.nombre}
+                                                        {producto?.descripcion}
                                                     </option>
                                                 ))}
                                             </Form.Control>
@@ -423,9 +516,10 @@ function ModificacionProduccion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="text"
-                                                defaultValue={almacenPT == "" ? informacionRequerimiento.um : almacenPT?.um}
+                                                value={unidadMedida}
                                                 placeholder="UM"
                                                 name="um"
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -435,9 +529,10 @@ function ModificacionProduccion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="text"
-                                                defaultValue={almacenPT == "" ? informacionRequerimiento.almacenProductoTerminado : almacenPT?.existenciasTotales}
+                                                value={cantidad}
                                                 placeholder="Almacen producto terminado"
                                                 name="almacenPT"
+                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -640,8 +735,9 @@ function ModificacionProduccion(props) {
                                             <Form.Control
                                                 type="number"
                                                 placeholder="Numero de molde"
-                                                value={almacenPT == "" ? informacionRequerimiento.numeroMolde : formDataPlaneacion.noMolde}
-                                                name="numeroMolde"
+                                                value={formDataPlaneacion.noMolde}
+                                                name="noMolde"
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -651,9 +747,10 @@ function ModificacionProduccion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="number"
-                                                value={almacenPT == "" ? informacionRequerimiento.numeroCavidades : formDataPlaneacion.cavMolde}
+                                                defaultValue={formDataPlaneacion.cavMolde}
                                                 placeholder="Numero de cavidades"
                                                 name="numeroCavidades"
+                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -698,35 +795,40 @@ function ModificacionProduccion(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina1"
-                                                    defaultValue={informacionRequerimiento.numeroMaquina1}
+                                                    value={numeroMaquina1}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="maquina1"
-                                                    defaultValue={informacionRequerimiento.maquina1}
+                                                    value={nombreMaquina1}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="ciclo1"
-                                                    defaultValue={informacionRequerimiento.ciclo1}
+                                                    value={formDataPlaneacion.tiempoCiclo1}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="pieza1"
-                                                    defaultValue={informacionRequerimiento.pieza1}
+                                                    value={piezasTurno1.toFixed(2)}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="bolsa1"
-                                                    defaultValue={informacionRequerimiento.bolsa1}
+                                                    value={formDataPlaneacion.noPiezasxEmpaque}
+                                                    disabled
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -743,35 +845,40 @@ function ModificacionProduccion(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina2"
-                                                    defaultValue={informacionRequerimiento.numeroMaquina2}
+                                                    value={numeroMaquina2}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="maquina2"
-                                                    defaultValue={informacionRequerimiento.maquina2}
+                                                    value={nombreMaquina2}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="ciclo2"
-                                                    defaultValue={informacionRequerimiento.ciclo2}
+                                                    value={formDataPlaneacion.tiempoCiclo2}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
-                                                    name="pieza2"
-                                                    defaultValue={informacionRequerimiento.pieza2}
+                                                    name="pieza1"
+                                                    value={piezasTurno2.toFixed(2)}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="bolsa2"
-                                                    defaultValue={informacionRequerimiento.bolsa2}
+                                                    value={formDataPlaneacion.noPiezasxEmpaque}
+                                                    disabled
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -788,35 +895,40 @@ function ModificacionProduccion(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina3"
-                                                    defaultValue={informacionRequerimiento.numeroMaquina3}
+                                                    value={numeroMaquina3}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="maquina3"
-                                                    defaultValue={informacionRequerimiento.maquina3}
+                                                    value={nombreMaquina3}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="ciclo3"
-                                                    defaultValue={informacionRequerimiento.ciclo3}
+                                                    value={formDataPlaneacion.tiempoCiclo3}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
-                                                    name="pieza3"
-                                                    defaultValue={informacionRequerimiento.pieza3}
+                                                    name="pieza1"
+                                                    value={piezasTurno3.toFixed(2)}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="bolsa3"
-                                                    defaultValue={informacionRequerimiento.bolsa3}
+                                                    value={formDataPlaneacion.noPiezasxEmpaque}
+                                                    disabled
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -841,9 +953,10 @@ function ModificacionProduccion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="text"
-                                                value={almacenPT == "" ? informacionRequerimiento.material : formDataPlaneacion.descripcionMP}
+                                                defaultValue={formDataPlaneacion.descripcionMP}
                                                 placeholder="Material"
-                                                name="material"
+                                                name="Material"
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -854,8 +967,9 @@ function ModificacionProduccion(props) {
                                             <Form.Control
                                                 type="text"
                                                 placeholder="Molido"
-                                                value={almacenPT == "" ? informacionRequerimiento.molido : formDataPlaneacion.porcentajeMolido}
-                                                name="molido"
+                                                defaultValue={formDataPlaneacion.porcentajeMolido}
+                                                name="Molido"
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -865,9 +979,10 @@ function ModificacionProduccion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="number"
-                                                value={almacenPT == "" ? informacionRequerimiento.pesoPieza : formDataPlaneacion.pesoPiezas}
+                                                defaultValue={formDataPlaneacion.pesoPiezas}
                                                 placeholder="Peso de la pieza"
                                                 name="pesoPieza"
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -877,9 +992,10 @@ function ModificacionProduccion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="number"
-                                                value={almacenPT == "" ? informacionRequerimiento.pesoColada : formDataPlaneacion.pesoColada}
+                                                defaultValue={formDataPlaneacion.pesoColada}
                                                 placeholder="Peso colada"
                                                 name="pesoColada"
+                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -891,9 +1007,10 @@ function ModificacionProduccion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="text"
-                                                value={almacenPT == "" ? informacionRequerimiento.empaque : formDataPlaneacion.descripcionBolsa}
+                                                defaultValue={formDataPlaneacion.descripcionBolsa}
                                                 placeholder="Empaque"
                                                 name="empaque"
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -904,8 +1021,9 @@ function ModificacionProduccion(props) {
                                             <Form.Control
                                                 type="text"
                                                 placeholder="Pigmento/MB"
-                                                value={almacenPT == "" ? informacionRequerimiento.pigmento : formDataPlaneacion.descripcionPigmento}
+                                                defaultValue={formDataPlaneacion.descripcionPigmento}
                                                 name="Pigmento"
+                                                disabled
                                             />
                                         </Form.Group>
                                         <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -914,9 +1032,10 @@ function ModificacionProduccion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="number"
-                                                defaultValue={almacenPT == "" ? informacionRequerimiento.aplicacion : formDataPlaneacion.aplicacionGxKG}
+                                                defaultValue={formDataPlaneacion.aplicacionGxKG}
                                                 placeholder="Apliación (gr/kg)"
                                                 name="aplicacion"
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -926,9 +1045,10 @@ function ModificacionProduccion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="number"
-                                                value={almacenPT == "" ? informacionRequerimiento.bolsasCajasUtilizar : formDataPlaneacion.noPiezasxEmpaque}
+                                                value={bolsasCajasUtilizar.toFixed(2)}
                                                 placeholder="Bolsas o cajas a utilizar"
                                                 name="bolsasCajasUtilizar"
+                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -941,8 +1061,9 @@ function ModificacionProduccion(props) {
                                             <Form.Control
                                                 type="text"
                                                 placeholder="Material x turno"
-                                                name="materialxTurno"
-                                                defaultValue={informacionRequerimiento.materialxTurno}
+                                                name="materialTurno"
+                                                value={materialTurno.toFixed(2)}
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -954,7 +1075,8 @@ function ModificacionProduccion(props) {
                                                 type="number"
                                                 placeholder="merma"
                                                 name="merma"
-                                                defaultValue={informacionRequerimiento.merma}
+                                                value={formDataPlaneacion.porcentajeScrap}
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -966,7 +1088,8 @@ function ModificacionProduccion(props) {
                                                 type="number"
                                                 placeholder="Kg de material"
                                                 name="kgMaterial"
-                                                defaultValue={informacionRequerimiento.kgMaterial}
+                                                value={kgMaterial.toFixed(2)}
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -977,8 +1100,9 @@ function ModificacionProduccion(props) {
                                             <Form.Control
                                                 type="number"
                                                 placeholder="Kg de PIG o MB"
-                                                name="pigMb"
-                                                defaultValue={informacionRequerimiento.pigMb}
+                                                name="kgPIGMB"
+                                                value={pigMB.toFixed(2)}
+                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>

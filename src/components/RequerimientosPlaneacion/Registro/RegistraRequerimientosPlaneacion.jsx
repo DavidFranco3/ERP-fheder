@@ -9,10 +9,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { listarMatrizProductosActivos, obtenerMatrizProducto } from "../../../api/matrizProductos";
 import { map } from "lodash";
-import { listarAlmacenPT } from "../../../api/almacenPT";
+import { listarAlmacenPT, obtenerDatosAlmacenPT } from "../../../api/almacenPT";
 import { registraRequerimiento, obtenerNumeroRequerimiento, obtenerItemRequerimiento } from "../../../api/requerimientosPlaneacion";
 import { toast } from "react-toastify";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
+import { obtenerMaquina } from "../../../api/maquinas";
 
 function RegistraRequerimientosPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
@@ -26,7 +27,7 @@ function RegistraRequerimientosPlaneacion(props) {
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
         try {
-            obtenerMatrizProducto(almacenPT?.idProducto).then(response => {
+            obtenerMatrizProducto(formData.materiaPrima).then(response => {
                 const { data } = response;
                 // console.log(data)
                 // initialData
@@ -44,6 +45,83 @@ function RegistraRequerimientosPlaneacion(props) {
             console.log(e)
         }
     }, [formData.materiaPrima]);
+
+    const [unidadMedida, setUnidadMedida] = useState("Piezas");
+
+    const [cantidad, setCantidad] = useState("0");
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerDatosAlmacenPT(formDataPlaneacion.noInterno).then(response => {
+                const { data } = response;
+                setUnidadMedida(data.um);
+                setCantidad(data.existenciasTotales)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.noInterno]);
+
+
+    const [numeroMaquina1, setNumeroMaquina1] = useState("");
+
+    const [nombreMaquina1, setNombreMaquina1] = useState("");
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerMaquina(formDataPlaneacion.opcion1).then(response => {
+                const { data } = response;
+                setNumeroMaquina1(data.numeroMaquina);
+                setNombreMaquina1(data.marca)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.opcion1]);
+
+    const [numeroMaquina2, setNumeroMaquina2] = useState("");
+
+    const [nombreMaquina2, setNombreMaquina2] = useState("");
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerMaquina(formDataPlaneacion.opcion2).then(response => {
+                const { data } = response;
+                setNumeroMaquina2(data.numeroMaquina);
+                setNombreMaquina2(data.marca)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.opcion2]);
+
+    const [numeroMaquina3, setNumeroMaquina3] = useState("");
+
+    const [nombreMaquina3, setNombreMaquina3] = useState("");
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerMaquina(formDataPlaneacion.opcion3).then(response => {
+                const { data } = response;
+                setNumeroMaquina3(data.numeroMaquina);
+                setNombreMaquina3(data.marca)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.opcion3]);
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -176,9 +254,9 @@ function RegistraRequerimientosPlaneacion(props) {
                     folio: data.noRequerimiento,
                     requerimiento: {
                         semana: formData.semana,
-                        producto: almacenPT.idProducto,
-                        um: almacenPT.um,
-                        almacenProductoTerminado: almacenPT.existenciasTotales,
+                        producto: formData.materiaPrima,
+                        um: unidadMedida,
+                        almacenProductoTerminado: cantidad,
                         ordenVenta: listOVCargadas,
                         totalProducir: totalProducir,
                     },
@@ -187,25 +265,25 @@ function RegistraRequerimientosPlaneacion(props) {
                         numeroCavidades: formDataPlaneacion.cavMolde,
                         opcionesMaquinaria: {
                             1: {
-                                numeroMaquina1: formData.numeroMaquina1,
-                                maquina1: formData.maquina1,
-                                ciclo1: formData.ciclo1,
-                                pieza1: formData.pieza1,
-                                bolsa1: formData.bolsa1,
+                                numeroMaquina1: numeroMaquina1,
+                                maquina1: nombreMaquina1,
+                                ciclo1: formDataPlaneacion.tiempoCiclo1,
+                                pieza1: piezasTurno1,
+                                bolsa1: formDataPlaneacion.noPiezasxEmpaque,
                             },
                             2: {
-                                numeroMaquina2: formData.numeroMaquina2,
-                                maquina2: formData.maquina2,
-                                ciclo2: formData.ciclo2,
-                                pieza2: formData.pieza2,
-                                bolsa2: formData.bolsa2,
+                                numeroMaquina2: numeroMaquina2,
+                                maquina2: nombreMaquina2,
+                                ciclo2: formDataPlaneacion.tiempoCiclo2,
+                                pieza2: piezasTurno2,
+                                bolsa2: formDataPlaneacion.noPiezasxEmpaque,
                             },
                             3: {
-                                numeroMaquina3: formData.numeroMaquina3,
-                                maquina3: formData.maquina3,
-                                ciclo3: formData.ciclo3,
-                                pieza3: formData.pieza3,
-                                bolsa3: formData.bolsa3,
+                                numeroMaquina3: numeroMaquina3,
+                                maquina3: nombreMaquina3,
+                                ciclo3: formDataPlaneacion.tiempoCiclo3,
+                                pieza3: piezasTurno3,
+                                bolsa3: formDataPlaneacion.noPiezasxEmpaque,
                             },
                         },
                     },
@@ -214,14 +292,14 @@ function RegistraRequerimientosPlaneacion(props) {
                         molido: formDataPlaneacion.porcentajeMolido,
                         pesoPieza: formDataPlaneacion.pesoPiezas,
                         pesoColada: formDataPlaneacion.pesoColada,
-                        kgMaterial: formData.kgMaterial,
+                        kgMaterial: kgMaterial,
                         pigmento: formDataPlaneacion.descripcionPigmento,
                         aplicacion: formDataPlaneacion.aplicacionGxKG,
-                        pigMb: formData.kgPIGMB,
-                        materialxTurno: formData.materialTurno,
-                        merma: formData.merma,
+                        pigMb: pigMB,
+                        materialxTurno: materialTurno,
+                        merma: formDataPlaneacion.porcentajeScrap,
                         empaque: formDataPlaneacion.descripcionBolsa,
-                        bolsasCajasUtilizar: formDataPlaneacion.noPiezasxEmpaque
+                        bolsasCajasUtilizar: bolsasCajasUtilizar
                     },
                     estado: "true"
                 }
@@ -301,7 +379,21 @@ function RegistraRequerimientosPlaneacion(props) {
 
     const [listOCCargadas, setListOCCargadas] = useState([]);
 
-    const totalProducir =  (listOVCargadas.reduce((amount, item) => (amount + parseInt(item.cantidadProducirOV)), 0));
+    const totalProducir = (listOVCargadas.reduce((amount, item) => (amount + parseInt(item.cantidadProducirOV)), 0));
+
+    const kgMaterial = (parseFloat(formDataPlaneacion.pesoPiezas) + (parseFloat(formDataPlaneacion.pesoColada) / parseFloat(formDataPlaneacion.cavMolde)) * parseFloat(totalProducir)) * (1 + parseFloat((formDataPlaneacion.porcentajeScrap / 100)));
+
+    const materialTurno = (((formDataPlaneacion.pesoColada / formDataPlaneacion.cavMolde) + formDataPlaneacion.pesoPiezas) * formDataPlaneacion.piezasxTurno) * (1 + (formDataPlaneacion.porcentajeScrap));
+
+    const pigMB = (formDataPlaneacion.aplicacionGxKG * kgMaterial) / 1000;
+
+    const bolsasCajasUtilizar = (totalProducir / formDataPlaneacion.noPiezasxEmpaque);
+
+    const piezasTurno1 = (((3600 / formDataPlaneacion.tiempoCiclo1) * formDataPlaneacion.cavMolde) * 12);
+
+    const piezasTurno2 = (((3600 / formDataPlaneacion.tiempoCiclo2) * formDataPlaneacion.cavMolde) * 12);
+
+    const piezasTurno3 = (((3600 / formDataPlaneacion.tiempoCiclo3) * formDataPlaneacion.cavMolde) * 12);
 
     return (
         <>
@@ -314,15 +406,15 @@ function RegistraRequerimientosPlaneacion(props) {
                             </h1>
                         </Col>
                         <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
+                            <Button
+                                className="btnRegistroVentas"
+                                onClick={() => {
+                                    rutaRegreso()
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                            </Button>
+                        </Col>
                     </Row>
                 </Alert>
 
@@ -367,12 +459,12 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 name="materiaPrima"
                                             >
                                                 <option>Elige una opción</option>
-                                                {map(listMateriasPrimas, (materiaprima, index) => (
+                                                {map(listProductosActivos, (producto, index) => (
                                                     <option
                                                         key={index}
-                                                        value={materiaprima?.idProducto + "/" + materiaprima?.folioAlmacen + "/" + materiaprima?.folioMP + "/" + materiaprima?.nombre + "/" + materiaprima?.um + "/" + materiaprima?.existenciasOV + "/" + materiaprima?.existenciasStock + "/" + materiaprima?.existenciasTotales}
+                                                        value={producto?.id}
                                                     >
-                                                        {materiaprima?.nombre}
+                                                        {producto?.descripcion}
                                                     </option>
                                                 ))}
                                             </Form.Control>
@@ -384,9 +476,10 @@ function RegistraRequerimientosPlaneacion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="text"
-                                                defaultValue={almacenPT?.um}
+                                                value={unidadMedida}
                                                 placeholder="UM"
                                                 name="um"
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -396,9 +489,10 @@ function RegistraRequerimientosPlaneacion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="text"
-                                                defaultValue={almacenPT?.existenciasTotales}
+                                                value={cantidad}
                                                 placeholder="Almacen producto terminado"
                                                 name="almacenPT"
+                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -573,6 +667,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 placeholder="Total a producir"
                                                 name="totalProducir"
                                                 value={totalProducir}
+                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -602,6 +697,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 placeholder="Numero de molde"
                                                 value={formDataPlaneacion.noMolde}
                                                 name="noMolde"
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -614,6 +710,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={formDataPlaneacion.cavMolde}
                                                 placeholder="Numero de cavidades"
                                                 name="numeroCavidades"
+                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -658,35 +755,40 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina1"
-                                                    defaultValue={formData.numeroMaquina1}
+                                                    value={numeroMaquina1}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="maquina1"
-                                                    defaultValue={formData.maquina1}
+                                                    value={nombreMaquina1}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="ciclo1"
-                                                    defaultValue={formData.ciclo1}
+                                                    value={formDataPlaneacion.tiempoCiclo1}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="pieza1"
-                                                    defaultValue={formData.pieza1}
+                                                    value={piezasTurno1.toFixed(2)}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="bolsa1"
-                                                    defaultValue={formData.bolsa1}
+                                                    value={formDataPlaneacion.noPiezasxEmpaque}
+                                                    disabled
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -703,35 +805,40 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina2"
-                                                    defaultValue={formData.numeroMaquina2}
+                                                    value={numeroMaquina2}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="maquina2"
-                                                    defaultValue={formData.maquina2}
+                                                    value={nombreMaquina2}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="ciclo2"
-                                                    defaultValue={formData.ciclo2}
+                                                    value={formDataPlaneacion.tiempoCiclo2}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
-                                                    name="pieza2"
-                                                    defaultValue={formData.pieza2}
+                                                    name="pieza1"
+                                                    value={piezasTurno2.toFixed(2)}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="bolsa2"
-                                                    defaultValue={formData.bolsa2}
+                                                    value={formDataPlaneacion.noPiezasxEmpaque}
+                                                    disabled
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -748,35 +855,40 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina3"
-                                                    defaultValue={formData.numeroMaquina3}
+                                                    value={numeroMaquina3}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="maquina3"
-                                                    defaultValue={formData.maquina3}
+                                                    value={nombreMaquina3}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="ciclo3"
-                                                    defaultValue={formData.ciclo3}
+                                                    value={formDataPlaneacion.tiempoCiclo3}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
-                                                    name="pieza3"
-                                                    defaultValue={formData.pieza3}
+                                                    name="pieza1"
+                                                    value={piezasTurno3.toFixed(2)}
+                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="bolsa3"
-                                                    defaultValue={formData.bolsa3}
+                                                    value={formDataPlaneacion.noPiezasxEmpaque}
+                                                    disabled
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -804,6 +916,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={formDataPlaneacion.descripcionMP}
                                                 placeholder="Material"
                                                 name="Material"
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -816,6 +929,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 placeholder="Molido"
                                                 defaultValue={formDataPlaneacion.porcentajeMolido}
                                                 name="Molido"
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -828,6 +942,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={formDataPlaneacion.pesoPiezas}
                                                 placeholder="Peso de la pieza"
                                                 name="pesoPieza"
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -840,6 +955,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={formDataPlaneacion.pesoColada}
                                                 placeholder="Peso colada"
                                                 name="pesoColada"
+                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -854,6 +970,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={formDataPlaneacion.descripcionBolsa}
                                                 placeholder="Empaque"
                                                 name="empaque"
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -866,6 +983,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 placeholder="Pigmento/MB"
                                                 defaultValue={formDataPlaneacion.descripcionPigmento}
                                                 name="Pigmento"
+                                                disabled
                                             />
                                         </Form.Group>
                                         <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -877,6 +995,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 defaultValue={formDataPlaneacion.aplicacionGxKG}
                                                 placeholder="Apliación (gr/kg)"
                                                 name="aplicacion"
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -886,9 +1005,10 @@ function RegistraRequerimientosPlaneacion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="number"
-                                                defaultValue={formDataPlaneacion.noPiezasxEmpaque}
+                                                value={bolsasCajasUtilizar.toFixed(2)}
                                                 placeholder="Bolsas o cajas a utilizar"
                                                 name="bolsasCajasUtilizar"
+                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -902,7 +1022,8 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 type="text"
                                                 placeholder="Material x turno"
                                                 name="materialTurno"
-                                                defaultValue={formData.materialTurno}
+                                                value={materialTurno.toFixed(2)}
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -914,7 +1035,8 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 type="number"
                                                 placeholder="merma"
                                                 name="merma"
-                                                defaultValue={formData.merma}
+                                                value={formDataPlaneacion.porcentajeScrap}
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -926,7 +1048,8 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 type="number"
                                                 placeholder="Kg de material"
                                                 name="kgMaterial"
-                                                defaultValue={formData.kgMaterial}
+                                                value={kgMaterial.toFixed(2)}
+                                                disabled
                                             />
                                         </Form.Group>
 
@@ -938,7 +1061,8 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 type="number"
                                                 placeholder="Kg de PIG o MB"
                                                 name="kgPIGMB"
-                                                defaultValue={formData.kgPIGMB}
+                                                value={pigMB.toFixed(2)}
+                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>

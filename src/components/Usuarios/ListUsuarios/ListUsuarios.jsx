@@ -4,7 +4,7 @@ import moment from "moment";
 import 'moment/locale/es';
 
 import "./ListUsuarios.scss"
-import { Badge, Button, Container, Navbar, Table } from "react-bootstrap";
+import { Badge, Button, Container, Navbar, Table, Form, Col } from "react-bootstrap";
 import { map } from "lodash";
 import EliminacionLogicaUsuarios from "../EliminacionLogica";
 import BasicModal from "../../Modal/BasicModal";
@@ -298,7 +298,8 @@ function ListUsuarios(props) {
 
         return (
             <>
-                <TextField
+                <Col sm="2">
+                <Form.Control
                     id="search"
                     type="text"
                     placeholder="Busqueda por nombre"
@@ -306,12 +307,13 @@ function ListUsuarios(props) {
                     value={filterText}
                     onChange={e => setFilterText(e.target.value)}
                 />
+                </Col>
                 <ClearButton type="button" onClick={handleClear}>
                     X
                 </ClearButton>
             </>
         );
-    }, [filterText, resetPaginationToogle]);
+    }, [filterText]);
 
     const handleChangePage = (page) => {
         // console.log("Nueva pagina "+ newPage)
