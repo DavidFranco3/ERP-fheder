@@ -12,6 +12,7 @@ import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { registraMatrizProductos } from "../../../api/matrizProductos";
 import "./RegistraMatrizProductos.scss"
 import { listarProveedores } from "../../../api/proveedores";
+import {listarMaquina} from "../../../api/maquinas";
 
 function RegistraMatrizProductos(props) {
 
@@ -20,6 +21,10 @@ function RegistraMatrizProductos(props) {
 
     // Para almacenar el listado de clientes
     const [listClientes, setListClientes] = useState(null);
+
+    // Para almacenar el listado de maquinas
+    const [listMaquinas, setListMaquinas] = useState(null);
+
     // Para almacenar el listado de materias primas
     const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
 
@@ -83,6 +88,28 @@ function RegistraMatrizProductos(props) {
             console.log(e)
         }
 
+        try {
+            listarMaquina().then(response => {
+                const { data } = response;
+                // console.log(data)
+
+                if (!listMaquinas && data) {
+                    setListMaquinas(formatModelMaquinas(data));
+                } else {
+                    const datosMaquinas = formatModelMaquinas(data);
+                    setListMaquinas(datosMaquinas);
+                }
+            }).catch(e => {
+                //console.log(e)
+                if (e.message === 'Network Error') {
+                    //console.log("No hay internet")
+                    toast.error("Conexión al servidor no disponible");
+                }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+
         // Para obtener el listado de proveedores
         try {
             listarProveedores().then(response => {
@@ -107,7 +134,7 @@ function RegistraMatrizProductos(props) {
         e.preventDefault()
 
 
-        if (!formData.noInterno || !formData.cliente || !formData.noMolde || !formData.cavMolde || !formData.noParte || !formData.descripcion || !formData.pesoPiezas || !formData.pesoColada || !formData.porcentajeScrap || !formData.descripcionMP || !formData.descripcionPigmento || !formData.aplicacionGxKG || !formData.proveedor || !formData.tiempoCiclo || !formData.noOperadores || !formData.descripcionBolsa || !formData.noPiezasxEmpaque || !formData.opcion1 || !formData.tiempoCiclo1 || !formData.opcion2 || !formData.tiempoCiclo2 || !formData.opcion3 || !formData.tiempoCiclo3 || !formData.opcion4 || !formData.tiempoCiclo4 || !formData.opcion5 || !formData.tiempoCiclo5 || !formData.opcion6 || !formData.tiempoCiclo6) {
+        if (!formData.noInterno || !formData.cliente || !formData.noMolde || !formData.cavMolde || !formData.noParte || !formData.descripcion || !formData.pesoPiezas || !formData.pesoColada || !formData.porcentajeScrap || !formData.descripcionMP || !formData.descripcionPigmento || !formData.aplicacionGxKG || !formData.tiempoCiclo || !formData.noOperadores || !formData.descripcionBolsa || !formData.noPiezasxEmpaque) {
             toast.warning("Completa el formulario");
         } else {
             //console.log(formData)
@@ -149,27 +176,27 @@ function RegistraMatrizProductos(props) {
                 opcionMaquinaria: {
                     1: {
                         opcion1: formData.opcion1,
-                        tiempoCiclo1: formData.tiempoCiclo1
+                        tiempoCiclo1: formData.tiempoCiclo1 == "" ? formData.tiempoCiclo : formData.tiempoCiclo1
                     },
                     2: {
                         opcion2: formData.opcion2,
-                        tiempoCiclo2: formData.tiempoCiclo2
+                        tiempoCiclo2: formData.tiempoCiclo2 == "" ? formData.tiempoCiclo : formData.tiempoCiclo2
                     },
                     3: {
                         opcion3: formData.opcion3,
-                        tiempoCiclo3: formData.tiempoCiclo3
+                        tiempoCiclo3: formData.tiempoCiclo3 == "" ? formData.tiempoCiclo : formData.tiempoCiclo3
                     },
                     4: {
                         opcion4: formData.opcion4,
-                        tiempoCiclo4: formData.tiempoCiclo4
+                        tiempoCiclo4: formData.tiempoCiclo4 == "" ? formData.tiempoCiclo : formData.tiempoCiclo4
                     },
                     5: {
                         opcion5: formData.opcion5,
-                        tiempoCiclo5: formData.tiempoCiclo5
+                        tiempoCiclo5: formData.tiempoCiclo15== "" ? formData.tiempoCiclo : formData.tiempoCiclo5
                     },
                     6: {
                         opcion6: formData.opcion6,
-                        tiempoCiclo6: formData.tiempoCiclo6
+                        tiempoCiclo6: formData.tiempoCiclo6 == "" ? formData.tiempoCiclo : formData.tiempoCiclo6
                     }
                 },
                 estado: "true"
@@ -205,12 +232,12 @@ function RegistraMatrizProductos(props) {
 
     // Para obtener el porcentaje de molido
     const molido = ((parseFloat(formData.pesoColada) / parseFloat(formData.cavMolde)) / parseFloat(formData.pesoPiezas)) * 100;
-    
+
     // Para obtener el total de piezas por hora
     const piezasHora = (3600 / (parseFloat(formData.tiempoCiclo))) * formData.cavMolde;
 
     // Para obtener el total de piezas por turno
-    const piezasTurno = (12 * parseFloat (piezasHora));
+    const piezasTurno = (12 * parseFloat(piezasHora));
 
     return (
         <>
@@ -223,715 +250,749 @@ function RegistraMatrizProductos(props) {
                             </h1>
                         </Col>
                         <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            onClick={() => {
-                                rutaRegresoProductos()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
-                </Row>
-            </Alert>
+                            <Button
+                                className="btnRegistroVentas"
+                                onClick={() => {
+                                    rutaRegresoProductos()
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                            </Button>
+                        </Col>
+                    </Row>
+                </Alert>
 
-            <Container fluid>
-                <Col>
-                    <div className="formularioRegistroMatrizProductos">
-                        <Form onChange={onChange} onSubmit={onSubmit}>
+                <Container fluid>
+                    <Col>
+                        <div className="formularioRegistroMatrizProductos">
+                            <Form onChange={onChange} onSubmit={onSubmit}>
 
-                            <div className="encabezado">
-                                <Container fluid>
-                                    <br />
-                                    {/* No. interno, cliente, no. parte */}
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridNumeroInterno">
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    No. interno
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe el no. interno"
-                                                    name="noInterno"
-                                                    defaultValue={formData.noInterno}
-                                                />
-                                            </Col>
+                                <div className="encabezado">
+                                    <Container fluid>
+                                        <br />
+                                        {/* No. interno, cliente, no. parte */}
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridNumeroInterno">
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        No. interno
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe el no. interno"
+                                                        name="noInterno"
+                                                        defaultValue={formData.noInterno}
+                                                    />
+                                                </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Cliente
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control as="select"
-                                                    defaultValue={formData.cliente}
-                                                    name="cliente"
-                                                >
-                                                    <option>Elige una opción</option>
-                                                    {map(listClientes, (cliente, index) => (
-                                                        <option key={index} value={cliente?.id}>{cliente?.nombre + " " + cliente.apellidos}</option>
-                                                    ))}
-                                                </Form.Control>
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-                                    {/* No. molde, cav. molde */}
-                                    <Row className="mb-3">
-
-                                        <Form.Group as={Row} controlId="formGridNoParte">
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    No. parte
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe el no.parte"
-                                                    name="noParte"
-                                                    defaultValue={formData.noParte}
-                                                />
-                                            </Col>
-
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    No. molde
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe el no. de molde"
-                                                    name="noMolde"
-                                                    defaultValue={formData.noMolde}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-
-                                    {/* Descripción */}
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridCAVMolde">
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    CAV molde
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    step="0.000001"
-                                                    min="0"
-                                                    placeholder="Escribe el cav del molde"
-                                                    name="cavMolde"
-                                                    defaultValue={formData.cavMolde}
-                                                />
-                                            </Col>
-
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Nombre del producto
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe la descripción"
-                                                    name="descripcion"
-                                                    defaultValue={formData.descripcion}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-
-                                    <Row className="mb-3">
-                                    <Form.Group as={Row} controlId="formGridNumeroParte">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Precio de venta
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm="4">
-                                                <Form.Control
-                                                    type="number"
-                                                    step="0.000001"
-                                                    min="0"
-                                                    placeholder="Escribe el precio de venta"
-                                                    name="precioVenta"
-                                                    defaultValue={formData.precioVenta}
-                                                />
-                                            </Col>
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Cliente
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control as="select"
+                                                        defaultValue={formData.cliente}
+                                                        name="cliente"
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        {map(listClientes, (cliente, index) => (
+                                                            <option key={index} value={cliente?.id}>{cliente?.nombre + " " + cliente.apellidos}</option>
+                                                        ))}
+                                                    </Form.Control>
+                                                </Col>
                                             </Form.Group>
                                         </Row>
-                                </Container>
-                            </div>
+                                        {/* No. molde, cav. molde */}
+                                        <Row className="mb-3">
 
-                            {/* Datos de la pieza */}
-                            <div className="datosPieza">
-                                <Container fluid>
-                                    <br />
-                                    <div className="tituloSeccion">
-                                        <h4>
-                                            Datos de la pieza
-                                        </h4>
-                                    </div>
-                                    {/* Peso piezas, peso colada, peso total inyeccion*/}
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridNumeroParte">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Peso de la pieza
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    step="0.000001"
-                                                    min="0"
-                                                    placeholder="Escribe el peso"
-                                                    name="pesoPiezas"
-                                                    defaultValue={formData.pesoPiezas}
-                                                />
-                                            </Col>
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Peso colada
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    step="0.000001"
-                                                    min="0"
-                                                    placeholder="Escribe el peso"
-                                                    name="pesoColada"
-                                                    defaultValue={formData.pesoColada}
-                                                />
-                                            </Col>
-                                        </Form.Group>
+                                            <Form.Group as={Row} controlId="formGridNoParte">
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        No. parte
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe el no.parte"
+                                                        name="noParte"
+                                                        defaultValue={formData.noParte}
+                                                    />
+                                                </Col>
+
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        No. molde
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe el no. de molde"
+                                                        name="noMolde"
+                                                        defaultValue={formData.noMolde}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                        </Row>
+
+                                        {/* Descripción */}
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridCAVMolde">
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        CAV molde
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        step="0.000001"
+                                                        min="0"
+                                                        placeholder="Escribe el cav del molde"
+                                                        name="cavMolde"
+                                                        defaultValue={formData.cavMolde}
+                                                    />
+                                                </Col>
+
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Nombre del producto
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe la descripción"
+                                                        name="descripcion"
+                                                        defaultValue={formData.descripcion}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                        </Row>
+
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridNumeroParte">
+                                                <Col sm="2">
+                                                    <Form.Label>
+                                                        Precio de venta
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col sm="4">
+                                                    <Form.Control
+                                                        type="number"
+                                                        step="0.000001"
+                                                        min="0"
+                                                        placeholder="Escribe el precio de venta"
+                                                        name="precioVenta"
+                                                        defaultValue={formData.precioVenta}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                        </Row>
+                                    </Container>
+                                </div>
+
+                                {/* Datos de la pieza */}
+                                <div className="datosPieza">
+                                    <Container fluid>
+                                        <br />
+                                        <div className="tituloSeccion">
+                                            <h4>
+                                                Datos de la pieza
+                                            </h4>
+                                        </div>
+                                        {/* Peso piezas, peso colada, peso total inyeccion*/}
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridNumeroParte">
+                                                <Col sm="2">
+                                                    <Form.Label>
+                                                        Peso de la pieza
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        step="0.000001"
+                                                        min="0"
+                                                        placeholder="Escribe el peso"
+                                                        name="pesoPiezas"
+                                                        defaultValue={formData.pesoPiezas}
+                                                    />
+                                                </Col>
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Peso colada
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        step="0.000001"
+                                                        min="0"
+                                                        placeholder="Escribe el peso"
+                                                        name="pesoColada"
+                                                        defaultValue={formData.pesoColada}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                        </Row>
+                                        {/* porcentaje scrap, porcentaje molido*/}
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridPesoTotalInyeccion">
+                                                <Col sm="2">
+                                                    <Form.Label>
+                                                        Peso total de inyección
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        step="0.000001"
+                                                        min="0"
+                                                        placeholder="Escribe el peso"
+                                                        name="pesoTotalInyeccion"
+                                                        value={formData.pesoPiezas == "" ? 0 : formData.pesoColada == "" ? 0 : formData.cavMolde == "" ? 0 : inyeccion.toFixed(2)}
+                                                        disabled
+                                                    />
+                                                </Col>
+
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Porcentaje scrap
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        step="0.1"
+                                                        min="0"
+                                                        placeholder="Escribe el porcentaje"
+                                                        name="porcentajeScrap"
+                                                        defaultValue={formData.porcentajeScrap}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                        </Row>
+
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridPorcentajeMolido">
+                                                <Col sm="2">
+                                                    <Form.Label>
+                                                        Porcentaje de molido
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col sm="3">
+                                                    <Form.Control
+                                                        type="number"
+                                                        step="0.00000000000001"
+                                                        min="0"
+                                                        placeholder="Escribe el porcentaje"
+                                                        name="porcentajeMolido"
+                                                        value={formData.pesoPiezas == "" ? 0 : formData.pesoColada == "" ? 0 : formData.cavMolde == "" ? 0 : molido > 1 ? molido.toFixed(0) : molido.toFixed(2)}
+                                                        disabled
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                        </Row>
+                                    </Container>
+                                </div>
+
+                                {/* Materia prima */}
+                                <div className="materiaPrima">
+                                    <Container fluid>
+                                        <br />
+                                        <div className="tituloSeccion">
+                                            <h4>
+                                                Materia prima
+                                            </h4>
+                                        </div>
+                                        {/* Descripción */}
+
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridDescripcionMateriaPrima">
+                                                <Col sm="2">
+                                                    <Form.Label>
+                                                        Selecciona la materia prima
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col sm="3">
+                                                    <Form.Control as="select"
+                                                        defaultValue={formData.descripcionMP}
+                                                        name="descripcionMP"
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        {map(listMateriasPrimas, (materiaprima, index) => (
+                                                            <option key={index} value={materiaprima?.descripcion}>{materiaprima?.descripcion}</option>
+                                                        ))}
+                                                    </Form.Control>
+                                                </Col>
+                                            </Form.Group>
+                                        </Row>
+                                    </Container>
+                                </div>
+
+                                {/* Pigmento */}
+                                <div className="pigmentoMasterBach">
+                                    <Container fluid>
+                                        <br />
+                                        <div className="tituloSeccion">
+                                            <h4>
+                                                Pigmento / Master bach
+                                            </h4>
+                                        </div>
+                                        {/* Descripcion */}
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridDescripciónPigmento">
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Descripción
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe la descripción"
+                                                        name="descripcionPigmento"
+                                                        defaultValue={formData.descripcionPigmento}
+                                                    />
+                                                </Col>
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Aplicación G x K.G.
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        step="0.000001"
+                                                        min="0"
+                                                        placeholder="Escribe la aplicación"
+                                                        name="aplicacionGxKG"
+                                                        defaultValue={formData.aplicacionGxKG}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                        </Row>
+                                        {/* Aplicacion gxkg, proveedor */}
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridProveedor">
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Proveedor
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        as="select"
+                                                        defaultValue={formData.proveedor}
+                                                        name="proveedor"
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        {map(listProveedores, (proveedor, index) => (
+                                                            <option key={index} value={proveedor?.id}>{proveedor?.nombre}</option>
+                                                        ))}
+                                                    </Form.Control>
+                                                </Col>
+                                            </Form.Group>
+                                        </Row>
+                                    </Container>
+                                </div>
+
+                                <div className="pigmentoMasterBach">
+                                    <Container fluid>
+                                        <br />
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridProveedor">
+                                                <Col sm="2">
+                                                    <Form.Label>
+                                                        No. de operadores
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        min="0"
+                                                        placeholder="Escribe el numero de operadores"
+                                                        name="noOperadores"
+                                                        defaultValue={formData.noOperadores}
+                                                    />
+                                                </Col>
+
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Tiempo ciclo
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        step="0.1"
+                                                        min="0"
+                                                        placeholder="Escribe el tiempo"
+                                                        name="tiempoCiclo"
+                                                        defaultValue={formData.tiempoCiclo}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+
+                                        </Row>
+                                        {/* Tiempo ciclo (seg), no operadores, piezas x hora, piezas x turno */}
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridPiezasxHora">
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Piezas x Hora
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        min="0"
+                                                        placeholder="Escribe el numero de piezas"
+                                                        name="piezasxHora"
+                                                        value={formData.tiempoCiclo == "" ? 0 : formData.cavMolde == "" ? 0 : piezasHora.toFixed(2)}
+                                                        disabled
+                                                    />
+                                                </Col>
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Piezas x Turno
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        min="0"
+                                                        placeholder="Escribe el numero de piezas"
+                                                        name="piezasxTurno"
+                                                        value={formData.tiempoCiclo == "" ? 0 : formData.cavMolde == "" ? 0 : piezasTurno.toFixed(2)}
+                                                        disabled
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                        </Row>
+
+                                        <Row className="mb-3">
+
+                                        </Row>
+                                    </Container>
+                                </div>
+
+                                {/* Material de empaque */}
+                                <div className="materialEmpaque">
+                                    <Container fluid>
+                                        <br />
+                                        <div className="tituloSeccion">
+                                            <h4>
+                                                Material de empaque
+                                            </h4>
+                                        </div>
+                                        {/* Porcentaje scrap, no piezas por empaque */}
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridPorcentajeScrap">
+                                                <Col sm="2">
+                                                    <Form.Label>
+                                                        Descripcion de la bolsa
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe el porcentaje"
+                                                        name="descripcionBolsa"
+                                                        defaultValue={formData.descripcionBolsa}
+                                                    />
+                                                </Col>
+
+                                                <Col sm="2">
+                                                    <Form.Label>
+                                                        No. de piezas por empaque
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        min="0"
+                                                        placeholder="Escribe el numero de piezas"
+                                                        name="noPiezasxEmpaque"
+                                                        defaultValue={formData.noPiezasxEmpaque}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+
+                                        </Row>
+                                    </Container>
+                                </div>
+
+                                {/* Opciones maquinaria */}
+                                <div className="opcionesMaquinaria">
+                                    <Container fluid>
+                                        <br />
+                                        <div className="tituloSeccion">
+                                            <h4>
+                                                Opciones de maquina
+                                            </h4>
+                                        </div>
+                                        {/* Opcion 1, Tiempo ciclo (seg) */}
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridOpcion1">
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Opción 1
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        as="select"
+                                                        defaultValue={formData.opcion1}
+                                                        name="opcion1"
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        {map(listMaquinas, (maquina, index) => (
+                                                            <option value={maquina?.id} selected={maquina?.id === formData.opcion1}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                        ))}
+                                                    </Form.Control>
+                                                </Col>
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Tiempo ciclo
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        min="0"
+                                                        placeholder="Escribe el tiempo de ciclo"
+                                                        name="tiempoCiclo1"
+                                                        defaultValue={formData.tiempoCiclo}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                        </Row>
+
+                                        {/* Opcion 2, Tiempo ciclo (seg) */}
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridOpcion2">
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Opción 2
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        as="select"
+                                                        defaultValue={formData.opcion2}
+                                                        name="opcion2"
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        {map(listMaquinas, (maquina, index) => (
+                                                            <option value={maquina?.id} selected={maquina?.id === formData.opcion2}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                        ))}
+                                                    </Form.Control>
+                                                </Col>
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Tiempo ciclo
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        min="0"
+                                                        placeholder="Escribe el tiempo de ciclo"
+                                                        name="tiempoCiclo2"
+                                                        defaultValue={formData.tiempoCiclo}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+
+                                        </Row>
+                                        {/* Opcion 3, Tiempo ciclo (seg) */}
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridOpcion3">
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Opción 3
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        as="select"
+                                                        defaultValue={formData.opcion3}
+                                                        name="opcion3"
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        {map(listMaquinas, (maquina, index) => (
+                                                            <option value={maquina?.id} selected={maquina?.id === formData.opcion3}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                        ))}
+                                                    </Form.Control>
+                                                </Col>
+
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Tiempo ciclo
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        min="0"
+                                                        placeholder="Escribe el tiempo de ciclo"
+                                                        name="tiempoCiclo3"
+                                                        defaultValue={formData.tiempoCiclo}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+
+                                        </Row>
+
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridOpcion1">
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Opción 4
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        as="select"
+                                                        defaultValue={formData.opcion4}
+                                                        name="opcion4"
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        {map(listMaquinas, (maquina, index) => (
+                                                            <option value={maquina?.id} selected={maquina?.id === formData.opcion4}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                        ))}
+                                                    </Form.Control>
+                                                </Col>
+
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Tiempo ciclo
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        min="0"
+                                                        placeholder="Escribe el tiempo de ciclo"
+                                                        name="tiempoCiclo4"
+                                                        defaultValue={formData.tiempoCiclo}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                        </Row>
+
+                                        {/* Opcion 2, Tiempo ciclo (seg) */}
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridOpcion2">
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Opción 5
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        as="select"
+                                                        defaultValue={formData.opcion5}
+                                                        name="opcion5"
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        {map(listMaquinas, (maquina, index) => (
+                                                            <option value={maquina?.id} selected={maquina?.id === formData.opcion5}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                        ))}
+                                                    </Form.Control>
+                                                </Col>
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Tiempo ciclo
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        min="0"
+                                                        placeholder="Escribe el tiempo de ciclo"
+                                                        name="tiempoCiclo5"
+                                                        defaultValue={formData.tiempoCiclo}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+
+                                        </Row>
+                                        {/* Opcion 3, Tiempo ciclo (seg) */}
+                                        <Row className="mb-3">
+                                            <Form.Group as={Row} controlId="formGridOpcion3">
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Opción 6
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        as="select"
+                                                        defaultValue={formData.opcion6}
+                                                        name="opcion6"
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        {map(listMaquinas, (maquina, index) => (
+                                                            <option value={maquina?.id} selected={maquina?.id === formData.opcion6}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                        ))}
+                                                    </Form.Control>
+                                                </Col>
+                                                <Col sm="1">
+                                                    <Form.Label>
+                                                        Tiempo ciclo
+                                                    </Form.Label>
+                                                </Col>
+                                                <Col>
+                                                    <Form.Control
+                                                        type="number"
+                                                        min="0"
+                                                        placeholder="Escribe el tiempo de ciclo"
+                                                        name="tiempoCiclo6"
+                                                        defaultValue={formData.tiempoCiclo}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+
+                                        </Row>
+                                    </Container>
+                                </div>
+
+                                <Form.Group as={Row} className="botones">
+                                    <Row>
+                                        <Col>
+                                            <Button
+                                                type="submit"
+                                                variant="success"
+                                                className="registrar"
+                                            >
+                                                {!loading ? "Registrar" : <Spinner animation="border" />}
+                                            </Button>
+                                        </Col>
+                                        <Col>
+                                            <Button
+                                                variant="danger"
+                                                className="cancelar"
+                                                onClick={() => {
+                                                    rutaRegresoProductos()
+                                                }}
+                                            >
+                                                Cancelar
+                                            </Button>
+                                        </Col>
                                     </Row>
-                                    {/* porcentaje scrap, porcentaje molido*/}
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridPesoTotalInyeccion">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Peso total de inyección
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    step="0.000001"
-                                                    min="0"
-                                                    placeholder="Escribe el peso"
-                                                    name="pesoTotalInyeccion"
-                                                    value={formData.pesoPiezas == "" ?  0 : formData.pesoColada == "" ? 0 : formData.cavMolde == "" ? 0 : inyeccion.toFixed(2)}
-                                                    disabled
-                                                />
-                                            </Col>
-
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Porcentaje scrap
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    step="0.1"
-                                                    min="0"
-                                                    placeholder="Escribe el porcentaje"
-                                                    name="porcentajeScrap"
-                                                    defaultValue={formData.porcentajeScrap}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridPorcentajeMolido">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Porcentaje de molido
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm="3">
-                                                <Form.Control
-                                                    type="number"
-                                                    step="0.00000000000001"
-                                                    min="0"
-                                                    placeholder="Escribe el porcentaje"
-                                                    name="porcentajeMolido"
-                                                    value={formData.pesoPiezas == "" ? 0 : formData.pesoColada == "" ? 0 : formData.cavMolde == "" ? 0 : molido > 1 ? molido.toFixed(0) : molido.toFixed(2)}
-                                                    disabled
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-                                </Container>
-                            </div>
-
-                            {/* Materia prima */}
-                            <div className="materiaPrima">
-                                <Container fluid>
-                                    <br />
-                                    <div className="tituloSeccion">
-                                        <h4>
-                                            Materia prima
-                                        </h4>
-                                    </div>
-                                    {/* Descripción */}
-
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridDescripcionMateriaPrima">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Selecciona la materia prima
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm="3">
-                                                <Form.Control as="select"
-                                                    defaultValue={formData.descripcionMP}
-                                                    name="descripcionMP"
-                                                >
-                                                    <option>Elige una opción</option>
-                                                    {map(listMateriasPrimas, (materiaprima, index) => (
-                                                        <option key={index} value={materiaprima?.descripcion}>{materiaprima?.descripcion}</option>
-                                                    ))}
-                                                </Form.Control>
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-                                </Container>
-                            </div>
-
-                            {/* Pigmento */}
-                            <div className="pigmentoMasterBach">
-                                <Container fluid>
-                                    <br />
-                                    <div className="tituloSeccion">
-                                        <h4>
-                                            Pigmento / Master bach
-                                        </h4>
-                                    </div>
-                                    {/* Descripcion */}
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridDescripciónPigmento">
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Descripción
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe la descripción"
-                                                    name="descripcionPigmento"
-                                                    defaultValue={formData.descripcionPigmento}
-                                                />
-                                            </Col>
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Aplicación G x K.G.
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    step="0.000001"
-                                                    min="0"
-                                                    placeholder="Escribe la aplicación"
-                                                    name="aplicacionGxKG"
-                                                    defaultValue={formData.aplicacionGxKG}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-                                    {/* Aplicacion gxkg, proveedor */}
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridProveedor">
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Proveedor
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    as="select"
-                                                    defaultValue={formData.proveedor}
-                                                    name="proveedor"
-                                                >
-                                                    <option>Elige una opción</option>
-                                                    {map(listProveedores, (proveedor, index) => (
-                                                        <option key={index} value={proveedor?.id}>{proveedor?.nombre}</option>
-                                                    ))}
-                                                </Form.Control>
-                                            </Col>
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Tiempo ciclo
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    step="0.1"
-                                                    min="0"
-                                                    placeholder="Escribe el tiempo"
-                                                    name="tiempoCiclo"
-                                                    defaultValue={formData.tiempoCiclo}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-
-                                    </Row>
-                                    {/* Tiempo ciclo (seg), no operadores, piezas x hora, piezas x turno */}
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridPiezasxHora">
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Piezas x Hora
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    min="0"
-                                                    placeholder="Escribe el numero de piezas"
-                                                    name="piezasxHora"
-                                                    value={formData.tiempoCiclo == "" ? 0 : formData.cavMolde == "" ? 0 : piezasHora.toFixed(2)}
-                                                    disabled
-                                                />
-                                            </Col>
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Piezas x Turno
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    min="0"
-                                                    placeholder="Escribe el numero de piezas"
-                                                    name="piezasxTurno"
-                                                    value={formData.tiempoCiclo == "" ? 0 : formData.cavMolde == "" ? 0 : piezasTurno.toFixed(2)}
-                                                    disabled
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridNoOperadores">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    No. de operadores
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm="4">
-                                                <Form.Control
-                                                    type="number"
-                                                    min="0"
-                                                    placeholder="Escribe el numero de operadores"
-                                                    name="noOperadores"
-                                                    defaultValue={formData.noOperadores}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-                                </Container>
-                            </div>
-
-                            {/* Material de empaque */}
-                            <div className="materialEmpaque">
-                                <Container fluid>
-                                    <br />
-                                    <div className="tituloSeccion">
-                                        <h4>
-                                            Material de empaque
-                                        </h4>
-                                    </div>
-                                    {/* Porcentaje scrap, no piezas por empaque */}
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridPorcentajeScrap">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Descripcion de la bolsa
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe el porcentaje"
-                                                    name="descripcionBolsa"
-                                                    defaultValue={formData.descripcionBolsa}
-                                                />
-                                            </Col>
-
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    No. de piezas por empaque
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    min="0"
-                                                    placeholder="Escribe el numero de piezas"
-                                                    name="noPiezasxEmpaque"
-                                                    defaultValue={formData.noPiezasxEmpaque}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-
-                                    </Row>
-                                </Container>
-                            </div>
-
-                            {/* Opciones maquinaria */}
-                            <div className="opcionesMaquinaria">
-                                <Container fluid>
-                                    <br />
-                                    <div className="tituloSeccion">
-                                        <h4>
-                                            Opciones de maquina
-                                        </h4>
-                                    </div>
-                                    {/* Opcion 1, Tiempo ciclo (seg) */}
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridOpcion1">
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Opción 1
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe una opción"
-                                                    name="opcion1"
-                                                    defaultValue={formData.opcion1}
-                                                />
-                                            </Col>
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Tiempo ciclo
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    min="0"
-                                                    placeholder="Escribe el tiempo de ciclo"
-                                                    name="tiempoCiclo1"
-                                                    defaultValue={formData.tiempoCiclo1}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-
-                                    {/* Opcion 2, Tiempo ciclo (seg) */}
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridOpcion2">
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Opción 2
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe una opción"
-                                                    name="opcion2"
-                                                    defaultValue={formData.opcion2}
-                                                />
-                                            </Col>
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Tiempo ciclo
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    min="0"
-                                                    placeholder="Escribe el tiempo de ciclo"
-                                                    name="tiempoCiclo2"
-                                                    defaultValue={formData.tiempoCiclo2}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-
-                                    </Row>
-                                    {/* Opcion 3, Tiempo ciclo (seg) */}
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridOpcion3">
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Opción 3
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe una opción"
-                                                    name="opcion3"
-                                                    defaultValue={formData.opcion3}
-                                                />
-                                            </Col>
-
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Tiempo ciclo
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    min="0"
-                                                    placeholder="Escribe el tiempo de ciclo"
-                                                    name="tiempoCiclo3"
-                                                    defaultValue={formData.tiempoCiclo3}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-
-                                    </Row>
-
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridOpcion1">
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Opción 4
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe una opción"
-                                                    name="opcion4"
-                                                    defaultValue={formData.opcion4}
-                                                />
-                                            </Col>
-
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Tiempo ciclo
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    min="0"
-                                                    placeholder="Escribe el tiempo de ciclo"
-                                                    name="tiempoCiclo4"
-                                                    defaultValue={formData.tiempoCiclo4}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-
-                                    {/* Opcion 2, Tiempo ciclo (seg) */}
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridOpcion2">
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Opción 5
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe una opción"
-                                                    name="opcion5"
-                                                    defaultValue={formData.opcion5}
-                                                />
-                                            </Col>
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Tiempo ciclo
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    min="0"
-                                                    placeholder="Escribe el tiempo de ciclo"
-                                                    name="tiempoCiclo5"
-                                                    defaultValue={formData.tiempoCiclo5}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-
-                                    </Row>
-                                    {/* Opcion 3, Tiempo ciclo (seg) */}
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridOpcion3">
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Opción 6
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe una opción"
-                                                    name="opcion6"
-                                                    defaultValue={formData.opcion6}
-                                                />
-                                            </Col>
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Tiempo ciclo
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    min="0"
-                                                    placeholder="Escribe el tiempo de ciclo"
-                                                    name="tiempoCiclo6"
-                                                    defaultValue={formData.tiempoCiclo6}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-
-                                    </Row>
-                                </Container>
-                            </div>
-
-                            <Form.Group as={Row} className="botones">
-                                <Row>
-                                    <Col>
-                                        <Button
-                                            type="submit"
-                                            variant="success"
-                                            className="registrar"
-                                        >
-                                            {!loading ? "Registrar" : <Spinner animation="border" />}
-                                        </Button>
-                                    </Col>
-                                    <Col>
-                                        <Button
-                                            variant="danger"
-                                            className="cancelar"
-                                            onClick={() => {
-                                                rutaRegresoProductos()
-                                            }}
-                                        >
-                                            Cancelar
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </Form.Group>
-                        </Form>
-                    </div>
-                </Col>
-            </Container>
-        </LayoutPrincipal>
+                                </Form.Group>
+                            </Form>
+                        </div>
+                    </Col>
+                </Container>
+            </LayoutPrincipal>
         </>
     );
 }
@@ -1036,6 +1097,24 @@ function formatModelClientes(data) {
             municipio: data.direccion.municipio,
             pais: data.direccion.pais,
             razonSocial: data.razonSocial,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelMaquinas(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            numeroMaquina: data.numeroMaquina,
+            marca: data.marca,
+            tonelaje: data.tonelaje,
+            lugar: data.lugar,
+            status: data.status,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { actualizaMateriaPrima } from "../../../api/materiaPrima";
-import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
-import {size, values} from "lodash";
-import {toast} from "react-toastify";
+import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
+import { size, values } from "lodash";
+import { toast } from "react-toastify";
 import queryString from "query-string";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function ModificaMateriasPrimas(props) {
     const { dataMateriaPrima, location, history, setShowModal } = props;
@@ -12,6 +12,11 @@ function ModificaMateriasPrimas(props) {
 
     // Para controlar la animacion de carga
     const [loading, setLoading] = useState(false);
+
+    // Cancelar y cerrar el formulario
+    const cancelarRegistro = () => {
+        setShowModal(false)
+    }
 
     // Para almacenar los datos del formulario
     const [formData, setFormData] = useState(initialFormData(dataMateriaPrima));
@@ -26,7 +31,7 @@ function ModificaMateriasPrimas(props) {
             return null;
         });
 
-        if(size(formData) !== validCount){
+        if (size(formData) !== validCount) {
             toast.warning("Comapleta el formulario")
         } else {
             setLoading(true)
@@ -102,13 +107,26 @@ function ModificaMateriasPrimas(props) {
                     </Form.Group>
 
                     <Form.Group as={Row} className="botones">
-                        <Button
-                            type="submit"
-                            variant="success"
-                            className="registrar"
-                        >
-                            {!loading ? "Actualizar información" : <Spinner animation="border" />}
-                        </Button>
+                        <Col>
+                            <Button
+                                type="submit"
+                                variant="success"
+                                className="registrar"
+                            >
+                                {!loading ? "Actualizar" : <Spinner animation="border" />}
+                            </Button>
+                        </Col>
+                        <Col>
+                            <Button
+                                variant="danger"
+                                className="cancelar"
+                                onClick={() => {
+                                    cancelarRegistro()
+                                }}
+                            >
+                                Cancelar
+                            </Button>
+                        </Col>
                     </Form.Group>
                 </Form>
             </div>

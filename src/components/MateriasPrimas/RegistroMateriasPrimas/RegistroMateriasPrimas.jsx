@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import {obtenerFolioActualMP, registraMateriaPrima} from "../../../api/materiaPrima";
-import {Button, Col, Form, Row, Spinner, Container} from "react-bootstrap";
-import {map, size, values} from "lodash";
-import {toast} from "react-toastify";
+import { obtenerFolioActualMP, registraMateriaPrima } from "../../../api/materiaPrima";
+import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
+import { map, size, values } from "lodash";
+import { toast } from "react-toastify";
 import queryString from "query-string";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistroMateriasPrimas(props) {
     const { setShowModal2, setShowModal, location, history } = props;
@@ -17,8 +17,8 @@ function RegistroMateriasPrimas(props) {
 
     // Para recuperar el folio de la materia prima
     const [folioActualMP, setFolioActualMP] = useState("");
-    
-     // Cancelar y cerrar el formulario
+
+    // Cancelar y cerrar el formulario
     const cancelarBusqueda = () => {
         setShowModal2(false)
     }
@@ -49,7 +49,7 @@ function RegistroMateriasPrimas(props) {
             return null;
         });
 
-        if(size(formData) !== validCount){
+        if (size(formData) !== validCount) {
             toast.warning("Completa el formulario")
         } else {
             setLoading(true)
@@ -86,80 +86,80 @@ function RegistroMateriasPrimas(props) {
             <div className="formularioDatos">
                 <Form onChange={onChange} onSubmit={onSubmit}>
                     <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                <Col sm="4">
-                                    <Form.Label align="center">
-                                        Orden de venta
-                                    </Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Orden de venta"
-                                        name="ordenVenta"
-                                        disabled
-                                    />
-                                </Col>
-                                </Form.Group>
+                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            <Col sm="4">
+                                <Form.Label align="center">
+                                    Orden de venta
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Orden de venta"
+                                    name="ordenVenta"
+                                    disabled
+                                />
+                            </Col>
+                        </Form.Group>
                     </Row>
-                    
+
                     <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                <Col sm="4">
-                                    <Form.Label align="center">
-                                        Producto
-                                    </Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Producto"
-                                        name="producto"
-                                        disabled
-                                    />
-                                </Col>
-                                </Form.Group>
+                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            <Col sm="4">
+                                <Form.Label align="center">
+                                    Producto
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Producto"
+                                    name="producto"
+                                    disabled
+                                />
+                            </Col>
+                        </Form.Group>
                     </Row>
-                    
+
                     <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                <Col sm="4">
-                                    <Form.Label>
-                                        Cantidad a producir
-                                    </Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Cantidad a producir"
-                                        name="cantidadProducir"
-                                        disabled
-                                    />
-                                </Col>
-                                </Form.Group>
+                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            <Col sm="4">
+                                <Form.Label>
+                                    Cantidad a producir
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Cantidad a producir"
+                                    name="cantidadProducir"
+                                    disabled
+                                />
+                            </Col>
+                        </Form.Group>
                     </Row>
-                    
+
                     <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                <Col sm="4">
-                                    <Form.Label align="center">
-                                        Planta asignada
-                                    </Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Planta asignada"
-                                        name="plantaAsignada"
-                                        disabled
-                                    />
-                                </Col>
-                                </Form.Group>
+                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            <Col sm="4">
+                                <Form.Label align="center">
+                                    Planta asignada
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Planta asignada"
+                                    name="plantaAsignada"
+                                    disabled
+                                />
+                            </Col>
+                        </Form.Group>
                     </Row>
-                    
+
                     <Container>
                         <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="4">
                                     <Form.Label align="center">
                                         Material
@@ -172,11 +172,11 @@ function RegistroMateriasPrimas(props) {
                                         name="material"
                                     />
                                 </Col>
-                                </Form.Group>
-                    </Row>
-                    
-                    <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="4">
                                     <Form.Label align="center">
                                         Material por unidad
@@ -189,11 +189,11 @@ function RegistroMateriasPrimas(props) {
                                         name="materialUnidad"
                                     />
                                 </Col>
-                                </Form.Group>
-                    </Row>
-                    
-                    <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="4">
                                     <Form.Label align="center">
                                         Material necesario
@@ -206,11 +206,11 @@ function RegistroMateriasPrimas(props) {
                                         name="materialNecesario"
                                     />
                                 </Col>
-                                </Form.Group>
-                    </Row>
-                    
-                    <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="4">
                                     <Form.Label align="center">
                                         Material ya reservado
@@ -223,11 +223,11 @@ function RegistroMateriasPrimas(props) {
                                         name="materialReservado"
                                     />
                                 </Col>
-                                </Form.Group>
-                    </Row>
-                    
-                    <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="4">
                                     <Form.Label align="center">
                                         Material a reservar
@@ -240,11 +240,11 @@ function RegistroMateriasPrimas(props) {
                                         name="materialReservar"
                                     />
                                 </Col>
-                                </Form.Group>
-                    </Row>
-                    
-                    <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="4">
                                     <Form.Label align="center">
                                         Material en almacen
@@ -257,11 +257,11 @@ function RegistroMateriasPrimas(props) {
                                         name="materialAlmacen"
                                     />
                                 </Col>
-                                </Form.Group>
-                    </Row>
-                    
-                    <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="4">
                                     <Form.Label align="center">
                                         Diferencia
@@ -274,17 +274,17 @@ function RegistroMateriasPrimas(props) {
                                         name="diferencia"
                                     />
                                 </Col>
-                                </Form.Group>
-                    </Row>
+                            </Form.Group>
+                        </Row>
                     </Container>
 
-                   <Form.Group as={Row} className="botones">
+                    <Form.Group as={Row} className="botones">
                         <Col>
                             <Button
                                 variant="success"
                                 className="registrar"
                             >
-                            Registrar
+                                Registrar
                             </Button>
                         </Col>
                         <Col>

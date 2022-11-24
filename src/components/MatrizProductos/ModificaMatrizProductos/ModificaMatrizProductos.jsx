@@ -12,6 +12,7 @@ import { actualizaProductosMatriz, obtenerMatrizProducto, registraMatrizProducto
 import { listarMateriaPrima } from "../../../api/materiaPrima";
 import { toast } from "react-toastify";
 import { listarClientes } from "../../../api/clientes";
+import { listarMaquina } from "../../../api/maquinas";
 import { listarProveedores } from "../../../api/proveedores";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
@@ -32,6 +33,10 @@ function ModificaMatrizProductos(props) {
 
     // Para almacenar el listado de clientes
     const [listClientes, setListClientes] = useState(null);
+
+    // Para almacenar el listado de maquinas
+    const [listMaquinas, setListMaquinas] = useState(null);
+
     // Para almacenar el listado de materias primas
     const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
 
@@ -100,22 +105,34 @@ function ModificaMatrizProductos(props) {
             listarClientes().then(response => {
                 const { data } = response;
                 // console.log(data)
-                const tempClientes = []
-                /*if(data){
-                    map(data, (cliente, index) => {
-                        //console.log(cliente.tipo)
-                        if(cliente.tipo === "interno"){
-                            tempClientes.push(cliente)
-                        }
-                    })
-                    setListClientes(tempClientes)
-                }*/
 
                 if (!listClientes && data) {
                     setListClientes(formatModelClientes(data));
                 } else {
                     const datosProductos = formatModelClientes(data);
                     setListClientes(datosProductos);
+                }
+            }).catch(e => {
+                //console.log(e)
+                if (e.message === 'Network Error') {
+                    //console.log("No hay internet")
+                    toast.error("Conexión al servidor no disponible");
+                }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+
+        try {
+            listarMaquina().then(response => {
+                const { data } = response;
+                // console.log(data)
+
+                if (!listMaquinas && data) {
+                    setListMaquinas(formatModelMaquinas(data));
+                } else {
+                    const datosMaquinas = formatModelMaquinas(data);
+                    setListMaquinas(datosMaquinas);
                 }
             }).catch(e => {
                 //console.log(e)
@@ -151,7 +168,7 @@ function ModificaMatrizProductos(props) {
     const onSubmit = e => {
         e.preventDefault()
 
-        if (!formData.noInterno || !formData.cliente || !formData.noMolde || !formData.cavMolde || !formData.noParte || !formData.descripcion || !formData.pesoPiezas || !formData.pesoColada || !formData.pesoTotalInyeccion || !formData.porcentajeScrap || !formData.porcentajeMolido || !formData.descripcionMP || !formData.descripcionPigmento || !formData.aplicacionGxKG || !formData.proveedor || !formData.tiempoCiclo || !formData.noOperadores || !formData.piezasxHora || !formData.piezasxTurno || !formData.descripcionBolsa || !formData.noPiezasxEmpaque || !formData.opcion1 || !formData.tiempoCiclo1 || !formData.opcion2 || !formData.tiempoCiclo2 || !formData.opcion3 || !formData.tiempoCiclo3 || !formData.opcion4 || !formData.tiempoCiclo4 || !formData.opcion5 || !formData.tiempoCiclo5 || !formData.opcion6 || !formData.tiempoCiclo6) {
+        if (!formData.noInterno || !formData.cliente || !formData.noMolde || !formData.cavMolde || !formData.noParte || !formData.descripcion || !formData.pesoPiezas || !formData.pesoColada || !formData.pesoTotalInyeccion || !formData.porcentajeScrap || !formData.porcentajeMolido || !formData.descripcionMP || !formData.descripcionPigmento || !formData.aplicacionGxKG || !formData.tiempoCiclo || !formData.noOperadores || !formData.piezasxHora || !formData.piezasxTurno || !formData.descripcionBolsa || !formData.noPiezasxEmpaque) {
             toast.warning("Completa el formulario");
         } else {
             //console.log(formData)
@@ -617,6 +634,31 @@ function ModificaMatrizProductos(props) {
                                                                     ))}
                                                                 </Form.Control>
                                                             </Col>
+                                                        </Form.Group>
+                                                    </Row>
+                                                </Container>
+                                            </div>
+
+                                            <div className="pigmentoMasterBach">
+                                                <Container fluid>
+                                                    <br />
+                                                    <Row className="mb-3">
+                                                        <Form.Group as={Row} controlId="formGridProveedor">
+                                                            <Col sm="2">
+                                                                <Form.Label>
+                                                                    No. de operadores
+                                                                </Form.Label>
+                                                            </Col>
+                                                            <Col>
+                                                                <Form.Control
+                                                                    type="number"
+                                                                    min="0"
+                                                                    placeholder="Escribe el numero de operadores"
+                                                                    name="noOperadores"
+                                                                    defaultValue={formData.noOperadores}
+                                                                />
+                                                            </Col>
+
                                                             <Col sm="1">
                                                                 <Form.Label>
                                                                     Tiempo ciclo
@@ -672,22 +714,7 @@ function ModificaMatrizProductos(props) {
                                                     </Row>
 
                                                     <Row className="mb-3">
-                                                        <Form.Group as={Row} controlId="formGridNoOperadores">
-                                                            <Col sm="2">
-                                                                <Form.Label>
-                                                                    No. de operadores
-                                                                </Form.Label>
-                                                            </Col>
-                                                            <Col sm="4">
-                                                                <Form.Control
-                                                                    type="number"
-                                                                    min="0"
-                                                                    placeholder="Escribe el numero de operadores"
-                                                                    name="noOperadores"
-                                                                    defaultValue={formData.noOperadores}
-                                                                />
-                                                            </Col>
-                                                        </Form.Group>
+
                                                     </Row>
                                                 </Container>
                                             </div>
@@ -757,11 +784,15 @@ function ModificaMatrizProductos(props) {
                                                             </Col>
                                                             <Col>
                                                                 <Form.Control
-                                                                    type="text"
-                                                                    placeholder="Escribe una opción"
-                                                                    name="opcion1"
+                                                                    as="select"
                                                                     defaultValue={formData.opcion1}
-                                                                />
+                                                                    name="opcion1"
+                                                                >
+                                                                    <option>Elige una opción</option>
+                                                                    {map(listMaquinas, (maquina, index) => (
+                                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion1}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                                    ))}
+                                                                </Form.Control>
                                                             </Col>
                                                             <Col sm="1">
                                                                 <Form.Label>
@@ -790,11 +821,15 @@ function ModificaMatrizProductos(props) {
                                                             </Col>
                                                             <Col>
                                                                 <Form.Control
-                                                                    type="text"
-                                                                    placeholder="Escribe una opción"
-                                                                    name="opcion2"
+                                                                    as="select"
                                                                     defaultValue={formData.opcion2}
-                                                                />
+                                                                    name="opcion2"
+                                                                >
+                                                                    <option>Elige una opción</option>
+                                                                    {map(listMaquinas, (maquina, index) => (
+                                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion2}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                                    ))}
+                                                                </Form.Control>
                                                             </Col>
                                                             <Col sm="1">
                                                                 <Form.Label>
@@ -822,12 +857,16 @@ function ModificaMatrizProductos(props) {
                                                                 </Form.Label>
                                                             </Col>
                                                             <Col>
-                                                                <Form.Control
-                                                                    type="text"
-                                                                    placeholder="Escribe una opción"
-                                                                    name="opcion3"
+                                                            <Form.Control
+                                                                    as="select"
                                                                     defaultValue={formData.opcion3}
-                                                                />
+                                                                    name="opcion3"
+                                                                >
+                                                                    <option>Elige una opción</option>
+                                                                    {map(listMaquinas, (maquina, index) => (
+                                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion3}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                                    ))}
+                                                                </Form.Control>
                                                             </Col>
 
                                                             <Col sm="1">
@@ -856,12 +895,16 @@ function ModificaMatrizProductos(props) {
                                                                 </Form.Label>
                                                             </Col>
                                                             <Col>
-                                                                <Form.Control
-                                                                    type="text"
-                                                                    placeholder="Escribe una opción"
-                                                                    name="opcion4"
+                                                            <Form.Control
+                                                                    as="select"
                                                                     defaultValue={formData.opcion4}
-                                                                />
+                                                                    name="opcion4"
+                                                                >
+                                                                    <option>Elige una opción</option>
+                                                                    {map(listMaquinas, (maquina, index) => (
+                                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion4}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                                    ))}
+                                                                </Form.Control>
                                                             </Col>
 
                                                             <Col sm="1">
@@ -890,12 +933,16 @@ function ModificaMatrizProductos(props) {
                                                                 </Form.Label>
                                                             </Col>
                                                             <Col>
-                                                                <Form.Control
-                                                                    type="text"
-                                                                    placeholder="Escribe una opción"
-                                                                    name="opcion5"
+                                                            <Form.Control
+                                                                    as="select"
                                                                     defaultValue={formData.opcion5}
-                                                                />
+                                                                    name="opcion5"
+                                                                >
+                                                                    <option>Elige una opción</option>
+                                                                    {map(listMaquinas, (maquina, index) => (
+                                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion5}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                                    ))}
+                                                                </Form.Control>
                                                             </Col>
                                                             <Col sm="1">
                                                                 <Form.Label>
@@ -923,12 +970,16 @@ function ModificaMatrizProductos(props) {
                                                                 </Form.Label>
                                                             </Col>
                                                             <Col>
-                                                                <Form.Control
-                                                                    type="text"
-                                                                    placeholder="Escribe una opción"
-                                                                    name="opcion6"
+                                                            <Form.Control
+                                                                    as="select"
                                                                     defaultValue={formData.opcion6}
-                                                                />
+                                                                    name="opcion6"
+                                                                >
+                                                                    <option>Elige una opción</option>
+                                                                    {map(listMaquinas, (maquina, index) => (
+                                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion6}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                                    ))}
+                                                                </Form.Control>
                                                             </Col>
                                                             <Col sm="1">
                                                                 <Form.Label>
@@ -1128,6 +1179,24 @@ function formatModelClientes(data) {
             municipio: data.direccion.municipio,
             pais: data.direccion.pais,
             razonSocial: data.razonSocial,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelMaquinas(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            numeroMaquina: data.numeroMaquina,
+            marca: data.marca,
+            tonelaje: data.tonelaje,
+            lugar: data.lugar,
+            status: data.status,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

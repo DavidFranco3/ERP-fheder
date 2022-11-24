@@ -12,6 +12,11 @@ function ModificacionDepartamentos(props) {
     // Para almacenar datos del departamento
     const [formData, setFormData] = useState(initialFormValue(dataDepto));
 
+    // Cancelar y cerrar el formulario
+    const cancelarRegistro = () => {
+        setShowModal(false)
+    }
+
     // Para la animacion de carga
     const [loading, setLoading] = useState(false);
 
@@ -64,11 +69,28 @@ function ModificacionDepartamentos(props) {
                     </Form.Group>
                 </Row>
 
-                <Form.Group className="btnEliminar">
-                    <Button variant="primary" type="submit">
-                        {!loading ? "¿Desea modificar los datos?" : <Spinner animation="border" />}
-                    </Button>
-                </Form.Group>
+                <Form.Group as={Row} className="botones">
+                        <Col>
+                            <Button
+                                type="submit"
+                                variant="success"
+                                className="registrar"
+                            >
+                                {!loading ? "Actualizar" : <Spinner animation="border" />}
+                            </Button>
+                        </Col>
+                        <Col>
+                            <Button
+                                variant="danger"
+                                className="cancelar"
+                                onClick={() => {
+                                    cancelarRegistro()
+                                }}
+                            >
+                                Cancelar
+                            </Button>
+                        </Col>
+                    </Form.Group>
             </Form>
         </>
     );
