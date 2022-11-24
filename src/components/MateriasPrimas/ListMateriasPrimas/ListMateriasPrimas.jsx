@@ -50,8 +50,23 @@ function ListMateriasPrimas(props) {
                     reorder: false
                 },
                 {
-                    name: "Tiempo de espera",
-                    selector: row => row.tiempoespera + " días",
+                    name: "Precio",
+                    selector: row => (
+                        <>
+                            {row.precio ? new Intl.NumberFormat('es-MX', {
+                                style: "currency",
+                                currency: "MXN"
+                            }).format(row.precio) : "No disponible"}
+                            { } MXN
+                        </>
+                    ),
+                    sortable: false,
+                    center: true,
+                    reorder: false
+                },
+                {
+                    name: "Proveedor",
+                    selector: row => row.proveedor,
                     sortable: false,
                     center: true,
                     reorder: false

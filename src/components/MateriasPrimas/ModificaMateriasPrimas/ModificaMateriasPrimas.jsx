@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { actualizaMateriaPrima } from "../../../api/materiaPrima";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
-import { size, values } from "lodash";
+import { map, size, values } from "lodash";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { listarProveedores } from "../../../api/proveedores";
 
 function ModificaMateriasPrimas(props) {
     const { dataMateriaPrima, location, history, setShowModal } = props;
@@ -20,6 +21,29 @@ function ModificaMateriasPrimas(props) {
 
     // Para almacenar los datos del formulario
     const [formData, setFormData] = useState(initialFormData(dataMateriaPrima));
+
+    // Para almacenar el listado de proveedores
+    const [listProveedores, setListProveedores] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarProveedores().then(response => {
+                const { data } = response;
+                // console.log(data)
+                if (!listarProveedores() && data) {
+                    setListProveedores(formatModelProveedores(data));
+                } else {
+                    const datosProveedores = formatModelProveedores(data);
+                    setListProveedores(datosProveedores);
+                }
+
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
 
     const onSubmit = e => {
         e.preventDefault();
@@ -61,50 +85,75 @@ function ModificaMateriasPrimas(props) {
     return (
         <>
             <div className="formularioDatos">
-                <Form onChange={onChange} onSubmit={onSubmit}>
-                    <Form.Group as={Row} controlId="formHorizontalDescripcion">
-                        <Form.Label>
-                            Folio
-                        </Form.Label>
-                        <Col>
-                            <Form.Control
-                                type="text"
-                                defaultValue={folio}
-                                disabled
-                            />
-                        </Col>
-                    </Form.Group>
+            <Form onChange={onChange} onSubmit={onSubmit}>
+                    <Row className="mb-3">
+                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            <Col sm="2">
+                                <Form.Label align="center">
+                                    Folio
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Orden de venta"
+                                    name="folio"
+                                    defaultValue={folio}
+                                    disabled
+                                />
+                            </Col>
 
-                    <Form.Group as={Row} controlId="formHorizontalDescripcion">
-                        <Form.Label>
-                            Descripción
-                        </Form.Label>
-                        <Col>
-                            <Form.Control
-                                type="text"
-                                placeholder="Escribe la descripcion"
-                                name="descripcion"
-                                defaultValue={formData.descripcion}
-                                required
-                            />
-                        </Col>
-                    </Form.Group>
+                            <Col sm="2">
+                                <Form.Label align="center">
+                                    Descripcion
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Descripcion"
+                                    name="descripcion"
+                                    defaultValue={formData.descripcion}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Row>
 
-                    <Form.Group as={Row} controlId="formHorizontalDescripcion">
-                        <Form.Label>
-                            Tiempo de espera
-                        </Form.Label>
-                        <Col>
-                            <Form.Control
-                                type="number"
-                                placeholder="Tiempo de espera"
-                                name="tiempoespera"
-                                defaultValue={formData.tiempoespera}
-                                required
-                                min="0"
-                            />
-                        </Col>
-                    </Form.Group>
+                    <Row className="mb-3">
+                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            <Col sm="2">
+                                <Form.Label align="center">
+                                    Precio
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Precio"
+                                    name="precio"
+                                    defaultValue={formData.precio}
+                                />
+                            </Col>
+
+                            <Col sm="2">
+                                <Form.Label>
+                                    Proveedor
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control as="select"
+                                    defaultValue={formData.proveedor}
+                                    name="proveedor"
+                                >
+                                    <option>Elige una opción</option>
+                                    {map(listProveedores, (proveedor, index) => (
+                                        <option key={index} value={proveedor?.nombre} selected={formData.proveedor == proveedor?.nombre}>{proveedor?.nombre}</option>
+                                    ))}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+                    </Row>
+
 
                     <Form.Group as={Row} className="botones">
                         <Col>
@@ -135,12 +184,40 @@ function ModificaMateriasPrimas(props) {
 }
 
 function initialFormData(data) {
-    const { id, descripcion, tiempoespera } = data;
+    const { id, descripcion, precio, proveedor } = data;
 
     return {
         descripcion: descripcion,
-        tiempoespera: tiempoespera
+        precio: precio,
+        proveedor: proveedor
     }
 }
+
+function formatModelProveedores(data) {
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            folio: data.folio,
+            nombre: data.nombre,
+            tipo: data.tipo,
+            productoServicio: data.productoServicio,
+            categoria: data.categoria,
+            personalContacto: data.personalContacto,
+            telefono: data.telefono,
+            correo: data.correo,
+            tiempoCredito: data.tiempoCredito,
+            tiempoRespuesta: data.tiempoRespuesta,
+            lugarRecoleccion: data.lugarRecoleccion,
+            horario: data.horario,
+            comentarios: data.comentarios,
+            estado: data.estado,
+            fechaCreacion: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
 
 export default ModificaMateriasPrimas;

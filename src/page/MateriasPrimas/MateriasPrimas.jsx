@@ -6,7 +6,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import LayoutPrincipal from "../../layout/layoutPrincipal";
 import { totalMateriaPrima, listarMateriaPrimaPaginacion } from "../../api/materiaPrima";
 import ListMateriasPrimas from "../../components/MateriasPrimas/ListMateriasPrimas";
-import BuscarOrdenVenta from "../../components/MateriasPrimas/BuscarOrdenVenta";
+import RegistroMateriasPrimas from '../../components/MateriasPrimas/RegistroMateriasPrimas';
 import BasicModal from "../../components/Modal/BasicModal";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -72,7 +72,7 @@ function MateriasPrimas(props) {
 
     // Para registrar los materiales
     const registraMaterial = (content) => {
-        setTitulosModal("Nueva reserva");
+        setTitulosModal("Nuevo material");
         setContentModal(content);
         setShowModal(true);
     }
@@ -99,7 +99,7 @@ function MateriasPrimas(props) {
                                 className="btnRegistroVentas"
                                 onClick={() => {
                                     registraMaterial(
-                                        <BuscarOrdenVenta
+                                        <RegistroMateriasPrimas
                                             setShowModal={setShowModal}
                                             showModal={showModal}
                                             location={location}
@@ -108,7 +108,7 @@ function MateriasPrimas(props) {
                                     )
                                 }}
                             >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nueva reserva
+                                <FontAwesomeIcon icon={faCirclePlus} /> Registrar un nuevo material
                             </Button>
                             <Button
                                 className="btnRegistroVentas"
@@ -165,7 +165,8 @@ function formatModelMateriales(data) {
             id: data._id,
             folio: data.folio,
             descripcion: data.descripcion,
-            tiempoespera: data.tiempoespera,
+            precio: data.precio,
+            proveedor: data.proveedor,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

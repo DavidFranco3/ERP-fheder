@@ -318,7 +318,7 @@ function RegistroCompras(props) {
                                         <option>Elige una opción</option>
                                         {map(listProveedores, (proveedor, index) => (
                                             <option key={index} value={proveedor?.id}>{proveedor?.nombre}</option>
-                                        ))}*
+                                        ))}
                                     </Form.Control>
                                 </Col>
 
