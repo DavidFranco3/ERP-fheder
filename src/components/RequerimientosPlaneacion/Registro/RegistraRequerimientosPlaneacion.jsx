@@ -381,7 +381,7 @@ function RegistraRequerimientosPlaneacion(props) {
 
     let totalProducir = (listOVCargadas.reduce((amount, item) => (amount + parseInt(item.cantidadProducirOV)), 0));
 
-    let kgMaterial = (formDataPlaneacion.pesoPiezas + (formDataPlaneacion.pesoColada / formDataPlaneacion.cavMolde) * totalProducir) * (1 + (formDataPlaneacion.porcentajeScrap / 100));
+    let kgMaterial = ((formDataPlaneacion.pesoPiezas + (formDataPlaneacion.pesoColada / formDataPlaneacion.cavMolde)) * totalProducir) * (1 + (formDataPlaneacion.porcentajeScrap / 100));
 
     let materialTurno = (((formDataPlaneacion.pesoColada / formDataPlaneacion.cavMolde) + formDataPlaneacion.pesoPiezas) * formDataPlaneacion.piezasxTurno) * (1 + (formDataPlaneacion.porcentajeScrap / 100));
 

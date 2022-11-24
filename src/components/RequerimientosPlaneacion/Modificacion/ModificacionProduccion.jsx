@@ -398,12 +398,12 @@ function ModificacionProduccion(props) {
 
     let totalProducir = (listOVCargadas.reduce((amount, item) => (amount + parseInt(item.cantidadProducirOV)), 0));
 
-    let kgMaterial = (formDataPlaneacion.pesoPiezas + (formDataPlaneacion.pesoColada / formDataPlaneacion.cavMolde) * totalProducir) * (1 + (formDataPlaneacion.porcentajeScrap / 100));
+    let kgMaterial = ((formDataPlaneacion.pesoPiezas + (formDataPlaneacion.pesoColada / formDataPlaneacion.cavMolde)) * totalProducir) * (1 + (formDataPlaneacion.porcentajeScrap / 100));
 
     let materialTurno = (((formDataPlaneacion.pesoColada / formDataPlaneacion.cavMolde) + formDataPlaneacion.pesoPiezas) * formDataPlaneacion.piezasxTurno) * (1 + (formDataPlaneacion.porcentajeScrap / 100));
 
     let pigMB = (formDataPlaneacion.aplicacionGxKG * kgMaterial) / 1000;
-
+ 
     let bolsasCajasUtilizar = (totalProducir / formDataPlaneacion.noPiezasxEmpaque);
 
     let piezasTurno1 = (((3600 / formDataPlaneacion.tiempoCiclo1) * formDataPlaneacion.cavMolde) * 12);
