@@ -262,7 +262,7 @@ function ModificaMatrizProductos(props) {
     }
 
     // Para obtener el peso de la inyeccion
-    const inyeccion = parseFloat(formData.pesoPiezas) + (parseFloat(formData.pesoColada) / parseFloat(formData.cavMolde)) * parseFloat(formData.cavMolde);
+    const inyeccion = (parseFloat(formData.pesoPiezas) + (parseFloat(formData.pesoColada) / parseFloat(formData.cavMolde))) * parseFloat(formData.cavMolde);
 
     // Para obtener el porcentaje de molido
     const molido = ((parseFloat(formData.pesoColada) / parseFloat(formData.cavMolde)) / parseFloat(formData.pesoPiezas)) * 100;
