@@ -6,12 +6,14 @@ import { isCurpValid, isEmailValid, isRFCValid } from "../../../utils/validation
 import { toast } from "react-toastify";
 import { registraUsuarios } from "../../../api/usuarios";
 import Dropzone from "../../Dropzone";
-import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner, Container, Alert } from "react-bootstrap";
 import { map } from "lodash";
 import { registraClientes } from "../../../api/clientes";
 import queryString from "query-string";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
 function RegistroClientes(props) {
     const { setRefreshCheckLogin, history } = props;
@@ -97,6 +99,25 @@ function RegistroClientes(props) {
     return (
         <>
             <LayoutPrincipal className="RegistroClientes" paginaSeleccionada="Clientes" setRefreshCheckLogin={setRefreshCheckLogin}>
+            <Alert>
+                    <Row>
+                        <Col xs={12} md={8}>
+                            <h1>
+                                Registrando cliente
+                            </h1>
+                        </Col>
+                        <Col xs={6} md={4}>
+                            <Button
+                                className="btnRegistroVentas"
+                                onClick={() => {
+                                    regresaPagina()
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                            </Button>
+                        </Col>
+                    </Row>
+                </Alert>
                 <Container fluid>
                     <br /><br />
 

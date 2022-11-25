@@ -6,11 +6,13 @@ import { actualizaUsuario, obtenerUsuario } from "../../../api/usuarios";
 import { toast } from "react-toastify";
 import { isCurpValid, isEmailValid, isRFCValid } from "../../../utils/validations";
 import Dropzone from "../../Dropzone";
-import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner, Container, Alert } from "react-bootstrap";
 import { map } from "lodash";
 import { actualizaCliente, obtenerCliente, registraClientes } from "../../../api/clientes";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
 function ModificacionClientes(props) {
     const { setRefreshCheckLogin } = props;
@@ -122,6 +124,25 @@ function ModificacionClientes(props) {
     return (
         <>
             <LayoutPrincipal className="ModificacionClientes" paginaSeleccionada="Clientes" setRefreshCheckLogin={setRefreshCheckLogin}>
+            <Alert>
+                    <Row>
+                        <Col xs={12} md={8}>
+                            <h1>
+                                Modificando cliente
+                            </h1>
+                        </Col>
+                        <Col xs={6} md={4}>
+                            <Button
+                                className="btnRegistroVentas"
+                                onClick={() => {
+                                    regresaPagina()
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                            </Button>
+                        </Col>
+                    </Row>
+                </Alert>
                 <Container fluid>
                     <br /><br />
 

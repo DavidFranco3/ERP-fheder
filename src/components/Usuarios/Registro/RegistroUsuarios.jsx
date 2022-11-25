@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import "./RegistroUsuarios.scss";
 import { Alert, Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import Dropzone from "../../Dropzone";
 import { useHistory } from "react-router-dom";
@@ -117,6 +117,25 @@ function RegistroUsuarios(props) {
     return (
         <>
             <LayoutPrincipal className="RegistroUsuarios" paginaSeleccionada="Usuarios" setRefreshCheckLogin={setRefreshCheckLogin}>
+            <Alert>
+                    <Row>
+                        <Col xs={12} md={8}>
+                            <h1>
+                                Registrando usuario
+                            </h1>
+                        </Col>
+                        <Col xs={6} md={4}>
+                            <Button
+                                className="btnRegistroVentas"
+                                onClick={() => {
+                                    regresaPagina()
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                            </Button>
+                        </Col>
+                    </Row>
+                </Alert>
                 <Container>
                     <br />
                     <br />
