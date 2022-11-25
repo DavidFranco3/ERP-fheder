@@ -2,7 +2,7 @@ import { useState, useEffect, Suspense } from 'react';
 import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { withRouter, useHistory } from "react-router-dom";
-import {faCirclePlus} from "@fortawesome/free-solid-svg-icons";
+import {faCirclePlus, faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
 import { totalCotizaciones, listarCotizacionPaginacion } from "../../api/cotizaciones";
 import LayoutPrincipal from "../../layout/layoutPrincipal";
 import ListCotizaciones from "../../components/Cotizaciones/ListCotizaciones";
@@ -16,6 +16,10 @@ function Cotizaciones(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     const enrutamiento = useHistory()
+
+    const rutaRegreso = () => {
+        enrutamiento.push("/")
+    }
 
     // Ruta de acceso
     const rutaRegistroCotizaciones = () => {
@@ -93,6 +97,14 @@ function Cotizaciones(props) {
                                 }}
                             >
                                 <FontAwesomeIcon icon={faCirclePlus} /> Crea una nueva cotización
+                            </Button>
+                            <Button
+                                className="btnRegistroVentas"
+                                onClick={() => {
+                                    rutaRegreso()
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
                             </Button>
                         </Col>
                     </Row>

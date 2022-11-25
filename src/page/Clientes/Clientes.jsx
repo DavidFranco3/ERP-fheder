@@ -3,7 +3,7 @@ import LayoutPrincipal from "../../layout/layoutPrincipal";
 import "./Clientes.scss";
 import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCirclePlus, faPlus, faUsers} from "@fortawesome/free-solid-svg-icons";
+import {faCirclePlus, faPlus, faUsers, faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
 import {totalClientes, listarClientesPaginacion} from "../../api/clientes";
 import {toast} from "react-toastify";
 import ListClientes from "../../components/Clientes/ListClientes";
@@ -16,6 +16,10 @@ function Clientes(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     const enrutamiento = useHistory();
+
+    const rutaRegreso = () => {
+        enrutamiento.push("/")
+    }
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -110,6 +114,14 @@ function Clientes(props) {
                                 }}
                             >
                                 <FontAwesomeIcon icon={faCirclePlus} /> Registrar una nuevo cliente
+                            </Button>
+                            <Button
+                                className="btnRegistroVentas"
+                                onClick={() => {
+                                    rutaRegreso()
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
                             </Button>
                         </Col>
                     </Row>

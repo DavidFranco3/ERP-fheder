@@ -2,7 +2,7 @@ import { useState, useEffect, Suspense } from 'react';
 import "./Departamentos.scss";
 import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCirclePlus, faPlus, faUsers} from "@fortawesome/free-solid-svg-icons";
+import {faCirclePlus, faPlus, faUsers, faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
 import LayoutPrincipal from "../../layout/layoutPrincipal";
 import {totalDepartamentos, listarDepartamentosPaginacion} from "../../api/departamentos";
 import { useHistory, withRouter } from "react-router-dom";
@@ -17,6 +17,12 @@ import AnimacionLoading from '../../assets/json/loading.json';
 
 function Departamentos(props) {
     const { setRefreshCheckLogin, location, history } = props;
+
+    const enrutamiento = useHistory();
+
+    const rutaRegreso = () => {
+        enrutamiento.push("/")
+    }
     
      // Para controlar la paginación
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -33,8 +39,6 @@ function Departamentos(props) {
     const [showModal, setShowModal] = useState(false);
     const [contentModal, setContentModal] = useState(null);
     const [titulosModal, setTitulosModal] = useState(null);
-
-    const enrutamiento = useHistory();
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -118,7 +122,15 @@ function Departamentos(props) {
                                     registraDepartamentos(<RegistroDepartamentos setShowModal={setShowModal} history={history} />)
                                 }}
                             >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Registrar una nuevo departamento
+                                <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                            </Button>
+                            <Button
+                                className="btnRegistroVentas"
+                                onClick={() => {
+                                    rutaRegreso()
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
                             </Button>
                         </Col>
                     </Row>

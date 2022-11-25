@@ -1,8 +1,8 @@
 import { useState, useEffect, Suspense } from 'react';
 import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCirclePlus} from "@fortawesome/free-solid-svg-icons";
-import { withRouter } from "react-router-dom";
+import {faCirclePlus, faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
+import { useHistory, withRouter } from "react-router-dom";
 import { totalLogs, listarLogsPaginacion } from "../../api/logsGenerales";
 import LayoutPrincipal from "../../layout/layoutPrincipal";
 import ListLogs from "../../components/Logs/ListLogs";
@@ -14,6 +14,12 @@ import AnimacionLoading from '../../assets/json/loading.json';
 
 function Logs(props) {
     const { setRefreshCheckLogin, location, history } = props;
+
+    const enrutamiento = useHistory();
+
+    const rutaRegreso = () => {
+        enrutamiento.push("/")
+    }
     
     // Para controlar la paginación
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -81,6 +87,14 @@ function Logs(props) {
                             </h1>
                         </Col>
                         <Col xs={6} md={4}>
+                        <Button
+                                className="btnRegistroVentas"
+                                onClick={() => {
+                                    rutaRegreso()
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                            </Button>
                         </Col>
                     </Row>
                 </Alert>

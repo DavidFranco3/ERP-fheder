@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import {listarTracking, listarTrackingPaginado, totalTracking} from "../../api/tracking";
 import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowLeftRotate} from "@fortawesome/free-solid-svg-icons";
+import {faArrowLeftRotate, faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
 import ListTracking from "../../components/Tracking/ListTracking";
 import "./Tracking.scss";
 import Lottie from 'react-lottie-player';
@@ -21,6 +21,10 @@ function Tracking(props) {
     const [noTotalTrackings, setNoTotalTrackings] = useState(0);
 
     const enrutamiento = useHistory();
+
+    const rutaRegreso = () => {
+        enrutamiento.push("/")
+    }
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -90,6 +94,14 @@ function Tracking(props) {
                             </h1>
                         </Col>
                         <Col xs={6} md={4}>
+                            <Button
+                                className="btnRegistroVentas"
+                                onClick={() => {
+                                    rutaRegreso()
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                            </Button>
                         </Col>
                     </Row>
                 </Alert>

@@ -1,7 +1,7 @@
 import { useState, useEffect, Suspense  } from 'react';
 import LayoutPrincipal from "../../layout/layoutPrincipal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faCirclePlus, faPlus, faUsers} from "@fortawesome/free-solid-svg-icons";
+import {faCirclePlus, faPlus, faUsers, faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
 import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
 import { useHistory, withRouter } from "react-router-dom";
 import "./Usuarios.scss";
@@ -17,6 +17,10 @@ function Usuarios(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     const enrutamiento = useHistory();
+
+    const rutaRegreso = () => {
+        enrutamiento.push("/")
+    }
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -111,6 +115,14 @@ function Usuarios(props) {
                                 }}
                             >
                                 <FontAwesomeIcon icon={faCirclePlus} /> Registrar un nuevo usuario
+                            </Button>
+                            <Button
+                                className="btnRegistroVentas"
+                                onClick={() => {
+                                    rutaRegreso()
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
                             </Button>
                         </Col>
                     </Row>
