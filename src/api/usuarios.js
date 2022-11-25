@@ -13,7 +13,24 @@ import axios from 'axios';
 import {getTokenApi, obtenidusuarioLogueado} from "./auth";
 export let nombreUsuario = "";
 export let apellidosUsuario = "";
+export let departamento = "";
 export let fotoPrincipal = null
+
+// Recupera nombre del usuario
+if(getTokenApi()) {
+    try {
+        obtenerUsuario(obtenidusuarioLogueado(getTokenApi())).then(response =>
+        {
+            //console.log(response);
+            const { data: { departamento } } = response;
+            //console.log(response)
+            departamento = departamento;
+            return departamento;
+        })
+    } catch (e) {
+        //
+    }
+}
 
 // Recupera nombre del usuario
 if(getTokenApi()) {
