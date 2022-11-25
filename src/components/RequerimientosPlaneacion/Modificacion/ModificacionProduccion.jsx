@@ -490,7 +490,8 @@ function ModificacionProduccion(props) {
                                             <Form.Label>
                                                 Producto
                                             </Form.Label>
-                                            <Form.Control as="select"
+                                            <Form.Control
+                                                as="select"
                                                 onChange={(e) => {
                                                     handleMateriaPrima(e.target.value)
                                                 }}
@@ -516,7 +517,7 @@ function ModificacionProduccion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="text"
-                                                value={unidadMedida}
+                                                defaultValue={unidadMedida}
                                                 placeholder="UM"
                                                 name="um"
                                             />
@@ -528,7 +529,7 @@ function ModificacionProduccion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="text"
-                                                value={cantidad}
+                                                defaultValue={cantidad}
                                                 placeholder="Almacen producto terminado"
                                                 name="almacenPT"
                                             />
@@ -733,7 +734,7 @@ function ModificacionProduccion(props) {
                                             <Form.Control
                                                 type="text"
                                                 placeholder="Numero de molde"
-                                                value={formDataPlaneacion.noMolde}
+                                                defaultValue={formDataPlaneacion.noMolde}
                                                 name="noMolde"
                                             />
                                         </Form.Group>
@@ -791,21 +792,21 @@ function ModificacionProduccion(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina1"
-                                                    value={numeroMaquina1}
+                                                    defaultValue={numeroMaquina1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="maquina1"
-                                                    value={nombreMaquina1}
+                                                    defaultValue={nombreMaquina1}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="ciclo1"
-                                                    value={formDataPlaneacion.tiempoCiclo1}
+                                                    defaultValue={formDataPlaneacion.tiempoCiclo1}
                                                 />
                                             </Col>
                                             <Col>
@@ -819,7 +820,7 @@ function ModificacionProduccion(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="bolsa1"
-                                                    value={formDataPlaneacion.noPiezasxEmpaque}
+                                                    defaultValue={formDataPlaneacion.noPiezasxEmpaque}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -836,21 +837,21 @@ function ModificacionProduccion(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina2"
-                                                    value={numeroMaquina2}
+                                                    defaultValue={numeroMaquina2}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="maquina2"
-                                                    value={nombreMaquina2}
+                                                    defaultValue={nombreMaquina2}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="ciclo2"
-                                                    value={formDataPlaneacion.tiempoCiclo2}
+                                                    defaultValue={formDataPlaneacion.tiempoCiclo2}
                                                 />
                                             </Col>
                                             <Col>
@@ -864,7 +865,7 @@ function ModificacionProduccion(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="bolsa2"
-                                                    value={formDataPlaneacion.noPiezasxEmpaque}
+                                                    defaultValue={formDataPlaneacion.noPiezasxEmpaque}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -881,21 +882,21 @@ function ModificacionProduccion(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="numeroMaquina3"
-                                                    value={numeroMaquina3}
+                                                    defaultValue={numeroMaquina3}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="maquina3"
-                                                    value={nombreMaquina3}
+                                                    defaultValue={nombreMaquina3}
                                                 />
                                             </Col>
                                             <Col>
                                                 <Form.Control
                                                     type="text"
                                                     name="ciclo3"
-                                                    value={formDataPlaneacion.tiempoCiclo3}
+                                                    defaultValue={formDataPlaneacion.tiempoCiclo3}
                                                 />
                                             </Col>
                                             <Col>
@@ -909,7 +910,7 @@ function ModificacionProduccion(props) {
                                                 <Form.Control
                                                     type="text"
                                                     name="bolsa3"
-                                                    value={formDataPlaneacion.noPiezasxEmpaque}
+                                                    defaultValue={formDataPlaneacion.noPiezasxEmpaque}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -1047,7 +1048,7 @@ function ModificacionProduccion(props) {
                                                 type="number"
                                                 placeholder="merma"
                                                 name="merma"
-                                                value={formDataPlaneacion.porcentajeScrap}
+                                                defaultValue={formDataPlaneacion.porcentajeScrap}
                                             />
                                         </Form.Group>
 
