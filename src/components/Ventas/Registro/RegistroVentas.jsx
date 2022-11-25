@@ -188,7 +188,7 @@ function RegistroVentas(props) {
                     incoterms: formData.incoterms,
                     moneda: "M.N.",
                     numeroPedido: formData.numeroPedido,
-                    lugarEntrega: clienteSeleccionado.calle + " " + clienteSeleccionado.numeroExterior + ", " + clienteSeleccionado.colonia + ", " + clienteSeleccionado.municipio + ", " + clienteSeleccionado.estado + ", " + clienteSeleccionado.pais,
+                    lugarEntrega: formData.lugarEntrega == "" ? clienteSeleccionado?.calle + ", " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado : formData.lugarEntrega,
                     cotizacion: linkCotizacion,
                     ordenCompra: linkOrdenCompra,
                     total: totalSinIVA,
@@ -231,13 +231,12 @@ function RegistroVentas(props) {
     // Gestion del producto seleccionado
     const handleProducto = (producto) => {
         const dataTempProductos = producto.split("/")
-        // console.log(dataTempProductos)
-        console.log(dataTempProductos[0])
+        console.log(dataTempProductos)
         const dataTemp = {
-            index: dataTempProductos[0],
-            idProducto: dataTempProductos[1],
-            ID: dataTempProductos[2],
-            item: dataTempProductos[3]
+            idProducto: dataTempProductos[0],
+            ID: dataTempProductos[1],
+            item: dataTempProductos[2],
+            precioUnitario: dataTempProductos[3],
         }
         setCargaProductos(cargaFormDataProductos(dataTemp))
     }
@@ -270,7 +269,7 @@ function RegistroVentas(props) {
                 material: material,
                 cantidad: cantidad,
                 um: um,
-                precioUnitario: precioUnitario,
+                precioUnitario: cargaProductos.precioUnitario,
                 total: totalUnitario
             }
             // console.log(dataTemp)
@@ -283,7 +282,6 @@ function RegistroVentas(props) {
             document.getElementById("descripcion").value = "Elige"
             document.getElementById("cantidad").value = ""
             document.getElementById("um").value = "Elige"
-            document.getElementById("precioUnitario").value = ""
             setTotalUnitario(0)
         }
     }
@@ -294,7 +292,6 @@ function RegistroVentas(props) {
         document.getElementById("descripcion").value = "Elige"
         document.getElementById("cantidad").value = ""
         document.getElementById("um").value = "Elige"
-        document.getElementById("precioUnitario").value = ""
         setTotalUnitario(0)
     }
 
@@ -329,6 +326,8 @@ function RegistroVentas(props) {
     const totalSinIVA = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.total)), 0);
 
     const renglon = listProductosCargados.length + 1;
+
+    console.log(cargaProductos)
 
     return (
         <>
@@ -523,8 +522,7 @@ function RegistroVentas(props) {
                                                 placeholder="Lugar de entrega"
                                                 style={{ height: '100px' }}
                                                 name="lugarEntrega"
-                                                disabled
-                                                value={formData.cliente != "" ? clienteSeleccionado?.calle + " " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado + ", " + clienteSeleccionado?.pais : ""}
+                                                defaultValue={formData.cliente != "" ? clienteSeleccionado?.calle + " " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado : ""}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -618,7 +616,7 @@ function RegistroVentas(props) {
                                                                     {map(listProductosActivos, (producto, index) => (
                                                                         <option
                                                                             key={index}
-                                                                            value={parseInt(index + 1) + "/" + producto.id + "/" + producto.noParte + "/" + producto.descripcion}
+                                                                            value={producto.id + "/" + producto.noParte + "/" + producto.descripcion + "/" + producto.precioVenta}
                                                                         >
                                                                             {producto.descripcion}
                                                                         </option>
@@ -674,16 +672,11 @@ function RegistroVentas(props) {
                                     </Form.Label>
                                     <Form.Control
                                         id="um"
-                                        as="select"
+                                        type="text"
                                         name="um"
-                                        defaultValue={cargaProductos.um}
-                                    >
-                                        <option >Elige</option>
-                                        <option value="KG">KG</option>
-                                        <option value="Litros">Litros</option>
-                                        <option value="Piezas">Piezas</option>
-                                        <option value="Cajas">Cajas</option>
-                                    </Form.Control>
+                                        value="Piezas"
+                                        disabled
+                                    />
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="formGridCliente">
@@ -697,6 +690,7 @@ function RegistroVentas(props) {
                                         name="precioUnitario"
                                         onChange={(e) => { calcularTotalUnitario(e.target.value) }}
                                         defaultValue={cargaProductos.precioUnitario}
+                                        disabled
                                     />
                                 </Form.Group>
 
@@ -883,8 +877,10 @@ function initialFormData(folio, fecha) {
         fechaEntrega: "",
         cliente: "",
         incoterms: "",
+        lugarEntrega: "",
         especificaciones: "",
         condicionesPago: "",
+        lugarEntrega: "",
         ordenCompra: "",
         cotizacion: "",
         numeroPedido: ""
@@ -897,6 +893,7 @@ function initialFormDataProductos() {
         ID: "",
         item: "",
         cantidad: "",
+        precioUnitario: "",
         um: "",
         descripcion: "",
         ordenCompra: "",
@@ -905,7 +902,7 @@ function initialFormDataProductos() {
 }
 
 function cargaFormDataProductos(data) {
-    const { idProducto, ID, item } = data;
+    const { idProducto, ID, item, precioUnitario } = data;
 
     return {
         idProducto: idProducto,
@@ -915,6 +912,7 @@ function cargaFormDataProductos(data) {
         um: "",
         descripcion: "",
         ordenCompra: "",
+        precioUnitario: precioUnitario,
         observaciones: ""
     }
 }
@@ -956,6 +954,7 @@ function formatModelMatrizProductos(data) {
             cliente: data.cliente,
             datosMolde: data.datosMolde,
             noParte: data.noParte,
+            precioVenta: data.precioVenta,
             descripcion: data.descripcion,
             datosPieza: data.datosPieza,
             materiaPrima: data.materiaPrima,

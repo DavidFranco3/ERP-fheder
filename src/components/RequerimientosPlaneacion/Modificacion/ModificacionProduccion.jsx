@@ -398,19 +398,19 @@ function ModificacionProduccion(props) {
 
     let totalProducir = (listOVCargadas.reduce((amount, item) => (amount + parseInt(item.cantidadProducirOV)), 0));
 
-    let kgMaterial = ((formDataPlaneacion.pesoPiezas + (formDataPlaneacion.pesoColada / formDataPlaneacion.cavMolde)) * totalProducir) * (1 + (formDataPlaneacion.porcentajeScrap / 100));
+    let kgMaterial = ((Number(formDataPlaneacion.pesoPiezas) + (Number(formDataPlaneacion.pesoColada) / Number(formDataPlaneacion.cavMolde))) * Number(totalProducir)) * (1 + (Number(formDataPlaneacion.porcentajeScrap) / 100));
 
-    let materialTurno = (((formDataPlaneacion.pesoColada / formDataPlaneacion.cavMolde) + formDataPlaneacion.pesoPiezas) * formDataPlaneacion.piezasxTurno) * (1 + (formDataPlaneacion.porcentajeScrap / 100));
+    let materialTurno = (((Number(formDataPlaneacion.pesoColada) / Number(formDataPlaneacion.cavMolde)) + Number(formDataPlaneacion.pesoPiezas)) * Number(formDataPlaneacion.piezasxTurno)) * (1 + (Number(formDataPlaneacion.porcentajeScrap) / 100));
 
-    let pigMB = (formDataPlaneacion.aplicacionGxKG * kgMaterial) / 1000;
- 
-    let bolsasCajasUtilizar = (totalProducir / formDataPlaneacion.noPiezasxEmpaque);
+    let pigMB = (Number(formDataPlaneacion.aplicacionGxKG) * Number(kgMaterial)) / 1000;
 
-    let piezasTurno1 = (((3600 / formDataPlaneacion.tiempoCiclo1) * formDataPlaneacion.cavMolde) * 12);
+    let bolsasCajasUtilizar = (Number(totalProducir) / Number(formDataPlaneacion.noPiezasxEmpaque));
 
-    let piezasTurno2 = (((3600 / formDataPlaneacion.tiempoCiclo2) * formDataPlaneacion.cavMolde) * 12);
+    let piezasTurno1 = (((3600 / Number(formDataPlaneacion.tiempoCiclo1)) * Number(formDataPlaneacion.cavMolde)) * 12);
 
-    let piezasTurno3 = (((3600 / formDataPlaneacion.tiempoCiclo3) * formDataPlaneacion.cavMolde) * 12);
+    let piezasTurno2 = (((3600 / Number(formDataPlaneacion.tiempoCiclo2)) * Number(formDataPlaneacion.cavMolde)) * 12);
+
+    let piezasTurno3 = (((3600 / Number(formDataPlaneacion.tiempoCiclo3)) * Number(formDataPlaneacion.cavMolde)) * 12);
 
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
@@ -519,7 +519,6 @@ function ModificacionProduccion(props) {
                                                 value={unidadMedida}
                                                 placeholder="UM"
                                                 name="um"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -532,7 +531,6 @@ function ModificacionProduccion(props) {
                                                 value={cantidad}
                                                 placeholder="Almacen producto terminado"
                                                 name="almacenPT"
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -737,7 +735,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Numero de molde"
                                                 value={formDataPlaneacion.noMolde}
                                                 name="noMolde"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -750,7 +747,6 @@ function ModificacionProduccion(props) {
                                                 defaultValue={formDataPlaneacion.cavMolde}
                                                 placeholder="Numero de cavidades"
                                                 name="numeroCavidades"
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -796,7 +792,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="numeroMaquina1"
                                                     value={numeroMaquina1}
-                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
@@ -804,7 +799,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="maquina1"
                                                     value={nombreMaquina1}
-                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
@@ -812,7 +806,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="ciclo1"
                                                     value={formDataPlaneacion.tiempoCiclo1}
-                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
@@ -820,7 +813,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="pieza1"
                                                     value={piezasTurno1.toFixed(2)}
-                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
@@ -828,7 +820,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="bolsa1"
                                                     value={formDataPlaneacion.noPiezasxEmpaque}
-                                                    disabled
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -846,7 +837,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="numeroMaquina2"
                                                     value={numeroMaquina2}
-                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
@@ -854,7 +844,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="maquina2"
                                                     value={nombreMaquina2}
-                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
@@ -862,7 +851,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="ciclo2"
                                                     value={formDataPlaneacion.tiempoCiclo2}
-                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
@@ -870,7 +858,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="pieza1"
                                                     value={piezasTurno2.toFixed(2)}
-                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
@@ -878,7 +865,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="bolsa2"
                                                     value={formDataPlaneacion.noPiezasxEmpaque}
-                                                    disabled
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -896,7 +882,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="numeroMaquina3"
                                                     value={numeroMaquina3}
-                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
@@ -904,7 +889,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="maquina3"
                                                     value={nombreMaquina3}
-                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
@@ -912,7 +896,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="ciclo3"
                                                     value={formDataPlaneacion.tiempoCiclo3}
-                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
@@ -920,7 +903,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="pieza1"
                                                     value={piezasTurno3.toFixed(2)}
-                                                    disabled
                                                 />
                                             </Col>
                                             <Col>
@@ -928,7 +910,6 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     name="bolsa3"
                                                     value={formDataPlaneacion.noPiezasxEmpaque}
-                                                    disabled
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -956,7 +937,6 @@ function ModificacionProduccion(props) {
                                                 defaultValue={formDataPlaneacion.descripcionMP}
                                                 placeholder="Material"
                                                 name="Material"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -969,7 +949,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Molido"
                                                 defaultValue={formDataPlaneacion.porcentajeMolido}
                                                 name="Molido"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -982,7 +961,6 @@ function ModificacionProduccion(props) {
                                                 defaultValue={formDataPlaneacion.pesoPiezas}
                                                 placeholder="Peso de la pieza"
                                                 name="pesoPieza"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -995,7 +973,6 @@ function ModificacionProduccion(props) {
                                                 defaultValue={formDataPlaneacion.pesoColada}
                                                 placeholder="Peso colada"
                                                 name="pesoColada"
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -1010,7 +987,6 @@ function ModificacionProduccion(props) {
                                                 defaultValue={formDataPlaneacion.descripcionBolsa}
                                                 placeholder="Empaque"
                                                 name="empaque"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -1023,7 +999,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Pigmento/MB"
                                                 defaultValue={formDataPlaneacion.descripcionPigmento}
                                                 name="Pigmento"
-                                                disabled
                                             />
                                         </Form.Group>
                                         <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -1035,7 +1010,6 @@ function ModificacionProduccion(props) {
                                                 defaultValue={formDataPlaneacion.aplicacionGxKG}
                                                 placeholder="Apliación (gr/kg)"
                                                 name="aplicacion"
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -1045,10 +1019,9 @@ function ModificacionProduccion(props) {
                                             </Form.Label>
                                             <Form.Control
                                                 type="number"
-                                                value={bolsasCajasUtilizar.toFixed(2)}
+                                                value={Math.ceil(bolsasCajasUtilizar)}
                                                 placeholder="Bolsas o cajas a utilizar"
                                                 name="bolsasCajasUtilizar"
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>
@@ -1062,8 +1035,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 placeholder="Material x turno"
                                                 name="materialTurno"
-                                                value={materialTurno.toFixed(2)}
-                                                disabled
+                                                value={materialTurno.toFixed(3)}
                                             />
                                         </Form.Group>
 
@@ -1076,7 +1048,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="merma"
                                                 name="merma"
                                                 value={formDataPlaneacion.porcentajeScrap}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -1089,7 +1060,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Kg de material"
                                                 name="kgMaterial"
                                                 value={kgMaterial.toFixed(2)}
-                                                disabled
                                             />
                                         </Form.Group>
 
@@ -1102,7 +1072,6 @@ function ModificacionProduccion(props) {
                                                 placeholder="Kg de PIG o MB"
                                                 name="kgPIGMB"
                                                 value={pigMB.toFixed(2)}
-                                                disabled
                                             />
                                         </Form.Group>
                                     </Row>

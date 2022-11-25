@@ -62,6 +62,7 @@ function ModificacionVentas(props) {
                 cliente: cliente,
                 incoterms: incoterms,
                 especificaciones: especificaciones,
+                lugarEntrega: lugarEntrega,
                 condicionesPago: condicionesPago,
                 cotizacion: cotizacion,
                 numeroPedido: numeroPedido,
@@ -255,10 +256,10 @@ function ModificacionVentas(props) {
         const dataTempProductos = producto.split("/")
         // console.log(dataTempProductos)
         const dataTemp = {
-            index: dataTempProductos[0],
-            idProducto: dataTempProductos[1],
-            ID: dataTempProductos[2],
-            item: dataTempProductos[3]
+            idProducto: dataTempProductos[0],
+            ID: dataTempProductos[1],
+            item: dataTempProductos[2],
+            precioUnitario: dataTempProductos[3]
         }
         setCargaProductos(cargaFormDataProductos(dataTemp))
     }
@@ -280,7 +281,7 @@ function ModificacionVentas(props) {
                 material: material,
                 cantidad: cantidad,
                 um: um,
-                precioUnitario: precioUnitario,
+                precioUnitario: cargaProductos.precioUnitario,
                 total: totalUnitario
             }
             // console.log(dataTemp)
@@ -290,10 +291,9 @@ function ModificacionVentas(props) {
             );
 
             setCargaProductos(initialFormDataProductos)
-            document.getElementById("descripcion").value = "Elige"
+            document.getElementById("material").value = "Elige"
             document.getElementById("cantidad").value = ""
             document.getElementById("um").value = "Elige"
-            document.getElementById("precioUnitario").value = ""
             setTotalUnitario(0)
         }
     }
@@ -304,7 +304,6 @@ function ModificacionVentas(props) {
         document.getElementById("material").value = "Elige"
         document.getElementById("cantidad").value = ""
         document.getElementById("um").value = "Elige"
-        document.getElementById("precioUnitario").value = ""
         setTotalUnitario(0)
     }
 
@@ -534,8 +533,7 @@ function ModificacionVentas(props) {
                                                 placeholder="Lugar de entrega"
                                                 style={{ height: '100px' }}
                                                 name="lugarEntrega"
-                                                disabled
-                                                value={clienteSeleccionado == "" ? informacionPedido.lugarEntrega : clienteSeleccionado?.calle + " " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado + ", " + clienteSeleccionado?.pais}
+                                                defaultValue={clienteSeleccionado == "" ? informacionPedido.lugarEntrega : clienteSeleccionado?.calle + " " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado + ", " + clienteSeleccionado?.pais}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -629,7 +627,7 @@ function ModificacionVentas(props) {
                                                                     {map(listProductosActivos, (producto, index) => (
                                                                         <option
                                                                             key={index}
-                                                                            value={parseInt(index + 1) + "/" + producto.id + "/" + producto.noParte + "/" + producto.descripcion}
+                                                                            value={producto.id + "/" + producto.noParte + "/" + producto.descripcion + "/" + producto.precioVenta}
                                                                         >
                                                                             {producto.descripcion}
                                                                         </option>
@@ -685,17 +683,11 @@ function ModificacionVentas(props) {
                                     </Form.Label>
                                     <Form.Control
                                         id="um"
-                                        as="select"
-                                        id="um"
+                                        type="text"
                                         name="um"
-                                        defaultValue={cargaProductos.um}
-                                    >
-                                        <option >Elige</option>
-                                        <option value="KG">KG</option>
-                                        <option value="Litros">Litros</option>
-                                        <option value="Piezas">Piezas</option>
-                                        <option value="Cajas">Cajas</option>
-                                    </Form.Control>
+                                        value="Piezas"
+                                        disabled
+                                    />
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="formGridCliente">
@@ -709,6 +701,7 @@ function ModificacionVentas(props) {
                                         name="precioUnitario"
                                         onChange={(e) => { calcularTotalUnitario(e.target.value) }}
                                         defaultValue={cargaProductos.precioUnitario}
+                                        disabled
                                     />
                                 </Form.Group>
 
@@ -948,7 +941,7 @@ function initialFormDataProductos() {
 }
 
 function cargaFormDataProductos(data) {
-    const { idProducto, ID, item } = data;
+    const { idProducto, ID, item, precioUnitario } = data;
 
     return {
         idProducto: idProducto,
@@ -956,7 +949,7 @@ function cargaFormDataProductos(data) {
         item: item,
         cantidad: "",
         um: "",
-        precioUnitario: "",
+        precioUnitario: precioUnitario,
         total: ""
     }
 }
@@ -999,6 +992,7 @@ function formatModelMatrizProductos(data) {
             datosMolde: data.datosMolde,
             noParte: data.noParte,
             descripcion: data.descripcion,
+            precioVenta: data.precioVenta,
             datosPieza: data.datosPieza,
             materiaPrima: data.materiaPrima,
             pigmentoMasterBach: data.pigmentoMasterBach,
