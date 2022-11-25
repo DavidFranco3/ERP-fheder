@@ -206,7 +206,7 @@ function ModificacionVentas(props) {
                 incoterms: informacionPedido.incoterms,
                 moneda: "M.N.",
                 numeroPedido: informacionPedido.numeroPedido,
-                lugarEntrega: clienteSeleccionado == "" ? informacionPedido.lugarEntrega : clienteSeleccionado?.calle + " " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado + ", " + clienteSeleccionado?.pais,
+                lugarEntrega: clienteSeleccionado == "" ? informacionPedido.lugarEntrega : clienteSeleccionado?.calle + " " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado,
                 cotizacion: linkCotizacion,
                 ordenCompra: linkOrdenCompra,
                 total: totalSinIVA,
@@ -387,7 +387,7 @@ function ModificacionVentas(props) {
                                             >
                                                 <option>Elige una opción</option>
                                                 {map(listClientes, (cliente, index) => (
-                                                    <option key={index} value={cliente?.id + "/" + cliente?.calle + "/" + cliente?.numeroExterior + "/" + cliente?.colonia + "/" + cliente?.municipio + "/" + cliente?.estado + "/" + cliente?.pais} selected={cliente?.id === informacionPedido.cliente}>{cliente?.nombre + " " + cliente.apellidos}</option>
+                                                    <option key={index} value={cliente?.id + "/" + cliente?.calle + "/" + cliente?.numeroExterior + "/" + cliente?.colonia + "/" + cliente?.municipio + "/" + cliente?.estado + "/" + cliente?.pais} selected={cliente?.id === informacionPedido.cliente}>{cliente?.nombre}</option>
                                                 ))}
                                             </Form.Control>
                                         </Col>
@@ -533,7 +533,7 @@ function ModificacionVentas(props) {
                                                 placeholder="Lugar de entrega"
                                                 style={{ height: '100px' }}
                                                 name="lugarEntrega"
-                                                defaultValue={clienteSeleccionado == "" ? informacionPedido.lugarEntrega : clienteSeleccionado?.calle + " " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado + ", " + clienteSeleccionado?.pais}
+                                                defaultValue={clienteSeleccionado == "" ? informacionPedido.lugarEntrega : clienteSeleccionado?.calle + " " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado}
                                             />
                                         </Col>
                                     </Form.Group>

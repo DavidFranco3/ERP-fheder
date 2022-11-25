@@ -13,8 +13,8 @@ function NombreCliente(props) {
             obtenerCliente(folio).then(response => {
                 const { data } = response;
                 // console.log(data)
-                const { nombre, apellidos } = data;
-                setNombreCliente(nombre + " " + apellidos)
+                const { nombre} = data;
+                setNombreCliente(nombre)
             }).catch(e => {
                 console.log(e)
             })

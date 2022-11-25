@@ -55,7 +55,7 @@ function ListClientes(props) {
     const columns = [
         {
             name: 'Nombre',
-            selector: row => row.nombre + " " + row.apellidos,
+            selector: row => row.nombre,
             sortable: true,
             center: true,
             reorder: true
@@ -305,9 +305,9 @@ function ListClientes(props) {
                 <DataTable
                     columns={columns}
                     data={filteredItems}
-                    actions={descargaCSV}
-                    subHeader
-                    subHeaderComponent={subHeaderComponentMemo}
+                    //actions={descargaCSV}
+                    //subHeader
+                    //subHeaderComponent={subHeaderComponentMemo}
                     progressPending={pending}
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}

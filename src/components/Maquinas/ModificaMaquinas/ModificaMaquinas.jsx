@@ -199,7 +199,7 @@ function valoresAlmacenados(data) {
         numeroMaquina: data.numeroMaquina,
         marca: data.marca,
         tonelaje: data.tonelaje,
-        lugar: data.tonelaje
+        lugar: data.lugar
     }
 }
 

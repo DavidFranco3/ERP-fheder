@@ -13,7 +13,7 @@ function BusquedaCliente(props) {
             obtenerCliente(idCliente).then(response => {
                 const { data } = response;
                 //console.log(data)
-                setNombreCliente(data.nombre + " " + data.apellidos)
+                setNombreCliente(data.nombre)
             }).catch(e => {
                 console.log(e)
             })

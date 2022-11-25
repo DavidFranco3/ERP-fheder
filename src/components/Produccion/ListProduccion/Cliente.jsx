@@ -14,8 +14,8 @@ function Cliente(props) {
             obtenerCliente(id).then(response => {
                 const { data } = response;
                 // console.log(data)
-                const { nombre, apellidos} = data;
-                setNombreCliente(nombre + " " + apellidos)
+                const { nombre} = data;
+                setNombreCliente(nombre)
             }).catch(e => {
                 //console.log(e)
                 if(e.message === 'Network Error') {

@@ -269,7 +269,6 @@ function ModificaMatrizProductos(props) {
 
     // Para obtener el total de piezas por hora
     const piezasHora = (3600 / (parseFloat(formData.tiempoCiclo))) * formData.cavMolde;
-    console.log(piezasHora)
 
     // Para obtener el total de piezas por turno
     const piezasTurno = (12 * parseFloat(piezasHora));
@@ -338,7 +337,7 @@ function ModificaMatrizProductos(props) {
                                                                 >
                                                                     <option>Elige una opción</option>
                                                                     {map(listClientes, (cliente, index) => (
-                                                                        <option key={index} value={cliente?.id} selected={cliente?.id === formData.cliente}>{cliente?.nombre + " " + cliente.apellidos}</option>
+                                                                        <option key={index} value={cliente?.id} selected={cliente?.id === formData.cliente}>{cliente?.nombre}</option>
                                                                     ))}
                                                                 </Form.Control>
                                                             </Col>

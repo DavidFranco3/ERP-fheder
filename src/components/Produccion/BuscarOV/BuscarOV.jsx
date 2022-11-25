@@ -41,8 +41,8 @@ function BuscarOV(props) {
 
                 obtenerCliente(cliente).then(response => {
                     const { data } = response;
-                    const { nombre, apellidos } = data;
-                    setValorFinalCliente(nombre + " " + apellidos)
+                    const { nombre } = data;
+                    setValorFinalCliente(nombre)
 
                 }).catch(e => {
                     console.log(e)

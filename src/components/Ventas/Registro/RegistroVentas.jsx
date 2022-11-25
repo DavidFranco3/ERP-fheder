@@ -377,7 +377,7 @@ function RegistroVentas(props) {
                                             >
                                                 <option>Elige una opción</option>
                                                 {map(listClientes, (cliente, index) => (
-                                                    <option key={index} value={cliente?.id + "/" + cliente?.calle + "/" + cliente?.numeroExterior + "/" + cliente?.colonia + "/" + cliente?.municipio + "/" + cliente?.estado + "/" + cliente?.pais}>{cliente?.nombre + " " + cliente.apellidos}</option>
+                                                    <option key={index} value={cliente?.id + "/" + cliente?.calle + "/" + cliente?.numeroExterior + "/" + cliente?.colonia + "/" + cliente?.municipio + "/" + cliente?.estado + "/" + cliente?.pais}>{cliente?.nombre}</option>
                                                 ))}
                                             </Form.Control>
                                         </Col>
@@ -475,7 +475,7 @@ function RegistroVentas(props) {
                                         </Col>
                                         <Col sm="4">
                                             <Form.Control
-                                                as="textArea"
+                                                as="textarea"
                                                 style={{ height: '100px' }}
                                                 placeholder="Condiciones de pago"
                                                 name="condicionesPago"

@@ -299,7 +299,7 @@ function RegistraMatrizProductos(props) {
                                                     >
                                                         <option>Elige una opción</option>
                                                         {map(listClientes, (cliente, index) => (
-                                                            <option key={index} value={cliente?.id}>{cliente?.nombre + " " + cliente.apellidos}</option>
+                                                            <option key={index} value={cliente?.id}>{cliente?.nombre}</option>
                                                         ))}
                                                     </Form.Control>
                                                 </Col>

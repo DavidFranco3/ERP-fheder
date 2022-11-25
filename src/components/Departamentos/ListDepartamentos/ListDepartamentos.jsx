@@ -224,9 +224,9 @@ function ListDepartamentos(props) {
             <Container fluid>
             <DataTable
                     columns={columns}
-                    actions={descargaCSV}
-                    subHeader
-                    subHeaderComponent={subHeaderComponentMemo}
+                    //actions={descargaCSV}
+                    //subHeader
+                    //subHeaderComponent={subHeaderComponentMemo}
                     data={filteredItems}
                     progressPending={pending}
                     pagination

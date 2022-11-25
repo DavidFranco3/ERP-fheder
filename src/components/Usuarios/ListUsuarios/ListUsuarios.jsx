@@ -333,9 +333,9 @@ function ListUsuarios(props) {
                 <DataTable
                     columns={columns}
                     data={filteredItems}
-                    actions={descargaCSV}
-                    subHeader
-                    subHeaderComponent={subHeaderComponentMemo}
+                    //actions={descargaCSV}
+                    //subHeader
+                    //subHeaderComponent={subHeaderComponentMemo}
                     progressPending={pending}
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
