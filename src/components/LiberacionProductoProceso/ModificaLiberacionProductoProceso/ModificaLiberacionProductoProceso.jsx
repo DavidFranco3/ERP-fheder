@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { useHistory, useParams } from "react-router-dom";
 import { obtenerLiberacionProducto, actualizaLiberacionProducto } from "../../../api/liberacionProductoProceso";
 import { toast } from "react-toastify";
@@ -244,980 +243,978 @@ function RegistraLiberacionProductoProceso(props) {
 
     return (
         <>
-            <LayoutPrincipal>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Nueva hoja de liberación de producto y proceso
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Nueva hoja de liberación de producto y proceso
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                <br />
+            <br />
 
-                <Container fluid>
-                    <div className="formularioDatos">
-                        <Form onChange={onChange} onSubmit={onSubmit}>
-                            <div className="encabezado">
-                                <Container fluid>
-                                    <br />
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Cliente
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control as="select"
-                                                    defaultValue={formData.cliente}
-                                                    name="cliente"
-                                                >
-                                                    <option>Elige una opción</option>
-                                                    {map(listClientes, (cliente, index) => (
-                                                        <option key={index} value={cliente?.nombre + " " + cliente.apellidos} selected={formData.cliente == cliente?.nombre + " " + cliente.apellidos}>{cliente?.nombre + " " + cliente.apellidos}</option>
-                                                    ))}
-                                                </Form.Control>
-                                            </Col>
+            <Container fluid>
+                <div className="formularioDatos">
+                    <Form onChange={onChange} onSubmit={onSubmit}>
+                        <div className="encabezado">
+                            <Container fluid>
+                                <br />
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col sm="2">
+                                            <Form.Label>
+                                                Cliente
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control as="select"
+                                                defaultValue={formData.cliente}
+                                                name="cliente"
+                                            >
+                                                <option>Elige una opción</option>
+                                                {map(listClientes, (cliente, index) => (
+                                                    <option key={index} value={cliente?.nombre + " " + cliente.apellidos} selected={formData.cliente == cliente?.nombre + " " + cliente.apellidos}>{cliente?.nombre + " " + cliente.apellidos}</option>
+                                                ))}
+                                            </Form.Control>
+                                        </Col>
 
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Fecha arranque Molde
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="date"
-                                                    placeholder="Fecha"
-                                                    name="fechaArranque"
-                                                    defaultValue={formData.fechaArranque}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="2">
+                                            <Form.Label>
+                                                Fecha arranque Molde
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="date"
+                                                placeholder="Fecha"
+                                                name="fechaArranque"
+                                                defaultValue={formData.fechaArranque}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Descripción pieza
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    as="select"
-                                                    onChange={(e) => {
-                                                        handleProducto(e.target.value)
-                                                    }}
-                                                    defaultValue={formData.descripcion}
-                                                    name="descripcion"
-                                                >
-                                                    <option>Elige una opcion</option>
-                                                    {map(listProductosActivos, (producto, index) => (
-                                                        <option
-                                                            key={index}
-                                                            value={producto.noParte + "/" + producto.descripcion} selected={productoSeleccionado.descripcion == producto?.descripcion}
-                                                        >
-                                                            {producto.descripcion}
-                                                        </option>
-                                                    ))}
-                                                </Form.Control>
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col sm="2">
+                                            <Form.Label>
+                                                Descripción pieza
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                as="select"
+                                                onChange={(e) => {
+                                                    handleProducto(e.target.value)
+                                                }}
+                                                defaultValue={formData.descripcion}
+                                                name="descripcion"
+                                            >
+                                                <option>Elige una opcion</option>
+                                                {map(listProductosActivos, (producto, index) => (
+                                                    <option
+                                                        key={index}
+                                                        value={producto.noParte + "/" + producto.descripcion} selected={productoSeleccionado.descripcion == producto?.descripcion}
+                                                    >
+                                                        {producto.descripcion}
+                                                    </option>
+                                                ))}
+                                            </Form.Control>
+                                        </Col>
 
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    No. Maquina
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    placeholder="No. Maquina"
-                                                    name="noMaquina"
-                                                    defaultValue={formData.noMaquina}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="2">
+                                            <Form.Label>
+                                                No. Maquina
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="number"
+                                                placeholder="No. Maquina"
+                                                name="noMaquina"
+                                                defaultValue={formData.noMaquina}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    No. Parte
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="number"
-                                                    placeholder="No. Parte/Molde"
-                                                    name="noParte"
-                                                    value={productoSeleccionado.noParte}
-                                                    disabled
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col sm="2">
+                                            <Form.Label>
+                                                No. Parte
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="number"
+                                                placeholder="No. Parte/Molde"
+                                                name="noParte"
+                                                value={productoSeleccionado.noParte}
+                                                disabled
+                                            />
+                                        </Col>
 
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Hoja de liberación
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Hoja de liberación"
-                                                    name="hojaLiberacion"
-                                                    defaultValue={formData.hojaLiberacion}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="2">
+                                            <Form.Label>
+                                                Hoja de liberación
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Hoja de liberación"
+                                                name="hojaLiberacion"
+                                                defaultValue={formData.hojaLiberacion}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Proceso
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Proceso"
-                                                    name="proceso"
-                                                    defaultValue={formData.proceso}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col sm="2">
+                                            <Form.Label>
+                                                Proceso
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Proceso"
+                                                name="proceso"
+                                                defaultValue={formData.proceso}
+                                            />
+                                        </Col>
 
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Elaboró
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Elaboró"
-                                                    name="elaboro"
-                                                    defaultValue={formData.elaboro}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="2">
+                                            <Form.Label>
+                                                Elaboró
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Elaboró"
+                                                name="elaboro"
+                                                defaultValue={formData.elaboro}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Fecha elaboración
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="date"
-                                                    placeholder="Fecha"
-                                                    name="fechaElaboracion"
-                                                    defaultValue={formData.fechaElaboracion}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col sm="2">
+                                            <Form.Label>
+                                                Fecha elaboración
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="date"
+                                                placeholder="Fecha"
+                                                name="fechaElaboracion"
+                                                defaultValue={formData.fechaElaboracion}
+                                            />
+                                        </Col>
 
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Turno
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    as="select"
-                                                    name="turno"
-                                                    defaultValue={formData.turno}
-                                                >
-                                                    <option >Elige....</option>
-                                                    <option value="1" selected={formData.turno=="1"}>1</option>
-                                                    <option value="2" selected={formData.turno=="2"}>2</option>
-                                                </Form.Control>
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-                                </Container>
-                            </div>
-                            <br />
+                                        <Col sm="2">
+                                            <Form.Label>
+                                                Turno
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                as="select"
+                                                name="turno"
+                                                defaultValue={formData.turno}
+                                            >
+                                                <option >Elige....</option>
+                                                <option value="1" selected={formData.turno == "1"}>1</option>
+                                                <option value="2" selected={formData.turno == "2"}>2</option>
+                                            </Form.Control>
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
+                            </Container>
+                        </div>
+                        <br />
 
-                            <div className="datosHerramientas">
-                                <Container fluid>
-                                    <br />
-                                    <div className="tituloSeccion">
-                                        <h4>
-                                            Proceso
-                                        </h4>
-                                    </div>
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    1-¿El area de trabajo se encuentra limpia y disponible para operar?
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="proceso1"
-                                                    id="si"
-                                                    defaultValue={formData.proceso1}
-                                                    checked={formData.proceso1=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="proceso1"
-                                                    id="no"
-                                                    defaultValue={formData.proceso1}
-                                                    checked={formData.proceso1=="no"}
-                                                />
-                                            </Col>
+                        <div className="datosHerramientas">
+                            <Container fluid>
+                                <br />
+                                <div className="tituloSeccion">
+                                    <h4>
+                                        Proceso
+                                    </h4>
+                                </div>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                1-¿El area de trabajo se encuentra limpia y disponible para operar?
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="proceso1"
+                                                id="si"
+                                                defaultValue={formData.proceso1}
+                                                checked={formData.proceso1 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="proceso1"
+                                                id="no"
+                                                defaultValue={formData.proceso1}
+                                                checked={formData.proceso1 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProceso1"
-                                                    defaultValue={formData.observacionesProceso1}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProceso1"
+                                                defaultValue={formData.observacionesProceso1}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    2-¿La carpeta de proceso esta completa y disponible para su uso?
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="proceso2"
-                                                    id="si"
-                                                    defaultValue={formData.proceso2}
-                                                    checked={formData.proceso2=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="proceso2"
-                                                    id="no"
-                                                    defaultValue={formData.proceso2}
-                                                    checked={formData.proceso2=="no"}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                2-¿La carpeta de proceso esta completa y disponible para su uso?
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="proceso2"
+                                                id="si"
+                                                defaultValue={formData.proceso2}
+                                                checked={formData.proceso2 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="proceso2"
+                                                id="no"
+                                                defaultValue={formData.proceso2}
+                                                checked={formData.proceso2 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProceso2"
-                                                    defaultValue={formData.observacionesProceso2}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProceso2"
+                                                defaultValue={formData.observacionesProceso2}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    3-¿El o los operadores estan capacitados en la operación?
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="proceso3"
-                                                    id="si"
-                                                    defaultValue={formData.proceso3}
-                                                    checked={formData.proceso3=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="proceso3"
-                                                    id="no"
-                                                    defaultValue={formData.proceso3}
-                                                    checked={formData.proceso3=="no"}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                3-¿El o los operadores estan capacitados en la operación?
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="proceso3"
+                                                id="si"
+                                                defaultValue={formData.proceso3}
+                                                checked={formData.proceso3 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="proceso3"
+                                                id="no"
+                                                defaultValue={formData.proceso3}
+                                                checked={formData.proceso3 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProceso3"
-                                                    defaultValue={formData.observacionesProceso3}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProceso3"
+                                                defaultValue={formData.observacionesProceso3}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    4-¿Se encuentra la pieza master para prueba?
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="proceso4"
-                                                    id="si"
-                                                    defaultValue={formData.proceso4}
-                                                    checked={formData.proceso4=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="proceso4"
-                                                    id="no"
-                                                    defaultValue={formData.proceso4}
-                                                    checked={formData.proceso4=="no"}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                4-¿Se encuentra la pieza master para prueba?
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="proceso4"
+                                                id="si"
+                                                defaultValue={formData.proceso4}
+                                                checked={formData.proceso4 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="proceso4"
+                                                id="no"
+                                                defaultValue={formData.proceso4}
+                                                checked={formData.proceso4 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProceso4"
-                                                    defaultValue={formData.observacionesProceso4}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProceso4"
+                                                defaultValue={formData.observacionesProceso4}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    5-¿Cuentan con orden de producción?
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="proceso5"
-                                                    id="si"
-                                                    defaultValue={formData.proceso5}
-                                                    checked={formData.proceso5=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="proceso5"
-                                                    id="no"
-                                                    defaultValue={formData.proceso5}
-                                                    checked={formData.proceso5=="no"}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                5-¿Cuentan con orden de producción?
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="proceso5"
+                                                id="si"
+                                                defaultValue={formData.proceso5}
+                                                checked={formData.proceso5 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="proceso5"
+                                                id="no"
+                                                defaultValue={formData.proceso5}
+                                                checked={formData.proceso5 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProceso5"
-                                                    defaultValue={formData.observacionesProceso5}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProceso5"
+                                                defaultValue={formData.observacionesProceso5}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    6-¿Cuentan con ayuda visual del producto?
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="proceso6"
-                                                    id="si"
-                                                    defaultValue={formData.proceso6}
-                                                    checked={formData.proceso6=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="proceso6"
-                                                    id="no"
-                                                    defaultValue={formData.proceso6}
-                                                    checked={formData.proceso6=="no"}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                6-¿Cuentan con ayuda visual del producto?
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="proceso6"
+                                                id="si"
+                                                defaultValue={formData.proceso6}
+                                                checked={formData.proceso6 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="proceso6"
+                                                id="no"
+                                                defaultValue={formData.proceso6}
+                                                checked={formData.proceso6 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProceso6"
-                                                    defaultValue={formData.observacionesProceso6}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProceso6"
+                                                defaultValue={formData.observacionesProceso6}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    7-¿Se encuentra con las etiquetas  correspondientes segun norma de empaque?
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="proceso7"
-                                                    id="si"
-                                                    defaultValue={formData.proceso7}
-                                                    checked={formData.proceso7=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="proceso7"
-                                                    id="no"
-                                                    defaultValue={formData.proceso7}
-                                                    checked={formData.proceso7=="no"}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                7-¿Se encuentra con las etiquetas  correspondientes segun norma de empaque?
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="proceso7"
+                                                id="si"
+                                                defaultValue={formData.proceso7}
+                                                checked={formData.proceso7 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="proceso7"
+                                                id="no"
+                                                defaultValue={formData.proceso7}
+                                                checked={formData.proceso7 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProceso7"
-                                                    defaultValue={formData.observacionesProceso7}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-                                </Container>
-                            </div>
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProceso7"
+                                                defaultValue={formData.observacionesProceso7}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
+                            </Container>
+                        </div>
 
-                            <br />
+                        <br />
 
-                            <div className="datosHerramientas">
-                                <Container fluid>
-                                    <br />
-                                    <div className="tituloSeccion">
-                                        <h4>
-                                            Producto
-                                        </h4>
-                                    </div>
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    1-¿Pieza libre de rebaba en contornos y zona de ensamble?
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="producto1"
-                                                    id="si"
-                                                    defaultValue={formData.producto1}
-                                                    checked={formData.producto1=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="producto1"
-                                                    id="no"
-                                                    defaultValue={formData.producto1}
-                                                    checked={formData.producto1=="no"}
-                                                />
-                                            </Col>
+                        <div className="datosHerramientas">
+                            <Container fluid>
+                                <br />
+                                <div className="tituloSeccion">
+                                    <h4>
+                                        Producto
+                                    </h4>
+                                </div>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                1-¿Pieza libre de rebaba en contornos y zona de ensamble?
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="producto1"
+                                                id="si"
+                                                defaultValue={formData.producto1}
+                                                checked={formData.producto1 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="producto1"
+                                                id="no"
+                                                defaultValue={formData.producto1}
+                                                checked={formData.producto1 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProducto1"
-                                                    defaultValue={formData.observacionesProducto1}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProducto1"
+                                                defaultValue={formData.observacionesProducto1}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    2-¿Tono dentro de los criterios establecidos?
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="producto2"
-                                                    id="si"
-                                                    defaultValue={formData.producto2}
-                                                    checked={formData.producto2=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="producto2"
-                                                    id="no"
-                                                    defaultValue={formData.producto2}
-                                                    checked={formData.producto2=="no"}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                2-¿Tono dentro de los criterios establecidos?
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="producto2"
+                                                id="si"
+                                                defaultValue={formData.producto2}
+                                                checked={formData.producto2 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="producto2"
+                                                id="no"
+                                                defaultValue={formData.producto2}
+                                                checked={formData.producto2 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProducto2"
-                                                    defaultValue={formData.observacionesProducto2}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProducto2"
+                                                defaultValue={formData.observacionesProducto2}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    3-¿Pieza con nivel de contaminacion aceptable?
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="producto3"
-                                                    id="si"
-                                                    defaultValue={formData.producto3}
-                                                    checked={formData.producto3=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="producto3"
-                                                    id="no"
-                                                    defaultValue={formData.producto3}
-                                                    checked={formData.producto3=="no"}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                3-¿Pieza con nivel de contaminacion aceptable?
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="producto3"
+                                                id="si"
+                                                defaultValue={formData.producto3}
+                                                checked={formData.producto3 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="producto3"
+                                                id="no"
+                                                defaultValue={formData.producto3}
+                                                checked={formData.producto3 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProducto3"
-                                                    defaultValue={formData.observacionesProducto3}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProducto3"
+                                                defaultValue={formData.observacionesProducto3}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    4-Piezas sin rechupe en parte interna (conforme a la pieza de ayuda visual)
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="producto4"
-                                                    id="si"
-                                                    defaultValue={formData.producto4}
-                                                    checked={formData.producto4=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="producto4"
-                                                    id="no"
-                                                    defaultValue={formData.producto4}
-                                                    checked={formData.producto4=="no"}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                4-Piezas sin rechupe en parte interna (conforme a la pieza de ayuda visual)
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="producto4"
+                                                id="si"
+                                                defaultValue={formData.producto4}
+                                                checked={formData.producto4 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="producto4"
+                                                id="no"
+                                                defaultValue={formData.producto4}
+                                                checked={formData.producto4 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProducto4"
-                                                    defaultValue={formData.observacionesProducto4}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProducto4"
+                                                defaultValue={formData.observacionesProducto4}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    5-¿Piezas sin rafaga ni marca?
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="producto5"
-                                                    id="si"
-                                                    defaultValue={formData.producto5}
-                                                    checked={formData.producto5=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="producto5"
-                                                    id="no"
-                                                    defaultValue={formData.producto5}
-                                                    checked={formData.producto5=="no"}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                5-¿Piezas sin rafaga ni marca?
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="producto5"
+                                                id="si"
+                                                defaultValue={formData.producto5}
+                                                checked={formData.producto5 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="producto5"
+                                                id="no"
+                                                defaultValue={formData.producto5}
+                                                checked={formData.producto5 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProducto5"
-                                                    defaultValue={formData.observacionesProducto5}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProducto5"
+                                                defaultValue={formData.observacionesProducto5}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    6-¿Piezas sin tiro corto o deformaciones?
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="producto6"
-                                                    id="si"
-                                                    defaultValue={formData.producto6}
-                                                    checked={formData.producto6=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="producto6"
-                                                    id="no"
-                                                    defaultValue={formData.producto6}
-                                                    checked={formData.producto6=="no"}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                6-¿Piezas sin tiro corto o deformaciones?
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="producto6"
+                                                id="si"
+                                                defaultValue={formData.producto6}
+                                                checked={formData.producto6 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="producto6"
+                                                id="no"
+                                                defaultValue={formData.producto6}
+                                                checked={formData.producto6 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProducto6"
-                                                    defaultValue={formData.observacionesProducto6}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProducto6"
+                                                defaultValue={formData.observacionesProducto6}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    7-¿Correcto emsable de componentes?
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="producto7"
-                                                    id="si"
-                                                    defaultValue={formData.producto7}
-                                                    checked={formData.producto7=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="producto7"
-                                                    id="no"
-                                                    defaultValue={formData.producto7}
-                                                    checked={formData.producto7=="no"}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                7-¿Correcto emsable de componentes?
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="producto7"
+                                                id="si"
+                                                defaultValue={formData.producto7}
+                                                checked={formData.producto7 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="producto7"
+                                                id="no"
+                                                defaultValue={formData.producto7}
+                                                checked={formData.producto7 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProducto7"
-                                                    defaultValue={formData.observacionesProducto7}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProducto7"
+                                                defaultValue={formData.observacionesProducto7}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col>
-                                                <Form.Label>
-                                                    8-¿Peso conforme a lo especificado en la carpeta de proceso/plan de control correto ensamble de componentes?
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="si"
-                                                    type="radio"
-                                                    label="Si"
-                                                    name="producto8"
-                                                    id="si"
-                                                    defaultValue={formData.producto8}
-                                                    checked={formData.producto8=="si"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="no"
-                                                    type="radio"
-                                                    label="No"
-                                                    name="producto8"
-                                                    id="no"
-                                                    defaultValue={formData.producto8}
-                                                    checked={formData.producto8=="no"}
-                                                />
-                                            </Col>
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col>
+                                            <Form.Label>
+                                                8-¿Peso conforme a lo especificado en la carpeta de proceso/plan de control correto ensamble de componentes?
+                                            </Form.Label>
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="si"
+                                                type="radio"
+                                                label="Si"
+                                                name="producto8"
+                                                id="si"
+                                                defaultValue={formData.producto8}
+                                                checked={formData.producto8 == "si"}
+                                            />
+                                        </Col>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                                value="no"
+                                                type="radio"
+                                                label="No"
+                                                name="producto8"
+                                                id="no"
+                                                defaultValue={formData.producto8}
+                                                checked={formData.producto8 == "no"}
+                                            />
+                                        </Col>
 
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observacionesProducto8"
-                                                    defaultValue={formData.observacionesProducto8}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-                                </Container>
-                            </div>
-                            <br />
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observacionesProducto8"
+                                                defaultValue={formData.observacionesProducto8}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
+                            </Container>
+                        </div>
+                        <br />
 
-                            <div className="encabezado">
-                                <Container fluid>
-                                    <br />
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridCantidad" className="cantidad">
-                                            <Col sm="1">
-                                                <Form.Label>
-                                                    Observaciones
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Observaciones"
-                                                    name="observaciones"
-                                                    defaultValue={formData.observaciones}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-                                </Container>
-                            </div>
+                        <div className="encabezado">
+                            <Container fluid>
+                                <br />
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formGridCantidad" className="cantidad">
+                                        <Col sm="1">
+                                            <Form.Label>
+                                                Observaciones
+                                            </Form.Label>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Observaciones"
+                                                name="observaciones"
+                                                defaultValue={formData.observaciones}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
+                            </Container>
+                        </div>
 
-                            <Form.Group as={Row} className="botones">
-                                <Col>
-                                    <Button
-                                        type="submit"
-                                        variant="success"
-                                        className="registrar"
-                                    >
-                                        {!loading ? "Registrar" : <Spinner animation="border" />}
-                                    </Button>
-                                </Col>
-                                <Col>
-                                    <Button
-                                        variant="danger"
-                                        className="cancelar"
-                                        onClick={() => {
-                                            rutaRegreso()
-                                        }}
-                                    >
-                                        Cancelar
-                                    </Button>
-                                </Col>
-                            </Form.Group>
-                            <br />
-                        </Form>
-                    </div>
-                </Container>
-            </LayoutPrincipal>
+                        <Form.Group as={Row} className="botones">
+                            <Col>
+                                <Button
+                                    type="submit"
+                                    variant="success"
+                                    className="registrar"
+                                >
+                                    {!loading ? "Modificar" : <Spinner animation="border" />}
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Button
+                                    variant="danger"
+                                    className="cancelar"
+                                    onClick={() => {
+                                        rutaRegreso()
+                                    }}
+                                >
+                                    Cancelar
+                                </Button>
+                            </Col>
+                        </Form.Group>
+                        <br />
+                    </Form>
+                </div>
+            </Container>
         </>
     );
 }

@@ -1,15 +1,14 @@
-import { useState, useEffect, Suspense  } from 'react';
-import LayoutPrincipal from "../../layout/layoutPrincipal";
+import { useState, useEffect, Suspense } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faCirclePlus, faPlus, faUsers, faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
-import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
+import { faCirclePlus, faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { useHistory, withRouter } from "react-router-dom";
 import "./Usuarios.scss";
 import { totalUsuarios, listarUsuariosPaginacion } from "../../api/usuarios";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import ListUsuarios from "../../components/Usuarios/ListUsuarios";
 import BasicModal from "../../components/Modal/BasicModal";
-import {getTokenApi, isExpiredToken, logoutApi} from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -24,8 +23,8 @@ function Usuarios(props) {
 
     // Cerrado de sesión automatico
     useEffect(() => {
-        if(getTokenApi()) {
-            if(isExpiredToken(getTokenApi())) {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
@@ -39,7 +38,7 @@ function Usuarios(props) {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [page, setPage] = useState(1);
     const [noTotalUsuarios, setNoTotalUsuarios] = useState(0);
-    
+
     // Para almacenar los usuarios
     const [listUsuarios, setListUsuarios] = useState(null);
 
@@ -53,17 +52,17 @@ function Usuarios(props) {
                 setNoTotalUsuarios(data)
             }).catch(e => {
                 // console.log(e)
-                if(e.message === 'Network Error') {
+                if (e.message === 'Network Error') {
                     toast.error("Conexión al servidor no disponible");
                 }
             })
 
-            if(page === 0) {
+            if (page === 0) {
                 setPage(1)
-                listarUsuariosPaginacion (page, rowsPerPage).then(response => {
+                listarUsuariosPaginacion(page, rowsPerPage).then(response => {
                     const { data } = response;
                     //console.log(data)
-                    if(!listUsuarios && data){
+                    if (!listUsuarios && data) {
                         setListUsuarios(formatModelUsuarios(data));
                     } else {
                         const datosUsuarios = formatModelUsuarios(data);
@@ -73,10 +72,10 @@ function Usuarios(props) {
                     console.log(e)
                 })
             } else {
-                listarUsuariosPaginacion (page, rowsPerPage).then(response => {
+                listarUsuariosPaginacion(page, rowsPerPage).then(response => {
                     const { data } = response;
                     //console.log(data)
-                    if(!listUsuarios && data){
+                    if (!listUsuarios && data) {
                         setListUsuarios(formatModelUsuarios(data));
                     } else {
                         const datosUsuarios = formatModelUsuarios(data);
@@ -99,61 +98,59 @@ function Usuarios(props) {
 
     return (
         <>
-            <LayoutPrincipal className="Usuarios" paginaSeleccionada="Usuarios" setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Mis usuarios
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    registraColaborador()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Registrar un nuevo usuario
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Mis usuarios
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                registraColaborador()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar un nuevo usuario
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {listUsuarios ?
-                    (
-                        <>
-                            <Suspense fallback={<Spinner />}>
+            {listUsuarios ?
+                (
+                    <>
+                        <Suspense fallback={<Spinner />}>
                             <ListUsuarios
-                            listUsuarios={listUsuarios}
-                                    location={location}
-                                    history={history}
-                                    setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalUsuarios={noTotalUsuarios}
+                                listUsuarios={listUsuarios}
+                                location={location}
+                                history={history}
+                                setRefreshCheckLogin={setRefreshCheckLogin}
+                                rowsPerPage={rowsPerPage}
+                                setRowsPerPage={setRowsPerPage}
+                                page={page}
+                                setPage={setPage}
+                                noTotalUsuarios={noTotalUsuarios}
                             />
-                            </Suspense>
-                        </>
-                    )
-                    :
-                    (
-                        <>
-                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                        </>
-                    )
-                }
-            </LayoutPrincipal>
+                        </Suspense>
+                    </>
+                )
+                :
+                (
+                    <>
+                        <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                    </>
+                )
+            }
         </>
     );
 }

@@ -13,7 +13,6 @@ import BasicModal from "../../components/Modal/BasicModal";
 import {map} from "lodash";
 import { Switch } from '@headlessui/react'
 import "./Productos.scss"
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -103,7 +102,6 @@ function Productos(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8}>
@@ -150,7 +148,6 @@ function Productos(props) {
                             </>
                         )
                 }
-            </LayoutPrincipal>
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}
             </BasicModal>

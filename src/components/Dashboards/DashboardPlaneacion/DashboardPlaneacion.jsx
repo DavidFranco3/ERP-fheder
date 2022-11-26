@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { useHistory } from "react-router-dom";
 import ImagenPanel from "../../../assets/svg/panelPrincipal.svg";
 import "./DashboardPlaneacion.scss";
@@ -59,64 +58,62 @@ function DashboardPlaneacion(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Planeacion
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
-                <div className="grid grid-cols-7 gap-3">
-                    <ItemCard
-                        path={'/MatrizProductos'}
-                        logo={LogoMatriz}
-                        title={'Matriz de productos'}
-                    />
-                    <ItemCard
-                        path={'/RequerimientosPlaneacion'}
-                        logo={LogoRequerimientos}
-                        title={'Requerimientos y planeación'}
-                    />
-                    <ItemCard
-                        path={'/Materiales'}
-                        logo={LogoMateriales}
-                        title={'Materiales'}
-                    />
-                    <ItemCard
-                        path={'/Produccion'}
-                        logo={LogoProduccion}
-                        title={'Ordenes de producción'}
-                    />
-                    <ItemCard
-                        path={'/Mes'}
-                        logo={LogoMes}
-                        title={'Programas de producción del mes'}
-                    />
-                    <ItemCard
-                        path={'/Maquinaria'}
-                        logo={LogoMaquina}
-                        title={'Programa de producción maquina'}
-                    />
-                    <ItemCard
-                        path={'/AsignacionPedido'}
-                        logo={LogoPedido}
-                        title={'Asignaciones de pedido'}
-                    />
-                </div>
-            </LayoutPrincipal>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Planeacion
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
+            <div className="grid grid-cols-7 gap-3">
+                <ItemCard
+                    path={'/MatrizProductos'}
+                    logo={LogoMatriz}
+                    title={'Matriz de productos'}
+                />
+                <ItemCard
+                    path={'/RequerimientosPlaneacion'}
+                    logo={LogoRequerimientos}
+                    title={'Requerimientos y planeación'}
+                />
+                <ItemCard
+                    path={'/Materiales'}
+                    logo={LogoMateriales}
+                    title={'Materiales'}
+                />
+                <ItemCard
+                    path={'/Produccion'}
+                    logo={LogoProduccion}
+                    title={'Ordenes de producción'}
+                />
+                <ItemCard
+                    path={'/Mes'}
+                    logo={LogoMes}
+                    title={'Programas de producción del mes'}
+                />
+                <ItemCard
+                    path={'/Maquinaria'}
+                    logo={LogoMaquina}
+                    title={'Programa de producción maquina'}
+                />
+                <ItemCard
+                    path={'/AsignacionPedido'}
+                    logo={LogoPedido}
+                    title={'Asignaciones de pedido'}
+                />
+            </div>
         </>
     );
 }

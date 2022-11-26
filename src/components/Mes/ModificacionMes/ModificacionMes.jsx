@@ -130,7 +130,7 @@ function ModificacionMes(props) {
                                     variant="success"
                                     className="registrar"
                                 >
-                                     {!loading ? "Registrar" : <Spinner animation="border" />}
+                                     {!loading ? "Modificar" : <Spinner animation="border" />}
                                 </Button>
                             </Col>
                             <Col>

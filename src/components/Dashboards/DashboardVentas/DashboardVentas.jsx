@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { useHistory } from "react-router-dom";
 import "./DashboardVentas.scss";
 import { Alert, Button, Col, Row, Card, Container, CardGroup, Image, Badge } from "react-bootstrap";
@@ -50,7 +49,6 @@ function DashboardVentas(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
             <Alert>
                     <Row>
                         <Col xs={12} md={8}>
@@ -82,7 +80,6 @@ function DashboardVentas(props) {
                         title={'Integración de ventas/gastos'}
                     />
                 </div>
-            </LayoutPrincipal>
         </>
     );
 }

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOV from "../BuscarOV";
@@ -397,7 +396,6 @@ function RegistraRequerimientosPlaneacion(props) {
 
     return (
         <>
-            <LayoutPrincipal className="RegistroProduccion" paginaSeleccionada="Produccion" setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8}>
@@ -1072,7 +1070,6 @@ function RegistraRequerimientosPlaneacion(props) {
                 <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                     {contentModal}
                 </BasicModal>
-            </LayoutPrincipal>
         </>
     );
 }

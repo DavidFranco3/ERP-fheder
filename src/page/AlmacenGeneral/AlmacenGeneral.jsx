@@ -1,5 +1,4 @@
 import { useState, useEffect, Suspense } from 'react';
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import { withRouter, useHistory } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
 import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
@@ -96,7 +95,6 @@ function AlmacenGeneral(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8} className="tituloPrincipal">
@@ -178,7 +176,6 @@ function AlmacenGeneral(props) {
                 <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                     {contentModal}
                 </BasicModal>
-            </LayoutPrincipal>
         </>
     );
 }

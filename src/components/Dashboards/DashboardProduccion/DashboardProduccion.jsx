@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { useHistory } from "react-router-dom";
 import ImagenPanel from "../../../assets/svg/panelPrincipal.svg";
 
@@ -58,54 +57,52 @@ function DashboardProduccion(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Producción
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
-                <div className="grid grid-cols-5 gap-3">
-                    <ItemCard
-                        path={'/ReporteProduccion'}
-                        logo={LogoProduccion}
-                        title={'Reporte de producción'}
-                    />
-                    <ItemCard
-                        path={'/CarpetasProceso'}
-                        logo={LogoCarpeta}
-                        title={'Carpetas de proceso'}
-                    />
-                    <ItemCard
-                        path={'/IdentificacionPT'}
-                        logo={LogoEtiqueta}
-                        title={'Etiqueta de identificación PT'}
-                    />
-                    <ItemCard
-                        path={'/MaterialMolido'}
-                        logo={LogoIdentificador}
-                        title={'Id. de material molido'}
-                    />
-                    <ItemCard
-                        path={'/ControlParametrosMaquina'}
-                        logo={LogoParametros}
-                        title={'Control de parametros de maquina'}
-                    />
-                </div>
-            </LayoutPrincipal>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Producción
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
+            <div className="grid grid-cols-5 gap-3">
+                <ItemCard
+                    path={'/ReporteProduccion'}
+                    logo={LogoProduccion}
+                    title={'Reporte de producción'}
+                />
+                <ItemCard
+                    path={'/CarpetasProceso'}
+                    logo={LogoCarpeta}
+                    title={'Carpetas de proceso'}
+                />
+                <ItemCard
+                    path={'/IdentificacionPT'}
+                    logo={LogoEtiqueta}
+                    title={'Etiqueta de identificación PT'}
+                />
+                <ItemCard
+                    path={'/MaterialMolido'}
+                    logo={LogoIdentificador}
+                    title={'Id. de material molido'}
+                />
+                <ItemCard
+                    path={'/ControlParametrosMaquina'}
+                    logo={LogoParametros}
+                    title={'Control de parametros de maquina'}
+                />
+            </div>
         </>
     );
 }

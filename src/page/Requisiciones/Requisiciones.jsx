@@ -2,7 +2,6 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import { withRouter, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
@@ -112,63 +111,60 @@ function Requisiciones(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Mis requisiciones
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegistraRequisiciones()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Levanta una requisición
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
-                
-                {
-                    listRequisiciones ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListRequisiciones
-                                        setRefreshCheckLogin={setRefreshCheckLogin}
-                                        listRequisiciones={listRequisiciones}
-                                        history={history}
-                                        location={location}
-                                        rowsPerPage={rowsPerPage}
-                                        setRowsPerPage={setRowsPerPage}
-                                        page={page}
-                                        setPage={setPage}
-                                        noTotalRequisiciones={noTotalRequisiciones}
-                                    />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Mis requisiciones
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegistraRequisiciones()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Levanta una requisición
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-            </LayoutPrincipal>
+            {
+                listRequisiciones ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListRequisiciones
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                    listRequisiciones={listRequisiciones}
+                                    history={history}
+                                    location={location}
+                                    rowsPerPage={rowsPerPage}
+                                    setRowsPerPage={setRowsPerPage}
+                                    page={page}
+                                    setPage={setPage}
+                                    noTotalRequisiciones={noTotalRequisiciones}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
         </>
     );
 }

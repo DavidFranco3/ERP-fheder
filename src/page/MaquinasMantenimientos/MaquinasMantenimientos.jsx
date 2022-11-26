@@ -3,8 +3,6 @@ import {Alert, Button, Col, Form, Row, Spinner, Container} from "react-bootstrap
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCirclePlus} from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
-import LayoutMantenimiento from "../../layout/layoutMantenimiento";
-
 
 function MaquinasMantenimientos(props) {
     const { setRefreshCheckLogin } = props;
@@ -24,7 +22,6 @@ function MaquinasMantenimientos(props) {
 
     return (
         <>
-            <LayoutMantenimiento setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8}>
@@ -105,8 +102,6 @@ function MaquinasMantenimientos(props) {
                             </Form>
                         </div>
                 </Container>
-                
-            </LayoutMantenimiento>
         </>
     );
 }

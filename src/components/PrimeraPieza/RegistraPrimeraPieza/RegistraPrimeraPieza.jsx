@@ -1,31 +1,30 @@
 import { useState, useEffect } from 'react';
-import {Alert, Button, Col, Form, Row, Container, Spinner} from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCirclePlus} from "@fortawesome/free-solid-svg-icons";
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
+import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
 
 function RegistraReporte(props) {
-    const {setShowModal} = props;
-    
-    const cancelarRegistro= () => {
+    const { setShowModal } = props;
+
+    const cancelarRegistro = () => {
         setShowModal(false)
     }
-    
+
     // Para controlar la animacion
-    const [loading, setLoading] = useState(false); 
-    
+    const [loading, setLoading] = useState(false);
+
     return (
         <>
-                <Container>
-                    <div className="formularioDatos">
-                        <Form>
-                            <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+            <Container>
+                <div className="formularioDatos">
+                    <Form>
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                <Form.Label>
-                                    Fecha
-                                </Form.Label>
+                                    <Form.Label>
+                                        Fecha
+                                    </Form.Label>
                                 </Col>
                                 <Col>
                                     <Form.Control
@@ -34,15 +33,15 @@ function RegistraReporte(props) {
                                         name="fecha"
                                     />
                                 </Col>
-                                </Form.Group>
-                            </Row>
-                            
-                            <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                <Form.Label>
-                                    No. Maquina
-                                </Form.Label>
+                                    <Form.Label>
+                                        No. Maquina
+                                    </Form.Label>
                                 </Col>
                                 <Col>
                                     <Form.Control
@@ -51,15 +50,15 @@ function RegistraReporte(props) {
                                         name="numeroMaquina"
                                     />
                                 </Col>
-                                </Form.Group>
-                            </Row>
-                            
-                            <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                <Form.Label>
-                                    Descripción producto
-                                </Form.Label>
+                                    <Form.Label>
+                                        Descripción producto
+                                    </Form.Label>
                                 </Col>
                                 <Col>
                                     <Form.Control
@@ -68,15 +67,15 @@ function RegistraReporte(props) {
                                         name="descripcionProducto"
                                     />
                                 </Col>
-                                </Form.Group>
-                            </Row>
-                            
-                            <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                <Form.Label>
-                                    Cliente
-                                </Form.Label>
+                                    <Form.Label>
+                                        Cliente
+                                    </Form.Label>
                                 </Col>
                                 <Col>
                                     <Form.Control
@@ -85,15 +84,15 @@ function RegistraReporte(props) {
                                         name="cliente"
                                     />
                                 </Col>
-                                </Form.Group>
-                            </Row>
-                            
-                            <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                <Form.Label>
-                                    Peso
-                                </Form.Label>
+                                    <Form.Label>
+                                        Peso
+                                    </Form.Label>
                                 </Col>
                                 <Col>
                                     <Form.Control
@@ -103,15 +102,15 @@ function RegistraReporte(props) {
                                         name="peso"
                                     />
                                 </Col>
-                                </Form.Group>
-                            </Row>
-                            
-                            <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                <Form.Label>
-                                    No. Cavidades
-                                </Form.Label>
+                                    <Form.Label>
+                                        No. Cavidades
+                                    </Form.Label>
                                 </Col>
                                 <Col>
                                     <Form.Control
@@ -120,15 +119,15 @@ function RegistraReporte(props) {
                                         name="numeroCavidades"
                                     />
                                 </Col>
-                                </Form.Group>
-                            </Row>
-                            
-                            <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                <Form.Label>
-                                    Inspector
-                                </Form.Label>
+                                    <Form.Label>
+                                        Inspector
+                                    </Form.Label>
                                 </Col>
                                 <Col>
                                     <Form.Control
@@ -137,15 +136,15 @@ function RegistraReporte(props) {
                                         name="inspector"
                                     />
                                 </Col>
-                                </Form.Group>
-                            </Row>
-                            
-                            <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                <Form.Label>
-                                    Supervisor
-                                </Form.Label>
+                                    <Form.Label>
+                                        Supervisor
+                                    </Form.Label>
                                 </Col>
                                 <Col>
                                     <Form.Control
@@ -154,34 +153,34 @@ function RegistraReporte(props) {
                                         name="supervisor"
                                     />
                                 </Col>
-                                </Form.Group>
-                            </Row>
-                            
+                            </Form.Group>
+                        </Row>
+
                         <Form.Group as={Row} className="botones">
-                        <Col>
-                            <Button
-                                type="submit"
-                                variant="success"
-                                className="registrar"
-                            >
-                                {"Registrar"}
-                            </Button>
-                        </Col>
-                        <Col>
-                            <Button
-                                variant="danger"
-                                className="cancelar"
-                                onClick={() => {
-                                    cancelarRegistro()
-                                }}
-                            >
-                                Cancelar
-                            </Button>
-                        </Col>
-                    </Form.Group>
-                        </Form>
-                    </div>
-                </Container> 
+                            <Col>
+                                <Button
+                                    type="submit"
+                                    variant="success"
+                                    className="registrar"
+                                >
+                                    {"Registrar"}
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Button
+                                    variant="danger"
+                                    className="cancelar"
+                                    onClick={() => {
+                                        cancelarRegistro()
+                                    }}
+                                >
+                                    Cancelar
+                                </Button>
+                            </Col>
+                        </Form.Group>
+                    </Form>
+                </div>
+            </Container>
         </>
     );
 }

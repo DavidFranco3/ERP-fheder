@@ -1,16 +1,15 @@
 import { useState, useEffect, Suspense } from 'react';
 import "./Departamentos.scss";
-import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCirclePlus, faPlus, faUsers, faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
-import {totalDepartamentos, listarDepartamentosPaginacion} from "../../api/departamentos";
+import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus, faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { totalDepartamentos, listarDepartamentosPaginacion } from "../../api/departamentos";
 import { useHistory, withRouter } from "react-router-dom";
 import ListDepartamentos from "../../components/Departamentos/ListDepartamentos";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroDepartamentos from "../../components/Departamentos/Registro";
-import {getTokenApi, isExpiredToken, logoutApi} from "../../api/auth";
-import {toast} from "react-toastify";
+import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -23,12 +22,12 @@ function Departamentos(props) {
     const rutaRegreso = () => {
         enrutamiento.push("/")
     }
-    
-     // Para controlar la paginación
+
+    // Para controlar la paginación
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [page, setPage] = useState(1);
     const [noTotalDepartamentos, setNoTotalDepartamentos] = useState(0);
-    
+
     // Para almacenar los departamentos
     const [listDepartamentos, setListDepartamentos] = useState(null);
 
@@ -42,8 +41,8 @@ function Departamentos(props) {
 
     // Cerrado de sesión automatico
     useEffect(() => {
-        if(getTokenApi()) {
-            if(isExpiredToken(getTokenApi())) {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
@@ -55,7 +54,7 @@ function Departamentos(props) {
 
     useEffect(() => {
         try {
-            totalDepartamentos().then(response =>{
+            totalDepartamentos().then(response => {
                 const { data } = response;
                 setNoTotalDepartamentos(data)
             }).catch(e => {
@@ -64,12 +63,12 @@ function Departamentos(props) {
 
             // listarOrdenesCompraPaginacion(pagina, limite)
 
-            if(page === 0) {
+            if (page === 0) {
                 setPage(1)
 
                 listarDepartamentosPaginacion(page, rowsPerPage).then(response => {
                     const { data } = response
-                    if(!listDepartamentos &&data) {
+                    if (!listDepartamentos && data) {
                         setListDepartamentos(formatModelDepartamento(data));
                     } else {
                         const datosDepartamentos = formatModelDepartamento(data);
@@ -81,7 +80,7 @@ function Departamentos(props) {
             } else {
                 listarDepartamentosPaginacion(page, rowsPerPage).then(response => {
                     const { data } = response
-                    if(!listDepartamentos &&data) {
+                    if (!listDepartamentos && data) {
                         setListDepartamentos(formatModelDepartamento(data));
                     } else {
                         const datosDepartamentos = formatModelDepartamento(data);
@@ -107,64 +106,60 @@ function Departamentos(props) {
 
     return (
         <>
-            <LayoutPrincipal className="Departamentos" paginaSeleccionada="Departamentos" setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Mis Departamentos
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    registraDepartamentos(<RegistroDepartamentos setShowModal={setShowModal} history={history} />)
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Mis Departamentos
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                registraDepartamentos(<RegistroDepartamentos setShowModal={setShowModal} history={history} />)
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {
-                    listDepartamentos ?
-                        (
-                            <>
-                            <Suspense fallback={<Spinner /> }>
-                                <ListDepartamentos 
-                                listDepartamentos={listDepartamentos} 
-                                history={history}
-                                setRefreshCheckLogin={setRefreshCheckLogin}
-                                location={location}
-                                rowsPerPage={rowsPerPage}
-                                setRowsPerPage={setRowsPerPage}
-                                page={page}
-                                setPage={setPage}
-                                noTotalDepartamentos={noTotalDepartamentos}
+            {
+                listDepartamentos ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListDepartamentos
+                                    listDepartamentos={listDepartamentos}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                    location={location}
+                                    rowsPerPage={rowsPerPage}
+                                    setRowsPerPage={setRowsPerPage}
+                                    page={page}
+                                    setPage={setPage}
+                                    noTotalDepartamentos={noTotalDepartamentos}
                                 />
                             </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
-
-            </LayoutPrincipal>
-
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}
             </BasicModal>

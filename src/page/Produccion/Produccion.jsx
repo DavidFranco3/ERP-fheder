@@ -3,7 +3,6 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import { useHistory, withRouter } from "react-router-dom";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -36,15 +35,15 @@ function Produccion(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-     // Para almacenar la lista de pedidos de venta
-     const [listProduccion, setListProduccion] = useState(null);
-    
-     // Para controlar la paginación
-     const [rowsPerPage, setRowsPerPage] = useState(10);
-     const [page, setPage] = useState(1);
-     const [noTotalProduccion, setNoTotalProduccion] = useState(0);
+    // Para almacenar la lista de pedidos de venta
+    const [listProduccion, setListProduccion] = useState(null);
 
-     useEffect(() => {
+    // Para controlar la paginación
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [page, setPage] = useState(1);
+    const [noTotalProduccion, setNoTotalProduccion] = useState(0);
+
+    useEffect(() => {
         try {
             totalProduccion().then(response => {
                 const { data } = response;
@@ -90,62 +89,60 @@ function Produccion(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Ordenes de producción
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegistro()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nueva orden
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Ordenes de producción
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegistro()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva orden
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {
-                    listProduccion ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListProduccion
-                                        listProduccion={listProduccion}
-                                        location={location}
-                                        history={history}
-                                        setRefreshCheckLogin={setRefreshCheckLogin}
-                                        rowsPerPage={rowsPerPage}
-                                        setRowsPerPage={setRowsPerPage}
-                                        page={page}
-                                        setPage={setPage}
-                                        noTotalProduccion={noTotalProduccion}
-                                    />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
-            </LayoutPrincipal>
+            {
+                listProduccion ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListProduccion
+                                    listProduccion={listProduccion}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                    rowsPerPage={rowsPerPage}
+                                    setRowsPerPage={setRowsPerPage}
+                                    page={page}
+                                    setPage={setPage}
+                                    noTotalProduccion={noTotalProduccion}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
         </>
     );
 }

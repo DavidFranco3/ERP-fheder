@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { useHistory } from "react-router-dom";
 import { actualizaMaquina, obtenerMaquina } from "../../../api/maquinas";
 import { toast } from "react-toastify";
@@ -163,7 +162,7 @@ function ModificaMaquinas(props) {
                                     variant="success"
                                     className="registrar"
                                 >
-                                    {!loading ? "Guardar" : <Spinner animation="border" />}
+                                    {!loading ? "Modificar" : <Spinner animation="border" />}
                                 </Button>
                             </Col>
                             <Col>

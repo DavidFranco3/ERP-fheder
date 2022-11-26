@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { useHistory } from "react-router-dom";
 
 function RegistroMaquinasMantenimientos(props) {
@@ -25,7 +24,6 @@ function RegistroMaquinasMantenimientos(props) {
 
     return (
         <>
-            <LayoutPrincipal>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8}>
@@ -137,7 +135,6 @@ function RegistroMaquinasMantenimientos(props) {
                         </Form>
                     </div>
                 </Container>
-            </LayoutPrincipal>
         </>
     );
 }

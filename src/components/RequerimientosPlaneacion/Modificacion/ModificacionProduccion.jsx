@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOV from "../BuscarOV";
@@ -436,684 +435,682 @@ function ModificacionProduccion(props) {
 
     return (
         <>
-            <LayoutPrincipal className="RegistroProduccion" paginaSeleccionada="Produccion" setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Requerimientos y planeación
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Requerimientos y planeación
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                <br />
+            <br />
 
-                <Container fluid>
-                    <div className="formularioDatos">
-                        <Form onChange={onChange} onSubmit={onSubmit}>
+            <Container fluid>
+                <div className="formularioDatos">
+                    <Form onChange={onChange} onSubmit={onSubmit}>
 
-                            <div className="datosGenerales">
-                                <Container fluid>
-                                    <br />
-                                    <div className="tituloSeccion">
-                                        <h4>
-                                            Requerimiento
-                                        </h4>
-                                    </div>
+                        <div className="datosGenerales">
+                            <Container fluid>
+                                <br />
+                                <div className="tituloSeccion">
+                                    <h4>
+                                        Requerimiento
+                                    </h4>
+                                </div>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Col} controlId="formHorizontalNoInterno">
-                                            <Form.Label align="center">
-                                                Semana
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                min="0"
-                                                placeholder="Semana"
-                                                name="semana"
-                                                defaultValue={informacionRequerimiento.semana}
-                                            />
-                                        </Form.Group>
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label align="center">
+                                            Semana
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            min="0"
+                                            placeholder="Semana"
+                                            name="semana"
+                                            defaultValue={informacionRequerimiento.semana}
+                                        />
+                                    </Form.Group>
 
-                                        <Form.Group as={Col} controlId="formGridMateriaPrima" className="producto">
-                                            <Form.Label>
-                                                Producto
-                                            </Form.Label>
-                                            <Form.Control
-                                                as="select"
-                                                onChange={(e) => {
-                                                    handleMateriaPrima(e.target.value)
-                                                }}
-                                                defaultValue={informacionRequerimiento.producto}
-                                                name="producto"
-                                            >
-                                                <option>Elige una opción</option>
-                                                {map(listProductosActivos, (producto, index) => (
-                                                    <option
-                                                        key={index}
-                                                        value={producto?.id}
-                                                        selected={producto?.id == informacionRequerimiento.producto}
-                                                    >
-                                                        {producto?.descripcion}
-                                                    </option>
-                                                ))}
-                                            </Form.Control>
-                                        </Form.Group>
-
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                UM
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                defaultValue={unidadMedida}
-                                                placeholder="UM"
-                                                name="um"
-                                            />
-                                        </Form.Group>
-
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                Almacen producto terminado
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                defaultValue={cantidad}
-                                                placeholder="Almacen producto terminado"
-                                                name="almacenPT"
-                                            />
-                                        </Form.Group>
-                                    </Row>
-
-                                    <Row className="mb-3">
-                                        <Col align="left">
-                                            <Button
-                                                variant="success"
-                                                className="agregar"
-                                                onClick={() => {
-                                                    buscarOV(
-                                                        <BuscarOV
-                                                            setOrdenVenta={setOrdenVenta}
-                                                            setClienteOV={setClienteOV}
-                                                            setCantidadRequeridaOV={setCantidadRequeridaOV}
-                                                            setShowModal={setShowModal}
-                                                        />)
-                                                }}
-                                            >
-                                                Orden venta
-                                            </Button>
-                                        </Col>
-                                    </Row>
-
-                                    <Row className="mb-3">
-                                        <Form.Group as={Col} controlId="formHorizontalNoInterno">
-                                            <Form.Label align="center">
-                                                ITEM
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="itemOV"
-                                                name="itemOV"
-                                                value={itemOV}
-                                                disabled
-                                            />
-                                        </Form.Group>
-
-                                        <Form.Group as={Col} controlId="formHorizontalNoParte">
-                                            <Form.Label align="center">
-                                                Orden de venta
-                                            </Form.Label>
-                                            <Form.Control
-                                                id="ordenVenta"
-                                                type="text"
-                                                placeholder="Orden de venta"
-                                                name="ordenVenta"
-                                                value={ordenVenta}
-                                                disabled
-                                            />
-                                        </Form.Group>
-
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                Cantidad pedida
-                                            </Form.Label>
-                                            <Form.Control
-                                                id="cantidadPedidaOV"
-                                                type="number"
-                                                min="0"
-                                                placeholder="Cantidad pedida"
-                                                name="cantidadPedidaVenta"
-                                                value={cantidadRequeridaOV}
-                                                disabled
-                                            />
-                                        </Form.Group>
-
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                Cantidad a producir
-                                            </Form.Label>
-                                            <Form.Control
-                                                id="cantidadProducirOV"
-                                                type="number"
-                                                placeholder="Cantidad a producir"
-                                                name="cantidadProducirVenta"
-                                            />
-                                        </Form.Group>
-
-                                        <Col sm="1">
-                                            <Form.Group as={Row} className="formGridCliente">
-                                                <Form.Label>
-                                                    &nbsp;
-                                                </Form.Label>
-
-                                                <Col>
-                                                    <Button
-                                                        variant="success"
-                                                        className="editar"
-                                                        onClick={() => {
-                                                            addItemsOV()
-                                                        }}
-                                                    >
-                                                        <FontAwesomeIcon icon={faCirclePlus} className="text-lg" />
-                                                    </Button>
-                                                </Col>
-                                                <Col>
-                                                    <Button
-                                                        variant="danger"
-                                                        className="editar"
-                                                        onClick={() => {
-                                                            cancelarCargaOV()
-                                                        }}
-                                                    >
-                                                        <FontAwesomeIcon icon={faX} className="text-lg" />
-                                                    </Button>
-                                                </Col>
-                                            </Form.Group>
-                                        </Col>
-
-                                    </Row>
-
-                                    <hr />
-
-                                    <Badge bg="secondary" className="tituloFormularioDetalles">
-                                        <h4>Listado de ordenes de ventas agregadas</h4>
-                                    </Badge>
-                                    <br />
-                                    <hr />
-                                    {/* Inicia tabla informativa del listado de articulos */}
-                                    <table className="responsive-tableRegistroVentas"
-                                    >
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Orden de venta</th>
-                                                <th scope="col">Cantidad pedida</th>
-                                                <th scope="col">Cantidad a producir</th>
-                                                <th scope="col">Eliminar</th>
-                                            </tr>
-                                        </thead>
-                                        <tfoot>
-                                        </tfoot>
-                                        <tbody>
-                                            {map(listOVCargadas, (ordenVenta, index) => (
-                                                <tr key={index}>
-                                                    <th scope="row">
-                                                        {index + 1}
-                                                    </th>
-                                                    <td data-title="ordenVenta">
-                                                        {ordenVenta.ordenVenta}
-                                                    </td>
-                                                    <td data-title="cantidadPedidaOV">
-                                                        {ordenVenta.cantidadPedidaOV}
-                                                    </td>
-                                                    <td data-title="cantidadProducirOV">
-                                                        {ordenVenta.cantidadProducirOV}
-                                                    </td>
-                                                    <td data-title="Eliminar">
-                                                        <div
-                                                            className="eliminarProductoListado"
-                                                            onClick={() => {
-                                                                removeItemOV(ordenVenta)
-                                                            }}
-                                                        >
-                                                            ❌
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                    <Form.Group as={Col} controlId="formGridMateriaPrima" className="producto">
+                                        <Form.Label>
+                                            Producto
+                                        </Form.Label>
+                                        <Form.Control
+                                            as="select"
+                                            onChange={(e) => {
+                                                handleMateriaPrima(e.target.value)
+                                            }}
+                                            defaultValue={informacionRequerimiento.producto}
+                                            name="producto"
+                                        >
+                                            <option>Elige una opción</option>
+                                            {map(listProductosActivos, (producto, index) => (
+                                                <option
+                                                    key={index}
+                                                    value={producto?.id}
+                                                    selected={producto?.id == informacionRequerimiento.producto}
+                                                >
+                                                    {producto?.descripcion}
+                                                </option>
                                             ))}
-                                        </tbody>
-                                    </table>
+                                        </Form.Control>
+                                    </Form.Group>
 
-                                    <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            UM
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={unidadMedida}
+                                            placeholder="UM"
+                                            name="um"
+                                        />
+                                    </Form.Group>
 
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                Total a producir
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Almacen producto terminado
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={cantidad}
+                                            placeholder="Almacen producto terminado"
+                                            name="almacenPT"
+                                        />
+                                    </Form.Group>
+                                </Row>
+
+                                <Row className="mb-3">
+                                    <Col align="left">
+                                        <Button
+                                            variant="success"
+                                            className="agregar"
+                                            onClick={() => {
+                                                buscarOV(
+                                                    <BuscarOV
+                                                        setOrdenVenta={setOrdenVenta}
+                                                        setClienteOV={setClienteOV}
+                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        >
+                                            Orden venta
+                                        </Button>
+                                    </Col>
+                                </Row>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label align="center">
+                                            ITEM
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="itemOV"
+                                            name="itemOV"
+                                            value={itemOV}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalNoParte">
+                                        <Form.Label align="center">
+                                            Orden de venta
+                                        </Form.Label>
+                                        <Form.Control
+                                            id="ordenVenta"
+                                            type="text"
+                                            placeholder="Orden de venta"
+                                            name="ordenVenta"
+                                            value={ordenVenta}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Cantidad pedida
+                                        </Form.Label>
+                                        <Form.Control
+                                            id="cantidadPedidaOV"
+                                            type="number"
+                                            min="0"
+                                            placeholder="Cantidad pedida"
+                                            name="cantidadPedidaVenta"
+                                            value={cantidadRequeridaOV}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Cantidad a producir
+                                        </Form.Label>
+                                        <Form.Control
+                                            id="cantidadProducirOV"
+                                            type="number"
+                                            placeholder="Cantidad a producir"
+                                            name="cantidadProducirVenta"
+                                        />
+                                    </Form.Group>
+
+                                    <Col sm="1">
+                                        <Form.Group as={Row} className="formGridCliente">
+                                            <Form.Label>
+                                                &nbsp;
                                             </Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                placeholder="Total a producir"
-                                                name="totalProducir"
-                                                value={totalProducir}
-                                                disabled
-                                            />
+
+                                            <Col>
+                                                <Button
+                                                    variant="success"
+                                                    className="editar"
+                                                    onClick={() => {
+                                                        addItemsOV()
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faCirclePlus} className="text-lg" />
+                                                </Button>
+                                            </Col>
+                                            <Col>
+                                                <Button
+                                                    variant="danger"
+                                                    className="editar"
+                                                    onClick={() => {
+                                                        cancelarCargaOV()
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faX} className="text-lg" />
+                                                </Button>
+                                            </Col>
                                         </Form.Group>
-                                    </Row>
+                                    </Col>
 
-                                </Container>
-                            </div>
+                                </Row>
 
-                            <br />
+                                <hr />
+
+                                <Badge bg="secondary" className="tituloFormularioDetalles">
+                                    <h4>Listado de ordenes de ventas agregadas</h4>
+                                </Badge>
+                                <br />
+                                <hr />
+                                {/* Inicia tabla informativa del listado de articulos */}
+                                <table className="responsive-tableRegistroVentas"
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Orden de venta</th>
+                                            <th scope="col">Cantidad pedida</th>
+                                            <th scope="col">Cantidad a producir</th>
+                                            <th scope="col">Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                    </tfoot>
+                                    <tbody>
+                                        {map(listOVCargadas, (ordenVenta, index) => (
+                                            <tr key={index}>
+                                                <th scope="row">
+                                                    {index + 1}
+                                                </th>
+                                                <td data-title="ordenVenta">
+                                                    {ordenVenta.ordenVenta}
+                                                </td>
+                                                <td data-title="cantidadPedidaOV">
+                                                    {ordenVenta.cantidadPedidaOV}
+                                                </td>
+                                                <td data-title="cantidadProducirOV">
+                                                    {ordenVenta.cantidadProducirOV}
+                                                </td>
+                                                <td data-title="Eliminar">
+                                                    <div
+                                                        className="eliminarProductoListado"
+                                                        onClick={() => {
+                                                            removeItemOV(ordenVenta)
+                                                        }}
+                                                    >
+                                                        ❌
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+
+                                <Row className="mb-3">
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Total a producir
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Total a producir"
+                                            name="totalProducir"
+                                            value={totalProducir}
+                                            disabled
+                                        />
+                                    </Form.Group>
+                                </Row>
+
+                            </Container>
+                        </div>
+
+                        <br />
 
 
-                            <div className="datosPlaneacion">
-                                <Container fluid>
-                                    <br />
-                                    <div className="tituloSeccion">
-                                        <h4>
-                                            Planeación
-                                        </h4>
-                                    </div>
+                        <div className="datosPlaneacion">
+                            <Container fluid>
+                                <br />
+                                <div className="tituloSeccion">
+                                    <h4>
+                                        Planeación
+                                    </h4>
+                                </div>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            No. Molde
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Numero de molde"
+                                            defaultValue={formDataPlaneacion.noMolde}
+                                            name="noMolde"
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            No. Cavidades
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            defaultValue={formDataPlaneacion.cavMolde}
+                                            placeholder="Numero de cavidades"
+                                            name="numeroCavidades"
+                                        />
+                                    </Form.Group>
+                                </Row>
+
+                                <Row className="mb-3">
+                                    <Col></Col>
+                                    <Col>
+                                        <Form.Label align="center">
+                                            No. Maquina
+                                        </Form.Label>
+                                    </Col>
+                                    <Col>
+                                        <Form.Label align="center">
+                                            Maquina
+                                        </Form.Label>
+                                    </Col>
+                                    <Col>
+                                        <Form.Label align="center">
+                                            Ciclo (seg)
+                                        </Form.Label>
+                                    </Col>
+                                    <Col>
+                                        <Form.Label align="center">
+                                            Pieza/Turno
+                                        </Form.Label>
+                                    </Col>
+                                    <Col>
+                                        <Form.Label align="center">
+                                            Piezas por bolsa o caja
+                                        </Form.Label>
+                                    </Col>
+                                </Row>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col sm={2}>
                                             <Form.Label align="center">
-                                                No. Molde
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Numero de molde"
-                                                defaultValue={formDataPlaneacion.noMolde}
-                                                name="noMolde"
-                                            />
-                                        </Form.Group>
-
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                No. Cavidades
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                defaultValue={formDataPlaneacion.cavMolde}
-                                                placeholder="Numero de cavidades"
-                                                name="numeroCavidades"
-                                            />
-                                        </Form.Group>
-                                    </Row>
-
-                                    <Row className="mb-3">
-                                        <Col></Col>
-                                        <Col>
-                                            <Form.Label align="center">
-                                                No. Maquina
+                                                Opcion 1
                                             </Form.Label>
                                         </Col>
                                         <Col>
+                                            <Form.Control
+                                                type="text"
+                                                name="numeroMaquina1"
+                                                defaultValue={numeroMaquina1}
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                name="maquina1"
+                                                defaultValue={nombreMaquina1}
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                name="ciclo1"
+                                                defaultValue={formDataPlaneacion.tiempoCiclo1}
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                name="pieza1"
+                                                value={piezasTurno1.toFixed(2)}
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                name="bolsa1"
+                                                defaultValue={formDataPlaneacion.noPiezasxEmpaque}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col sm={2}>
                                             <Form.Label align="center">
-                                                Maquina
+                                                Opcion 2
                                             </Form.Label>
                                         </Col>
                                         <Col>
+                                            <Form.Control
+                                                type="text"
+                                                name="numeroMaquina2"
+                                                defaultValue={numeroMaquina2}
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                name="maquina2"
+                                                defaultValue={nombreMaquina2}
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                name="ciclo2"
+                                                defaultValue={formDataPlaneacion.tiempoCiclo2}
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                name="pieza1"
+                                                value={piezasTurno2.toFixed(2)}
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                type="text"
+                                                name="bolsa2"
+                                                defaultValue={formDataPlaneacion.noPiezasxEmpaque}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                        <Col sm={2}>
                                             <Form.Label align="center">
-                                                Ciclo (seg)
+                                                Opcion 3
                                             </Form.Label>
                                         </Col>
                                         <Col>
-                                            <Form.Label align="center">
-                                                Pieza/Turno
-                                            </Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                name="numeroMaquina3"
+                                                defaultValue={numeroMaquina3}
+                                            />
                                         </Col>
                                         <Col>
-                                            <Form.Label align="center">
-                                                Piezas por bolsa o caja
-                                            </Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                name="maquina3"
+                                                defaultValue={nombreMaquina3}
+                                            />
                                         </Col>
-                                    </Row>
-
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col sm={2}>
-                                                <Form.Label align="center">
-                                                    Opcion 1
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="numeroMaquina1"
-                                                    defaultValue={numeroMaquina1}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="maquina1"
-                                                    defaultValue={nombreMaquina1}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="ciclo1"
-                                                    defaultValue={formDataPlaneacion.tiempoCiclo1}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="pieza1"
-                                                    value={piezasTurno1.toFixed(2)}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="bolsa1"
-                                                    defaultValue={formDataPlaneacion.noPiezasxEmpaque}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col sm={2}>
-                                                <Form.Label align="center">
-                                                    Opcion 2
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="numeroMaquina2"
-                                                    defaultValue={numeroMaquina2}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="maquina2"
-                                                    defaultValue={nombreMaquina2}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="ciclo2"
-                                                    defaultValue={formDataPlaneacion.tiempoCiclo2}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="pieza1"
-                                                    value={piezasTurno2.toFixed(2)}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="bolsa2"
-                                                    defaultValue={formDataPlaneacion.noPiezasxEmpaque}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col sm={2}>
-                                                <Form.Label align="center">
-                                                    Opcion 3
-                                                </Form.Label>
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="numeroMaquina3"
-                                                    defaultValue={numeroMaquina3}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="maquina3"
-                                                    defaultValue={nombreMaquina3}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="ciclo3"
-                                                    defaultValue={formDataPlaneacion.tiempoCiclo3}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="pieza1"
-                                                    value={piezasTurno3.toFixed(2)}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="bolsa3"
-                                                    defaultValue={formDataPlaneacion.noPiezasxEmpaque}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
-
-                                </Container>
-                            </div>
-                            <br />
-
-                            <div className="datosBOM">
-                                <Container fluid>
-                                    <br />
-                                    <div className="tituloSeccion">
-                                        <h4>
-                                            BOM
-                                        </h4>
-                                    </div>
-                                    <Row className="mb-3">
-                                        <Form.Group as={Col} controlId="formHorizontalNoInterno">
-                                            <Form.Label align="center">
-                                                Material
-                                            </Form.Label>
+                                        <Col>
                                             <Form.Control
                                                 type="text"
-                                                defaultValue={formDataPlaneacion.descripcionMP}
-                                                placeholder="Material"
-                                                name="Material"
+                                                name="ciclo3"
+                                                defaultValue={formDataPlaneacion.tiempoCiclo3}
                                             />
-                                        </Form.Group>
-
-                                        <Form.Group as={Col} controlId="formHorizontalNoParte">
-                                            <Form.Label align="center">
-                                                Molido
-                                            </Form.Label>
+                                        </Col>
+                                        <Col>
                                             <Form.Control
                                                 type="text"
-                                                placeholder="Molido"
-                                                defaultValue={formDataPlaneacion.porcentajeMolido}
-                                                name="Molido"
+                                                name="pieza1"
+                                                value={piezasTurno3.toFixed(2)}
                                             />
-                                        </Form.Group>
-
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                Peso de la pieza (Kg)
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                defaultValue={formDataPlaneacion.pesoPiezas}
-                                                placeholder="Peso de la pieza"
-                                                name="pesoPieza"
-                                            />
-                                        </Form.Group>
-
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                Peso colada (Kg)
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                defaultValue={formDataPlaneacion.pesoColada}
-                                                placeholder="Peso colada"
-                                                name="pesoColada"
-                                            />
-                                        </Form.Group>
-                                    </Row>
-
-                                    <Row className="mb-3">
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                Empaque
-                                            </Form.Label>
+                                        </Col>
+                                        <Col>
                                             <Form.Control
                                                 type="text"
-                                                defaultValue={formDataPlaneacion.descripcionBolsa}
-                                                placeholder="Empaque"
-                                                name="empaque"
+                                                name="bolsa3"
+                                                defaultValue={formDataPlaneacion.noPiezasxEmpaque}
                                             />
-                                        </Form.Group>
+                                        </Col>
+                                    </Form.Group>
+                                </Row>
 
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                Pigmento/MB
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Pigmento/MB"
-                                                defaultValue={formDataPlaneacion.descripcionPigmento}
-                                                name="Pigmento"
-                                            />
-                                        </Form.Group>
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                Aplicación (gr/kg)
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                defaultValue={formDataPlaneacion.aplicacionGxKG}
-                                                placeholder="Apliación (gr/kg)"
-                                                name="aplicacion"
-                                            />
-                                        </Form.Group>
+                            </Container>
+                        </div>
+                        <br />
 
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                Bolsas o cajas a utilizar
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                value={Math.ceil(bolsasCajasUtilizar)}
-                                                placeholder="Bolsas o cajas a utilizar"
-                                                name="bolsasCajasUtilizar"
-                                            />
-                                        </Form.Group>
-                                    </Row>
+                        <div className="datosBOM">
+                            <Container fluid>
+                                <br />
+                                <div className="tituloSeccion">
+                                    <h4>
+                                        BOM
+                                    </h4>
+                                </div>
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label align="center">
+                                            Material
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={formDataPlaneacion.descripcionMP}
+                                            placeholder="Material"
+                                            name="Material"
+                                        />
+                                    </Form.Group>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                Material x turno
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Material x turno"
-                                                name="materialTurno"
-                                                value={materialTurno.toFixed(3)}
-                                            />
-                                        </Form.Group>
+                                    <Form.Group as={Col} controlId="formHorizontalNoParte">
+                                        <Form.Label align="center">
+                                            Molido
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Molido"
+                                            defaultValue={formDataPlaneacion.porcentajeMolido}
+                                            name="Molido"
+                                        />
+                                    </Form.Group>
 
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                Merma (%)
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                placeholder="merma"
-                                                name="merma"
-                                                defaultValue={formDataPlaneacion.porcentajeScrap}
-                                            />
-                                        </Form.Group>
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Peso de la pieza (Kg)
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            defaultValue={formDataPlaneacion.pesoPiezas}
+                                            placeholder="Peso de la pieza"
+                                            name="pesoPieza"
+                                        />
+                                    </Form.Group>
 
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                Kg de material
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                placeholder="Kg de material"
-                                                name="kgMaterial"
-                                                value={kgMaterial.toFixed(2)}
-                                            />
-                                        </Form.Group>
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Peso colada (Kg)
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            defaultValue={formDataPlaneacion.pesoColada}
+                                            placeholder="Peso colada"
+                                            name="pesoColada"
+                                        />
+                                    </Form.Group>
+                                </Row>
 
-                                        <Form.Group as={Col} controlId="formHorizontalProducto">
-                                            <Form.Label align="center">
-                                                Kg de PIG o MB
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                placeholder="Kg de PIG o MB"
-                                                name="kgPIGMB"
-                                                value={pigMB.toFixed(2)}
-                                            />
-                                        </Form.Group>
-                                    </Row>
-                                </Container>
-                            </div>
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Empaque
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={formDataPlaneacion.descripcionBolsa}
+                                            placeholder="Empaque"
+                                            name="empaque"
+                                        />
+                                    </Form.Group>
 
-                            <br />
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Pigmento/MB
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Pigmento/MB"
+                                            defaultValue={formDataPlaneacion.descripcionPigmento}
+                                            name="Pigmento"
+                                        />
+                                    </Form.Group>
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Aplicación (gr/kg)
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            defaultValue={formDataPlaneacion.aplicacionGxKG}
+                                            placeholder="Apliación (gr/kg)"
+                                            name="aplicacion"
+                                        />
+                                    </Form.Group>
 
-                            <Form.Group as={Row} className="botones">
-                                <Col>
-                                    <Button
-                                        type="submit"
-                                        variant="success"
-                                        className="registrar"
-                                    >
-                                        {!loading ? "Registrar" : <Spinner animation="border" />}
-                                    </Button>
-                                </Col>
-                                <Col>
-                                    <Button
-                                        variant="danger"
-                                        className="cancelar"
-                                        onClick={() => {
-                                            rutaRegreso()
-                                        }}
-                                    >
-                                        Cancelar
-                                    </Button>
-                                </Col>
-                            </Form.Group>
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Bolsas o cajas a utilizar
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            value={Math.ceil(bolsasCajasUtilizar)}
+                                            placeholder="Bolsas o cajas a utilizar"
+                                            name="bolsasCajasUtilizar"
+                                        />
+                                    </Form.Group>
+                                </Row>
 
-                            <br />
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Material x turno
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Material x turno"
+                                            name="materialTurno"
+                                            value={materialTurno.toFixed(3)}
+                                        />
+                                    </Form.Group>
 
-                        </Form>
-                    </div>
-                </Container>
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Merma (%)
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="merma"
+                                            name="merma"
+                                            defaultValue={formDataPlaneacion.porcentajeScrap}
+                                        />
+                                    </Form.Group>
 
-                <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
-                    {contentModal}
-                </BasicModal>
-            </LayoutPrincipal>
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Kg de material
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Kg de material"
+                                            name="kgMaterial"
+                                            value={kgMaterial.toFixed(2)}
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Kg de PIG o MB
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Kg de PIG o MB"
+                                            name="kgPIGMB"
+                                            value={pigMB.toFixed(2)}
+                                        />
+                                    </Form.Group>
+                                </Row>
+                            </Container>
+                        </div>
+
+                        <br />
+
+                        <Form.Group as={Row} className="botones">
+                            <Col>
+                                <Button
+                                    type="submit"
+                                    variant="success"
+                                    className="registrar"
+                                >
+                                    {!loading ? "Modificar" : <Spinner animation="border" />}
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Button
+                                    variant="danger"
+                                    className="cancelar"
+                                    onClick={() => {
+                                        rutaRegreso()
+                                    }}
+                                >
+                                    Cancelar
+                                </Button>
+                            </Col>
+                        </Form.Group>
+
+                        <br />
+
+                    </Form>
+                </div>
+            </Container>
+
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }

@@ -1,6 +1,5 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useHistory, useParams, withRouter } from "react-router-dom";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import { Alert, Col, Row, Spinner, Button } from "react-bootstrap";
 import ListMovimientosAG from "../../components/AlmacenGeneral/ListMovimientosAG";
 import { obtenerDatosAlmacenGeneral, obtenerDatosxFolioAlmacenGeneral } from "../../api/almacenGeneral";
@@ -54,49 +53,47 @@ function MovimientosAlmacenGeneral(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8} className="tituloPrincipal">
-                            <h1>
-                                Movimientos del artículo
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8} className="tituloPrincipal">
+                        <h1>
+                            Movimientos del artículo
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {
-                    listMovimientos ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListMovimientosAG
-                                        listMovimientos={listMovimientos}
-                                        location={location}
-                                        history={history}
-                                        setRefreshCheckLogin={setRefreshCheckLogin}
-                                    />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
-            </LayoutPrincipal>
+            {
+                listMovimientos ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListMovimientosAG
+                                    listMovimientos={listMovimientos}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
         </>
     );
 }

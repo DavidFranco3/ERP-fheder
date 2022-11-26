@@ -3,7 +3,6 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistrarMes from "../../components/Mes/RegistraMes";
 import ListMeses from "../../components/Mes/ListMeses";
@@ -98,74 +97,71 @@ function Mes(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Programa de producción
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    registraMes(
-                                        <RegistrarMes
-                                            setShowModal={setShowModal}
-                                            showModal={showModal}
-                                            location={location}
-                                            history={history}
-                                        />
-                                    )
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nuevo mes
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
-
-                {
-                    listMeses ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListMeses
-                                        listMeses={listMeses}
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Programa de producción
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                registraMes(
+                                    <RegistrarMes
+                                        setShowModal={setShowModal}
+                                        showModal={showModal}
                                         location={location}
                                         history={history}
-                                        setRefreshCheckLogin={setRefreshCheckLogin}
-                                        rowsPerPage={rowsPerPage}
-                                        setRowsPerPage={setRowsPerPage}
-                                        page={page}
-                                        setPage={setPage}
-                                        noTotalMeses={noTotalMes}
                                     />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
+                                )
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo mes
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
-                    {contentModal}
-                </BasicModal>
+            {
+                listMeses ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListMeses
+                                    listMeses={listMeses}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                    rowsPerPage={rowsPerPage}
+                                    setRowsPerPage={setRowsPerPage}
+                                    page={page}
+                                    setPage={setPage}
+                                    noTotalMeses={noTotalMes}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
 
-            </LayoutPrincipal>
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }

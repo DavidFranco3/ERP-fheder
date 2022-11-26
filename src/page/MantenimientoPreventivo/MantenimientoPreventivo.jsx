@@ -3,7 +3,6 @@ import { Alert, Button, Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistraMantenimientoPreventivo from "../../components/MantenimientoPreventivo/RegistraMantenimientoPreventivo";
 
@@ -37,50 +36,48 @@ function MantenimientoPreventivo(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Programa de mantenimiento preventivo
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    nuevoRegistro(
-                                        <RegistraMantenimientoPreventivo
-                                            setShowModal={setShowModal}
-                                        />
-                                    )
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nuevo registro
-                            </Button>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Programa de mantenimiento preventivo
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                nuevoRegistro(
+                                    <RegistraMantenimientoPreventivo
+                                        setShowModal={setShowModal}
+                                    />
+                                )
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo registro
+                        </Button>
 
-                            <Button
-                                className="btnRegistroVentas"
+                        <Button
+                            className="btnRegistroVentas"
 
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Vista completa
-                            </Button>
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Vista completa
+                        </Button>
 
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
-                <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
-                    {contentModal}
-                </BasicModal>
-            </LayoutPrincipal>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }

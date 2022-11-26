@@ -8,7 +8,6 @@ import { withRouter, useHistory } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroExistenciasAlmacenMP from "../../components/AlmacenMP/RegistroExistenciasAlmacenMP";
 import RegistroEntradaSalida from "../../components/AlmacenMP/RegistroEntradaSalida";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -96,7 +95,6 @@ function AlmacenMp(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8} className="tituloPrincipal">
@@ -178,8 +176,6 @@ function AlmacenMp(props) {
                 <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                     {contentModal}
                 </BasicModal>
-
-            </LayoutPrincipal>
         </>
     );
 }

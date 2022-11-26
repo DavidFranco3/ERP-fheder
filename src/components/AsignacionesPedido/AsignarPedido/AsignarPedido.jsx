@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react';
-import { Button, Col, Form, Row, Container, Spinner} from "react-bootstrap";
+import { Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { listarAlmacenPT } from "../../../api/almacenPT";
-import {map} from "lodash";
-import {actualizaPedidoVenta} from "../../../api/asignacionPedido";
-import {toast} from "react-toastify";
+import { map } from "lodash";
+import { actualizaPedidoVenta } from "../../../api/asignacionPedido";
+import { toast } from "react-toastify";
 import queryString from "query-string";
 
 function AsignarPedido(props) {
-const { setShowModal, location, history, data } = props;
+    const { setShowModal, location, history, data } = props;
 
- // Para guardar los datos del formulario
+    // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
     // Para controlar la animacion
-    const [loading, setLoading] = useState(false); 
-    
-    const {id, cliente, producto, cantidadPedida} = data;
+    const [loading, setLoading] = useState(false);
+
+    const { id, cliente, producto, cantidadPedida } = data;
 
     // Para almacenar el listado de materias primas
     const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
@@ -24,7 +24,7 @@ const { setShowModal, location, history, data } = props;
             listarAlmacenPT().then(response => {
                 const { data } = response;
                 // console.log(data)
-                if(!listMateriasPrimas &&data) {
+                if (!listMateriasPrimas && data) {
                     setListMateriasPrimas(formatModelAlmacenPT(data));
                 } else {
                     const datosProductos = formatModelAlmacenPT(data);
@@ -37,88 +37,88 @@ const { setShowModal, location, history, data } = props;
             //console.log(e)
         }
     }, []);
-    
+
     const onSubmit = (e) => {
         e.preventDefault()
 
-            if(!formData.cantidadAsignada || !formData.plantaAsignada) {
-                toast.warning("Completa el formulario")
-            } else {
+        if (!formData.cantidadAsignada || !formData.plantaAsignada) {
+            toast.warning("Completa el formulario")
+        } else {
 
-                setLoading(true)
-                // Realiza registro de la aportación
+            setLoading(true)
+            // Realiza registro de la aportación
 
-                    const dataTemp = {
-                        cantidadAsignada: formData.cantidadAsignada,
-                        plantaAsignada: formData.plantaAsignada,
-                    }
-
-                    actualizaPedidoVenta(id, dataTemp).then(response => {
-                        const { data } = response;
-                        
-                        toast.success('Pedido asignado')
-                        setTimeout(() => {
-                            setLoading(false)
-                            history.push({
-                                search: queryString.stringify(""),
-                            });
-                            setShowModal(false)
-                        }, 2000)
-
-                    }).catch(e => {
-                        console.log(e)
-                    })
+            const dataTemp = {
+                cantidadAsignada: formData.cantidadAsignada,
+                plantaAsignada: formData.plantaAsignada,
             }
+
+            actualizaPedidoVenta(id, dataTemp).then(response => {
+                const { data } = response;
+
+                toast.success('Pedido asignado')
+                setTimeout(() => {
+                    setLoading(false)
+                    history.push({
+                        search: queryString.stringify(""),
+                    });
+                    setShowModal(false)
+                }, 2000)
+
+            }).catch(e => {
+                console.log(e)
+            })
+        }
     }
-    
+
     // Cancelar y cerrar el formulario
     const cancelarRegistro = () => {
         setShowModal(false)
     }
-    
+
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
-    
+
     return (
         <>
-                
-                <Container fluid>
-                    <div className="formularioDatos">
-                        <Form onChange={onChange} onSubmit={onSubmit}>
-                            <Row ClassName="mb-3">
-                                 <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                 <Col sm="4">
-                                 <Form.Label>Producto</Form.Label>
-                                 </Col>
-                                 <Col>
-                                    <Form.Control as="select"
-                                                                             value={producto}
-                                                                             name="producto"
-                                                                             disabled
-                                                               >
-                                                                   <option>Elige</option>
-                                                                   {map(listMateriasPrimas, (producto, index) => (
-                                                                       <option
-                                                                           key={index}
-                                                                           value={producto.idProducto} selected={producto?.producto === producto}
-                                                                       >
-                                                                           {producto.nombre}
-                                                                       </option>
-                                                                   ))}
-                                                               </Form.Control>
+
+            <Container fluid>
+                <div className="formularioDatos">
+                    <Form onChange={onChange} onSubmit={onSubmit}>
+                        <Row ClassName="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                <Col sm="4">
+                                    <Form.Label>Producto</Form.Label>
                                 </Col>
-                                </Form.Group>
-                            </Row>
-                            
-                            <br/>
-                            
-                            <Row ClassName="mb-3">
-                                 <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                 <Col sm="4">
-                                 <Form.Label>Cantidad Pedida</Form.Label>
-                                 </Col>
-                                 <Col>
+                                <Col>
+                                    <Form.Control as="select"
+                                        value={producto}
+                                        name="producto"
+                                        disabled
+                                    >
+                                        <option>Elige</option>
+                                        {map(listMateriasPrimas, (producto, index) => (
+                                            <option
+                                                key={index}
+                                                value={producto.idProducto} selected={producto?.producto === producto}
+                                            >
+                                                {producto.nombre}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                </Col>
+                            </Form.Group>
+                        </Row>
+
+                        <br />
+
+                        <Row ClassName="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                <Col sm="4">
+                                    <Form.Label>Cantidad Pedida</Form.Label>
+                                </Col>
+                                <Col>
                                     <Form.Control
                                         type="text"
                                         placeholder="Orden de venta"
@@ -127,17 +127,17 @@ const { setShowModal, location, history, data } = props;
                                         disabled
                                     />
                                 </Col>
-                                </Form.Group>
-                            </Row>
-                            
-                            <br/>
-                            
-                            <Row ClassName="mb-3">
-                                 <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                 <Col sm="4">
-                                 <Form.Label>Cantidad a asignar</Form.Label>
-                                 </Col>
-                                 <Col>
+                            </Form.Group>
+                        </Row>
+
+                        <br />
+
+                        <Row ClassName="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                <Col sm="4">
+                                    <Form.Label>Cantidad a asignar</Form.Label>
+                                </Col>
+                                <Col>
                                     <Form.Control
                                         type="text"
                                         placeholder="Cantidad a asignar"
@@ -145,17 +145,17 @@ const { setShowModal, location, history, data } = props;
                                         defaultValue={formData.cantidadAsignada}
                                     />
                                 </Col>
-                                </Form.Group>
-                            </Row>
-                            
-                            <br/>
-                            
-                            <Row ClassName="mb-3">
-                                 <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                 <Col sm="4">
-                                 <Form.Label>Planta Asignada</Form.Label>
-                                 </Col>
-                                 <Col>
+                            </Form.Group>
+                        </Row>
+
+                        <br />
+
+                        <Row ClassName="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                <Col sm="4">
+                                    <Form.Label>Planta Asignada</Form.Label>
+                                </Col>
+                                <Col>
                                     <Form.Control
                                         type="text"
                                         placeholder="Planta asignada"
@@ -163,34 +163,34 @@ const { setShowModal, location, history, data } = props;
                                         defaultValue={formData.plantaAsignada}
                                     />
                                 </Col>
-                                </Form.Group>
-                            </Row>
-                            
+                            </Form.Group>
+                        </Row>
+
                         <Form.Group as={Row} className="botones">
-                        <Col>
-                            <Button
-                                type="submit"
-                                variant="success"
-                                className="registrar"
-                            >
-                                {!loading ? "Registrar" : <Spinner animation="border" />}
-                            </Button>
-                        </Col>
-                        <Col>
-                            <Button
-                                variant="danger"
-                                className="cancelar"
-                                onClick={() => {
-                                    cancelarRegistro()
-                                }}
-                            >
-                                Cancelar
-                            </Button>
-                        </Col>
-                    </Form.Group>
-                        </Form>
-                    </div>
-                </Container> 
+                            <Col>
+                                <Button
+                                    type="submit"
+                                    variant="success"
+                                    className="registrar"
+                                >
+                                    {!loading ? "Asignar" : <Spinner animation="border" />}
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Button
+                                    variant="danger"
+                                    className="cancelar"
+                                    onClick={() => {
+                                        cancelarRegistro()
+                                    }}
+                                >
+                                    Cancelar
+                                </Button>
+                            </Col>
+                        </Form.Group>
+                    </Form>
+                </div>
+            </Container>
         </>
     );
 }

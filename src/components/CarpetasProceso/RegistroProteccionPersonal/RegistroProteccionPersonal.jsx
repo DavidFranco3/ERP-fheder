@@ -1,5 +1,4 @@
 import {useEffect, useMemo, useState} from 'react';
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import {Alert, Button, Col, Row, Form, Container, Badge} from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import { useHistory } from "react-router-dom";

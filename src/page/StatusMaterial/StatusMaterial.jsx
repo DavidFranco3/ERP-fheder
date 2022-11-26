@@ -3,7 +3,6 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import { listarStatusMaterialPaginacion, totalStatusMaterial } from "../../api/statusMaterial";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -88,62 +87,60 @@ function StatusMaterial(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Identificación de status del material
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegistro()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nueva etiqueta
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Identificación de status del material
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegistro()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva etiqueta
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {
-                    listStatus ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListCalidad
-                                        listStatus={listStatus}
-                                        location={location}
-                                        history={history}
-                                        setRefreshCheckLogin={setRefreshCheckLogin}
-                                        rowsPerPage={rowsPerPage}
-                                        setRowsPerPage={setRowsPerPage}
-                                        page={page}
-                                        setPage={setPage}
-                                        noTotalStatus={noTotalStatus}
-                                    />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
-            </LayoutPrincipal>
+            {
+                listStatus ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListCalidad
+                                    listStatus={listStatus}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                    rowsPerPage={rowsPerPage}
+                                    setRowsPerPage={setRowsPerPage}
+                                    page={page}
+                                    setPage={setPage}
+                                    noTotalStatus={noTotalStatus}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
         </>
     );
 }

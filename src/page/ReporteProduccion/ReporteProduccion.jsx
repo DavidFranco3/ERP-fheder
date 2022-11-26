@@ -1,5 +1,4 @@
 import { useEffect, useState, Suspense } from 'react';
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
@@ -90,63 +89,61 @@ function ReporteProduccion(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Reporte de producción
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegistro()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nuevo reporte
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Reporte de producción
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegistro()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo reporte
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
 
-                {
-                    listProduccion ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListReporteProduccion
-                                        listProduccion={listProduccion}
-                                        location={location}
-                                        history={history}
-                                        setRefreshCheckLogin={setRefreshCheckLogin}
-                                        rowsPerPage={rowsPerPage}
-                                        setRowsPerPage={setRowsPerPage}
-                                        page={page}
-                                        setPage={setPage}
-                                        noTotalProduccion={noTotalProduccion}
-                                    />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
-            </LayoutPrincipal>
+            {
+                listProduccion ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListReporteProduccion
+                                    listProduccion={listProduccion}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                    rowsPerPage={rowsPerPage}
+                                    setRowsPerPage={setRowsPerPage}
+                                    page={page}
+                                    setPage={setPage}
+                                    noTotalProduccion={noTotalProduccion}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
         </>
     );
 }

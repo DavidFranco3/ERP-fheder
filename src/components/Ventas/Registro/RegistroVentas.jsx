@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { useHistory } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
@@ -331,541 +330,539 @@ function RegistroVentas(props) {
 
     return (
         <>
-            <LayoutPrincipal className="RegistroVentas" paginaSeleccionada="Ventas" setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Orden de venta
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    regresaListadoVentas()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Orden de venta
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                regresaListadoVentas()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                <Container fluid>
-                    <div className="formularioRegistroOrdenVenta">
-                        <Form onChange={onChange} onSubmit={onSubmit}>
+            <Container fluid>
+                <div className="formularioRegistroOrdenVenta">
+                    <Form onChange={onChange} onSubmit={onSubmit}>
 
-                            {/* Datos de encabezado de la orden de venta*/}
-                            <div className="encabezadoOrdenVenta">
-                                {/* Folio, fecha elaboracion */}
-
-                                <Row>
-                                    <Form.Group as={Row} controlId="formGridCliente">
-                                        <Col sm="2">
-                                            <Form.Label>
-                                                Nombre del cliente
-                                            </Form.Label>
-                                        </Col>
-                                        <Col sm="4">
-                                            <Form.Control as="select"
-                                                onChange={(e) => {
-                                                    handleCliente(e.target.value)
-                                                }}
-                                                defaultValue={formData.cliente}
-                                                name="cliente"
-                                            >
-                                                <option>Elige una opción</option>
-                                                {map(listClientes, (cliente, index) => (
-                                                    <option key={index} value={cliente?.id + "/" + cliente?.calle + "/" + cliente?.numeroExterior + "/" + cliente?.colonia + "/" + cliente?.municipio + "/" + cliente?.estado + "/" + cliente?.pais}>{cliente?.nombre}</option>
-                                                ))}
-                                            </Form.Control>
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <br />
-
-                                <Row>
-                                    <Form.Group as={Row} controlId="formGridCliente">
-                                        <Col sm="2">
-                                            <Form.Label>
-                                                Numero de pedido
-                                            </Form.Label>
-                                        </Col>
-                                        <Col sm="4">
-                                            <Form.Control
-                                                type="number"
-                                                placeholder="Numero de pedido"
-                                                name="numeroPedido"
-                                                defaultValue={formData.numeroPedido}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <br />
-
-                                <Row>
-                                    <Form.Group as={Row} controlId="formGridCliente">
-                                        <Col sm="2">
-                                            <Form.Label>
-                                                Fecha de pedido
-                                            </Form.Label>
-                                        </Col>
-                                        <Col sm="4">
-                                            <Form.Control
-                                                type="date"
-                                                placeholder="Fecha de pedido"
-                                                name="fechaPedido"
-                                                defaultValue={formData.fechaPedido}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <br />
-
-                                <Row>
-                                    <Form.Group as={Row} controlId="formGridCliente">
-                                        <Col sm="2">
-                                            <Form.Label>
-                                                Fecha de entrega
-                                            </Form.Label>
-                                        </Col>
-                                        <Col sm="4">
-                                            <Form.Control
-                                                type="date"
-                                                placeholder="Fecha de entrega"
-                                                name="fechaEntrega"
-                                                defaultValue={formData.fechaEntrega}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <br />
-
-                                <Row>
-                                    <Form.Group as={Row} controlId="formGridCliente">
-                                        <Col sm="2">
-                                            <Form.Label>
-                                                Inconterms
-                                            </Form.Label>
-                                        </Col>
-                                        <Col sm="4">
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Incoterms"
-                                                name="incoterms"
-                                                defaultValue={formData.incoterms}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <br />
-
-                                <Row>
-                                    <Form.Group as={Row} controlId="formGridCliente">
-                                        <Col sm="2">
-                                            <Form.Label>
-                                                Condiciones de pago
-                                            </Form.Label>
-                                        </Col>
-                                        <Col sm="4">
-                                            <Form.Control
-                                                as="textarea"
-                                                style={{ height: '100px' }}
-                                                placeholder="Condiciones de pago"
-                                                name="condicionesPago"
-                                                defaultValue={formData.condicionesPago}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <br />
-
-                                <Row>
-                                    <Form.Group as={Row} controlId="formGridCliente">
-                                        <Col sm="2">
-                                            <Form.Label>
-                                                Moneda
-                                            </Form.Label>
-                                        </Col>
-                                        <Col sm="4">
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Numero de pedido"
-                                                name="moneda"
-                                                value="M.N."
-                                                disabled
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <br />
-
-                                <Row>
-                                    <Form.Group as={Row} controlId="formGridCliente">
-                                        <Col sm="2">
-                                            <Form.Label>
-                                                Lugar de entrega
-                                            </Form.Label>
-                                        </Col>
-                                        <Col sm="4">
-                                            <Form.Control
-                                                as="textarea"
-                                                type="text"
-                                                placeholder="Lugar de entrega"
-                                                style={{ height: '100px' }}
-                                                name="lugarEntrega"
-                                                defaultValue={formData.cliente != "" ? clienteSeleccionado?.calle + " " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado : ""}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <br />
-
-                                <Row>
-                                    <Form.Group as={Row} controlId="formGridCliente">
-                                        <Col sm="2">
-                                            <Form.Label>
-                                                Especificaciones del empaque
-                                            </Form.Label>
-                                        </Col>
-                                        <Col sm="4">
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Especificaciones del empaque"
-                                                name="especificaciones"
-                                                defaultValue={formData.especificaciones}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <br />
-
-                                <Row>
-                                    <Form.Group as={Row} className="botonesPDF">
-                                        <Col sm="3">
-                                            <div
-                                                className="custom-input-file col-md-6 col-sm-6 col-xs-6">
-                                                <Form.Control
-                                                    type="file"
-                                                    accept='.pdf, image/*'
-                                                    name="cotizacion"
-                                                    defaultValue={formData.cotizacion}
-                                                    className="input-file"
-                                                />
-                                                Adjuntar orden de venta
-                                            </div>
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-                            </div>
-                            <br />
-                            {/* Seleccion de productos */}
-
-                            <hr />
-                            <Badge bg="secondary" className="tituloFormularioDetalles">
-                                <h4>A continuación, especifica los detalles del artículo y agregalo</h4>
-                            </Badge>
-                            <br />
-                            <hr />
+                        {/* Datos de encabezado de la orden de venta*/}
+                        <div className="encabezadoOrdenVenta">
+                            {/* Folio, fecha elaboracion */}
 
                             <Row>
-
-                                <Form.Group as={Col} controlId="formGridPorcentaje scrap">
-                                    <Form.Label>
-                                        ITEM
-                                    </Form.Label>
-                                    <Form.Control type="number"
-                                        id="index"
-                                        value={renglon}
-                                        name="index"
-                                        disabled
-                                    />
-                                </Form.Group>
-
-                                {
-                                    listProductosActivos &&
-                                    (
-                                        <>
-                                            <Form.Group as={Col} controlId="formGridPorcentaje scrap">
-                                                <Form.Label>
-                                                    Descripción
-                                                </Form.Label>
-                                                {
-                                                    listProductosActivos ?
-                                                        (
-                                                            <>
-                                                                <Form.Control as="select"
-                                                                    id="descripcion"
-                                                                    onChange={(e) => {
-                                                                        handleProducto(e.target.value)
-                                                                    }}
-                                                                    defaultValue={cargaProductos.item}
-                                                                    name="descripcion"
-                                                                >
-                                                                    <option>Elige</option>
-                                                                    {map(listProductosActivos, (producto, index) => (
-                                                                        <option
-                                                                            key={index}
-                                                                            value={producto.id + "/" + producto.noParte + "/" + producto.descripcion + "/" + producto.precioVenta}
-                                                                        >
-                                                                            {producto.descripcion}
-                                                                        </option>
-                                                                    ))}
-                                                                </Form.Control>
-                                                            </>
-                                                        )
-                                                        :
-                                                        (
-                                                            <>
-                                                                <h4>No hay productos registrados</h4>
-                                                            </>
-                                                        )
-                                                }
-
-
-                                            </Form.Group>
-                                        </>
-                                    )
-                                }
-
-                                <Form.Group as={Col} controlId="formGridCliente">
-                                    <Form.Label>
-                                        Numero de parte
-                                    </Form.Label>
-                                    <Form.Control
-                                        id="material"
-                                        type="text"
-                                        placeholder="Descripcion"
-                                        name="MateriaPrima"
-                                        defaultValue={cargaProductos.ID}
-                                        disabled
-                                    />
-                                </Form.Group>
-
-                                <Form.Group as={Col} controlId="formGridCliente">
-                                    <Form.Label>
-                                        Cantidad
-                                    </Form.Label>
-                                    <Form.Control
-                                        id="cantidad"
-                                        type="number"
-                                        placeholder="Cantidad"
-                                        name="Cantidad"
-                                        onChange={(e) => { calcularTotalUnitario(e.target.value) }}
-                                        defaultValue={cargaProductos.cantidad}
-                                    />
-                                </Form.Group>
-
-                                <Form.Group as={Col}>
-                                    <Form.Label>
-                                        UM
-                                    </Form.Label>
-                                    <Form.Control
-                                        id="um"
-                                        type="text"
-                                        name="um"
-                                        value="Piezas"
-                                        disabled
-                                    />
-                                </Form.Group>
-
-                                <Form.Group as={Col} controlId="formGridCliente">
-                                    <Form.Label>
-                                        Precio unitario
-                                    </Form.Label>
-                                    <Form.Control
-                                        id="precioUnitario"
-                                        type="number"
-                                        placeholder="Precio unitario"
-                                        name="precioUnitario"
-                                        onChange={(e) => { calcularTotalUnitario(e.target.value) }}
-                                        defaultValue={cargaProductos.precioUnitario}
-                                        disabled
-                                    />
-                                </Form.Group>
-
-                                <Form.Group as={Col} controlId="formGridCliente">
-                                    <Form.Label>
-                                        Total
-                                    </Form.Label>
-                                    <Form.Control
-                                        id="total"
-                                        type="text"
-                                        placeholder="Total"
-                                        name="total"
-                                        onChange={(e) => { calcularTotalUnitario(e.target.value) }}
-                                        value={totalUnitario}
-                                        disabled
-                                    />
-                                </Form.Group>
-
-                                <Col sm="1">
-                                    <Form.Group as={Row} className="formGridCliente">
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
                                         <Form.Label>
-                                            &nbsp;
+                                            Nombre del cliente
                                         </Form.Label>
-
-                                        <Col>
-                                            <Button
-                                                variant="success"
-                                                className="editar"
-                                                onClick={() => {
-                                                    addItems()
-                                                }}
-                                            >
-                                                <FontAwesomeIcon icon={faCirclePlus} className="text-lg" />
-                                            </Button>
-                                        </Col>
-                                        <Col>
-                                            <Button
-                                                variant="danger"
-                                                className="editar"
-                                                onClick={() => {
-                                                    cancelarCargaProducto()
-                                                }}
-                                            >
-                                                <FontAwesomeIcon icon={faX} className="text-lg" />
-                                            </Button>
-                                        </Col>
-
-                                    </Form.Group>
-                                </Col>
-
-
+                                    </Col>
+                                    <Col sm="4">
+                                        <Form.Control as="select"
+                                            onChange={(e) => {
+                                                handleCliente(e.target.value)
+                                            }}
+                                            defaultValue={formData.cliente}
+                                            name="cliente"
+                                        >
+                                            <option>Elige una opción</option>
+                                            {map(listClientes, (cliente, index) => (
+                                                <option key={index} value={cliente?.id + "/" + cliente?.calle + "/" + cliente?.numeroExterior + "/" + cliente?.colonia + "/" + cliente?.municipio + "/" + cliente?.estado + "/" + cliente?.pais}>{cliente?.nombre}</option>
+                                            ))}
+                                        </Form.Control>
+                                    </Col>
+                                </Form.Group>
                             </Row>
 
-                            <hr />
+                            <br />
 
-                            {/* Listado de productos  */}
-                            <div className="tablaProductos">
-
-                                {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
-                                {/* Inicia tabla informativa  */}
-                                <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
-                                    <h4>Listado de productos seleccionados</h4>
-                                </Badge>
-                                <br />
-                                <hr />
-                                <table className="responsive-tableRegistroVentas"
-                                >
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">ITEM</th>
-                                            <th scope="col">Descripción</th>
-                                            <th scope="col">Numero de parte</th>
-                                            <th scope="col">Cantidad</th>
-                                            <th scope="col">UM</th>
-                                            <th scope="col">Precio unitario</th>
-                                            <th scope="col">Total</th>
-                                            <th scope="col">Eliminar</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                    </tfoot>
-                                    <tbody>
-                                        {map(listProductosCargados, (producto, index) => (
-                                            <tr key={index}>
-                                                <th scope="row">
-                                                    {index + 1}
-                                                </th>
-                                                <td data-title="Descripcion">
-                                                    {producto.item}
-                                                </td>
-                                                <td data-title="Material">
-                                                    {producto.ID}
-                                                </td>
-                                                <td data-title="UM">
-                                                    {producto.cantidad}
-                                                </td>
-                                                <td data-title="Descripción">
-                                                    {producto.um}
-                                                </td>
-                                                <td data-title="Orden de compra">
-                                                    {new Intl.NumberFormat('es-MX', {
-                                                        style: "currency",
-                                                        currency: "MXN"
-                                                    }).format(producto.precioUnitario)} MXN
-                                                </td>
-                                                <td data-title="Observaciones">
-                                                    {new Intl.NumberFormat('es-MX', {
-                                                        style: "currency",
-                                                        currency: "MXN"
-                                                    }).format(producto.total)} MXN
-                                                </td>
-                                                <td data-title="Eliminar">
-                                                    <div
-                                                        className="eliminarProductoListado"
-                                                        onClick={() => {
-                                                            removeItem(producto)
-                                                        }}
-                                                    >
-                                                        ❌
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                                {/* Termina tabla informativa */}
-
-                                {/* Inicia tabla definida con totales */}
-                                <Row>
-                                    <Col xs={12} md={8}>
+                            <Row>
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
+                                        <Form.Label>
+                                            Numero de pedido
+                                        </Form.Label>
                                     </Col>
-                                    <Col xs={6} md={4}>
-                                        {/* Subtotal */}
-                                        <Row>
-                                            <Col>Valor total sin IVA</Col>
-                                            <Col>
-                                                {new Intl.NumberFormat('es-MX', {
-                                                    style: "currency",
-                                                    currency: "MXN"
-                                                }).format(totalSinIVA)} MXN
-                                            </Col>
-                                        </Row>
+                                    <Col sm="4">
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Numero de pedido"
+                                            name="numeroPedido"
+                                            defaultValue={formData.numeroPedido}
+                                        />
                                     </Col>
-                                </Row>
-                                {/* Termina tabla definida con totales */}
-                            </div>
+                                </Form.Group>
+                            </Row>
 
-                            <Form.Group as={Row} className="botones">
-                                <Row>
+                            <br />
+
+                            <Row>
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
+                                        <Form.Label>
+                                            Fecha de pedido
+                                        </Form.Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Form.Control
+                                            type="date"
+                                            placeholder="Fecha de pedido"
+                                            name="fechaPedido"
+                                            defaultValue={formData.fechaPedido}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Row>
+
+                            <br />
+
+                            <Row>
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
+                                        <Form.Label>
+                                            Fecha de entrega
+                                        </Form.Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Form.Control
+                                            type="date"
+                                            placeholder="Fecha de entrega"
+                                            name="fechaEntrega"
+                                            defaultValue={formData.fechaEntrega}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Row>
+
+                            <br />
+
+                            <Row>
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
+                                        <Form.Label>
+                                            Inconterms
+                                        </Form.Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Incoterms"
+                                            name="incoterms"
+                                            defaultValue={formData.incoterms}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Row>
+
+                            <br />
+
+                            <Row>
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
+                                        <Form.Label>
+                                            Condiciones de pago
+                                        </Form.Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Form.Control
+                                            as="textarea"
+                                            style={{ height: '100px' }}
+                                            placeholder="Condiciones de pago"
+                                            name="condicionesPago"
+                                            defaultValue={formData.condicionesPago}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Row>
+
+                            <br />
+
+                            <Row>
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
+                                        <Form.Label>
+                                            Moneda
+                                        </Form.Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Numero de pedido"
+                                            name="moneda"
+                                            value="M.N."
+                                            disabled
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Row>
+
+                            <br />
+
+                            <Row>
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
+                                        <Form.Label>
+                                            Lugar de entrega
+                                        </Form.Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Form.Control
+                                            as="textarea"
+                                            type="text"
+                                            placeholder="Lugar de entrega"
+                                            style={{ height: '100px' }}
+                                            name="lugarEntrega"
+                                            defaultValue={formData.cliente != "" ? clienteSeleccionado?.calle + " " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado : ""}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Row>
+
+                            <br />
+
+                            <Row>
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
+                                        <Form.Label>
+                                            Especificaciones del empaque
+                                        </Form.Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Especificaciones del empaque"
+                                            name="especificaciones"
+                                            defaultValue={formData.especificaciones}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Row>
+
+                            <br />
+
+                            <Row>
+                                <Form.Group as={Row} className="botonesPDF">
+                                    <Col sm="3">
+                                        <div
+                                            className="custom-input-file col-md-6 col-sm-6 col-xs-6">
+                                            <Form.Control
+                                                type="file"
+                                                accept='.pdf, image/*'
+                                                name="cotizacion"
+                                                defaultValue={formData.cotizacion}
+                                                className="input-file"
+                                            />
+                                            Adjuntar orden de venta
+                                        </div>
+                                    </Col>
+                                </Form.Group>
+                            </Row>
+                        </div>
+                        <br />
+                        {/* Seleccion de productos */}
+
+                        <hr />
+                        <Badge bg="secondary" className="tituloFormularioDetalles">
+                            <h4>A continuación, especifica los detalles del artículo y agregalo</h4>
+                        </Badge>
+                        <br />
+                        <hr />
+
+                        <Row>
+
+                            <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                                <Form.Label>
+                                    ITEM
+                                </Form.Label>
+                                <Form.Control type="number"
+                                    id="index"
+                                    value={renglon}
+                                    name="index"
+                                    disabled
+                                />
+                            </Form.Group>
+
+                            {
+                                listProductosActivos &&
+                                (
+                                    <>
+                                        <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                                            <Form.Label>
+                                                Descripción
+                                            </Form.Label>
+                                            {
+                                                listProductosActivos ?
+                                                    (
+                                                        <>
+                                                            <Form.Control as="select"
+                                                                id="descripcion"
+                                                                onChange={(e) => {
+                                                                    handleProducto(e.target.value)
+                                                                }}
+                                                                defaultValue={cargaProductos.item}
+                                                                name="descripcion"
+                                                            >
+                                                                <option>Elige</option>
+                                                                {map(listProductosActivos, (producto, index) => (
+                                                                    <option
+                                                                        key={index}
+                                                                        value={producto.id + "/" + producto.noParte + "/" + producto.descripcion + "/" + producto.precioVenta}
+                                                                    >
+                                                                        {producto.descripcion}
+                                                                    </option>
+                                                                ))}
+                                                            </Form.Control>
+                                                        </>
+                                                    )
+                                                    :
+                                                    (
+                                                        <>
+                                                            <h4>No hay productos registrados</h4>
+                                                        </>
+                                                    )
+                                            }
+
+
+                                        </Form.Group>
+                                    </>
+                                )
+                            }
+
+                            <Form.Group as={Col} controlId="formGridCliente">
+                                <Form.Label>
+                                    Numero de parte
+                                </Form.Label>
+                                <Form.Control
+                                    id="material"
+                                    type="text"
+                                    placeholder="Descripcion"
+                                    name="MateriaPrima"
+                                    defaultValue={cargaProductos.ID}
+                                    disabled
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridCliente">
+                                <Form.Label>
+                                    Cantidad
+                                </Form.Label>
+                                <Form.Control
+                                    id="cantidad"
+                                    type="number"
+                                    placeholder="Cantidad"
+                                    name="Cantidad"
+                                    onChange={(e) => { calcularTotalUnitario(e.target.value) }}
+                                    defaultValue={cargaProductos.cantidad}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col}>
+                                <Form.Label>
+                                    UM
+                                </Form.Label>
+                                <Form.Control
+                                    id="um"
+                                    type="text"
+                                    name="um"
+                                    value="Piezas"
+                                    disabled
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridCliente">
+                                <Form.Label>
+                                    Precio unitario
+                                </Form.Label>
+                                <Form.Control
+                                    id="precioUnitario"
+                                    type="number"
+                                    placeholder="Precio unitario"
+                                    name="precioUnitario"
+                                    onChange={(e) => { calcularTotalUnitario(e.target.value) }}
+                                    defaultValue={cargaProductos.precioUnitario}
+                                    disabled
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridCliente">
+                                <Form.Label>
+                                    Total
+                                </Form.Label>
+                                <Form.Control
+                                    id="total"
+                                    type="text"
+                                    placeholder="Total"
+                                    name="total"
+                                    onChange={(e) => { calcularTotalUnitario(e.target.value) }}
+                                    value={totalUnitario}
+                                    disabled
+                                />
+                            </Form.Group>
+
+                            <Col sm="1">
+                                <Form.Group as={Row} className="formGridCliente">
+                                    <Form.Label>
+                                        &nbsp;
+                                    </Form.Label>
+
                                     <Col>
                                         <Button
-                                            type="submit"
                                             variant="success"
-                                            className="registrar"
+                                            className="editar"
+                                            onClick={() => {
+                                                addItems()
+                                            }}
                                         >
-                                            {!loading ? "Registrar Orden de Venta" : <Spinner animation="border" />}
+                                            <FontAwesomeIcon icon={faCirclePlus} className="text-lg" />
                                         </Button>
                                     </Col>
                                     <Col>
                                         <Button
                                             variant="danger"
-                                            className="registrar"
+                                            className="editar"
                                             onClick={() => {
-                                                regresaListadoVentas()
+                                                cancelarCargaProducto()
                                             }}
                                         >
-                                            Cancelar
+                                            <FontAwesomeIcon icon={faX} className="text-lg" />
                                         </Button>
                                     </Col>
-                                </Row>
-                            </Form.Group>
-                        </Form>
-                    </div>
-                </Container>
-            </LayoutPrincipal>
+
+                                </Form.Group>
+                            </Col>
+
+
+                        </Row>
+
+                        <hr />
+
+                        {/* Listado de productos  */}
+                        <div className="tablaProductos">
+
+                            {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
+                            {/* Inicia tabla informativa  */}
+                            <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
+                                <h4>Listado de productos seleccionados</h4>
+                            </Badge>
+                            <br />
+                            <hr />
+                            <table className="responsive-tableRegistroVentas"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ITEM</th>
+                                        <th scope="col">Descripción</th>
+                                        <th scope="col">Numero de parte</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">UM</th>
+                                        <th scope="col">Precio unitario</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                </tfoot>
+                                <tbody>
+                                    {map(listProductosCargados, (producto, index) => (
+                                        <tr key={index}>
+                                            <th scope="row">
+                                                {index + 1}
+                                            </th>
+                                            <td data-title="Descripcion">
+                                                {producto.item}
+                                            </td>
+                                            <td data-title="Material">
+                                                {producto.ID}
+                                            </td>
+                                            <td data-title="UM">
+                                                {producto.cantidad}
+                                            </td>
+                                            <td data-title="Descripción">
+                                                {producto.um}
+                                            </td>
+                                            <td data-title="Orden de compra">
+                                                {new Intl.NumberFormat('es-MX', {
+                                                    style: "currency",
+                                                    currency: "MXN"
+                                                }).format(producto.precioUnitario)} MXN
+                                            </td>
+                                            <td data-title="Observaciones">
+                                                {new Intl.NumberFormat('es-MX', {
+                                                    style: "currency",
+                                                    currency: "MXN"
+                                                }).format(producto.total)} MXN
+                                            </td>
+                                            <td data-title="Eliminar">
+                                                <div
+                                                    className="eliminarProductoListado"
+                                                    onClick={() => {
+                                                        removeItem(producto)
+                                                    }}
+                                                >
+                                                    ❌
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                            {/* Termina tabla informativa */}
+
+                            {/* Inicia tabla definida con totales */}
+                            <Row>
+                                <Col xs={12} md={8}>
+                                </Col>
+                                <Col xs={6} md={4}>
+                                    {/* Subtotal */}
+                                    <Row>
+                                        <Col>Valor total sin IVA</Col>
+                                        <Col>
+                                            {new Intl.NumberFormat('es-MX', {
+                                                style: "currency",
+                                                currency: "MXN"
+                                            }).format(totalSinIVA)} MXN
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                            {/* Termina tabla definida con totales */}
+                        </div>
+
+                        <Form.Group as={Row} className="botones">
+                            <Row>
+                                <Col>
+                                    <Button
+                                        type="submit"
+                                        variant="success"
+                                        className="registrar"
+                                    >
+                                        {!loading ? "Registrar" : <Spinner animation="border" />}
+                                    </Button>
+                                </Col>
+                                <Col>
+                                    <Button
+                                        variant="danger"
+                                        className="registrar"
+                                        onClick={() => {
+                                            regresaListadoVentas()
+                                        }}
+                                    >
+                                        Cancelar
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </Form.Group>
+                    </Form>
+                </div>
+            </Container>
         </>
     );
 }

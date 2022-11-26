@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import {Alert, Button, Col, Form, Row, Container, Spinner, Badge} from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCirclePlus} from "@fortawesome/free-solid-svg-icons";
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
+import { Alert, Button, Col, Form, Row, Container, Spinner, Badge } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
 
 function RegistraSolicitudMaterialInsumo(props) {
-    
+
     // Para definir el enrutamiento
     const enrutamiento = useHistory()
 
@@ -14,30 +13,29 @@ function RegistraSolicitudMaterialInsumo(props) {
     const rutaRegreso = () => {
         enrutamiento.push("/SolicitudMaterialInsumo")
     }
-    
+
     // Para controlar la animacion
-    const [loading, setLoading] = useState(false); 
-    
+    const [loading, setLoading] = useState(false);
+
     return (
         <>
-            <LayoutPrincipal>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Nueva solicitud de material/insumos
-                            </h1>
-                        </Col>
-                    </Row>
-                </Alert>
-                
-                <br/>
-                
-                <Container fluid>
-                    <div className="formularioDatos">
-                        <Form>
-                            <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Nueva solicitud de material/insumos
+                        </h1>
+                    </Col>
+                </Row>
+            </Alert>
+
+            <br />
+
+            <Container fluid>
+                <div className="formularioDatos">
+                    <Form>
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="1">
                                     <Form.Label align="center">
                                         ¿Que solicita?
@@ -50,7 +48,7 @@ function RegistraSolicitudMaterialInsumo(props) {
                                         name="solicitud"
                                     />
                                 </Col>
-                                
+
                                 <Col sm="2">
                                     <Form.Label align="center">
                                         Fecha de elaboracion
@@ -63,7 +61,7 @@ function RegistraSolicitudMaterialInsumo(props) {
                                         name="fechaElaboracion"
                                     />
                                 </Col>
-                                
+
                                 <Col sm="2">
                                     <Form.Label align="center">
                                         Nombre del solicitante
@@ -76,11 +74,11 @@ function RegistraSolicitudMaterialInsumo(props) {
                                         name="nombreSolicitante"
                                     />
                                 </Col>
-                                </Form.Group>
-                            </Row>
-                            
-                            <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="1">
                                     <Form.Label align="center">
                                         Folio
@@ -93,7 +91,7 @@ function RegistraSolicitudMaterialInsumo(props) {
                                         name="folio"
                                     />
                                 </Col>
-                                
+
                                 <Col sm="2">
                                     <Form.Label align="center">
                                         ¿Cuando se require?
@@ -106,7 +104,7 @@ function RegistraSolicitudMaterialInsumo(props) {
                                         name="requiere"
                                     />
                                 </Col>
-                                
+
                                 <Col sm="2">
                                     <Form.Label align="center">
                                         Area solicitante
@@ -119,51 +117,51 @@ function RegistraSolicitudMaterialInsumo(props) {
                                         name="areaSolicitante"
                                     />
                                 </Col>
-                                </Form.Group>
-                            </Row>
-                            
-                            <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="1">Item</Col>
                                 <Col sm="3">
                                     <Form.Label align="center">
                                         Descripcion del producto y/o servicio
                                     </Form.Label>
                                 </Col>
-                                
+
                                 <Col sm="2">
                                     <Form.Label align="center">
                                         Unidad de medida
                                     </Form.Label>
                                 </Col>
-                                
+
                                 <Col sm="1">
                                     <Form.Label align="center">
                                         Cantidad
                                     </Form.Label>
                                 </Col>
-                                
+
                                 <Col sm="2">
                                     <Form.Label align="center">
                                         Proveedor sugerido
                                     </Form.Label>
                                 </Col>
-                                
+
                                 <Col sm="2">
                                     <Form.Label align="center">
                                         Aplicacion
                                     </Form.Label>
                                 </Col>
-                                
+
                                 <Col sm="1">
 
                                 </Col>
-                                
-                                </Form.Group>
-                            </Row>
-                            
-                            <Row className="mb-3">
-                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="1"></Col>
                                 <Col sm="3">
                                     <Form.Control
@@ -172,7 +170,7 @@ function RegistraSolicitudMaterialInsumo(props) {
                                         name="descripcion"
                                     />
                                 </Col>
-                                
+
                                 <Col sm="2">
                                     <Form.Control
                                         type="text"
@@ -180,7 +178,7 @@ function RegistraSolicitudMaterialInsumo(props) {
                                         name="pieza"
                                     />
                                 </Col>
-                                
+
                                 <Col sm="1">
                                     <Form.Control
                                         type="number"
@@ -188,7 +186,7 @@ function RegistraSolicitudMaterialInsumo(props) {
                                         name="cantidad"
                                     />
                                 </Col>
-                                
+
                                 <Col sm="2">
                                     <Form.Control
                                         type="text"
@@ -196,7 +194,7 @@ function RegistraSolicitudMaterialInsumo(props) {
                                         name="proveedor"
                                     />
                                 </Col>
-                                
+
                                 <Col sm="2">
                                     <Form.Control
                                         type="text"
@@ -204,45 +202,44 @@ function RegistraSolicitudMaterialInsumo(props) {
                                         name="aplicacion"
                                     />
                                 </Col>
-                                
+
                                 <Col sm="1">
-                                        <Badge
-                                            bg="success"
-                                            className="agregarItem"
-                                        >
-                        +
-                    </Badge>
-                                    </Col>
-                                
-                                </Form.Group>
-                            </Row>
-                            
+                                    <Badge
+                                        bg="success"
+                                        className="agregarItem"
+                                    >
+                                        +
+                                    </Badge>
+                                </Col>
+
+                            </Form.Group>
+                        </Row>
+
                         <Form.Group as={Row} className="botones">
-                        <Col>
-                            <Button
-                                type="submit"
-                                variant="success"
-                                className="registrar"
-                            >
-                                {"Registrar"}
-                            </Button>
-                        </Col>
-                        <Col>
-                            <Button
-                                variant="danger"
-                                className="cancelar"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                Cancelar
-                            </Button>
-                        </Col>
-                    </Form.Group>
-                        </Form>
-                    </div>
-                </Container> 
-            </LayoutPrincipal>
+                            <Col>
+                                <Button
+                                    type="submit"
+                                    variant="success"
+                                    className="registrar"
+                                >
+                                    {"Registrar"}
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Button
+                                    variant="danger"
+                                    className="cancelar"
+                                    onClick={() => {
+                                        rutaRegreso()
+                                    }}
+                                >
+                                    Cancelar
+                                </Button>
+                            </Col>
+                        </Form.Group>
+                    </Form>
+                </div>
+            </Container>
         </>
     );
 }

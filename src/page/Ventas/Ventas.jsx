@@ -8,7 +8,6 @@ import ListVentas from "../../components/Ventas/ListVentas";
 import { listarPedidosVentaPaginacion, totalPedidoVenta } from "../../api/pedidoVenta";
 import "./Ventas.scss"
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import { obtenerUsuario } from "../../api/usuarios";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -111,63 +110,60 @@ function Ventas(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Mis pedidos de venta
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegistroPedidoVenta()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Crear un nuevo pedido
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Mis pedidos de venta
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegistroPedidoVenta()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Crear un nuevo pedido
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {
-                    listPedidosVenta ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListVentas
-                                        listPedidosVenta={listPedidosVenta}
-                                        location={location}
-                                        history={history}
-                                        setRefreshCheckLogin={setRefreshCheckLogin}
-                                        rowsPerPage={rowsPerPage}
-                                        setRowsPerPage={setRowsPerPage}
-                                        page={page}
-                                        setPage={setPage}
-                                        noTotalVentas={noTotalVentas}
-                                    />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
-
-            </LayoutPrincipal>
+            {
+                listPedidosVenta ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListVentas
+                                    listPedidosVenta={listPedidosVenta}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                    rowsPerPage={rowsPerPage}
+                                    setRowsPerPage={setRowsPerPage}
+                                    page={page}
+                                    setPage={setPage}
+                                    noTotalVentas={noTotalVentas}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
         </>
     );
 }

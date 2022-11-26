@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import { toast } from "react-toastify";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import { listarPaginacionDeptoCompras, totalDeptoCompras } from "../../api/compras";
 import { withRouter, useHistory } from "react-router-dom";
 import ListCompras from "../../components/Compras/ListCompras";
@@ -93,7 +92,6 @@ function Compras(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8} className="tituloPrincipal">
@@ -148,7 +146,6 @@ function Compras(props) {
                             </>
                         )
                 }
-            </LayoutPrincipal>
         </>
     );
 }

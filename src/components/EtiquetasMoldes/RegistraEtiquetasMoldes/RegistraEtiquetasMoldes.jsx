@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import {Alert, Button, Col, Form, Row, Container, Spinner} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCirclePlus} from "@fortawesome/free-solid-svg-icons";
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { useHistory } from "react-router-dom";
 
 function RegistraEtiquetasMoldes(props) {

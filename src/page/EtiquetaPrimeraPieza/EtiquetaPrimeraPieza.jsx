@@ -3,7 +3,6 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroPrimeraPieza from "../../components/EtiquetaPrimeraPieza/RegistraPrimeraPieza";
 import { listarEtiquetasPiezasPaginacion, totalEtiquetasPiezas } from "../../api/etiquetaPrimeraPieza";
@@ -93,78 +92,75 @@ function EtiquetaPrimeraPieza(props) {
     const enrutamiento = useHistory()
 
     const rutaRegreso = () => {
-       enrutamiento.push("/DashboardCalidad")
-   }
+        enrutamiento.push("/DashboardCalidad")
+    }
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Registro de primera pieza
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    nuevaEtiqueta1eraPieza(
-                                        <RegistroPrimeraPieza
-                                            setShowModal={setShowModal}
-                                            location={location}
-                                            history={history}
-                                        />
-                                    )
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nueva etiqueta 1era pieza
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Registro de primera pieza
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                nuevaEtiqueta1eraPieza(
+                                    <RegistroPrimeraPieza
+                                        setShowModal={setShowModal}
+                                        location={location}
+                                        history={history}
+                                    />
+                                )
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva etiqueta 1era pieza
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {
-                    listEtiquetas ?
-                        (
-                            <>
+            {
+                listEtiquetas ?
+                    (
+                        <>
                             <Suspense fallback={<Spinner />}>
-                               <ListEtiquetasPrimeraPieza
-                                   listEtiquetas={listEtiquetas}
-                                   location={location}
-                                   history={history}
-                                   setRefreshCheckLogin={setRefreshCheckLogin}
-                                   rowsPerPage={rowsPerPage}
-                                   setRowsPerPage={setRowsPerPage}
-                                   page={page}
-                                   setPage={setPage}
-                                   noTotalEtiquetas={noTotalEtiquetas}
-                               />
+                                <ListEtiquetasPrimeraPieza
+                                    listEtiquetas={listEtiquetas}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                    rowsPerPage={rowsPerPage}
+                                    setRowsPerPage={setRowsPerPage}
+                                    page={page}
+                                    setPage={setPage}
+                                    noTotalEtiquetas={noTotalEtiquetas}
+                                />
                             </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
+                        </>
+                    )
+                    :
+                    (
+                        <>
                             <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
+                        </>
+                    )
+            }
 
-                <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
-                    {contentModal}
-                </BasicModal>
-
-            </LayoutPrincipal>
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }

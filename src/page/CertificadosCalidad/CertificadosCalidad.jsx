@@ -8,7 +8,6 @@ import ListCertificadosCalidad from '../../components/CertificadosCalidad/ListCe
 import { listarCertificadoPaginacion, totalCertificado } from "../../api/certificadosCalidad";
 import "./CertificadosCalidad.scss"
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -90,7 +89,6 @@ function CertificadosCalidad(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8}>
@@ -145,7 +143,6 @@ function CertificadosCalidad(props) {
                             </>
                         )
                 }
-            </LayoutPrincipal>
         </>
     );
 }

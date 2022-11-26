@@ -14,7 +14,6 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import ListCompras from "../../components/Compras/ListCompras";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import "./ComprasAlmacenMP.scss";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -102,7 +101,6 @@ function ComprasAlmacenMp(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8} className="tituloPrincipal">
@@ -157,7 +155,6 @@ function ComprasAlmacenMp(props) {
                             </>
                         )
                 }
-            </LayoutPrincipal>
         </>
     );
 }

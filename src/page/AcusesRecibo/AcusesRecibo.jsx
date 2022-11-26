@@ -1,5 +1,4 @@
 import React from 'react';
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import {Alert, Button, Col, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCirclePlus} from "@fortawesome/free-solid-svg-icons";
@@ -17,7 +16,6 @@ function AcusesRecibo(props) {
     
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8}>
@@ -37,8 +35,6 @@ function AcusesRecibo(props) {
                         </Col>
                     </Row>
                 </Alert>
-
-            </LayoutPrincipal>
         </>
     );
 }

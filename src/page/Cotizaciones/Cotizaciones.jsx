@@ -1,14 +1,13 @@
 import { useState, useEffect, Suspense } from 'react';
-import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { withRouter, useHistory } from "react-router-dom";
-import {faCirclePlus, faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { totalCotizaciones, listarCotizacionPaginacion } from "../../api/cotizaciones";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import ListCotizaciones from "../../components/Cotizaciones/ListCotizaciones";
 import { registraCotizacion, obtenerNumeroCotizacion } from "../../api/cotizaciones";
 import queryString from "query-string";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -25,8 +24,8 @@ function Cotizaciones(props) {
     const rutaRegistroCotizaciones = () => {
         enrutamiento.push("/RegistroCotizaciones")
     }
-    
-         // Para controlar la paginación
+
+    // Para controlar la paginación
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [page, setPage] = useState(1);
     const [noTotalCotizaciones, setNoTotalCotizaciones] = useState(0);
@@ -36,7 +35,7 @@ function Cotizaciones(props) {
 
     useEffect(() => {
         try {
-            totalCotizaciones().then(response =>{
+            totalCotizaciones().then(response => {
                 const { data } = response;
                 setNoTotalCotizaciones(data)
             }).catch(e => {
@@ -45,12 +44,12 @@ function Cotizaciones(props) {
 
             // listarOrdenesCompraPaginacion(pagina, limite)
 
-            if(page === 0) {
+            if (page === 0) {
                 setPage(1)
 
                 listarCotizacionPaginacion(page, rowsPerPage).then(response => {
                     const { data } = response
-                    if(!listCotizaciones && data) {
+                    if (!listCotizaciones && data) {
                         setListCotizaciones(formatModelCotizacion(data));
                     } else {
                         const datosCotizaciones = formatModelCotizacion(data);
@@ -62,7 +61,7 @@ function Cotizaciones(props) {
             } else {
                 listarCotizacionPaginacion(page, rowsPerPage).then(response => {
                     const { data } = response
-                    if(!listCotizaciones && data) {
+                    if (!listCotizaciones && data) {
                         setListCotizaciones(formatModelCotizacion(data));
                     } else {
                         const datosCotizacion = formatModelCotizacion(data);
@@ -81,40 +80,39 @@ function Cotizaciones(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Mis cotizaciones
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegistroCotizaciones()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Crea una nueva cotización
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Mis cotizaciones
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegistroCotizaciones()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Crea una nueva cotización
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {
-                    listCotizaciones ?
-                        (
-                            <>
-                            <Suspense fallback={<Spinner /> }>
+            {
+                listCotizaciones ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
                                 <ListCotizaciones
                                     setRefreshCheckLogin={setRefreshCheckLogin}
                                     location={location}
@@ -127,16 +125,15 @@ function Cotizaciones(props) {
                                     noTotalCotizaciones={noTotalCotizaciones}
                                 />
                             </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
-            </LayoutPrincipal>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
         </>
     );
 }

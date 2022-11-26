@@ -1,7 +1,6 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useHistory, useParams, withRouter } from "react-router-dom";
 import { listarMovimientosAlmacenMP, obtenerDatosAlmacenMPFolio } from "../../api/almacenMP";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import { Alert, Badge, Button, Col, Row, Spinner } from "react-bootstrap";
 import ListMovimientosMP from "../../components/AlmacenMP/ListMovimientosMP";
 import Lottie from 'react-lottie-player';
@@ -77,47 +76,45 @@ function MovimientosAlmacenMp(props) {
 
     return (
         <>
-            <LayoutPrincipal>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Movimientos de la Materia Prima
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Movimientos de la Materia Prima
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {
-                    listMovimientosMP ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListMovimientosMP
-                                        listMovimientosMP={listMovimientosMP}
-                                        infoMPAlmacen={infoMPAlmacen}
-                                    />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
-            </LayoutPrincipal>
+            {
+                listMovimientosMP ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListMovimientosMP
+                                    listMovimientosMP={listMovimientosMP}
+                                    infoMPAlmacen={infoMPAlmacen}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
         </>
     );
 }

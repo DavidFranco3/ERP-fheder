@@ -1,7 +1,6 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useHistory, useParams, withRouter } from "react-router-dom";
 import { listarMovimientosAlmacenPT, obtenerDatosAlmacenPT } from "../../api/almacenPT";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import { Alert, Badge, Button, Col, Row, Spinner } from "react-bootstrap";
 import ListMovimientosPT from "../../components/AlmacenPT/ListMovimientosPT";
 import Lottie from 'react-lottie-player';
@@ -77,7 +76,6 @@ function MovimientosAlmacenPt(props) {
 
     return (
         <>
-            <LayoutPrincipal>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8}>
@@ -117,7 +115,6 @@ function MovimientosAlmacenPt(props) {
                             </>
                         )
                 }
-            </LayoutPrincipal>
         </>
     );
 }

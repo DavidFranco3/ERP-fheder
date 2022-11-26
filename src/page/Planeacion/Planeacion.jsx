@@ -1,12 +1,11 @@
 import { useState, useEffect, Suspense } from 'react';
 import { withRouter, useHistory } from "react-router-dom";
-import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCirclePlus, faPlus, faUsers} from "@fortawesome/free-solid-svg-icons";
-import {getTokenApi, isExpiredToken, logoutApi} from "../../api/auth";
-import {toast} from "react-toastify";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
-import {totalPlaneacion, listarPaginacionPlaneaciones} from "../../api/planeacion";
+import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus, faPlus, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { toast } from "react-toastify";
+import { totalPlaneacion, listarPaginacionPlaneaciones } from "../../api/planeacion";
 import ListPlaneacion from "../../components/Planeacion/ListPlaneacion";
 import "./Planeacion.scss";
 import Lottie from 'react-lottie-player';
@@ -14,13 +13,13 @@ import AnimacionLoading from '../../assets/json/loading.json';
 
 function Planeacion(props) {
     const { setRefreshCheckLogin, location, history } = props;
-    
+
     const enrutamiento = useHistory();
-    
+
     // Cerrado de sesión automatico
     useEffect(() => {
-        if(getTokenApi()) {
-            if(isExpiredToken(getTokenApi())) {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
@@ -29,17 +28,17 @@ function Planeacion(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
-    
+
     // Para ir hacia la ruta de registro del pedido de venta
     const rutaRegistroPlaneacion = () => {
-            enrutamiento.push("/RegistroPlaneacion")
+        enrutamiento.push("/RegistroPlaneacion")
     }
-    
+
     // Para controlar la paginación
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [page, setPage] = useState(1);
     const [noTotalPlaneaciones, setNoTotalPlaneaciones] = useState(0);
-    
+
     // Para almacenar el listado de planeaciones
     const [listPlaneaciones, setListPlaneaciones] = useState(null);
 
@@ -50,17 +49,17 @@ function Planeacion(props) {
                 setNoTotalPlaneaciones(data)
             }).catch(e => {
                 // console.log(e)
-                if(e.message === 'Network Error') {
+                if (e.message === 'Network Error') {
                     toast.error("Conexión al servidor no disponible");
                 }
             })
 
-            if(page === 0) {
+            if (page === 0) {
                 setPage(1)
                 listarPaginacionPlaneaciones(page, rowsPerPage).then(response => {
                     const { data } = response;
                     //console.log(data)
-                    if(!listPlaneaciones && data){
+                    if (!listPlaneaciones && data) {
                         setListPlaneaciones(formatModelPlaneacion(data));
                     } else {
                         const datosPlaneaciones = formatModelPlaneacion(data);
@@ -73,7 +72,7 @@ function Planeacion(props) {
                 listarPaginacionPlaneaciones(page, rowsPerPage).then(response => {
                     const { data } = response;
                     //console.log(data)
-                    if(!listPlaneaciones && data){
+                    if (!listPlaneaciones && data) {
                         setListPlaneaciones(formatModelPlaneacion(data));
                     } else {
                         const datosPlaneaciones = formatModelPlaneacion(data);
@@ -91,32 +90,31 @@ function Planeacion(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8} className="tituloAlertPanel">
-                            <h1>
-                                Planeación
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegistroPlaneacion()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Registrar una nueva planeación
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8} className="tituloAlertPanel">
+                        <h1>
+                            Planeación
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegistroPlaneacion()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar una nueva planeación
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {
-                    listPlaneaciones ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
+            {
+                listPlaneaciones ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
                                 <ListPlaneacion
                                     listPlaneaciones={listPlaneaciones}
                                     location={location}
@@ -128,18 +126,16 @@ function Planeacion(props) {
                                     setPage={setPage}
                                     noTotalPlaneaciones={noTotalPlaneaciones}
                                 />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
-
-            </LayoutPrincipal>
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
         </>
     );
 }

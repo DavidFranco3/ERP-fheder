@@ -1,33 +1,32 @@
 import { useState, useEffect } from 'react';
 import { useHistory, useParams } from "react-router-dom";
-import {Alert, Col, Button, Spinner, Form, Container, Row} from "react-bootstrap";
+import { Alert, Col, Button, Spinner, Form, Container, Row } from "react-bootstrap";
 import EncabezadoOV from "../../Ventas/Registro/Pasos/OrdenVenta/EncabezadoOV/EncabezadoOV";
 import FooterOv from "../../Ventas/Registro/Pasos/OrdenVenta/FooterOV";
 import NuevaOrden from "../../Ventas/Registro/Pasos/OrdenVenta/NuevaOrden";
 import DetallesMateriaPrima from "../../Ventas/Registro/Pasos/OrdenVenta/DetallesMateriaPrima";
 import TiemposEspera from "../../Ventas/Registro/Pasos/OrdenVenta/TiemposEspera";
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { obtenerCotizacion, registraCotizacion, obtenerNumeroCotizacion, actualizaCotizacion } from "../../../api/cotizaciones";
-import {listarClientes} from "../../../api/clientes";
-import {listarProveedores} from "../../../api/proveedores";
-import {toast} from "react-toastify";
-import {map} from "lodash";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { listarClientes } from "../../../api/clientes";
+import { listarProveedores } from "../../../api/proveedores";
+import { toast } from "react-toastify";
+import { map } from "lodash";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function ModificacionesCotizaciones(props) {
 
     // Define la extraccion de los parametros
     const parametros = useParams()
     const { id } = parametros;
-    
+
     const enrutamiento = useHistory();
-    
+
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoCotizaciones = () => {
         enrutamiento.push("/Cotizaciones");
     }
-    
-        // Para almacenar los datos del formulario de Inicial, Partidas y VistaPrevia
+
+    // Para almacenar los datos del formulario de Inicial, Partidas y VistaPrevia
     const [formData, setFormData] = useState(initialFormDataInicial());
 
     // Para controlar la animacion de carga
@@ -37,10 +36,10 @@ function ModificacionesCotizaciones(props) {
     const [datosCotizacion, setDatosCotizacion] = useState(null);
     const [folioCotizacion, setFolioCotizacion] = useState("");
     const [fechaCreacion, setFechaCreacion] = useState(new Date());
-    
+
     // Para determinar si hay conexion con el servidor o a internet
     const [conexionInternet, setConexionInternet] = useState(true);
-    
+
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
 
@@ -52,7 +51,7 @@ function ModificacionesCotizaciones(props) {
 
                 //console.log(data);
 
-                if(!listClientes && data) {
+                if (!listClientes && data) {
                     setListClientes(formatModelClientes(data));
                 } else {
                     const datosClientes = formatModelClientes(data);
@@ -60,7 +59,7 @@ function ModificacionesCotizaciones(props) {
                 }
             }).catch(e => {
                 //console.log(e)
-                if(e.message === 'Network Error') {
+                if (e.message === 'Network Error') {
                     //console.log("No hay internet")
                     toast.error("Conexión a Internet no Disponible");
                     setConexionInternet(false);
@@ -70,7 +69,7 @@ function ModificacionesCotizaciones(props) {
             console.log(e)
         }
     }, []);
-    
+
     // Para almacenar la lista completa de clientes
     const [listProveedores, setListProveedores] = useState(null);
 
@@ -82,7 +81,7 @@ function ModificacionesCotizaciones(props) {
 
                 //console.log(data);
 
-                if(!listProveedores && data) {
+                if (!listProveedores && data) {
                     setListProveedores(formatModelProveedores(data));
                 } else {
                     const datosProveedores = formatModelProveedores(data);
@@ -90,7 +89,7 @@ function ModificacionesCotizaciones(props) {
                 }
             }).catch(e => {
                 //console.log(e)
-                if(e.message === 'Network Error') {
+                if (e.message === 'Network Error') {
                     //console.log("No hay internet")
                     toast.error("Conexión a Internet no Disponible");
                     setConexionInternet(false);
@@ -100,7 +99,7 @@ function ModificacionesCotizaciones(props) {
             console.log(e)
         }
     }, []);
-    
+
     useEffect(() => {
         try {
             obtenerCotizacion(id).then(response => {
@@ -114,151 +113,149 @@ function ModificacionesCotizaciones(props) {
             //console.log(e)
         }
     }, []);
-    
+
     const onSubmit = e => {
         e.preventDefault()
-        
+
         if (!formData.fecha || !formData.proveedor || !formData.cliente) {
             toast.warning("Completa el formulario");
         } else {
-        
-        //console.log(formData)
-        setLoading(true)
-        try {
-            obtenerNumeroCotizacion().then(response => {
+
+            //console.log(formData)
+            setLoading(true)
+            try {
+                obtenerNumeroCotizacion().then(response => {
                     const { data } = response;
                     // console.log(data)
                     const { noCotizacion } = data;
-        const dataTemp = {
-            folio: folioCotizacion,
-            fechaCreacion: formData.fecha, 
-            vendedor: formData.proveedor,
-            cliente: formData.cliente,
-            status: "true"
-        }
-        
-            actualizaCotizacion(id, dataTemp).then(response => {
-                const { data } = response;
-                LogsInformativos("Se actualizo la cotización con folio ", folioCotizacion)
-                setLoading(false)
-                toast.success(data.mensaje)
-                regresaListadoCotizaciones()
-            }).catch(e => {
-                console.log(e)
-                if(e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión al servidor no disponible");
-                }
-            })
-            }).catch(e => {
+                    const dataTemp = {
+                        folio: folioCotizacion,
+                        fechaCreacion: formData.fecha,
+                        vendedor: formData.proveedor,
+                        cliente: formData.cliente,
+                        status: "true"
+                    }
+
+                    actualizaCotizacion(id, dataTemp).then(response => {
+                        const { data } = response;
+                        LogsInformativos("Se actualizo la cotización con folio ", folioCotizacion)
+                        setLoading(false)
+                        toast.success(data.mensaje)
+                        regresaListadoCotizaciones()
+                    }).catch(e => {
+                        console.log(e)
+                        if (e.message === 'Network Error') {
+                            //console.log("No hay internet")
+                            toast.error("Conexión al servidor no disponible");
+                        }
+                    })
+                }).catch(e => {
                     console.log(e)
                 })
-        } catch (e) {
-            console.log(e)
+            } catch (e) {
+                console.log(e)
+            }
         }
     }
-    }
-    
-        const onChange = e => {
+
+    const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
     return (
         <>
-            <LayoutPrincipal>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Cotizacion
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <h1>
-                                Folio: {folioCotizacion}
-                            </h1>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Cotizacion
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <h1>
+                            Folio: {folioCotizacion}
+                        </h1>
+                    </Col>
+                </Row>
+            </Alert>
 
-                <Container fluid>
-                    <div className="formularioNuevaOrden">
-                <Form onChange={onChange} onSubmit={onSubmit}>
-                    {/* Fecha de creación, vendedor, referencia */}
-                    <Row className="mb-3">
-                        <Form.Group as={Col} controlId="formGridFechaCreacion">
-                            <Form.Label>Fecha de creación</Form.Label>
-                            <Form.Control
-                                        className="mb-3"
-                                        type="datetime-local"
-                                        placeholder="Fecha"
-                                        value={formData.fecha}
-                                        name="fecha"
-                                        />
+            <Container fluid>
+                <div className="formularioNuevaOrden">
+                    <Form onChange={onChange} onSubmit={onSubmit}>
+                        {/* Fecha de creación, vendedor, referencia */}
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formGridFechaCreacion">
+                                <Form.Label>Fecha de creación</Form.Label>
+                                <Form.Control
+                                    className="mb-3"
+                                    type="datetime-local"
+                                    placeholder="Fecha"
+                                    value={formData.fecha}
+                                    name="fecha"
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridVendedor">
+                                <Form.Label>
+                                    Vendedor
+                                </Form.Label>
+                                <Form.Control as="select"
+                                    value={formData.proveedor}
+                                    name="proveedor"
+                                >
+                                    <option>Elige una opción</option>
+                                    {map(listProveedores, (proveedor, index) => (
+                                        <option key={index} value={proveedor?.id}>{proveedor?.nombre}</option>
+                                    ))}
+                                </Form.Control>
+                            </Form.Group>
+
+
+                            {/* Cliente */}
+                            <Form.Group as={Col} controlId="formGridCliente">
+                                <Form.Label>
+                                    Cliente
+                                </Form.Label>
+                                <Form.Control as="select"
+                                    value={formData.cliente}
+                                    name="cliente"
+                                >
+                                    <option>Elige una opción</option>
+                                    {map(listClientes, (cliente, index) => (
+                                        <option key={index} value={cliente?.id}>{cliente?.nombre + " " + cliente.apellidos}</option>
+                                    ))}
+                                </Form.Control>
+                            </Form.Group>
+                        </Row>
+
+                        <Form.Group as={Row} className="botones">
+                            <Row>
+                                <Col>
+                                    <Button
+                                        type="submit"
+                                        variant="success"
+                                        className="registrar"
+                                    >
+                                        {!loading ? "Modificar" : <Spinner animation="border" />}
+                                    </Button>
+                                </Col>
+                                <Col>
+                                    <Button
+                                        variant="danger"
+                                        className="registrar"
+                                        onClick={() => {
+                                            regresaListadoCotizaciones()
+                                        }}
+                                    >
+                                        Cancelar
+                                    </Button>
+                                </Col>
+                            </Row>
                         </Form.Group>
 
-                        <Form.Group as={Col} controlId="formGridVendedor">
-                            <Form.Label>
-                                            Vendedor
-                                        </Form.Label>
-                                        <Form.Control as="select"
-                                                      value={formData.proveedor}
-                                                      name="proveedor"
-                                        >
-                                            <option>Elige una opción</option>
-                                            {map(listProveedores, (proveedor, index) => (
-                                                <option key={index} value={proveedor?.id}>{proveedor?.nombre}</option>
-                                            ))}
-                                        </Form.Control>
-                                    </Form.Group>
-
-                    
-                    {/* Cliente */}
-                    <Form.Group as={Col} controlId="formGridCliente">
-                                        <Form.Label>
-                                            Cliente
-                                        </Form.Label>
-                                        <Form.Control as="select"
-                                                      value={formData.cliente}
-                                                      name="cliente"
-                                        >
-                                            <option>Elige una opción</option>
-                                            {map(listClientes, (cliente, index) => (
-                                                <option key={index} value={cliente?.id}>{cliente?.nombre + " " + cliente.apellidos}</option>
-                                            ))}
-                                        </Form.Control>
-                                    </Form.Group>
-                    </Row>
-                    
-                     <Form.Group as={Row} className="botones">
-                                <Row>
-                                    <Col>
-                                        <Button
-                                            type="submit"
-                                            variant="success"
-                                            className="registrar"
-                                        >
-                                            {!loading ? "Registrar cotizacion" : <Spinner animation="border" />}
-                                        </Button>
-                                    </Col>
-                                    <Col>
-                                        <Button
-                                            variant="danger"
-                                            className="registrar"
-                                            onClick={() => {
-                                                regresaListadoCotizaciones()
-                                            }}
-                                        >
-                                            Cancelar
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </Form.Group>
-                    
-                </Form>
-            </div>
-                </Container>
-            </LayoutPrincipal>
+                    </Form>
+                </div>
+            </Container>
         </>
     );
 }

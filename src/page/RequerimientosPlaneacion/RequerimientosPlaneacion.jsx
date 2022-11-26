@@ -8,7 +8,6 @@ import ListRequerimientosPlaneacion from "../../components/RequerimientosPlaneac
 import { listarRequerimientoPaginacion, totalRequerimiento } from "../../api/requerimientosPlaneacion";
 import "./RequerimientosPlaneacion.scss"
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -93,63 +92,60 @@ function RequerimientosPlaneacion(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Requerimientos y planeación
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegistro()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nuevo requerimiento
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Requerimientos y planeación
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegistro()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo requerimiento
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {
-                    listRequerimientosPlaneacion ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListRequerimientosPlaneacion
-                                        listRequerimientosPlaneacion={listRequerimientosPlaneacion}
-                                        location={location}
-                                        history={history}
-                                        setRefreshCheckLogin={setRefreshCheckLogin}
-                                        rowsPerPage={rowsPerPage}
-                                        setRowsPerPage={setRowsPerPage}
-                                        page={page}
-                                        setPage={setPage}
-                                        noTotalRequerimientos={noTotalRequerimientos}
-                                    />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
-
-            </LayoutPrincipal>
+            {
+                listRequerimientosPlaneacion ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListRequerimientosPlaneacion
+                                    listRequerimientosPlaneacion={listRequerimientosPlaneacion}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                    rowsPerPage={rowsPerPage}
+                                    setRowsPerPage={setRowsPerPage}
+                                    page={page}
+                                    setPage={setPage}
+                                    noTotalRequerimientos={noTotalRequerimientos}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
         </>
     );
 }

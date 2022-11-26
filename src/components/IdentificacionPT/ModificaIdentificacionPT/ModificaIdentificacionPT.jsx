@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import { useHistory } from "react-router-dom";
@@ -327,7 +326,7 @@ function ModificaIdentificacionPT(props) {
                                     variant="success"
                                     className="registrar"
                                 >
-                                    {!loading ? "Registrar" : <Spinner animation="border" />}
+                                    {!loading ? "Modificar" : <Spinner animation="border" />}
                                 </Button>
                             </Col>
                             <Col>

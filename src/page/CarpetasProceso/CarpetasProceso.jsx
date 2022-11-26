@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import { Alert, Button, Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
@@ -37,7 +36,6 @@ function CarpetasProceso(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8}>
@@ -65,7 +63,6 @@ function CarpetasProceso(props) {
                         </Col>
                     </Row>
                 </Alert>
-            </LayoutPrincipal>
         </>
     );
 }

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { useHistory } from "react-router-dom";
 import "./RegistraMantenimiento.scss";
 
@@ -21,15 +20,14 @@ function RegistraMantenimiento(props) {
 
     return (
         <>
-            <LayoutPrincipal>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Nueva orden de mantenimiento
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Nueva orden de mantenimiento
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
                             onClick={() => {
@@ -337,7 +335,6 @@ function RegistraMantenimiento(props) {
                     </Form>
                 </div>
             </Container>
-        </LayoutPrincipal>
         </>
     );
 }

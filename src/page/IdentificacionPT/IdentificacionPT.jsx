@@ -3,7 +3,6 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroIdentificacionPT from "../../components/IdentificacionPT/RegistroIdentificacionPT";
 import Lottie from 'react-lottie-player';
@@ -38,12 +37,12 @@ function IdentificacionPT(props) {
         enrutamiento.push("/DashboardProduccion")
     }
 
-     // Para controlar la paginación
-     const [rowsPerPage, setRowsPerPage] = useState(10);
-     const [page, setPage] = useState(1);
-     const [noTotalEtiquetas, setNoTotalEtiquetas] = useState(0);
+    // Para controlar la paginación
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [page, setPage] = useState(1);
+    const [noTotalEtiquetas, setNoTotalEtiquetas] = useState(0);
 
-     // Para almacenar el listado de compras realizadas
+    // Para almacenar el listado de compras realizadas
     const [listEtiquetas, setListEtiquetas] = useState(null);
 
     useEffect(() => {
@@ -93,72 +92,70 @@ function IdentificacionPT(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Etiqueta de identificacion PT
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    nuevaEtiqueta(
-                                        <RegistroIdentificacionPT
-                                            setShowModal={setShowModal}
-                                            location={location}
-                                            history={history}
-                                        />
-                                    )
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nueva etiqueta
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
-
-                {
-                    listEtiquetas ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListEtiquetasPT
-                                        setRefreshCheckLogin={setRefreshCheckLogin}
-                                        listEtiquetas={listEtiquetas}
-                                        history={history}
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Etiqueta de identificacion PT
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                nuevaEtiqueta(
+                                    <RegistroIdentificacionPT
+                                        setShowModal={setShowModal}
                                         location={location}
-                                        rowsPerPage={rowsPerPage}
-                                        setRowsPerPage={setRowsPerPage}
-                                        page={page}
-                                        setPage={setPage}
-                                        noTotalEtiquetas={noTotalEtiquetas}
+                                        history={history}
                                     />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
+                                )
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva etiqueta
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
-                    {contentModal}
-                </BasicModal>
-            </LayoutPrincipal>
+            {
+                listEtiquetas ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListEtiquetasPT
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                    listEtiquetas={listEtiquetas}
+                                    history={history}
+                                    location={location}
+                                    rowsPerPage={rowsPerPage}
+                                    setRowsPerPage={setRowsPerPage}
+                                    page={page}
+                                    setPage={setPage}
+                                    noTotalEtiquetas={noTotalEtiquetas}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
+
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }

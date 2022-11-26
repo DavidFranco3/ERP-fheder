@@ -3,7 +3,6 @@ import { Alert, Button, Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 
 function AlertasCalidad(props) {
     const { setRefreshCheckLogin } = props;
@@ -22,7 +21,6 @@ function AlertasCalidad(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8}>
@@ -50,7 +48,6 @@ function AlertasCalidad(props) {
                         </Col>
                     </Row>
                 </Alert>
-            </LayoutPrincipal>
         </>
     );
 }

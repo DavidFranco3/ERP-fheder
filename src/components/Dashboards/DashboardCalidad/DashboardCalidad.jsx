@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { useHistory } from "react-router-dom";
 
 import "./DashboardCalidad.scss";
@@ -60,74 +59,72 @@ function DashboardCalidad(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Calidad
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
-                <div className="grid grid-cols-3 gap-3">
-                    <ItemCard
-                        path={'/Calidad'}
-                        logo={LogoCalidad}
-                        title={'Inspeccion de calidad de material'}
-                    />
-                    <ItemCard
-                        path={'/StatusMaterial'}
-                        logo={LogoIdentificacion}
-                        title={'Identificación de estatus de material'}
-                    />
-                    <ItemCard
-                        path={'/InspeccionPieza'}
-                        logo={LogoInspeccionPieza}
-                        title={'Registro de inspección de pieza'}
-                    />
-                    <ItemCard
-                        path={'/EtiquetaPrimeraPieza'}
-                        logo={LogoPrimeraPieza}
-                        title={'Registro de primera pieza'}
-                    />
-                    <ItemCard
-                        path={'/AlertasCalidad'}
-                        logo={LogoAlertas}
-                        title={'Alertas de calidad'}
-                    />
-                    <ItemCard
-                        path={'/NoConformidad'}
-                        logo={LogoNoConformidad}
-                        title={'Control de no conformidad'}
-                    />
-                    <ItemCard
-                        path={'/LiberacionProductoProceso'}
-                        logo={LogoLiberacion}
-                        title={'Hoja de liberación de producto y proceso'}
-                    />
-                    <ItemCard
-                        path={'/FichaTecnica'}
-                        logo={LogoFichasTecnicas}
-                        title={'Fichas tecnicas'}
-                    />
-                    <ItemCard
-                        path={'/CertificadosCalidad'}
-                        logo={LogoCertificados}
-                        title={'Certificados de calidad'}
-                    />
-                </div>
-            </LayoutPrincipal>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Calidad
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
+            <div className="grid grid-cols-3 gap-3">
+                <ItemCard
+                    path={'/Calidad'}
+                    logo={LogoCalidad}
+                    title={'Inspeccion de calidad de material'}
+                />
+                <ItemCard
+                    path={'/StatusMaterial'}
+                    logo={LogoIdentificacion}
+                    title={'Identificación de estatus de material'}
+                />
+                <ItemCard
+                    path={'/InspeccionPieza'}
+                    logo={LogoInspeccionPieza}
+                    title={'Registro de inspección de pieza'}
+                />
+                <ItemCard
+                    path={'/EtiquetaPrimeraPieza'}
+                    logo={LogoPrimeraPieza}
+                    title={'Registro de primera pieza'}
+                />
+                <ItemCard
+                    path={'/AlertasCalidad'}
+                    logo={LogoAlertas}
+                    title={'Alertas de calidad'}
+                />
+                <ItemCard
+                    path={'/NoConformidad'}
+                    logo={LogoNoConformidad}
+                    title={'Control de no conformidad'}
+                />
+                <ItemCard
+                    path={'/LiberacionProductoProceso'}
+                    logo={LogoLiberacion}
+                    title={'Hoja de liberación de producto y proceso'}
+                />
+                <ItemCard
+                    path={'/FichaTecnica'}
+                    logo={LogoFichasTecnicas}
+                    title={'Fichas tecnicas'}
+                />
+                <ItemCard
+                    path={'/CertificadosCalidad'}
+                    logo={LogoCertificados}
+                    title={'Certificados de calidad'}
+                />
+            </div>
         </>
     );
 }

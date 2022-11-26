@@ -1,14 +1,13 @@
 import { useState, useEffect, Suspense } from 'react';
 import { withRouter, useHistory } from "react-router-dom";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
-import {Alert, Button, Col, Row, Spinner } from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCirclePlus, faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
+import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import RegistroExistenciasAlmacenPT from "../../components/AlmacenPT/RegistroExistenciasAlmacenPT";
 import RegistroEntradaSalidaAlmacenPT from "../../components/AlmacenPT/RegistroEntradaSalidaAlmacenPT";
 import ListAlmacenPT from "../../components/AlmacenPT/ListAlmacenPT";
 import BasicModal from "../../components/Modal/BasicModal";
-import {listarPaginacionAlmacenPT, totalAlmacenPT} from "../../api/almacenPT";
+import { listarPaginacionAlmacenPT, totalAlmacenPT } from "../../api/almacenPT";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -52,12 +51,12 @@ function AlmacenPt(props) {
                 setNoTotalAlmacenPT(data)
             })
             // listarPaginacionAlmacenMP(page,rowsPerPage)
-            if(page === 0) {
+            if (page === 0) {
                 setPage(1)
                 listarPaginacionAlmacenPT(page, rowsPerPage).then(response => {
                     const { data } = response;
 
-                    if(!listAlmacenPT &&data) {
+                    if (!listAlmacenPT && data) {
                         setListAlmacenPT(formatModelAlmacenPT(data));
                     } else {
                         const datosUsuarios = formatModelAlmacenPT(data);
@@ -68,7 +67,7 @@ function AlmacenPt(props) {
                 listarPaginacionAlmacenPT(page, rowsPerPage).then(response => {
                     const { data } = response;
 
-                    if(!listAlmacenPT &&data) {
+                    if (!listAlmacenPT && data) {
                         setListAlmacenPT(formatModelAlmacenPT(data));
                     } else {
                         const datosUsuarios = formatModelAlmacenPT(data);
@@ -87,87 +86,83 @@ function AlmacenPt(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8} className="tituloPrincipal">
-                            <h1>
-                                Existencias de almacén producto terminado
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    nuevoRegistro(
-                                        <RegistroExistenciasAlmacenPT
-                                            setShowModal={setShowModal}
-                                            location={location}
-                                            history={history}
-                                        />
-                                    )
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nuevo registro
-                            </Button>
-
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    nuevaEntradaSalida(
-                                        <RegistroEntradaSalidaAlmacenPT
-                                            setShowModal={setShowModal}
-                                            location={location}
-                                            history={history}
-                                        />
-                                    )
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nueva E / S
-                            </Button>
-
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-
-                        </Col>
-                    </Row>
-                </Alert>
-
-                {
-                    listAlmacenPT ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListAlmacenPT
-                                        listAlmacenPT={listAlmacenPT}
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8} className="tituloPrincipal">
+                        <h1>
+                            Existencias de almacén producto terminado
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                nuevoRegistro(
+                                    <RegistroExistenciasAlmacenPT
+                                        setShowModal={setShowModal}
                                         location={location}
                                         history={history}
-                                        setRefreshCheckLogin={setRefreshCheckLogin}
-                                        rowsPerPage={rowsPerPage}
-                                        setRowsPerPage={setRowsPerPage}
-                                        page={page}
-                                        setPage={setPage}
-                                        noTotalAlmacenPT={noTotalAlmacenPT}
                                     />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
+                                )
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo registro
+                        </Button>
 
-            </LayoutPrincipal>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                nuevaEntradaSalida(
+                                    <RegistroEntradaSalidaAlmacenPT
+                                        setShowModal={setShowModal}
+                                        location={location}
+                                        history={history}
+                                    />
+                                )
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva E / S
+                        </Button>
 
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+
+                    </Col>
+                </Row>
+            </Alert>
+
+            {
+                listAlmacenPT ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListAlmacenPT
+                                    listAlmacenPT={listAlmacenPT}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                    rowsPerPage={rowsPerPage}
+                                    setRowsPerPage={setRowsPerPage}
+                                    page={page}
+                                    setPage={setPage}
+                                    noTotalAlmacenPT={noTotalAlmacenPT}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}
             </BasicModal>

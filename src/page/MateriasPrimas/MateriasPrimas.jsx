@@ -3,7 +3,6 @@ import { withRouter, useHistory } from "react-router-dom";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import { totalMateriaPrima, listarMateriaPrimaPaginacion } from "../../api/materiaPrima";
 import ListMateriasPrimas from "../../components/MateriasPrimas/ListMateriasPrimas";
 import RegistroMateriasPrimas from '../../components/MateriasPrimas/RegistroMateriasPrimas';
@@ -86,73 +85,71 @@ function MateriasPrimas(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Lista de materiales
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    registraMaterial(
-                                        <RegistroMateriasPrimas
-                                            setShowModal={setShowModal}
-                                            showModal={showModal}
-                                            location={location}
-                                            history={history}
-                                        />
-                                    )
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Registrar un nuevo material
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
-
-                {
-                    listMateriales ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListMateriasPrimas
-                                        listMateriales={listMateriales}
-                                        history={history}
-                                        setRefreshCheckLogin={setRefreshCheckLogin}
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Lista de materiales
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                registraMaterial(
+                                    <RegistroMateriasPrimas
+                                        setShowModal={setShowModal}
+                                        showModal={showModal}
                                         location={location}
-                                        rowsPerPage={rowsPerPage}
-                                        setRowsPerPage={setRowsPerPage}
-                                        page={page}
-                                        setPage={setPage}
-                                        noTotalMateriales={noTotalMateriales}
+                                        history={history}
                                     />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
+                                )
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar un nuevo material
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
-                    {contentModal}
-                </BasicModal>
-            </LayoutPrincipal>
+            {
+                listMateriales ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListMateriasPrimas
+                                    listMateriales={listMateriales}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                    location={location}
+                                    rowsPerPage={rowsPerPage}
+                                    setRowsPerPage={setRowsPerPage}
+                                    page={page}
+                                    setPage={setPage}
+                                    noTotalMateriales={noTotalMateriales}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
+
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }

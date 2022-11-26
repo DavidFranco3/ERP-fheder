@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { useHistory } from "react-router-dom";
 import ImagenPanel from "../../../assets/svg/panelPrincipal.svg";
 import "./DashboardMantenimiento.scss";
@@ -59,7 +58,6 @@ function DashboardMantenimiento(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
             <Alert>
                     <Row>
                         <Col xs={12} md={8}>
@@ -121,7 +119,6 @@ function DashboardMantenimiento(props) {
                         title={'Lista de verificacion de mantenimientos preventivos'}
                     />
                 </div>
-            </LayoutPrincipal>
         </>
     );
 }

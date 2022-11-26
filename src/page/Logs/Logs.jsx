@@ -1,14 +1,13 @@
 import { useState, useEffect, Suspense } from 'react';
-import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCirclePlus, faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
+import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
 import { totalLogs, listarLogsPaginacion } from "../../api/logsGenerales";
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import ListLogs from "../../components/Logs/ListLogs";
 import moment from "moment";
 import "./Logs.scss";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -20,7 +19,7 @@ function Logs(props) {
     const rutaRegreso = () => {
         enrutamiento.push("/")
     }
-    
+
     // Para controlar la paginación
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [page, setPage] = useState(1);
@@ -37,17 +36,17 @@ function Logs(props) {
                 setNoTotaLogs(data)
             }).catch(e => {
                 // console.log(e)
-                if(e.message === 'Network Error') {
+                if (e.message === 'Network Error') {
                     toast.error("Conexión al servidor no disponible");
                 }
             })
 
-            if(page === 0) {
+            if (page === 0) {
                 setPage(1)
                 listarLogsPaginacion(page, rowsPerPage).then(response => {
                     const { data } = response;
                     //console.log(data)
-                    if(!listLog && data){
+                    if (!listLog && data) {
                         setListLog(formatModelLogs(data));
                     } else {
                         const datosLogs = formatModelLogs(data);
@@ -60,7 +59,7 @@ function Logs(props) {
                 listarLogsPaginacion(page, rowsPerPage).then(response => {
                     const { data } = response;
                     //console.log(data)
-                    if(!listLog && data){
+                    if (!listLog && data) {
                         setListLog(formatModelLogs(data));
                     } else {
                         const datosLogs = formatModelLogs(data);
@@ -78,62 +77,59 @@ function Logs(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
-                <Alert className="alertLogsSistema">
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Logs del sistema
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
+            <Alert className="alertLogsSistema">
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Logs del sistema
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
                         <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                <div className="listadoLogs">
-                    {
-                        listLog ?
-                            (
-                                <>
-                                    <Suspense fallback={<Spinner />}>
+            <div className="listadoLogs">
+                {
+                    listLog ?
+                        (
+                            <>
+                                <Suspense fallback={<Spinner />}>
                                     <ListLogs
-                                    listLogs={listLog}
-                                    location={location}
-                                    history={history}
-                                    setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalLogs={noTotalLogs}
+                                        listLogs={listLog}
+                                        location={location}
+                                        history={history}
+                                        setRefreshCheckLogin={setRefreshCheckLogin}
+                                        rowsPerPage={rowsPerPage}
+                                        setRowsPerPage={setRowsPerPage}
+                                        page={page}
+                                        setPage={setPage}
+                                        noTotalLogs={noTotalLogs}
                                     />
-                                    </Suspense>
-                                </>
-                            )
-                            :
-                            (
-                                <>
-                                    <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                                </>
-                            )
-                    }
-                </div>
-
-            </LayoutPrincipal>
+                                </Suspense>
+                            </>
+                        )
+                        :
+                        (
+                            <>
+                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                            </>
+                        )
+                }
+            </div>
         </>
     );
 }
 
-function formatModelLogs(data){
+function formatModelLogs(data) {
     //console.log(data)
     const dataTemp = []
     data.forEach(data => {

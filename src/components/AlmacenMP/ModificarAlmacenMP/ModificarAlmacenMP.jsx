@@ -127,7 +127,7 @@ function ModificarAlmacenMp(props) {
                                 variant="success"
                                 className="registrar"
                             >
-                                {!loading ? "Actualizar" : <Spinner animation="border" />}
+                                {!loading ? "Modificar" : <Spinner animation="border" />}
                             </Button>
                         </Col>
                         <Col>

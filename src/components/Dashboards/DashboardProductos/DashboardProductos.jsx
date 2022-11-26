@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { useHistory } from "react-router-dom";
 import ImagenPanel from "../../../assets/svg/panelPrincipal.svg";
 
@@ -51,7 +50,6 @@ function DashboardProductos(props) {
 
     return (
         <>
-            <LayoutPrincipal className="Dashboard" paginaSeleccionada="Dashboard" setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Container className="gruposOpciones">
                     <div className="subeFotoPerfil">
                         <h3 className="textoFotoPerfil">Productos</h3>
@@ -88,7 +86,6 @@ function DashboardProductos(props) {
                         </Card>
                     </CardGroup>
                 </Container>
-            </LayoutPrincipal>
         </>
     );
 }

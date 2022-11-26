@@ -28,13 +28,7 @@ function Login({ setRefreshCheckLogin }) {
     const onSubmit = async (e) => {
         e.preventDefault()
 
-        let validCount = 0
-        values(formData).some((value) => {
-            value && validCount++
-            return null
-        })
-
-        if (validCount !== size(formData)) {
+        if (!formData.correo || !formData.password) {
             toast.warning('Completa todos los campos del formulario.')
         } else {
             if (!isEmailValid(formData.correo)) {

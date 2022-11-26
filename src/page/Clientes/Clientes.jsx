@@ -1,5 +1,4 @@
 import { useState, useEffect, Suspense } from 'react';
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import "./Clientes.scss";
 import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -98,7 +97,6 @@ function Clientes(props) {
 
     return (
         <>
-            <LayoutPrincipal className="Clientes" paginaSeleccionada="Clientes" setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8}>
@@ -153,7 +151,6 @@ function Clientes(props) {
                         </>
                         )
                 }
-            </LayoutPrincipal>
         </>
     );
 }

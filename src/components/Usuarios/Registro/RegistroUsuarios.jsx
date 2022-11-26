@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-
 import "./RegistroUsuarios.scss";
 import { Alert, Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import Dropzone from "../../Dropzone";
 import { useHistory } from "react-router-dom";
 import { listarDepartamento } from "../../../api/departamentos";
@@ -116,7 +114,6 @@ function RegistroUsuarios(props) {
 
     return (
         <>
-            <LayoutPrincipal className="RegistroUsuarios" paginaSeleccionada="Usuarios" setRefreshCheckLogin={setRefreshCheckLogin}>
             <Alert>
                     <Row>
                         <Col xs={12} md={8}>
@@ -399,7 +396,6 @@ function RegistroUsuarios(props) {
                         </Form>
                     </div>
                 </Container>
-            </LayoutPrincipal>
         </>
     );
 }

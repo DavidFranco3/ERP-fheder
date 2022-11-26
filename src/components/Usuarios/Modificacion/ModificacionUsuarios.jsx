@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { useHistory, useParams } from "react-router-dom";
 import { listarDepartamento } from "../../../api/departamentos";
 import { isCurpValid, isEmailValid, isRFCValid } from "../../../utils/validations";
@@ -134,291 +133,289 @@ function ModificacionUsuarios(props) {
 
     return (
         <>
-            <LayoutPrincipal className="RegistroUsuarios" paginaSeleccionada="Usuarios" setRefreshCheckLogin={setRefreshCheckLogin}>
             <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Modificando usuario
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    regresaPagina()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
-                <Container>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Modificando usuario
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            onClick={() => {
+                                regresaPagina()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
+            <Container>
 
-                    <br/><br/>
+                <br /><br />
 
-                    <div className="formularioDatos">
-                        <Form onChange={onChange} onSubmit={onSubmit}>
-                            <Row className="mb-3">
-                                <Form.Group as={Col} controlId="formHorizontalNombre">
-                                    <Form.Label>
-                                        Nombre
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Escribe el nombre"
-                                        name="nombre"
-                                        defaultValue={formData.nombre}
-                                    />
-                                </Form.Group>
-
-                                <Form.Group as={Col} controlId="formHorizontalTelefonoFijo">
-                                    <Form.Label>
-                                        Teléfono fijo
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="number"
-                                        placeholder="Numero de teléfono"
-                                        name="telefonoFijo"
-                                        defaultValue={formData.telefonoFijo}
-                                    />
-                                </Form.Group>
-                            </Row>
-
-                            <Row className="mb-3">
-                                <Form.Group as={Col} controlId="formHorizontalNSS">
-                                    <Form.Label>
-                                        NSS
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Escribe el nss"
-                                        name="nss"
-                                        defaultValue={formData.nss}
-                                    />
-                                </Form.Group>
-
-                                <Form.Group as={Col} controlId="formHorizontalRFC">
-                                    <Form.Label>
-                                        RFC
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Escribe el rfc"
-                                        name="rfc"
-                                        defaultValue={formData.rfc}
-                                    />
-                                </Form.Group>
-
-                                <Form.Group as={Col} controlId="formHorizontalTelefonoCelular">
-                                    <Form.Label>
-                                        Teléfono celular
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="number"
-                                        placeholder="Numero de teléfono"
-                                        name="telefonoCelular"
-                                        defaultValue={formData.telefonoCelular}
-                                    />
-                                </Form.Group>
-                            </Row>
-
-                            <Row className="mb-3">
-                                <Form.Label align="center">
-                                    Datos del domicilio
+                <div className="formularioDatos">
+                    <Form onChange={onChange} onSubmit={onSubmit}>
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formHorizontalNombre">
+                                <Form.Label>
+                                    Nombre
                                 </Form.Label>
-                                <Form.Group as={Col} className="mb-3" controlId="formHorizontalCalle">
-                                    <Form.Label>
-                                        Calle
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Escribe la calle"
-                                        name="calle"
-                                        defaultValue={formData.calle}
-                                    />
-                                </Form.Group>
-
-                                <Form.Group as={Col} controlId="formGridNumeroExterior">
-                                    <Form.Label>
-                                        Numero exterior
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Numero exterior"
-                                        name="numeroExterior"
-                                        defaultValue={formData.numeroExterior}
-                                    />
-                                </Form.Group>
-
-                                <Form.Group as={Col} controlId="formGridNumeroInterior">
-                                    <Form.Label>
-                                        Numero interior
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Numero interior"
-                                        name="numeroInterior"
-                                        defaultValue={formData.numeroInterior}
-                                    />
-                                </Form.Group>
-                            </Row>
-
-                            <Row className="mb-3">
-                                <Form.Group as={Col} controlId="formGridEstado">
-                                    <Form.Label>
-                                        Estado
-                                    </Form.Label>
-
-                                    <Form.Control as="select"
-                                        defaultValue={formData.estado}
-                                        name="estado"
-                                    >
-                                        <option>Elige una opción</option>
-                                        <option value="Aguascalientes" selected={formData.estado === "Aguascalientes"}>Aguascalientes</option>
-                                        <option value="Baja California" selected={formData.estado === "Baja California"}>Baja California</option>
-                                        <option value="Baja California Sur" selected={formData.estado === ""}>Baja California Sur</option>
-                                        <option value="Campeche" selected={formData.estado === ""}>Campeche</option>
-                                        <option value="Chiapas" selected={formData.estado === ""}>Chiapas</option>
-                                        <option value="Chihuahua" selected={formData.estado === ""}>Chihuahua</option>
-                                        <option value="CDMX" selected={formData.estado === ""}>Ciudad de México</option>
-                                        <option value="Coahuila" selected={formData.estado === ""}>Coahuila</option>
-                                        <option value="Colima" selected={formData.estado === ""}>Colima</option>
-                                        <option value="Durango" selected={formData.estado === ""}>Durango</option>
-                                        <option value="Estado de México" selected={formData.estado === ""}>Estado de México</option>
-                                        <option value="Guanajuato" selected={formData.estado === ""}>Guanajuato</option>
-                                        <option value="Guerrero" selected={formData.estado === ""}>Guerrero</option>
-                                        <option value="Hidalgo" selected={formData.estado === ""}>Hidalgo</option>
-                                        <option value="Jalisco" selected={formData.estado === ""}>Jalisco</option>
-                                        <option value="Michoacán" selected={formData.estado === ""}>Michoacán</option>
-                                        <option value="Morelos" selected={formData.estado === ""}>Morelos</option>
-                                        <option value="Nayarit" selected={formData.estado === ""}>Nayarit</option>
-                                        <option value="Nuevo León" selected={formData.estado === ""}>Nuevo León</option>
-                                        <option value="Oaxaca" selected={formData.estado === ""}>Oaxaca</option>
-                                        <option value="Puebla" selected={formData.estado === ""}>Puebla</option>
-                                        <option value="Querétaro" selected={formData.estado === "Querétaro"}>Querétaro</option>
-                                        <option value="Quintana Roo" selected={formData.estado === ""}>Quintana Roo</option>
-                                        <option value="San Luis Potosí" selected={formData.estado === ""}>San Luis Potosí</option>
-                                        <option value="Sinaloa" selected={formData.estado === ""}>Sinaloa</option>
-                                        <option value="Sonora" selected={formData.estado === ""}>Sonora</option>
-                                        <option value="Tabasco" selected={formData.estado === ""}>Tabasco</option>
-                                        <option value="Tamaulipas" selected={formData.estado === ""}>Tamaulipas</option>
-                                        <option value="Tlaxcala" selected={formData.estado === ""}>Tlaxcala</option>
-                                        <option value="Veracruz" selected={formData.estado === ""}>Veracruz</option>
-                                        <option value="Yucatán" selected={formData.estado === ""}>Yucatán</option>
-                                        <option value="Zacatecas" selected={formData.estado === ""}>Zacatecas</option>
-                                    </Form.Control>
-                                </Form.Group>
-
-                                <Form.Group as={Col} controlId="formGridMunicipio">
-                                    <Form.Label>
-                                        Municipio
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Municipio"
-                                        name="municipio"
-                                        defaultValue={formData.municipio}
-                                    />
-                                </Form.Group>
-
-                                <Form.Group as={Col} controlId="formGridColonia">
-                                    <Form.Label>
-                                        Colonia
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Colonia"
-                                        name="colonia"
-                                        defaultValue={formData.colonia}
-                                    />
-                                </Form.Group>
-                            </Row>
-
-                            <Row className="mb-3">
-                                <Form.Group as={Col} controlId="formHorizontalDepartamento">
-                                    <Form.Label>
-                                        Departamento
-                                    </Form.Label>
-                                    <Form.Control as="select"
-                                        defaultValue={formData.departamento}
-                                        name="departamento"
-                                    >
-                                        <option>Elige una opción</option>
-                                        {map(departamentosregistrados, (departamento, index) => (
-                                            <option key={index} value={departamento?.id} selected={formData.departamento === departamento?.nombre}>{departamento?.nombre}</option>
-                                        ))}
-                                    </Form.Control>
-                                </Form.Group>
-
-                                <Form.Group as={Col} controlId="formHorizontalCorreo">
-                                    <Form.Label>
-                                        Correo
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Correo electronico"
-                                        name="correo"
-                                        defaultValue={formData.correo}
-                                    />
-                                </Form.Group>
-                            </Row>
-
-                            <Row className="mb-3">
-                                <Form.Group as={Col} controlId="formGridPassword">
-                                    <Form.Label>
-                                        Contraseña
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="password"
-                                        placeholder="Contraseña"
-                                        name="password"
-                                        defaultValue={formData.password}
-                                    />
-                                </Form.Group>
-
-                                <Form.Group as={Col} controlId="formGridRepitePassword">
-                                    <Form.Label>
-                                        Repite la contraseña
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="password"
-                                        placeholder="Repite la contraseña"
-                                        name="repitePassword"
-                                        defaultValue={formData.repitePassword}
-                                    />
-                                </Form.Group>
-                            </Row>
-
-                            <Form.Group as={Row} className="botones">
-                                <Row>
-                                    <Col>
-                                        <Button
-                                            type="submit"
-                                            variant="success"
-                                            className="registrar"
-                                        >
-                                            {!loading ? "Actualizar" : <Spinner animation="border" />}
-                                        </Button>
-                                    </Col>
-                                    <Col>
-                                        <Button
-                                            variant="danger"
-                                            className="cancelar"
-                                            onClick={() => {
-                                                regresaPagina()
-                                            }}
-                                        >
-                                            Cancelar
-                                        </Button>
-                                    </Col>
-                                </Row>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Escribe el nombre"
+                                    name="nombre"
+                                    defaultValue={formData.nombre}
+                                />
                             </Form.Group>
-                        </Form>
-                    </div>
-                </Container>
-            </LayoutPrincipal>
+
+                            <Form.Group as={Col} controlId="formHorizontalTelefonoFijo">
+                                <Form.Label>
+                                    Teléfono fijo
+                                </Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    placeholder="Numero de teléfono"
+                                    name="telefonoFijo"
+                                    defaultValue={formData.telefonoFijo}
+                                />
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formHorizontalNSS">
+                                <Form.Label>
+                                    NSS
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Escribe el nss"
+                                    name="nss"
+                                    defaultValue={formData.nss}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formHorizontalRFC">
+                                <Form.Label>
+                                    RFC
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Escribe el rfc"
+                                    name="rfc"
+                                    defaultValue={formData.rfc}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formHorizontalTelefonoCelular">
+                                <Form.Label>
+                                    Teléfono celular
+                                </Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    placeholder="Numero de teléfono"
+                                    name="telefonoCelular"
+                                    defaultValue={formData.telefonoCelular}
+                                />
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Label align="center">
+                                Datos del domicilio
+                            </Form.Label>
+                            <Form.Group as={Col} className="mb-3" controlId="formHorizontalCalle">
+                                <Form.Label>
+                                    Calle
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Escribe la calle"
+                                    name="calle"
+                                    defaultValue={formData.calle}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridNumeroExterior">
+                                <Form.Label>
+                                    Numero exterior
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Numero exterior"
+                                    name="numeroExterior"
+                                    defaultValue={formData.numeroExterior}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridNumeroInterior">
+                                <Form.Label>
+                                    Numero interior
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Numero interior"
+                                    name="numeroInterior"
+                                    defaultValue={formData.numeroInterior}
+                                />
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formGridEstado">
+                                <Form.Label>
+                                    Estado
+                                </Form.Label>
+
+                                <Form.Control as="select"
+                                    defaultValue={formData.estado}
+                                    name="estado"
+                                >
+                                    <option>Elige una opción</option>
+                                    <option value="Aguascalientes" selected={formData.estado === "Aguascalientes"}>Aguascalientes</option>
+                                    <option value="Baja California" selected={formData.estado === "Baja California"}>Baja California</option>
+                                    <option value="Baja California Sur" selected={formData.estado === ""}>Baja California Sur</option>
+                                    <option value="Campeche" selected={formData.estado === ""}>Campeche</option>
+                                    <option value="Chiapas" selected={formData.estado === ""}>Chiapas</option>
+                                    <option value="Chihuahua" selected={formData.estado === ""}>Chihuahua</option>
+                                    <option value="CDMX" selected={formData.estado === ""}>Ciudad de México</option>
+                                    <option value="Coahuila" selected={formData.estado === ""}>Coahuila</option>
+                                    <option value="Colima" selected={formData.estado === ""}>Colima</option>
+                                    <option value="Durango" selected={formData.estado === ""}>Durango</option>
+                                    <option value="Estado de México" selected={formData.estado === ""}>Estado de México</option>
+                                    <option value="Guanajuato" selected={formData.estado === ""}>Guanajuato</option>
+                                    <option value="Guerrero" selected={formData.estado === ""}>Guerrero</option>
+                                    <option value="Hidalgo" selected={formData.estado === ""}>Hidalgo</option>
+                                    <option value="Jalisco" selected={formData.estado === ""}>Jalisco</option>
+                                    <option value="Michoacán" selected={formData.estado === ""}>Michoacán</option>
+                                    <option value="Morelos" selected={formData.estado === ""}>Morelos</option>
+                                    <option value="Nayarit" selected={formData.estado === ""}>Nayarit</option>
+                                    <option value="Nuevo León" selected={formData.estado === ""}>Nuevo León</option>
+                                    <option value="Oaxaca" selected={formData.estado === ""}>Oaxaca</option>
+                                    <option value="Puebla" selected={formData.estado === ""}>Puebla</option>
+                                    <option value="Querétaro" selected={formData.estado === "Querétaro"}>Querétaro</option>
+                                    <option value="Quintana Roo" selected={formData.estado === ""}>Quintana Roo</option>
+                                    <option value="San Luis Potosí" selected={formData.estado === ""}>San Luis Potosí</option>
+                                    <option value="Sinaloa" selected={formData.estado === ""}>Sinaloa</option>
+                                    <option value="Sonora" selected={formData.estado === ""}>Sonora</option>
+                                    <option value="Tabasco" selected={formData.estado === ""}>Tabasco</option>
+                                    <option value="Tamaulipas" selected={formData.estado === ""}>Tamaulipas</option>
+                                    <option value="Tlaxcala" selected={formData.estado === ""}>Tlaxcala</option>
+                                    <option value="Veracruz" selected={formData.estado === ""}>Veracruz</option>
+                                    <option value="Yucatán" selected={formData.estado === ""}>Yucatán</option>
+                                    <option value="Zacatecas" selected={formData.estado === ""}>Zacatecas</option>
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridMunicipio">
+                                <Form.Label>
+                                    Municipio
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Municipio"
+                                    name="municipio"
+                                    defaultValue={formData.municipio}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridColonia">
+                                <Form.Label>
+                                    Colonia
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Colonia"
+                                    name="colonia"
+                                    defaultValue={formData.colonia}
+                                />
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formHorizontalDepartamento">
+                                <Form.Label>
+                                    Departamento
+                                </Form.Label>
+                                <Form.Control as="select"
+                                    defaultValue={formData.departamento}
+                                    name="departamento"
+                                >
+                                    <option>Elige una opción</option>
+                                    {map(departamentosregistrados, (departamento, index) => (
+                                        <option key={index} value={departamento?.id} selected={formData.departamento === departamento?.nombre}>{departamento?.nombre}</option>
+                                    ))}
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formHorizontalCorreo">
+                                <Form.Label>
+                                    Correo
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Correo electronico"
+                                    name="correo"
+                                    defaultValue={formData.correo}
+                                />
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formGridPassword">
+                                <Form.Label>
+                                    Contraseña
+                                </Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    placeholder="Contraseña"
+                                    name="password"
+                                    defaultValue={formData.password}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridRepitePassword">
+                                <Form.Label>
+                                    Repite la contraseña
+                                </Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    placeholder="Repite la contraseña"
+                                    name="repitePassword"
+                                    defaultValue={formData.repitePassword}
+                                />
+                            </Form.Group>
+                        </Row>
+
+                        <Form.Group as={Row} className="botones">
+                            <Row>
+                                <Col>
+                                    <Button
+                                        type="submit"
+                                        variant="success"
+                                        className="registrar"
+                                    >
+                                        {!loading ? "Modificar" : <Spinner animation="border" />}
+                                    </Button>
+                                </Col>
+                                <Col>
+                                    <Button
+                                        variant="danger"
+                                        className="cancelar"
+                                        onClick={() => {
+                                            regresaPagina()
+                                        }}
+                                    >
+                                        Cancelar
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </Form.Group>
+                    </Form>
+                </div>
+            </Container>
         </>
     );
 }

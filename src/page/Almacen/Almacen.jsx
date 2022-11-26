@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import LayoutPrincipal from "../../layout/layoutPrincipal";
 import {Alert, Button, Col, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCirclePlus, faPlus, faUsers} from "@fortawesome/free-solid-svg-icons";
@@ -67,7 +66,6 @@ function Almacen(props) {
 
     return (
         <>
-            <LayoutPrincipal setRefreshCheckLogin={setRefreshCheckLogin}>
                 <Alert>
                     <Row>
                         <Col xs={12} md={8}>
@@ -100,8 +98,6 @@ function Almacen(props) {
                         </>
                     )
                 }
-
-            </LayoutPrincipal>
         </>
     );
 }
