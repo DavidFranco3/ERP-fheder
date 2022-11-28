@@ -183,6 +183,7 @@ function RegistroVentas(props) {
                     fechaElaboracion: formData.fechaPedido,
                     fechaEntrega: formData.fechaEntrega,
                     cliente: clienteSeleccionado.id,
+                    nombreCliente: clienteSeleccionado.nombreCliente,
                     condicionesPago: formData.condicionesPago,
                     incoterms: formData.incoterms,
                     moneda: "M.N.",
@@ -318,7 +319,7 @@ function RegistroVentas(props) {
             colonia: temp[3],
             municipio: temp[4],
             estado: temp[5],
-            pais: temp[6]
+            nombreCliente: temp[6]
         })
     }
 
@@ -375,7 +376,7 @@ function RegistroVentas(props) {
                                         >
                                             <option>Elige una opción</option>
                                             {map(listClientes, (cliente, index) => (
-                                                <option key={index} value={cliente?.id + "/" + cliente?.calle + "/" + cliente?.numeroExterior + "/" + cliente?.colonia + "/" + cliente?.municipio + "/" + cliente?.estado + "/" + cliente?.pais}>{cliente?.nombre}</option>
+                                                <option key={index} value={cliente?.id + "/" + cliente?.calle + "/" + cliente?.numeroExterior + "/" + cliente?.colonia + "/" + cliente?.municipio + "/" + cliente?.estado + "/" + cliente?.nombre}>{cliente?.nombre}</option>
                                             ))}
                                         </Form.Control>
                                     </Col>

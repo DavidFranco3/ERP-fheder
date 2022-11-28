@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
-import BuscarOV from "../BuscarOV";
+import BuscarOV from "../../../page/BuscarOV";
 import { useHistory, useParams } from "react-router-dom";
 import "./ModificacionProduccion.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -201,6 +201,7 @@ function ModificacionVentas(props) {
                 fechaElaboracion: informacionPedido.fechaPedido,
                 fechaEntrega: informacionPedido.fechaEntrega,
                 cliente: clienteSeleccionado.id,
+                nombreCliente: clienteSeleccionado.nombreCliente,
                 condicionesPago: informacionPedido.condicionesPago,
                 incoterms: informacionPedido.incoterms,
                 moneda: "M.N.",
@@ -330,7 +331,7 @@ function ModificacionVentas(props) {
             colonia: temp[3],
             municipio: temp[4],
             estado: temp[5],
-            pais: temp[6]
+            nombreCliente: temp[6]
         })
     }
 
@@ -385,7 +386,7 @@ function ModificacionVentas(props) {
                                         >
                                             <option>Elige una opción</option>
                                             {map(listClientes, (cliente, index) => (
-                                                <option key={index} value={cliente?.id + "/" + cliente?.calle + "/" + cliente?.numeroExterior + "/" + cliente?.colonia + "/" + cliente?.municipio + "/" + cliente?.estado + "/" + cliente?.pais} selected={cliente?.id === informacionPedido.cliente}>{cliente?.nombre}</option>
+                                                <option key={index} value={cliente?.id + "/" + cliente?.calle + "/" + cliente?.numeroExterior + "/" + cliente?.colonia + "/" + cliente?.municipio + "/" + cliente?.estado + "/" + cliente?.nombre} selected={cliente?.id === informacionPedido.cliente}>{cliente?.nombre}</option>
                                             ))}
                                         </Form.Control>
                                     </Col>

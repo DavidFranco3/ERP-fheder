@@ -1,4 +1,3 @@
-
 // Constante para desarrollo
 // export const API_HOST = "http://localhost:5050";
 
