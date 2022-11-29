@@ -381,14 +381,13 @@ function RegistroVentas(props) {
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                    <div className="flex items-center mb-6">
+                                    <div className="flex items-center mb-1">
                                         <Form.Control 
                                         type="text"
                                             defaultValue={formData.nombreCliente}
+                                            placeholder="Buscar cliente"
                                             name="cliente"
-                                            disabled
                                         />
-                                        
                                         <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
                                             icon={faSearch}

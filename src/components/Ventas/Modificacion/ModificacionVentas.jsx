@@ -14,7 +14,10 @@ import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
+import BasicModal from "../../Modal/BasicModal";
+import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
+
 
 function ModificacionVentas(props) {
     const { datos, setRefreshCheckLogin } = props;
@@ -25,13 +28,25 @@ function ModificacionVentas(props) {
     const { folio } = params
 
     // Para guardar los datos del formulario
-    const [formData, setFormData] = useState(initialFormData(folio, new Date));
+    const [formData, setFormData] = useState(initialFormData());
 
     // Para determinar el uso de la animacion de carga mientras se guarda el pedido
     const [loading, setLoading] = useState(false);
 
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
+
+    // Para hacer uso del modal
+    const [showModal, setShowModal] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    // Para la eliminacion fisica de usuarios
+    const buscarOV = (content) => {
+        setTitulosModal("Buscar cliente");
+        setContentModal(content);
+        setShowModal(true);
+    }
 
     // Para determinar si hay conexion con el servidor o a internet
     const [conexionInternet, setConexionInternet] = useState(true);
@@ -53,12 +68,13 @@ function ModificacionVentas(props) {
         obtenerDatosPedidoVenta(folio).then(response => {
             const { data } = response;
             //console.log(data)
-            const { folio, fechaElaboracion, fechaEntrega, cliente, incoterms, especificaciones, condicionesPago, ordenCompra, cotizacion, numeroPedido, lugarEntrega, productos } = data;
+            const { folio, fechaElaboracion, fechaEntrega, cliente, nombreCliente, incoterms, especificaciones, condicionesPago, ordenCompra, cotizacion, numeroPedido, lugarEntrega, productos } = data;
             const dataTemp = {
                 folio: folio,
                 fechaPedido: fechaElaboracion,
                 fechaEntrega: fechaEntrega,
                 cliente: cliente,
+                nombreCliente: nombreCliente,
                 incoterms: incoterms,
                 especificaciones: especificaciones,
                 lugarEntrega: lugarEntrega,
@@ -200,13 +216,13 @@ function ModificacionVentas(props) {
             const dataTempPrincipalOV = {
                 fechaElaboracion: informacionPedido.fechaPedido,
                 fechaEntrega: informacionPedido.fechaEntrega,
-                cliente: clienteSeleccionado.id,
-                nombreCliente: clienteSeleccionado.nombreCliente,
+                cliente: formData.cliente == "" ? informacionPedido.cliente : formData.cliente,
+                nombreCliente: formData.nombreCliente == "" ? informacionPedido.nombreCliente : formData.nombreCliente,
                 condicionesPago: informacionPedido.condicionesPago,
                 incoterms: informacionPedido.incoterms,
                 moneda: "M.N.",
                 numeroPedido: informacionPedido.numeroPedido,
-                lugarEntrega: clienteSeleccionado == "" ? informacionPedido.lugarEntrega : clienteSeleccionado?.calle + " " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado,
+                lugarEntrega: formData.lugarEntrega == "" ? informacionPedido.lugarEntrega : formData.lugarEntrega,
                 cotizacion: linkCotizacion,
                 ordenCompra: linkOrdenCompra,
                 total: totalSinIVA,
@@ -377,18 +393,26 @@ function ModificacionVentas(props) {
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                        <Form.Control as="select"
-                                            onChange={(e) => {
-                                                handleCliente(e.target.value)
-                                            }}
-                                            defaultValue={informacionPedido.cliente}
+                                    <div className="flex items-center mb-1">
+                                        <Form.Control 
+                                        type="text"
+                                            defaultValue={formData.nombreCliente == "" ? informacionPedido.nombreCliente : formData.nombreCliente}
+                                            placeholder="Buscar cliente"
                                             name="cliente"
-                                        >
-                                            <option>Elige una opción</option>
-                                            {map(listClientes, (cliente, index) => (
-                                                <option key={index} value={cliente?.id + "/" + cliente?.calle + "/" + cliente?.numeroExterior + "/" + cliente?.colonia + "/" + cliente?.municipio + "/" + cliente?.estado + "/" + cliente?.nombre} selected={cliente?.id === informacionPedido.cliente}>{cliente?.nombre}</option>
-                                            ))}
-                                        </Form.Control>
+                                        />
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarOV(
+                                                    <BuscarCliente
+                                                        formData={formData}
+                                                        setFormData={setFormData}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        />
+                                    </div>
                                     </Col>
                                 </Form.Group>
                             </Row>
@@ -532,7 +556,7 @@ function ModificacionVentas(props) {
                                             placeholder="Lugar de entrega"
                                             style={{ height: '100px' }}
                                             name="lugarEntrega"
-                                            defaultValue={clienteSeleccionado == "" ? informacionPedido.lugarEntrega : clienteSeleccionado?.calle + " " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado}
+                                            defaultValue={formData.lugarEntrega == "" ? informacionPedido.lugarEntrega : formData.lugarEntrega}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -873,21 +897,18 @@ function ModificacionVentas(props) {
                     </Form>
                 </div>
             </Container>
+
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }
 
 function initialFormData(folio, fecha) {
     return {
-        folio: folio,
-        fechaPedido: "",
-        fechaEntrega: "",
-        incoterms: "",
-        especificaciones: "",
-        condicionesPago: "",
-        ordenCompra: "",
-        cotizacion: "",
-        numeroPedido: "",
+        cliente: "",
+        nombreCliente: "",
         lugarEntrega: ""
     }
 }
@@ -909,13 +930,14 @@ function initialValues() {
 
 // Valores almacenados
 function valoresAlmacenados(data) {
-    const { folio, fechaPedido, fechaEntrega, cliente, incoterms, especificaciones, condicionesPago, ordenCompra, cotizacion, numeroPedido, lugarEntrega } = data;
+    const { folio, fechaPedido, fechaEntrega, cliente, nombreCliente, incoterms, especificaciones, condicionesPago, ordenCompra, cotizacion, numeroPedido, lugarEntrega } = data;
 
     return {
         folio: folio,
         fechaPedido: fechaPedido,
         fechaEntrega: fechaEntrega,
         cliente: cliente,
+        nombreCliente: nombreCliente,
         incoterms: incoterms,
         especificaciones: especificaciones,
         condicionesPago: condicionesPago,

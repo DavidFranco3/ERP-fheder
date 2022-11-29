@@ -19,6 +19,9 @@ function BuscarClientes(props) {
     // Para almacenar la informacion del formulario
     const [clienteSeleccionado, setClienteSeleccionado] = useState(initialFormData());
 
+    // Para almacenar la informacion del formulario
+    const [valoresCliente, setValoresCliente] = useState(initialValues());
+
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
@@ -28,7 +31,7 @@ function BuscarClientes(props) {
             obtenerCliente(clienteSeleccionado.seleccion).then(response => {
                 const { data } = response;
                 const { cliente, nombreCliente, fechaElaboracion, fechaEntrega, productos } = data;
-                setFormData(valoresAlmacenados(data))
+                setValoresCliente(valoresAlmacenados(data))
             }).catch(e => {
                 console.log(e)
             })
@@ -55,7 +58,12 @@ function BuscarClientes(props) {
             //setNombreCliente()
             //console.log(formData)
             setLoading(true);
-            
+            const dataTemp = {
+                cliente: valoresCliente.cliente,
+                nombreCliente: valoresCliente.nombreCliente,
+                lugarEntrega: valoresCliente.lugarEntrega
+            }
+            setFormData(dataTemp)
             setShowModal(false);
         }
     }
@@ -287,11 +295,19 @@ function initialFormData() {
     }
 }
 
+function initialValues() {
+    return {
+        cliente: "",
+        nombreCliente: "",
+        lugarEntrega:  "",
+    }
+}
+
 function valoresAlmacenados(data) {
     return {
         cliente: data._id,
         nombreCliente: data.nombre,
-        lugarEntrega: data.direccion.calle +","+ data.direccion.numeroExterior +","+ data.direccion.colonia +","+ data.direccion.municipio +","+ data.direccion.estado,
+        lugarEntrega: data.direccion.calle +", "+ data.direccion.numeroExterior +", "+ data.direccion.colonia +", "+ data.direccion.municipio +", "+ data.direccion.estado,
     }
 }
 
