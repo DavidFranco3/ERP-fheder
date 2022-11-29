@@ -10,7 +10,7 @@ import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { obtenerCliente } from "../../../api/clientes";
 import { obtenerNumeroProduccion, obtenerItemProduccion, registraProduccion, obtenerProduccion, actualizaProduccion } from "../../../api/produccion"
 import { toast } from "react-toastify";
-import BuscarOV from "../BuscarOV";
+import BuscarOV from "../../../page/BuscarOV";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
@@ -27,6 +27,8 @@ function ModificacionProduccion(props) {
     const [listResultados, setListResultados] = useState([]);
 
     const [listRegistros, setListRegistros] = useState([]);
+
+    const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -379,6 +381,7 @@ function ModificacionProduccion(props) {
                                                 buscarOV(
                                                     <BuscarOV
                                                         setOrdenVenta={setOrdenVenta}
+                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
                                                         setShowModal={setShowModal}
                                                     />)
                                             }}

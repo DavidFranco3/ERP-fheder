@@ -3,7 +3,7 @@ import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstr
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, useParams } from "react-router-dom";
-import BuscarOV from "../BuscarOV";
+import BuscarOV from "../../../page/BuscarOV";
 import BasicModal from "../../Modal/BasicModal";
 import { obtenerInspeccion, actualizaInspeccion } from "../../../api/inspeccionMaterial";
 import { toast } from "react-toastify";
@@ -61,6 +61,8 @@ function ModificaReporte(props) {
     const rutaRegreso = () => {
         enrutamiento.push("/Calidad")
     }
+
+    const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
@@ -179,6 +181,7 @@ function ModificaReporte(props) {
                                                 buscarOV(
                                                     <BuscarOV
                                                         setOrdenVenta={setOrdenVenta}
+                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
                                                         setShowModal={setShowModal}
                                                     />)
                                             }}

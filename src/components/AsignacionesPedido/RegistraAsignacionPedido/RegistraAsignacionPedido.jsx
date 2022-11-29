@@ -7,12 +7,22 @@ import { map } from "lodash";
 import { registraAsignacionPedido, obtenerItem } from "../../../api/asignacionPedido";
 import { toast } from "react-toastify";
 import queryString from "query-string";
+import BuscarOV from "../../../page/BuscarOV";
+import BasicModal from "../../Modal/BasicModal";
 
 function RegistraAsignacionPedido(props) {
     const { setShowModal, location, history } = props;
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+    // Para hacer uso del modal
+    const [showModal2, setShowModal2] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
+
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
@@ -54,6 +64,12 @@ function RegistraAsignacionPedido(props) {
     // Para almacenar el listado de materias primas
     const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
 
+    const buscarOV = (content) => {
+        setTitulosModal("Buscar orden de venta");
+        setContentModal(content);
+        setShowModal2(true);
+    }
+
     useEffect(() => {
         try {
             listarAlmacenPT().then(response => {
@@ -93,7 +109,7 @@ function RegistraAsignacionPedido(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!formData.buscar || !formData.producto) {
+        if (!formData.producto) {
             toast.warning("Completa el formulario")
         } else {
 
@@ -127,7 +143,7 @@ function RegistraAsignacionPedido(props) {
                             search: queryString.stringify(""),
                         });
                         setShowModal(false)
-                    }, 2000)
+                    }, 0)
 
                 }).catch(e => {
                     console.log(e)
@@ -156,18 +172,29 @@ function RegistraAsignacionPedido(props) {
                     <Form onChange={onChange} onSubmit={onSubmit}>
                         <Row ClassName="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                <Col sm="5">
+                                <Col>
                                     <Form.Label>
                                         Orden de venta:
                                     </Form.Label>
-                                </Col>
-                                <Col sm="7">
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Buscar orden de venta"
-                                        name="buscar"
-                                        defaultValue={formData.buscar}
-                                    />
+
+                                    <Button
+                                        variant="success"
+                                        className="agregar"
+                                        onClick={() => {
+                                            buscarOV(
+                                                <BuscarOV
+                                                    setOrdenVenta={setOrdenVenta}
+                                                    setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                    setIdCliente={setIdCliente}
+                                                    setNombreCliente={setNombreCliente}
+                                                    setFechaPedido={setFechaPedido}
+                                                    setFechaEntrega={setFechaEntrega}
+                                                    setShowModal={setShowModal2}
+                                                />)
+                                        }}
+                                    >
+                                        Orden venta
+                                    </Button>
                                 </Col>
                             </Form.Group>
                         </Row>
@@ -184,7 +211,7 @@ function RegistraAsignacionPedido(props) {
                                         type="text"
                                         placeholder="Orden de venta"
                                         name="ordenVenta"
-                                        value={formData.buscar.length == 9 ? ordenVenta : ""}
+                                        value={ordenVenta}
                                         disabled
                                     />
                                 </Col>
@@ -203,7 +230,7 @@ function RegistraAsignacionPedido(props) {
                                         type="text"
                                         placeholder="Cliente"
                                         name="cliente"
-                                        value={formData.buscar.length == 9 ? nombreCliente : ""}
+                                        value={nombreCliente}
                                         disabled
                                     />
                                 </Col>
@@ -222,7 +249,7 @@ function RegistraAsignacionPedido(props) {
                                         type="date"
                                         placeholder="Fecha pedido"
                                         name="fechaPedido"
-                                        value={formData.buscar.length == 9 ? fechaPedido : ""}
+                                        value={fechaPedido}
                                         disabled
                                     />
                                 </Col>
@@ -241,7 +268,7 @@ function RegistraAsignacionPedido(props) {
                                         type="date"
                                         placeholder="Fecha entrega"
                                         name="fechaEntrega"
-                                        value={formData.buscar.length == 9 ? fechaEntrega : ""}
+                                        value={fechaEntrega}
                                         disabled
                                     />
                                 </Col>
@@ -302,6 +329,9 @@ function RegistraAsignacionPedido(props) {
                     </Form>
                 </div>
             </Container>
+            <BasicModal show={showModal2} setShow={setShowModal2} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }

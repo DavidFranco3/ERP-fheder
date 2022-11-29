@@ -13,7 +13,7 @@ import { obtenerDatosPedidoVenta, listarPedidosVenta } from "../../../api/pedido
 import { toast } from "react-toastify";
 
 function BuscarOrdenVenta(props) {
-    const { setOrdenVenta, setClienteOV, setCantidadRequeridaOV, setShowModal, listVentas } = props;
+    const { setOrdenVenta, setCantidadRequeridaOV, setIdCliente, setNombreCliente, setFechaPedido, setFechaEntrega, setShowModal, listVentas } = props;
     // console.log(ordenVenta)
 
     console.log(listVentas)
@@ -23,6 +23,11 @@ function BuscarOrdenVenta(props) {
 
     const [listProducto, setListProducto] = useState([]);
 
+    const [cliente, setCliente] = useState("");
+    const [nombre, setNombre] = useState("");
+    const [pedido, setPedido] = useState("");
+    const [entrega, setEntrega] = useState("");
+
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
@@ -31,8 +36,12 @@ function BuscarOrdenVenta(props) {
 
             obtenerDatosPedidoVenta(formData.seleccion).then(response => {
                 const { data } = response;
-                const { productos } = data;
+                const { cliente, nombreCliente, fechaElaboracion, fechaEntrega, productos } = data;
                 setListProducto(productos)
+                setIdCliente(cliente)
+                setNombreCliente(nombreCliente)
+                setFechaPedido(fechaElaboracion)
+                setFechaEntrega(fechaEntrega)
             }).catch(e => {
                 console.log(e)
             })
@@ -99,6 +108,20 @@ function BuscarOrdenVenta(props) {
         {
             name: 'Cliente',
             selector: row => row.nombreCliente,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Cantidad",
+            selector: row => row.productos.reduce((amount, item) => (amount + parseInt(item.cantidad)), 0),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Fecha de pedido",
+            selector: row => moment(row.fechaPedido).format('LL'),
             sortable: false,
             center: true,
             reorder: false
