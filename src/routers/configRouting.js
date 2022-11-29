@@ -52,6 +52,7 @@ import VerificacionMantenimientos from "../page/VerificacionMantenimientos";
 import SolicitudMaterialInsumo from "../page/SolicitudMaterialInsumo";
 import RequerimientosPlaneacion from "../page/RequerimientosPlaneacion";
 import VentasGastos from "../page/VentasGastos";
+import Error404 from "../page/Error404";
 
 // importacion de dashboards
 import DashboardVentas from "../components/Dashboards/DashboardVentas";
@@ -900,5 +901,10 @@ export default [
         path: "/",
         exact: true,
         page: Dashboard
+    },
+    {
+        path: "*",
+        exact: true,
+        page: Error404
     }
 ]

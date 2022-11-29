@@ -56,9 +56,9 @@ function ListClientes(props) {
         {
             name: 'Nombre',
             selector: row => row.nombre,
-            sortable: true,
+            sortable: false,
             center: true,
-            reorder: true
+            reorder: false
         },
         {
             name: 'RFC',
