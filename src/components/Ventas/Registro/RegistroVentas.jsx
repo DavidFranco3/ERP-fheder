@@ -3,16 +3,18 @@ import { useHistory } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
+import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
 import { listarClientes } from "../../../api/clientes";
 import { registraPedidoVenta, obtenerNumeroPedidoVenta } from "../../../api/pedidoVenta";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import "./RegistroVentas.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
 import { LogRegistroPlaneacion } from "../../Planeacion/Gestion/GestionPlaneacion";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
+import BasicModal from "../../Modal/BasicModal";
 
 function RegistroVentas(props) {
     const { setRefreshCheckLogin } = props;
@@ -27,6 +29,18 @@ function RegistroVentas(props) {
 
     // Para determinar si hay conexion con el servidor o a internet
     const [conexionInternet, setConexionInternet] = useState(true);
+
+    // Para hacer uso del modal
+    const [showModal, setShowModal] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    // Para la eliminacion fisica de usuarios
+    const buscarOV = (content) => {
+        setTitulosModal("Buscar cliente");
+        setContentModal(content);
+        setShowModal(true);
+    }
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
@@ -182,13 +196,13 @@ function RegistroVentas(props) {
                     folio: data.noVenta,
                     fechaElaboracion: formData.fechaPedido,
                     fechaEntrega: formData.fechaEntrega,
-                    cliente: clienteSeleccionado.id,
-                    nombreCliente: clienteSeleccionado.nombreCliente,
+                    cliente: formData.cliente,
+                    nombreCliente: formData.nombreCliente,
                     condicionesPago: formData.condicionesPago,
                     incoterms: formData.incoterms,
                     moneda: "M.N.",
                     numeroPedido: formData.numeroPedido,
-                    lugarEntrega: formData.lugarEntrega == "" ? clienteSeleccionado?.calle + ", " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado : formData.lugarEntrega,
+                    lugarEntrega: formData.lugarEntrega,
                     cotizacion: linkCotizacion,
                     ordenCompra: linkOrdenCompra,
                     total: totalSinIVA,
@@ -367,18 +381,27 @@ function RegistroVentas(props) {
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                        <Form.Control as="select"
-                                            onChange={(e) => {
-                                                handleCliente(e.target.value)
-                                            }}
-                                            defaultValue={formData.cliente}
+                                    <div className="flex items-center mb-6">
+                                        <Form.Control 
+                                        type="text"
+                                            defaultValue={formData.nombreCliente}
                                             name="cliente"
-                                        >
-                                            <option>Elige una opción</option>
-                                            {map(listClientes, (cliente, index) => (
-                                                <option key={index} value={cliente?.id + "/" + cliente?.calle + "/" + cliente?.numeroExterior + "/" + cliente?.colonia + "/" + cliente?.municipio + "/" + cliente?.estado + "/" + cliente?.nombre}>{cliente?.nombre}</option>
-                                            ))}
-                                        </Form.Control>
+                                            disabled
+                                        />
+                                        
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarOV(
+                                                    <BuscarCliente
+                                                        formData={formData}
+                                                        setFormData={setFormData}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        />
+                                    </div>
                                     </Col>
                                 </Form.Group>
                             </Row>
@@ -521,7 +544,7 @@ function RegistroVentas(props) {
                                             placeholder="Lugar de entrega"
                                             style={{ height: '100px' }}
                                             name="lugarEntrega"
-                                            defaultValue={formData.cliente != "" ? clienteSeleccionado?.calle + " " + clienteSeleccionado?.numeroExterior + ", " + clienteSeleccionado?.colonia + ", " + clienteSeleccionado?.municipio + ", " + clienteSeleccionado?.estado : ""}
+                                            defaultValue={formData.lugarEntrega == "" ? "" : formData.lugarEntrega}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -864,6 +887,10 @@ function RegistroVentas(props) {
                     </Form>
                 </div>
             </Container>
+
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }
@@ -874,6 +901,7 @@ function initialFormData(folio, fecha) {
         fechaPedido: "",
         fechaEntrega: "",
         cliente: "",
+        nombreCliente: "",
         incoterms: "",
         lugarEntrega: "",
         especificaciones: "",

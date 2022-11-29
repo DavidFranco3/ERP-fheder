@@ -133,6 +133,7 @@ function RegistraRequerimientosPlaneacion(props) {
     const [clienteOV, setClienteOV] = useState("");
 
     const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
+    
     // Para la eliminacion fisica de usuarios
     const buscarOV = (content) => {
         setTitulosModal("Buscar orden de venta");
