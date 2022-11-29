@@ -4,6 +4,7 @@ import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-
 import { map } from "lodash";
 import { toast } from "react-toastify";
 import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
+import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import { listarClientes } from "../../../api/clientes";
 import { registraPedidoVenta, obtenerNumeroPedidoVenta } from "../../../api/pedidoVenta";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -38,6 +39,13 @@ function RegistroVentas(props) {
     // Para la eliminacion fisica de usuarios
     const buscarOV = (content) => {
         setTitulosModal("Buscar cliente");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarProducto = (content) => {
+        setTitulosModal("Buscar producto");
         setContentModal(content);
         setShowModal(true);
     }
@@ -293,9 +301,9 @@ function RegistroVentas(props) {
             );
 
             setCargaProductos(initialFormDataProductos)
-            document.getElementById("descripcion").value = "Elige"
+            //document.getElementById("descripcion").value = ""
             document.getElementById("cantidad").value = ""
-            document.getElementById("um").value = "Elige"
+            document.getElementById("um").value = "Piezas"
             setTotalUnitario(0)
         }
     }
@@ -303,9 +311,9 @@ function RegistroVentas(props) {
     // Para limpiar el formulario de detalles de producto
     const cancelarCargaProducto = () => {
         setCargaProductos(initialFormDataProductos)
-        document.getElementById("descripcion").value = "Elige"
+        //document.getElementById("descripcion").value = ""
         document.getElementById("cantidad").value = ""
-        document.getElementById("um").value = "Elige"
+        document.getElementById("um").value = "Piezas"
         setTotalUnitario(0)
     }
 
@@ -381,26 +389,26 @@ function RegistroVentas(props) {
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                    <div className="flex items-center mb-1">
-                                        <Form.Control 
-                                        type="text"
-                                            defaultValue={formData.nombreCliente}
-                                            placeholder="Buscar cliente"
-                                            name="cliente"
-                                        />
-                                        <FontAwesomeIcon
-                                            className="cursor-pointer py-2 -ml-6"
-                                            icon={faSearch}
-                                            onClick={() => {
-                                                buscarOV(
-                                                    <BuscarCliente
-                                                        formData={formData}
-                                                        setFormData={setFormData}
-                                                        setShowModal={setShowModal}
-                                                    />)
-                                            }}
-                                        />
-                                    </div>
+                                        <div className="flex items-center mb-1">
+                                            <Form.Control
+                                                type="text"
+                                                defaultValue={formData.nombreCliente}
+                                                placeholder="Buscar cliente"
+                                                name="cliente"
+                                            />
+                                            <FontAwesomeIcon
+                                                className="cursor-pointer py-2 -ml-6"
+                                                icon={faSearch}
+                                                onClick={() => {
+                                                    buscarOV(
+                                                        <BuscarCliente
+                                                            formData={formData}
+                                                            setFormData={setFormData}
+                                                            setShowModal={setShowModal}
+                                                        />)
+                                                }}
+                                            />
+                                        </div>
                                     </Col>
                                 </Form.Group>
                             </Row>
@@ -613,51 +621,32 @@ function RegistroVentas(props) {
                                 />
                             </Form.Group>
 
-                            {
-                                listProductosActivos &&
-                                (
-                                    <>
-                                        <Form.Group as={Col} controlId="formGridPorcentaje scrap">
-                                            <Form.Label>
-                                                Descripción
-                                            </Form.Label>
-                                            {
-                                                listProductosActivos ?
-                                                    (
-                                                        <>
-                                                            <Form.Control as="select"
-                                                                id="descripcion"
-                                                                onChange={(e) => {
-                                                                    handleProducto(e.target.value)
-                                                                }}
-                                                                defaultValue={cargaProductos.item}
-                                                                name="descripcion"
-                                                            >
-                                                                <option>Elige</option>
-                                                                {map(listProductosActivos, (producto, index) => (
-                                                                    <option
-                                                                        key={index}
-                                                                        value={producto.id + "/" + producto.noParte + "/" + producto.descripcion + "/" + producto.precioVenta}
-                                                                    >
-                                                                        {producto.descripcion}
-                                                                    </option>
-                                                                ))}
-                                                            </Form.Control>
-                                                        </>
-                                                    )
-                                                    :
-                                                    (
-                                                        <>
-                                                            <h4>No hay productos registrados</h4>
-                                                        </>
-                                                    )
-                                            }
+                            <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                                <Form.Label>
+                                    Descripción
+                                </Form.Label>
+                                <div className="flex items-center mb-1">
+                                <Form.Control
+                                    type="text"
+                                    id="descripcion"
+                                    defaultValue={cargaProductos.item}
+                                    name="descripcion"
+                                />
+                                <FontAwesomeIcon
+                                    className="cursor-pointer py-2 -ml-6"
+                                    icon={faSearch}
+                                    onClick={() => {
+                                        buscarProducto(
+                                            <BuscarProducto
+                                                formData={cargaProductos}
+                                                setFormData={setCargaProductos}
+                                                setShowModal={setShowModal}
+                                            />)
+                                    }}
+                                />
+                                </div>
+                            </Form.Group>
 
-
-                                        </Form.Group>
-                                    </>
-                                )
-                            }
 
                             <Form.Group as={Col} controlId="formGridCliente">
                                 <Form.Label>
