@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import BuscarOV from "../../../page/BuscarOV";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 function RegistroProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -307,31 +307,28 @@ function RegistroProduccion(props) {
                                         <Form.Label align="center">
                                             Orden Venta
                                         </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Orden de venta"
-                                            name="ordenVenta"
-                                            value={ordenVenta}
-                                            disabled
-                                        />
+                                        <div className="flex items-center mb-1">
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Orden de venta"
+                                                name="ordenVenta"
+                                                value={ordenVenta}
+                                                disabled
+                                            />
+                                            <FontAwesomeIcon
+                                                className="cursor-pointer py-2 -ml-6"
+                                                icon={faSearch}
+                                                onClick={() => {
+                                                    buscarOV(
+                                                        <BuscarOV
+                                                            setOrdenVenta={setOrdenVenta}
+                                                            setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                            setShowModal={setShowModal}
+                                                        />)
+                                                }}
+                                            />
+                                        </div>
                                     </Form.Group>
-
-                                    <Col sm="5">
-                                        <Button
-                                            variant="success"
-                                            className="agregar"
-                                            onClick={() => {
-                                                buscarOV(
-                                                    <BuscarOV
-                                                        setOrdenVenta={setOrdenVenta}
-                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
-                                                        setShowModal={setShowModal}
-                                                    />)
-                                            }}
-                                        >
-                                            Orden venta
-                                        </Button>
-                                    </Col>
                                 </Row>
 
                                 <Row className="mb-3">

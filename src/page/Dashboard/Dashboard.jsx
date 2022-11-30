@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
-import ImagenPanel from "../../assets/svg/panelPrincipal.svg";
 import "./Dashboard.scss";
-import { Alert, Button, Col, Row, Card, Container, CardGroup, Image } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { Card, Image } from "react-bootstrap";
 // Importacion de imagenes para los iconos de los menus
 import LogoVentas from "../../assets/png/principales/ventas.png";
 import LogoMaquinas from "../../assets/png/principales/maquinas.png";
@@ -47,8 +44,6 @@ function Dashboard(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
-
-    // Define las rutas
 
     const goTo = (ruta) => enrutamiento.push(ruta);
 

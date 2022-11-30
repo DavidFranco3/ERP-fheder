@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 import queryString from "query-string";
 import BuscarOV from "../../../page/BuscarOV";
 import BasicModal from "../../Modal/BasicModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 function RegistraAsignacionPedido(props) {
     const { setShowModal, location, history } = props;
@@ -172,14 +174,21 @@ function RegistraAsignacionPedido(props) {
                     <Form onChange={onChange} onSubmit={onSubmit}>
                         <Row ClassName="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                <Col sm="4">
+                                    <Form.Label>Orden de venta:</Form.Label>
+                                </Col>
                                 <Col>
-                                    <Form.Label>
-                                        Orden de venta:
-                                    </Form.Label>
-
-                                    <Button
-                                        variant="success"
-                                        className="agregar"
+                                <div className="flex items-center mb-1">
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Orden de venta"
+                                        name="ordenVenta"
+                                        value={ordenVenta}
+                                        disabled
+                                    />
+                                    <FontAwesomeIcon
+                                        className="cursor-pointer py-2 -ml-6"
+                                        icon={faSearch}
                                         onClick={() => {
                                             buscarOV(
                                                 <BuscarOV
@@ -192,28 +201,8 @@ function RegistraAsignacionPedido(props) {
                                                     setShowModal={setShowModal2}
                                                 />)
                                         }}
-                                    >
-                                        Orden venta
-                                    </Button>
-                                </Col>
-                            </Form.Group>
-                        </Row>
-
-                        <br />
-
-                        <Row ClassName="mb-3">
-                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                <Col sm="4">
-                                    <Form.Label>Orden de venta:</Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Orden de venta"
-                                        name="ordenVenta"
-                                        value={ordenVenta}
-                                        disabled
                                     />
+                                    </div>
                                 </Col>
                             </Form.Group>
                         </Row>

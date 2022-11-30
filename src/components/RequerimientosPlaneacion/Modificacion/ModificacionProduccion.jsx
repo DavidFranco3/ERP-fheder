@@ -5,7 +5,7 @@ import BuscarOV from "../../../page/BuscarOV";
 import { useHistory, useParams } from "react-router-dom";
 import "./ModificacionProduccion.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { listarMatrizProductosActivos, obtenerMatrizProducto } from "../../../api/matrizProductos";
 import { map } from "lodash";
 import { listarAlmacenPT, obtenerDatosAlmacenPT } from "../../../api/almacenPT";
@@ -535,26 +535,6 @@ function ModificacionProduccion(props) {
                                 </Row>
 
                                 <Row className="mb-3">
-                                    <Col align="left">
-                                        <Button
-                                            variant="success"
-                                            className="agregar"
-                                            onClick={() => {
-                                                buscarOV(
-                                                    <BuscarOV
-                                                        setOrdenVenta={setOrdenVenta}
-                                                        setClienteOV={setClienteOV}
-                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
-                                                        setShowModal={setShowModal}
-                                                    />)
-                                            }}
-                                        >
-                                            Orden venta
-                                        </Button>
-                                    </Col>
-                                </Row>
-
-                                <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
                                             ITEM
@@ -572,6 +552,7 @@ function ModificacionProduccion(props) {
                                         <Form.Label align="center">
                                             Orden de venta
                                         </Form.Label>
+                                        <div className="flex items-center mb-1">
                                         <Form.Control
                                             id="ordenVenta"
                                             type="text"
@@ -580,6 +561,20 @@ function ModificacionProduccion(props) {
                                             value={ordenVenta}
                                             disabled
                                         />
+                                        <FontAwesomeIcon
+                                                className="cursor-pointer py-2 -ml-6"
+                                                icon={faSearch}
+                                                onClick={() => {
+                                                    buscarOV(
+                                                        <BuscarOV
+                                                            setOrdenVenta={setOrdenVenta}
+                                                            setClienteOV={setClienteOV}
+                                                            setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                            setShowModal={setShowModal}
+                                                        />)
+                                                }}
+                                            />
+                                            </div>
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
