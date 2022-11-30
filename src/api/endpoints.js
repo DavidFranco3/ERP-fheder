@@ -535,6 +535,7 @@ export const ENDPOINTObtenerItemAlmacenMP = "/almacenMP/obtenerItem";
 export const ENDPOINTListarPaginandoAlmacenMP = "/almacenMP/listarPaginando"
 export const ENDPOINTObtenerAlmacenMP = "/almacenMP/obtener"
 export const ENDPOINTObtenerDatosFolioMPAlmacenMP = "/almacenMP/obtenerDatosFolioMP"
+export const ENDPOINTObtenerDatosMP = "/almacenMP/obtenerDatosMP"
 export const ENDPOINTListarMovimientos = "/almacenMP/listarMovimientosMP"
 export const ENDPOINTEliminarAlmacenMP = "/almacenMP/eliminar"
 export const ENDPOINTActualizarEstadoAlmacenMP = "/almacenMP/actualizarEstado"

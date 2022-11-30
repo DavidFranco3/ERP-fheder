@@ -139,7 +139,8 @@ function RegistraMatrizProductos(props) {
             //console.log(formData)
             setLoading(true)
 
-            const temp = formData.proveedor.split("/")
+            const temp = formData.proveedor.split("/");
+            const temp2 = formData.descripcionMP.split("/");
 
             const dataTemp = {
                 noInterno: formData.noInterno,
@@ -159,7 +160,8 @@ function RegistraMatrizProductos(props) {
                     porcentajeMolido: molido,
                 },
                 materiaPrima: {
-                    descripcion: formData.descripcionMP,
+                    idMaterial: temp2[0],
+                    descripcion: temp2[1],
                 },
                 pigmentoMasterBach: {
                     descripcion: formData.descripcionPigmento,
@@ -527,7 +529,7 @@ function RegistraMatrizProductos(props) {
                                                 >
                                                     <option>Elige una opción</option>
                                                     {map(listMateriasPrimas, (materiaprima, index) => (
-                                                        <option key={index} value={materiaprima?.descripcion}>{materiaprima?.descripcion}</option>
+                                                        <option key={index} value={materiaprima?.id +"/"+ materiaprima?.descripcion}>{materiaprima?.descripcion}</option>
                                                     ))}
                                                 </Form.Control>
                                             </Col>

@@ -174,6 +174,7 @@ function ModificaMatrizProductos(props) {
             setLoading(true)
 
             const temp = formData.proveedor.split("/")
+            const temp2 = formData.descripcionMP.split("/")
 
             const dataTemp = {
                 noInterno: formData.noInterno,
@@ -193,7 +194,9 @@ function ModificaMatrizProductos(props) {
                     porcentajeMolido: formData.porcentajeMolido
                 },
                 materiaPrima: {
-                    descripcion: formData.descripcionMP,
+                    idMaterial: temp2[0],
+                    descripcion: temp2[1],
+
                 },
                 pigmentoMasterBach: {
                     descripcion: formData.descripcionPigmento,
@@ -563,7 +566,7 @@ function ModificaMatrizProductos(props) {
                                                             >
                                                                 <option>Elige una opción</option>
                                                                 {map(listMateriasPrimas, (materiaprima, index) => (
-                                                                    <option key={index} value={materiaprima?.descripcion} selected={materiaprima?.descripcion === formData.descripcionMP}>{materiaprima?.descripcion}</option>
+                                                                    <option key={index} value={materiaprima?.id +"/"+ materiaprima?.descripcion} selected={materiaprima?.descripcion === formData.descripcionMP}>{materiaprima?.descripcion}</option>
                                                                 ))}
                                                             </Form.Control>
                                                         </Col>

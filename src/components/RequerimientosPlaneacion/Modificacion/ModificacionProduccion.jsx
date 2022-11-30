@@ -12,6 +12,7 @@ import { listarAlmacenPT, obtenerDatosAlmacenPT } from "../../../api/almacenPT";
 import { obtenerRequerimiento, actualizaRequerimiento } from "../../../api/requerimientosPlaneacion";
 import { toast } from "react-toastify";
 import { obtenerMaquina } from "../../../api/maquinas";
+import { obtenerDatosMP } from "../../../api/almacenMP";
 
 function ModificacionProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -35,7 +36,7 @@ function ModificacionProduccion(props) {
         obtenerRequerimiento(id).then(response => {
             const { data } = response;
             //console.log(data)
-            const { folio, requerimiento, planeacion, bom } = data;
+            const { folio, requerimiento, planeacion, bom, datosRequisicion } = data;
             const dataTemp = {
                 folio: folio,
                 requerimiento: requerimiento,
@@ -82,11 +83,29 @@ function ModificacionProduccion(props) {
             }
             setInformacionRequerimiento(valoresAlmacenados(dataTemp))
             setListOVCargadas(requerimiento.ordenVenta)
+            setCantidadAlmacen(datosRequisicion.almacenMP)
+
             // setFechaCreacion(fechaElaboracion)
         }).catch(e => {
             console.log(e)
         })
     }, []);
+
+    
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerDatosMP(formDataPlaneacion.idMaterial).then(response => {
+                const { data } = response;
+                setCantidadAlmacen(data.cantidadExistencia)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.idMaterial]);
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -97,6 +116,9 @@ function ModificacionProduccion(props) {
     const [ordenVenta, setOrdenVenta] = useState("");
     // Para almacenar el cliente de la OV
     const [clienteOV, setClienteOV] = useState("");
+
+    // Para almacenar la cantidad en el almacen de materia prima
+    const [cantidadAlmacen, setCantidadAlmacen] = useState("0");
 
     const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
     // Para la eliminacion fisica de usuarios
@@ -325,6 +347,11 @@ function ModificacionProduccion(props) {
                     empaque: formDataPlaneacion.descripcionBolsa,
                     bolsasCajasUtilizar: bolsasCajasUtilizar
                 },
+                datosRequisicion: {
+                    kgMaterial: kgMaterial,
+                    almacenMP: cantidadAlmacen,
+                    cantidadPedir: Number(kgMaterial) - Number(cantidadAlmacen)
+                },
                 estado: "true"
             }
             // console.log(dataTemp)
@@ -346,12 +373,6 @@ function ModificacionProduccion(props) {
             })
         }
 
-    }
-
-    const onChange = e => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-        setFormDataPlaneacion({ ...formDataPlaneacion, [e.target.name]: e.target.value })
-        setInformacionRequerimiento({ ...informacionRequerimiento, [e.target.name]: e.target.value })
     }
 
     const addItemsOV = () => {
@@ -415,10 +436,22 @@ function ModificacionProduccion(props) {
 
     let piezasTurno3 = (((3600 / Number(formDataPlaneacion.tiempoCiclo3)) * Number(formDataPlaneacion.cavMolde)) * 12);
 
+    const [cantidadPedir, setCantidadPedir] = useState(0);
     useEffect(() => {
+        setCantidadPedir(Number(kgMaterial) - Number(cantidadAlmacen))
+    }, [kgMaterial, cantidadAlmacen]);
+
+    const onChange = e => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataPlaneacion({ ...formDataPlaneacion, [e.target.name]: e.target.value })
+        setInformacionRequerimiento({ ...informacionRequerimiento, [e.target.name]: e.target.value })
+    }
+
+    useEffect(() => {
+        const temp = informacionRequerimiento.producto.split("/");
         // Para buscar el producto en la matriz de productos
         try {
-            obtenerMatrizProducto(informacionRequerimiento.producto).then(response => {
+            obtenerMatrizProducto(temp[0]).then(response => {
                 const { data } = response;
                 // console.log(data)
                 // initialData
@@ -1077,6 +1110,61 @@ function ModificacionProduccion(props) {
                         </div>
 
                         <br />
+
+                        <div className="datosBOM">
+                            <Container fluid>
+                                <br />
+                                <div className="tituloSeccion">
+                                    <h4>
+                                        Datos de la requisición
+                                    </h4>
+                                </div>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Kg de material
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Kg de material"
+                                            name="kgMaterial"
+                                            value={kgMaterial.toFixed(2)}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Almacen MP
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Kg de material"
+                                            name="CantidadMP"
+                                            value={Number(cantidadAlmacen)}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Cantidad a pedir
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            step="0.01"
+                                            placeholder="cantidad a pedir"
+                                            name="cantidadMP"
+                                            value={cantidadPedir}
+                                            disabled
+                                        />
+                                    </Form.Group>
+                                </Row>
+                            </Container>
+                        </div>
+
+                        < br / >
 
                         <Form.Group as={Row} className="botones">
                             <Col>

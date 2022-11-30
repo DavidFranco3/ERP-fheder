@@ -104,6 +104,7 @@ function RegistroExistenciasAlmacenMp(props) {
             toast.warning("Completa el formulario")
         } else {
             setLoading(true)
+            const temp = formData.materiaPrima.split("/")
             try {
                 obtenerFolioActualAlmacenMP().then(response => {
                     const { data } = response;
@@ -116,7 +117,8 @@ function RegistroExistenciasAlmacenMp(props) {
                     const dataTemp = {
                         item: itemActual,
                         folioAlmacen: noAlmacen,
-                        nombreMP: formData.materiaPrima,
+                        folioMP: temp[0],
+                        nombreMP: temp[1],
                         um: formData.unidadMedida,
                         fecha: "",
                         cantidadExistencia: "0",
@@ -164,7 +166,7 @@ function RegistroExistenciasAlmacenMp(props) {
                         >
                             <option>Elige una opción</option>
                             {map(listMateriasPrimas, (materiaprima, index) => (
-                                <option key={index} value={materiaprima?.descripcion}>{materiaprima?.descripcion}</option>
+                                <option key={index} value={materiaprima?.id +"/"+ materiaprima?.descripcion}>{materiaprima?.descripcion}</option>
                             ))}
                         </Form.Control>
                     </Form.Group>

@@ -9,6 +9,7 @@ import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/fre
 import { listarMatrizProductosActivos, obtenerMatrizProducto } from "../../../api/matrizProductos";
 import { map } from "lodash";
 import { listarAlmacenPT, obtenerDatosAlmacenPT } from "../../../api/almacenPT";
+import { obtenerDatosMP } from "../../../api/almacenMP";
 import { registraRequerimiento, obtenerNumeroRequerimiento, obtenerItemRequerimiento } from "../../../api/requerimientosPlaneacion";
 import { toast } from "react-toastify";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
@@ -23,10 +24,28 @@ function RegistraRequerimientosPlaneacion(props) {
     // Para almacenar la informacion del formulario
     const [formDataPlaneacion, setFormDataPlaneacion] = useState(initialFormDataPlaneacionInitial());
 
+    // Para almacenar la cantidad en el almacen de materia prima
+    const [cantidadAlmacen, setCantidadAlmacen] = useState("0");
+
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
         try {
-            obtenerMatrizProducto(formData.materiaPrima).then(response => {
+            obtenerDatosMP(formDataPlaneacion.idMaterial).then(response => {
+                const { data } = response;
+                setCantidadAlmacen(data.cantidadExistencia)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.idMaterial]);
+
+    useEffect(() => {
+        const temp = formData.materiaPrima.split("/");
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerMatrizProducto(temp[0]).then(response => {
                 const { data } = response;
                 // console.log(data)
                 // initialData
@@ -305,6 +324,11 @@ function RegistraRequerimientosPlaneacion(props) {
                         empaque: formDataPlaneacion.descripcionBolsa,
                         bolsasCajasUtilizar: bolsasCajasUtilizar
                     },
+                    datosRequisicion: {
+                        kgMaterial: kgMaterial,
+                        almacenMP: cantidadAlmacen,
+                        cantidadPedir: Number(kgMaterial) - Number(cantidadAlmacen)
+                    },
                     estado: "true"
                 }
                 // console.log(dataTemp)
@@ -324,11 +348,6 @@ function RegistraRequerimientosPlaneacion(props) {
                 console.log(e)
             })
         }
-    }
-
-    const onChange = e => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-        setFormDataPlaneacion({ ...formDataPlaneacion, [e.target.name]: e.target.value })
     }
 
     const [listOVCargadas, setListOVCargadas] = useState([]);
@@ -399,6 +418,17 @@ function RegistraRequerimientosPlaneacion(props) {
 
     let piezasTurno3 = (((3600 / Number(formDataPlaneacion.tiempoCiclo3)) * Number(formDataPlaneacion.cavMolde)) * 12);
 
+    const [cantidadPedir, setCantidadPedir] = useState(0);
+    useEffect(() => {
+        setCantidadPedir(Number(kgMaterial) - Number(cantidadAlmacen))
+    }, [kgMaterial, cantidadAlmacen]);
+
+    const onChange = e => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataPlaneacion({ ...formDataPlaneacion, [e.target.name]: e.target.value })
+        setCantidadPedir({ ...cantidadPedir, [e.target.name]: e.target.value })
+    }
+
     return (
         <>
             <Alert>
@@ -465,7 +495,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                             {map(listProductosActivos, (producto, index) => (
                                                 <option
                                                     key={index}
-                                                    value={producto?.id + "/" + producto?.descripcion +"/"+ producto.pigmentoMasterBach?.nombreProveedor}
+                                                    value={producto?.id + "/" + producto?.descripcion + "/" + producto.pigmentoMasterBach?.nombreProveedor}
                                                 >
                                                     {producto?.descripcion}
                                                 </option>
@@ -517,15 +547,15 @@ function RegistraRequerimientosPlaneacion(props) {
                                             Orden de venta
                                         </Form.Label>
                                         <div className="flex items-center mb-1">
-                                        <Form.Control
-                                            id="ordenVenta"
-                                            type="text"
-                                            placeholder="Orden de venta"
-                                            name="ordenVenta"
-                                            value={ordenVenta}
-                                            disabled
-                                        />
-                                        <FontAwesomeIcon
+                                            <Form.Control
+                                                id="ordenVenta"
+                                                type="text"
+                                                placeholder="Orden de venta"
+                                                name="ordenVenta"
+                                                value={ordenVenta}
+                                                disabled
+                                            />
+                                            <FontAwesomeIcon
                                                 className="cursor-pointer py-2 -ml-6"
                                                 icon={faSearch}
                                                 onClick={() => {
@@ -538,7 +568,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                         />)
                                                 }}
                                             />
-                                            </div>
+                                        </div>
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -1038,6 +1068,61 @@ function RegistraRequerimientosPlaneacion(props) {
 
                         <br />
 
+                        <div className="datosBOM">
+                            <Container fluid>
+                                <br />
+                                <div className="tituloSeccion">
+                                    <h4>
+                                        Datos de la requisición
+                                    </h4>
+                                </div>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Kg de material
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Kg de material"
+                                            name="kgMaterial"
+                                            value={kgMaterial.toFixed(2)}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Almacen MP
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Kg de material"
+                                            name="CantidadMP"
+                                            value={Number(cantidadAlmacen)}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Cantidad a pedir
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            step="0.01"
+                                            placeholder="cantidad a pedir"
+                                            name="cantidadMP"
+                                            value={cantidadPedir}
+                                            disabled
+                                        />
+                                    </Form.Group>
+                                </Row>
+                            </Container>
+                        </div>
+
+                        <br />
+
                         <Form.Group as={Row} className="botones">
                             <Col>
                                 <Button
@@ -1065,6 +1150,7 @@ function RegistraRequerimientosPlaneacion(props) {
 
                     </Form>
                 </div>
+
             </Container>
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
@@ -1088,6 +1174,7 @@ function initialFormDataPlaneacion(data) {
         porcentajeScrap: data.datosPieza.porcentajeScrap,
         porcentajeMolido: data.datosPieza.porcentajeMolido,
         descripcionMP: data.materiaPrima.descripcion,
+        idMaterial: data.materiaPrima.idMaterial,
         descripcionPigmento: data.pigmentoMasterBach.descripcion,
         aplicacionGxKG: data.pigmentoMasterBach.aplicacionGxKG,
         proveedor: data.pigmentoMasterBach.proveedor,
@@ -1127,6 +1214,7 @@ function initialFormDataPlaneacionInitial() {
         porcentajeScrap: "",
         porcentajeMolido: "",
         descripcionMP: "",
+        idMaterial: "",
         descripcionPigmento: "",
         aplicacionGxKG: "",
         proveedor: "",
@@ -1154,6 +1242,7 @@ function initialFormDataPlaneacionInitial() {
 
 function initialFormData() {
     return {
+        cantidadMP: "",
         materiaPrima: "",
         semana: "",
         numeroMaquina1: "",

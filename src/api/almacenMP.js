@@ -6,6 +6,7 @@ import {
     ENDPOINTListarPaginandoAlmacenMP,
     ENDPOINTObtenerAlmacenMP,
     ENDPOINTObtenerDatosFolioMPAlmacenMP,
+    ENDPOINTObtenerDatosMP,
     ENDPOINTListarMovimientos,
     ENDPOINTEliminarAlmacenMP,
     ENDPOINTActualizarEstadoAlmacenMP,
@@ -125,6 +126,18 @@ export async function obtenerDatosAlmacenMPFolio(folioAlmacen) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTObtenerDatosFolioMPAlmacenMP + `/${folioAlmacen}`, config);
+}
+
+// Obtener los datos de una materia prima segun el folio de la MP
+export async function obtenerDatosMP(folioMP) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTObtenerDatosMP + `/${folioMP}`, config);
 }
 
 // Listar todos los movimientos de una materia prima segun el folio de la mp
