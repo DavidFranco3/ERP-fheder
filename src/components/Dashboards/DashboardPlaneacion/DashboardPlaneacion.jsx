@@ -86,7 +86,7 @@ function DashboardPlaneacion(props) {
                 <ItemCard
                     path={'/RequerimientosPlaneacion'}
                     logo={LogoRequerimientos}
-                    title={'Requerimientos y planeación'}
+                    title={'Planeación'}
                 />
                 <ItemCard
                     path={'/Materiales'}

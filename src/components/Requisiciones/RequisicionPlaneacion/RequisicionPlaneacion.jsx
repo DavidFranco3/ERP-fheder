@@ -34,7 +34,7 @@ function RegistraRequisiciones(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/Requisiciones")
+        enrutamiento.push("/RequerimientosPlaneacion")
     }
 
     useEffect(() => {
