@@ -48,6 +48,11 @@ function ListProduccion(props) {
         enrutamiento.push(`/ModificaRequerimientosPlaneacion/${id}`);
     }
 
+    // Para la modificacion de datos del pedido
+    const requisicionPlaneacion = (id) => {
+        enrutamiento.push(`/RequisicionPlaneacion/${id}`);
+    }
+
     // Para abrir en una pestaña nueva el pdf de la vista
     const vistaPrevia = () => {
         // enrutamiento.push("")
@@ -91,6 +96,25 @@ function ListProduccion(props) {
         {
             name: "Cantidad total a producir",
             selector: row => row.requerimiento.totalProducir,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Requisicion",
+            selector: row => (
+                <>
+                    <Badge
+                        bg="primary"
+                        className="editar"
+                        onClick={() => {
+                            requisicionPlaneacion(row.id)
+                        }}
+                    >
+                        Generar
+                    </Badge>
+                </>
+            ),
             sortable: false,
             center: true,
             reorder: false

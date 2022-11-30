@@ -139,6 +139,8 @@ function RegistraMatrizProductos(props) {
             //console.log(formData)
             setLoading(true)
 
+            const temp = formData.proveedor.split("/")
+
             const dataTemp = {
                 noInterno: formData.noInterno,
                 cliente: formData.cliente,
@@ -162,7 +164,8 @@ function RegistraMatrizProductos(props) {
                 pigmentoMasterBach: {
                     descripcion: formData.descripcionPigmento,
                     aplicacionGxKG: formData.aplicacionGxKG,
-                    proveedor: formData.proveedor
+                    proveedor: temp[0],
+                    nombreProveedor:  temp[1]
                 },
                 tiempoCiclo: formData.tiempoCiclo,
                 noOperadores: formData.noOperadores,
@@ -591,7 +594,7 @@ function RegistraMatrizProductos(props) {
                                                 >
                                                     <option>Elige una opción</option>
                                                     {map(listProveedores, (proveedor, index) => (
-                                                        <option key={index} value={proveedor?.id}>{proveedor?.nombre}</option>
+                                                        <option key={index} value={proveedor?.id +"/"+ proveedor?.nombre}>{proveedor?.nombre}</option>
                                                     ))}
                                                 </Form.Control>
                                             </Col>

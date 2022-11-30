@@ -271,13 +271,17 @@ function ModificacionProduccion(props) {
             //console.log("Continuar")
             setLoading(true)
 
+            const temp = informacionRequerimiento.producto.split("/")
+
             const dataTemp = {
                 requerimiento: {
                     semana: informacionRequerimiento.semana,
-                    producto: informacionRequerimiento.producto,
+                    producto: temp[0],
+                    nombreProducto: temp[1],
                     um: unidadMedida,
                     almacenProductoTerminado: cantidad,
                     ordenVenta: listOVCargadas,
+                    nombreProveedor: temp[2],
                     totalProducir: totalProducir,
                 },
                 planeacion: {
@@ -500,7 +504,7 @@ function ModificacionProduccion(props) {
                                             {map(listProductosActivos, (producto, index) => (
                                                 <option
                                                     key={index}
-                                                    value={producto?.id}
+                                                    value={producto?.id +"/"+ producto?.descripcion +"/"+ producto.pigmentoMasterBach?.nombreProveedor}
                                                     selected={producto?.id == informacionRequerimiento.producto}
                                                 >
                                                     {producto?.descripcion}

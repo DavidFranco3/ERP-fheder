@@ -246,6 +246,8 @@ function RegistraRequerimientosPlaneacion(props) {
             //console.log("Continuar")
             setLoading(true)
 
+            const temp = formData.materiaPrima.split("/")
+
             // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
             obtenerNumeroRequerimiento().then(response => {
                 const { data } = response;
@@ -254,10 +256,12 @@ function RegistraRequerimientosPlaneacion(props) {
                     folio: data.noRequerimiento,
                     requerimiento: {
                         semana: formData.semana,
-                        producto: formData.materiaPrima,
+                        producto: temp[0],
+                        nombreProducto: temp[1],
                         um: unidadMedida,
                         almacenProductoTerminado: cantidad,
                         ordenVenta: listOVCargadas,
+                        nombreProveedor: temp[2],
                         totalProducir: totalProducir,
                     },
                     planeacion: {
@@ -461,7 +465,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                             {map(listProductosActivos, (producto, index) => (
                                                 <option
                                                     key={index}
-                                                    value={producto?.id}
+                                                    value={producto?.id + "/" + producto?.descripcion +"/"+ producto.pigmentoMasterBach?.nombreProveedor}
                                                 >
                                                     {producto?.descripcion}
                                                 </option>

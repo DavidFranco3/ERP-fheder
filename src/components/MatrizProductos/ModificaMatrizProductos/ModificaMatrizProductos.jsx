@@ -173,6 +173,8 @@ function ModificaMatrizProductos(props) {
             //console.log(formData)
             setLoading(true)
 
+            const temp = formData.proveedor.split("/")
+
             const dataTemp = {
                 noInterno: formData.noInterno,
                 cliente: formData.cliente,
@@ -196,7 +198,8 @@ function ModificaMatrizProductos(props) {
                 pigmentoMasterBach: {
                     descripcion: formData.descripcionPigmento,
                     aplicacionGxKG: formData.aplicacionGxKG,
-                    proveedor: formData.proveedor
+                    proveedor: temp[0],
+                    nombreProveedor: temp[1]
                 },
                 tiempoCiclo: formData.tiempoCiclo,
                 noOperadores: formData.noOperadores,
@@ -627,7 +630,7 @@ function ModificaMatrizProductos(props) {
                                                             >
                                                                 <option>Elige una opción</option>
                                                                 {map(listProveedores, (proveedor, index) => (
-                                                                    <option key={index} value={proveedor?.id} selected={proveedor?.id === formData.proveedor}>{proveedor?.nombre}</option>
+                                                                    <option key={index} value={proveedor?.id +"/"+ proveedor?.nombre} selected={proveedor?.id === formData.proveedor}>{proveedor?.nombre}</option>
                                                                 ))}
                                                             </Form.Control>
                                                         </Col>

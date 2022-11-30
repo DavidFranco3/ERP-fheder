@@ -94,6 +94,7 @@ import ModificaReporte from "../components/Calidad/ModificaReporte";
 // Rutas para las requisiciones
 import RegistraRequisiciones from "../components/Requisiciones/RegistraRequisiciones";
 import ModificaRequisiciones from "../components/Requisiciones/ModificaRequisiciones";
+import RequisicionesPlaneacion from "../components/Requisiciones/RequisicionPlaneacion";
 
 // Rutas para las renisiones
 import RegistraRemisiones from "../components/Remisiones/RegistraRemisiones";
@@ -213,6 +214,7 @@ import RegistraSolicitudMaterialInsumo from "../components/SolicitudMaterialInsu
 // Rutas para Registro de entrada y salida de moldes
 import RegistraRequerimientosPlaneacion from "../components/RequerimientosPlaneacion/Registro";
 import ModificaRequerimientosPlaneacion from "../components/RequerimientosPlaneacion/Modificacion";
+import RequisicionPlaneacion from "../components/Requisiciones/RequisicionPlaneacion";
 
 export default [
     {
@@ -511,6 +513,11 @@ export default [
         path: "/ModificacionRequisicion/:id",
         exact: true,
         page: ModificaRequisiciones
+    },
+    {
+        path: "/RequisicionPlaneacion/:id",
+        exact: true,
+        page: RequisicionPlaneacion
     },
     {
         path: "/RegistroRemision",
