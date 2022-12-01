@@ -14,6 +14,7 @@ import Usuarios from "../page/Usuarios";
 import Clientes from "../page/Clientes";
 import Departamentos from "../page/Departamentos";
 import MateriasPrimas from "../page/MateriasPrimas";
+import Insumos from "../page/Insumos";
 import Cotizaciones from "../page/Cotizaciones";
 import Proveedores from "../page/Proveedores";
 import Requisiciones from "../page/Requisiciones";
@@ -678,6 +679,11 @@ export default [
         path: "/Materiales",
         exact: true,
         page: MateriasPrimas
+    },
+    {
+        path: "/Insumos",
+        exact: true,
+        page: Insumos
     },
     {
         path: "/Departamentos",

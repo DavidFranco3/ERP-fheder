@@ -327,7 +327,8 @@ function RegistraRequerimientosPlaneacion(props) {
                     datosRequisicion: {
                         kgMaterial: kgMaterial,
                         almacenMP: cantidadAlmacen,
-                        cantidadPedir: Number(kgMaterial) - Number(cantidadAlmacen)
+                        cantidadSugerida: Number(kgMaterial) - Number(cantidadAlmacen),
+                        cantidadPedir: formData.cantidadMP
                     },
                     estado: "true"
                 }
@@ -421,12 +422,11 @@ function RegistraRequerimientosPlaneacion(props) {
     const [cantidadPedir, setCantidadPedir] = useState(0);
     useEffect(() => {
         setCantidadPedir(Number(kgMaterial) - Number(cantidadAlmacen))
-    }, [kgMaterial, cantidadAlmacen]);
+    }, [formData.materiaPrima, formDataPlaneacion.idMaterial, totalProducir]);
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
         setFormDataPlaneacion({ ...formDataPlaneacion, [e.target.name]: e.target.value })
-        setCantidadPedir({ ...cantidadPedir, [e.target.name]: e.target.value })
     }
 
     return (
@@ -1106,7 +1106,7 @@ function RegistraRequerimientosPlaneacion(props) {
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
                                         <Form.Label align="center">
-                                            Cantidad a pedir
+                                            Cantidad sugerida
                                         </Form.Label>
                                         <Form.Control
                                             type="number"
@@ -1115,6 +1115,19 @@ function RegistraRequerimientosPlaneacion(props) {
                                             name="cantidadMP"
                                             value={cantidadPedir}
                                             disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Cantidad a pedir
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            step="0.01"
+                                            placeholder="cantidad a pedir"
+                                            name="cantidadMP"
+                                            defaulValue={cantidadPedir}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1242,7 +1255,7 @@ function initialFormDataPlaneacionInitial() {
 
 function initialFormData() {
     return {
-        cantidadMP: "",
+        cantidadMP: 0,
         materiaPrima: "",
         semana: "",
         numeroMaquina1: "",

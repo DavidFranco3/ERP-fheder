@@ -9,6 +9,7 @@ import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import LogoCompras from "../../../assets/png/menus/ordenCompra.png";
 import LogoRequisicion from "../../../assets/png/menus/requisiciones.png";
 import LogoProveedores from "../../../assets/png/menus/proveedor.png";
+import LogoInsumos from "../../../assets/png/menus/insumos.png";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
 import { toast } from "react-toastify";
 
@@ -70,7 +71,7 @@ function DashboardCompras(props) {
                     </Col>
                 </Row>
             </Alert>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-4 gap-3">
                 <ItemCard
                     path={'/Compras'}
                     logo={LogoCompras}
@@ -85,6 +86,11 @@ function DashboardCompras(props) {
                     path={'/Proveedores'}
                     logo={LogoProveedores}
                     title={'Lista de proveedores-materiales aprobados'}
+                />
+                <ItemCard
+                    path={'/Insumos'}
+                    logo={LogoInsumos}
+                    title={'Insumos'}
                 />
             </div>
         </>

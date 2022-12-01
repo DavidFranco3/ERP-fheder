@@ -1,28 +1,26 @@
 import { useState, useEffect } from 'react';
-import { obtenerFolioActualMP, registraMateriaPrima } from "../../../api/materiaPrima";
-import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
+import { actualizaInsumo } from "../../../api/insumos";
+import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import { map, size, values } from "lodash";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { listarProveedores } from "../../../api/proveedores";
 
-function RegistroMateriasPrimas(props) {
-    const { setShowModal2, setShowModal, location, history } = props;
+function ModificaInsumos(props) {
+    const { dataInsumos, location, history, setShowModal } = props;
+    const { id, folio, descripcion } = dataInsumos;
 
-    // Para almacenar los datos del formulario
-    const [formData, setFormData] = useState(initialFormData());
-
-    // Para el icono de cargando del boton
+    // Para controlar la animacion de carga
     const [loading, setLoading] = useState(false);
 
-    // Para recuperar el folio de la materia prima
-    const [folioActualMP, setFolioActualMP] = useState("");
-
     // Cancelar y cerrar el formulario
-    const cancelarBusqueda = () => {
+    const cancelarRegistro = () => {
         setShowModal(false)
     }
+
+    // Para almacenar los datos del formulario
+    const [formData, setFormData] = useState(initialFormData(dataInsumos));
 
     // Para almacenar el listado de proveedores
     const [listProveedores, setListProveedores] = useState(null);
@@ -47,22 +45,6 @@ function RegistroMateriasPrimas(props) {
         }
     }, []);
 
-    useEffect(() => {
-        try {
-            obtenerFolioActualMP().then(response => {
-                const { data } = response;
-                // console.log(data)
-                const { noMP } = data;
-                setFolioActualMP(noMP)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
-
     const onSubmit = e => {
         e.preventDefault();
         //console.log(formData)
@@ -74,30 +56,24 @@ function RegistroMateriasPrimas(props) {
         });
 
         if (size(formData) !== validCount) {
-            toast.warning("Completa el formulario")
+            toast.warning("Comapleta el formulario")
         } else {
             setLoading(true)
-            const dataTemp = {
-                folio: folioActualMP,
-                descripcion: formData.descripcion,
-                precio: formData.precio,
-                proveedor: formData.proveedor
-            }
             try {
-                registraMateriaPrima(dataTemp).then(response => {
+                actualizaInsumo(id, formData).then(response => {
                     const { data } = response;
-                    LogsInformativos("Nuevo material registrado", formData)
+                    LogsInformativos("El insumo con descripción: " + descripcion + " fue modificado", dataInsumos)
                     toast.success(data.mensaje)
                     setLoading(false)
+                    setShowModal(false)
                     history.push({
                         search: queryString.stringify(""),
                     });
-                    setShowModal(false)
                 }).catch(e => {
-                    //console.log(e)
+                    console.log(e)
                 })
             } catch (e) {
-                //console.log(e)
+                console.log(e)
             }
         }
     }
@@ -109,7 +85,7 @@ function RegistroMateriasPrimas(props) {
     return (
         <>
             <div className="formularioDatos">
-                <Form onChange={onChange} onSubmit={onSubmit}>
+            <Form onChange={onChange} onSubmit={onSubmit}>
                     <Row className="mb-3">
                         <Form.Group as={Row} controlId="formHorizontalNoInterno">
                             <Col sm="2">
@@ -122,7 +98,7 @@ function RegistroMateriasPrimas(props) {
                                     type="text"
                                     placeholder="Orden de venta"
                                     name="folio"
-                                    defaultValue={folioActualMP}
+                                    defaultValue={folio}
                                     disabled
                                 />
                             </Col>
@@ -171,12 +147,13 @@ function RegistroMateriasPrimas(props) {
                                 >
                                     <option>Elige una opción</option>
                                     {map(listProveedores, (proveedor, index) => (
-                                        <option key={index} value={proveedor?.nombre}>{proveedor?.nombre}</option>
+                                        <option key={index} value={proveedor?.nombre} selected={formData.proveedor == proveedor?.nombre}>{proveedor?.nombre}</option>
                                     ))}
                                 </Form.Control>
                             </Col>
                         </Form.Group>
                     </Row>
+
 
                     <Form.Group as={Row} className="botones">
                         <Col>
@@ -185,7 +162,7 @@ function RegistroMateriasPrimas(props) {
                                 variant="success"
                                 className="registrar"
                             >
-                                {!loading ? "Registrar" : <Spinner animation="border" />}
+                                {!loading ? "Modificar" : <Spinner animation="border" />}
                             </Button>
                         </Col>
                         <Col>
@@ -193,7 +170,7 @@ function RegistroMateriasPrimas(props) {
                                 variant="danger"
                                 className="cancelar"
                                 onClick={() => {
-                                    cancelarBusqueda()
+                                    cancelarRegistro()
                                 }}
                             >
                                 Cancelar
@@ -206,11 +183,13 @@ function RegistroMateriasPrimas(props) {
     );
 }
 
-function initialFormData() {
+function initialFormData(data) {
+    const { id, descripcion, precio, proveedor } = data;
+
     return {
-        descripcion: "",
-        precio: "",
-        proveedor: ""
+        descripcion: descripcion,
+        precio: precio,
+        proveedor: proveedor
     }
 }
 
@@ -240,4 +219,5 @@ function formatModelProveedores(data) {
     return dataTemp;
 }
 
-export default RegistroMateriasPrimas;
+
+export default ModificaInsumos;

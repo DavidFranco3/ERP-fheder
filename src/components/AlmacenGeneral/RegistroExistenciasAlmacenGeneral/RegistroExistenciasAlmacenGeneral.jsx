@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
-import {map, size, values} from "lodash";
-import {toast} from "react-toastify";
-import {obtenerFolioActualAlmacenGeneral, registraAlmacenGeneral} from "../../../api/almacenGeneral";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { listarInsumo } from "../../../api/insumos";
+import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
+import { map, size, values } from "lodash";
+import { toast } from "react-toastify";
+import { obtenerFolioActualAlmacenGeneral, registraAlmacenGeneral } from "../../../api/almacenGeneral";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
 
 function RegistroExistenciasAlmacenGeneral(props) {
@@ -30,6 +31,28 @@ function RegistroExistenciasAlmacenGeneral(props) {
         }
     }, []);
 
+    // Almacenar el listado de materias primas
+    const [listInsumos, setListInsumos] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarInsumo().then(response => {
+                const { data } = response;
+                //console.log(data)
+                if (!listInsumos && data) {
+                    setListInsumos(formatModelInsumos(data));
+                } else {
+                    const datosInsumos = formatModelInsumos(data);
+                    setListInsumos(datosInsumos);
+                }
+            }).catch(e => {
+                //console.log(e)
+            })
+        } catch (e) {
+            //console.log(e)
+        }
+    }, []);
+
 
     // Cancelar y cerrar el formulario
     const cancelarRegistro = () => {
@@ -42,14 +65,19 @@ function RegistroExistenciasAlmacenGeneral(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if(!formData.nombre || !formData.descripcion || !formData.um || !formData.tipo){
+        if (!formData.nombre || !formData.descripcion || !formData.um) {
             toast.warning("Completa el formulario")
         } else {
             // console.log(formData)
             setLoading(true)
+
+            const temp = formData.nombre.split("/")
+
             const dataTemp = {
                 folioAlmacen: folioActualAG,
-                nombre: formData.nombre,
+                idInsumo: temp[0],
+                folioInsumo: temp[1],
+                nombre: temp[2],
                 descripcion: formData.descripcion,
                 um: formData.um,
                 tipo: formData.tipo,
@@ -88,83 +116,67 @@ function RegistroExistenciasAlmacenGeneral(props) {
         <>
             <div className="contenidoFormularioPrincipal">
                 <Form onChange={onChange} onSubmit={onSubmit}>
-                <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formGridFolioAG">
-                        <Form.Label>
-                            Folio
-                        </Form.Label>
-                        <Form.Control
-                            type="text"
-                            nombre="folio"
-                            defaultValue={folioActualAG}
-                            disabled
-                        />
-                    </Form.Group>
-
-                    <Form.Group as={Col}>
-                        <Form.Label>
-                            Nombre
-                        </Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="nombre"
-                            placeholder="Escribe el nombre"
-                            defaultValue={formData.nombre}
-                        />
-                    </Form.Group>
-                </Row>
-                
-                <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formHorizontalUnidadMedida" className="unidadMedidaMP">
-                        <Form.Label>
-                            Unidad de medida
-                        </Form.Label>
-                        <Col>
-                            <Form.Control
-                                as="select"
-                                name="um"
-                                defaultValue={formData.um}
-                            >
-                                <option >Elige....</option>
-                                <option value="KG">KG</option>
-                                <option value="Litros">Litros</option>
-                                <option value="Piezas">Pieza</option>
-                                <option value="Otros">Otros</option>
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
-                    
-                    <Form.Group as={Col} controlId="formHorizontalStatus" className="status">
-                        <Form.Label>
-                            Tipo
-                        </Form.Label>
-                        <Col>
-                            <Form.Control
-                                as="select"
-                                name="tipo"
-                                defaultValue={formData.tipo}
-                            >
-                                <option >Elige....</option>
-                                <option value="Maquinaria">Maquinaria</option>
-                                <option value="Accesorio">Accesorio</option>
-                                <option value="Empaque">Empaque</option>
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
-                    </Row>
-                    
                     <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formHorizontalDescripcion" className="descripcionMP">
-                        <Form.Label>
-                            Descripción
-                        </Form.Label>
+                        <Form.Group as={Col} controlId="formGridFolioAG">
+                            <Form.Label>
+                                Folio
+                            </Form.Label>
+                            <Form.Control
+                                type="text"
+                                nombre="folio"
+                                defaultValue={folioActualAG}
+                                disabled
+                            />
+                        </Form.Group>
+
+                        <Form.Group as={Col}>
+                            <Form.Label>
+                                Nombre
+                            </Form.Label>
+                            <Form.Control
+                                as="select"
+                                defaultValue={formData.nombre}
+                                name="nombre"
+                            >
+                                <option>Elige una opción</option>
+                                {map(listInsumos, (insumo, index) => (
+                                    <option key={index} value={insumo?.id + "/" + insumo?.folio + "/" + insumo?.descripcion}>{insumo?.folio + " -- " + insumo?.descripcion}</option>
+                                ))}
+                            </Form.Control>
+                        </Form.Group>
+                    </Row>
+
+                    <Row className="mb-3">
+                        <Form.Group as={Col} controlId="formHorizontalUnidadMedida" className="unidadMedidaMP">
+                            <Form.Label>
+                                Unidad de medida
+                            </Form.Label>
+                            <Col>
+                                <Form.Control
+                                    as="select"
+                                    name="um"
+                                    defaultValue={formData.um}
+                                >
+                                    <option >Elige....</option>
+                                    <option value="KG">KG</option>
+                                    <option value="Litros">Litros</option>
+                                    <option value="Piezas">Pieza</option>
+                                    <option value="Otros">Otros</option>
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formHorizontalDescripcion" className="descripcionMP">
+                            <Form.Label>
+                                Descripción
+                            </Form.Label>
                             <Form.Control
                                 as="textarea" rows={2}
                                 placeholder="Escribe la descripcion"
                                 name="descripcion"
                                 defaultValue={formData.descripcion}
                             />
-                    </Form.Group>
+                        </Form.Group>
                     </Row>
 
                     <Form.Group as={Row} className="botones">
@@ -195,13 +207,30 @@ function RegistroExistenciasAlmacenGeneral(props) {
     );
 }
 
-function initialFormData(){
+function initialFormData() {
     return {
         nombre: "",
         descripcion: "",
         um: "",
         tipo: ""
     }
+}
+
+function formatModelInsumos(data) {
+    // console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            folio: data.folio,
+            descripcion: data.descripcion,
+            precio: data.precio,
+            proveedor: data.proveedor,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
 }
 
 export default RegistroExistenciasAlmacenGeneral;

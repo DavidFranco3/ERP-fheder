@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { obtenerFolioActualMP, registraMateriaPrima } from "../../../api/materiaPrima";
+import { obtenerFolioActualInsumo, registraInsumo } from "../../../api/insumos";
 import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
 import { map, size, values } from "lodash";
 import { toast } from "react-toastify";
@@ -7,7 +7,7 @@ import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { listarProveedores } from "../../../api/proveedores";
 
-function RegistroMateriasPrimas(props) {
+function RegistroInsumos(props) {
     const { setShowModal2, setShowModal, location, history } = props;
 
     // Para almacenar los datos del formulario
@@ -17,7 +17,7 @@ function RegistroMateriasPrimas(props) {
     const [loading, setLoading] = useState(false);
 
     // Para recuperar el folio de la materia prima
-    const [folioActualMP, setFolioActualMP] = useState("");
+    const [folioActualInsumo, setFolioActualInsumo] = useState("");
 
     // Cancelar y cerrar el formulario
     const cancelarBusqueda = () => {
@@ -49,11 +49,11 @@ function RegistroMateriasPrimas(props) {
 
     useEffect(() => {
         try {
-            obtenerFolioActualMP().then(response => {
+            obtenerFolioActualInsumo().then(response => {
                 const { data } = response;
                 // console.log(data)
-                const { noMP } = data;
-                setFolioActualMP(noMP)
+                const { noInsumo } = data;
+                setFolioActualInsumo(noInsumo)
             }).catch(e => {
                 console.log(e)
             })
@@ -78,15 +78,15 @@ function RegistroMateriasPrimas(props) {
         } else {
             setLoading(true)
             const dataTemp = {
-                folio: folioActualMP,
+                folio: folioActualInsumo,
                 descripcion: formData.descripcion,
                 precio: formData.precio,
                 proveedor: formData.proveedor
             }
             try {
-                registraMateriaPrima(dataTemp).then(response => {
+                registraInsumo(dataTemp).then(response => {
                     const { data } = response;
-                    LogsInformativos("Nuevo material registrado", formData)
+                    LogsInformativos("Nuevo insumo registrado", formData)
                     toast.success(data.mensaje)
                     setLoading(false)
                     history.push({
@@ -94,10 +94,10 @@ function RegistroMateriasPrimas(props) {
                     });
                     setShowModal(false)
                 }).catch(e => {
-                    //console.log(e)
+                    console.log(e)
                 })
             } catch (e) {
-                //console.log(e)
+                console.log(e)
             }
         }
     }
@@ -122,7 +122,7 @@ function RegistroMateriasPrimas(props) {
                                     type="text"
                                     placeholder="Orden de venta"
                                     name="folio"
-                                    defaultValue={folioActualMP}
+                                    defaultValue={folioActualInsumo}
                                     disabled
                                 />
                             </Col>
@@ -240,4 +240,4 @@ function formatModelProveedores(data) {
     return dataTemp;
 }
 
-export default RegistroMateriasPrimas;
+export default RegistroInsumos;

@@ -278,7 +278,7 @@ function RegistroEntradaSalidaAlmacenGeneral(props) {
             <div className="contenidoFormularioPrincipal">
                 <Form onChange={onChange} onSubmit={onSubmit}>
                 <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formGridMateriaPrima" className="materiaPrima">
+                    <Form.Group as={Col} controlId="formGridMateriaPrima" className="tipo">
                         <Form.Label>
                             Producto del almacen
                         </Form.Label>
