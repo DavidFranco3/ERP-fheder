@@ -53,7 +53,7 @@ function Requisiciones(props) {
 
     useEffect(() => {
         try {
-            totalRequision(departamentoUsuario).then(response => {
+            totalRequision().then(response => {
                 const { data } = response;
                 setNoTotalRequisiciones(data)
             }).catch(e => {
@@ -63,7 +63,7 @@ function Requisiciones(props) {
             if (page === 0) {
                 setPage(1)
 
-                listarRequisicionesPaginacion(page, rowsPerPage, departamentoUsuario).then(response => {
+                listarRequisicionesPaginacion(page, rowsPerPage).then(response => {
                     const { data } = response
                     if (!listRequisiciones && data) {
                         setListRequisiciones(formatModelRequisiciones(data));
@@ -75,7 +75,7 @@ function Requisiciones(props) {
                     console.log(e)
                 })
             } else {
-                listarRequisicionesPaginacion(page, rowsPerPage, departamentoUsuario).then(response => {
+                listarRequisicionesPaginacion(page, rowsPerPage).then(response => {
                     const { data } = response
                     if (!listRequisiciones && data) {
                         setListRequisiciones(formatModelRequisiciones(data));
@@ -90,7 +90,7 @@ function Requisiciones(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage, departamentoUsuario]);
+    }, [location, page, rowsPerPage]);
 
     // Cerrado de sesión automatico
     useEffect(() => {

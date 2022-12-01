@@ -41,7 +41,7 @@ export async function obtenerItem() {
 }
 
 // Obten el total de registros de la colección
-export async function totalRequision(departamento) {
+export async function totalRequision() {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -49,7 +49,7 @@ export async function totalRequision(departamento) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTTotalRequisicion + `/?departamento=${departamento}`, config);
+    return await axios.get(API_HOST + ENDPOINTTotalRequisicion, config);
 }
 
 
@@ -103,7 +103,7 @@ export async function listarRequisicionesPorDepartamentos(params) {
 }
 
 // Lista las requisiciones paginandolas
-export async function listarRequisicionesPaginacion(pagina, limite, departamento) {
+export async function listarRequisicionesPaginacion(pagina, limite) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -111,7 +111,7 @@ export async function listarRequisicionesPaginacion(pagina, limite, departamento
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarPaginandoRequisicion + `/?pagina=${pagina}&&limite=${limite}&&departamento=${departamento}`, config);
+    return await axios.get(API_HOST + ENDPOINTListarPaginandoRequisicion + `/?pagina=${pagina}&&limite=${limite}`, config);
 }
 
 // Elimina requisiciones

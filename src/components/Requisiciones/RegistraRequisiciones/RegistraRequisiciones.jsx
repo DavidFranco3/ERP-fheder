@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { map } from "lodash";
 import { listarPedidosVenta } from "../../../api/pedidoVenta";
 import { listarProveedores } from "../../../api/proveedores";
@@ -10,11 +10,16 @@ import { obtenerNumeroRequisicion, registraRequisicion, obtenerItem } from "../.
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
 import { obtenerUsuario } from "../../../api/usuarios";
+import BuscarDepartamento from '../../../page/BuscarDepartamento';
+import BasicModal from "../../Modal/BasicModal";
 
 function RegistraRequisiciones(props) {
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+     // Para guardar los datos del formulario
+     const [departamentoElegido, setDepartamentoElegido] = useState(initialDepartamento());
 
     // Para guardar los datos de los articulos
     const [formDataArticulos, setFormDataArticulos] = useState(initialFormDataArticulos());
@@ -30,6 +35,18 @@ function RegistraRequisiciones(props) {
     // Define la ruta de registro
     const rutaRegreso = () => {
         enrutamiento.push("/Requisiciones")
+    }
+
+    // Para hacer uso del modal
+    const [showModal, setShowModal] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    // Para la eliminacion fisica de usuarios
+    const buscarDepartamento = (content) => {
+        setTitulosModal("Buscar departamento");
+        setContentModal(content);
+        setShowModal(true);
     }
 
     const [departamentoUsuario, setDepartamentoUsuario] = useState("");
@@ -192,7 +209,7 @@ function RegistraRequisiciones(props) {
                         solicitante: formData.solicitante,
                         aprobo: formData.aprobo,
                         comentarios: formData.comentarios,
-                        departamento: departamentoUsuario,
+                        departamento: departamentoElegido.departamento,
                         productosSolicitados: listProductosCargados,
                         status: formData.estado
                     }
@@ -293,14 +310,28 @@ function RegistraRequisiciones(props) {
                             <Form.Label>
                                 Departamento
                             </Form.Label>
+                            <div className="flex items-center mb-1">
                             <Form.Control
                                 type="text"
                                 placeholder="Escribe el departamento"
                                 name="departamento"
-                                value={departamentoUsuario}
+                                value={departamentoElegido.departamento}
                                 disabled
                             >
                             </Form.Control>
+                            <FontAwesomeIcon
+                                className="cursor-pointer py-2 -ml-6"
+                                icon={faSearch}
+                                onClick={() => {
+                                    buscarDepartamento(
+                                        <BuscarDepartamento
+                                            formData={departamentoElegido}
+                                            setFormData={setDepartamentoElegido}
+                                            setShowModal={setShowModal}
+                                        />)
+                                }}
+                            />
+                            </div>
                         </Form.Group>
                     </Row>
 
@@ -578,6 +609,10 @@ function RegistraRequisiciones(props) {
 
                 </Form>
             </Container>
+
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }
@@ -589,6 +624,12 @@ function initialFormData() {
         aprobo: "",
         estado: "",
         comentarios: "",
+    }
+}
+
+function initialDepartamento() {
+    return {
+        departamento: ""
     }
 }
 

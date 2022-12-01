@@ -85,7 +85,7 @@ function ListVentas(props) {
         },
         {
             name: "Fecha pedido",
-            selector: row => moment(row.fechaPedido).format('LL'),
+            selector: row => moment(row.fechaElaboracion).format('LL'),
             sortable: false,
             center: true,
             reorder: false

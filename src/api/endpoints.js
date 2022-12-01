@@ -231,7 +231,7 @@ export const ENDPOINTObtenerItemProveedor = "/proveedores/obtenerItem";
 // Requisicion
 export const ENDPOINTRegistroRequisicion = "/requisicion/registro";
 export const ENDPOINTListarRequisicion = "/requisicion/listar";
-export const ENDPOINTListarPaginandoRequisicion = "/requisicion/listarPaginandoDepartamento";
+export const ENDPOINTListarPaginandoRequisicion = "/requisicion/listarPaginando";
 export const ENDPOINTListarPorDepartamento = "/requisicion/listarDepartamento";
 export const ENDPOINTObtenerRequisicion = "/requisicion/obtener";
 export const ENDPOINTObtenerNoRequisicion = "/requisicion/obtenerNoRequisicion";
@@ -239,7 +239,7 @@ export const ENDPOINTObtenerItemRequisicion = "/requisicion/obtenerItem";
 export const ENDPOINTEliminarRequisicion = "/requisicion/eliminar";
 export const ENDPOINTCambiarStatusRequisicion = "/requisicion/cambiarStatus";
 export const ENDPOINTActualizarRequisicion = "/requisicion/actualizar";
-export const ENDPOINTTotalRequisicion = "/requisicion/totalDepartamento";
+export const ENDPOINTTotalRequisicion = "/requisicion/total";
 
 // Reportes de calidad
 export const ENDPOINTRegistroReportesCalidad = "/reportesCalidad/registro";

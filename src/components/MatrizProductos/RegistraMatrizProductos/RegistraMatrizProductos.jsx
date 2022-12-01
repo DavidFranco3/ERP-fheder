@@ -657,7 +657,7 @@ function RegistraMatrizProductos(props) {
                                                     min="0"
                                                     placeholder="Escribe el numero de piezas"
                                                     name="piezasxHora"
-                                                    value={formData.tiempoCiclo == "" ? 0 : formData.cavMolde == "" ? 0 : piezasHora.toFixed(2)}
+                                                    value={formData.tiempoCiclo == "" ? 0 : formData.cavMolde == "" ? 0 : Math.floor(piezasHora)}
                                                     disabled
                                                 />
                                             </Col>
@@ -672,7 +672,7 @@ function RegistraMatrizProductos(props) {
                                                     min="0"
                                                     placeholder="Escribe el numero de piezas"
                                                     name="piezasxTurno"
-                                                    value={formData.tiempoCiclo == "" ? 0 : formData.cavMolde == "" ? 0 : piezasTurno.toFixed(2)}
+                                                    value={formData.tiempoCiclo == "" ? 0 : formData.cavMolde == "" ? 0 : Math.floor(piezasTurno)}
                                                     disabled
                                                 />
                                             </Col>
