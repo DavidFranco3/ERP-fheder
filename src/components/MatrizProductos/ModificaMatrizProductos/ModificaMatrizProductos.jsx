@@ -566,7 +566,7 @@ function ModificaMatrizProductos(props) {
                                                             >
                                                                 <option>Elige una opción</option>
                                                                 {map(listMateriasPrimas, (materiaprima, index) => (
-                                                                    <option key={index} value={materiaprima?.id +"/"+ materiaprima?.descripcion} selected={materiaprima?.descripcion === formData.descripcionMP}>{materiaprima?.descripcion}</option>
+                                                                    <option key={index} value={materiaprima?.id +"/"+ materiaprima?.descripcion} selected={materiaprima?.id +"/"+ materiaprima?.descripcion === formData.descripcionMP}>{materiaprima?.descripcion}</option>
                                                                 ))}
                                                             </Form.Control>
                                                         </Col>
@@ -633,7 +633,7 @@ function ModificaMatrizProductos(props) {
                                                             >
                                                                 <option>Elige una opción</option>
                                                                 {map(listProveedores, (proveedor, index) => (
-                                                                    <option key={index} value={proveedor?.id +"/"+ proveedor?.nombre} selected={proveedor?.id === formData.proveedor}>{proveedor?.nombre}</option>
+                                                                    <option key={index} value={proveedor?.id +"/"+ proveedor?.nombre} selected={proveedor?.id +"/"+ proveedor?.nombre === formData.proveedor}>{proveedor?.nombre}</option>
                                                                 ))}
                                                             </Form.Control>
                                                         </Col>
@@ -1094,10 +1094,10 @@ function valoresAlmacenados(data) {
         pesoTotalInyeccion: data.datosPieza.pesoTotalInyeccion,
         porcentajeScrap: data.datosPieza.porcentajeScrap,
         porcentajeMolido: data.datosPieza.porcentajeMolido,
-        descripcionMP: data.materiaPrima.descripcion,
+        descripcionMP: data.materiaPrima.idMaterial +"/"+ data.materiaPrima.descripcion,
         descripcionPigmento: data.pigmentoMasterBach.descripcion,
         aplicacionGxKG: data.pigmentoMasterBach.aplicacionGxKG,
-        proveedor: data.pigmentoMasterBach.proveedor,
+        proveedor: data.pigmentoMasterBach.proveedor +"/"+ data.pigmentoMasterBach.nombreProveedor,
         tiempoCiclo: data.tiempoCiclo,
         noOperadores: data.noOperadores,
         piezasxHora: data.piezasxHora,

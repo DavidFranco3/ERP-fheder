@@ -41,7 +41,9 @@ function ModificacionProduccion(props) {
                 folio: folio,
                 requerimiento: requerimiento,
                 semana: requerimiento.semana,
-                producto: requerimiento.semana,
+                producto: requerimiento.producto,
+                nombreProducto: requerimiento.nombreProducto,
+                nombreProveedor: requerimiento.nombreProveedor,
                 um: requerimiento.um,
                 almacenProductoTerminado: requerimiento.almacenProductoTerminado,
                 ordenVenta: requerimiento.ordenVenta,
@@ -538,7 +540,7 @@ function ModificacionProduccion(props) {
                                                 <option
                                                     key={index}
                                                     value={producto?.id +"/"+ producto?.descripcion +"/"+ producto.pigmentoMasterBach?.nombreProveedor}
-                                                    selected={producto?.id == informacionRequerimiento.producto}
+                                                    selected={producto?.id +"/"+ producto?.descripcion +"/"+ producto.pigmentoMasterBach?.nombreProveedor == informacionRequerimiento.producto}
                                                 >
                                                     {producto?.descripcion}
                                                 </option>
@@ -1362,7 +1364,7 @@ function valoresAlmacenados(data) {
         folio: folio,
         requerimiento: requerimiento,
         semana: requerimiento.semana,
-        producto: requerimiento.producto,
+        producto: requerimiento.producto +"/"+ requerimiento.nombreProducto +"/"+ requerimiento.nombreProveedor,
         um: requerimiento.um,
         almacenProductoTerminado: requerimiento.almacenProductoTerminado,
         ordenVenta: requerimiento.ordenVenta,
