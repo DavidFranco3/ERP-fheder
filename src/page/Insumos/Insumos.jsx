@@ -163,6 +163,7 @@ function formatModelInsumos(data) {
             folio: data.folio,
             descripcion: data.descripcion,
             precio: data.precio,
+            um: data.um,
             proveedor: data.proveedor,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt

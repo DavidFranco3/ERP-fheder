@@ -65,7 +65,7 @@ function RegistroExistenciasAlmacenGeneral(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!formData.nombre || !formData.descripcion || !formData.um) {
+        if (!formData.nombre || !formData.descripcion) {
             toast.warning("Completa el formulario")
         } else {
             // console.log(formData)
@@ -79,7 +79,7 @@ function RegistroExistenciasAlmacenGeneral(props) {
                 folioInsumo: temp[1],
                 nombre: temp[2],
                 descripcion: formData.descripcion,
-                um: formData.um,
+                um: temp[3],
                 tipo: formData.tipo,
                 existenciasOV: "0",
                 existenciasStock: "0",
@@ -112,6 +112,8 @@ function RegistroExistenciasAlmacenGeneral(props) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
+    const temp = formData.nombre.split("/")
+
     return (
         <>
             <div className="contenidoFormularioPrincipal">
@@ -140,7 +142,7 @@ function RegistroExistenciasAlmacenGeneral(props) {
                             >
                                 <option>Elige una opción</option>
                                 {map(listInsumos, (insumo, index) => (
-                                    <option key={index} value={insumo?.id + "/" + insumo?.folio + "/" + insumo?.descripcion}>{insumo?.folio + " -- " + insumo?.descripcion}</option>
+                                    <option key={index} value={insumo?.id + "/" + insumo?.folio + "/" + insumo?.descripcion +"/"+ insumo?.um}>{insumo?.folio + " -- " + insumo?.descripcion}</option>
                                 ))}
                             </Form.Control>
                         </Form.Group>
@@ -153,16 +155,11 @@ function RegistroExistenciasAlmacenGeneral(props) {
                             </Form.Label>
                             <Col>
                                 <Form.Control
-                                    as="select"
+                                    type="text"
                                     name="um"
-                                    defaultValue={formData.um}
-                                >
-                                    <option >Elige....</option>
-                                    <option value="KG">KG</option>
-                                    <option value="Litros">Litros</option>
-                                    <option value="Piezas">Pieza</option>
-                                    <option value="Otros">Otros</option>
-                                </Form.Control>
+                                    value={temp[3]}
+                                    disabled
+                                />
                             </Col>
                         </Form.Group>
 
@@ -225,6 +222,7 @@ function formatModelInsumos(data) {
             folio: data.folio,
             descripcion: data.descripcion,
             precio: data.precio,
+            um: data.um,
             proveedor: data.proveedor,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt

@@ -85,24 +85,9 @@ function ModificaInsumos(props) {
     return (
         <>
             <div className="formularioDatos">
-            <Form onChange={onChange} onSubmit={onSubmit}>
+                <Form onChange={onChange} onSubmit={onSubmit}>
                     <Row className="mb-3">
                         <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                            <Col sm="2">
-                                <Form.Label align="center">
-                                    Folio
-                                </Form.Label>
-                            </Col>
-                            <Col>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Orden de venta"
-                                    name="folio"
-                                    defaultValue={folio}
-                                    disabled
-                                />
-                            </Col>
-
                             <Col sm="2">
                                 <Form.Label align="center">
                                     Descripcion
@@ -115,6 +100,25 @@ function ModificaInsumos(props) {
                                     name="descripcion"
                                     defaultValue={formData.descripcion}
                                 />
+                            </Col>
+
+                            <Col sm="2">
+                                <Form.Label align="center">
+                                    Unidad de medida
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    as="select"
+                                    name="um"
+                                    defaultValue={formData.um}
+                                >
+                                    <option >Elige....</option>
+                                    <option value="KG" selected={formData.um == "KG"}>KG</option>
+                                    <option value="Litros" selected={formData.um == "Litros"}>Litros</option>
+                                    <option value="Piezas" selected={formData.um == "Piezas"}>Pieza</option>
+                                    <option value="Otros" selected={formData.um == "Otros"}>Otros</option>
+                                </Form.Control>
                             </Col>
                         </Form.Group>
                     </Row>
@@ -141,15 +145,12 @@ function ModificaInsumos(props) {
                                 </Form.Label>
                             </Col>
                             <Col>
-                                <Form.Control as="select"
+                                <Form.Control
+                                    type="text"
                                     defaultValue={formData.proveedor}
                                     name="proveedor"
-                                >
-                                    <option>Elige una opción</option>
-                                    {map(listProveedores, (proveedor, index) => (
-                                        <option key={index} value={proveedor?.nombre} selected={formData.proveedor == proveedor?.nombre}>{proveedor?.nombre}</option>
-                                    ))}
-                                </Form.Control>
+                                />
+
                             </Col>
                         </Form.Group>
                     </Row>
@@ -184,11 +185,12 @@ function ModificaInsumos(props) {
 }
 
 function initialFormData(data) {
-    const { id, descripcion, precio, proveedor } = data;
+    const { id, descripcion, precio, um, proveedor } = data;
 
     return {
         descripcion: descripcion,
         precio: precio,
+        um: um,
         proveedor: proveedor
     }
 }
