@@ -1,25 +1,25 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
-import ImagenPanel from "../../../assets/svg/panelPrincipal.svg";
-import "./DashboardPlaneacion.scss";
+
+import "./DashboardCatalogos.scss";
 import { Alert, Button, Col, Row, Card, Container, CardGroup, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 // Importacion de imagenes para los iconos de los menus
-import LogoPlaneacion from "../../../assets/png/menus/planeacion.png";
-import LogoMatriz from "../../../assets/png/menus/catalogoProductos.png";
-import LogoPedido from "../../../assets/png/menus/asignacionPedido.png";
+import LogoMaquinas from "../../../assets/png/menus/maquinas.png";
+import LogoProveedores from "../../../assets/png/menus/proveedor.png";
+import LogoInsumos from "../../../assets/png/menus/insumos.png";
+import LogoProductos from "../../../assets/png/menus/catalogoProductos.png";
+import LogoClientes from "../../../assets/png/menus/clientes.png";
 import LogoMateriales from "../../../assets/png/menus/materiales.png";
-import LogoProduccion from "../../../assets/png/menus/produccion.png";
-import LogoMes from "../../../assets/png/menus/mes.png";
-import LogoMaquina from "../../../assets/png/menus/maquinaria.png";
-import LogoRequerimientos from "../../../assets/png/menus/requerimiento.png"
+import LogoDepartamentos from "../../../assets/png/menus/departamentos.png";
+import LogoUsuarios from "../../../assets/png/menus/usuarios.png";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
 import { toast } from "react-toastify";
 import { obtenerUsuario } from "../../../api/usuarios";
 import { LogGeneral } from "../../Logs/LogsSistema/LogsSistema";
 
-function DashboardPlaneacion(props) {
+function DashboardCatalogos(props) {
     const { setRefreshCheckLogin } = props;
 
     const enrutamiento = useHistory();
@@ -62,7 +62,7 @@ function DashboardPlaneacion(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Planeacion
+                            Catálogos
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
@@ -77,35 +77,50 @@ function DashboardPlaneacion(props) {
                     </Col>
                 </Row>
             </Alert>
-            <div className="grid grid-cols-5 gap-3">
+            <div className="grid grid-cols-4 gap-4">
                 <ItemCard
-                    path={'/RequerimientosPlaneacion'}
-                    logo={LogoRequerimientos}
-                    title={'Planeación'}
+                    path={'/Maquinas'}
+                    logo={LogoMaquinas}
+                    title={'Maquinas'}
                 />
                 <ItemCard
-                    path={'/Produccion'}
-                    logo={LogoProduccion}
-                    title={'Ordenes de producción'}
+                    path={'/Proveedores'}
+                    logo={LogoProveedores}
+                    title={'Proveedores'}
                 />
                 <ItemCard
-                    path={'/Mes'}
-                    logo={LogoMes}
-                    title={'Programas de producción del mes'}
+                    path={'/Insumos'}
+                    logo={LogoInsumos}
+                    title={'Insumos'}
                 />
                 <ItemCard
-                    path={'/Maquinaria'}
-                    logo={LogoMaquina}
-                    title={'Programa de producción maquina'}
+                    path={'/MatrizProductos'}
+                    logo={LogoProductos}
+                    title={'Productos'}
                 />
                 <ItemCard
-                    path={'/AsignacionPedido'}
-                    logo={LogoPedido}
-                    title={'Asignaciones de pedido'}
+                    path={'/Materiales'}
+                    logo={LogoMateriales}
+                    title={'Materiales'}
+                />
+                <ItemCard
+                    path={'/Clientes'}
+                    logo={LogoClientes}
+                    title={'Clientes'}
+                />
+                <ItemCard
+                    path={'/Departamentos'}
+                    logo={LogoDepartamentos}
+                    title={'Departamentos'}
+                />
+                <ItemCard
+                    path={'/Usuarios'}
+                    logo={LogoUsuarios}
+                    title={'Usuarios'}
                 />
             </div>
         </>
     );
 }
 
-export default DashboardPlaneacion;
+export default DashboardCatalogos;

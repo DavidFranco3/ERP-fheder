@@ -64,6 +64,7 @@ import DashboardPlaneacion from "../components/Dashboards/DashboardPlaneacion";
 import DashboardProduccion from "../components/Dashboards/DashboardProduccion";
 import DashboardCalidad from "../components/Dashboards/DashboardCalidad";
 import DashboardMantenimiento from "../components/Dashboards/DashboardMantenimiento";
+import DashboardCatalogos from "../components/Dashboards/DashboardCatalogos"
 
 // Importacion de almacenes
 import AlmacenMP from "../page/AlmacenMP";
@@ -909,6 +910,11 @@ export default [
         path: "/RequerimientosPlaneacion",
         exact: true,
         page: RequerimientosPlaneacion
+    },
+    {
+        path: "/DashboardCatalogos",
+        exact: true,
+        page: DashboardCatalogos
     },
     {
         path: "/",

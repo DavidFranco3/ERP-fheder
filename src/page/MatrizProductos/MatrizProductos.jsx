@@ -89,7 +89,7 @@ function MatrizProductos(props) {
     }, [location, page, rowsPerPage]);
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardPlaneacion")
+        enrutamiento.push("/DashboardCatalogos")
     }
 
     return (

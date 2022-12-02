@@ -44,7 +44,7 @@ function Maquinas(props) {
     const enrutamiento = useHistory()
 
     const rutaRegreso = () => {
-        enrutamiento.push("/")
+        enrutamiento.push("/DashboardCatalogos")
     }
 
     // Para almacenar la lista de pedidos de venta

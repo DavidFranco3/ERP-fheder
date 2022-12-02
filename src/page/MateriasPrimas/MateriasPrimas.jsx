@@ -80,7 +80,7 @@ function MateriasPrimas(props) {
     const enrutamiento = useHistory()
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardPlaneacion")
+        enrutamiento.push("/DashboardCatalogos")
     }
 
     return (

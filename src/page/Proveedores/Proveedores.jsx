@@ -97,7 +97,7 @@ function Proveedores(props) {
     }
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCompras")
+        enrutamiento.push("/DashboardCatalogos")
     }
 
     return (

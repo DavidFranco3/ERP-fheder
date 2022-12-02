@@ -22,6 +22,7 @@ import LogoCalidad from "../../assets/png/principales/calidad.png";
 import Tracking from "../../assets/png/tracking.png"
 import LogoLogs from "../../assets/png/principales/logs.png";
 import LogoMantenimiento from "../../assets/png/principales/mantenimiento.png";
+import LogoCatalogos from "../../assets/png/principales/catalogos.png";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
 import { toast } from "react-toastify";
 import { obtenerUsuario } from "../../api/usuarios";
@@ -60,7 +61,7 @@ function Dashboard(props) {
 
     return (
         <>
-            <div className="grid grid-cols-6 gap-3">
+            <div className="grid grid-cols-5 gap-3">
                 <ItemCard
                     path={'/Tracking'}
                     logo={Tracking}
@@ -77,9 +78,9 @@ function Dashboard(props) {
                     title={'Compras'}
                 />
                 <ItemCard
-                    path={'/Maquinas'}
-                    logo={LogoMaquinas}
-                    title={'Maquinas'}
+                    path={'/DashboardCatalogos'}
+                    logo={LogoCatalogos}
+                    title={'Catálogos'}
                 />
                 <ItemCard
                     path={'/DashboardAlmacenes'}
@@ -107,24 +108,9 @@ function Dashboard(props) {
                     title={'Calidad'}
                 />
                 <ItemCard
-                    path={'/Usuarios'}
-                    logo={LogoUsuarios}
-                    title={'Usuarios'}
-                />
-                <ItemCard
-                    path={'/Clientes'}
-                    logo={LogoClientes}
-                    title={'Clientes'}
-                />
-                <ItemCard
                     path={'/DashboardMantenimiento'}
                     logo={LogoMantenimiento}
                     title={'Mantenimiento'}
-                />
-                <ItemCard
-                    path={'/Departamentos'}
-                    logo={LogoDepartamentos}
-                    title={'Departamentos'}
                 />
                 <ItemCard
                     path={'/Embarque'}

@@ -20,7 +20,7 @@ function Departamentos(props) {
     const enrutamiento = useHistory();
 
     const rutaRegreso = () => {
-        enrutamiento.push("/")
+        enrutamiento.push("/DashboardCatalogos")
     }
 
     // Para controlar la paginación

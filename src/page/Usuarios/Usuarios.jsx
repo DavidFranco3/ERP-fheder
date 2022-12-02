@@ -18,7 +18,7 @@ function Usuarios(props) {
     const enrutamiento = useHistory();
 
     const rutaRegreso = () => {
-        enrutamiento.push("/")
+        enrutamiento.push("/DashboardCatalogos")
     }
 
     // Cerrado de sesión automatico

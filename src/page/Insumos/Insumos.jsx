@@ -80,7 +80,7 @@ function Insumos(props) {
     const enrutamiento = useHistory()
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCompras")
+        enrutamiento.push("/DashboardCatalogos")
     }
 
     return (

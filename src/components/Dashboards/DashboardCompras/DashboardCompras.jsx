@@ -71,7 +71,7 @@ function DashboardCompras(props) {
                     </Col>
                 </Row>
             </Alert>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 gap-3">
                 <ItemCard
                     path={'/Compras'}
                     logo={LogoCompras}
@@ -81,16 +81,6 @@ function DashboardCompras(props) {
                     path={'/Requisiciones'}
                     logo={LogoRequisicion}
                     title={'Requisiciones'}
-                />
-                <ItemCard
-                    path={'/Proveedores'}
-                    logo={LogoProveedores}
-                    title={'Lista de proveedores-materiales aprobados'}
-                />
-                <ItemCard
-                    path={'/Insumos'}
-                    logo={LogoInsumos}
-                    title={'Insumos'}
                 />
             </div>
         </>
