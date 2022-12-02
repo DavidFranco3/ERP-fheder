@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 // Importacion de imagenes para los iconos de los menus
 import LogoPlaneacion from "../../../assets/png/menus/planeacion.png";
-import LogoMatriz from "../../../assets/png/menus/matriz.png";
+import LogoMatriz from "../../../assets/png/menus/catalogoProductos.png";
 import LogoPedido from "../../../assets/png/menus/asignacionPedido.png";
 import LogoMateriales from "../../../assets/png/menus/materiales.png";
 import LogoProduccion from "../../../assets/png/menus/produccion.png";
@@ -81,7 +81,7 @@ function DashboardPlaneacion(props) {
                 <ItemCard
                     path={'/MatrizProductos'}
                     logo={LogoMatriz}
-                    title={'Matriz de productos'}
+                    title={'Catálogo de productos'}
                 />
                 <ItemCard
                     path={'/RequerimientosPlaneacion'}
