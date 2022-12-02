@@ -14,6 +14,8 @@ import LogoClientes from "../../../assets/png/menus/clientes.png";
 import LogoMateriales from "../../../assets/png/menus/materiales.png";
 import LogoDepartamentos from "../../../assets/png/menus/departamentos.png";
 import LogoUsuarios from "../../../assets/png/menus/usuarios.png";
+import LogoPigmento from "../../../assets/png/menus/pigmento.png";
+import LogoEmpaques from "../../../assets/png/menus/empaques.png";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
 import { toast } from "react-toastify";
 import { obtenerUsuario } from "../../../api/usuarios";
@@ -77,7 +79,7 @@ function DashboardCatalogos(props) {
                     </Col>
                 </Row>
             </Alert>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-5 gap-5">
                 <ItemCard
                     path={'/Maquinas'}
                     logo={LogoMaquinas}
@@ -117,6 +119,16 @@ function DashboardCatalogos(props) {
                     path={'/Usuarios'}
                     logo={LogoUsuarios}
                     title={'Usuarios'}
+                />
+                <ItemCard
+                    path={'/Pigmento'}
+                    logo={LogoPigmento}
+                    title={'Pigmento'}
+                />
+                <ItemCard
+                    path={'/Empaques'}
+                    logo={LogoEmpaques}
+                    title={'Empaques'}
                 />
             </div>
         </>

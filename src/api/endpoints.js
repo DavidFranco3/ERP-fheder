@@ -153,6 +153,28 @@ export const ENDPOINTActualizarMateriaPrima = "/materiasPrimas/actualizar";
 export const ENDPOINTObtenerFolioActualMateriaPrima = "/materiasPrimas/obtenerFolio"
 export const ENDPOINTTotalMateriaPrima = "/materiasPrimas/total";
 
+// Pigmento
+export const ENDPOINTRegistraPigmento = "/pigmento/registro";
+export const ENDPOINTListarPigmento = "/pigmento/listar";
+export const ENDPOINTListarPaginandoPigmento = "/pigmento/listarPaginando";
+export const ENDPOINTObtenerPigmento = "/pigmento/obtener";
+export const ENDPOINTObtenerPorFolioPigmento = "/pigmento/obtenerPorFolio"
+export const ENDPOINTEliminarPigmento= "/pigmento/eliminar";
+export const ENDPOINTActualizarPigmento = "/pigmento/actualizar";
+export const ENDPOINTObtenerFolioActualPigmento = "/pigmento/obtenerFolio"
+export const ENDPOINTTotalPigmento = "/pigmento/total";
+
+// Empaques
+export const ENDPOINTRegistraEmpaque = "/empaques/registro";
+export const ENDPOINTListarEmpaque = "/empaques/listar";
+export const ENDPOINTListarPaginandoEmpaque = "/empaques/listarPaginando";
+export const ENDPOINTObtenerEmpaque = "/empaques/obtener";
+export const ENDPOINTObtenerPorFolioEmpaque = "/empaques/obtenerPorFolio"
+export const ENDPOINTEliminarEmpaque = "/empaques/eliminar";
+export const ENDPOINTActualizarEmpaque = "/empaques/actualizar";
+export const ENDPOINTObtenerFolioActualEmpaque = "/empaques/obtenerFolio"
+export const ENDPOINTTotalEmpaque = "/empaques/total";
+
 // Insumos
 export const ENDPOINTRegistraInsumo = "/insumos/registro";
 export const ENDPOINTListarInsumo = "/insumos/listar";

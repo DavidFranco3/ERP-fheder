@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { obtenerFolioActualMP, registraMateriaPrima } from "../../../api/materiaPrima";
 import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
-import { map, size, values } from "lodash";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -67,13 +66,7 @@ function RegistroMateriasPrimas(props) {
         e.preventDefault();
         //console.log(formData)
 
-        let validCount = 0;
-        values(formData).some(value => {
-            value && validCount++;
-            return null;
-        });
-
-        if (size(formData) !== validCount) {
+        if (!formData.descripcion || !formData.precio || !formData.um || !formData.proveedor) {
             toast.warning("Completa el formulario")
         } else {
             setLoading(true)
@@ -95,10 +88,10 @@ function RegistroMateriasPrimas(props) {
                     });
                     setShowModal(false)
                 }).catch(e => {
-                    //console.log(e)
+                    console.log(e)
                 })
             } catch (e) {
-                //console.log(e)
+                console.log(e)
             }
         }
     }

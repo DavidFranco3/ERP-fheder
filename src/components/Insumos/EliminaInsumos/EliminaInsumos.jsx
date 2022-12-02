@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { eliminaInsumo } from "../../../api/insumos";
-import {Button, Col, Form, Row, Spinner, Alert} from "react-bootstrap";
-import {toast} from "react-toastify";
+import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
+import { toast } from "react-toastify";
 import queryString from "query-string";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function EliminaInsumos(props) {
     const { dataInsumos, location, history, setShowModal } = props;
-    const { id, folio, descripcion } = dataInsumos;
+    const { id, folio, descripcion, um, precio } = dataInsumos;
 
     // Para controlar la animacion de carga
     const [loading, setLoading] = useState(false);
@@ -43,28 +43,28 @@ function EliminaInsumos(props) {
         <>
             <div className="formularioDatos">
                 <Form onSubmit={onSubmit}>
-                <Alert variant="danger">
-                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
-                    <p className="mensaje">
-                        Esta acción eliminara del sistema el insumo.
-                    </p>
-                </Alert>
+                    <Alert variant="danger">
+                        <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                        <p className="mensaje">
+                            Esta acción eliminara del sistema el insumo.
+                        </p>
+                    </Alert>
                     <Row>
-                    <Form.Group as={Col} controlId="formHorizontalDescripcion">
-                        <Form.Label>
-                            Folio
-                        </Form.Label>
+                        <Form.Group as={Col} controlId="formHorizontalDescripcion">
+                            <Form.Label>
+                                Folio
+                            </Form.Label>
                             <Form.Control
                                 type="text"
                                 defaultValue={folio}
                                 disabled
                             />
-                    </Form.Group>
+                        </Form.Group>
 
-                    <Form.Group as={Col} controlId="formHorizontalDescripcion">
-                        <Form.Label>
-                            Descripción
-                        </Form.Label>
+                        <Form.Group as={Col} controlId="formHorizontalDescripcion">
+                            <Form.Label>
+                                Descripción
+                            </Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Escribe la descripcion"
@@ -72,31 +72,59 @@ function EliminaInsumos(props) {
                                 defaultValue={descripcion}
                                 disabled
                             />
-                    </Form.Group>
+                        </Form.Group>
+                    </Row>
+
+                    <br />
+
+                    <Row>
+                        <Form.Group as={Col} controlId="formHorizontalDescripcion">
+                            <Form.Label>
+                                UM
+                            </Form.Label>
+                            <Form.Control
+                                type="text"
+                                defaultValue={um}
+                                disabled
+                            />
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formHorizontalDescripcion">
+                            <Form.Label>
+                                Descripción
+                            </Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Escribe la descripcion"
+                                name="descripcion"
+                                defaultValue={precio}
+                                disabled
+                            />
+                        </Form.Group>
                     </Row>
 
                     <Form.Group as={Row} className="botones">
-                    <Col>
-                        <Button
-                            type="submit"
-                            variant="success"
-                            className="registrar"
-                        >
-                            {!loading ? "Eliminar" : <Spinner animation="border" />}
-                        </Button>
-                    </Col>
-                    <Col>
-                        <Button
-                            variant="danger"
-                            className="cancelar"
-                            onClick={() => {
-                                cancelarEliminacion()
-                            }}
-                        >
-                            Cancelar
-                        </Button>
-                    </Col>
-                </Form.Group>
+                        <Col>
+                            <Button
+                                type="submit"
+                                variant="success"
+                                className="registrar"
+                            >
+                                {!loading ? "Eliminar" : <Spinner animation="border" />}
+                            </Button>
+                        </Col>
+                        <Col>
+                            <Button
+                                variant="danger"
+                                className="cancelar"
+                                onClick={() => {
+                                    cancelarEliminacion()
+                                }}
+                            >
+                                Cancelar
+                            </Button>
+                        </Col>
+                    </Form.Group>
                 </Form>
             </div>
         </>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { actualizaInsumo } from "../../../api/insumos";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
-import { map, size, values } from "lodash";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -49,13 +48,7 @@ function ModificaInsumos(props) {
         e.preventDefault();
         //console.log(formData)
 
-        let validCount = 0;
-        values(formData).some(value => {
-            value && validCount++;
-            return null;
-        });
-
-        if (size(formData) !== validCount) {
+        if (!formData.descripcion || !formData.precio || !formData.um || !formData.proveedor) {
             toast.warning("Comapleta el formulario")
         } else {
             setLoading(true)

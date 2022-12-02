@@ -1,25 +1,27 @@
 import { useState, useEffect } from 'react';
-import { actualizaMateriaPrima } from "../../../api/materiaPrima";
-import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
+import {obtenerFolioActualPigmento, registraPigmento } from "../../../api/pigmento";
+import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { listarProveedores } from "../../../api/proveedores";
 
-function ModificaMateriasPrimas(props) {
-    const { dataMateriaPrima, location, history, setShowModal } = props;
-    const { id, folio, descripcion } = dataMateriaPrima;
-
-    // Para controlar la animacion de carga
-    const [loading, setLoading] = useState(false);
-
-    // Cancelar y cerrar el formulario
-    const cancelarRegistro = () => {
-        setShowModal(false)
-    }
+function RegistroPigmento(props) {
+    const { setShowModal2, setShowModal, location, history } = props;
 
     // Para almacenar los datos del formulario
-    const [formData, setFormData] = useState(initialFormData(dataMateriaPrima));
+    const [formData, setFormData] = useState(initialFormData());
+
+    // Para el icono de cargando del boton
+    const [loading, setLoading] = useState(false);
+
+    // Para recuperar el folio de la materia prima
+    const [folioActualPigmento, setFolioActualPigmento] = useState("");
+
+    // Cancelar y cerrar el formulario
+    const cancelarBusqueda = () => {
+        setShowModal(false)
+    }
 
     // Para almacenar el listado de proveedores
     const [listProveedores, setListProveedores] = useState(null);
@@ -44,24 +46,46 @@ function ModificaMateriasPrimas(props) {
         }
     }, []);
 
+    useEffect(() => {
+        try {
+            obtenerFolioActualPigmento().then(response => {
+                const { data } = response;
+                // console.log(data)
+                const { noPigmento } = data;
+                setFolioActualPigmento(noPigmento)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
+
     const onSubmit = e => {
         e.preventDefault();
         //console.log(formData)
 
-        if (!formData.descripcion || !formData.precio || !formData.um || !formData.proveedor) {
-            toast.warning("Comapleta el formulario")
+        if (!formData.nombre || !formData.precio || !formData.um) {
+            toast.warning("Completa el formulario")
         } else {
             setLoading(true)
+            const dataTemp = {
+                folio: folioActualPigmento,
+                nombre: formData.nombre,
+                precio: formData.precio,
+                um: formData.um,
+            }
             try {
-                actualizaMateriaPrima(id, formData).then(response => {
+                registraPigmento(dataTemp).then(response => {
                     const { data } = response;
-                    LogsInformativos("El material con descripción: " + descripcion + " fue modificado", dataMateriaPrima)
+                    LogsInformativos("Nuevo pigmento registrado", formData)
                     toast.success(data.mensaje)
                     setLoading(false)
-                    setShowModal(false)
                     history.push({
                         search: queryString.stringify(""),
                     });
+                    setShowModal(false)
                 }).catch(e => {
                     console.log(e)
                 })
@@ -78,25 +102,44 @@ function ModificaMateriasPrimas(props) {
     return (
         <>
             <div className="formularioDatos">
-            <Form onChange={onChange} onSubmit={onSubmit}>
+                <Form onChange={onChange} onSubmit={onSubmit}>
                     <Row className="mb-3">
                         <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                            <Col sm="2">
+                        <Col sm="2">
                                 <Form.Label align="center">
-                                    Descripcion
+                                    Folio
                                 </Form.Label>
                             </Col>
                             <Col>
                                 <Form.Control
                                     type="text"
-                                    placeholder="Descripcion"
-                                    name="descripcion"
-                                    defaultValue={formData.descripcion}
+                                    placeholder="folio"
+                                    name="folio"
+                                    value={folioActualPigmento}
+                                    disabled
                                 />
                             </Col>
                             <Col sm="2">
                                 <Form.Label align="center">
-                                    UM
+                                    Nombre
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Nombre"
+                                    name="nombre"
+                                    defaultValue={formData.nombre}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Row>
+
+                    <Row className="mb-3">
+                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                        <Col sm="2">
+                                <Form.Label align="center">
+                                    Unidad de medida
                                 </Form.Label>
                             </Col>
                             <Col>
@@ -106,17 +149,13 @@ function ModificaMateriasPrimas(props) {
                                     defaultValue={formData.um}
                                 >
                                     <option >Elige....</option>
-                                    <option value="KG" selected="KG">KG</option>
-                                    <option value="Litros" selected="Litros">Litros</option>
-                                    <option value="Piezas" selected="Piezas">Pieza</option>
-                                    <option value="Otros" selected="Otros">Otros</option>
+                                    <option value="KG">KG</option>
+                                    <option value="Litros">Litros</option>
+                                    <option value="Piezas">Pieza</option>
+                                    <option value="Otros">Otros</option>
                                 </Form.Control>
                             </Col>
-                        </Form.Group>
-                    </Row>
-
-                    <Row className="mb-3">
-                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            
                             <Col sm="2">
                                 <Form.Label align="center">
                                     Precio
@@ -130,22 +169,8 @@ function ModificaMateriasPrimas(props) {
                                     defaultValue={formData.precio}
                                 />
                             </Col>
-
-                            <Col sm="2">
-                                <Form.Label>
-                                    Proveedor
-                                </Form.Label>
-                            </Col>
-                            <Col>
-                                <Form.Control 
-                                type="text"
-                                    defaultValue={formData.proveedor}
-                                    name="proveedor"
-                                />
-                            </Col>
                         </Form.Group>
                     </Row>
-
 
                     <Form.Group as={Row} className="botones">
                         <Col>
@@ -154,7 +179,7 @@ function ModificaMateriasPrimas(props) {
                                 variant="success"
                                 className="registrar"
                             >
-                                {!loading ? "Modificar" : <Spinner animation="border" />}
+                                {!loading ? "Registrar" : <Spinner animation="border" />}
                             </Button>
                         </Col>
                         <Col>
@@ -162,7 +187,7 @@ function ModificaMateriasPrimas(props) {
                                 variant="danger"
                                 className="cancelar"
                                 onClick={() => {
-                                    cancelarRegistro()
+                                    cancelarBusqueda()
                                 }}
                             >
                                 Cancelar
@@ -175,14 +200,11 @@ function ModificaMateriasPrimas(props) {
     );
 }
 
-function initialFormData(data) {
-    const { id, descripcion, precio, um, proveedor } = data;
-
+function initialFormData() {
     return {
-        descripcion: descripcion,
-        precio: precio,
-        um: um,
-        proveedor: proveedor
+        nombre: "",
+        precio: "",
+        um: ""
     }
 }
 
@@ -212,5 +234,4 @@ function formatModelProveedores(data) {
     return dataTemp;
 }
 
-
-export default ModificaMateriasPrimas;
+export default RegistroPigmento;

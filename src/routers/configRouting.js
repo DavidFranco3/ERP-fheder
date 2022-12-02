@@ -53,6 +53,8 @@ import VerificacionMantenimientos from "../page/VerificacionMantenimientos";
 import SolicitudMaterialInsumo from "../page/SolicitudMaterialInsumo";
 import RequerimientosPlaneacion from "../page/RequerimientosPlaneacion";
 import VentasGastos from "../page/VentasGastos";
+import Pigmento from "../page/Pigmento";
+import Empaques from "../page/Empaques";
 import Error404 from "../page/Error404";
 
 // importacion de dashboards
@@ -695,6 +697,16 @@ export default [
         path: "/VentasGastos",
         exact: true,
         page: VentasGastos
+    },
+    {
+        path: "/Pigmento",
+        exact: true,
+        page: Pigmento
+    },
+    {
+        path: "/Empaques",
+        exact: true,
+        page: Empaques
     },
     {
         path: "/Clientes",

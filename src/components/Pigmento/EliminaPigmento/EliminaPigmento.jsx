@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { eliminaMateriaPrima } from "../../../api/materiaPrima";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { eliminaPigmento } from '../../../api/pigmento';
 
-function EliminaMateriasPrimas(props) {
-    const { dataMaterial, location, history, setShowModal } = props;
-    const { id, folio, descripcion, um, precio } = dataMaterial;
+function EliminaPigmento(props) {
+    const { dataPigmento, location, history, setShowModal } = props;
+    const { id, folio, nombre, um, precio } = dataPigmento;
 
     // Para controlar la animacion de carga
     const [loading, setLoading] = useState(false);
@@ -22,9 +22,9 @@ function EliminaMateriasPrimas(props) {
 
         setLoading(true)
         try {
-            eliminaMateriaPrima(id).then(response => {
+            eliminaPigmento(id).then(response => {
                 const { data } = response;
-                LogsInformativos("El material con descripción " + descripcion + " fue eliminado")
+                LogsInformativos("El material con nombre " + nombre + " fue eliminado")
                 toast.success(data.mensaje)
                 setLoading(false)
                 setShowModal(false)
@@ -32,10 +32,10 @@ function EliminaMateriasPrimas(props) {
                     search: queryString.stringify(""),
                 });
             }).catch(e => {
-                // console.log(e)
+                console.log(e)
             })
         } catch (e) {
-            // console.log(e)
+            console.log(e)
         }
     }
 
@@ -46,7 +46,7 @@ function EliminaMateriasPrimas(props) {
                     <Alert variant="danger">
                         <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
                         <p className="mensaje">
-                            Esta acción eliminara del sistema la materia prima.
+                            Esta acción eliminara del sistema el pigmento.
                         </p>
                     </Alert>
                     <Row>
@@ -67,15 +67,15 @@ function EliminaMateriasPrimas(props) {
                             </Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Escribe la descripcion"
-                                name="descripcion"
-                                defaultValue={descripcion}
+                                placeholder="Escribe el nombre"
+                                name="nombre"
+                                defaultValue={nombre}
                                 disabled
                             />
                         </Form.Group>
                     </Row>
 
-                    <br/>
+                    <br />
 
                     <Row>
                         <Form.Group as={Col} controlId="formHorizontalDescripcion">
@@ -91,12 +91,12 @@ function EliminaMateriasPrimas(props) {
 
                         <Form.Group as={Col} controlId="formHorizontalDescripcion">
                             <Form.Label>
-                                Descripción
+                                Precio
                             </Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Escribe la descripcion"
-                                name="descripcion"
+                                placeholder="Escribe el precio"
+                                name="precio"
                                 defaultValue={precio}
                                 disabled
                             />
@@ -131,4 +131,4 @@ function EliminaMateriasPrimas(props) {
     );
 }
 
-export default EliminaMateriasPrimas;
+export default EliminaPigmento;

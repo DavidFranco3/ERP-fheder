@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { actualizaMateriaPrima } from "../../../api/materiaPrima";
+import { actualizaEmpaque } from "../../../api/empaques";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { listarProveedores } from "../../../api/proveedores";
 
-function ModificaMateriasPrimas(props) {
-    const { dataMateriaPrima, location, history, setShowModal } = props;
-    const { id, folio, descripcion } = dataMateriaPrima;
+function ModificaEmpaque(props) {
+    const { dataEmpaque, location, history, setShowModal } = props;
+    const { id, folio, nombre } = dataEmpaque;
 
     // Para controlar la animacion de carga
     const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ function ModificaMateriasPrimas(props) {
     }
 
     // Para almacenar los datos del formulario
-    const [formData, setFormData] = useState(initialFormData(dataMateriaPrima));
+    const [formData, setFormData] = useState(initialFormData(dataEmpaque));
 
     // Para almacenar el listado de proveedores
     const [listProveedores, setListProveedores] = useState(null);
@@ -48,14 +48,14 @@ function ModificaMateriasPrimas(props) {
         e.preventDefault();
         //console.log(formData)
 
-        if (!formData.descripcion || !formData.precio || !formData.um || !formData.proveedor) {
+        if (!formData.nombre || !formData.precio || !formData.um) {
             toast.warning("Comapleta el formulario")
         } else {
             setLoading(true)
             try {
-                actualizaMateriaPrima(id, formData).then(response => {
+                actualizaEmpaque(id, formData).then(response => {
                     const { data } = response;
-                    LogsInformativos("El material con descripción: " + descripcion + " fue modificado", dataMateriaPrima)
+                    LogsInformativos("El empaque con nombre: " + nombre + " fue modificado", dataEmpaque)
                     toast.success(data.mensaje)
                     setLoading(false)
                     setShowModal(false)
@@ -78,22 +78,42 @@ function ModificaMateriasPrimas(props) {
     return (
         <>
             <div className="formularioDatos">
-            <Form onChange={onChange} onSubmit={onSubmit}>
+                <Form onChange={onChange} onSubmit={onSubmit}>
                     <Row className="mb-3">
                         <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                            <Col sm="2">
+                        <Col sm="2">
                                 <Form.Label align="center">
-                                    Descripcion
+                                    Folio
                                 </Form.Label>
                             </Col>
                             <Col>
                                 <Form.Control
                                     type="text"
-                                    placeholder="Descripcion"
-                                    name="descripcion"
-                                    defaultValue={formData.descripcion}
+                                    placeholder="Folio"
+                                    name="folio"
+                                    value={formData.folio}
+                                    disabled
                                 />
                             </Col>
+                            
+                            <Col sm="2">
+                                <Form.Label align="center">
+                                    Nombre
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Nombre"
+                                    name="nombre"
+                                    defaultValue={formData.nombre}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Row>
+
+                    <Row className="mb-3">
+                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
                             <Col sm="2">
                                 <Form.Label align="center">
                                     UM
@@ -112,11 +132,6 @@ function ModificaMateriasPrimas(props) {
                                     <option value="Otros" selected="Otros">Otros</option>
                                 </Form.Control>
                             </Col>
-                        </Form.Group>
-                    </Row>
-
-                    <Row className="mb-3">
-                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
                             <Col sm="2">
                                 <Form.Label align="center">
                                     Precio
@@ -128,19 +143,6 @@ function ModificaMateriasPrimas(props) {
                                     placeholder="Precio"
                                     name="precio"
                                     defaultValue={formData.precio}
-                                />
-                            </Col>
-
-                            <Col sm="2">
-                                <Form.Label>
-                                    Proveedor
-                                </Form.Label>
-                            </Col>
-                            <Col>
-                                <Form.Control 
-                                type="text"
-                                    defaultValue={formData.proveedor}
-                                    name="proveedor"
                                 />
                             </Col>
                         </Form.Group>
@@ -176,13 +178,13 @@ function ModificaMateriasPrimas(props) {
 }
 
 function initialFormData(data) {
-    const { id, descripcion, precio, um, proveedor } = data;
+    const { id, folio, nombre, precio, um } = data;
 
     return {
-        descripcion: descripcion,
+        folio: folio,
+        nombre: nombre,
         precio: precio,
         um: um,
-        proveedor: proveedor
     }
 }
 
@@ -213,4 +215,4 @@ function formatModelProveedores(data) {
 }
 
 
-export default ModificaMateriasPrimas;
+export default ModificaEmpaque;
