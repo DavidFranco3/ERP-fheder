@@ -61,7 +61,8 @@ function BuscarMateriales(props) {
             const dataTemp = {
                 descripcion: valoresCliente.descripcion,
                 um: valoresCliente.um,
-                proveedor: valoresCliente.proveedor
+                proveedor: valoresCliente.proveedor,
+                precio: valoresCliente.precio
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -316,7 +317,8 @@ function initialValues() {
     return {
         descripcion: "",
         um: "",
-        proveedor: ""
+        proveedor: "",
+        precio: ""
     }
 }
 
@@ -324,7 +326,8 @@ function valoresAlmacenados(data) {
     return {
         descripcion: data.descripcion,
         um: data.um,
-        proveedor: data.proveedor
+        proveedor: data.proveedor,
+        precio: data.precio
     }
 }
 

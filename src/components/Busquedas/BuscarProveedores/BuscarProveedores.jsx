@@ -3,17 +3,17 @@ import { Row, Col, Container, Form, Button, Spinner } from "react-bootstrap"
 import moment from "moment";
 //import NombreCliente from "../../ListTracking/NombreCliente";
 import { map } from "lodash";
-import "./BuscarInsumo.scss"
+import "./BuscarProveedores.scss"
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { estilos } from "../../../utils/tableStyled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
-import { obtenerInsumo } from "../../../api/insumos";
+import { obtenerProveedores } from "../../../api/proveedores";
 import { toast } from "react-toastify";
 
-function BuscarInsumo(props) {
-    const { setFormData, formData, setShowModal, listInsumos } = props;
+function BuscarProveedores(props) {
+    const { setFormData, formData, setShowModal, listProveedores } = props;
     // console.log(ordenVenta)
 
     // Para almacenar la informacion del formulario
@@ -28,9 +28,8 @@ function BuscarInsumo(props) {
     useEffect(() => {
         try {
 
-            obtenerInsumo(clienteSeleccionado.seleccion).then(response => {
+            obtenerProveedores(clienteSeleccionado.seleccion).then(response => {
                 const { data } = response;
-                const { cliente, nombreCliente, fechaElaboracion, fechaEntrega, productos } = data;
                 setValoresCliente(valoresAlmacenados(data))
             }).catch(e => {
                 console.log(e)
@@ -59,10 +58,8 @@ function BuscarInsumo(props) {
             //console.log(formData)
             setLoading(true);
             const dataTemp = {
-                descripcion: valoresCliente.descripcion,
-                um: valoresCliente.um,
                 proveedor: valoresCliente.proveedor,
-                precio: valoresCliente.precio
+                nombreProveedor: valoresCliente.nombreProveedor
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -71,7 +68,7 @@ function BuscarInsumo(props) {
 
     const columns = [
         {
-            name: 'Folio',
+            name: 'Nombre',
             selector: row => (
                 <>
                     <Form.Group as={Row} controlId="formHorizontalNoInterno">
@@ -87,7 +84,7 @@ function BuscarInsumo(props) {
                             />
                         </Col>
                         <Col>
-                            {row.folio}
+                            {row.nombre}
                         </Col>
                     </Form.Group>
                 </>
@@ -97,37 +94,22 @@ function BuscarInsumo(props) {
             reorder: false
         },
         {
-            name: 'Nombre',
-            selector: row => row.descripcion,
+            name: 'Correo',
+            selector: row => row.correo,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'UM',
-            selector: row => row.um,
+            name: 'Telefono',
+            selector: row => row.telefono,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Precio",
-            selector: row => (
-                <>
-                    {row.precio ? new Intl.NumberFormat('es-MX', {
-                        style: "currency",
-                        currency: "MXN"
-                    }).format(row.precio) : "No disponible"}
-                    { } MXN
-                </>
-            ),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Proveedor',
-            selector: row => row.proveedor,
+            name: 'Personal de contacto',
+            selector: row => row.personalContacto,
             sortable: false,
             center: true,
             reorder: false
@@ -141,7 +123,7 @@ function BuscarInsumo(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listInsumos);
+            setRows(listProveedores);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -224,8 +206,8 @@ function BuscarInsumo(props) {
     `;
 
 
-    const filteredItems = listInsumos.filter(
-        item => item.descripcion && item.descripcion.toLowerCase().includes(filterText.toLowerCase())
+    const filteredItems = listProveedores.filter(
+        item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const subHeaderComponentMemo = useMemo(() => {
@@ -242,7 +224,7 @@ function BuscarInsumo(props) {
                     <Form.Control
                         id="search"
                         type="text"
-                        placeholder="Busqueda por nombre del Insumo"
+                        placeholder="Busqueda por nombre del proveedor"
                         aria-label="Search Input"
                         value={filterText}
                         onChange={e => setFilterText(e.target.value)}
@@ -313,20 +295,16 @@ function initialFormData() {
 
 function initialValues() {
     return {
-        descripcion: "",
-        um: "",
         proveedor: "",
-        precio: ""
+        nombreProveedor: ""
     }
 }
 
 function valoresAlmacenados(data) {
     return {
-        descripcion: data.descripcion,
-        um: data.um,
-        proveedor: data.proveedor,
-        precio: data.precio
+        proveedor: data._id,
+        nombreProveedor: data.nombre
     }
 }
 
-export default BuscarInsumo;
+export default BuscarProveedores;
