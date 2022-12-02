@@ -180,6 +180,8 @@ function formatModelRequisiciones(data) {
             solicitante: data.solicitante,
             aprobo: data.aprobo,
             comentarios: data.comentarios,
+            tipoRequisicion: data.tipoRequisicion,
+            tipoAplicacion: data.tipoAplicacion,
             departamento: data.departamento,
             productosSolicitados: data.productosSolicitados,
             status: data.status,

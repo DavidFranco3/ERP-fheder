@@ -100,7 +100,7 @@ function RegistroExistenciasAlmacenMp(props) {
         e.preventDefault()
         // console.log(formData)
 
-        if(!formData.materiaPrima || !formData.unidadMedida){
+        if(!formData.materiaPrima){
             toast.warning("Completa el formulario")
         } else {
             setLoading(true)
@@ -119,7 +119,7 @@ function RegistroExistenciasAlmacenMp(props) {
                         folioAlmacen: noAlmacen,
                         folioMP: temp[0],
                         nombreMP: temp[1],
-                        um: formData.unidadMedida,
+                        um: temp[2],
                         fecha: "",
                         cantidadExistencia: "0",
                         estado: "true"
@@ -151,6 +151,8 @@ function RegistroExistenciasAlmacenMp(props) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
+    const temp = formData.materiaPrima.split("/")
+
     return (
         <>
             <div className="contenidoFormularioPrincipal">
@@ -166,7 +168,7 @@ function RegistroExistenciasAlmacenMp(props) {
                         >
                             <option>Elige una opción</option>
                             {map(listMateriasPrimas, (materiaprima, index) => (
-                                <option key={index} value={materiaprima?.id +"/"+ materiaprima?.descripcion}>{materiaprima?.descripcion}</option>
+                                <option key={index} value={materiaprima?.id +"/"+ materiaprima?.descripcion +"/"+ materiaprima?.um}>{materiaprima?.descripcion}</option>
                             ))}
                         </Form.Control>
                     </Form.Group>
@@ -176,16 +178,11 @@ function RegistroExistenciasAlmacenMp(props) {
                                 U.M
                             </Form.Label>
                             <Form.Control
-                                as="select"
+                                type="text"
                                 name="unidadMedida"
-                                defaultValue={formData.unidadMedida}
-                            >
-                                <option >Elige....</option>
-                                <option value="KG">KG</option>
-                                <option value="Litros">Litros</option>
-                                <option value="Piezas">Pieza</option>
-                                <option value="Otros">Otros</option>
-                            </Form.Control>
+                                value={temp[2]}
+                                disabled
+                            />
                         </Form.Group>
                     </Row>
 
@@ -232,6 +229,7 @@ function formatModelMateriasPrimas(data) {
             id: data._id,
             folio: data.folio,
             descripcion: data.descripcion,
+            um: data.um,
             tiempoespera: data.tiempoespera,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt

@@ -81,6 +81,7 @@ function RegistroMateriasPrimas(props) {
                 folio: folioActualMP,
                 descripcion: formData.descripcion,
                 precio: formData.precio,
+                um: formData.um,
                 proveedor: formData.proveedor
             }
             try {
@@ -114,21 +115,6 @@ function RegistroMateriasPrimas(props) {
                         <Form.Group as={Row} controlId="formHorizontalNoInterno">
                             <Col sm="2">
                                 <Form.Label align="center">
-                                    Folio
-                                </Form.Label>
-                            </Col>
-                            <Col>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Orden de venta"
-                                    name="folio"
-                                    defaultValue={folioActualMP}
-                                    disabled
-                                />
-                            </Col>
-
-                            <Col sm="2">
-                                <Form.Label align="center">
                                     Descripcion
                                 </Form.Label>
                             </Col>
@@ -139,6 +125,25 @@ function RegistroMateriasPrimas(props) {
                                     name="descripcion"
                                     defaultValue={formData.descripcion}
                                 />
+                            </Col>
+
+                            <Col sm="2">
+                                <Form.Label align="center">
+                                    Unidad de medida
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    as="select"
+                                    name="um"
+                                    defaultValue={formData.um}
+                                >
+                                    <option >Elige....</option>
+                                    <option value="KG">KG</option>
+                                    <option value="Litros">Litros</option>
+                                    <option value="Piezas">Pieza</option>
+                                    <option value="Otros">Otros</option>
+                                </Form.Control>
                             </Col>
                         </Form.Group>
                     </Row>
@@ -165,15 +170,11 @@ function RegistroMateriasPrimas(props) {
                                 </Form.Label>
                             </Col>
                             <Col>
-                                <Form.Control as="select"
+                                <Form.Control 
+                                type="text"
                                     defaultValue={formData.proveedor}
                                     name="proveedor"
-                                >
-                                    <option>Elige una opción</option>
-                                    {map(listProveedores, (proveedor, index) => (
-                                        <option key={index} value={proveedor?.nombre}>{proveedor?.nombre}</option>
-                                    ))}
-                                </Form.Control>
+                               />
                             </Col>
                         </Form.Group>
                     </Row>
@@ -210,7 +211,8 @@ function initialFormData() {
     return {
         descripcion: "",
         precio: "",
-        proveedor: ""
+        proveedor: "",
+        um: ""
     }
 }
 

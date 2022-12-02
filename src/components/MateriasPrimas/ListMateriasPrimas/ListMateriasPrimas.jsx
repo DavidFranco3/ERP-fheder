@@ -50,6 +50,13 @@ function ListMateriasPrimas(props) {
                     reorder: false
                 },
                 {
+                    name: "UM",
+                    selector: row => row.um,
+                    sortable: false,
+                    center: true,
+                    reorder: false
+                },
+                {
                     name: "Precio",
                     selector: row => (
                         <>

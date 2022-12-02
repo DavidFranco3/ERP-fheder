@@ -12,14 +12,17 @@ import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "
 import { obtenerUsuario } from "../../../api/usuarios";
 import BuscarDepartamento from '../../../page/BuscarDepartamento';
 import BasicModal from "../../Modal/BasicModal";
+import BuscarMaterial from '../../../page/BuscarMaterial';
+import BuscarInsumos from '../../../page/BuscarInsumos';
+import BuscarOV from '../../../page/BuscarOV';
 
 function RegistraRequisiciones(props) {
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
 
-     // Para guardar los datos del formulario
-     const [departamentoElegido, setDepartamentoElegido] = useState(initialDepartamento());
+    // Para guardar los datos del formulario
+    const [departamentoElegido, setDepartamentoElegido] = useState(initialDepartamento());
 
     // Para guardar los datos de los articulos
     const [formDataArticulos, setFormDataArticulos] = useState(initialFormDataArticulos());
@@ -37,6 +40,13 @@ function RegistraRequisiciones(props) {
         enrutamiento.push("/Requisiciones")
     }
 
+    // Para almacenar la OV
+    const [ordenVenta, setOrdenVenta] = useState("");
+    // Para almacenar el cliente de la OV
+    const [clienteOV, setClienteOV] = useState("");
+
+    const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
+
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
     const [contentModal, setContentModal] = useState(null);
@@ -45,6 +55,27 @@ function RegistraRequisiciones(props) {
     // Para la eliminacion fisica de usuarios
     const buscarDepartamento = (content) => {
         setTitulosModal("Buscar departamento");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarMaterial = (content) => {
+        setTitulosModal("Buscar material");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarInsumo = (content) => {
+        setTitulosModal("Buscar insumo");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarOV = (content) => {
+        setTitulosModal("Buscar Orden de Venta");
         setContentModal(content);
         setShowModal(true);
     }
@@ -144,23 +175,19 @@ function RegistraRequisiciones(props) {
                 [...listProductosCargados, dataTemp]
             );
 
+            setFormDataArticulos(initialFormDataArticulos)
             //setCargaProductos(initialFormDataProductos)
             document.getElementById("cantidad").value = "0"
-            document.getElementById("um").value = "Elige"
-            document.getElementById("descripcion").value = ""
-            document.getElementById("proveedor").value = "Elige"
-            document.getElementById("referencia").value = "Elige"
+            setOrdenVenta("")
         }
     }
 
     // Para limpiar el formulario de detalles de producto
     const cancelarCargaProducto = () => {
+        setFormDataArticulos(initialFormDataArticulos)
         //setCargaProductos(initialFormDataProductos)
         document.getElementById("cantidad").value = "0"
-        document.getElementById("um").value = "Elige"
-        document.getElementById("descripcion").value = ""
-        document.getElementById("proveedor").value = "Elige"
-        document.getElementById("referencia").value = "Elige"
+        setOrdenVenta("")
     }
 
     // Para eliminar productos del listado
@@ -210,6 +237,8 @@ function RegistraRequisiciones(props) {
                         aprobo: formData.aprobo,
                         comentarios: formData.comentarios,
                         departamento: departamentoElegido.departamento,
+                        tipoRequisicion: formData.tipoRequisicion,
+                        tipoAplicacion: formData.tipoAplicacion,
                         productosSolicitados: listProductosCargados,
                         status: formData.estado
                     }
@@ -311,28 +340,64 @@ function RegistraRequisiciones(props) {
                                 Departamento
                             </Form.Label>
                             <div className="flex items-center mb-1">
-                            <Form.Control
-                                type="text"
-                                placeholder="Escribe el departamento"
-                                name="departamento"
-                                value={departamentoElegido.departamento}
-                                disabled
-                            >
-                            </Form.Control>
-                            <FontAwesomeIcon
-                                className="cursor-pointer py-2 -ml-6"
-                                icon={faSearch}
-                                onClick={() => {
-                                    buscarDepartamento(
-                                        <BuscarDepartamento
-                                            formData={departamentoElegido}
-                                            setFormData={setDepartamentoElegido}
-                                            setShowModal={setShowModal}
-                                        />)
-                                }}
-                            />
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Escribe el departamento"
+                                    name="departamento"
+                                    value={departamentoElegido.departamento}
+                                    disabled
+                                >
+                                </Form.Control>
+                                <FontAwesomeIcon
+                                    className="cursor-pointer py-2 -ml-6"
+                                    icon={faSearch}
+                                    onClick={() => {
+                                        buscarDepartamento(
+                                            <BuscarDepartamento
+                                                formData={departamentoElegido}
+                                                setFormData={setDepartamentoElegido}
+                                                setShowModal={setShowModal}
+                                            />)
+                                    }}
+                                />
                             </div>
                         </Form.Group>
+                    </Row>
+
+                    <Row className="mb-3">
+                        <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
+                            <Form.Label>
+                                Tipo de requisicion
+                            </Form.Label>
+                            <Form.Control
+                                as="select"
+                                name="tipoRequisicion"
+                                defaultValue={formData.tipoRequisicion}
+                            >
+                                <option >Elige....</option>
+                                <option value="Materiales">Materiales</option>
+                                <option value="Insumos">Insumos</option>
+                            </Form.Control>
+                        </Form.Group>
+
+                        {formData.tipoRequisicion == "Materiales" && (
+                            <>
+                                <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
+                                    <Form.Label>
+                                        Tipo de Aplicacion
+                                    </Form.Label>
+                                    <Form.Control
+                                        as="select"
+                                        name="tipoAplicacion"
+                                        defaultValue={formData.tipoAplicacion}
+                                    >
+                                        <option >Elige....</option>
+                                        <option value="Orden Venta">Orden venta</option>
+                                        <option value="Stock">Stock</option>
+                                    </Form.Control>
+                                </Form.Group>
+                            </>
+                        )}
                     </Row>
 
                     <hr />
@@ -362,13 +427,47 @@ function RegistraRequisiciones(props) {
                             <Form.Label>
                                 Producto y/o servicio
                             </Form.Label>
-                            <Form.Control
-                                id="descripcion"
-                                type="text"
-                                placeholder="Escribe la descripcion"
-                                name="descripcion"
-                                defaultValue={formDataArticulos.descripcion}
-                            />
+                            <div className="flex items-center mb-1">
+                                <Form.Control
+                                    id="descripcion"
+                                    type="text"
+                                    placeholder="Escribe la descripcion"
+                                    name="descripcion"
+                                    defaultValue={formDataArticulos.descripcion}
+                                />
+                                {formData.tipoRequisicion == "Materiales" && (
+                                    <>
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarMaterial(
+                                                    <BuscarMaterial
+                                                        formData={formDataArticulos}
+                                                        setFormData={setFormDataArticulos}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        />
+                                    </>
+                                )}
+                                {formData.tipoRequisicion == "Insumos" && (
+                                    <>
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarInsumo(
+                                                    <BuscarInsumos
+                                                        formData={formDataArticulos}
+                                                        setFormData={setFormDataArticulos}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        />
+                                    </>
+                                )}
+                            </div>
                         </Form.Group>
 
                         <Form.Group as={Col}>
@@ -376,17 +475,11 @@ function RegistraRequisiciones(props) {
                                 UM
                             </Form.Label>
                             <Form.Control
-                                as="select"
+                                type="text"
                                 id="um"
                                 name="um"
                                 defaultValue={formDataArticulos.um}
-                            >
-                                <option >Elige</option>
-                                <option value="KG">KG</option>
-                                <option value="Litros">Litros</option>
-                                <option value="Piezas">Pieza</option>
-                                <option value="Otros">Otros</option>
-                            </Form.Control>
+                            />
                         </Form.Group>
 
                         <Form.Group as={Col}>
@@ -409,32 +502,71 @@ function RegistraRequisiciones(props) {
                             </Form.Label>
                             <Form.Control
                                 id="proveedor"
-                                as="select"
+                                type="text"
                                 defaultValue={formDataArticulos.proveedor}
                                 name="proveedor"
-                            >
-                                <option>Elige</option>
-                                {map(listProveedores, (proveedor, index) => (
-                                    <option key={index} value={proveedor?.nombre}>{proveedor?.nombre}</option>
-                                ))}*
-                            </Form.Control>
+                            />
                         </Form.Group>
 
                         <Form.Group as={Col}>
-                            <Form.Label>
-                                Aplicación
-                            </Form.Label>
-                            <Form.Control
-                                id="referencia"
-                                as="select"
-                                defaultValue={formDataArticulos.referencia}
-                                name="referencia"
-                            >
-                                <option>Elige</option>
-                                {map(listOrdenesVenta, (venta, index) => (
-                                    <option key={index} value={venta?.folio}>{venta?.folio}</option>
-                                ))}*
-                            </Form.Control>
+                            {formData.tipoRequisicion == "Materiales" && formData.tipoAplicacion == "Orden Venta" && (
+                                <>
+                                    <Form.Label>
+                                        Aplicación
+                                    </Form.Label>
+                                    <div className="flex items-center mb-1">
+                                        <Form.Control
+                                            id="referencia"
+                                            type="text"
+                                            defaultValue={ordenVenta}
+                                            name="referencia"
+                                        />
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarOV(
+                                                    <BuscarOV
+                                                    setOrdenVenta={setOrdenVenta}
+                                                    setClienteOV={setClienteOV}
+                                                    setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        />
+                                    </div>
+                                </>
+                            )}
+
+                            {formData.tipoRequisicion == "Materiales" && formData.tipoAplicacion == "Stock" && (
+                                <>
+                                    <Form.Label>
+                                        Aplicación
+                                    </Form.Label>
+                                    <Form.Control
+                                        id="referencia"
+                                        type="text"
+                                        value="Stock"
+                                        name="referencia"
+                                        disabled
+                                    />
+                                </>
+                            )}
+
+                            {formData.tipoRequisicion == "Insumos" && (
+                                <>
+                                    <Form.Label>
+                                        Aplicación
+                                    </Form.Label>
+                                    <Form.Control
+                                        id="referencia"
+                                        type="text"
+                                        value="Stock"
+                                        name="referencia"
+                                        disabled
+                                    />
+                                </>
+                            )}
                         </Form.Group>
 
                         <Col sm="1">
@@ -624,6 +756,8 @@ function initialFormData() {
         aprobo: "",
         estado: "",
         comentarios: "",
+        tipoRequisicion: "",
+        tipoAplicacion: ""
     }
 }
 
