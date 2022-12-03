@@ -60,7 +60,7 @@ function DashboardAlmacenes(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Almacen
+                            Almacén
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
@@ -79,17 +79,17 @@ function DashboardAlmacenes(props) {
                 <ItemCard
                     path={'/AlmacenMP'}
                     logo={LogoMateriasPrimas}
-                    title={'Almacen de materia prima'}
+                    title={'Almacén de materia prima'}
                 />
                 <ItemCard
                     path={'/AlmacenPT'}
                     logo={LogoProductoTerminado}
-                    title={'Almacen de producto terminado'}
+                    title={'Almacén de producto terminado'}
                 />
                 <ItemCard
                     path={'/AlmacenGeneral'}
                     logo={LogoAlmacenGeneral}
-                    title={'Almacen general'}
+                    title={'Almacén general'}
                 />
                 <ItemCard
                     path={'/Compras/AlmacenMP'}

@@ -5,11 +5,17 @@ import { map } from "lodash";
 import "./RegistroComprasAlmacenMP.scss"
 import { listarProveedores } from "../../../api/proveedores";
 import { toast } from "react-toastify";
-import { actualizaOrdenCompra, obtenerDatosCompra, obtenerNumeroOrdenCompra, registraOrdenCompra, obtenerItem } from "../../../api/compras";
+import { obtenerNumeroOrdenCompra, registraOrdenCompra, obtenerItem } from "../../../api/compras";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { listarPedidosVenta } from "../../../api/pedidoVenta";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
+import BuscarProveedor from '../../../page/BuscarProveedor';
+import BasicModal from "../../Modal/BasicModal";
+import BuscarMaterial from '../../../page/BuscarMaterial';
+import BuscarInsumos from '../../../page/BuscarInsumos';
+import BuscarOV from '../../../page/BuscarOV';
 
 function RegistroComprasAlmacenMP(props) {
     const { } = props;
@@ -21,7 +27,40 @@ function RegistroComprasAlmacenMP(props) {
     const enrutamiento = useHistory();
     // Para definir la ruta de regreso a compras
     const regresaCompras = () => {
-        enrutamiento.push("/Compras/AlmacenMP")
+        enrutamiento.push("/Compras")
+    }
+
+    // Para hacer uso del modal
+    const [showModal, setShowModal] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    // Para la eliminacion fisica de usuarios
+    const buscarProveedor = (content) => {
+        setTitulosModal("Buscar proveedor");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarMaterial = (content) => {
+        setTitulosModal("Buscar material");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarInsumo = (content) => {
+        setTitulosModal("Buscar insumo");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarOV = (content) => {
+        setTitulosModal("Buscar Orden de Venta");
+        setContentModal(content);
+        setShowModal(true);
     }
 
     // Para almacenar el listado de ordenes de venta
@@ -113,9 +152,19 @@ function RegistroComprasAlmacenMP(props) {
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
 
+    // Para guardar los datos del formulario
+    const [proveedorSeleccionado, setProveedorSeleccionado] = useState(initialProveedor());
+
     // Para guardar los datos de los articulos
     const [formDataArticulos, setFormDataArticulos] = useState(initialFormDataArticulos());
     const [listProductosCargados, setListProductosCargados] = useState([]);
+
+    // Para almacenar la OV
+    const [ordenVenta, setOrdenVenta] = useState("");
+    // Para almacenar el cliente de la OV
+    const [clienteOV, setClienteOV] = useState("");
+
+    const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
 
     const [totalUnitario, setTotalUnitario] = useState(0);
 
@@ -152,25 +201,28 @@ function RegistroComprasAlmacenMP(props) {
                 [...listProductosCargados, dataTemp]
             );
 
+            // Actualizacion del tracking
+            LogTrackingActualizacion(referencia, "En orden de compra", "3")
+
+            //setCargaProductos(initialFormDataProductos)
+            setFormDataArticulos(initialFormDataArticulos)
             //setCargaProductos(initialFormDataProductos)
             document.getElementById("cantidad").value = "0"
-            document.getElementById("um").value = "Elige"
-            document.getElementById("descripcion").value = ""
-            document.getElementById("precio").value = "0"
+            setOrdenVenta("")
             setTotalUnitario(0)
-            document.getElementById("referencia").value = "Elige"
+
         }
     }
 
     // Para limpiar el formulario de detalles de producto
     const cancelarCargaProducto = () => {
         //setCargaProductos(initialFormDataProductos)
+        setFormDataArticulos(initialFormDataArticulos)
+        //setCargaProductos(initialFormDataProductos)
         document.getElementById("cantidad").value = "0"
-        document.getElementById("um").value = "Elige"
-        document.getElementById("descripcion").value = ""
-        document.getElementById("precio").value = "0"
+        setOrdenVenta("")
         setTotalUnitario(0)
-        document.getElementById("referencia").value = "Elige"
+
     }
 
     // Para eliminar productos del listado
@@ -184,7 +236,7 @@ function RegistroComprasAlmacenMP(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!formData.proveedor || !formData.fechaSolicitud || !formData.fechaEntrega || !formData.autorizo) {
+        if (!formData.fechaSolicitud || !formData.fechaEntrega || !formData.autorizo) {
             toast.warning("Completa el formulario");
         } else {
 
@@ -197,10 +249,12 @@ function RegistroComprasAlmacenMP(props) {
                     const dataTemp = {
                         item: itemActual,
                         folio: data.noCompra,
-                        proveedor: formData.proveedor,
+                        proveedor: proveedorSeleccionado.proveedor,
+                        nombreProveedor: proveedorSeleccionado.nombreProveedor,
                         fechaSolicitud: formData.fechaSolicitud,
                         fechaEntrega: formData.fechaEntrega,
                         autoriza: formData.autorizo,
+                        tipoCompra: formData.tipoCompra,
                         departamento: "Almacen",
                         productos: listProductosCargados,
                         subtotal: subTotal,
@@ -226,7 +280,6 @@ function RegistroComprasAlmacenMP(props) {
                 console.log(e)
             }
         }
-
     }
 
     const onChange = e => {
@@ -271,77 +324,94 @@ function RegistroComprasAlmacenMP(props) {
                     {/* Inicio del encabdezado de la solicitud */}
                     {/* Folio, proveedor , fecha de elaboración */}
                     <Row className="mb-3">
-                        <Form.Group as={Row} controlId="formGridFolio">
-                            <Col sm="1">
-                                <Form.Label>
-                                    Folio
-                                </Form.Label>
-                            </Col>
-                            <Col>
+                        <Form.Group as={Col} controlId="formGridFolio">
+                            <Form.Label>
+                                Folio
+                            </Form.Label>
+
+                            <Form.Control
+                                type="text"
+                                placeholder="Folio de la orden de compra"
+                                name="folio"
+                                defaultValue={folioActual}
+                                disabled
+                            />
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridFolio">
+                            <Form.Label>Fecha de solicitud</Form.Label>
+
+                            <Form.Control
+                                className="mb-3"
+                                type="date"
+                                defaultValue={formData.fechaSolicitud}
+                                placeholder="Fecha de solicitud"
+                                name="fechaSolicitud"
+                            />
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridFolio">
+                            <Form.Label>
+                                Proveedor
+                            </Form.Label>
+                            <div className="flex items-center mb-1">
                                 <Form.Control
                                     type="text"
-                                    placeholder="Folio de la orden de compra"
-                                    name="folio"
-                                    defaultValue={folioActual}
-                                    disabled
-                                />
-                            </Col>
-
-                            <Col sm="1">
-                                <Form.Label>Fecha de solicitud</Form.Label>
-                            </Col>
-                            <Col>
-                                <Form.Control
-                                    className="mb-3"
-                                    type="date"
-                                    defaultValue={formData.fechaSolicitud}
-                                    placeholder="Fecha de solicitud"
-                                    name="fechaSolicitud"
-                                />
-                            </Col>
-
-                            <Col sm="1">
-                                <Form.Label>
-                                    Proveedor
-                                </Form.Label>
-                            </Col>
-                            <Col>
-                                <Form.Control as="select"
-                                    defaultValue={formData.proveedor}
+                                    placeholder='Proveedor'
+                                    defaultValue={proveedorSeleccionado.nombreProveedor}
                                     name="proveedor"
-                                >
-                                    <option>Elige una opción</option>
-                                    {map(listProveedores, (proveedor, index) => (
-                                        <option key={index} value={proveedor?.id}>{proveedor?.nombre}</option>
-                                    ))}*
-                                </Form.Control>
-                            </Col>
-
-                            <Col sm="1">
-                                <Form.Label>Fecha de entrega</Form.Label>
-                            </Col>
-                            <Col>
-                                <Form.Control
-                                    className="mb-3"
-                                    type="date"
-                                    defaultValue={formData.fechaEntrega}
-                                    placeholder="Fecha de entrega"
-                                    name="fechaEntrega"
                                 />
-                            </Col>
-
-                            <Col sm="1">
-                                <Form.Label>Autorizó</Form.Label>
-                            </Col>
-                            <Col>
-                                <Form.Control
-                                    className="mb-3"
-                                    type="text"
-                                    defaultValue={formData.autorizo}
-                                    placeholder="Autorizó"
-                                    name="autorizo"
+                                <FontAwesomeIcon
+                                    className="cursor-pointer py-2 -ml-6"
+                                    icon={faSearch}
+                                    onClick={() => {
+                                        buscarProveedor(
+                                            <BuscarProveedor
+                                                formData={proveedorSeleccionado}
+                                                setFormData={setProveedorSeleccionado}
+                                                setShowModal={setShowModal}
+                                            />)
+                                    }}
                                 />
-                            </Col>
+                            </div>
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridFolio">
+                            <Form.Label>Fecha de entrega</Form.Label>
+                            <Form.Control
+                                className="mb-3"
+                                type="date"
+                                defaultValue={formData.fechaEntrega}
+                                placeholder="Fecha de entrega"
+                                name="fechaEntrega"
+                            />
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridFolio">
+                            <Form.Label>Autorizó</Form.Label>
+                            <Form.Control
+                                className="mb-3"
+                                type="text"
+                                defaultValue={formData.autorizo}
+                                placeholder="Autorizó"
+                                name="autorizo"
+                            />
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridFolio">
+                            <Form.Label align="center">
+                                Compra de
+                            </Form.Label>
+
+                            <Form.Control
+                                as="select"
+                                name="tipoCompra"
+                                defaultValue={formData.tipoCompra}
+                            >
+                                <option >Elige....</option>
+                                <option value="Material">Material</option>
+                                <option value="Insumos">Insumos</option>
+                            </Form.Control>
                         </Form.Group>
                     </Row>
 
@@ -370,6 +440,65 @@ function RegistroComprasAlmacenMP(props) {
 
                         <Form.Group as={Col}>
                             <Form.Label>
+                                Descripción
+                            </Form.Label>
+                            <div className="flex items-center mb-1">
+                                <Form.Control
+                                    id="descripcion"
+                                    type="text"
+                                    placeholder="Escribe la descripcion"
+                                    name="descripcion"
+                                    defaultValue={formDataArticulos.descripcion}
+                                />
+                                {formData.tipoCompra == "Material" && (
+                                    <>
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarMaterial(
+                                                    <BuscarMaterial
+                                                        formData={formDataArticulos}
+                                                        setFormData={setFormDataArticulos}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        />
+                                    </>
+                                )}
+                                {formData.tipoCompra == "Insumos" && (
+                                    <>
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarInsumo(
+                                                    <BuscarInsumos
+                                                        formData={formDataArticulos}
+                                                        setFormData={setFormDataArticulos}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        />
+                                    </>
+                                )}
+                            </div>
+                        </Form.Group>
+
+                        <Form.Group as={Col}>
+                            <Form.Label>
+                                UM
+                            </Form.Label>
+                            <Form.Control
+                                type="text"
+                                id="um"
+                                name="um"
+                                defaultValue={formDataArticulos.um}
+                            />
+                        </Form.Group>
+
+                        <Form.Group as={Col}>
+                            <Form.Label>
                                 Cantidad
                             </Form.Label>
                             <Form.Control
@@ -380,37 +509,6 @@ function RegistroComprasAlmacenMP(props) {
                                 name="cantidad"
                                 onChange={(e) => { calcularTotalUnitario(e.target.value) }}
                                 defaultValue={formDataArticulos.cantidad}
-                            />
-                        </Form.Group>
-
-                        <Form.Group as={Col}>
-                            <Form.Label>
-                                UM
-                            </Form.Label>
-                            <Form.Control
-                                as="select"
-                                id="um"
-                                name="um"
-                                defaultValue={formDataArticulos.um}
-                            >
-                                <option >Elige</option>
-                                <option value="KG">KG</option>
-                                <option value="Litros">Litros</option>
-                                <option value="Piezas">Pieza</option>
-                                <option value="Otros">Otros</option>
-                            </Form.Control>
-                        </Form.Group>
-
-                        <Form.Group as={Col}>
-                            <Form.Label>
-                                Descripción
-                            </Form.Label>
-                            <Form.Control
-                                id="descripcion"
-                                type="text"
-                                placeholder="Escribe la descripcion"
-                                name="descripcion"
-                                defaultValue={formDataArticulos.descripcion}
                             />
                         </Form.Group>
 
@@ -446,20 +544,49 @@ function RegistroComprasAlmacenMP(props) {
                         </Form.Group>
 
                         <Form.Group as={Col}>
-                            <Form.Label>
-                                Referencia
-                            </Form.Label>
-                            <Form.Control
-                                id="referencia"
-                                as="select"
-                                defaultValue={formDataArticulos.referencia}
-                                name="referencia"
-                            >
-                                <option>Elige</option>
-                                {map(listOrdenesVenta, (venta, index) => (
-                                    <option key={index} value={venta?.folio}>{venta?.folio}</option>
-                                ))}*
-                            </Form.Control>
+                            {formData.tipoCompra == "Material" && (
+                                <>
+                                    <Form.Label>
+                                        Referencia
+                                    </Form.Label>
+                                    <div className="flex items-center mb-1">
+                                        <Form.Control
+                                            id="referencia"
+                                            type="text"
+                                            defaultValue={ordenVenta}
+                                            name="referencia"
+                                        />
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarOV(
+                                                    <BuscarOV
+                                                        setOrdenVenta={setOrdenVenta}
+                                                        setClienteOV={setClienteOV}
+                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        />
+                                    </div>
+                                </>
+                            )}
+
+                            {formData.tipoCompra == "Insumos" && (
+                                <>
+                                    <Form.Label>
+                                        Referencia
+                                    </Form.Label>
+                                    <Form.Control
+                                        id="referencia"
+                                        type="text"
+                                        value="Stock"
+                                        name="referencia"
+                                        disabled
+                                    />
+                                </>
+                            )}
                         </Form.Group>
 
                         <Col sm="1">
@@ -635,6 +762,9 @@ function RegistroComprasAlmacenMP(props) {
                 </Form>
                 <br />
             </Container>
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }
@@ -644,7 +774,15 @@ function initialFormData() {
         fechaSolicitud: "",
         proveedor: "",
         fechaEntrega: "",
-        autorizo: ""
+        autorizo: "",
+        tipoCompra: ""
+    }
+}
+
+function initialProveedor() {
+    return {
+        proveedor: "",
+        nombreProveedor: ""
     }
 }
 

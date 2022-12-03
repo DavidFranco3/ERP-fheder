@@ -61,7 +61,7 @@ function Dashboard(props) {
 
     return (
         <>
-            <div className="grid grid-cols-5 gap-3">
+            <div className="grid grid-cols-5 gap-5">
                 <ItemCard
                     path={'/Tracking'}
                     logo={Tracking}
@@ -85,7 +85,7 @@ function Dashboard(props) {
                 <ItemCard
                     path={'/DashboardAlmacenes'}
                     logo={LogoAlmacen}
-                    title={'Almacen'}
+                    title={'Almacén'}
                 />
                 <ItemCard
                     path={'/DashboardPlaneacion'}
