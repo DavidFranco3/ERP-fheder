@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
 // Importacion de imagenes para los iconos de los menus
-import LogoCompras from "../../../assets/png/menus/ordenCompra.png";
 import LogoMateriasPrimas from "../../../assets/png/menus/materiasPrimas.png";
 import LogoProductoTerminado from "../../../assets/png/menus/productoTerminado.png";
 import LogoAlmacenGeneral from "../../../assets/png/menus/almacenGeneral.png";
@@ -75,7 +74,7 @@ function DashboardAlmacenes(props) {
                     </Col>
                 </Row>
             </Alert>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-3 gap-3">
                 <ItemCard
                     path={'/AlmacenMP'}
                     logo={LogoMateriasPrimas}
@@ -90,11 +89,6 @@ function DashboardAlmacenes(props) {
                     path={'/AlmacenGeneral'}
                     logo={LogoAlmacenGeneral}
                     title={'Almacén general'}
-                />
-                <ItemCard
-                    path={'/Compras/AlmacenMP'}
-                    logo={LogoCompras}
-                    title={'Compras MP'}
                 />
             </div>
         </>

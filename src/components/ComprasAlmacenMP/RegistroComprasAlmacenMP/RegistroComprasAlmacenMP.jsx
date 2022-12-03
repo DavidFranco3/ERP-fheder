@@ -27,7 +27,7 @@ function RegistroComprasAlmacenMP(props) {
     const enrutamiento = useHistory();
     // Para definir la ruta de regreso a compras
     const regresaCompras = () => {
-        enrutamiento.push("/Compras")
+        enrutamiento.push("/Compras/AlmacenMP")
     }
 
     // Para hacer uso del modal
