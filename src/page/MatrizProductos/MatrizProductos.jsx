@@ -6,7 +6,6 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { Switch } from "@headlessui/react";
-import ListProductos from "../../components/CatalogoProductos/ListProductos";
 import { totalMatrizProductos, listarMatrizProductosPaginacion } from "../../api/matrizProductos";
 import ListMatrizProductos from "../../components/MatrizProductos/ListMatrizProductos";
 import Lottie from 'react-lottie-player';

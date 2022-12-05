@@ -1,8 +1,6 @@
 // Rutas generales del sistema
 import Dashboard from "../page/Dashboard";
-import Productos from "../page/CatalogoProductos";
 import Tiquets from "../page/Tiquets";
-import Almacen from "../page/Almacen";
 import Compras from "../page/Compras";
 import Embarque from "../page/Embarque";
 import Facturacion from "../page/Facturacion";
@@ -73,11 +71,6 @@ import AlmacenMP from "../page/AlmacenMP";
 import AlmacenPt from "../page/AlmacenPT";
 import AlmacenGeneral from "../page/AlmacenGeneral";
 
-// Importaciones para las compras que realiza el almacen
-import ComprasAlmacenMP from "../page/ComprasAlmacenMP";
-import RegistroComprasAlmacenMP from "../components/ComprasAlmacenMP/RegistroComprasAlmacenMP";
-import ModificacionComprasAlmacenMP from "../components/ComprasAlmacenMP/ModificacionComprasAlmacenMP";
-
 // Listado de movimientos de materia prima en almacen
 import MovimientosAlmacenMP from "../page/MovimientosAlmacenMP";
 import MovimientosAlmacenPT from "../page/MovimientosAlmacenPT";
@@ -108,10 +101,6 @@ import ModificaRemisiones from "../components/Remisiones/ModificaRemisiones";
 import RegistraCotizaciones from "../components/Cotizaciones/RegistraCotizaciones";
 import ModificaCotizaciones from "../components/Cotizaciones/ModificaCotizaciones";
 
-// Rutas para los productos
-import RegistraProductos from "../components/CatalogoProductos/RegistraProductos";
-import ModificaProductos from "../components/CatalogoProductos/ModificaProductos";
-
 // Rutas para los usuarios (colaboradores)
 import RegistroUsuarios from "../components/Usuarios/Registro";
 import ModificacionUsuarios from "../components/Usuarios/Modificacion";
@@ -123,10 +112,6 @@ import ModificacionClientes from "../components/Clientes/Modificacion";
 // Rutas para los tiquets
 import RegistroTiquets from "../components/Tiquets/Registro";
 import ModificacionTiquets from "../components/Tiquets/Modificacion";
-
-// Rutas para el almacen
-import RegistroAlmacen from "../components/Almacen/Registro";
-import ModificacionAlmacen from "../components/Almacen/Modificacion";
 
 // Rutas para las compras
 import RegistroCompras from "../components/Compras/Registro";
@@ -327,16 +312,6 @@ export default [
         page: ModificaMatrizProductos
     },
     {
-        path: "/Registra-CatalogoProductos",
-        exact: true,
-        page: RegistraProductos
-    },
-    {
-        path: "/Modifica-Producto/:id",
-        exact: true,
-        page: ModificaProductos
-    },
-    {
         path: "/RegistroUsuarios",
         exact: true,
         page: RegistroUsuarios
@@ -416,22 +391,6 @@ export default [
         path: "/AlmacenGeneral/Movimientos/:folioAlmacen",
         exact: true,
         page: MovimientosAlmacenGeneral
-    },
-    //
-    {
-        path: "/RegistroAlmacen",
-        exact: true,
-        page: RegistroAlmacen
-    },
-    {
-        path: "/ModificacionAlmacen/:id",
-        exact: true,
-        page: ModificacionAlmacen
-    },
-    {
-        path: "/ModificacionAlmacen",
-        exact: true,
-        page: ModificacionAlmacen
     },
     {
         path: "/RegistroCompras",
@@ -549,16 +508,6 @@ export default [
         page: MatrizProductos
     },
     {
-        path: "/Compras/AlmacenMP/Modificacion/:folio",
-        exact: true,
-        page: ModificacionComprasAlmacenMP
-    },
-    {
-        path: "/Compras/AlmacenMP/Registro",
-        exact: true,
-        page: RegistroComprasAlmacenMP
-    },
-    {
         path: "/MovimientosAlmacenGeneral/:folioAlmacen",
         exact: true,
         page: MovimientosAlmacenGeneral
@@ -654,11 +603,6 @@ export default [
         page: Logs
     },
     {
-        path: "/Compras/AlmacenMP",
-        exact: true,
-        page: ComprasAlmacenMP
-    },
-    {
         path: "/Requisiciones",
         exact: true,
         page: Requisiciones
@@ -729,11 +673,6 @@ export default [
         page: AlmacenMP
     },
     {
-        path: "/Almacen",
-        exact: true,
-        page: Almacen
-    },
-    {
         path: "/Tracking",
         exact: true,
         page: Tracking
@@ -787,11 +726,6 @@ export default [
         path: "/Ventas",
         exact: true,
         page: Ventas
-    },
-    {
-        path: "/CatalogoProductos",
-        exact: true,
-        page: Productos
     },
     {
         path: "/Tiquets",

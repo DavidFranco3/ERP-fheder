@@ -1,13 +1,9 @@
 import { useState, useEffect } from 'react';
-import { eliminaMateriaPrima, actualizaMateriaPrima } from "../../../api/materiaPrima";
 import DataTable from "react-data-table-component";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@fortawesome/free-solid-svg-icons";
 import BasicModal from "../../Modal/BasicModal";
-import BusquedaMateriaPrima from "../../CatalogoProductos/ListProductos/BusquedaMateriaPrima";
 import {Badge, Container} from "react-bootstrap";
-import EstadoProducto from "../../CatalogoProductos/EstadoProducto";
-import EliminaProductos from "../../CatalogoProductos/EliminaProductos";
 import ModificaPigmento from '../ModificaPigmento';
 import EliminaPigmento from '../EliminaPigmento';
 import {estilos} from "../../../utils/tableStyled";
