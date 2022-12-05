@@ -7,11 +7,17 @@ import { map } from "lodash";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { Alert, Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { registraMatrizProductos } from "../../../api/matrizProductos";
 import "./RegistraMatrizProductos.scss"
 import { listarProveedores } from "../../../api/proveedores";
 import { listarMaquina } from "../../../api/maquinas";
+import BasicModal from "../../Modal/BasicModal";
+import BuscarMaterial from '../../../page/BuscarMaterial';
+import BuscarCliente from '../../../page/BuscarCliente';
+import BuscarPigmento from '../../../page/BuscarPigmento';
+import BuscarProveedor from "../../../page/BuscarProveedor";
+import BuscarEmpaque from '../../../page/BuscarEmpaque';
 
 function RegistraMatrizProductos(props) {
 
@@ -30,6 +36,21 @@ function RegistraMatrizProductos(props) {
     // para almacenar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
 
+    // para almacenar los datos del formulario
+    const [dataCliente, setDataCliente] = useState(initialClientes());
+
+    // para almacenar los datos del formulario
+    const [dataMaterial, setDataMaterial] = useState(initialMaterial());
+
+    // para almacenar los datos del formulario
+    const [dataPigmento, setDataPigmento] = useState(initialPigmento());
+
+    // para almacenar los datos del formulario
+    const [dataProveedor, setDataProveedor] = useState(initialProveedor());
+
+    // para almacenar los datos del formulario
+    const [dataEmpaque, setDataEmpaque] = useState(initialEmpaque());
+
     // para almacenar el listado de porveedores
     const [listProveedores, setListProveedores] = useState(null);
 
@@ -39,6 +60,46 @@ function RegistraMatrizProductos(props) {
     // Define el regreso hacia los productos
     const rutaRegresoProductos = () => {
         enrutamiento.push("/MatrizProductos")
+    }
+
+    // Para hacer uso del modal
+    const [showModal, setShowModal] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    // Para la eliminacion fisica de usuarios
+    const buscarMaterial = (content) => {
+        setTitulosModal("Buscar material");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarCliente = (content) => {
+        setTitulosModal("Buscar cliente");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarPigmento = (content) => {
+        setTitulosModal("Buscar pigmento");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarProveedor = (content) => {
+        setTitulosModal("Buscar proveedor");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarEmpaque = (content) => {
+        setTitulosModal("Buscar empaque");
+        setContentModal(content);
+        setShowModal(true);
     }
 
     useEffect(() => {
@@ -133,18 +194,16 @@ function RegistraMatrizProductos(props) {
         e.preventDefault()
 
 
-        if (!formData.noInterno || !formData.cliente || !formData.noMolde || !formData.cavMolde || !formData.noParte || !formData.descripcion || !formData.pesoPiezas || !formData.pesoColada || !formData.porcentajeScrap || !formData.descripcionMP || !formData.descripcionPigmento || !formData.aplicacionGxKG || !formData.tiempoCiclo || !formData.noOperadores || !formData.descripcionBolsa || !formData.noPiezasxEmpaque) {
+        if (!formData.noInterno || !formData.noMolde || !formData.cavMolde || !formData.noParte || !formData.descripcion || !formData.pesoPiezas || !formData.pesoColada || !formData.porcentajeScrap || !formData.aplicacionGxKG || !formData.tiempoCiclo || !formData.noOperadores || !formData.noPiezasxEmpaque) {
             toast.warning("Completa el formulario");
         } else {
             //console.log(formData)
             setLoading(true)
 
-            const temp = formData.proveedor.split("/");
-            const temp2 = formData.descripcionMP.split("/");
-
             const dataTemp = {
                 noInterno: formData.noInterno,
-                cliente: formData.cliente,
+                cliente: dataCliente.cliente,
+                nombreCliente: dataCliente.nombreCliente,
                 datosMolde: {
                     noMolde: formData.noMolde,
                     cavMolde: formData.cavMolde
@@ -160,21 +219,21 @@ function RegistraMatrizProductos(props) {
                     porcentajeMolido: molido,
                 },
                 materiaPrima: {
-                    idMaterial: temp2[0],
-                    descripcion: temp2[1],
+                    idMaterial: dataMaterial.idMaterial,
+                    descripcion: dataMaterial.descripcion,
                 },
                 pigmentoMasterBach: {
-                    descripcion: formData.descripcionPigmento,
+                    descripcion: dataPigmento.descripcionPigmento,
                     aplicacionGxKG: formData.aplicacionGxKG,
-                    proveedor: temp[0],
-                    nombreProveedor:  temp[1]
+                    proveedor: dataProveedor.proveedor,
+                    nombreProveedor: dataProveedor.nombreProveedor
                 },
                 tiempoCiclo: formData.tiempoCiclo,
                 noOperadores: formData.noOperadores,
                 piezasxHora: piezasHora,
                 piezasxTurno: piezasTurno,
                 materialEmpaque: {
-                    descripcionBolsa: formData.descripcionBolsa,
+                    descripcionBolsa: dataEmpaque.descripcionEmpaque,
                     noPiezasxEmpaque: formData.noPiezasxEmpaque
                 },
                 opcionMaquinaria: {
@@ -229,6 +288,17 @@ function RegistraMatrizProductos(props) {
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+
+        setDataCliente({ ...dataCliente, [e.target.name]: e.target.value })
+
+        setDataMaterial({ ...dataMaterial, [e.target.name]: e.target.value })
+
+        setDataPigmento({ ...dataPigmento, [e.target.name]: e.target.value })
+
+        setDataProveedor({ ...dataProveedor, [e.target.name]: e.target.value })
+
+        setDataEmpaque({ ...dataEmpaque, [e.target.name]: e.target.value })
+
     }
 
     // Para obtener el peso de la inyeccion
@@ -296,15 +366,26 @@ function RegistraMatrizProductos(props) {
                                                 </Form.Label>
                                             </Col>
                                             <Col>
-                                                <Form.Control as="select"
-                                                    defaultValue={formData.cliente}
-                                                    name="cliente"
-                                                >
-                                                    <option>Elige una opción</option>
-                                                    {map(listClientes, (cliente, index) => (
-                                                        <option key={index} value={cliente?.id}>{cliente?.nombre}</option>
-                                                    ))}
-                                                </Form.Control>
+                                                <div className="flex items-center mb-1">
+                                                    <Form.Control
+                                                        type="text"
+                                                        defaultValue={dataCliente.nombreCliente}
+                                                        placeholder="Buscar cliente"
+                                                        name="cliente"
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        className="cursor-pointer py-2 -ml-6"
+                                                        icon={faSearch}
+                                                        onClick={() => {
+                                                            buscarCliente(
+                                                                <BuscarCliente
+                                                                    formData={dataCliente}
+                                                                    setFormData={setDataCliente}
+                                                                    setShowModal={setShowModal}
+                                                                />)
+                                                        }}
+                                                    />
+                                                </div>
                                             </Col>
                                         </Form.Group>
                                     </Row>
@@ -523,15 +604,26 @@ function RegistraMatrizProductos(props) {
                                                 </Form.Label>
                                             </Col>
                                             <Col sm="3">
-                                                <Form.Control as="select"
-                                                    defaultValue={formData.descripcionMP}
-                                                    name="descripcionMP"
-                                                >
-                                                    <option>Elige una opción</option>
-                                                    {map(listMateriasPrimas, (materiaprima, index) => (
-                                                        <option key={index} value={materiaprima?.id +"/"+ materiaprima?.descripcion}>{materiaprima?.descripcion}</option>
-                                                    ))}
-                                                </Form.Control>
+                                                <div className="flex items-center mb-1">
+                                                    <Form.Control
+                                                        type="text"
+                                                        defaultValue={dataMaterial.descripcion}
+                                                        placeholder="Buscar material"
+                                                        name="descripcionMP"
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        className="cursor-pointer py-2 -ml-6"
+                                                        icon={faSearch}
+                                                        onClick={() => {
+                                                            buscarMaterial(
+                                                                <BuscarMaterial
+                                                                    formData={dataMaterial}
+                                                                    setFormData={setDataMaterial}
+                                                                    setShowModal={setShowModal}
+                                                                />)
+                                                        }}
+                                                    />
+                                                </div>
                                             </Col>
                                         </Form.Group>
                                     </Row>
@@ -556,12 +648,26 @@ function RegistraMatrizProductos(props) {
                                                 </Form.Label>
                                             </Col>
                                             <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe la descripción"
-                                                    name="descripcionPigmento"
-                                                    defaultValue={formData.descripcionPigmento}
-                                                />
+                                                <div className="flex items-center mb-1">
+                                                    <Form.Control
+                                                        type="text"
+                                                        defaultValue={dataPigmento.descripcionPigmento}
+                                                        placeholder="Buscar pigmento"
+                                                        name="descripcionPigmento"
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        className="cursor-pointer py-2 -ml-6"
+                                                        icon={faSearch}
+                                                        onClick={() => {
+                                                            buscarPigmento(
+                                                                <BuscarPigmento
+                                                                    formData={dataPigmento}
+                                                                    setFormData={setDataPigmento}
+                                                                    setShowModal={setShowModal}
+                                                                />)
+                                                        }}
+                                                    />
+                                                </div>
                                             </Col>
                                             <Col sm="1">
                                                 <Form.Label>
@@ -588,17 +694,27 @@ function RegistraMatrizProductos(props) {
                                                     Proveedor
                                                 </Form.Label>
                                             </Col>
-                                            <Col>
-                                                <Form.Control
-                                                    as="select"
-                                                    defaultValue={formData.proveedor}
-                                                    name="proveedor"
-                                                >
-                                                    <option>Elige una opción</option>
-                                                    {map(listProveedores, (proveedor, index) => (
-                                                        <option key={index} value={proveedor?.id +"/"+ proveedor?.nombre}>{proveedor?.nombre}</option>
-                                                    ))}
-                                                </Form.Control>
+                                            <Col sm="3">
+                                                <div className="flex items-center mb-1">
+                                                    <Form.Control
+                                                        type="text"
+                                                        defaultValue={dataProveedor.nombreProveedor}
+                                                        placeholder="Buscar proveedor"
+                                                        name="proveedor"
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        className="cursor-pointer py-2 -ml-6"
+                                                        icon={faSearch}
+                                                        onClick={() => {
+                                                            buscarProveedor(
+                                                                <BuscarProveedor
+                                                                    formData={dataProveedor}
+                                                                    setFormData={setDataProveedor}
+                                                                    setShowModal={setShowModal}
+                                                                />)
+                                                        }}
+                                                    />
+                                                </div>
                                             </Col>
                                         </Form.Group>
                                     </Row>
@@ -699,16 +815,30 @@ function RegistraMatrizProductos(props) {
                                         <Form.Group as={Row} controlId="formGridPorcentajeScrap">
                                             <Col sm="2">
                                                 <Form.Label>
-                                                    Descripcion de la bolsa
+                                                    Descripcion del empaque
                                                 </Form.Label>
                                             </Col>
                                             <Col>
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe el porcentaje"
-                                                    name="descripcionBolsa"
-                                                    defaultValue={formData.descripcionBolsa}
-                                                />
+                                                <div className="flex items-center mb-1">
+                                                    <Form.Control
+                                                        type="text"
+                                                        defaultValue={dataEmpaque.descripcionEmpaque}
+                                                        placeholder="Buscar empaque"
+                                                        name="descripcionEmpaque"
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        className="cursor-pointer py-2 -ml-6"
+                                                        icon={faSearch}
+                                                        onClick={() => {
+                                                            buscarEmpaque(
+                                                                <BuscarEmpaque
+                                                                    formData={dataEmpaque}
+                                                                    setFormData={setDataEmpaque}
+                                                                    setShowModal={setShowModal}
+                                                                />)
+                                                        }}
+                                                    />
+                                                </div>
                                             </Col>
 
                                             <Col sm="2">
@@ -756,7 +886,7 @@ function RegistraMatrizProductos(props) {
                                                 >
                                                     <option>Elige una opción</option>
                                                     {map(listMaquinas, (maquina, index) => (
-                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion1}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion1}>{maquina?.numeroMaquina + "-" + maquina?.marca + " " + maquina?.lugar}</option>
                                                     ))}
                                                 </Form.Control>
                                             </Col>
@@ -793,7 +923,7 @@ function RegistraMatrizProductos(props) {
                                                 >
                                                     <option>Elige una opción</option>
                                                     {map(listMaquinas, (maquina, index) => (
-                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion2}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion2}>{maquina?.numeroMaquina + "-" + maquina?.marca + " " + maquina?.lugar}</option>
                                                     ))}
                                                 </Form.Control>
                                             </Col>
@@ -830,7 +960,7 @@ function RegistraMatrizProductos(props) {
                                                 >
                                                     <option>Elige una opción</option>
                                                     {map(listMaquinas, (maquina, index) => (
-                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion3}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion3}>{maquina?.numeroMaquina + "-" + maquina?.marca + " " + maquina?.lugar}</option>
                                                     ))}
                                                 </Form.Control>
                                             </Col>
@@ -868,7 +998,7 @@ function RegistraMatrizProductos(props) {
                                                 >
                                                     <option>Elige una opción</option>
                                                     {map(listMaquinas, (maquina, index) => (
-                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion4}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion4}>{maquina?.numeroMaquina + "-" + maquina?.marca + " " + maquina?.lugar}</option>
                                                     ))}
                                                 </Form.Control>
                                             </Col>
@@ -906,7 +1036,7 @@ function RegistraMatrizProductos(props) {
                                                 >
                                                     <option>Elige una opción</option>
                                                     {map(listMaquinas, (maquina, index) => (
-                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion5}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion5}>{maquina?.numeroMaquina + "-" + maquina?.marca + " " + maquina?.lugar}</option>
                                                     ))}
                                                 </Form.Control>
                                             </Col>
@@ -943,7 +1073,7 @@ function RegistraMatrizProductos(props) {
                                                 >
                                                     <option>Elige una opción</option>
                                                     {map(listMaquinas, (maquina, index) => (
-                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion6}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                        <option value={maquina?.id} selected={maquina?.id === formData.opcion6}>{maquina?.numeroMaquina + "-" + maquina?.marca + " " + maquina?.lugar}</option>
                                                     ))}
                                                 </Form.Control>
                                             </Col>
@@ -995,6 +1125,10 @@ function RegistraMatrizProductos(props) {
                     </div>
                 </Col>
             </Container>
+
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }
@@ -1035,6 +1169,39 @@ function initialFormData() {
         tiempoCiclo5: "",
         opcion6: "",
         tiempoCiclo6: ""
+    }
+}
+
+function initialClientes() {
+    return {
+        cliente: "",
+        nombreCliente: ""
+    }
+}
+
+function initialMaterial() {
+    return {
+        idMaterial: "",
+        descripcion: ""
+    }
+}
+
+function initialPigmento() {
+    return {
+        descripcionPigmento: ""
+    }
+}
+
+function initialEmpaque() {
+    return {
+        descripcionEmpaque: ""
+    }
+}
+
+function initialProveedor() {
+    return {
+        proveedor: "",
+        nombreProveedor: ""
     }
 }
 

@@ -3,17 +3,17 @@ import { Row, Col, Container, Form, Button, Spinner } from "react-bootstrap"
 import moment from "moment";
 //import NombreCliente from "../../ListTracking/NombreCliente";
 import { map } from "lodash";
-import "./BuscarMateriales.scss"
+import "./BuscarPigmentos.scss"
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { estilos } from "../../../utils/tableStyled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
-import { obtenerMateriaPrima } from "../../../api/materiaPrima";
+import { obtenerPigmento } from "../../../api/pigmento";
 import { toast } from "react-toastify";
 
-function BuscarMateriales(props) {
-    const { setFormData, formData, setShowModal, listMateriales } = props;
+function BuscarPigmentos(props) {
+    const { setFormData, formData, setShowModal, listPigmento } = props;
     // console.log(ordenVenta)
 
     // Para almacenar la informacion del formulario
@@ -28,7 +28,7 @@ function BuscarMateriales(props) {
     useEffect(() => {
         try {
 
-            obtenerMateriaPrima(clienteSeleccionado.seleccion).then(response => {
+            obtenerPigmento(clienteSeleccionado.seleccion).then(response => {
                 const { data } = response;
                 const { cliente, nombreCliente, fechaElaboracion, fechaEntrega, productos } = data;
                 setValoresCliente(valoresAlmacenados(data))
@@ -59,11 +59,7 @@ function BuscarMateriales(props) {
             //console.log(formData)
             setLoading(true);
             const dataTemp = {
-                idMaterial: valoresCliente.idMaterial,
-                descripcion: valoresCliente.descripcion,
-                um: valoresCliente.um,
-                proveedor: valoresCliente.proveedor,
-                precio: valoresCliente.precio
+                descripcionPigmento: valoresCliente.descripcionPigmento
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -101,7 +97,7 @@ function BuscarMateriales(props) {
         },
         {
             name: 'Nombre',
-            selector: row => row.descripcion,
+            selector: row => row.nombre,
             sortable: false,
             center: true,
             reorder: false
@@ -128,13 +124,6 @@ function BuscarMateriales(props) {
             center: true,
             reorder: false
         },
-        {
-            name: 'Proveedor',
-            selector: row => row.proveedor,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
     ];
 
     // Configurando animacion de carga
@@ -144,7 +133,7 @@ function BuscarMateriales(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listMateriales);
+            setRows(listPigmento);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -227,8 +216,8 @@ function BuscarMateriales(props) {
     `;
 
 
-    const filteredItems = listMateriales.filter(
-        item => item.descripcion && item.descripcion.toLowerCase().includes(filterText.toLowerCase())
+    const filteredItems = listPigmento.filter(
+        item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const subHeaderComponentMemo = useMemo(() => {
@@ -245,7 +234,7 @@ function BuscarMateriales(props) {
                     <Form.Control
                         id="search"
                         type="text"
-                        placeholder="Busqueda por nombre del material"
+                        placeholder="Busqueda por nombre del pigmento"
                         aria-label="Search Input"
                         value={filterText}
                         onChange={e => setFilterText(e.target.value)}
@@ -316,22 +305,14 @@ function initialFormData() {
 
 function initialValues() {
     return {
-        idMaterial: "",
-        descripcion: "",
-        um: "",
-        proveedor: "",
-        precio: ""
+        descripcionPigmento: "",
     }
 }
 
 function valoresAlmacenados(data) {
     return {
-        idMaterial: data._id,
-        descripcion: data.descripcion,
-        um: data.um,
-        proveedor: data.proveedor,
-        precio: data.precio
+        descripcionPigmento: data.nombre,
     }
 }
 
-export default BuscarMateriales;
+export default BuscarPigmentos;
