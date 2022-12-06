@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { map } from "lodash";
 import { listarPedidosVenta } from "../../../api/pedidoVenta";
 import { listarProveedores } from "../../../api/proveedores";
@@ -11,7 +11,11 @@ import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
 import { obtenerUsuario } from "../../../api/usuarios";
 import { obtenerRequerimiento } from "../../../api/requerimientosPlaneacion";
-
+import BuscarDepartamento from '../../../page/BuscarDepartamento';
+import BasicModal from "../../Modal/BasicModal";
+import BuscarMaterial from '../../../page/BuscarMaterial';
+import BuscarInsumos from '../../../page/BuscarInsumos';
+import BuscarOV from '../../../page/BuscarOV';
 
 function RegistraRequisiciones(props) {
 
@@ -20,6 +24,9 @@ function RegistraRequisiciones(props) {
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+    // Para guardar los datos del formulario
+    const [departamentoElegido, setDepartamentoElegido] = useState(initialDepartamento());
 
     // Para guardar los datos de los articulos
     const [formDataArticulos, setFormDataArticulos] = useState(initialFormDataArticulos());
@@ -35,6 +42,46 @@ function RegistraRequisiciones(props) {
     // Define la ruta de registro
     const rutaRegreso = () => {
         enrutamiento.push("/RequerimientosPlaneacion")
+    }
+
+    // Para almacenar la OV
+    const [ordenVenta, setOrdenVenta] = useState("");
+    // Para almacenar el cliente de la OV
+    const [clienteOV, setClienteOV] = useState("");
+
+    const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
+
+    // Para hacer uso del modal
+    const [showModal, setShowModal] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    // Para la eliminacion fisica de usuarios
+    const buscarDepartamento = (content) => {
+        setTitulosModal("Buscar departamento");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarMaterial = (content) => {
+        setTitulosModal("Buscar material");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarInsumo = (content) => {
+        setTitulosModal("Buscar insumo");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarOV = (content) => {
+        setTitulosModal("Buscar Orden de Venta");
+        setContentModal(content);
+        setShowModal(true);
     }
 
     useEffect(() => {
@@ -134,47 +181,43 @@ function RegistraRequisiciones(props) {
         }
     }, []);
 
-    // Para agregar productos al listado
-    const addItems = () => {
-        const cantidad = document.getElementById("cantidad").value
-        const um = document.getElementById("um").value
-        const descripcion = document.getElementById("descripcion").value
-        const proveedor = document.getElementById("proveedor").value
-        const referencia = document.getElementById("referencia").value
+   // Para agregar productos al listado
+   const addItems = () => {
+    const cantidad = document.getElementById("cantidad").value
+    const um = document.getElementById("um").value
+    const descripcion = document.getElementById("descripcion").value
+    const proveedor = document.getElementById("proveedor").value
+    const referencia = document.getElementById("referencia").value
 
-        if (!cantidad || !um || !descripcion || !proveedor || !referencia) {
-            toast.warning("Completa la informacion del producto");
-        } else {
-            const dataTemp = {
-                cantidad: cantidad,
-                um: um,
-                descripcion: descripcion,
-                proveedor: proveedor,
-                referencia: referencia,
-            }
-
-            setListProductosCargados(
-                [...listProductosCargados, dataTemp]
-            );
-
-            //setCargaProductos(initialFormDataProductos)
-            document.getElementById("cantidad").value = "0"
-            document.getElementById("um").value = "Elige"
-            document.getElementById("descripcion").value = ""
-            document.getElementById("proveedor").value = "Elige"
-            document.getElementById("referencia").value = "Elige"
+    if (!cantidad || !um || !descripcion || !proveedor || !referencia) {
+        toast.warning("Completa la informacion del producto");
+    } else {
+        const dataTemp = {
+            cantidad: cantidad,
+            um: um,
+            descripcion: descripcion,
+            proveedor: proveedor,
+            referencia: referencia,
         }
-    }
 
-    // Para limpiar el formulario de detalles de producto
-    const cancelarCargaProducto = () => {
+        setListProductosCargados(
+            [...listProductosCargados, dataTemp]
+        );
+
+        setFormDataArticulos(initialFormDataArticulos)
         //setCargaProductos(initialFormDataProductos)
         document.getElementById("cantidad").value = "0"
-        document.getElementById("um").value = "Elige"
-        document.getElementById("descripcion").value = ""
-        document.getElementById("proveedor").value = "Elige"
-        document.getElementById("referencia").value = "Elige"
+        setOrdenVenta("")
     }
+}
+
+// Para limpiar el formulario de detalles de producto
+const cancelarCargaProducto = () => {
+    setFormDataArticulos(initialFormDataArticulos)
+    //setCargaProductos(initialFormDataProductos)
+    document.getElementById("cantidad").value = "0"
+    setOrdenVenta("")
+}
 
     // Para eliminar productos del listado
     const removeItem = (producto) => {
@@ -222,7 +265,9 @@ function RegistraRequisiciones(props) {
                         solicitante: formData.solicitante,
                         aprobo: formData.aprobo,
                         comentarios: formData.comentarios,
-                        departamento: departamentoUsuario,
+                        departamento: departamentoElegido.departamento,
+                        tipoRequisicion: formData.tipoRequisicion,
+                        tipoAplicacion: formData.tipoAplicacion,
                         productosSolicitados: listProductosCargados,
                         status: formData.estado
                     }
@@ -276,7 +321,7 @@ function RegistraRequisiciones(props) {
 
             <Container>
                 <Form onChange={onChange} onSubmit={onSubmit}>
-                    <Row className="mb-3">
+                <Row className="mb-3">
                         <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
                             <Form.Label>
                                 Folio
@@ -323,15 +368,65 @@ function RegistraRequisiciones(props) {
                             <Form.Label>
                                 Departamento
                             </Form.Label>
+                            <div className="flex items-center mb-1">
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Escribe el departamento"
+                                    name="departamento"
+                                    value={departamentoElegido.departamento}
+                                    disabled
+                                >
+                                </Form.Control>
+                                <FontAwesomeIcon
+                                    className="cursor-pointer py-2 -ml-6"
+                                    icon={faSearch}
+                                    onClick={() => {
+                                        buscarDepartamento(
+                                            <BuscarDepartamento
+                                                formData={departamentoElegido}
+                                                setFormData={setDepartamentoElegido}
+                                                setShowModal={setShowModal}
+                                            />)
+                                    }}
+                                />
+                            </div>
+                        </Form.Group>
+                    </Row>
+
+                    <Row className="mb-3">
+                        <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
+                            <Form.Label>
+                                Tipo de requisicion
+                            </Form.Label>
                             <Form.Control
-                                type="text"
-                                placeholder="Escribe el departamento"
-                                name="departamento"
-                                value={departamentoUsuario}
-                                disabled
+                                as="select"
+                                name="tipoRequisicion"
+                                defaultValue={formData.tipoRequisicion}
                             >
+                                <option >Elige....</option>
+                                <option value="Materiales">Materiales</option>
+                                <option value="Insumos">Insumos</option>
                             </Form.Control>
                         </Form.Group>
+
+                        {formData.tipoRequisicion == "Materiales" && (
+                            <>
+                                <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
+                                    <Form.Label>
+                                        Tipo de Aplicacion
+                                    </Form.Label>
+                                    <Form.Control
+                                        as="select"
+                                        name="tipoAplicacion"
+                                        defaultValue={formData.tipoAplicacion}
+                                    >
+                                        <option >Elige....</option>
+                                        <option value="Orden Venta">Orden venta</option>
+                                        <option value="Stock">Stock</option>
+                                    </Form.Control>
+                                </Form.Group>
+                            </>
+                        )}
                     </Row>
 
                     <hr />
@@ -361,13 +456,47 @@ function RegistraRequisiciones(props) {
                             <Form.Label>
                                 Producto y/o servicio
                             </Form.Label>
-                            <Form.Control
-                                id="descripcion"
-                                type="text"
-                                placeholder="Escribe la descripcion"
-                                name="descripcion"
-                                defaultValue={formDataArticulos.descripcion}
-                            />
+                            <div className="flex items-center mb-1">
+                                <Form.Control
+                                    id="descripcion"
+                                    type="text"
+                                    placeholder="Escribe la descripcion"
+                                    name="descripcion"
+                                    defaultValue={formDataArticulos.descripcion}
+                                />
+                                {formData.tipoRequisicion == "Materiales" && (
+                                    <>
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarMaterial(
+                                                    <BuscarMaterial
+                                                        formData={formDataArticulos}
+                                                        setFormData={setFormDataArticulos}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        />
+                                    </>
+                                )}
+                                {formData.tipoRequisicion == "Insumos" && (
+                                    <>
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarInsumo(
+                                                    <BuscarInsumos
+                                                        formData={formDataArticulos}
+                                                        setFormData={setFormDataArticulos}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        />
+                                    </>
+                                )}
+                            </div>
                         </Form.Group>
 
                         <Form.Group as={Col}>
@@ -375,17 +504,11 @@ function RegistraRequisiciones(props) {
                                 UM
                             </Form.Label>
                             <Form.Control
-                                as="select"
+                                type="text"
                                 id="um"
                                 name="um"
                                 defaultValue={formDataArticulos.um}
-                            >
-                                <option >Elige</option>
-                                <option value="KG">KG</option>
-                                <option value="Litros">Litros</option>
-                                <option value="Piezas">Pieza</option>
-                                <option value="Otros">Otros</option>
-                            </Form.Control>
+                            />
                         </Form.Group>
 
                         <Form.Group as={Col}>
@@ -408,32 +531,71 @@ function RegistraRequisiciones(props) {
                             </Form.Label>
                             <Form.Control
                                 id="proveedor"
-                                as="select"
+                                type="text"
                                 defaultValue={formDataArticulos.proveedor}
                                 name="proveedor"
-                            >
-                                <option>Elige</option>
-                                {map(listProveedores, (proveedor, index) => (
-                                    <option key={index} value={proveedor?.nombre}>{proveedor?.nombre}</option>
-                                ))}*
-                            </Form.Control>
+                            />
                         </Form.Group>
 
                         <Form.Group as={Col}>
-                            <Form.Label>
-                                Aplicación
-                            </Form.Label>
-                            <Form.Control
-                                id="referencia"
-                                as="select"
-                                defaultValue={formDataArticulos.referencia}
-                                name="referencia"
-                            >
-                                <option>Elige</option>
-                                {map(listOrdenesVenta, (venta, index) => (
-                                    <option key={index} value={venta?.folio}>{venta?.folio}</option>
-                                ))}*
-                            </Form.Control>
+                            {formData.tipoRequisicion == "Materiales" && formData.tipoAplicacion == "Orden Venta" && (
+                                <>
+                                    <Form.Label>
+                                        Aplicación
+                                    </Form.Label>
+                                    <div className="flex items-center mb-1">
+                                        <Form.Control
+                                            id="referencia"
+                                            type="text"
+                                            defaultValue={ordenVenta}
+                                            name="referencia"
+                                        />
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarOV(
+                                                    <BuscarOV
+                                                    setOrdenVenta={setOrdenVenta}
+                                                    setClienteOV={setClienteOV}
+                                                    setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        />
+                                    </div>
+                                </>
+                            )}
+
+                            {formData.tipoRequisicion == "Materiales" && formData.tipoAplicacion == "Stock" && (
+                                <>
+                                    <Form.Label>
+                                        Aplicación
+                                    </Form.Label>
+                                    <Form.Control
+                                        id="referencia"
+                                        type="text"
+                                        value="Stock"
+                                        name="referencia"
+                                        disabled
+                                    />
+                                </>
+                            )}
+
+                            {formData.tipoRequisicion == "Insumos" && (
+                                <>
+                                    <Form.Label>
+                                        Aplicación
+                                    </Form.Label>
+                                    <Form.Control
+                                        id="referencia"
+                                        type="text"
+                                        value="Stock"
+                                        name="referencia"
+                                        disabled
+                                    />
+                                </>
+                            )}
                         </Form.Group>
 
                         <Col sm="1">
@@ -605,9 +767,12 @@ function RegistraRequisiciones(props) {
                             </Button>
                         </Col>
                     </Form.Group>
-
                 </Form>
             </Container>
+
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }
@@ -629,6 +794,12 @@ function initialFormDataArticulos() {
         descripcion: "",
         referencia: "",
         proveedor: "",
+    }
+}
+
+function initialDepartamento() {
+    return {
+        departamento: ""
     }
 }
 
