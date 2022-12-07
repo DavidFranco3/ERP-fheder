@@ -90,13 +90,13 @@ function RegistraRequisiciones(props) {
         obtenerRequerimiento(id).then(response => {
             const { data } = response;
             //console.log(data)
-            const {requerimiento, datosRequisicion} = data;
+            const {requerimiento, bom, datosRequisicion} = data;
             map(requerimiento.ordenVenta, (ordenVenta, index) => {
                 cantidad = ordenVenta.cantidadPedidaOV
                 referencia = ordenVenta.ordenVenta
             })
             const dataTemp = [{
-                descripcion: requerimiento.nombreProducto,
+                descripcion: bom.material,
                 um: requerimiento.um,
                 cantidad: datosRequisicion.cantidadPedir,
                 proveedor: requerimiento.nombreProveedor,
