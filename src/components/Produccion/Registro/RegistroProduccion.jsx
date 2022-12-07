@@ -166,12 +166,12 @@ function RegistroProduccion(props) {
     const [listProductosActivos, setListProductosActivos] = useState(null);
 
     const hoy = new Date();
-        // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
-        const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0"+hoy.getDate() : hoy.getDate() + '-' + hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '/' + hoy.getDate();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate() : hoy.getDate() + '-' + hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '/' + hoy.getDate();
 
-        console.log(fecha, formData.fecha)
+    console.log(fecha, formData.fecha)
 
-        const [fechaActual, setFechaActual] = useState(fecha);
+    const [fechaActual, setFechaActual] = useState(fecha);
 
     // Para traer el listado de productos activos
     useEffect(() => {
@@ -241,97 +241,94 @@ function RegistroProduccion(props) {
 
     const onSubmit = e => {
         e.preventDefault();
+        //console.log("Continuar")
+        setLoading(true)
 
-        if (!formData.notasImportantes || !formData.elaboro || !formData.observaciones) {
-            toast.warning("Completa el formulario");
-        } else {
-            //console.log("Continuar")
-            setLoading(true)
-
-            // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            obtenerItemProduccion().then(response => {
-                const { data } = response;
-                const dataTemp = {
-                    item: data.item,
-                    folio: folioActual,
-                    generalidades: {
-                        ordenVenta: formDataPlaneacion.ordenVenta,
-                        noInterno: formDataProduccion.noInterno,
-                        noParte: formDataProduccion.noParte,
-                        producto: formDataPlaneacion.nombreProducto,
-                        cliente: formDataProduccion.cliente,
-                    },
-                    planeacion: {
-                        ordenProduccion: folioActual,
-                        fecha: formData.fecha=="" ? fechaActual : formData.fecha,
-                        noParte: formDataProduccion.noParte,
-                        noCavidades: formDataProduccion.cavMolde,
-                        cantidadProducir: formDataPlaneacion.cantidadProducir,
-                        opcionesMaquinaria: {
-                            1: {
-                                numeroMaquina1: numeroMaquina1,
-                                maquina1: nombreMaquina1,
-                                ciclo1: formDataProduccion.tiempoCiclo1,
-                                pieza1: piezasTurno1,
-                                bolsa1: formDataProduccion.noPiezasxEmpaque,
-                            },
-                            2: {
-                                numeroMaquina2: numeroMaquina2,
-                                maquina2: nombreMaquina2,
-                                ciclo2: formDataProduccion.tiempoCiclo2,
-                                pieza2: piezasTurno2,
-                                bolsa2: formDataProduccion.noPiezasxEmpaque,
-                            },
-                            3: {
-                                numeroMaquina3: numeroMaquina3,
-                                maquina3: nombreMaquina3,
-                                ciclo3: formDataProduccion.tiempoCiclo3,
-                                pieza3: piezasTurno3,
-                                bolsa3: formDataProduccion.noPiezasxEmpaque,
-                            },
+        // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
+        obtenerItemProduccion().then(response => {
+            const { data } = response;
+            const dataTemp = {
+                item: data.item,
+                folio: folioActual,
+                generalidades: {
+                    ordenVenta: formDataPlaneacion.ordenVenta,
+                    noInterno: formDataProduccion.noInterno,
+                    noParte: formDataProduccion.noParte,
+                    idProducto: formDataPlaneacion.producto,
+                    producto: formDataPlaneacion.nombreProducto,
+                    cliente: formDataProduccion.cliente,
+                    nombreCliente: formDataProduccion.nombreCliente
+                },
+                planeacion: {
+                    ordenProduccion: folioActual,
+                    fecha: formData.fecha == "" ? fechaActual : formData.fecha,
+                    noParte: formDataProduccion.noParte,
+                    noCavidades: formDataProduccion.cavMolde,
+                    cantidadProducir: formDataPlaneacion.cantidadProducir,
+                    opcionesMaquinaria: {
+                        1: {
+                            numeroMaquina1: numeroMaquina1,
+                            maquina1: nombreMaquina1,
+                            ciclo1: formDataProduccion.tiempoCiclo1,
+                            pieza1: piezasTurno1,
+                            bolsa1: formDataProduccion.noPiezasxEmpaque,
+                        },
+                        2: {
+                            numeroMaquina2: numeroMaquina2,
+                            maquina2: nombreMaquina2,
+                            ciclo2: formDataProduccion.tiempoCiclo2,
+                            pieza2: piezasTurno2,
+                            bolsa2: formDataProduccion.noPiezasxEmpaque,
+                        },
+                        3: {
+                            numeroMaquina3: numeroMaquina3,
+                            maquina3: nombreMaquina3,
+                            ciclo3: formDataProduccion.tiempoCiclo3,
+                            pieza3: piezasTurno3,
+                            bolsa3: formDataProduccion.noPiezasxEmpaque,
                         },
                     },
-                    bom: {
-                        material: formDataProduccion.descripcionMP,
-                        molido: formDataProduccion.porcentajeMolido,
-                        pesoPieza: formDataProduccion.pesoPiezas,
-                        pesoColada: formDataProduccion.pesoColada,
-                        kgMaterial: kgMaterial,
-                        pigmento: formDataProduccion.descripcionPigmento,
-                        aplicacion: formDataProduccion.aplicacionGxKG,
-                        pigMb: pigMB,
-                        materialxTurno: materialTurno,
-                        merma: formDataProduccion.porcentajeScrap,
-                        empaque: formDataProduccion.descripcionBolsa,
-                        bolsasCajasUtilizar: bolsasCajasUtilizar,
-                        notas: formData.notasImportantes,
-                        elaboro: formData.elaboro,
-                    },
-                    resultados: listResultados,
-                    materiaPrima: listRegistros,
-                    observaciones: formData.observaciones,
-                    estado: "true"
-                }
-                // console.log(dataTemp)
-                // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
-                // 
-                // Modificar el pedido creado recientemente
-                registraProduccion(dataTemp).then(response => {
-                    const { data: { mensaje, datos } } = response;
+                },
+                bom: {
+                    material: formDataProduccion.descripcionMP,
+                    molido: formDataProduccion.porcentajeMolido,
+                    pesoPieza: formDataProduccion.pesoPiezas,
+                    pesoColada: formDataProduccion.pesoColada,
+                    kgMaterial: kgMaterial,
+                    pigmento: formDataProduccion.descripcionPigmento,
+                    aplicacion: formDataProduccion.aplicacionGxKG,
+                    pigMb: pigMB,
+                    materialxTurno: materialTurno,
+                    merma: formDataProduccion.porcentajeScrap,
+                    empaque: formDataProduccion.descripcionBolsa,
+                    bolsasCajasUtilizar: bolsasCajasUtilizar,
+                    notas: formData.notasImportantes,
+                    elaboro: formData.elaboro,
+                },
+                resultados: listResultados,
+                materiaPrima: listRegistros,
+                observaciones: formData.observaciones,
+                estado: "true"
+            }
+            // console.log(dataTemp)
+            // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
+            // 
+            // Modificar el pedido creado recientemente
+            registraProduccion(dataTemp).then(response => {
+                const { data: { mensaje, datos } } = response;
 
-                    // Actualizacion del tracking
-                    LogTrackingActualizacion(formDataPlaneacion.ordenVenta, "En produccion", "6")
-                    // console.log(response)
-                    toast.success(mensaje)
-                    setLoading(false)
-                    rutaRegreso()
-                }).catch(e => {
-                    console.log(e)
-                })
+                // Actualizacion del tracking
+                LogTrackingActualizacion(formDataPlaneacion.ordenVenta, "En produccion", "6")
+                // console.log(response)
+                toast.success(mensaje)
+                setLoading(false)
+                rutaRegreso()
             }).catch(e => {
                 console.log(e)
             })
-        }
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     const onChange = e => {
@@ -418,7 +415,7 @@ function RegistroProduccion(props) {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
-                                            Orden Venta
+                                            Planeacion
                                         </Form.Label>
                                         <div className="flex items-center mb-1">
                                             <Form.Control
@@ -445,7 +442,6 @@ function RegistroProduccion(props) {
                                 </Row>
 
                                 <Row className="mb-3">
-
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
                                             No. Interno
@@ -455,7 +451,6 @@ function RegistroProduccion(props) {
                                             placeholder="Número interno"
                                             name="NúmeroInterno"
                                             defaultValue={formDataProduccion.noInterno}
-                                            disabled
                                         />
                                     </Form.Group>
 
@@ -468,7 +463,6 @@ function RegistroProduccion(props) {
                                             placeholder="Número de parte"
                                             name="NúmeroParte"
                                             defaultValue={formDataProduccion.noParte}
-                                            disabled
                                         />
                                     </Form.Group>
 
@@ -493,7 +487,6 @@ function RegistroProduccion(props) {
                                             placeholder="Cliente"
                                             name="cliente"
                                             defaultValue={formDataProduccion.nombreCliente}
-                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
