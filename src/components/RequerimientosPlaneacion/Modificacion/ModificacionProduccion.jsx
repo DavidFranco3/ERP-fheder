@@ -116,6 +116,9 @@ function ModificacionProduccion(props) {
 
     // Para almacenar la OV
     const [ordenVenta, setOrdenVenta] = useState("");
+
+    // Para almacenar la OV
+    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
     // Para almacenar el cliente de la OV
     const [clienteOV, setClienteOV] = useState("");
 
@@ -303,6 +306,7 @@ function ModificacionProduccion(props) {
                     producto: temp[0],
                     nombreProducto: temp[1],
                     um: unidadMedida,
+                    ov: ordenVentaPrincipal,
                     almacenProductoTerminado: cantidad,
                     ordenVenta: listOVCargadas,
                     nombreProveedor: temp[2],
@@ -610,6 +614,7 @@ function ModificacionProduccion(props) {
                                                             setClienteOV={setClienteOV}
                                                             setCantidadRequeridaOV={setCantidadRequeridaOV}
                                                             setShowModal={setShowModal}
+                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
                                                         />)
                                                 }}
                                             />

@@ -6,7 +6,7 @@ import AgregarRegistro from "../AgregarRegistro";
 import { useHistory } from "react-router-dom";
 import "./RegistroProduccion.scss";
 import { map } from "lodash";
-import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
+import { listarMatrizProductosActivos, obtenerMatrizProducto } from "../../../api/matrizProductos";
 import { obtenerCliente } from "../../../api/clientes";
 import { obtenerNumeroProduccion, obtenerItemProduccion, registraProduccion } from "../../../api/produccion";
 import { toast } from "react-toastify";
@@ -14,12 +14,20 @@ import BuscarOV from "../../../page/BuscarOV";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
+import BuscarPlaneacion from '../../../page/BuscarPlaneacion';
+import { obtenerMaquina } from "../../../api/maquinas";
 
 function RegistroProduccion(props) {
     const { setRefreshCheckLogin } = props;
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+    // Para almacenar la informacion del formulario
+    const [formDataPlaneacion, setFormDataPlaneacion] = useState(initialPlaneacion());
+
+    // Para almacenar la informacion del formulario
+    const [formDataProduccion, setFormDataProduccion] = useState(initialFormDataPlaneacionInitial());
 
     const [listResultados, setListResultados] = useState([]);
 
@@ -50,6 +58,85 @@ function RegistroProduccion(props) {
         }
     }, []);
 
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerMatrizProducto(formDataPlaneacion.producto).then(response => {
+                const { data } = response;
+                // console.log(data)
+                // initialData
+
+                if (!formDataProduccion && data) {
+                    setFormDataProduccion(initialFormDataProduccion(data));
+                } else {
+                    const datosProduccion = initialFormDataProduccion(data);
+                    setFormDataProduccion(datosProduccion);
+                }
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.producto]);
+
+    const [numeroMaquina1, setNumeroMaquina1] = useState("");
+
+    const [nombreMaquina1, setNombreMaquina1] = useState("");
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerMaquina(formDataProduccion.opcion1).then(response => {
+                const { data } = response;
+                setNumeroMaquina1(data.numeroMaquina);
+                setNombreMaquina1(data.marca)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataProduccion.opcion1]);
+
+    const [numeroMaquina2, setNumeroMaquina2] = useState("");
+
+    const [nombreMaquina2, setNombreMaquina2] = useState("");
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerMaquina(formDataProduccion.opcion2).then(response => {
+                const { data } = response;
+                setNumeroMaquina2(data.numeroMaquina);
+                setNombreMaquina2(data.marca)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataProduccion.opcion2]);
+
+    const [numeroMaquina3, setNumeroMaquina3] = useState("");
+
+    const [nombreMaquina3, setNombreMaquina3] = useState("");
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerMaquina(formDataProduccion.opcion3).then(response => {
+                const { data } = response;
+                setNumeroMaquina3(data.numeroMaquina);
+                setNombreMaquina3(data.marca)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataProduccion.opcion3]);
+
     // Para la eliminacion fisica de usuarios
     const agregarResultado = (content) => {
         setTitulosModal("Agregar resultado");
@@ -77,6 +164,14 @@ function RegistroProduccion(props) {
 
     // Para almacenar el listado de productos activos
     const [listProductosActivos, setListProductosActivos] = useState(null);
+
+    const hoy = new Date();
+        // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+        const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0"+hoy.getDate() : hoy.getDate() + '-' + hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '/' + hoy.getDate();
+
+        console.log(fecha, formData.fecha)
+
+        const [fechaActual, setFechaActual] = useState(fecha);
 
     // Para traer el listado de productos activos
     useEffect(() => {
@@ -147,7 +242,7 @@ function RegistroProduccion(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        if (!formData.fecha) {
+        if (!formData.notasImportantes || !formData.elaboro || !formData.observaciones) {
             toast.warning("Completa el formulario");
         } else {
             //console.log("Continuar")
@@ -160,55 +255,55 @@ function RegistroProduccion(props) {
                     item: data.item,
                     folio: folioActual,
                     generalidades: {
-                        ordenVenta: ordenVenta,
-                        noInterno: producto.noIntermo,
-                        noParte: producto.noParte,
-                        producto: producto.descripcion,
-                        cliente: producto.cliente,
+                        ordenVenta: formDataPlaneacion.ordenVenta,
+                        noInterno: formDataProduccion.noInterno,
+                        noParte: formDataProduccion.noParte,
+                        producto: formDataPlaneacion.nombreProducto,
+                        cliente: formDataProduccion.cliente,
                     },
                     planeacion: {
                         ordenProduccion: folioActual,
-                        fecha: formData.fecha,
-                        noParte: producto.noParte,
-                        noCavidades: producto.cavMolde,
-                        cantidadProducir: formData.cantidadProducir,
+                        fecha: formData.fecha=="" ? fechaActual : formData.fecha,
+                        noParte: formDataProduccion.noParte,
+                        noCavidades: formDataProduccion.cavMolde,
+                        cantidadProducir: formDataPlaneacion.cantidadProducir,
                         opcionesMaquinaria: {
                             1: {
-                                numeroMaquina1: formData.numeroMaquina1,
-                                maquina1: formData.maquina1,
-                                ciclo1: formData.ciclo1,
-                                pieza1: formData.pieza1,
-                                bolsa1: formData.bolsa1,
+                                numeroMaquina1: numeroMaquina1,
+                                maquina1: nombreMaquina1,
+                                ciclo1: formDataProduccion.tiempoCiclo1,
+                                pieza1: piezasTurno1,
+                                bolsa1: formDataProduccion.noPiezasxEmpaque,
                             },
                             2: {
-                                numeroMaquina2: formData.numeroMaquina2,
-                                maquina2: formData.maquina2,
-                                ciclo2: formData.ciclo2,
-                                pieza2: formData.pieza2,
-                                bolsa2: formData.bolsa2,
+                                numeroMaquina2: numeroMaquina2,
+                                maquina2: nombreMaquina2,
+                                ciclo2: formDataProduccion.tiempoCiclo2,
+                                pieza2: piezasTurno2,
+                                bolsa2: formDataProduccion.noPiezasxEmpaque,
                             },
                             3: {
-                                numeroMaquina3: formData.numeroMaquina3,
-                                maquina3: formData.maquina3,
-                                ciclo3: formData.ciclo3,
-                                pieza3: formData.pieza3,
-                                bolsa3: formData.bolsa3,
+                                numeroMaquina3: numeroMaquina3,
+                                maquina3: nombreMaquina3,
+                                ciclo3: formDataProduccion.tiempoCiclo3,
+                                pieza3: piezasTurno3,
+                                bolsa3: formDataProduccion.noPiezasxEmpaque,
                             },
                         },
                     },
                     bom: {
-                        material: producto.material,
-                        molido: producto.molido,
-                        pesoPieza: producto.pesoPieza,
-                        pesoColada: producto.pesoColada,
-                        kgMaterial: formData.kgMaterial,
-                        pigmento: producto.pigmentoMb,
-                        aplicacion: producto.aplicacionGxKG,
-                        pigMb: formData.kgPIGMB,
-                        materialxTurno: formData.materialTurno,
-                        merma: formData.merma,
-                        empaque: producto.empaque,
-                        bolsasCajasUtilizar: producto.bolsasCajasUtilizar,
+                        material: formDataProduccion.descripcionMP,
+                        molido: formDataProduccion.porcentajeMolido,
+                        pesoPieza: formDataProduccion.pesoPiezas,
+                        pesoColada: formDataProduccion.pesoColada,
+                        kgMaterial: kgMaterial,
+                        pigmento: formDataProduccion.descripcionPigmento,
+                        aplicacion: formDataProduccion.aplicacionGxKG,
+                        pigMb: pigMB,
+                        materialxTurno: materialTurno,
+                        merma: formDataProduccion.porcentajeScrap,
+                        empaque: formDataProduccion.descripcionBolsa,
+                        bolsasCajasUtilizar: bolsasCajasUtilizar,
                         notas: formData.notasImportantes,
                         elaboro: formData.elaboro,
                     },
@@ -225,7 +320,7 @@ function RegistroProduccion(props) {
                     const { data: { mensaje, datos } } = response;
 
                     // Actualizacion del tracking
-                    LogTrackingActualizacion(ordenVenta, "En produccion", "6")
+                    LogTrackingActualizacion(formDataPlaneacion.ordenVenta, "En produccion", "6")
                     // console.log(response)
                     toast.success(mensaje)
                     setLoading(false)
@@ -241,6 +336,8 @@ function RegistroProduccion(props) {
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataPlaneacion({ ...formDataPlaneacion, [e.target.name]: e.target.value })
+        setFormDataProduccion({ ...formDataProduccion, [e.target.name]: e.target.value })
     }
 
     // Para eliminar productos del listado
@@ -260,10 +357,26 @@ function RegistroProduccion(props) {
     const [ordenVenta, setOrdenVenta] = useState("");
 
     const buscarOV = (content) => {
-        setTitulosModal("Buscar orden de venta");
+        setTitulosModal("Buscar planeacion");
         setContentModal(content);
         setShowModal(true);
     }
+
+    //let totalProducir = (listOVCargadas.reduce((amount, item) => (amount + parseInt(item.cantidadProducirOV)), 0));
+
+    let kgMaterial = ((Number(formDataProduccion.pesoPiezas) + (Number(formDataProduccion.pesoColada) / Number(formDataProduccion.cavMolde))) * Number(formDataPlaneacion.cantidadProducir)) * (1 + (Number(formDataProduccion.porcentajeScrap) / 100));
+
+    let materialTurno = (((Number(formDataProduccion.pesoColada) / Number(formDataProduccion.cavMolde)) + Number(formDataProduccion.pesoPiezas)) * Number(formDataProduccion.piezasxTurno)) * (1 + (Number(formDataProduccion.porcentajeScrap) / 100));
+
+    let pigMB = (Number(formDataProduccion.aplicacionGxKG) * Number(kgMaterial)) / 1000;
+
+    let bolsasCajasUtilizar = (Number(formDataPlaneacion.cantidadProducir) / Number(formDataProduccion.noPiezasxEmpaque));
+
+    let piezasTurno1 = (((3600 / Number(formDataProduccion.tiempoCiclo1)) * Number(formDataProduccion.cavMolde)) * 12);
+
+    let piezasTurno2 = (((3600 / Number(formDataProduccion.tiempoCiclo2)) * Number(formDataProduccion.cavMolde)) * 12);
+
+    let piezasTurno3 = (((3600 / Number(formDataProduccion.tiempoCiclo3)) * Number(formDataProduccion.cavMolde)) * 12);
 
     return (
         <>
@@ -312,7 +425,7 @@ function RegistroProduccion(props) {
                                                 type="text"
                                                 placeholder="Orden de venta"
                                                 name="ordenVenta"
-                                                value={ordenVenta}
+                                                value={formDataPlaneacion.ordenVenta}
                                                 disabled
                                             />
                                             <FontAwesomeIcon
@@ -320,9 +433,9 @@ function RegistroProduccion(props) {
                                                 icon={faSearch}
                                                 onClick={() => {
                                                     buscarOV(
-                                                        <BuscarOV
-                                                            setOrdenVenta={setOrdenVenta}
-                                                            setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                        <BuscarPlaneacion
+                                                            setFormData={setFormDataPlaneacion}
+                                                            formData={formDataPlaneacion}
                                                             setShowModal={setShowModal}
                                                         />)
                                                 }}
@@ -341,7 +454,7 @@ function RegistroProduccion(props) {
                                             type="text"
                                             placeholder="Número interno"
                                             name="NúmeroInterno"
-                                            value={producto.noIntermo}
+                                            defaultValue={formDataProduccion.noInterno}
                                             disabled
                                         />
                                     </Form.Group>
@@ -354,7 +467,7 @@ function RegistroProduccion(props) {
                                             type="text"
                                             placeholder="Número de parte"
                                             name="NúmeroParte"
-                                            value={producto.noParte}
+                                            defaultValue={formDataProduccion.noParte}
                                             disabled
                                         />
                                     </Form.Group>
@@ -364,23 +477,11 @@ function RegistroProduccion(props) {
                                             Nombre del producto
                                         </Form.Label>
                                         <Form.Control
-                                            as="select"
-                                            onChange={(e) => {
-                                                handleProducto(e.target.value)
-                                            }}
-                                            defaultValue={formData.producto}
-                                            name="producto"
-                                        >
-                                            <option>Elige</option>
-                                            {map(listProductosActivos, (producto, index) => (
-                                                <option
-                                                    key={index}
-                                                    value={producto.id + "/" + producto.noInterno + "/" + producto.noParte + "/" + producto.descripcion + "/" + producto.cliente + "/" + producto.datosMolde.cavMolde + "/" + producto.materiaPrima.descripcion + "/" + producto.datosPieza.porcentajeMolido + "/" + producto.datosPieza.pesoPiezas + "/" + producto.datosPieza.pesoColada + "/" + producto.pigmentoMasterBach.descripcion + "/" + producto.pigmentoMasterBach.aplicacionGxKG + "/" + producto.materialEmpaque.descripcionBolsa + "/" + producto.materialEmpaque.noPiezasxEmpaque}
-                                                >
-                                                    {producto.descripcion}
-                                                </option>
-                                            ))}
-                                        </Form.Control>
+                                            type="text"
+                                            placeholder="nombre del producto"
+                                            defaultValue={formDataPlaneacion.nombreProducto}
+                                            name="nombreProducto"
+                                        />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -390,8 +491,8 @@ function RegistroProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="Cliente"
-                                            name="Cliente"
-                                            value={formData.producto == "" ? "" : nombreCliente}
+                                            name="cliente"
+                                            defaultValue={formDataProduccion.nombreCliente}
                                             disabled
                                         />
                                     </Form.Group>
@@ -431,7 +532,7 @@ function RegistroProduccion(props) {
                                             type="date"
                                             placeholder="fecha"
                                             name="fecha"
-                                            defaultValue={formData.fecha}
+                                            defaultValue={formData.fecha == "" ? fechaActual : formData.fecha}
                                         />
                                     </Form.Group>
 
@@ -440,10 +541,10 @@ function RegistroProduccion(props) {
                                             No. Parte
                                         </Form.Label>
                                         <Form.Control
-                                            type="number"
+                                            type="text"
                                             placeholder="Numero de parte"
-                                            name="numeroParte"
-                                            value={producto.noParte}
+                                            name="NúmeroParte"
+                                            defaultValue={formDataProduccion.noParte}
                                         />
                                     </Form.Group>
 
@@ -452,10 +553,10 @@ function RegistroProduccion(props) {
                                             No. Cavidades
                                         </Form.Label>
                                         <Form.Control
-                                            type="number"
+                                            type="text"
                                             placeholder="Numero de cavidades"
-                                            name="numeroCavidades"
-                                            defaultValue={producto.cavMolde}
+                                            name="noCavidades"
+                                            defaultValue={formDataProduccion.cavMolde}
                                         />
                                     </Form.Group>
 
@@ -467,7 +568,7 @@ function RegistroProduccion(props) {
                                             type="number"
                                             placeholder="Cantidad a producir"
                                             name="cantidadProducir"
-                                            defaultValue={formData.cantidadProducir}
+                                            defaultValue={formDataPlaneacion.cantidadProducir}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -512,35 +613,35 @@ function RegistroProduccion(props) {
                                             <Form.Control
                                                 type="text"
                                                 name="numeroMaquina1"
-                                                defaultValue={formData.numeroMaquina1}
+                                                defaultValue={numeroMaquina1}
                                             />
                                         </Col>
                                         <Col>
                                             <Form.Control
                                                 type="text"
                                                 name="maquina1"
-                                                defaultValue={formData.maquina1}
+                                                defaultValue={nombreMaquina1}
                                             />
                                         </Col>
                                         <Col>
                                             <Form.Control
                                                 type="text"
                                                 name="ciclo1"
-                                                defaultValue={formData.ciclo1}
+                                                defaultValue={formDataProduccion.tiempoCiclo1}
                                             />
                                         </Col>
                                         <Col>
                                             <Form.Control
                                                 type="text"
                                                 name="pieza1"
-                                                defaultValue={formData.pieza1}
+                                                value={piezasTurno1.toFixed(2)}
                                             />
                                         </Col>
                                         <Col>
                                             <Form.Control
                                                 type="text"
                                                 name="bolsa1"
-                                                defaultValue={formData.bolsa1}
+                                                defaultValue={formDataProduccion.noPiezasxEmpaque}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -557,35 +658,35 @@ function RegistroProduccion(props) {
                                             <Form.Control
                                                 type="text"
                                                 name="numeroMaquina2"
-                                                defaultValue={formData.numeroMaquina2}
+                                                defaultValue={numeroMaquina2}
                                             />
                                         </Col>
                                         <Col>
                                             <Form.Control
                                                 type="text"
                                                 name="maquina2"
-                                                defaultValue={formData.maquina2}
+                                                defaultValue={nombreMaquina2}
                                             />
                                         </Col>
                                         <Col>
                                             <Form.Control
                                                 type="text"
                                                 name="ciclo2"
-                                                defaultValue={formData.ciclo2}
+                                                defaultValue={formDataProduccion.tiempoCiclo2}
                                             />
                                         </Col>
                                         <Col>
                                             <Form.Control
                                                 type="text"
                                                 name="pieza2"
-                                                defaultValue={formData.pieza2}
+                                                value={piezasTurno2.toFixed(2)}
                                             />
                                         </Col>
                                         <Col>
                                             <Form.Control
                                                 type="text"
                                                 name="bolsa2"
-                                                defaultValue={formData.bolsa2}
+                                                defaultValue={formDataProduccion.noPiezasxEmpaque}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -602,35 +703,35 @@ function RegistroProduccion(props) {
                                             <Form.Control
                                                 type="text"
                                                 name="numeroMaquina3"
-                                                defaultValue={formData.numeroMaquina3}
+                                                defaultValue={numeroMaquina3}
                                             />
                                         </Col>
                                         <Col>
                                             <Form.Control
                                                 type="text"
                                                 name="maquina3"
-                                                defaultValue={formData.maquina3}
+                                                defaultValue={nombreMaquina3}
                                             />
                                         </Col>
                                         <Col>
                                             <Form.Control
                                                 type="text"
                                                 name="ciclo3"
-                                                defaultValue={formData.ciclo3}
+                                                defaultValue={formDataProduccion.tiempoCiclo3}
                                             />
                                         </Col>
                                         <Col>
                                             <Form.Control
                                                 type="text"
                                                 name="pieza3"
-                                                defaultValue={formData.pieza3}
+                                                value={piezasTurno3.toFixed(2)}
                                             />
                                         </Col>
                                         <Col>
                                             <Form.Control
                                                 type="text"
                                                 name="bolsa3"
-                                                defaultValue={formData.bolsa3}
+                                                defaultValue={formDataProduccion.noPiezasxEmpaque}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -654,9 +755,9 @@ function RegistroProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
+                                            defaultValue={formDataProduccion.descripcionMP}
                                             placeholder="Material"
                                             name="Material"
-                                            value={producto.material}
                                         />
                                     </Form.Group>
 
@@ -667,8 +768,8 @@ function RegistroProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="Molido"
+                                            defaultValue={formDataProduccion.porcentajeMolido}
                                             name="Molido"
-                                            value={producto.molido}
                                         />
                                     </Form.Group>
 
@@ -678,9 +779,9 @@ function RegistroProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="number"
+                                            defaultValue={formDataProduccion.pesoPiezas}
                                             placeholder="Peso de la pieza"
                                             name="pesoPieza"
-                                            value={producto.pesoPieza}
                                         />
                                     </Form.Group>
 
@@ -690,21 +791,9 @@ function RegistroProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="number"
+                                            defaultValue={formDataProduccion.pesoColada}
                                             placeholder="Peso colada"
                                             name="pesoColada"
-                                            value={producto.pesoColada}
-                                        />
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formHorizontalProducto">
-                                        <Form.Label align="center">
-                                            Kg de material
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="number"
-                                            placeholder="Kg de material"
-                                            name="kgMaterial"
-                                            defaultValue={formData.kgMaterial}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -712,13 +801,25 @@ function RegistroProduccion(props) {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
                                         <Form.Label align="center">
+                                            Empaque
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={formDataProduccion.descripcionBolsa}
+                                            placeholder="Empaque"
+                                            name="empaque"
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
                                             Pigmento/MB
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
                                             placeholder="Pigmento/MB"
+                                            defaultValue={formDataProduccion.descripcionPigmento}
                                             name="Pigmento"
-                                            value={producto.pigmentoMb}
                                         />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -727,21 +828,21 @@ function RegistroProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="number"
+                                            defaultValue={formDataProduccion.aplicacionGxKG}
                                             placeholder="Apliación (gr/kg)"
                                             name="aplicacion"
-                                            value={producto.aplicacionGxKG}
                                         />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
                                         <Form.Label align="center">
-                                            Kg de PIG o MB
+                                            Bolsas o cajas a utilizar
                                         </Form.Label>
                                         <Form.Control
                                             type="number"
-                                            placeholder="Kg de PIG o MB"
-                                            name="kgPIGMB"
-                                            defaultValue={formData.kgPIGMB}
+                                            value={Math.ceil(bolsasCajasUtilizar)}
+                                            placeholder="Bolsas o cajas a utilizar"
+                                            name="bolsasCajasUtilizar"
                                         />
                                     </Form.Group>
                                 </Row>
@@ -755,7 +856,7 @@ function RegistroProduccion(props) {
                                             type="text"
                                             placeholder="Material x turno"
                                             name="materialTurno"
-                                            defaultValue={formData.materialTurno}
+                                            value={materialTurno.toFixed(3)}
                                         />
                                     </Form.Group>
 
@@ -767,31 +868,31 @@ function RegistroProduccion(props) {
                                             type="number"
                                             placeholder="merma"
                                             name="merma"
-                                            defaultValue={formData.merma}
+                                            defaultValue={formDataProduccion.porcentajeScrap}
                                         />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
                                         <Form.Label align="center">
-                                            Empaque
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Empaque"
-                                            name="empaque"
-                                            value={producto.empaque}
-                                        />
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formHorizontalProducto">
-                                        <Form.Label align="center">
-                                            Bolsas o cajas a utilizar
+                                            Kg de material
                                         </Form.Label>
                                         <Form.Control
                                             type="number"
-                                            placeholder="Bolsas o cajas a utilizar"
-                                            name="bolsasCajasUtilizar"
-                                            value={producto.bolsasCajasUtilizar}
+                                            placeholder="Kg de material"
+                                            name="kgMaterial"
+                                            value={kgMaterial.toFixed(2)}
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Kg de PIG o MB
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Kg de PIG o MB"
+                                            name="kgPIGMB"
+                                            value={pigMB.toFixed(2)}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1099,10 +1200,23 @@ function RegistroProduccion(props) {
     );
 }
 
+function initialPlaneacion() {
+    return {
+        ordenVenta: "",
+        producto: "",
+        nombreProducto: "",
+        cantidadProducir: "",
+    }
+}
+
 function initialFormData() {
     return {
         producto: "",
         semana: "",
+        fecha: "",
+        notasImportantes: "",
+        elaboro: "",
+        observaciones: "",
         numeroMaquina1: "",
         maquina1: "",
         ciclo1: "",
@@ -1126,7 +1240,89 @@ function initialFormData() {
         cantidadProducir: "",
         notasImportantes: "",
         elaboro: "",
-        observaciones: ""
+        observaciones: "",
+    }
+}
+
+function initialFormDataProduccion(data) {
+    return {
+        noInterno: data.noInterno,
+        cliente: data.cliente,
+        nombreCliente: data.nombreCliente,
+        noMolde: data.datosMolde.noMolde,
+        cavMolde: data.datosMolde.cavMolde,
+        noParte: data.noParte,
+        descripcion: data.descripcion,
+        pesoPiezas: data.datosPieza.pesoPiezas,
+        pesoColada: data.datosPieza.pesoColada,
+        pesoTotalInyeccion: data.datosPieza.pesoTotalInyeccion,
+        porcentajeScrap: data.datosPieza.porcentajeScrap,
+        porcentajeMolido: data.datosPieza.porcentajeMolido,
+        descripcionMP: data.materiaPrima.descripcion,
+        idMaterial: data.materiaPrima.idMaterial,
+        descripcionPigmento: data.pigmentoMasterBach.descripcion,
+        aplicacionGxKG: data.pigmentoMasterBach.aplicacionGxKG,
+        proveedor: data.pigmentoMasterBach.proveedor,
+        tiempoCiclo: data.tiempoCiclo,
+        noOperadores: data.noOperadores,
+        piezasxHora: data.piezasxHora,
+        piezasxTurno: data.piezasxTurno,
+        descripcionBolsa: data.materialEmpaque.descripcionBolsa,
+        noPiezasxEmpaque: data.materialEmpaque.noPiezasxEmpaque,
+        opcionMaquinaria: data.opcionMaquinaria,
+        opcion1: data.opcionMaquinaria[0][1].opcion1,
+        tiempoCiclo1: data.opcionMaquinaria[0][1].tiempoCiclo1,
+        opcion2: data.opcionMaquinaria[0][2].opcion2,
+        tiempoCiclo2: data.opcionMaquinaria[0][2].tiempoCiclo2,
+        opcion3: data.opcionMaquinaria[0][3].opcion3,
+        tiempoCiclo3: data.opcionMaquinaria[0][3].tiempoCiclo3,
+        opcion4: data.opcionMaquinaria[0][4].opcion4,
+        tiempoCiclo4: data.opcionMaquinaria[0][4].tiempoCiclo4,
+        opcion5: data.opcionMaquinaria[0][5].opcion5,
+        tiempoCiclo5: data.opcionMaquinaria[0][5].tiempoCiclo5,
+        opcion6: data.opcionMaquinaria[0][6].opcion6,
+        tiempoCiclo6: data.opcionMaquinaria[0][6].tiempoCiclo6
+    }
+}
+
+function initialFormDataPlaneacionInitial() {
+    return {
+        noInterno: "",
+        cliente: "",
+        nombreCliente: "",
+        noMolde: "",
+        cavMolde: "",
+        noParte: "",
+        descripcion: "",
+        pesoPiezas: "",
+        pesoColada: "",
+        pesoTotalInyeccion: "",
+        porcentajeScrap: "",
+        porcentajeMolido: "",
+        descripcionMP: "",
+        idMaterial: "",
+        descripcionPigmento: "",
+        aplicacionGxKG: "",
+        proveedor: "",
+        tiempoCiclo: "",
+        noOperadores: "",
+        piezasxHora: "",
+        piezasxTurno: "",
+        descripcionBolsa: "",
+        noPiezasxEmpaque: "",
+        opcionMaquinaria: "",
+        opcion1: "",
+        tiempoCiclo1: "",
+        opcion2: "",
+        tiempoCiclo2: "",
+        opcion3: "",
+        tiempoCiclo3: "",
+        opcion4: "",
+        tiempoCiclo4: "",
+        opcion5: "",
+        tiempoCiclo5: "",
+        opcion6: "",
+        tiempoCiclo6: ""
     }
 }
 

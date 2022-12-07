@@ -4,16 +4,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
-import BuscarOrdenVenta from "../../components/Busquedas/BuscarOrdenVenta"
-import { listarPedidosVenta, totalPedidoVenta } from "../../api/pedidoVenta";
-import "./BuscarOV.scss"
+import BuscarPlaneaciones from '../../components/Busquedas/BuscarPlaneaciones';
+import { listarRequerimiento, totalPedidoVenta } from "../../api/requerimientosPlaneacion";
+import "./BuscarPlaneacion.scss"
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
-function BuscarOV(props) {
-    const { setOrdenVentaPrincipal, setOrdenVenta, setClienteOV, setCantidadRequeridaOV, setIdCliente, setNombreCliente, setFechaPedido, setFechaEntrega, setShowModal, setRefreshCheckLogin, location, history } = props;
+function BuscarPlaneacion(props) {
+    const { setFormData, formData, setShowModal, setRefreshCheckLogin, location, history } = props;
 
     const enrutamiento = useHistory();
 
@@ -31,20 +31,20 @@ function BuscarOV(props) {
     // Termina cerrado de sesión automatico
 
     // Almacena los datos de la orden de venta
-    const [listVentas, setListVentas] = useState(null);
+    const [listRequerimientos, setListRequerimientos] = useState(null);
 
     useEffect(() => {
         try {
-            listarPedidosVenta().then(response => {
+            listarRequerimiento().then(response => {
                 const { data } = response;
 
                 //console.log(data);
 
-                if (!listVentas && data) {
-                    setListVentas(formatModelPedidosventa(data));
+                if (!listRequerimientos && data) {
+                    setListRequerimientos(formatModelRequerimientosPlaneacion(data));
                 } else {
-                    const datosVentas = formatModelPedidosventa(data);
-                    setListVentas(datosVentas);
+                    const datosRequerimientos = formatModelRequerimientosPlaneacion(data);
+                    setListRequerimientos(datosRequerimientos);
                 }
             }).catch(e => {
                 console.log(e)
@@ -54,31 +54,22 @@ function BuscarOV(props) {
         }
     }, [location]);
 
-    console.log(listVentas)
-
-
     return (
         <>
 
             {
-                listVentas ?
+                listRequerimientos ?
                     (
                         <>
                             <Suspense fallback={<Spinner />}>
-                                <BuscarOrdenVenta
-                                    listVentas={listVentas}
+                                <BuscarPlaneaciones
+                                    listRequerimientos={listRequerimientos}
                                     setShowModal={setShowModal}
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    setOrdenVenta={setOrdenVenta}
-                                    setClienteOV={setClienteOV}
-                                    setCantidadRequeridaOV={setCantidadRequeridaOV}
-                                    setIdCliente={setIdCliente}
-                                    setNombreCliente={setNombreCliente}
-                                    setFechaPedido={setFechaPedido}
-                                    setFechaEntrega={setFechaEntrega}
-                                    setOrdenVentaPrincipal={setOrdenVentaPrincipal}
+                                    formData={formData}
+                                    setFormData={setFormData}
                                 />
                             </Suspense>
                         </>
@@ -94,28 +85,17 @@ function BuscarOV(props) {
     );
 }
 
-function formatModelPedidosventa(data) {
+function formatModelRequerimientosPlaneacion(data) {
     //console.log(data)
     const dataTemp = []
     data.forEach(data => {
         dataTemp.push({
             id: data._id,
+            item: data.item,
             folio: data.folio,
-            fechaElaboracion: data.fechaElaboracion,
-            fechaEntrega: data.fechaEntrega,
-            cliente: data.cliente,
-            nombreCliente: data.nombreCliente,
-            condicionesPago: data.condicionesPago,
-            especificaciones: data.especificaciones,
-            incoterms: data.incoterms,
-            moneda: data.moneda,
-            numeroPedido: data.numeroPedido,
-            lugarEntrega: data.lugarEntrega,
-            cotizacion: data.cotizacion,
-            ordenCompra: data.ordenCompra,
-            total: data.total,
-            productos: data.productos,
-            totalProductos: data.productos.length,
+            requerimiento: data.requerimiento,
+            planeacion: data.planeacion,
+            bom: data.bom,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });
@@ -123,4 +103,4 @@ function formatModelPedidosventa(data) {
     return dataTemp;
 }
 
-export default withRouter(BuscarOV);
+export default withRouter(BuscarPlaneacion);

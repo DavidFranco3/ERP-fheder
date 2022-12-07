@@ -3,30 +3,24 @@ import { Row, Col, Container, Form, Button, Spinner } from "react-bootstrap"
 import moment from "moment";
 //import NombreCliente from "../../ListTracking/NombreCliente";
 import { map } from "lodash";
-import "./BuscarOrdenVenta.scss"
+import "./BuscarPlaneaciones.scss"
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { estilos } from "../../../utils/tableStyled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
-import { obtenerDatosPedidoVenta, listarPedidosVenta } from "../../../api/pedidoVenta";
+import { obtenerRequerimiento } from "../../../api/requerimientosPlaneacion";
 import { toast } from "react-toastify";
 
-function BuscarOrdenVenta(props) {
-    const { setOrdenVentaPrincipal, setOrdenVenta, setCantidadRequeridaOV, setIdCliente, setNombreCliente, setFechaPedido, setFechaEntrega, setShowModal, listVentas } = props;
+function BuscarPlaneaciones(props) {
+    const { setFormData, formData, setShowModal, listRequerimientos } = props;
     // console.log(ordenVenta)
 
-    console.log(listVentas)
+    // Para almacenar la informacion del formulario
+    const [clienteSeleccionado, setClienteSeleccionado] = useState(initialFormData());
 
     // Para almacenar la informacion del formulario
-    const [formData, setFormData] = useState(initialFormData());
-
-    const [listProducto, setListProducto] = useState([]);
-
-    const [cliente, setCliente] = useState("");
-    const [nombre, setNombre] = useState("");
-    const [pedido, setPedido] = useState("");
-    const [entrega, setEntrega] = useState("");
+    const [valoresCliente, setValoresCliente] = useState(initialValues());
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
@@ -34,14 +28,9 @@ function BuscarOrdenVenta(props) {
     useEffect(() => {
         try {
 
-            obtenerDatosPedidoVenta(formData.seleccion).then(response => {
+            obtenerRequerimiento(clienteSeleccionado.seleccion).then(response => {
                 const { data } = response;
-                const { cliente, nombreCliente, fechaElaboracion, fechaEntrega, productos } = data;
-                setListProducto(productos)
-                setIdCliente(cliente)
-                setNombreCliente(nombreCliente)
-                setFechaPedido(fechaElaboracion)
-                setFechaEntrega(fechaEntrega)
+                setValoresCliente(valoresAlmacenados(data))
             }).catch(e => {
                 console.log(e)
             })
@@ -49,9 +38,7 @@ function BuscarOrdenVenta(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [formData.seleccion]);
-
-    const cantidad = listProducto.reduce((amount, item) => (amount + parseInt(item.cantidad)), 0);
+    }, [clienteSeleccionado.seleccion]);
 
     // Cancelar y cerrar el formulario
     const cancelarBusqueda = () => {
@@ -59,41 +46,43 @@ function BuscarOrdenVenta(props) {
     }
 
     const onChange = e => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
+        setClienteSeleccionado({ ...clienteSeleccionado, [e.target.name]: e.target.value })
     }
 
     const onSubmit = e => {
         //e.preventDefault();
-        if (!formData.seleccion) {
+        if (!clienteSeleccionado.seleccion) {
             toast.warning("Selecciona un registro")
         } else {
             //setNombreCliente()
             //console.log(formData)
             setLoading(true);
-            setOrdenVenta(formData.seleccion);
-            setOrdenVentaPrincipal(formData.seleccion);
-            setCantidadRequeridaOV(cantidad);
+            const dataTemp = {
+                ordenVenta: valoresCliente.ordenVenta,
+                producto: valoresCliente.producto,
+                nombreProducto: valoresCliente.nombreProducto,
+                cantidadProducir: valoresCliente.cantidadProducir
+            }
+            setFormData(dataTemp)
             setShowModal(false);
         }
     }
 
-    console.log(formData.seleccion)
-
     const columns = [
         {
-            name: 'Orden de venta',
+            name: 'Folio',
             selector: row => (
                 <>
                     <Form.Group as={Row} controlId="formHorizontalNoInterno">
                         <Col>
                             <Form.Check
-                                value={row.folio}
+                                value={row.id}
                                 type="radio"
                                 //label="Paletizado"
                                 name="seleccion"
                                 onChange={onChange}
-                                id={row.folio}
-                                defaultValue={formData.seleccion}
+                                id={row.id}
+                                defaultValue={clienteSeleccionado.seleccion}
                             />
                         </Col>
                         <Col>
@@ -107,37 +96,15 @@ function BuscarOrdenVenta(props) {
             reorder: false
         },
         {
-            name: 'Cliente',
-            selector: row => row.nombreCliente,
+            name: 'Producto',
+            selector: row => row.requerimiento.nombreProducto,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Cantidad",
-            selector: row => row.productos.reduce((amount, item) => (amount + parseInt(item.cantidad)), 0),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: "Fecha de pedido",
-            selector: row => moment(row.fechaPedido).format('LL'),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Total',
-            selector: row => (
-                <>
-                    ${''}
-                    {new Intl.NumberFormat('es-MX', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                    }).format(row.total)} MXN
-                </>
-            ),
+            name: 'Cantidad a producir',
+            selector: row => row.requerimiento.totalProducir,
             sortable: false,
             center: true,
             reorder: false
@@ -151,7 +118,7 @@ function BuscarOrdenVenta(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listVentas);
+            setRows(listRequerimientos);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -234,8 +201,8 @@ function BuscarOrdenVenta(props) {
     `;
 
 
-    const filteredItems = listVentas.filter(
-        item => item.nombreCliente && item.nombreCliente.toLowerCase().includes(filterText.toLowerCase())
+    const filteredItems = listRequerimientos.filter(
+        item => item.requerimiento.nombreProducto && item.requerimiento.nombreProducto.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const subHeaderComponentMemo = useMemo(() => {
@@ -252,7 +219,7 @@ function BuscarOrdenVenta(props) {
                     <Form.Control
                         id="search"
                         type="text"
-                        placeholder="Busqueda por nombre del cliente"
+                        placeholder="Busqueda por nombre del producto"
                         aria-label="Search Input"
                         value={filterText}
                         onChange={e => setFilterText(e.target.value)}
@@ -321,4 +288,22 @@ function initialFormData() {
     }
 }
 
-export default BuscarOrdenVenta;
+function initialValues() {
+    return {
+        ordenVenta: "",
+        producto: "",
+        nombreProducto: "",
+        cantidadProducir: "",
+    }
+}
+
+function valoresAlmacenados(data) {
+    return {
+        ordenVenta: data.requerimiento.ov,
+        producto: data.requerimiento.producto,
+        nombreProducto: data.requerimiento.nombreProducto,
+        cantidadProducir: data.requerimiento.totalProducir
+    }
+}
+
+export default BuscarPlaneaciones;

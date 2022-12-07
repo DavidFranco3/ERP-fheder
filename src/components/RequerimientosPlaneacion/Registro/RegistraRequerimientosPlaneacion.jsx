@@ -148,6 +148,10 @@ function RegistraRequerimientosPlaneacion(props) {
 
     // Para almacenar la OV
     const [ordenVenta, setOrdenVenta] = useState("");
+
+    // Para almacenar la OV
+    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
+
     // Para almacenar el cliente de la OV
     const [clienteOV, setClienteOV] = useState("");
 
@@ -278,6 +282,7 @@ function RegistraRequerimientosPlaneacion(props) {
                         producto: temp[0],
                         nombreProducto: temp[1],
                         um: unidadMedida,
+                        ov: ordenVentaPrincipal,
                         almacenProductoTerminado: cantidad,
                         ordenVenta: listOVCargadas,
                         nombreProveedor: temp[2],
@@ -562,6 +567,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                     buscarOV(
                                                         <BuscarOV
                                                             setOrdenVenta={setOrdenVenta}
+                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
                                                             setClienteOV={setClienteOV}
                                                             setCantidadRequeridaOV={setCantidadRequeridaOV}
                                                             setShowModal={setShowModal}
