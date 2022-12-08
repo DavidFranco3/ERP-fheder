@@ -13,7 +13,7 @@ import { obtenerDatosPedidoVenta, listarPedidosVenta } from "../../../api/pedido
 import { toast } from "react-toastify";
 
 function BuscarOrdenVenta(props) {
-    const { setOrdenVentaPrincipal, setOrdenVenta, setCantidadRequeridaOV, setIdCliente, setNombreCliente, setFechaPedido, setFechaEntrega, setShowModal, listVentas } = props;
+    const { setProducto, setOrdenVentaPrincipal, setOrdenVenta, setCantidadRequeridaOV, setIdCliente, setNombreCliente, setFechaPedido, setFechaEntrega, setShowModal, listVentas } = props;
     // console.log(ordenVenta)
 
     console.log(listVentas)
@@ -27,6 +27,7 @@ function BuscarOrdenVenta(props) {
     const [nombre, setNombre] = useState("");
     const [pedido, setPedido] = useState("");
     const [entrega, setEntrega] = useState("");
+    const [productoElegido, setProductoElegido] = useState("");
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
@@ -73,6 +74,7 @@ function BuscarOrdenVenta(props) {
             setOrdenVenta(formData.seleccion);
             setOrdenVentaPrincipal(formData.seleccion);
             setCantidadRequeridaOV(cantidad);
+            setProducto(listProducto)
             setShowModal(false);
         }
     }

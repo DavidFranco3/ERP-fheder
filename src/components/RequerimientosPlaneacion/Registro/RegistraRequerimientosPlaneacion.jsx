@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import "./RegistraRequerimientosPlaneacion.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { listarMatrizProductosActivos, obtenerMatrizProducto } from "../../../api/matrizProductos";
+import { listarMatrizProductosActivos, obtenerMatrizProducto, obtenerPorNoInternoMatrizProducto } from "../../../api/matrizProductos";
 import { map } from "lodash";
 import { listarAlmacenPT, obtenerDatosAlmacenPT } from "../../../api/almacenPT";
 import { obtenerDatosMP } from "../../../api/almacenMP";
@@ -27,6 +27,19 @@ function RegistraRequerimientosPlaneacion(props) {
     // Para almacenar la cantidad en el almacen de materia prima
     const [cantidadAlmacen, setCantidadAlmacen] = useState("0");
 
+    // Para almacenar la OV
+    const [ordenVenta, setOrdenVenta] = useState("");
+
+    // Para almacenar la OV
+    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
+
+    // Para almacenar el cliente de la OV
+    const [clienteOV, setClienteOV] = useState("");
+
+    const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
+
+    const [producto, setProducto] = useState([]);
+
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
         try {
@@ -43,9 +56,15 @@ function RegistraRequerimientosPlaneacion(props) {
 
     useEffect(() => {
         const temp = formData.materiaPrima.split("/");
+        let idProducto = "";
+        if (producto.length == 1) {
+            map(producto, (datosProducto, index) => {
+                idProducto = datosProducto.ID
+            })
+        }
         // Para buscar el producto en la matriz de productos
         try {
-            obtenerMatrizProducto(temp[0]).then(response => {
+            obtenerPorNoInternoMatrizProducto(producto.length == 1 ? idProducto : temp[0]).then(response => {
                 const { data } = response;
                 // console.log(data)
                 // initialData
@@ -62,16 +81,23 @@ function RegistraRequerimientosPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [formData.materiaPrima]);
+    }, [producto.length == 1 ? producto : formData.materiaPrima]);
 
     const [unidadMedida, setUnidadMedida] = useState("Piezas");
 
     const [cantidad, setCantidad] = useState("0");
 
     useEffect(() => {
+        const temp = formData.materiaPrima.split("/");
+        let idProducto = "";
+        if (producto.length == 1) {
+            map(producto, (datosProducto, index) => {
+                idProducto = datosProducto.ID
+            })
+        }
         // Para buscar el producto en la matriz de productos
         try {
-            obtenerDatosAlmacenPT(formDataPlaneacion.noInterno).then(response => {
+            obtenerDatosAlmacenPT(producto.length == 1 ? idProducto : temp[0]).then(response => {
                 const { data } = response;
                 setUnidadMedida(data.um);
                 setCantidad(data.existenciasTotales)
@@ -81,7 +107,7 @@ function RegistraRequerimientosPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [formDataPlaneacion.noInterno]);
+    }, [producto.length == 1 ? producto : formData.materiaPrima]);
 
 
     const [numeroMaquina1, setNumeroMaquina1] = useState("");
@@ -146,16 +172,7 @@ function RegistraRequerimientosPlaneacion(props) {
     const [contentModal, setContentModal] = useState(null);
     const [titulosModal, setTitulosModal] = useState(null);
 
-    // Para almacenar la OV
-    const [ordenVenta, setOrdenVenta] = useState("");
-
-    // Para almacenar la OV
-    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
-
-    // Para almacenar el cliente de la OV
-    const [clienteOV, setClienteOV] = useState("");
-
-    const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
+    console.log(producto)
 
     // Para la eliminacion fisica de usuarios
     const buscarOV = (content) => {
@@ -214,10 +231,10 @@ function RegistraRequerimientosPlaneacion(props) {
                     setListMateriasPrimas(datosProductos);
                 }
             }).catch(e => {
-                //console.log(e)
+                console.log(e)
             })
         } catch (e) {
-            //console.log(e)
+            console.log(e)
         }
     }, []);
 
@@ -279,13 +296,13 @@ function RegistraRequerimientosPlaneacion(props) {
                     folio: data.noRequerimiento,
                     requerimiento: {
                         semana: formData.semana,
-                        producto: temp[0],
-                        nombreProducto: temp[1],
+                        producto: formDataPlaneacion.id,
+                        nombreProducto: formDataPlaneacion.descripcion,
                         um: unidadMedida,
                         ov: ordenVentaPrincipal,
                         almacenProductoTerminado: cantidad,
                         ordenVenta: listOVCargadas,
-                        nombreProveedor: temp[2],
+                        nombreProveedor: formDataPlaneacion.nombreProveedor,
                         totalProducir: totalProducir,
                     },
                     planeacion: {
@@ -474,68 +491,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
-                                            Semana
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="number"
-                                            min="0"
-                                            placeholder="Semana"
-                                            name="semana"
-                                            defaultValue={formData.semana}
-                                        />
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formGridMateriaPrima" className="producto">
-                                        <Form.Label>
-                                            Producto
-                                        </Form.Label>
-                                        <Form.Control as="select"
-                                            onChange={(e) => {
-                                                handleMateriaPrima(e.target.value)
-                                            }}
-                                            defaultValue={formData.materiaPrima}
-                                            name="materiaPrima"
-                                        >
-                                            <option>Elige una opción</option>
-                                            {map(listProductosActivos, (producto, index) => (
-                                                <option
-                                                    key={index}
-                                                    value={producto?.id + "/" + producto?.descripcion + "/" + producto.pigmentoMasterBach?.nombreProveedor}
-                                                >
-                                                    {producto?.descripcion}
-                                                </option>
-                                            ))}
-                                        </Form.Control>
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formHorizontalProducto">
-                                        <Form.Label align="center">
-                                            UM
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            defaultValue={unidadMedida}
-                                            placeholder="UM"
-                                            name="um"
-                                        />
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formHorizontalProducto">
-                                        <Form.Label align="center">
-                                            Almacen producto terminado
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            defaultValue={cantidad}
-                                            placeholder="Almacen producto terminado"
-                                            name="almacenPT"
-                                        />
-                                    </Form.Group>
-                                </Row>
-
-                                <Row className="mb-3">
-                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
-                                        <Form.Label align="center">
                                             ITEM
                                         </Form.Label>
                                         <Form.Control
@@ -570,6 +525,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                             setOrdenVentaPrincipal={setOrdenVentaPrincipal}
                                                             setClienteOV={setClienteOV}
                                                             setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                            setProducto={setProducto}
                                                             setShowModal={setShowModal}
                                                         />)
                                                 }}
@@ -635,6 +591,80 @@ function RegistraRequerimientosPlaneacion(props) {
                                         </Form.Group>
                                     </Col>
 
+                                </Row>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label align="center">
+                                            Semana
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            min="0"
+                                            placeholder="Semana"
+                                            name="semana"
+                                            defaultValue={formData.semana}
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formGridMateriaPrima" className="producto">
+                                        <Form.Label>
+                                            Producto
+                                        </Form.Label>
+                                        { producto.length == 1 ? (
+                                            <>
+                                            <Form.Control 
+                                            type="text"
+                                                defaultValue={formDataPlaneacion.descripcion}
+                                                name="materiaPrima"
+                                            />
+                                            </>
+                                        ):(
+                                            <>
+                                            <Form.Control as="select"
+                                                onChange={(e) => {
+                                                    handleMateriaPrima(e.target.value)
+                                                }}
+                                                defaultValue={formData.materiaPrima}
+                                                name="materiaPrima"
+                                            >
+                                                <option>Elige una opción</option>
+                                                {map(producto, (productos, index) => (
+                                                    <option
+                                                        key={index}
+                                                        value={productos?.ID + "/" + productos?.item }
+                                                    >
+                                                        {productos?.item}
+                                                    </option>
+                                                ))}
+                                            </Form.Control>
+                                            </> 
+                                        )}
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            UM
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={unidadMedida}
+                                            placeholder="UM"
+                                            name="um"
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Almacen producto terminado
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={cantidad}
+                                            placeholder="Almacen producto terminado"
+                                            name="almacenPT"
+                                        />
+                                    </Form.Group>
                                 </Row>
 
                                 <hr />
@@ -1181,6 +1211,7 @@ function RegistraRequerimientosPlaneacion(props) {
 
 function initialFormDataPlaneacion(data) {
     return {
+        id: data._id,
         noInterno: data.noInterno,
         cliente: data.cliente,
         noMolde: data.datosMolde.noMolde,
@@ -1197,6 +1228,7 @@ function initialFormDataPlaneacion(data) {
         descripcionPigmento: data.pigmentoMasterBach.descripcion,
         aplicacionGxKG: data.pigmentoMasterBach.aplicacionGxKG,
         proveedor: data.pigmentoMasterBach.proveedor,
+        nombreProveedor: data.pigmentoMasterBach.nombreProveedor,
         tiempoCiclo: data.tiempoCiclo,
         noOperadores: data.noOperadores,
         piezasxHora: data.piezasxHora,
