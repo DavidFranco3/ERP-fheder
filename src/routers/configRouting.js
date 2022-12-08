@@ -140,6 +140,7 @@ import ModificacionVentas from "../components/Ventas/Modificacion";
 // Rutas para producción
 import RegistroProduccion from "../components/Produccion/Registro";
 import ModificacionProduccion from "../components/Produccion/Modificacion";
+import ProduccionPlaneacion from "../components/Produccion/ProduccionPlaneacion";
 
 // Rutas para rechazos
 import RegistroRechazos from "../components/Rechazos/RegistraRechazos";
@@ -466,6 +467,11 @@ export default [
         path: "/ModificacionProduccion/:id",
         exact: true,
         page: ModificacionProduccion
+    },
+    {
+        path: "/ProduccionPlaneacion/:id",
+        exact: true,
+        page: ProduccionPlaneacion
     },
     {
         path: "/RegistroRequisicion",

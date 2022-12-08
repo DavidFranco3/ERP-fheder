@@ -53,6 +53,11 @@ function ListProduccion(props) {
         enrutamiento.push(`/RequisicionPlaneacion/${id}`);
     }
 
+    // Para la modificacion de datos del pedido
+    const produccionPlaneacion = (id) => {
+        enrutamiento.push(`/ProduccionPlaneacion/${id}`);
+    }
+
     // Para abrir en una pestaña nueva el pdf de la vista
     const vistaPrevia = () => {
         // enrutamiento.push("")
@@ -109,6 +114,25 @@ function ListProduccion(props) {
                         className="editar"
                         onClick={() => {
                             requisicionPlaneacion(row.id)
+                        }}
+                    >
+                        Generar
+                    </Badge>
+                </>
+            ),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Orden produccion",
+            selector: row => (
+                <>
+                    <Badge
+                        bg="primary"
+                        className="editar"
+                        onClick={() => {
+                            produccionPlaneacion(row.id)
                         }}
                     >
                         Generar
