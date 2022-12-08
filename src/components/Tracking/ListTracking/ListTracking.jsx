@@ -381,6 +381,7 @@ function ListTracking(props) {
             <Container fluid>
                 <DataTable
                     columns={columns}
+                    noDataComponent="No hay registros para mostrar"
                     // actions={descargaCSV}
                     data={listTracking}
                     expandableRows

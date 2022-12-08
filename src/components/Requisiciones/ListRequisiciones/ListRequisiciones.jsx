@@ -5,9 +5,9 @@ import BasicModal from "../../Modal/BasicModal";
 //import EstadoProveedor from "../EstadoProveedor";
 //import ModificaProveedores from "../ModificaProveedores";
 import EliminaRequisiciones from "../EliminaRequisiciones";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@fortawesome/free-solid-svg-icons";
-import {estilos} from "../../../utils/tableStyled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
+import { estilos } from "../../../utils/tableStyled";
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import moment from "moment";
@@ -48,7 +48,7 @@ function ListRequisiciones(props) {
     // Para llenar la evaluación del proveedor
     const registraEvaluacion = (idProveedor) => {
     }
-    
+
     const columns = [
         {
             name: 'ITEM',
@@ -113,35 +113,35 @@ function ListRequisiciones(props) {
             selector: row => (
                 <>
                     <Badge
-                            bg="info"
-                            className="evaluacionProveedor"
-                        >
-                            <FontAwesomeIcon icon={faEye} className="text-lg" />
-                        </Badge>
-                        <Badge
-                            bg="success"
-                            className="editarProveedor"
-                            onClick={() => {
-                                ModificacionRequisicion(row.id)
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                        </Badge>
-                        <Badge
-                            bg="danger"
-                            className="eliminarProveedor"
-                            onClick={() => {
-                                eliminacionRequisicion(
-                                    <EliminaRequisiciones
-                                        datosRequisicion={row}
-                                        history={history}
-                                        setShowModal={setShowModal}
-                                    />
-                                )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                        </Badge>
+                        bg="info"
+                        className="evaluacionProveedor"
+                    >
+                        <FontAwesomeIcon icon={faEye} className="text-lg" />
+                    </Badge>
+                    <Badge
+                        bg="success"
+                        className="editarProveedor"
+                        onClick={() => {
+                            ModificacionRequisicion(row.id)
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                    </Badge>
+                    <Badge
+                        bg="danger"
+                        className="eliminarProveedor"
+                        onClick={() => {
+                            eliminacionRequisicion(
+                                <EliminaRequisiciones
+                                    datosRequisicion={row}
+                                    history={history}
+                                    setShowModal={setShowModal}
+                                />
+                            )
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                    </Badge>
                 </>
             )
         }
@@ -158,7 +158,7 @@ function ListRequisiciones(props) {
         //setRowsPerPage(parseInt(event.target.value, 10));
         setPage(1);
     };
-        
+
     // Configurando animacion de carga
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
@@ -178,11 +178,12 @@ function ListRequisiciones(props) {
     };
 
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
-    
+
     return (
         <>
             <Container fluid>
                 <DataTable
+                    noDataComponent="No hay registros para mostrar"
                     columns={columns}
                     data={listRequisiciones}
                     progressPending={pending}

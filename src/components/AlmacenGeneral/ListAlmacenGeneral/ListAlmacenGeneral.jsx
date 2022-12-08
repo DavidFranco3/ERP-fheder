@@ -274,6 +274,7 @@ function ListAlmacenGeneral(props) {
             <Container fluid>
                 <DataTable
                     columns={columns}
+                    noDataComponent="No hay registros para mostrar"
                     data={listAlmacenGeneral}
                     progressPending={pending}
                     paginationComponentOptions={paginationComponentOptions}

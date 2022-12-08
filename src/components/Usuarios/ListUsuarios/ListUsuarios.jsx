@@ -299,14 +299,14 @@ function ListUsuarios(props) {
         return (
             <>
                 <Col sm="2">
-                <Form.Control
-                    id="search"
-                    type="text"
-                    placeholder="Busqueda por nombre"
-                    aria-label="Search Input"
-                    value={filterText}
-                    onChange={e => setFilterText(e.target.value)}
-                />
+                    <Form.Control
+                        id="search"
+                        type="text"
+                        placeholder="Busqueda por nombre"
+                        aria-label="Search Input"
+                        value={filterText}
+                        onChange={e => setFilterText(e.target.value)}
+                    />
                 </Col>
                 <ClearButton type="button" onClick={handleClear}>
                     X
@@ -331,6 +331,7 @@ function ListUsuarios(props) {
         <>
             <Container fluid>
                 <DataTable
+                    noDataComponent="No hay registros para mostrar"
                     columns={columns}
                     data={filteredItems}
                     //actions={descargaCSV}

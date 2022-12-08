@@ -304,6 +304,7 @@ function ListClientes(props) {
             <Container fluid>
                 <DataTable
                     columns={columns}
+                    noDataComponent="No hay registros para mostrar"
                     data={filteredItems}
                     //actions={descargaCSV}
                     //subHeader

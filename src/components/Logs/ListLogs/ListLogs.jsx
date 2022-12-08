@@ -119,6 +119,7 @@ function ListLogs(props) {
             <Container fluid>
                 <DataTable
                     columns={columns}
+                    noDataComponent="No hay registros para mostrar"
                     data={listLogs}
                     progressPending={pending}
                     paginationComponentOptions={paginationComponentOptions}

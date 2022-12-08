@@ -245,6 +245,7 @@ function BuscarClientes(props) {
         <>
             <Container fluid>
                 <DataTable
+                    noDataComponent="No hay registros para mostrar"
                     columns={columns}
                     data={filteredItems}
                     //actions={descargaCSV}
@@ -299,7 +300,7 @@ function initialValues() {
     return {
         cliente: "",
         nombreCliente: "",
-        lugarEntrega:  "",
+        lugarEntrega: "",
     }
 }
 
@@ -307,7 +308,7 @@ function valoresAlmacenados(data) {
     return {
         cliente: data._id,
         nombreCliente: data.nombre,
-        lugarEntrega: data.direccion.calle +", "+ data.direccion.numeroExterior +", "+ data.direccion.colonia +", "+ data.direccion.municipio +", "+ data.direccion.estado,
+        lugarEntrega: data.direccion.calle + ", " + data.direccion.numeroExterior + ", " + data.direccion.colonia + ", " + data.direccion.municipio + ", " + data.direccion.estado,
     }
 }
 

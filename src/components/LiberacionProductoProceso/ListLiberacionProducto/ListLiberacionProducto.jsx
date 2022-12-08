@@ -205,6 +205,7 @@ function ListLiberacionProducto(props) {
         <Container fluid>
             <DataTable
                     columns={columns}
+                    noDataComponent="No hay registros para mostrar"
                     // actions={descargaCSV}
                     data={listLiberacion}
                     //expandableRows

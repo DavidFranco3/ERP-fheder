@@ -186,6 +186,7 @@ function ListCalidad(props) {
         <Container fluid>
             <DataTable
                     columns={columns}
+                    noDataComponent="No hay registros para mostrar"
                     // actions={descargaCSV}
                     data={listStatus}
                     //expandableRows

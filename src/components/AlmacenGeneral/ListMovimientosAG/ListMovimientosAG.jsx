@@ -109,6 +109,7 @@ function ListMovimientosAg(props) {
         <Container fluid>
             <DataTable
                 columns={columns}
+                noDataComponent="No hay registros para mostrar"
                 data={listMovimientos}
                 progressPending={pending}
                 pagination

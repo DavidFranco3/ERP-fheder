@@ -102,6 +102,7 @@ function ListMovimientosMp(props) {
             <DataTable
                 
                 columns={columns}
+                noDataComponent="No hay registros para mostrar"
                 data={listMovimientosMP}
                 progressPending={pending}
                 pagination

@@ -161,14 +161,9 @@ function ListVentas(props) {
         },
     ];
 
-    console.log(columns)
-
     // Configurando animacion de carga
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
-
-    console.log(rows.folio)
-
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -190,6 +185,7 @@ function ListVentas(props) {
             <Container fluid>
                 <DataTable
                     columns={columns}
+                    noDataComponent="No hay registros para mostrar"
                     data={listPedidosVenta}
                     expandableRows
                     expandableRowsComponent={ExpandedComponent}

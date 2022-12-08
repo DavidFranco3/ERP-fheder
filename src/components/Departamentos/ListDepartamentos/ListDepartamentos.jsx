@@ -224,6 +224,7 @@ function ListDepartamentos(props) {
             <Container fluid>
             <DataTable
                     columns={columns}
+                    noDataComponent="No hay registros para mostrar"
                     //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}

@@ -223,6 +223,7 @@ function ListCotizaciones(props) {
             <Container fluid>
             <DataTable
                     columns={columns}
+                    noDataComponent="No hay registros para mostrar"
                     data={listCotizaciones}
                     progressPending={pending}
                     pagination

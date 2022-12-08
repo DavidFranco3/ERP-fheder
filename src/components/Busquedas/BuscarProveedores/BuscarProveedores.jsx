@@ -243,6 +243,7 @@ function BuscarProveedores(props) {
         <>
             <Container fluid>
                 <DataTable
+                    noDataComponent="No hay registros para mostrar"
                     columns={columns}
                     data={filteredItems}
                     //actions={descargaCSV}

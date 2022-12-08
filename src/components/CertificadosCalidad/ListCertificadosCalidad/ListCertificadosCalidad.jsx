@@ -180,6 +180,7 @@ function ListCertificadosCalidad(props) {
                     columns={columns}
                     // actions={descargaCSV}
                     data={listCertificados}
+                    noDataComponent="No hay registros para mostrar"
                     // expandableRows
                     // expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}

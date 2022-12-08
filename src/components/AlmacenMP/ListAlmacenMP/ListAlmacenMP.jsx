@@ -204,6 +204,7 @@ function ListAlmacenMp(props) {
             <Container fluid>
                 <DataTable
                     columns={columns}
+                    noDataComponent="No hay registros para mostrar"
                     data={listAlmacenMP}
                     progressPending={pending}
                     paginationComponentOptions={paginationComponentOptions}

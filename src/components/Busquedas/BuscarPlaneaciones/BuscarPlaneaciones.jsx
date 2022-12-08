@@ -240,6 +240,7 @@ function BuscarPlaneaciones(props) {
                 <DataTable
                     columns={columns}
                     data={filteredItems}
+                    noDataComponent="No hay registros para mostrar"
                     //actions={descargaCSV}
                     subHeader
                     subHeaderComponent={subHeaderComponentMemo}

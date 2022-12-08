@@ -141,9 +141,9 @@ function ListCalidad(props) {
                     <Badge
                         bg="success"
                         className="editarProveedor"
-                    onClick={() => {
-                        modificacionCalidad(row.id)
-                    }}
+                        onClick={() => {
+                            modificacionCalidad(row.id)
+                        }}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
                     </Badge>
@@ -194,6 +194,7 @@ function ListCalidad(props) {
         <>
             <Container fluid>
                 <DataTable
+                    noDataComponent="No hay registros para mostrar"
                     columns={columns}
                     // actions={descargaCSV}
                     data={listInspeccion}

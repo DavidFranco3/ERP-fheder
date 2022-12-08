@@ -218,6 +218,7 @@ function ListMatrizProductos(props) {
                 <DataTable
                     columns={columns}
                     data={listProductos}
+                    noDataComponent="No hay registros para mostrar"
                     progressPending={pending}
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
