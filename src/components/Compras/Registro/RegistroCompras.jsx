@@ -309,6 +309,7 @@ function RegistroCompras(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 regresaCompras()
                             }}
@@ -363,6 +364,7 @@ function RegistroCompras(props) {
                                 />
                                 <FontAwesomeIcon
                                     className="cursor-pointer py-2 -ml-6"
+                                    title="Buscar entre los proveedores"
                                     icon={faSearch}
                                     onClick={() => {
                                         buscarProveedor(
@@ -454,6 +456,7 @@ function RegistroCompras(props) {
                                     <>
                                         <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre los materiales"
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarMaterial(
@@ -470,6 +473,7 @@ function RegistroCompras(props) {
                                     <>
                                         <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre los insumos"
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarInsumo(
@@ -558,6 +562,7 @@ function RegistroCompras(props) {
                                         />
                                         <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre las ordenes de venta"
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarOV(
@@ -598,6 +603,7 @@ function RegistroCompras(props) {
                                 <Col>
                                     <Button
                                         variant="success"
+                                        title="Guardar datos del producto"
                                         className="editar"
                                         onClick={() => {
                                             addItems()
@@ -609,6 +615,7 @@ function RegistroCompras(props) {
                                 <Col>
                                     <Button
                                         variant="danger"
+                                        title="Limpiar los datos del producto"
                                         className="editar"
                                         onClick={() => {
                                             cancelarCargaProducto()
@@ -680,6 +687,7 @@ function RegistroCompras(props) {
                                     <td data-title="Eliminar">
                                         <div
                                             className="eliminarProductoListado"
+                                            title="Eliminar el producto agregado"
                                             onClick={() => {
                                                 removeItem(producto)
                                             }}
@@ -740,6 +748,7 @@ function RegistroCompras(props) {
                             <Col>
                                 <Button
                                     type="submit"
+                                    title="Guardar la información del formulario"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -749,6 +758,7 @@ function RegistroCompras(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="cerrar el formulario"
                                     className="registrar"
                                     onClick={() => {
                                         regresaCompras()

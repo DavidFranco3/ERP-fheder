@@ -241,7 +241,10 @@ function BuscarEmpaques(props) {
                     />
                 </Col>
                 <Col>
-                    <ClearButton type="button" onClick={handleClear}>
+                    <ClearButton 
+                    title="Limpiar la busqueda"
+                    type="button" 
+                    onClick={handleClear}>
                         X
                     </ClearButton>
                 </Col>
@@ -269,8 +272,8 @@ function BuscarEmpaques(props) {
                 <Form.Group as={Row} className="botones">
                     <Col>
                         <Button
-
                             variant="success"
+                            title="Guardar el registro seleccionado"
                             className="registrar"
                             onClick={() => {
                                 onSubmit()
@@ -283,6 +286,7 @@ function BuscarEmpaques(props) {
                     <Col>
                         <Button
                             variant="danger"
+                            title="Cerrar el formulario"
                             className="cancelar"
                             onClick={() => {
                                 cancelarBusqueda()

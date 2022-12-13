@@ -144,6 +144,7 @@ function ListEtiquetasPrimeraPieza(props) {
                 <>
                     <Badge
                         bg="primary"
+                        title="Generar PDF"
                         className="ver"
                         onClick={() => {
                         }}
@@ -153,6 +154,7 @@ function ListEtiquetasPrimeraPieza(props) {
                     <Badge
                         bg="success"
                         className="editar"
+                        title="Modificar"
                         onClick={() => {
                             modificacionEtiqueta(
                                 <ModificacionEtiquetaPrimeraPieza
@@ -167,6 +169,7 @@ function ListEtiquetasPrimeraPieza(props) {
                     <Badge
                         bg="danger"
                         className="eliminar"
+                        title="Eliminar"
                         onClick={() => {
                             eliminacionEtiqueta(
                                 <EliminacionEtiquetasPrimeraPieza

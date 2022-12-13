@@ -83,6 +83,7 @@ function ListInsumos(props) {
                     <Badge
                         bg="success"
                         className="editar"
+                        title="Modificar"
                         onClick={() => {
                             actualizaInsumo(
                                 <ModificaInsumos
@@ -99,6 +100,7 @@ function ListInsumos(props) {
                     <Badge
                         bg="danger"
                         className="eliminar"
+                        title="Eliminar"
                         onClick={() => {
                             eliminaInsumo(
                                 <EliminaInsumos

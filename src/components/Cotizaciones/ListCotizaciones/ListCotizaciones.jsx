@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import moment from "moment";
 import { useHistory } from "react-router-dom";
-import {Badge, Container} from "react-bootstrap";
+import { Badge, Container } from "react-bootstrap";
 import DataTable, { createTheme } from "react-data-table-component";
 import BasicModal from "../../Modal/BasicModal";
 import EliminaCotizaciones from "../EliminaCotizaciones";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@fortawesome/free-solid-svg-icons";
-import {estilos} from "../../../utils/tableStyled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
+import { estilos } from "../../../utils/tableStyled";
 import Clientes from "./Clientes";
 import Proveedor from "./Proveedor";
 import EliminacionLogicaCotizaciones from "../EliminacionLogica";
@@ -33,14 +33,14 @@ function ListCotizaciones(props) {
         setContentModal(content);
         setShowModal(true);
     }
-    
+
     //Para la eliminacion logica de usuarios
     const eliminaLogicaCotizaciones = (content) => {
         setTitulosModal("Deshabilitando cotización");
         setContentModal(content);
         setShowModal(true);
     }
-    
+
     //Para la eliminacion logica de usuarios
     const habilitaCotizaciones = (content) => {
         setTitulosModal("Habilitando cotización");
@@ -60,14 +60,14 @@ function ListCotizaciones(props) {
 
     // Define el uso de svg personalizado
     createTheme(
-        "collapsedButton",{
-            expander: {
-                fontColor: 'rgba(0,0,0,.87)',
-                //backgroundColor: 'transparent',
-                collapsedButton: (<FontAwesomeIcon icon={faEye}/>),
-                expandedButton: (<FontAwesomeIcon icon={faEye}/>),
-            }
+        "collapsedButton", {
+        expander: {
+            fontColor: 'rgba(0,0,0,.87)',
+            //backgroundColor: 'transparent',
+            collapsedButton: (<FontAwesomeIcon icon={faEye} />),
+            expandedButton: (<FontAwesomeIcon icon={faEye} />),
         }
+    }
     )
 
     const columns = [
@@ -107,33 +107,47 @@ function ListCotizaciones(props) {
         {
             name: "Status",
             selector: row => row.status === "true" ?
-                    (
-                        <>
-                            <Badge
-                                bg="success"
-                                className="editar"
-                                onClick={() => {
-                                    eliminaLogicaCotizaciones(<EliminacionLogicaCotizaciones dataCotizacion={row} setShowModal={setShowModal} history={history} />)
-                                }}
-                            >
-                                Activo
-                            </Badge>
-                        </>
-                    )
-                    :
-                    (
-                        <>
-                            <Badge
-                                bg="danger"
-                                className="eliminar"
-                                onClick={() => {
-                                    habilitaCotizaciones(<EliminacionLogicaCotizaciones dataCotizacion={row} setShowModal={setShowModal} history={history} />)
-                                }}
-                            >
-                                Inactivo
-                                </Badge>
-                        </>
-                        ),
+                (
+                    <>
+                        <Badge
+                            bg="success"
+                            title="Deshabilitar"
+                            className="editar"
+                            onClick={() => {
+                                eliminaLogicaCotizaciones(
+                                    <EliminacionLogicaCotizaciones
+                                        dataCotizacion={row}
+                                        setShowModal={setShowModal}
+                                        history={history}
+                                    />
+                                )
+                            }}
+                        >
+                            Activo
+                        </Badge>
+                    </>
+                )
+                :
+                (
+                    <>
+                        <Badge
+                            bg="danger"
+                            title="Habilitar"
+                            className="eliminar"
+                            onClick={() => {
+                                habilitaCotizaciones(
+                                    <EliminacionLogicaCotizaciones
+                                        dataCotizacion={row}
+                                        setShowModal={setShowModal}
+                                        history={history}
+                                    />
+                                )
+                            }}
+                        >
+                            Inactivo
+                        </Badge>
+                    </>
+                ),
             sortable: false,
             center: true,
             reorder: false
@@ -161,6 +175,7 @@ function ListCotizaciones(props) {
                     <Badge
                         bg="success"
                         className="editar"
+                        title="Modificar"
                         onClick={() => {
                             modificaCotizacion(row.id)
                         }}
@@ -169,6 +184,7 @@ function ListCotizaciones(props) {
                     </Badge>
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminar"
                         onClick={() => {
                             eliminaCotizacion(
@@ -212,7 +228,7 @@ function ListCotizaciones(props) {
     return (
         <>
             <Container fluid>
-            <DataTable
+                <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
                     data={listCotizaciones}
@@ -222,8 +238,8 @@ function ListCotizaciones(props) {
                     paginationResetDefaultPage={resetPaginationToogle}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
-            />
-        </Container>
+                />
+            </Container>
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}

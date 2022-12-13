@@ -452,6 +452,7 @@ function RegistroEntradaSalidaAlmacenPt(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Guardar información del movimiento"
                                 variant="success"
                                 className="registrar"
                             >
@@ -461,6 +462,7 @@ function RegistroEntradaSalidaAlmacenPt(props) {
                         <Col>
                             <Button
                                 variant="danger"
+                                title="Cerrar el formulario"
                                 className="cancelar"
                                 onClick={() => {
                                     cancelarRegistro()

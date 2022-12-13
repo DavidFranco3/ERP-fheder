@@ -131,6 +131,7 @@ function ListCalidad(props) {
 
                     <Badge
                         bg="success"
+                        title="Modificar"
                         className="editarProveedor"
                         onClick={() => {
                             modificacionCalidad(row.id)
@@ -141,6 +142,7 @@ function ListCalidad(props) {
 
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminarProveedor"
                         onClick={() => {
                             eliminacionInspeccion(

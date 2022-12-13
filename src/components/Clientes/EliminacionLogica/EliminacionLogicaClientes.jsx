@@ -135,6 +135,7 @@ function EliminacionLogicaClientes(props) {
                     <Col>
                         <Button
                             variant="success"
+                            title={estadoCliente === "true" ? "Deshabilitar" : "Habilitar"}
                             type="submit"
                             className='registrar'
                         >
@@ -145,6 +146,7 @@ function EliminacionLogicaClientes(props) {
                         <Button
                             variant="danger"
                             className="cancelar"
+                            title="Cerrar el formulario"
                             onClick={() => {
                                 cancelar()
                             }}

@@ -86,6 +86,7 @@ function ListCalidad(props) {
                 <>
                     <Badge
                         bg="primary"
+                        title="Generar PDF"
                         className="ver"
                         onClick={() => {
                         }}
@@ -94,6 +95,7 @@ function ListCalidad(props) {
                     </Badge>
                     <Badge
                         bg="success"
+                        title="Modificar"
                         className="editar"
                         onClick={() => {
                             modificaPedidoVenta(row.id)
@@ -103,6 +105,7 @@ function ListCalidad(props) {
                     </Badge>
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminar"
                         onClick={() => {
                             eliminaStatusMaterial(

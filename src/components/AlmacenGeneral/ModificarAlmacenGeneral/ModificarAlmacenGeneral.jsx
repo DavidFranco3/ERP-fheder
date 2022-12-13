@@ -160,6 +160,7 @@ function ModificarAlmacenGeneral(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Actualizar información del registro"
                                 variant="success"
                                 className="registrar"
                             >
@@ -169,6 +170,7 @@ function ModificarAlmacenGeneral(props) {
                         <Col>
                             <Button
                                 variant="danger"
+                                title="Cerrar el formulario"
                                 className="cancelar"
                                 onClick={() => {
                                     cancelarActualizacion()

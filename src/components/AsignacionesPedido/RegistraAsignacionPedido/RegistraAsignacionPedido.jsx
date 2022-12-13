@@ -304,6 +304,7 @@ function RegistraAsignacionPedido(props) {
                             <Col>
                                 <Button
                                     type="submit"
+                                    title="Guardar la asignación del pedido"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -313,6 +314,7 @@ function RegistraAsignacionPedido(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         cancelarRegistro()

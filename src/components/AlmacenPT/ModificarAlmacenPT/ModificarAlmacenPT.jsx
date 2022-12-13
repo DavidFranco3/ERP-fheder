@@ -161,6 +161,7 @@ function ModificarAlmacenPt(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Modificar la información"
                                 variant="success"
                                 className="registrar"
                             >
@@ -170,6 +171,7 @@ function ModificarAlmacenPt(props) {
                         <Col>
                             <Button
                                 variant="danger"
+                                title="Cerrar la información"
                                 className="cancelar"
                                 onClick={() => {
                                     cancelarRegistro()

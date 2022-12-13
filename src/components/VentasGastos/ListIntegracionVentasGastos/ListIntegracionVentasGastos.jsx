@@ -133,6 +133,7 @@ function ListIntegracionVentasGastos(props) {
                     <Badge
                         bg="success"
                         className="editar"
+                        title="Modificar"
                         onClick={() => {
                             modificacionIntegracion(
                                 <ModificacionIntegracionVentasGastos
@@ -146,6 +147,7 @@ function ListIntegracionVentasGastos(props) {
                     </Badge>
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminar"
                         onClick={() => {
                             eliminacionIntegracion(

@@ -145,6 +145,7 @@ function ListMatrizProductos(props) {
             selector: row => (
                 <>
                     <Badge
+                        title="Generar PDF"
                         bg="primary"
                         className="ver"
                         onClick={() => {
@@ -154,6 +155,7 @@ function ListMatrizProductos(props) {
                     </Badge>
                     <Badge
                         bg="success"
+                        title="Modificar"
                         className="editar"
                         onClick={() => {
                             rutaModificaProductos(row.id)
@@ -163,6 +165,7 @@ function ListMatrizProductos(props) {
                     </Badge>
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminar"
                         onClick={() => {
                             eliminaProducto(

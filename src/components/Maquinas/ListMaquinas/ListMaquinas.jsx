@@ -156,12 +156,14 @@ function ListMaquinas(props) {
                 <>
                     <Badge
                         bg="info"
+                        title="Generar PDF"
                         className="evaluacionProveedor"
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />
                     </Badge>
                     <Badge
                         bg="success"
+                        title="Modificar"
                         className="eliminarProveedor"
                         onClick={() => {
                             modifcaMaquina(
@@ -178,6 +180,7 @@ function ListMaquinas(props) {
 
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminarProveedor"
                         onClick={() => {
                             eliminacionMaquina(

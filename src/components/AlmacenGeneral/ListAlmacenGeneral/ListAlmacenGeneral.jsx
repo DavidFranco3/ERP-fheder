@@ -172,6 +172,7 @@ function ListAlmacenGeneral(props) {
                             <>
                                 <Badge
                                     bg="info"
+                                    title="Ver movimientos"
                                     className="evaluacionProveedor"
                                     onClick={() => {
                                         irRutaverMovimientos(row.folioAlmacen)
@@ -185,6 +186,7 @@ function ListAlmacenGeneral(props) {
                     <Badge
                         bg="success"
                         className="editarProveedor"
+                        title="Modificar"
                         onClick={() => {
                             modificarAlmacenGeneral(
                                 <ModificarAlmacenGeneral
@@ -201,6 +203,7 @@ function ListAlmacenGeneral(props) {
                     <Badge
                         bg="danger"
                         className="eliminarProveedor"
+                        title="Eliminar"
                         onClick={() => {
                             eliminacionAlmacenGeneral(
                                 <EliminaAlmacenGeneral

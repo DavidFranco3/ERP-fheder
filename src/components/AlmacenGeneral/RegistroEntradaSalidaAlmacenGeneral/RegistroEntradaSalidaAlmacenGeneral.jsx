@@ -417,6 +417,7 @@ function RegistroEntradaSalidaAlmacenGeneral(props) {
                             <Button
                                 type="submit"
                                 variant="success"
+                                title="Guardar información del movimiento"
                                 className="registrar"
                             >
                                 {!loading ? "Registrar" : <Spinner animation="border" />}
@@ -425,6 +426,7 @@ function RegistroEntradaSalidaAlmacenGeneral(props) {
                         <Col>
                             <Button
                                 variant="danger"
+                                tile="Cerrar el formulario"
                                 className="cancelar"
                                 onClick={() => {
                                     cancelarRegistro()

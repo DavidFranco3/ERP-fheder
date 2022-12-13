@@ -82,6 +82,7 @@ function ListIntegracionVentasGastos(props) {
                 <>
                     <Badge
                         bg="success"
+                        title="Modificar"
                         className="editar"
                         onClick={() => {
                             modificacionMes(
@@ -96,6 +97,7 @@ function ListIntegracionVentasGastos(props) {
                     </Badge>
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminar"
                         onClick={() => {
                             eliminacionMes(

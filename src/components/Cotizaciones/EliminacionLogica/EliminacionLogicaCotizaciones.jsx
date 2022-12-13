@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import queryString from "query-string";
 import "./EliminacionLogicaCotizaciones.scss";
-import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
-import {toast} from "react-toastify";
-import {cambiaStatusCotizacion} from "../../../api/cotizaciones";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
+import { toast } from "react-toastify";
+import { cambiaStatusCotizacion } from "../../../api/cotizaciones";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function EliminacionLogicaCotizaciones(props) {
     const { dataCotizacion, setShowModal, history } = props;
@@ -17,7 +17,7 @@ function EliminacionLogicaCotizaciones(props) {
 
     // Para determinar el uso de la animacion
     const [loading, setLoading] = useState(false);
-    
+
     // Para cancelar el registro
     const cancelar = () => {
         setShowModal(false)
@@ -37,11 +37,11 @@ function EliminacionLogicaCotizaciones(props) {
             cambiaStatusCotizacion(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if(dataTemp.status === "true") {
+                if (dataTemp.status === "true") {
                     toast.success("Cotización habilitada");
                     LogsInformativos("Se ha habilitado la cotización " + formData.cliente + " " + formData.vendedor)
                 }
-                if(dataTemp.status === "false") {
+                if (dataTemp.status === "false") {
                     toast.success("Cotización deshabilitada");
                     LogsInformativos("Se ha deshabilitado el cotización " + formData.cliente + " " + formData.vendedor)
                 }
@@ -67,39 +67,43 @@ function EliminacionLogicaCotizaciones(props) {
                     <Form.Group as={Col} controlId="formGridNombre">
                         <Form.Label>Cliente</Form.Label>
                         <Form.Control type="text"
-                                      name="nombre"
-                                      disabled={true}
-                                      defaultValue={formData.cliente}
+                            name="nombre"
+                            disabled={true}
+                            defaultValue={formData.cliente}
                         />
                     </Form.Group>
-                    
+
                     <Form.Group as={Col} controlId="formGridNombre">
                         <Form.Label>Vendededor</Form.Label>
                         <Form.Control type="text"
-                                      name="nombre"
-                                      disabled={true}
-                                      defaultValue={formData.vendedor}
+                            name="nombre"
+                            disabled={true}
+                            defaultValue={formData.vendedor}
                         />
                     </Form.Group>
                 </Row>
 
-                <Form.Group as={Row} className="btnEliminar">
-                <Col>
-                    <Button variant="success" type="submit">
-                        {!loading ? (status === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
-                    </Button>
-                </Col>
-                <Col>
-                            <Button
-                                variant="danger"
-                                className="cancelar"
-                                onClick={() => {
-                                    cancelar()
-                                }}
-                            >
-                                Cancelar
-                            </Button>
-                        </Col>
+                <Form.Group as={Row}
+                    className="btnEliminar"
+                    title={status === "true" ? "Deshabilitar" : "Habilitar"}
+                >
+                    <Col>
+                        <Button variant="success" type="submit">
+                            {!loading ? (status === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button
+                            variant="danger"
+                            title="Cerrar el formulario"
+                            className="cancelar"
+                            onClick={() => {
+                                cancelar()
+                            }}
+                        >
+                            Cancelar
+                        </Button>
+                    </Col>
                 </Form.Group>
             </Form>
         </>
@@ -107,7 +111,7 @@ function EliminacionLogicaCotizaciones(props) {
 }
 
 function initialFormData(data) {
-    const { cliente, vendedor  } = data;
+    const { cliente, vendedor } = data;
 
     return {
         cliente: cliente,

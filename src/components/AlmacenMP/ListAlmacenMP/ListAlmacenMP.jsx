@@ -117,6 +117,7 @@ function ListAlmacenMp(props) {
                             <>
                                 <Badge
                                     bg="info"
+                                    title="Ver movimientos"
                                     className="evaluacionProveedor"
                                     onClick={() => {
                                         irRutaverMovimientos(row.folioAlmacen)
@@ -130,6 +131,7 @@ function ListAlmacenMp(props) {
                     <Badge
                         bg="success"
                         className="editarProveedor"
+                        title="Modificar"
                         onClick={() => {
                             modificarMateriasPrimas(
                                 <ModificarAlmacenMP
@@ -146,6 +148,7 @@ function ListAlmacenMp(props) {
                     <Badge
                         bg="danger"
                         className="eliminarProveedor"
+                        title="Eliminar"
                         onClick={() => {
                             eliminacionMateriasprimas(
                                 <EliminaAlmacenMateriaPrima

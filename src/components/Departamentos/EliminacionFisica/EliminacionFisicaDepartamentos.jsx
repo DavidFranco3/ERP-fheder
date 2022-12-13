@@ -75,6 +75,7 @@ function EliminacionFisicaDepartamentos(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Eliminar"
                                 variant="success"
                                 className="registrar"
                             >

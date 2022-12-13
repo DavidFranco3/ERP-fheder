@@ -369,6 +369,7 @@ function RegistroCarpetasProceso(props) {
                                         <Col sm="2">
                                             <Button
                                                 variant="success"
+                                                title="Agregar un registro de herramienta"
                                                 className="registrar"
                                                 onClick={() => {
                                                     nuevoRegistroHerramienta(
@@ -422,6 +423,7 @@ function RegistroCarpetasProceso(props) {
                                         <Col sm="2">
                                             <Button
                                                 variant="success"
+                                                title="Agregar un registro de protección"
                                                 className="registrar"
                                                 onClick={() => {
                                                     nuevoRegistroProteccion(
@@ -572,6 +574,7 @@ function RegistroCarpetasProceso(props) {
                             <Col>
                                 <Button
                                     variant="success"
+                                    title="Guardar la información del formulario"
                                     className="registrar"
                                 >
                                     Registrar
@@ -580,6 +583,7 @@ function RegistroCarpetasProceso(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         rutaRegreso()

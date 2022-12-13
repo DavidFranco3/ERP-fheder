@@ -1,19 +1,19 @@
-import {useEffect, useMemo, useState} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import moment from "moment";
-import {Badge, Button, Container, Table} from "react-bootstrap";
-import {map} from "lodash";
+import { Badge, Button, Container, Table } from "react-bootstrap";
+import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionAsignacionPedido from "../EliminacionAsignacionPedido";
 import AsignarPedido from "../AsignarPedido"
 import styled from 'styled-components';
-import DataTable  from 'react-data-table-component';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faArrowPointer} from "@fortawesome/free-solid-svg-icons";
+import DataTable from 'react-data-table-component';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faArrowPointer } from "@fortawesome/free-solid-svg-icons";
 import "./ListAsignacionPedido.scss";
 import ProductoAsignado from "./ProductoAsignado";
 import ClienteAsignado from "./ClienteAsignado";
-import {estilos} from "../../../utils/tableStyled";
+import { estilos } from "../../../utils/tableStyled";
 
 function ListAsignacionPedido(props) {
     const { setRefreshCheckLogin, listAsignacionPedido, history, location } = props;
@@ -33,7 +33,7 @@ function ListAsignacionPedido(props) {
         setContentModal(content);
         setShowModal(true);
     }
-    
+
     // Para la eliminacion fisica de usuarios
     const asignarPedido = (content) => {
         setTitulosModal("Asignar");
@@ -45,7 +45,7 @@ function ListAsignacionPedido(props) {
     const vistaPrevia = () => {
         // enrutamiento.push("")
     }
-    
+
     const columns = [
         {
             name: "ITEM",
@@ -135,61 +135,38 @@ function ListAsignacionPedido(props) {
             reorder: true,
             selector: row => (
                 <>
-                        {
-                            row.plantaAsignada && row.cantidadAsignada === "N/A" ?
-                            (
-                        <>
-                            <Badge
-                            bg="warning"
-                            className="editarProveedor"
-                            onClick={() => {
-                                asignarPedido(
-                                    <AsignarPedido
-                                        data={row}
-                                        setShowModal={setShowModal}
-                                        history={history}
-                                    />
-                                )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowPointer} className="text-lg" />
-                        </Badge>
-                        </>
-                        ):(
-                        <>
-                        <Badge
-                            bg="danger"
-                            className="editarProveedor"
-                            onClick={() => {
-                                asignarPedido(
-                                    <AsignarPedido
-                                        data={row}
-                                        setShowModal={setShowModal}
-                                        history={history}
-                                    />
-                                )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowPointer} className="text-lg" />
-                        </Badge>
-                        </>
+                    <Badge
+                        bg={row.plantaAsignada && row.cantidadAsignada === "N/A" ? "warning" : "danger"}
+                        className="editarProveedor"
+                        title={row.plantaAsignada && row.cantidadAsignada === "N/A" ? "Asignar pedido" : "Reasignar pedido"}
+                        onClick={() => {
+                            asignarPedido(
+                                <AsignarPedido
+                                    data={row}
+                                    setShowModal={setShowModal}
+                                    history={history}
+                                />
                             )
-                            }
-                        <Badge
-                            bg="danger"
-                            className="eliminarProveedor"
-                            onClick={() => {
-                                eliminacionAsignacion(
-                                    <EliminacionAsignacionPedido
-                                        data={row}
-                                        setShowModal={setShowModal}
-                                        history={history}
-                                    />
-                                )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                        </Badge>
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faArrowPointer} className="text-lg" />
+                    </Badge>
+                    <Badge
+                        bg="danger"
+                        title="Eliminar"
+                        className="eliminarProveedor"
+                        onClick={() => {
+                            eliminacionAsignacion(
+                                <EliminacionAsignacionPedido
+                                    data={row}
+                                    setShowModal={setShowModal}
+                                    history={history}
+                                />
+                            )
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                    </Badge>
                 </>
             )
         }
@@ -217,7 +194,7 @@ function ListAsignacionPedido(props) {
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
 
     // Defino barra de busqueda
-    const ClearButton = styled(Button) ` 
+    const ClearButton = styled(Button)` 
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
         border-top-right-radius: 5px;
@@ -230,7 +207,7 @@ function ListAsignacionPedido(props) {
         justify-content: center;
     `;
 
-    const TextField = styled.input ` 
+    const TextField = styled.input` 
         height: 32px;
         border-radius: 3px;
         border-top-left-radius: 5px;
@@ -246,8 +223,8 @@ function ListAsignacionPedido(props) {
 
     return (
         <>
-        <Container fluid>
-            <DataTable
+            <Container fluid>
+                <DataTable
                     columns={columns}
                     data={listAsignacionPedido}
                     noDataComponent="No hay registros para mostrar"
@@ -257,8 +234,8 @@ function ListAsignacionPedido(props) {
                     paginationResetDefaultPage={resetPaginationToogle}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
-            />
-        </Container>
+                />
+            </Container>
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}

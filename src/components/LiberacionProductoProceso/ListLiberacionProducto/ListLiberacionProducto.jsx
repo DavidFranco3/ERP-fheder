@@ -135,6 +135,7 @@ function ListLiberacionProducto(props) {
                 <>
                     <Badge
                         bg="primary"
+                        title="Generar PDF"
                         className="ver"
                         onClick={() => {
                         }}
@@ -143,6 +144,7 @@ function ListLiberacionProducto(props) {
                     </Badge>
                     <Badge
                         bg="success"
+                        title="Modificar"
                         className="editar"
                         onClick={() => {
                             modificaLiberacion(row.id)
@@ -152,6 +154,7 @@ function ListLiberacionProducto(props) {
                     </Badge>
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminar"
                         onClick={() => {
                             eliminaLiberacion(

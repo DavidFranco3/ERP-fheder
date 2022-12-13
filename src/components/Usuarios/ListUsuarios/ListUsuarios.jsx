@@ -128,6 +128,7 @@ function ListUsuarios(props) {
                         <>
                             <Badge
                                 bg="success"
+                                title="Deshabilitar"
                                 className="editar"
                                 onClick={() => {
                                     eliminaLogicaUsuarios(
@@ -147,6 +148,7 @@ function ListUsuarios(props) {
                         <>
                             <Badge
                                 bg="danger"
+                                title="Habilitar"
                                 className="eliminar"
                                 onClick={() => {
                                     habilitaUsuarios(
@@ -171,6 +173,7 @@ function ListUsuarios(props) {
                 <>
                     <Badge
                         bg="success"
+                        title="Modificar"
                         className="editar"
                         onClick={() => {
                             modificaUsuarios(row.id)
@@ -180,6 +183,7 @@ function ListUsuarios(props) {
                     </Badge>
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminar"
                         onClick={() => {
                             eliminaUsuarios(

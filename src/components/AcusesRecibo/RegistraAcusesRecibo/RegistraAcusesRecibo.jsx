@@ -92,6 +92,7 @@ function RegistraAcusesRecibo(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Guardar información del formulario"
                                 variant="success"
                                 className="registrar"
                             >
@@ -101,6 +102,7 @@ function RegistraAcusesRecibo(props) {
                         <Col>
                             <Button
                                 variant="danger"
+                                title="Cerrar formulario"
                                 className="cancelar"
                                 onClick={() => {
                                     rutaRegreso()

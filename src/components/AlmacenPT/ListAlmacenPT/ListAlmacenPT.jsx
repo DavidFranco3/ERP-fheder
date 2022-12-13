@@ -184,6 +184,7 @@ function ListAlmacenPt(props) {
                                 <>
                                     <Badge
                                         bg="info"
+                                        title="Ver movimientos"
                                         className="evaluacionProveedor"
                                         onClick={() => {
                                             irRutaverMovimientos(row.folioMP)
@@ -197,6 +198,7 @@ function ListAlmacenPt(props) {
                         <Badge
                             bg="success"
                             className="editarProveedor"
+                            title="Modificar"
                             onClick={() => {
                                 modificarPT(
                                     <ModificarAlmacenPT
@@ -213,6 +215,7 @@ function ListAlmacenPt(props) {
                         <Badge
                             bg="danger"
                             className="eliminarProveedor"
+                            title="Eliminar"
                             onClick={() => {
                                 eliminacionPT(
                                     <EliminaAlmacenPT

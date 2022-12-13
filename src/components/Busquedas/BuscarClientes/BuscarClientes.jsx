@@ -233,7 +233,10 @@ function BuscarClientes(props) {
                     />
                 </Col>
                 <Col>
-                    <ClearButton type="button" onClick={handleClear}>
+                    <ClearButton 
+                    type="button" 
+                    title="Limpiar la busqueda"
+                    onClick={handleClear}>
                         X
                     </ClearButton>
                 </Col>
@@ -261,8 +264,8 @@ function BuscarClientes(props) {
                 <Form.Group as={Row} className="botones">
                     <Col>
                         <Button
-
                             variant="success"
+                            title="Usar el registro seleccionado"
                             className="registrar"
                             onClick={() => {
                                 onSubmit()
@@ -275,6 +278,7 @@ function BuscarClientes(props) {
                     <Col>
                         <Button
                             variant="danger"
+                            title="Cerrar el formulario"
                             className="cancelar"
                             onClick={() => {
                                 cancelarBusqueda()

@@ -249,7 +249,10 @@ function BuscarInsumo(props) {
                     />
                 </Col>
                 <Col>
-                    <ClearButton type="button" onClick={handleClear}>
+                    <ClearButton 
+                    title="Limpiar la busqueda"
+                    type="button" 
+                    onClick={handleClear}>
                         X
                     </ClearButton>
                 </Col>
@@ -277,8 +280,8 @@ function BuscarInsumo(props) {
                 <Form.Group as={Row} className="botones">
                     <Col>
                         <Button
-
                             variant="success"
+                            title="Usar el registro seleccionado"
                             className="registrar"
                             onClick={() => {
                                 onSubmit()
@@ -291,6 +294,7 @@ function BuscarInsumo(props) {
                     <Col>
                         <Button
                             variant="danger"
+                            title="Cerrar el formulario"
                             className="cancelar"
                             onClick={() => {
                                 cancelarBusqueda()

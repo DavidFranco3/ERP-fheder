@@ -140,6 +140,7 @@ function ListProduccion(props) {
                 <>
                     <Badge
                         bg="primary"
+                        title="Generar PDF"
                         className="ver"
                         onClick={() => {
                         }}
@@ -148,6 +149,7 @@ function ListProduccion(props) {
                     </Badge>
                     <Badge
                         bg="success"
+                        title="Modificar"
                         className="editar"
                         onClick={() => {
                             modificaPedidoVenta(row.id)
@@ -158,6 +160,7 @@ function ListProduccion(props) {
                     <Badge
                         bg="danger"
                         className="eliminar"
+                        title="Eliminar"
                         onClick={() => {
                             eliminaPlaneacion(
                                 <EliminacionFisicaPlaneacion

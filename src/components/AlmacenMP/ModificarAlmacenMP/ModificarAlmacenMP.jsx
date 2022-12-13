@@ -124,6 +124,7 @@ function ModificarAlmacenMp(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Actualizar la información"
                                 variant="success"
                                 className="registrar"
                             >
@@ -133,6 +134,7 @@ function ModificarAlmacenMp(props) {
                         <Col>
                             <Button
                                 variant="danger"
+                                title="Cerrar el formulario"
                                 className="cancelar"
                                 onClick={() => {
                                     cancelarRegistro()

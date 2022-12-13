@@ -114,6 +114,7 @@ function ListVentas(props) {
                 <>
                     <Badge
                         bg="primary"
+                        title="Generar PDF"
                         className="ver"
                         onClick={() => {
                         }}
@@ -122,6 +123,7 @@ function ListVentas(props) {
                     </Badge>
                     <Badge
                         bg="success"
+                        title="Modificar"
                         className="editar"
                         onClick={() => {
                             modificaPedidoVenta(row.folio)
@@ -131,6 +133,7 @@ function ListVentas(props) {
                     </Badge>
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminar"
                         onClick={() => {
                             eliminaPedidoVenta(

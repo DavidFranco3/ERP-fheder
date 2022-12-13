@@ -75,6 +75,7 @@ function RegistroHerramientasEquipos(props) {
                                 <Col>
                                     <Button
                                         variant="success"
+                                        title="Guardar la información del formulario"
                                         className="registrar"
                                     >
                                         Registrar
@@ -83,6 +84,7 @@ function RegistroHerramientasEquipos(props) {
                                 <Col>
                                     <Button
                                         variant="danger"
+                                        title="Cerrar el formulario"
                                         className="cancelar"
                                         onClick={() => {
                                             cancelarRegistro()

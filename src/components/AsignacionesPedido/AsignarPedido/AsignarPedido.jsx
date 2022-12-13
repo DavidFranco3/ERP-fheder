@@ -170,6 +170,7 @@ function AsignarPedido(props) {
                             <Col>
                                 <Button
                                     type="submit"
+                                    title="Registrar la asignación"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -179,6 +180,7 @@ function AsignarPedido(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         cancelarRegistro()

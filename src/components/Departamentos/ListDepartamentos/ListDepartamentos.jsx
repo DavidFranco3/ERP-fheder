@@ -3,17 +3,17 @@ import moment from "moment";
 import 'moment/locale/es';
 import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
-import {Button, Container} from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import DataTable, { ExpanderComponentProps, createTheme } from 'react-data-table-component';
 import "./ListDepartamentos.scss";
-import {map} from "lodash";
-import {Badge, Table} from "react-bootstrap";
+import { map } from "lodash";
+import { Badge, Table } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaDepartamentos from "../EliminacionFisica";
 import ModificacionDepartamentos from "../Modificacion";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@fortawesome/free-solid-svg-icons";
-import {estilos} from "../../../utils/tableStyled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
+import { estilos } from "../../../utils/tableStyled";
 
 function ListDepartamentos(props) {
     const { listDepartamentos, setRefreshCheckLogin, history, location } = props;
@@ -61,8 +61,7 @@ function ListDepartamentos(props) {
             sortable: false,
             center: true,
             reorder: false
-        }
-        ,
+        },
         {
             name: 'Acciones',
             center: true,
@@ -72,17 +71,29 @@ function ListDepartamentos(props) {
                     <Badge
                         bg="success"
                         className="editar"
+                        title="Modificar"
                         onClick={() => {
-                            modificaDepartamentos(<ModificacionDepartamentos dataDepto={row} setShowModal={setShowModal} history={history} />)
+                            modificaDepartamentos(
+                                <ModificacionDepartamentos
+                                    dataDepto={row}
+                                    setShowModal={setShowModal}
+                                    history={history}
+                                />)
                         }}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
                     </Badge>
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminar"
                         onClick={() => {
-                            eliminaDepartamentos(<EliminacionFisicaDepartamentos dataDepto={row} setShowModal={setShowModal} history={history} />)
+                            eliminaDepartamentos(
+                                <EliminacionFisicaDepartamentos
+                                    dataDepto={row}
+                                    setShowModal={setShowModal}
+                                    history={history}
+                                />)
                         }}
                     >
                         <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
@@ -121,9 +132,9 @@ function ListDepartamentos(props) {
         result += keys.join(columnDelimiter);
         result += lineDelimiter;
         array.forEach(item => {
-        let ctr = 0;
-        keys.forEach(key => {
-            if (ctr > 0) result += columnDelimiter;
+            let ctr = 0;
+            keys.forEach(key => {
+                if (ctr > 0) result += columnDelimiter;
                 result += item[key];
                 ctr++;
             });
@@ -153,7 +164,7 @@ function ListDepartamentos(props) {
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
 
     // Defino barra de busqueda
-    const ClearButton = styled(Button) ` 
+    const ClearButton = styled(Button)` 
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
         border-top-right-radius: 5px;
@@ -166,7 +177,7 @@ function ListDepartamentos(props) {
         justify-content: center;
     `;
 
-    const TextField = styled.input ` 
+    const TextField = styled.input` 
         height: 32px;
         border-radius: 3px;
         border-top-left-radius: 5px;
@@ -185,7 +196,7 @@ function ListDepartamentos(props) {
         item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase())
     );
 
-    const  subHeaderComponentMemo = useMemo(() => {
+    const subHeaderComponentMemo = useMemo(() => {
         const handleClear = () => {
             if (filterText) {
                 setResetPaginationToogle(!resetPaginationToogle);
@@ -213,21 +224,21 @@ function ListDepartamentos(props) {
     return (
         <>
             <Container fluid>
-            <DataTable
+                <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
                     //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}
-                    data={filteredItems}
+                    data={listDepartamentos}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
-            />
-        </Container>
+                />
+            </Container>
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}

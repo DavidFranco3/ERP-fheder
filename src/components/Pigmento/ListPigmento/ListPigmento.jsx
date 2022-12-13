@@ -76,6 +76,7 @@ function ListPigmento(props) {
                     <Badge
                         bg="success"
                         className="editar"
+                        title="Modificar"
                         onClick={() => {
                             actualizaPigmento(
                                 <ModificaPigmento
@@ -91,6 +92,7 @@ function ListPigmento(props) {
                     </Badge>
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminar"
                         onClick={() => {
                             eliminaPigmento(

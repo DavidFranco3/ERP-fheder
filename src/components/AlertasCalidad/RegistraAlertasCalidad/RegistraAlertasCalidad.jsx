@@ -33,6 +33,7 @@ function RegistraAlertasCalidad(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú calidad"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -367,6 +368,7 @@ function RegistraAlertasCalidad(props) {
                             <Col>
                                 <Button
                                     variant="success"
+                                    title="Guardar información del formulario"
                                     className="registrar"
                                 >
                                     {"Registrar"}
@@ -375,6 +377,7 @@ function RegistraAlertasCalidad(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         rutaRegreso()

@@ -123,6 +123,7 @@ function ListInspeccionPieza(props) {
                     <>
                         <Badge
                             bg="success" className="activo"
+                            title="Deshabilitar"
                             onClick={() => {
                                 cancelacionInspeccion(
                                     <EliminacionLogicaInspecciones
@@ -143,6 +144,7 @@ function ListInspeccionPieza(props) {
                     <>
                         <Badge
                             bg="danger" className="obsoleto"
+                            title="Deshabilitado"
                         >
                             Cancelado
                         </Badge>

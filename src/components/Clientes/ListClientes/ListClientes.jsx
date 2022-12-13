@@ -90,7 +90,9 @@ function ListClientes(props) {
                 (
                     <>
                         <Badge
-                            bg="success" className="editar"
+                            bg="success" 
+                            className="editar"
+                            title="Deshabilitar cliente"
                             onClick={() => {
                                 eliminaLogicaClientes(
                                     <EliminacionLogicaClientes
@@ -111,6 +113,7 @@ function ListClientes(props) {
                         <Badge
                             bg="danger"
                             className="eliminar"
+                            title="Habilitar cliente"
                             onClick={() => {
                                 habilitaClientes(
                                     <EliminacionLogicaClientes
@@ -142,6 +145,7 @@ function ListClientes(props) {
                 <>
                     <Badge
                         bg="success"
+                        title="Modificar"
                         className="editar"
                         onClick={() => {
                             irHaciaModificacion(row.id)
@@ -155,6 +159,7 @@ function ListClientes(props) {
                         onClick={() => {
                             eliminaClientes(<EliminacionFisicaClientes
                                 dataCliente={row}
+                                title="Eliminar"
                                 setShowModal={setShowModal}
                                 history={history}
                             />
@@ -293,7 +298,7 @@ function ListClientes(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={filteredItems}
+                    data={listClientes}
                     //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}

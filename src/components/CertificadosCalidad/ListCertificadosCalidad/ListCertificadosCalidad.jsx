@@ -107,6 +107,7 @@ function ListCertificadosCalidad(props) {
                 <>
                     <Badge
                         bg="primary"
+                        title="Generar PDF"
                         className="ver"
                         onClick={() => {
                         }}
@@ -115,6 +116,7 @@ function ListCertificadosCalidad(props) {
                     </Badge>
                     <Badge
                         bg="success"
+                        title="Modificar"
                         className="editar"
                         onClick={() => {
                             modificaCertificado(row.id)
@@ -124,6 +126,7 @@ function ListCertificadosCalidad(props) {
                     </Badge>
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminar"
                         onClick={() => {
                             eliminaCertificado(

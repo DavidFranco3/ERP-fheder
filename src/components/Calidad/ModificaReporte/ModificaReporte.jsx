@@ -140,6 +140,7 @@ function ModificaReporte(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -176,6 +177,7 @@ function ModificaReporte(props) {
                                     <Col sm="5">
                                         <Button
                                             variant="success"
+                                            title="Buscar entre las ordenes de venta"
                                             className="agregar"
                                             onClick={() => {
                                                 buscarOV(
@@ -559,6 +561,7 @@ function ModificaReporte(props) {
                             <Col>
                                 <Button
                                     type="submit"
+                                    title="Actualizar la información del registro"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -568,6 +571,7 @@ function ModificaReporte(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         rutaRegreso()

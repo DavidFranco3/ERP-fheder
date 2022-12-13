@@ -82,6 +82,7 @@ function ListMateriasPrimas(props) {
                 <>
                     <Badge
                         bg="success"
+                        title="Modificar"
                         className="editar"
                         onClick={() => {
                             cambiaInformacionMaterial(
@@ -98,6 +99,7 @@ function ListMateriasPrimas(props) {
                     </Badge>
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminar"
                         onClick={() => {
                             eliminaMaterial(

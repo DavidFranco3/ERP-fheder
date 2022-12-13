@@ -109,6 +109,7 @@ function ListEtiquetaMolido(props) {
                 <>
                     <Badge
                         bg="primary"
+                        title="Generar PDF"
                         className="ver"
                         onClick={() => {
                         }}
@@ -117,6 +118,7 @@ function ListEtiquetaMolido(props) {
                     </Badge>
                     <Badge
                         bg="success"
+                        title="Modificar"
                         className="editar"
                         onClick={() => {
                             modificacionEtiqueta(
@@ -131,6 +133,7 @@ function ListEtiquetaMolido(props) {
                     </Badge>
                     <Badge
                         bg="danger"
+                        title="Eliminar"
                         className="eliminar"
                         onClick={() => {
                             eliminacionEtiqueta(

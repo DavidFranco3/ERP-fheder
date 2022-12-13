@@ -158,6 +158,7 @@ function ListCompras(props) {
                 <>
                     <Badge
                         bg="info"
+                        title="Generar PDF"
                         className="evaluacionProveedor"
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />
@@ -168,6 +169,7 @@ function ListCompras(props) {
                                 <>
                                     <Badge
                                         bg="success"
+                                        title="Modificar"
                                         className="editarProveedor"
                                         onClick={() => {
                                             modificacionCompra(row.folio)
@@ -180,6 +182,7 @@ function ListCompras(props) {
                                 <>
                                     <Badge
                                         bg="success"
+                                        title="Modificar"
                                         className="editarProveedor"
                                         onClick={() => {
                                             modificacionCompraAlmacen(row.folio)
@@ -193,6 +196,7 @@ function ListCompras(props) {
                     <Badge
                         bg="danger"
                         className="eliminarProveedor"
+                        title="Eliminar"
                         onClick={() => {
                             eliminacionCompra(
                                 <EliminacionFisicaCompras

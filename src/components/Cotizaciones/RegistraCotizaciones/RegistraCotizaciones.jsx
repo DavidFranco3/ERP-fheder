@@ -234,6 +234,7 @@ function RegistraCotizaciones(props) {
                                 <Col>
                                     <Button
                                         type="submit"
+                                        title="Guardar la información del formulario"
                                         variant="success"
                                         className="registrar"
                                     >
