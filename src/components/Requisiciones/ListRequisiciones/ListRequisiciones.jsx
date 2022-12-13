@@ -15,7 +15,7 @@ import ModificaRequisiciones from '../ModificaRequisiciones';
 import { useHistory } from "react-router-dom";
 
 function ListRequisiciones(props) {
-    const { listRequisiciones, setRefreshCheckLogin, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalRequisiciones } = props;
+    const { listRequisiciones, setRefreshCheckLogin, history, location } = props;
 
     moment.locale("es");
 
@@ -147,18 +147,6 @@ function ListRequisiciones(props) {
         }
     ];
 
-    const handleChangePage = (page) => {
-        // console.log("Nueva pagina "+ newPage)
-        setPage(page);
-    };
-
-    const handleChangeRowsPerPage = (newPerPage) => {
-        // console.log("Registros por pagina "+ parseInt(event.target.value, 10))
-        setRowsPerPage(newPerPage)
-        //setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(1);
-    };
-
     // Configurando animacion de carga
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
@@ -192,10 +180,6 @@ function ListRequisiciones(props) {
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                     pagination
-                    paginationServer
-                    paginationTotalRows={noTotalRequisiciones}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                    onChangePage={handleChangePage}
                 />
             </Container>
 

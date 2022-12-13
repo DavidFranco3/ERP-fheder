@@ -9,7 +9,7 @@ import EliminaPigmento from '../EliminaPigmento';
 import { estilos } from "../../../utils/tableStyled";
 
 function ListPigmento(props) {
-    const { setRefreshCheckLogin, listPigmentos, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalPigmentos } = props;
+    const { setRefreshCheckLogin, listPigmentos, history, location } = props;
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -123,15 +123,6 @@ function ListPigmento(props) {
         return () => clearTimeout(timeout);
     }, []);
 
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
     const paginationComponentOptions = {
         rowsPerPageText: 'Filas por página',
         rangeSeparatorText: 'de'
@@ -149,10 +140,6 @@ function ListPigmento(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalPigmentos}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                 />

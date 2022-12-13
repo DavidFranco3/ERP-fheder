@@ -6,7 +6,7 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { Switch } from "@headlessui/react";
-import { totalMatrizProductos, listarMatrizProductosPaginacion } from "../../api/matrizProductos";
+import { listarMatrizProductos } from "../../api/matrizProductos";
 import ListMatrizProductos from "../../components/MatrizProductos/ListMatrizProductos";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -34,58 +34,29 @@ function MatrizProductos(props) {
         enrutamiento.push("/Registra-Matriz-Productos")
     }
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalProductos, setNoTotalProductos] = useState(0);
-
     // Para almacenar el listado de productos
     const [listProductos, setListProductos] = useState(null);
 
     useEffect(() => {
         try {
-            totalMatrizProductos().then(response => {
+            listarMatrizProductos().then(response => {
                 const { data } = response;
-                setNoTotalProductos(data)
-            }).catch(e => {
-                // console.log(e)
-                if (e.message === 'Network Error') {
-                    toast.error("Conexión al servidor no disponible");
-                }
-            })
 
-            if (page === 0) {
-                setPage(1)
-                listarMatrizProductosPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    //console.log(data)
-                    if (!listProductos && data) {
-                        setListProductos(formatModelMatrizProductos(data));
-                    } else {
-                        const datosProductos = formatModelMatrizProductos(data);
-                        setListProductos(datosProductos)
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarMatrizProductosPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    //console.log(data)
-                    if (!listProductos && data) {
-                        setListProductos(formatModelMatrizProductos(data));
-                    } else {
-                        const datosProductos = formatModelMatrizProductos(data);
-                        setListProductos(datosProductos)
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
+                //console.log(data);
+
+                if (!listProductos && data) {
+                    setListProductos(formatModelMatrizProductos(data));
+                } else {
+                    const datosProductos = formatModelMatrizProductos(data);
+                    setListProductos(datosProductos);
+                }
+            }).catch(e => {
+                console.log(e)
+            })
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     const rutaRegreso = () => {
         enrutamiento.push("/DashboardCatalogos")
@@ -103,14 +74,16 @@ function MatrizProductos(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar un nuevo producto"
                             onClick={() => {
                                 rutaRegistraProductos()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar un nuevo producto
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú catalogos"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -131,11 +104,6 @@ function MatrizProductos(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalProductos={noTotalProductos}
                                 />
                             </Suspense>
                         </>

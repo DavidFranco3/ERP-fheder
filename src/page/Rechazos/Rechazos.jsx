@@ -26,11 +26,12 @@ function Rechazos(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registar un nuevo rechazo de producto"
                             onClick={() => {
                                 rutaRegistraRechazos()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar nuevo rechazo
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                     </Col>
                 </Row>

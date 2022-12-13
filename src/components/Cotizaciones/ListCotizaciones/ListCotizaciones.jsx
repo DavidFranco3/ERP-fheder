@@ -13,7 +13,7 @@ import Proveedor from "./Proveedor";
 import EliminacionLogicaCotizaciones from "../EliminacionLogica";
 
 function ListCotizaciones(props) {
-    const { setRefreshCheckLogin, location, history, listCotizaciones, rowsPerPage, setRowsPerPage, page, setPage, noTotalCotizaciones } = props;
+    const { setRefreshCheckLogin, location, history, listCotizaciones } = props;
 
     // console.log(listCotizaciones)
 
@@ -208,15 +208,6 @@ function ListCotizaciones(props) {
         rowsPerPageText: 'Filas por página',
         rangeSeparatorText: 'de'
     };
-    
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
 
     return (
         <>
@@ -229,10 +220,6 @@ function ListCotizaciones(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalCotizaciones}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
             />

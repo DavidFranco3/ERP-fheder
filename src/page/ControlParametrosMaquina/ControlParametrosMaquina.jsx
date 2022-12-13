@@ -46,14 +46,16 @@ function ControlParametrosMaquina(props) {
                         <Col xs={6} md={4}>
                             <Button
                                 className="btnRegistroVentas"
+                                title="Registrar un nuevo parametro de maquina"
                                 onClick={() => {
                                     rutaRegistro()
                                 }}
                             >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nuevo parametro
+                                <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                             </Button>
                             <Button
                                 className="btnRegistroVentas"
+                                title="Regresar al menú producción"
                                 onClick={() => {
                                     rutaRegreso()
                                 }}

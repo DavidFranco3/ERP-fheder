@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
 function MovimientosAlmacenMp(props) {
-
+    const { setRefreshCheckLogin, location, history } = props;
     // Define el uso del enrutamiento
     const enrutamiento = useHistory();
 
@@ -86,6 +86,7 @@ function MovimientosAlmacenMp(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú almacen de materia prima"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -104,6 +105,9 @@ function MovimientosAlmacenMp(props) {
                                 <ListMovimientosMP
                                     listMovimientosMP={listMovimientosMP}
                                     infoMPAlmacen={infoMPAlmacen}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
                                 />
                             </Suspense>
                         </>

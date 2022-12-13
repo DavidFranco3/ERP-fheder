@@ -41,11 +41,12 @@ function Logistica(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva logistica"
                             onClick={() => {
                                 rutaRegistraLogistica()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo registro
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                     </Col>
                 </Row>

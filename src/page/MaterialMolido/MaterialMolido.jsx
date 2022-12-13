@@ -6,7 +6,7 @@ import { useHistory, withRouter } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroMaterialMolido from "../../components/MaterialMolido/RegistroMaterialMolido";
 import ListEtiquetaMolido from '../../components/MaterialMolido/ListEtiquetaMolido';
-import { listarEtiquetaMolidoPaginacion, totalEtiquetaMolido } from "../../api/etiquetaMolido";
+import { listarEtiquetaMolido } from "../../api/etiquetaMolido";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
@@ -52,53 +52,27 @@ function MaterialMolido(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalEtiquetas, setNoTotalEtiquetas] = useState(0);
-
     // Para almacenar la lista de las integraciones de ventas y gastos
     const [listEtiquetas, setListEtiquetas] = useState(null);
 
     useEffect(() => {
         try {
-            totalEtiquetaMolido().then(response => {
+            listarEtiquetaMolido().then(response => {
                 const { data } = response;
-                setNoTotalEtiquetas(data)
+
+                if (!listEtiquetas && data) {
+                    setListEtiquetas(formatModelEtiquetaMolido(data));
+                } else {
+                    const datosEtiquetas = formatModelEtiquetaMolido(data);
+                    setListEtiquetas(datosEtiquetas);
+                }
+            }).catch(e => {
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(page, rowsPerPage)
-            if (page === 0) {
-                setPage(1)
-                listarEtiquetaMolidoPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listEtiquetas && data) {
-                        setListEtiquetas(formatModelEtiquetaMolido(data));
-                    } else {
-                        const datosEtiqueta = formatModelEtiquetaMolido(data);
-                        setListEtiquetas(datosEtiqueta);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarEtiquetaMolidoPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listEtiquetas && data) {
-                        setListEtiquetas(formatModelEtiquetaMolido(data));
-                    } else {
-                        const datosEtiqueta = formatModelEtiquetaMolido(data);
-                        setListEtiquetas(datosEtiqueta);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     return (
         <>
@@ -112,6 +86,7 @@ function MaterialMolido(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva etiqueta de material molido"
                             onClick={() => {
                                 nuevaEtiqueta(
                                     <RegistroMaterialMolido
@@ -122,10 +97,11 @@ function MaterialMolido(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva etiqueta
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú producción"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -146,11 +122,6 @@ function MaterialMolido(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalEtiquetas={noTotalEtiquetas}
                                 />
                             </Suspense>
                         </>

@@ -32,20 +32,22 @@ function EntradaSalidaMoldes(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva E/S de moldes"
                             onClick={() => {
                                 rutaRegistro()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo registro
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
-
+                            title="vista general"
                         >
                             <FontAwesomeIcon icon={faCirclePlus} /> Vista general
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú mantenimiento"
                             onClick={() => {
                                 rutaRegreso()
                             }}

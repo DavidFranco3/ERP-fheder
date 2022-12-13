@@ -26,17 +26,8 @@ function classNames(...classes) {
 }
 
 function ListTracking(props) {
-    const { listTracking, setRefreshCheckLogin, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalTrackings } = props;
+    const { listTracking, setRefreshCheckLogin, history, location } = props;
     //console.log(listTracking)
-
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
 
     // Definicion de tabla
     const ExpandedComponent = ({ data }) => (
@@ -390,10 +381,6 @@ function ListTracking(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalTrackings}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                 />

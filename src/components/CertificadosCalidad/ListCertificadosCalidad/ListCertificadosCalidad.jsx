@@ -14,20 +14,9 @@ import "./ListCertificadosCalidad.scss";
 import {estilos} from "../../../utils/tableStyled";
 
 function ListCertificadosCalidad(props) {
-    const { setRefreshCheckLogin, listCertificados, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalCertificado } = props;
+    const { setRefreshCheckLogin, listCertificados, history, location } = props;
 
     const enrutamiento = useHistory();
-    
-       // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
-    //console.log(listPedidosVenta)
 
     moment.locale("es");
 
@@ -187,10 +176,6 @@ function ListCertificadosCalidad(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalCertificado}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
             />

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import { toast } from "react-toastify";
-import { totalProveedores, listarProveedoresPaginacion } from "../../api/proveedores";
+import { listarProveedores } from "../../api/proveedores";
 import { withRouter, useHistory } from "react-router-dom";
 import ListProveedores from "../../components/Proveedores/ListProveedores";
 import BasicModal from "../../components/Modal/BasicModal";
@@ -34,11 +34,6 @@ function Proveedores(props) {
     // Para determinar el estado de la conexion
     const [conexionInternet, setConexionInternet] = useState(true);
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalProveedores, setNoTotalProveedores] = useState(0);
-
     // Para almacenar el listado de proveedores
     const [listProveedores, setListProveedores] = useState(null);
 
@@ -49,45 +44,24 @@ function Proveedores(props) {
 
     useEffect(() => {
         try {
-            totalProveedores().then(response => {
+            listarProveedores().then(response => {
                 const { data } = response;
-                setNoTotalProveedores(data)
+
+                //console.log(data);
+
+                if (!listProveedores && data) {
+                    setListProveedores(formatModelProveedores(data));
+                } else {
+                    const datosProveedores = formatModelProveedores(data);
+                    setListProveedores(datosProveedores);
+                }
             }).catch(e => {
-                // console.log(e)
+                console.log(e)
             })
-
-            if (page === 0) {
-                setPage(1)
-
-                listarProveedoresPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listProveedores && data) {
-                        setListProveedores(formatModelProveedores(data));
-                    } else {
-                        const datosProveedores = formatModelProveedores(data);
-                        setListProveedores(datosProveedores);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarProveedoresPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listProveedores && data) {
-                        setListProveedores(formatModelProveedores(data));
-                    } else {
-                        const datosProveedores = formatModelProveedores(data);
-                        setListProveedores(datosProveedores);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     //Para el registro de proveedores
     const registraProveedor = (content) => {
@@ -112,6 +86,7 @@ function Proveedores(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar un nuevo proveedor"
                             onClick={() => {
                                 registraProveedor(
                                     <RegistraProveedores
@@ -121,10 +96,11 @@ function Proveedores(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar una nuevo proveedor
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú catalogos"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -144,11 +120,6 @@ function Proveedores(props) {
                                 history={history}
                                 setRefreshCheckLogin={setRefreshCheckLogin}
                                 location={location}
-                                rowsPerPage={rowsPerPage}
-                                setRowsPerPage={setRowsPerPage}
-                                page={page}
-                                setPage={setPage}
-                                noTotalProveedores={noTotalProveedores}
                             />
                         </Suspense>
                     </>

@@ -14,20 +14,9 @@ import "./ListEtiquetaMolido.scss";
 import { estilos } from "../../../utils/tableStyled";
 
 function ListEtiquetaMolido(props) {
-    const { setRefreshCheckLogin, listEtiquetas, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalEtiquetas } = props;
+    const { setRefreshCheckLogin, listEtiquetas, history, location } = props;
 
     const enrutamiento = useHistory();
-
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
-    //console.log(listPedidosVenta)
 
     moment.locale("es");
 
@@ -193,10 +182,6 @@ function ListEtiquetaMolido(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalEtiquetas}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                 />

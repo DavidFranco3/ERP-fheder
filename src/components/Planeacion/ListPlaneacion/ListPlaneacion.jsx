@@ -16,7 +16,7 @@ import DataTable  from 'react-data-table-component';
 // Terminan importaciones para la tabla
 
 function ListPlaneacion(props) {
-    const { listPlaneaciones, history, location, setRefreshCheckLogin, rowsPerPage, setRowsPerPage, page, setPage, noTotalPlaneaciones } = props;
+    const { listPlaneaciones, history, location, setRefreshCheckLogin } = props;
 
     // console.log(listPlaneaciones)
 
@@ -130,18 +130,6 @@ function ListPlaneacion(props) {
                     )
                 }
     ];
-
-    const handleChangePage = (page) => {
-        // console.log("Nueva pagina "+ newPage)
-        setPage(page);
-    };
-
-    const handleChangeRowsPerPage = (newPerPage) => {
-        // console.log("Registros por pagina "+ parseInt(event.target.value, 10))
-        setRowsPerPage(newPerPage)
-        //setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(1);
-    };
         
     // Definiendo estilos para data table
     // Configurando animacion de carga
@@ -177,10 +165,6 @@ function ListPlaneacion(props) {
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                     pagination
-                    paginationServer
-                    paginationTotalRows={noTotalPlaneaciones}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                    onChangePage={handleChangePage}
                 />
             </Container>
 

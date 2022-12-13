@@ -7,7 +7,7 @@ import BasicModal from "../../components/Modal/BasicModal";
 import RegistroIdentificacionPT from "../../components/IdentificacionPT/RegistroIdentificacionPT";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
-import { listarEtiquetaPTPaginacion, totalEtiquetasPT } from "../../api/etiquetaIdentificacionPT";
+import { listarEtiquetaPT } from "../../api/etiquetaIdentificacionPT";
 import ListEtiquetasPT from '../../components/IdentificacionPT/ListEtiquetasPT';
 
 function IdentificacionPT(props) {
@@ -37,57 +37,29 @@ function IdentificacionPT(props) {
         enrutamiento.push("/DashboardProduccion")
     }
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalEtiquetas, setNoTotalEtiquetas] = useState(0);
-
     // Para almacenar el listado de compras realizadas
     const [listEtiquetas, setListEtiquetas] = useState(null);
 
     useEffect(() => {
         try {
-            totalEtiquetasPT().then(response => {
+            listarEtiquetaPT().then(response => {
                 const { data } = response;
-                setNoTotalEtiquetas(data)
+
+                //console.log(data);
+
+                if (!listEtiquetas && data) {
+                    setListEtiquetas(formatModelEtiquetas(data));
+                } else {
+                    const datosEtiquetas = formatModelEtiquetas(data);
+                    setListEtiquetas(datosEtiquetas);
+                }
             }).catch(e => {
-                // console.log(e)
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(pagina, limite)
-
-            if (page === 0) {
-                setPage(1)
-
-                listarEtiquetaPTPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listEtiquetas && data) {
-                        setListEtiquetas(formatModelEtiquetas(data));
-                    } else {
-                        const datosEtiquetas = formatModelEtiquetas(data);
-                        setListEtiquetas(datosEtiquetas);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarEtiquetaPTPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listEtiquetas && data) {
-                        setListEtiquetas(formatModelEtiquetas(data));
-                    } else {
-                        const datosEtiquetas = formatModelEtiquetas(data);
-                        setListEtiquetas(datosEtiquetas);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
 
     return (
@@ -102,6 +74,7 @@ function IdentificacionPT(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva etiqueta de identificación de producto terminado"
                             onClick={() => {
                                 nuevaEtiqueta(
                                     <RegistroIdentificacionPT
@@ -112,10 +85,11 @@ function IdentificacionPT(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva etiqueta
+                            <FontAwesomeIcon icon={faCirclePlus} />Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú producción"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -136,11 +110,6 @@ function IdentificacionPT(props) {
                                     listEtiquetas={listEtiquetas}
                                     history={history}
                                     location={location}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalEtiquetas={noTotalEtiquetas}
                                 />
                             </Suspense>
                         </>

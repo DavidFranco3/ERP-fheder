@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faPlus, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import { toast } from "react-toastify";
-import { totalPlaneacion, listarPaginacionPlaneaciones } from "../../api/planeacion";
+import { listarPlaneaciones } from "../../api/planeacion";
 import ListPlaneacion from "../../components/Planeacion/ListPlaneacion";
 import "./Planeacion.scss";
 import Lottie from 'react-lottie-player';
@@ -34,58 +34,29 @@ function Planeacion(props) {
         enrutamiento.push("/RegistroPlaneacion")
     }
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalPlaneaciones, setNoTotalPlaneaciones] = useState(0);
-
     // Para almacenar el listado de planeaciones
     const [listPlaneaciones, setListPlaneaciones] = useState(null);
 
     useEffect(() => {
         try {
-            totalPlaneacion().then(response => {
+            listarPlaneaciones().then(response => {
                 const { data } = response;
-                setNoTotalPlaneaciones(data)
-            }).catch(e => {
-                // console.log(e)
-                if (e.message === 'Network Error') {
-                    toast.error("Conexión al servidor no disponible");
-                }
-            })
 
-            if (page === 0) {
-                setPage(1)
-                listarPaginacionPlaneaciones(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    //console.log(data)
-                    if (!listPlaneaciones && data) {
-                        setListPlaneaciones(formatModelPlaneacion(data));
-                    } else {
-                        const datosPlaneaciones = formatModelPlaneacion(data);
-                        setListPlaneaciones(datosPlaneaciones)
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarPaginacionPlaneaciones(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    //console.log(data)
-                    if (!listPlaneaciones && data) {
-                        setListPlaneaciones(formatModelPlaneacion(data));
-                    } else {
-                        const datosPlaneaciones = formatModelPlaneacion(data);
-                        setListPlaneaciones(datosPlaneaciones)
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
+                //console.log(data);
+
+                if (!listPlaneaciones && data) {
+                    setListPlaneaciones(formatModelPlaneacion(data));
+                } else {
+                    const datosPlaneacion = formatModelPlaneacion(data);
+                    setListPlaneaciones(datosPlaneacion);
+                }
+            }).catch(e => {
+                console.log(e)
+            })
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
 
     return (
@@ -100,11 +71,12 @@ function Planeacion(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva planeación"
                             onClick={() => {
                                 rutaRegistroPlaneacion()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar una nueva planeación
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                     </Col>
                 </Row>
@@ -120,11 +92,6 @@ function Planeacion(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalPlaneaciones={noTotalPlaneaciones}
                                 />
                             </Suspense>
                         </>

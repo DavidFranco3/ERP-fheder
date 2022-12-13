@@ -19,7 +19,7 @@ import { estilos } from "../../../utils/tableStyled";
 import { exportCSVFile } from "../../../utils/exportCSV";
 
 function ListUsuarios(props) {
-    const { listUsuarios, history, location, setRefreshCheckLogin, rowsPerPage, setRowsPerPage, page, setPage, noTotalUsuarios } = props;
+    const { listUsuarios, history, location, setRefreshCheckLogin } = props;
 
     const enrutamiento = useHistory();
 
@@ -315,18 +315,6 @@ function ListUsuarios(props) {
         );
     }, [filterText]);
 
-    const handleChangePage = (page) => {
-        // console.log("Nueva pagina "+ newPage)
-        setPage(page);
-    };
-
-    const handleChangeRowsPerPage = (newPerPage) => {
-        // console.log("Registros por pagina "+ parseInt(event.target.value, 10))
-        setRowsPerPage(newPerPage)
-        //setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(1);
-    };
-
     return (
         <>
             <Container fluid>
@@ -343,10 +331,6 @@ function ListUsuarios(props) {
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                     pagination
-                    paginationServer
-                    paginationTotalRows={noTotalUsuarios}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                    onChangePage={handleChangePage}
                 />
             </Container>
 

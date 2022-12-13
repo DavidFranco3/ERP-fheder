@@ -8,7 +8,7 @@ import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import { toast } from "react-toastify";
 import "./Produccion.scss";
-import { listarProduccionPaginacion, totalProduccion } from "../../api/produccion";
+import { listarProduccion } from "../../api/produccion";
 import ListProduccion from '../../components/Produccion/ListProduccion';
 
 function Produccion(props) {
@@ -38,50 +38,24 @@ function Produccion(props) {
     // Para almacenar la lista de pedidos de venta
     const [listProduccion, setListProduccion] = useState(null);
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalProduccion, setNoTotalProduccion] = useState(0);
-
     useEffect(() => {
         try {
-            totalProduccion().then(response => {
+            listarProduccion().then(response => {
                 const { data } = response;
-                setNoTotalProduccion(data)
+
+                if (!listProduccion && data) {
+                    setListProduccion(formatModelProduccion(data));
+                } else {
+                    const datosProduccion = formatModelProduccion(data);
+                    setListProduccion(datosProduccion);
+                }
+            }).catch(e => {
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(page, rowsPerPage)
-            if (page === 0) {
-                setPage(1)
-                listarProduccionPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listProduccion && data) {
-                        setListProduccion(formatModelProduccion(data));
-                    } else {
-                        const datosProduccion = formatModelProduccion(data);
-                        setListProduccion(datosProduccion);
-                    }
-                }).catch(e => {
-                    // console.log(e)
-                })
-            } else {
-                listarProduccionPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listProduccion && data) {
-                        setListProduccion(formatModelProduccion(data));
-                    } else {
-                        const datosProduccion = formatModelProduccion(data);
-                        setListProduccion(datosProduccion);
-                    }
-                }).catch(e => {
-                    // console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     const rutaRegreso = () => {
         enrutamiento.push("/DashboardPlaneacion")
@@ -99,14 +73,16 @@ function Produccion(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva orden de producción"
                             onClick={() => {
                                 rutaRegistro()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva orden
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú producción"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -127,11 +103,6 @@ function Produccion(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalProduccion={noTotalProduccion}
                                 />
                             </Suspense>
                         </>

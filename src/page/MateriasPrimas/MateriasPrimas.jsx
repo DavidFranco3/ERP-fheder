@@ -3,7 +3,7 @@ import { withRouter, useHistory } from "react-router-dom";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { totalMateriaPrima, listarMateriaPrimaPaginacion } from "../../api/materiaPrima";
+import { listarMateriaPrima } from "../../api/materiaPrima";
 import ListMateriasPrimas from "../../components/MateriasPrimas/ListMateriasPrimas";
 import RegistroMateriasPrimas from '../../components/MateriasPrimas/RegistroMateriasPrimas';
 import BasicModal from "../../components/Modal/BasicModal";
@@ -18,56 +18,27 @@ function MateriasPrimas(props) {
     const [contentModal, setContentModal] = useState(null);
     const [titulosModal, setTitulosModal] = useState(null);
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalMateriales, setNoTotalMateriales] = useState(0);
-
     // Para almacenar la lista de materiales
     const [listMateriales, setListMateriales] = useState(null);
 
-    // Para traer la lista de materiales
     useEffect(() => {
         try {
-            totalMateriaPrima().then(response => {
+            listarMateriaPrima().then(response => {
                 const { data } = response;
-                setNoTotalMateriales(data)
+
+                if (!listMateriales && data) {
+                    setListMateriales(formatModelMateriales(data));
+                } else {
+                    const datosMateriales = formatModelMateriales(data);
+                    setListMateriales(datosMateriales);
+                }
             }).catch(e => {
-                // console.log(e)
+                console.log(e)
             })
-
-            if (page === 0) {
-                setPage(1)
-
-                listarMateriaPrimaPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listMateriales && data) {
-                        setListMateriales(formatModelMateriales(data));
-                    } else {
-                        const datosMateriales = formatModelMateriales(data);
-                        setListMateriales(datosMateriales);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarMateriaPrimaPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listMateriales && data) {
-                        setListMateriales(formatModelMateriales(data));
-                    } else {
-                        const datosMateriales = formatModelMateriales(data);
-                        setListMateriales(datosMateriales);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     // Para registrar los materiales
     const registraMaterial = (content) => {
@@ -95,6 +66,7 @@ function MateriasPrimas(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar un nuevo material"
                             onClick={() => {
                                 registraMaterial(
                                     <RegistroMateriasPrimas
@@ -106,10 +78,11 @@ function MateriasPrimas(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar un nuevo material
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú catalogos"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -130,11 +103,6 @@ function MateriasPrimas(props) {
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
                                     location={location}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalMateriales={noTotalMateriales}
                                 />
                             </Suspense>
                         </>

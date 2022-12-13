@@ -40,6 +40,7 @@ function InventarioMaquinas(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva maquina"
                             onClick={() => {
                                 nuevoRegistro(
                                     <RegistraInventarioMaquinas
@@ -48,10 +49,11 @@ function InventarioMaquinas(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva maquina
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar el menú mantenimiento"
                             onClick={() => {
                                 rutaRegreso()
                             }}

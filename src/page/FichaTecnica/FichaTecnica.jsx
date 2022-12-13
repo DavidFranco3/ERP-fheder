@@ -31,14 +31,16 @@ function FichaTecnica(props) {
                         <Col xs={6} md={4}>
                             <Button
                                 className="btnRegistroVentas"
+                                title="Registrar una nueva ficha"
                                 onClick={() => {
                                     rutaRegistro()
                                 }}
                             >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nueva ficha
+                                <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                             </Button>
                             <Button
                                 className="btnRegistroVentas"
+                                title="Regresar al menú calidad"
                                 onClick={() => {
                                     rutaRegreso()
                                 }}

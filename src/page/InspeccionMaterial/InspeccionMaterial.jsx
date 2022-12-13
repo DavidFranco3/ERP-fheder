@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
-import { listarInspeccionPiezaPaginacion, totalInspeccionPieza } from "../../api/inspeccionPieza";
+import { listarInspeccionPieza } from "../../api/inspeccionPieza";
 import ListInspeccion from '../../components/InspeccionMaterial/ListInspeccionPieza';
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -38,56 +38,30 @@ function InspeccionPieza(props) {
         enrutamiento.push("/DashboardCalidad")
     }
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalInspeccion, setNoTotalInspeccion] = useState(0);
-
     // Para almacenar el listado de compras realizadas
     const [listInspeccion, setListInspeccion] = useState(null);
 
     useEffect(() => {
         try {
-            totalInspeccionPieza().then(response => {
+            listarInspeccionPieza().then(response => {
                 const { data } = response;
-                setNoTotalInspeccion(data)
+
+                //console.log(data);
+
+                if (!listInspeccion && data) {
+                    setListInspeccion(formatModelInspeccion(data));
+                } else {
+                    const datosInspeccion = formatModelInspeccion(data);
+                    setListInspeccion(datosInspeccion);
+                }
             }).catch(e => {
                 console.log(e)
             })
-
-            if (page === 0) {
-                setPage(1)
-
-                listarInspeccionPiezaPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listInspeccion && data) {
-                        setListInspeccion(formatModelInspeccion(data));
-                    } else {
-                        const datosInspeccion = formatModelInspeccion(data);
-                        setListInspeccion(datosInspeccion);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarInspeccionPiezaPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listInspeccion && data) {
-                        setListInspeccion(formatModelInspeccion(data));
-                    } else {
-                        const datosInspeccion = formatModelInspeccion(data);
-                        setListInspeccion(datosInspeccion);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
-
+    }, [location]);
+    
     return (
         <>
             <Alert>
@@ -100,14 +74,16 @@ function InspeccionPieza(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva inspeccion de material"
                             onClick={() => {
                                 rutaRegistro()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo registro de inspeccion
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú calidad"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -128,11 +104,6 @@ function InspeccionPieza(props) {
                                     listInspeccion={listInspeccion}
                                     history={history}
                                     location={location}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalInspeccion={noTotalInspeccion}
                                 />
                             </Suspense>
                         </>

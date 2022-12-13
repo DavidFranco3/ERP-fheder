@@ -1,13 +1,13 @@
 import { useState, useEffect, Suspense } from 'react';
 import "./Clientes.scss";
-import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCirclePlus, faPlus, faUsers, faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
-import {totalClientes, listarClientesPaginacion} from "../../api/clientes";
-import {toast} from "react-toastify";
+import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus, faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { listarClientes } from "../../api/clientes";
+import { toast } from "react-toastify";
 import ListClientes from "../../components/Clientes/ListClientes";
-import { useHistory ,withRouter } from "react-router-dom";
-import {getTokenApi, isExpiredToken, logoutApi} from "../../api/auth";
+import { useHistory, withRouter } from "react-router-dom";
+import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -22,8 +22,8 @@ function Clientes(props) {
 
     // Cerrado de sesión automatico
     useEffect(() => {
-        if(getTokenApi()) {
-            if(isExpiredToken(getTokenApi())) {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
@@ -32,17 +32,12 @@ function Clientes(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
-    
-        // Ir hacia ruta de registro
+
+    // Ir hacia ruta de registro
     const rutaRegistro = () => {
         enrutamiento.push("/RegistroClientes");
     }
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalClientes, setNoTotalClientes] = useState(0);
-    
     // Para almacenar los usuarios
     const [listClientes, setListClientes] = useState(null);
 
@@ -51,96 +46,69 @@ function Clientes(props) {
 
     useEffect(() => {
         try {
-            totalClientes().then(response => {
+            listarClientes().then(response => {
                 const { data } = response;
-                setNoTotalClientes(data)
-            }).catch(e => {
-                // console.log(e)
-                if(e.message === 'Network Error') {
-                    toast.error("Conexión al servidor no disponible");
-                }
-            })
 
-            if(page === 0) {
-                setPage(1)
-                listarClientesPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    //console.log(data)
-                    if(!listClientes && data){
-                        setListClientes(formatModelClientes(data));
-                    } else {
-                        const datosClientes = formatModelClientes(data);
-                        setListClientes(datosClientes)
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarClientesPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    //console.log(data)
-                    if(!listClientes && data){
-                        setListClientes(formatModelClientes(data));
-                    } else {
-                        const datosClientes = formatModelClientes(data);
-                        setListClientes(datosClientes)
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
+                //console.log(data);
+
+                if (!listClientes && data) {
+                    setListClientes(formatModelClientes(data));
+                } else {
+                    const datosClientes = formatModelClientes(data);
+                    setListClientes(datosClientes);
+                }
+            }).catch(e => {
+                console.log(e)
+            })
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
 
     return (
         <>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Mis clientes
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegistro()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Registrar una nuevo cliente
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Mis clientes
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            title="Registrar un nuevo cliente"
+                            onClick={() => {
+                                rutaRegistro()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            title="Regresar al menú catalogos"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {
-                    listClientes ?
-                        (
-                            <>
+            {
+                listClientes ?
+                    (
+                        <>
                             <Suspense fallback={<Spinner />}>
-                            <ListClientes
-                                listClientes={listClientes}
+                                <ListClientes
+                                    listClientes={listClientes}
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalClientes={noTotalClientes}
-                            />
+                                />
                             </Suspense>
                         </>
                     )
@@ -149,8 +117,8 @@ function Clientes(props) {
                         <>
                             <Lottie loop={true} play={true} animationData={AnimacionLoading} />
                         </>
-                        )
-                }
+                    )
+            }
         </>
     );
 }

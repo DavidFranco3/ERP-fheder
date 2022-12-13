@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroPrimeraPieza from "../../components/EtiquetaPrimeraPieza/RegistraPrimeraPieza";
-import { listarEtiquetasPiezasPaginacion, totalEtiquetasPiezas } from "../../api/etiquetaPrimeraPieza";
+import { listarEtiquetasPiezas } from "../../api/etiquetaPrimeraPieza";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
@@ -40,53 +40,29 @@ function EtiquetaPrimeraPieza(props) {
         setShowModal(true);
     }
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalEtiquetas, setNoTotalEtiquetas] = useState(0);
-
     // Para almacenar la lista de las integraciones de ventas y gastos
     const [listEtiquetas, setListEtiquetas] = useState(null);
 
     useEffect(() => {
         try {
-            totalEtiquetasPiezas().then(response => {
+            listarEtiquetasPiezas().then(response => {
                 const { data } = response;
-                setNoTotalEtiquetas(data)
+
+                //console.log(data);
+
+                if (!listEtiquetas && data) {
+                    setListEtiquetas(formatModelEtiquetaPrimeraPieza(data));
+                } else {
+                    const datosEtiquetas = formatModelEtiquetaPrimeraPieza(data);
+                    setListEtiquetas(datosEtiquetas);
+                }
+            }).catch(e => {
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(page, rowsPerPage)
-            if (page === 0) {
-                setPage(1)
-                listarEtiquetasPiezasPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listEtiquetas && data) {
-                        setListEtiquetas(formatModelEtiquetaPrimeraPieza(data));
-                    } else {
-                        const datosVentas = formatModelEtiquetaPrimeraPieza(data);
-                        setListEtiquetas(datosVentas);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarEtiquetasPiezasPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listEtiquetas && data) {
-                        setListEtiquetas(formatModelEtiquetaPrimeraPieza(data));
-                    } else {
-                        const datosVentas = formatModelEtiquetaPrimeraPieza(data);
-                        setListEtiquetas(datosVentas);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory()
@@ -107,6 +83,7 @@ function EtiquetaPrimeraPieza(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar nueva etiqueta de 1era pieza"
                             onClick={() => {
                                 nuevaEtiqueta1eraPieza(
                                     <RegistroPrimeraPieza
@@ -117,10 +94,11 @@ function EtiquetaPrimeraPieza(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva etiqueta 1era pieza
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menu calidad"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -141,11 +119,6 @@ function EtiquetaPrimeraPieza(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalEtiquetas={noTotalEtiquetas}
                                 />
                             </Suspense>
                         </>

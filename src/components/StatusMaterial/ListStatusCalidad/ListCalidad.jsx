@@ -14,20 +14,9 @@ import "./ListCalidad.scss";
 import {estilos} from "../../../utils/tableStyled";
 
 function ListCalidad(props) {
-    const { setRefreshCheckLogin, listStatus, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalStatus } = props;
+    const { setRefreshCheckLogin, listStatus, history, location } = props;
 
     const enrutamiento = useHistory();
-    
-       // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
-    //console.log(listPedidosVenta)
 
     moment.locale("es");
 
@@ -195,10 +184,6 @@ function ListCalidad(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalStatus}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
             />

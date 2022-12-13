@@ -14,20 +14,9 @@ import ProductosPedido from "./ProductosPedido";
 import {estilos} from "../../../utils/tableStyled";
 
 function ListProduccion(props) {
-    const { setRefreshCheckLogin, listRequerimientosPlaneacion, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalRequerimientos } = props;
+    const { setRefreshCheckLogin, listRequerimientosPlaneacion, history, location } = props;
 
     const enrutamiento = useHistory();
-    
-       // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
-    //console.log(listPedidosVenta)
 
     moment.locale("es");
 
@@ -248,10 +237,6 @@ function ListProduccion(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalRequerimientos}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
             />

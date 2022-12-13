@@ -63,6 +63,7 @@ function MovimientosAlmacenGeneral(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú almacen general"
                             onClick={() => {
                                 rutaRegreso()
                             }}

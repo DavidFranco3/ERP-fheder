@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import ListRequerimientosPlaneacion from "../../components/RequerimientosPlaneacion/ListProduccion/";
-import { listarRequerimientoPaginacion, totalRequerimiento } from "../../api/requerimientosPlaneacion";
+import { listarRequerimiento } from "../../api/requerimientosPlaneacion";
 import "./RequerimientosPlaneacion.scss"
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import Lottie from 'react-lottie-player';
@@ -25,11 +25,6 @@ function RequerimientosPlaneacion(props) {
     // Para almacenar la lista de pedidos de venta
     const [listRequerimientosPlaneacion, setListRequerimientosPlaneacion] = useState(null);
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalRequerimientos, setNoTotalRequerimientos] = useState(0);
-
     // Para determinar si hay conexion al servidor o a internet
     const [conexionInternet, setConexionInternet] = useState(true);
 
@@ -48,43 +43,22 @@ function RequerimientosPlaneacion(props) {
 
     useEffect(() => {
         try {
-            totalRequerimiento().then(response => {
+            listarRequerimiento().then(response => {
                 const { data } = response;
-                setNoTotalRequerimientos(data)
+
+                if (!listRequerimientosPlaneacion && data) {
+                    setListRequerimientosPlaneacion(formatModelRequerimientosPlaneacion(data));
+                } else {
+                    const datosRequerimiento = formatModelRequerimientosPlaneacion(data);
+                    setListRequerimientosPlaneacion(datosRequerimiento);
+                }
+            }).catch(e => {
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(page, rowsPerPage)
-            if (page === 0) {
-                setPage(1)
-                listarRequerimientoPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listRequerimientosPlaneacion && data) {
-                        setListRequerimientosPlaneacion(formatModelRequerimientosPlaneacion(data));
-                    } else {
-                        const datosVentas = formatModelRequerimientosPlaneacion(data);
-                        setListRequerimientosPlaneacion(datosVentas);
-                    }
-                }).catch(e => {
-                    // console.log(e)
-                })
-            } else {
-                listarRequerimientoPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listRequerimientosPlaneacion && data) {
-                        setListRequerimientosPlaneacion(formatModelRequerimientosPlaneacion(data));
-                    } else {
-                        const datosVentas = formatModelRequerimientosPlaneacion(data);
-                        setListRequerimientosPlaneacion(datosVentas);
-                    }
-                }).catch(e => {
-                    // console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     const rutaRegreso = () => {
         enrutamiento.push("/DashboardPlaneacion")
@@ -102,14 +76,16 @@ function RequerimientosPlaneacion(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar un nuevo requerimiento y planeación"
                             onClick={() => {
                                 rutaRegistro()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo requerimiento
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú planeación"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -130,11 +106,6 @@ function RequerimientosPlaneacion(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalRequerimientos={noTotalRequerimientos}
                                 />
                             </Suspense>
                         </>

@@ -6,7 +6,7 @@ import { useHistory, withRouter } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroVentasGastos from "../../components/VentasGastos/RegistraVentasGastos";
 import ListIntegracionVentasGastos from '../../components/VentasGastos/ListIntegracionVentasGastos';
-import { listarIntegracionesPaginacion, totalIntegraciones } from "../../api/integracionVentasGastos";
+import { listarIntegraciones } from "../../api/integracionVentasGastos";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
@@ -36,11 +36,6 @@ function VentasGastos(props) {
         enrutamiento.push("/RegistroReporte")
     }
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalIntegraciones, setNoTotalIntegraciones] = useState(0);
-
     // Para almacenar la lista de las integraciones de ventas y gastos
     const [listIntegraciones, setListIntegraciones] = useState(null);
 
@@ -51,43 +46,24 @@ function VentasGastos(props) {
 
     useEffect(() => {
         try {
-            totalIntegraciones().then(response => {
+            listarIntegraciones().then(response => {
                 const { data } = response;
-                setNoTotalIntegraciones(data)
+
+                //console.log(data);
+
+                if (!listIntegraciones && data) {
+                    setListIntegraciones(formatModelIntegracionesVentasGastos(data));
+                } else {
+                    const datosIntegraciones = formatModelIntegracionesVentasGastos(data);
+                    setListIntegraciones(datosIntegraciones);
+                }
+            }).catch(e => {
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(page, rowsPerPage)
-            if (page === 0) {
-                setPage(1)
-                listarIntegracionesPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listIntegraciones && data) {
-                        setListIntegraciones(formatModelIntegracionesVentasGastos(data));
-                    } else {
-                        const datosVentas = formatModelIntegracionesVentasGastos(data);
-                        setListIntegraciones(datosVentas);
-                    }
-                }).catch(e => {
-                    // console.log(e)
-                })
-            } else {
-                listarIntegracionesPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listIntegraciones && data) {
-                        setListIntegraciones(formatModelIntegracionesVentasGastos(data));
-                    } else {
-                        const datosVentas = formatModelIntegracionesVentasGastos(data);
-                        setListIntegraciones(datosVentas);
-                    }
-                }).catch(e => {
-                    // console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     // Para el registro en el almacen de mp
     const nuevoRegistro = (content) => {
@@ -112,6 +88,7 @@ function VentasGastos(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva integración de ventas/gastos"
                             onClick={() => {
                                 nuevoRegistro(
                                     <RegistroVentasGastos
@@ -122,16 +99,17 @@ function VentasGastos(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo registro
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
-
+                            title="Ver reporte"
                         >
                             <FontAwesomeIcon icon={faCirclePlus} /> Ver reporte
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú ventas"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -152,11 +130,6 @@ function VentasGastos(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalIntegraciones={noTotalIntegraciones}
                                 />
                             </Suspense>
                         </>

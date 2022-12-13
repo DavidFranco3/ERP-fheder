@@ -46,14 +46,16 @@ function CarpetasProceso(props) {
                         <Col xs={6} md={4}>
                             <Button
                                 className="btnRegistroVentas"
+                                title="Registrar una nueva carpeta de proceso"
                                 onClick={() => {
                                     rutaRegistro()
                                 }}
                             >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nueva carpeta
+                                <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                             </Button>
                             <Button
                                 className="btnRegistroVentas"
+                                title="Regresar al menú producción"
                                 onClick={() => {
                                     rutaRegreso()
                                 }}

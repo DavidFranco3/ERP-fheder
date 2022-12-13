@@ -9,7 +9,7 @@ import ModificaMateriasPrimas from "../ModificaMateriasPrimas";
 import { estilos } from "../../../utils/tableStyled";
 
 function ListMateriasPrimas(props) {
-    const { setRefreshCheckLogin, listMateriales, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalMateriales } = props;
+    const { setRefreshCheckLogin, listMateriales, history, location } = props;
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -130,15 +130,6 @@ function ListMateriasPrimas(props) {
         return () => clearTimeout(timeout);
     }, []);
 
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
     const paginationComponentOptions = {
         rowsPerPageText: 'Filas por página',
         rangeSeparatorText: 'de'
@@ -156,10 +147,6 @@ function ListMateriasPrimas(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalMateriales}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                 />

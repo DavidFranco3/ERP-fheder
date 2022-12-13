@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
 import AgregarOrdenes from "../../components/AsignacionesPedido/RegistraAsignacionPedido";
-import { listarAsignacionPedidosPaginacion, totalAsignacionPedido } from "../../api/asignacionPedido";
+import { listarAsignacionPedidos } from "../../api/asignacionPedido";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import ListAsignacionPedido from "../../components/AsignacionesPedido/ListAsignacionPedido";
@@ -36,39 +36,24 @@ function AsignacionPedido(props) {
 
     useEffect(() => {
         try {
-            totalAsignacionPedido().then(response => {
+            listarAsignacionPedidos().then(response => {
                 const { data } = response;
-                setNoTotalAsignaciones(data)
+
+                //console.log(data);
+
+                if (!listAsignacionPedido && data) {
+                    setListAsignacionPedido(formatModelAsignacionPedido(data));
+                } else {
+                    const datosAsignacion = formatModelAsignacionPedido(data);
+                    setListAsignacionPedido(datosAsignacion);
+                }
+            }).catch(e => {
+                console.log(e)
             })
-            // listarPaginacionAlmacenMP(page,rowsPerPage)
-            if (page === 0) {
-                setPage(1)
-                listarAsignacionPedidosPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-
-                    if (!listAsignacionPedido && data) {
-                        setListAsignacionPedido(formatModelAlmacenPT(data));
-                    } else {
-                        const datosUsuarios = formatModelAlmacenPT(data);
-                        setListAsignacionPedido(datosUsuarios);
-                    }
-                })
-            } else {
-                listarAsignacionPedidosPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-
-                    if (!listAsignacionPedido && data) {
-                        setListAsignacionPedido(formatModelAlmacenPT(data));
-                    } else {
-                        const datosUsuarios = formatModelAlmacenPT(data);
-                        setListAsignacionPedido(datosUsuarios);
-                    }
-                })
-            }
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory()
@@ -89,6 +74,7 @@ function AsignacionPedido(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva asignacion de pedido"
                             onClick={() => {
                                 nuevaOrden(
                                     <AgregarOrdenes
@@ -99,10 +85,11 @@ function AsignacionPedido(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Agregar ordenes
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú planeación"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -123,11 +110,6 @@ function AsignacionPedido(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalAsignaciones={noTotalAsignaciones}
                                 />
                             </Suspense>
                         </>
@@ -147,7 +129,7 @@ function AsignacionPedido(props) {
     );
 }
 
-function formatModelAlmacenPT(data) {
+function formatModelAsignacionPedido(data) {
     //console.log(data)
     const dataTemp = []
     data.forEach(data => {

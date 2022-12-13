@@ -70,6 +70,7 @@ function DashboardCatalogos(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menu principal"
                             onClick={() => {
                                 rutaRegreso()
                             }}

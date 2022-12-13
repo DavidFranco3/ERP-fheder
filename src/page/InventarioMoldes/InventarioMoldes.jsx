@@ -40,6 +40,7 @@ function InventarioMoldes(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar un nuevo molde"
                             onClick={() => {
                                 nuevoRegistro(
                                     <RegistraInventarioMoldes
@@ -48,10 +49,11 @@ function InventarioMoldes(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo molde
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú mantenimiento"
                             onClick={() => {
                                 rutaRegreso()
                             }}

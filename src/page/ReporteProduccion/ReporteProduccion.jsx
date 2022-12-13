@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import { toast } from "react-toastify";
 import { useHistory, withRouter } from "react-router-dom";
-import { listarReportesProduccionPaginacion, totalReportesProduccion } from "../../api/reporteProduccion";
+import { listarReportesProduccion } from "../../api/reporteProduccion";
 import "./ReporteProduccion.scss";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -42,50 +42,26 @@ function ReporteProduccion(props) {
     // Para almacenar la lista de pedidos de venta
     const [listProduccion, setListProduccion] = useState(null);
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalProduccion, setNoTotalProduccion] = useState(0);
-
     useEffect(() => {
         try {
-            totalReportesProduccion().then(response => {
+            listarReportesProduccion().then(response => {
                 const { data } = response;
-                setNoTotalProduccion(data)
+
+                //console.log(data);
+
+                if (!listProduccion && data) {
+                    setListProduccion(formatModelProduccion(data));
+                } else {
+                    const datosProduccion = formatModelProduccion(data);
+                    setListProduccion(datosProduccion);
+                }
+            }).catch(e => {
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(page, rowsPerPage)
-            if (page === 0) {
-                setPage(1)
-                listarReportesProduccionPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listProduccion && data) {
-                        setListProduccion(formatModelProduccion(data));
-                    } else {
-                        const datosProduccion = formatModelProduccion(data);
-                        setListProduccion(datosProduccion);
-                    }
-                }).catch(e => {
-                    // console.log(e)
-                })
-            } else {
-                listarReportesProduccionPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listProduccion && data) {
-                        setListProduccion(formatModelProduccion(data));
-                    } else {
-                        const datosProduccion = formatModelProduccion(data);
-                        setListProduccion(datosProduccion);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     return (
         <>
@@ -99,14 +75,16 @@ function ReporteProduccion(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar un nuevo reporte de producción"
                             onClick={() => {
                                 rutaRegistro()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo reporte
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú producción"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -128,11 +106,6 @@ function ReporteProduccion(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalProduccion={noTotalProduccion}
                                 />
                             </Suspense>
                         </>

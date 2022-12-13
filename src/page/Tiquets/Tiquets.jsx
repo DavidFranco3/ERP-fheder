@@ -42,11 +42,12 @@ function Tiquets(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar un nuevo ticket"
                             onClick={() => {
                                 rutaRegistraTiquets()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo registro
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                     </Col>
                 </Row>

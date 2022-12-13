@@ -27,11 +27,12 @@ function SolicitudMaterialInsumo(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva solicitud de material e insumos"
                             onClick={() => {
                                 rutaRegistro()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva solicitud
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                     </Col>
                 </Row>

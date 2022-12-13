@@ -14,7 +14,7 @@ import DataTable from 'react-data-table-component';
 import { estilos } from "../../../utils/tableStyled";
 
 function ListClientes(props) {
-    const { listClientes, history, location, setRefreshCheckLogin, rowsPerPage, setRowsPerPage, page, setPage, noTotalClientes } = props;
+    const { listClientes, history, location, setRefreshCheckLogin } = props;
 
     moment.locale("es");
     //console.log(listClientes);
@@ -287,18 +287,6 @@ function ListClientes(props) {
         );
     }, [filterText, resetPaginationToogle]);
 
-    const handleChangePage = (page) => {
-        // console.log("Nueva pagina "+ newPage)
-        setPage(page);
-    };
-
-    const handleChangeRowsPerPage = (newPerPage) => {
-        // console.log("Registros por pagina "+ parseInt(event.target.value, 10))
-        setRowsPerPage(newPerPage)
-        //setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(1);
-    };
-
     return (
         <>
             <Container fluid>
@@ -315,10 +303,6 @@ function ListClientes(props) {
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                     pagination
-                    paginationServer
-                    paginationTotalRows={noTotalClientes}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                    onChangePage={handleChangePage}
                 />
             </Container>
 

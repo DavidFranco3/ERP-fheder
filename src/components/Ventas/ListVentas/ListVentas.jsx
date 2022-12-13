@@ -15,22 +15,9 @@ import { estilos } from "../../../utils/tableStyled";
 import ListProductosVentas from '../ListProductosVentas';
 
 function ListVentas(props) {
-    const { setRefreshCheckLogin, listPedidosVenta, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalVentas } = props;
-
-    const { folio } = listPedidosVenta
+    const { setRefreshCheckLogin, listPedidosVenta, history, location } = props;
 
     const enrutamiento = useHistory();
-
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
-    //console.log(listPedidosVenta)
 
     moment.locale("es");
 
@@ -193,10 +180,6 @@ function ListVentas(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalVentas}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                 />

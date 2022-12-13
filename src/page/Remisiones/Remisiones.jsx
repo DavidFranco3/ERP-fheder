@@ -26,11 +26,12 @@ function Remisiones(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar una nueva remisión"
                             onClick={() => {
                                 rutaRegistraRemisiones()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Crear nueva remisión
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                     </Col>
                 </Row>

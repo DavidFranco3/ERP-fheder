@@ -3,7 +3,7 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
-import { totalLogs, listarLogsPaginacion } from "../../api/logsGenerales";
+import { listarLogs } from "../../api/logsGenerales";
 import ListLogs from "../../components/Logs/ListLogs";
 import moment from "moment";
 import "./Logs.scss";
@@ -20,10 +20,6 @@ function Logs(props) {
         enrutamiento.push("/")
     }
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalLogs, setNoTotaLogs] = useState(0);
     // Para almacenar todos los log del sistema
     const [listLog, setListLog] = useState(null);
 
@@ -31,48 +27,22 @@ function Logs(props) {
 
     useEffect(() => {
         try {
-            totalLogs().then(response => {
+            listarLogs().then(response => {
                 const { data } = response;
-                setNoTotaLogs(data)
-            }).catch(e => {
-                // console.log(e)
-                if (e.message === 'Network Error') {
-                    toast.error("Conexión al servidor no disponible");
-                }
-            })
 
-            if (page === 0) {
-                setPage(1)
-                listarLogsPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    //console.log(data)
-                    if (!listLog && data) {
-                        setListLog(formatModelLogs(data));
-                    } else {
-                        const datosLogs = formatModelLogs(data);
-                        setListLog(datosLogs)
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarLogsPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    //console.log(data)
-                    if (!listLog && data) {
-                        setListLog(formatModelLogs(data));
-                    } else {
-                        const datosLogs = formatModelLogs(data);
-                        setListLog(datosLogs)
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
+                if (!listLog && data) {
+                    setListLog(formatModelLogs(data));
+                } else {
+                    const datosLog = formatModelLogs(data);
+                    setListLog(datosLog);
+                }
+            }).catch(e => {
+                console.log(e)
+            })
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
 
     return (
@@ -87,6 +57,7 @@ function Logs(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú principal"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -108,11 +79,6 @@ function Logs(props) {
                                         location={location}
                                         history={history}
                                         setRefreshCheckLogin={setRefreshCheckLogin}
-                                        rowsPerPage={rowsPerPage}
-                                        setRowsPerPage={setRowsPerPage}
-                                        page={page}
-                                        setPage={setPage}
-                                        noTotalLogs={noTotalLogs}
                                     />
                                 </Suspense>
                             </>

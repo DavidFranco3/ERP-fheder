@@ -46,6 +46,7 @@ function MantenimientoPreventivo(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar un nuevo programa de mantenimiento preventivo"
                             onClick={() => {
                                 nuevoRegistro(
                                     <RegistraMantenimientoPreventivo
@@ -54,18 +55,19 @@ function MantenimientoPreventivo(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo registro
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
 
                         <Button
                             className="btnRegistroVentas"
-
+                            title="Vista completa"
                         >
                             <FontAwesomeIcon icon={faCirclePlus} /> Vista completa
                         </Button>
 
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú mantimiento"
                             onClick={() => {
                                 rutaRegreso()
                             }}

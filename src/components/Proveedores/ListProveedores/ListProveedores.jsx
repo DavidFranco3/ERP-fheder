@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 
 function ListProveedores(props) {
-    const { listProveedores, setRefreshCheckLogin, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalProveedores } = props;
+    const { listProveedores, setRefreshCheckLogin, history, location } = props;
 
     // console.log(listProveedores)
 
@@ -238,18 +238,6 @@ function ListProveedores(props) {
         }
     ];
 
-    const handleChangePage = (page) => {
-        // console.log("Nueva pagina "+ newPage)
-        setPage(page);
-    };
-
-    const handleChangeRowsPerPage = (newPerPage) => {
-        // console.log("Registros por pagina "+ parseInt(event.target.value, 10))
-        setRowsPerPage(newPerPage)
-        //setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(1);
-    };
-
     // Configurando animacion de carga
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
@@ -283,10 +271,6 @@ function ListProveedores(props) {
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                     pagination
-                    paginationServer
-                    paginationTotalRows={noTotalProveedores}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                    onChangePage={handleChangePage}
                 />
             </Container>
 

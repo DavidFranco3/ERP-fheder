@@ -31,14 +31,16 @@ function AlertasCalidad(props) {
                         <Col xs={6} md={4}>
                             <Button
                                 className="btnRegistroVentas"
+                                title="Registrar una nueva alerta de calidad"
                                 onClick={() => {
                                     rutaRegistro()
                                 }}
                             >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nueva alerta
+                                <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                             </Button>
                             <Button
                                 className="btnRegistroVentas"
+                                title="Regresar a la pagina anterior"
                                 onClick={() => {
                                     rutaRegreso()
                                 }}

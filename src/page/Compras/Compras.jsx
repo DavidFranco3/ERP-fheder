@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import { toast } from "react-toastify";
-import { listarPaginacionDeptoCompras, totalDeptoCompras } from "../../api/compras";
+import { listarDeptoCompras } from "../../api/compras";
 import { withRouter, useHistory } from "react-router-dom";
 import ListCompras from "../../components/Compras/ListCompras";
 import Lottie from 'react-lottie-player';
@@ -12,11 +12,6 @@ import AnimacionLoading from '../../assets/json/loading.json';
 
 function Compras(props) {
     const { setRefreshCheckLogin, location, history } = props;
-
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalComprasDepto, setNoTotalComprasDepto] = useState(0);
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -39,47 +34,24 @@ function Compras(props) {
 
     useEffect(() => {
         try {
-            totalDeptoCompras("Compras").then(response => {
+            listarDeptoCompras("Compras").then(response => {
                 const { data } = response;
-                setNoTotalComprasDepto(data)
+
+                //console.log(data);
+
+                if (!listCompras && data) {
+                    setListCompras(formatModelCompras(data));
+                } else {
+                    const datosCompras = formatModelCompras(data);
+                    setListCompras(datosCompras);
+                }
             }).catch(e => {
-                // console.log(e)
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(pagina, limite)
-
-            if (page === 0) {
-                setPage(1)
-
-                listarPaginacionDeptoCompras(page, rowsPerPage, "Compras").then(response => {
-                    const { data } = response
-                    if (!listCompras && data) {
-                        setListCompras(formatModelCompras(data));
-                    } else {
-                        const datosCompras = formatModelCompras(data);
-                        setListCompras(datosCompras);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarPaginacionDeptoCompras(page, rowsPerPage, "Compras").then(response => {
-                    const { data } = response
-                    if (!listCompras && data) {
-                        setListCompras(formatModelCompras(data));
-                    } else {
-                        const datosCompras = formatModelCompras(data);
-                        setListCompras(datosCompras);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage, "Compras"]);
+    }, [location]);
 
     // Define el registro de una nueva compra y enruta hacia la vista de registro
     const registraCompra = () => {
@@ -92,60 +64,57 @@ function Compras(props) {
 
     return (
         <>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8} className="tituloPrincipal">
-                            <h1>
-                                Mis compras
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    registraCompra()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Crear orden de compra
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8} className="tituloPrincipal">
+                        <h1>
+                            Mis compras
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            title="Registrar una nueva orden de compra"
+                            onClick={() => {
+                                registraCompra()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            title="Regresar al menú compras"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {
-                    listCompras ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListCompras
-                                        setRefreshCheckLogin={setRefreshCheckLogin}
-                                        listCompras={listCompras}
-                                        history={history}
-                                        location={location}
-                                        rowsPerPage={rowsPerPage}
-                                        setRowsPerPage={setRowsPerPage}
-                                        page={page}
-                                        setPage={setPage}
-                                        noTotalComprasDepto={noTotalComprasDepto}
-                                    />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
+            {
+                listCompras ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListCompras
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                    listCompras={listCompras}
+                                    history={history}
+                                    location={location}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
         </>
     );
 }

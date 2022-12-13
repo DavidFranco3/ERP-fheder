@@ -3,9 +3,8 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { withRouter, useHistory } from "react-router-dom";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { totalCotizaciones, listarCotizacionPaginacion } from "../../api/cotizaciones";
+import { listarCotizacion } from "../../api/cotizaciones";
 import ListCotizaciones from "../../components/Cotizaciones/ListCotizaciones";
-import { registraCotizacion, obtenerNumeroCotizacion } from "../../api/cotizaciones";
 import queryString from "query-string";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
@@ -35,47 +34,24 @@ function Cotizaciones(props) {
 
     useEffect(() => {
         try {
-            totalCotizaciones().then(response => {
+            listarCotizacion().then(response => {
                 const { data } = response;
-                setNoTotalCotizaciones(data)
+
+                //console.log(data);
+
+                if (!listCotizaciones && data) {
+                    setListCotizaciones(formatModelCotizacion(data));
+                } else {
+                    const datosCotizacion = formatModelCotizacion(data);
+                    setListCotizaciones(datosCotizacion);
+                }
             }).catch(e => {
-                // console.log(e)
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(pagina, limite)
-
-            if (page === 0) {
-                setPage(1)
-
-                listarCotizacionPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listCotizaciones && data) {
-                        setListCotizaciones(formatModelCotizacion(data));
-                    } else {
-                        const datosCotizaciones = formatModelCotizacion(data);
-                        setListCotizaciones(datosCotizaciones);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarCotizacionPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listCotizaciones && data) {
-                        setListCotizaciones(formatModelCotizacion(data));
-                    } else {
-                        const datosCotizacion = formatModelCotizacion(data);
-                        setListCotizaciones(datosCotizacion);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
 
     return (
@@ -90,14 +66,16 @@ function Cotizaciones(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva cotizacion"
                             onClick={() => {
                                 rutaRegistroCotizaciones()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Crea una nueva cotización
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú principal"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -118,11 +96,6 @@ function Cotizaciones(props) {
                                     location={location}
                                     history={history}
                                     listCotizaciones={listCotizaciones}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalCotizaciones={noTotalCotizaciones}
                                 />
                             </Suspense>
                         </>

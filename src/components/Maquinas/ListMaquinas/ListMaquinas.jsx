@@ -18,17 +18,8 @@ import ModificaMaquinas from '../ModificaMaquinas';
 import EliminacionLogicaMaquinas from '../EliminacionLogica';
 
 function ListMaquinas(props) {
-    const { setRefreshCheckLogin, listMaquinas, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalMaquinas } = props;
+    const { setRefreshCheckLogin, listMaquinas, history, location } = props;
     moment.locale("es");
-
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -268,10 +259,6 @@ function ListMaquinas(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalMaquinas}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                 />

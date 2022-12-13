@@ -17,19 +17,7 @@ import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 
 function ListAlmacenMp(props) {
-    const { listAlmacenMP, location, history, setRefreshCheckLogin, rowsPerPage, setRowsPerPage, page, setPage, noTotalAlmacenMP } = props;
-
-    const handleChangePage = (page) => {
-        // console.log("Nueva pagina "+ newPage)
-        setPage(page);
-    };
-
-    const handleChangeRowsPerPage = (newPerPage) => {
-        // console.log("Registros por pagina "+ parseInt(event.target.value, 10))
-        setRowsPerPage(newPerPage)
-        //setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(1);
-    };
+    const { listAlmacenMP, location, history, setRefreshCheckLogin } = props;
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -193,8 +181,6 @@ function ListAlmacenMp(props) {
     const paginationComponentOptions = {
         rowsPerPageText: 'Filas por página',
         rangeSeparatorText: 'de',
-        selectAllRowsItem: true,
-        selectAllRowsItemText: 'Todos'
     };
 
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
@@ -212,10 +198,6 @@ function ListAlmacenMp(props) {
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                     pagination
-                    paginationServer
-                    paginationTotalRows={noTotalAlmacenMP}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                    onChangePage={handleChangePage}
                 />
             </Container>
 

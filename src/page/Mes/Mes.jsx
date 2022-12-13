@@ -6,7 +6,7 @@ import { useHistory, withRouter } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistrarMes from "../../components/Mes/RegistraMes";
 import ListMeses from "../../components/Mes/ListMeses";
-import { listarMesPaginacion, totalMes } from "../../api/mes";
+import { listarMeses } from "../../api/mes";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
@@ -50,43 +50,22 @@ function Mes(props) {
 
     useEffect(() => {
         try {
-            totalMes().then(response => {
+            listarMeses().then(response => {
                 const { data } = response;
-                setNoTotalMes(data)
+
+                if (!listMeses && data) {
+                    setListMeses(formatModelMeses(data));
+                } else {
+                    const datosMeses = formatModelMeses(data);
+                    setListMeses(datosMeses);
+                }
+            }).catch(e => {
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(page, rowsPerPage)
-            if (page === 0) {
-                setPage(1)
-                listarMesPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listMeses && data) {
-                        setListMeses(formatModelMeses(data));
-                    } else {
-                        const datosVentas = formatModelMeses(data);
-                        setListMeses(datosVentas);
-                    }
-                }).catch(e => {
-                    // console.log(e)
-                })
-            } else {
-                listarMesPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listMeses && data) {
-                        setListMeses(formatModelMeses(data));
-                    } else {
-                        const datosVentas = formatModelMeses(data);
-                        setListMeses(datosVentas);
-                    }
-                }).catch(e => {
-                    // console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory()
@@ -107,6 +86,7 @@ function Mes(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar un nuevo programa de producción del mes"
                             onClick={() => {
                                 registraMes(
                                     <RegistrarMes
@@ -118,10 +98,11 @@ function Mes(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo mes
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú planeación"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -142,11 +123,6 @@ function Mes(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalMeses={noTotalMes}
                                 />
                             </Suspense>
                         </>

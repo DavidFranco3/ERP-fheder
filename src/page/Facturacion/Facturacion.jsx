@@ -57,6 +57,7 @@ function Facturacion(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva factura"
                             onClick={() => {
                                 nuevoRegistro(
                                     <RegistroFactura
@@ -67,7 +68,7 @@ function Facturacion(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} />
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                     </Col>
                 </Row>

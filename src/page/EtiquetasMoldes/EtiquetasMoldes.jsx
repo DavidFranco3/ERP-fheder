@@ -46,6 +46,7 @@ function EtiquetasMoldes(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva etiqueta de moldes"
                             onClick={() => {
                                 nuevoRegistro(
                                     <RegistroEtiquetasMoldes
@@ -54,10 +55,11 @@ function EtiquetasMoldes(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo registro
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registro
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú mantenimiento"
                             onClick={() => {
                                 rutaRegreso()
                             }}

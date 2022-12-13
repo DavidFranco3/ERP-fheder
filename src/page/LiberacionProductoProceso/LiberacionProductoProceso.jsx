@@ -3,7 +3,7 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
-import { listarLiberacionProductoPaginacion, totalLiberacionProducto } from "../../api/liberacionProductoProceso";
+import { listarLiberacionProducto } from "../../api/liberacionProductoProceso";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
@@ -41,50 +41,26 @@ function LiberacionProductoProceso(props) {
     // Para almacenar la lista de pedidos de venta
     const [listLiberacion, setListLiberacion] = useState(null);
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalLiberacion, setNoTotalLiberacion] = useState(0);
-
     useEffect(() => {
         try {
-            totalLiberacionProducto().then(response => {
+            listarLiberacionProducto().then(response => {
                 const { data } = response;
-                setNoTotalLiberacion(data)
+
+                //console.log(data);
+
+                if (!listLiberacion && data) {
+                    setListLiberacion(formatModelLiberacionProducto(data));
+                } else {
+                    const datosLiberacion = formatModelLiberacionProducto(data);
+                    setListLiberacion(datosLiberacion);
+                }
+            }).catch(e => {
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(page, rowsPerPage)
-            if (page === 0) {
-                setPage(1)
-                listarLiberacionProductoPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listLiberacion && data) {
-                        setListLiberacion(formatModelLiberacionProducto(data));
-                    } else {
-                        const datosLiberacion = formatModelLiberacionProducto(data);
-                        setListLiberacion(datosLiberacion);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarLiberacionProductoPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listLiberacion && data) {
-                        setListLiberacion(formatModelLiberacionProducto(data));
-                    } else {
-                        const datosLiberacion = formatModelLiberacionProducto(data);
-                        setListLiberacion(datosLiberacion);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     return (
         <>
@@ -98,14 +74,16 @@ function LiberacionProductoProceso(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva hoja de liberación de producto y proceso"
                             onClick={() => {
                                 rutaRegistro()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva hoja
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú calidad"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -115,7 +93,6 @@ function LiberacionProductoProceso(props) {
                     </Col>
                 </Row>
             </Alert>
-
 
             {
                 listLiberacion ?
@@ -127,11 +104,6 @@ function LiberacionProductoProceso(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalLiberacion={noTotalLiberacion}
                                 />
                             </Suspense>
                         </>

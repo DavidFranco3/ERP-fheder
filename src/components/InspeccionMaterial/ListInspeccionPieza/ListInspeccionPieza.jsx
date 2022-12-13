@@ -17,20 +17,9 @@ import "./ListInspeccionPieza.scss";
 import { estilos } from "../../../utils/tableStyled";
 
 function ListInspeccionPieza(props) {
-    const { setRefreshCheckLogin, listInspeccion, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalInspeccion } = props;
+    const { setRefreshCheckLogin, listInspeccion, history, location } = props;
 
     const enrutamiento = useHistory();
-
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
-    //console.log(listPedidosVenta)
 
     moment.locale("es");
 
@@ -248,10 +237,6 @@ function ListInspeccionPieza(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalInspeccion}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                 />

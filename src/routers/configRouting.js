@@ -59,7 +59,6 @@ import Error404 from "../page/Error404";
 import DashboardVentas from "../components/Dashboards/DashboardVentas";
 import DashboardCompras from "../components/Dashboards/DashboardCompras";
 import DashboardAlmacenes from "../components/Dashboards/DashboardAlmacenes";
-import DashboardProductos from "../components/Dashboards/DashboardProductos";
 import DashboardPlaneacion from "../components/Dashboards/DashboardPlaneacion";
 import DashboardProduccion from "../components/Dashboards/DashboardProduccion";
 import DashboardCalidad from "../components/Dashboards/DashboardCalidad";
@@ -832,11 +831,6 @@ export default [
         path: "/DashboardAlmacenes",
         exact: true,
         page: DashboardAlmacenes
-    },
-    {
-        path: "/DashboardProductos",
-        exact: true,
-        page: DashboardProductos
     },
     {
         path: "/DashboardPlaneacion",

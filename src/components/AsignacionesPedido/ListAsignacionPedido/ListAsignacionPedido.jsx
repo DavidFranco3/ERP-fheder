@@ -16,20 +16,9 @@ import ClienteAsignado from "./ClienteAsignado";
 import {estilos} from "../../../utils/tableStyled";
 
 function ListAsignacionPedido(props) {
-    const { setRefreshCheckLogin, listAsignacionPedido, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalAsignaciones } = props;
+    const { setRefreshCheckLogin, listAsignacionPedido, history, location } = props;
 
     const enrutamiento = useHistory();
-    
-       // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
-    //console.log(listPedidosVenta)
 
     moment.locale("es");
 
@@ -260,19 +249,12 @@ function ListAsignacionPedido(props) {
         <Container fluid>
             <DataTable
                     columns={columns}
-                    // actions={descargaCSV}
                     data={listAsignacionPedido}
                     noDataComponent="No hay registros para mostrar"
-                    // expandableRows
-                    // expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalAsignaciones}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
             />

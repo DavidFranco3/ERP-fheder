@@ -15,20 +15,9 @@ import "./ListMeses.scss";
 import { estilos } from "../../../utils/tableStyled";
 
 function ListIntegracionVentasGastos(props) {
-    const { setRefreshCheckLogin, listMeses, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalMeses } = props;
+    const { setRefreshCheckLogin, listMeses, history, location } = props;
 
     const enrutamiento = useHistory();
-
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
-    //console.log(listPedidosVenta)
 
     moment.locale("es");
 
@@ -187,10 +176,6 @@ function ListIntegracionVentasGastos(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalMeses}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                 />

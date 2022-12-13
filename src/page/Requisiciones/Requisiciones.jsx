@@ -8,7 +8,7 @@ import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
-import { listarRequisicionesPaginacion, totalRequision } from "../../api/requisicion";
+import { listarRequisiciones } from "../../api/requisicion";
 import ListRequisiciones from '../../components/Requisiciones/ListRequisiciones';
 
 function Requisiciones(props) {
@@ -43,54 +43,27 @@ function Requisiciones(props) {
         enrutamiento.push("/RegistroRequisicion")
     }
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalRequisiciones, setNoTotalRequisiciones] = useState(0);
-
     // Para almacenar el listado de compras realizadas
     const [listRequisiciones, setListRequisiciones] = useState(null);
 
     useEffect(() => {
         try {
-            totalRequision().then(response => {
+            listarRequisiciones().then(response => {
                 const { data } = response;
-                setNoTotalRequisiciones(data)
+
+                if (!listRequisiciones && data) {
+                    setListRequisiciones(formatModelRequisiciones(data));
+                } else {
+                    const datosRequisiciones = formatModelRequisiciones(data);
+                    setListRequisiciones(datosRequisiciones);
+                }
             }).catch(e => {
                 console.log(e)
             })
-
-            if (page === 0) {
-                setPage(1)
-
-                listarRequisicionesPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listRequisiciones && data) {
-                        setListRequisiciones(formatModelRequisiciones(data));
-                    } else {
-                        const datosCompras = formatModelRequisiciones(data);
-                        setListRequisiciones(datosCompras);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarRequisicionesPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listRequisiciones && data) {
-                        setListRequisiciones(formatModelRequisiciones(data));
-                    } else {
-                        const datosCompras = formatModelRequisiciones(data);
-                        setListRequisiciones(datosCompras);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -121,14 +94,16 @@ function Requisiciones(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una requisición"
                             onClick={() => {
                                 rutaRegistraRequisiciones()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Levanta una requisición
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú compras"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -149,11 +124,6 @@ function Requisiciones(props) {
                                     listRequisiciones={listRequisiciones}
                                     history={history}
                                     location={location}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalRequisiciones={noTotalRequisiciones}
                                 />
                             </Suspense>
                         </>

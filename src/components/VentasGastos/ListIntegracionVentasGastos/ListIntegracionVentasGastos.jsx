@@ -14,20 +14,9 @@ import ClienteAsignado from "./ClienteAsignado";
 import { estilos } from "../../../utils/tableStyled";
 
 function ListIntegracionVentasGastos(props) {
-    const { setRefreshCheckLogin, listIntegraciones, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalIntegraciones } = props;
+    const { setRefreshCheckLogin, listIntegraciones, history, location } = props;
 
     const enrutamiento = useHistory();
-
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
-    //console.log(listPedidosVenta)
 
     moment.locale("es");
 
@@ -237,10 +226,6 @@ function ListIntegracionVentasGastos(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalIntegraciones}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                 />

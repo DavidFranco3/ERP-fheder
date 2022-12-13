@@ -3,7 +3,7 @@ import { withRouter, useHistory } from "react-router-dom";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { totalEmpaque, listarEmpaquePaginacion } from "../../api/empaques";
+import { listarEmpaque } from "../../api/empaques";
 import ListEmpaques from '../../components/Empaques/ListEmpaques';
 import RegistroEmpaque from '../../components/Empaques/RegistroEmpaque';
 import BasicModal from "../../components/Modal/BasicModal";
@@ -18,56 +18,30 @@ function Empaques(props) {
     const [contentModal, setContentModal] = useState(null);
     const [titulosModal, setTitulosModal] = useState(null);
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalEmpaques, setNoTotalEmpaques] = useState(0);
-
     // Para almacenar la lista de materiales
     const [listEmpaques, setListEmpaques] = useState(null);
 
     // Para traer la lista de materiales
     useEffect(() => {
         try {
-            totalEmpaque().then(response => {
+            listarEmpaque().then(response => {
                 const { data } = response;
-                setNoTotalEmpaques(data)
+
+                //console.log(data);
+
+                if (!listEmpaques && data) {
+                    setListEmpaques(formatModelEmpaques(data));
+                } else {
+                    const datosEmpaques = formatModelEmpaques(data);
+                    setListEmpaques(datosEmpaques);
+                }
             }).catch(e => {
-                // console.log(e)
+                console.log(e)
             })
-
-            if (page === 0) {
-                setPage(1)
-
-                listarEmpaquePaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listEmpaques && data) {
-                        setListEmpaques(formatModelEmpaques(data));
-                    } else {
-                        const datosEmpaques = formatModelEmpaques(data);
-                        setListEmpaques(datosEmpaques);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarEmpaquePaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listEmpaques && data) {
-                        setListEmpaques(formatModelEmpaques(data));
-                    } else {
-                        const datosEmpaques = formatModelEmpaques(data);
-                        setListEmpaques(datosEmpaques);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     // Para registrar los materiales
     const registraEmpaque = (content) => {
@@ -95,6 +69,7 @@ function Empaques(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar un nuevo empaque"
                             onClick={() => {
                                 registraEmpaque(
                                     <RegistroEmpaque
@@ -106,10 +81,11 @@ function Empaques(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar empaque
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú catalogos"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -130,11 +106,6 @@ function Empaques(props) {
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
                                     location={location}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalEmpaques={noTotalEmpaques}
                                 />
                             </Suspense>
                         </>

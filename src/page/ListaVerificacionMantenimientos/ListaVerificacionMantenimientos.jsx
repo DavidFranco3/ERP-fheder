@@ -32,6 +32,7 @@ function ListaVerificacionMantenimientos(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Ver reporte"
                             onClick={() => {
                             }}
                         >

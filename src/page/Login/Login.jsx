@@ -114,6 +114,7 @@ function Login({ setRefreshCheckLogin }) {
                                     className="cursor-pointer py-2 -ml-6"
                                     icon={!mostrarPassword ? faEyeSlash : faEye}
                                     onClick={togglePasswordVisiblity}
+                                    title={!mostrarPassword ? "Mostar contraseña" : "Ocultar contraseña"}
                                 />
                             </div>
                             <div className="pt-6">
@@ -123,6 +124,7 @@ function Login({ setRefreshCheckLogin }) {
                                     data-mdb-ripple="true"
                                     data-mdb-ripple-color="light"
                                     disabled={signInLoading}
+                                    title="Iniciar sesión"
                                 >
                                     {!signInLoading ? (
                                         'Iniciar Sesión'
@@ -142,6 +144,7 @@ function Login({ setRefreshCheckLogin }) {
                         } Copyright:{' '}
                         <a
                             className="text-emerald-700 no-underline"
+                            title="Ir al sitio web de la empresa"
                             href="https://ideasysolucionestecnologicas.com"
                             target="_blank"
                             rel="noreferrer"

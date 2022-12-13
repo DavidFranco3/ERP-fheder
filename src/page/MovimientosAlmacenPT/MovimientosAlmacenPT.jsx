@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
 function MovimientosAlmacenPt(props) {
-
+    const { setRefreshCheckLogin, location, history } = props;
     // Define el uso del enrutamiento
     const enrutamiento = useHistory();
 
@@ -76,45 +76,49 @@ function MovimientosAlmacenPt(props) {
 
     return (
         <>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Movimientos de los productos terminados
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Movimientos de los productos terminados
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            title="Regresar al menú almacen de producto terminado"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {
-                    listMovimientosPT ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListMovimientosPT
-                                        listMovimientosPT={listMovimientosPT}
-                                        infoMPAlmacen={infoMPAlmacen}
-                                    />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />s
-                            </>
-                        )
-                }
+            {
+                listMovimientosPT ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListMovimientosPT
+                                    listMovimientosPT={listMovimientosPT}
+                                    infoMPAlmacen={infoMPAlmacen}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />s
+                        </>
+                    )
+            }
         </>
     );
 }

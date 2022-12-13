@@ -3,7 +3,7 @@ import { withRouter, useHistory } from "react-router-dom";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { totalInsumo, listarInsumoPaginacion } from "../../api/insumos";
+import { listarInsumo } from "../../api/insumos";
 import ListInsumos from "../../components/Insumos/ListInsumos";
 import RegistroInsumos from '../../components/Insumos/RegistroInsumos';
 import BasicModal from "../../components/Modal/BasicModal";
@@ -18,56 +18,29 @@ function Insumos(props) {
     const [contentModal, setContentModal] = useState(null);
     const [titulosModal, setTitulosModal] = useState(null);
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalInsumos, setNoTotalInsumos] = useState(0);
-
     // Para almacenar la lista de materiales
     const [listInsumos, setListInsumos] = useState(null);
 
-    // Para traer la lista de materiales
     useEffect(() => {
         try {
-            totalInsumo().then(response => {
+            listarInsumo().then(response => {
                 const { data } = response;
-                setNoTotalInsumos(data)
+
+                //console.log(data);
+
+                if (!listInsumos && data) {
+                    setListInsumos(formatModelInsumos(data));
+                } else {
+                    const datosInsumos = formatModelInsumos(data);
+                    setListInsumos(datosInsumos);
+                }
             }).catch(e => {
-                // console.log(e)
+                console.log(e)
             })
-
-            if (page === 0) {
-                setPage(1)
-
-                listarInsumoPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listInsumos && data) {
-                        setListInsumos(formatModelInsumos(data));
-                    } else {
-                        const datosInsumos = formatModelInsumos(data);
-                        setListInsumos(datosInsumos);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarInsumoPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listInsumos && data) {
-                        setListInsumos(formatModelInsumos(data));
-                    } else {
-                        const datosInsumos = formatModelInsumos(data);
-                        setListInsumos(datosInsumos);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     // Para registrar los materiales
     const registraInsumo = (content) => {
@@ -95,6 +68,7 @@ function Insumos(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar un nuevo insumo"
                             onClick={() => {
                                 registraInsumo(
                                     <RegistroInsumos
@@ -106,10 +80,11 @@ function Insumos(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar un nuevo insumo
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú catalogos"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -130,11 +105,6 @@ function Insumos(props) {
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
                                     location={location}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalInsumos={noTotalInsumos}
                                 />
                             </Suspense>
                         </>

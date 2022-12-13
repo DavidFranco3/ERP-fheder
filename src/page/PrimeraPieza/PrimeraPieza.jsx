@@ -33,6 +33,7 @@ function PrimeraPieza(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una primera pieza"
                             onClick={() => {
                                 nuevaEtiqueta1eraPieza(
                                     <RegistroPrimeraPieza
@@ -43,7 +44,7 @@ function PrimeraPieza(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva etiqueta 1era pieza
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                     </Col>
                 </Row>

@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistraMaquinas from '../../components/Maquinas/RegistraMaquinas';
-import { listarMaquinaPaginacion, totalMaquina } from "../../api/maquinas";
+import { listarMaquina } from "../../api/maquinas";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
@@ -50,50 +50,26 @@ function Maquinas(props) {
     // Para almacenar la lista de pedidos de venta
     const [listMaquinas, setListMaquinas] = useState(null);
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalMaquinas, setNoTotalMaquinas] = useState(0);
-
     useEffect(() => {
         try {
-            totalMaquina().then(response => {
+            listarMaquina().then(response => {
                 const { data } = response;
-                setNoTotalMaquinas(data)
+
+                //console.log(data);
+
+                if (!listMaquinas && data) {
+                    setListMaquinas(formatModelMaquinas(data));
+                } else {
+                    const datosMaquina = formatModelMaquinas(data);
+                    setListMaquinas(datosMaquina);
+                }
+            }).catch(e => {
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(page, rowsPerPage)
-            if (page === 0) {
-                setPage(1)
-                listarMaquinaPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listMaquinas && data) {
-                        setListMaquinas(formatModelMaquinas(data));
-                    } else {
-                        const datosMaquinas = formatModelMaquinas(data);
-                        setListMaquinas(datosMaquinas);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarMaquinaPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listMaquinas && data) {
-                        setListMaquinas(formatModelMaquinas(data));
-                    } else {
-                        const datosMaquinas = formatModelMaquinas(data);
-                        setListMaquinas(datosMaquinas);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     return (
         <>
@@ -107,6 +83,7 @@ function Maquinas(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva maquina"
                             onClick={() => {
                                 registraMaquina(
                                     <RegistraMaquinas
@@ -122,6 +99,7 @@ function Maquinas(props) {
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú catalogos"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -131,6 +109,7 @@ function Maquinas(props) {
                     </Col>
                 </Row>
             </Alert>
+
             {
                 listMaquinas ?
                     (
@@ -141,11 +120,6 @@ function Maquinas(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalMaquinas={noTotalMaquinas}
                                 />
                             </Suspense>
                         </>

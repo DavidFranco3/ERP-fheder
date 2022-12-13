@@ -9,7 +9,7 @@ import ModificaInsumos from '../ModificaInsumos';
 import { estilos } from "../../../utils/tableStyled";
 
 function ListInsumos(props) {
-    const { setRefreshCheckLogin, listInsumos, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalInsumos } = props;
+    const { setRefreshCheckLogin, listInsumos, history, location } = props;
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -130,15 +130,6 @@ function ListInsumos(props) {
         return () => clearTimeout(timeout);
     }, []);
 
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
     const paginationComponentOptions = {
         rowsPerPageText: 'Filas por página',
         rangeSeparatorText: 'de'
@@ -156,10 +147,6 @@ function ListInsumos(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalInsumos}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                 />

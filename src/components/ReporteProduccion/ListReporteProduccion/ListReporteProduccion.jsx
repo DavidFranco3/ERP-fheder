@@ -12,20 +12,9 @@ import "./ListReporteProduccion.scss";
 import { estilos } from "../../../utils/tableStyled";
 
 function ListReporteProduccion(props) {
-    const { setRefreshCheckLogin, listProduccion, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalProduccion } = props;
+    const { setRefreshCheckLogin, listProduccion, history, location } = props;
 
     const enrutamiento = useHistory();
-
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
-    //console.log(listPedidosVenta)
 
     moment.locale("es");
 
@@ -185,10 +174,6 @@ function ListReporteProduccion(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalProduccion}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                 />

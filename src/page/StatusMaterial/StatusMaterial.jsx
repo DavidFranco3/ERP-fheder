@@ -3,7 +3,7 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
-import { listarStatusMaterialPaginacion, totalStatusMaterial } from "../../api/statusMaterial";
+import { listarStatusMaterial } from "../../api/statusMaterial";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
@@ -40,50 +40,26 @@ function StatusMaterial(props) {
     // Para almacenar la lista de pedidos de venta
     const [listStatus, setListStatus] = useState(null);
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalStatus, setNoTotalStatus] = useState(0);
-
     useEffect(() => {
         try {
-            totalStatusMaterial().then(response => {
+            listarStatusMaterial().then(response => {
                 const { data } = response;
-                setNoTotalStatus(data)
+
+                //console.log(data);
+
+                if (!listStatus && data) {
+                    setListStatus(formatModelStatusMaterial(data));
+                } else {
+                    const datosStatus = formatModelStatusMaterial(data);
+                    setListStatus(datosStatus);
+                }
+            }).catch(e => {
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(page, rowsPerPage)
-            if (page === 0) {
-                setPage(1)
-                listarStatusMaterialPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listStatus && data) {
-                        setListStatus(formatModelStatusMaterial(data));
-                    } else {
-                        const datosStatus = formatModelStatusMaterial(data);
-                        setListStatus(datosStatus);
-                    }
-                }).catch(e => {
-                    // console.log(e)
-                })
-            } else {
-                listarStatusMaterialPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listStatus && data) {
-                        setListStatus(formatModelStatusMaterial(data));
-                    } else {
-                        const datosStatus = formatModelStatusMaterial(data);
-                        setListStatus(datosStatus);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     return (
         <>
@@ -97,14 +73,16 @@ function StatusMaterial(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva etiqueta de status de material"
                             onClick={() => {
                                 rutaRegistro()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva etiqueta
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú calidad"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -125,11 +103,6 @@ function StatusMaterial(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalStatus={noTotalStatus}
                                 />
                             </Suspense>
                         </>

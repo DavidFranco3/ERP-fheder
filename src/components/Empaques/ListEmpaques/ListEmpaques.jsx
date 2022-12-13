@@ -9,7 +9,7 @@ import ModificaEmpaque from '../ModificaEmpaque';
 import {estilos} from "../../../utils/tableStyled";
 
 function ListEmpaques(props) {
-    const { setRefreshCheckLogin, listEmpaques, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalEmpaques } = props;
+    const { setRefreshCheckLogin, listEmpaques, history, location } = props;
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -123,15 +123,6 @@ function ListEmpaques(props) {
         return () => clearTimeout(timeout);
     }, []);
 
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
     const paginationComponentOptions = {
         rowsPerPageText: 'Filas por página',
         rangeSeparatorText: 'de'
@@ -149,10 +140,6 @@ function ListEmpaques(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalEmpaques}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
             />

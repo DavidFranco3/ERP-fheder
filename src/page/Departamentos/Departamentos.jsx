@@ -3,7 +3,7 @@ import "./Departamentos.scss";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { totalDepartamentos, listarDepartamentosPaginacion } from "../../api/departamentos";
+import { listarDepartamento } from "../../api/departamentos";
 import { useHistory, withRouter } from "react-router-dom";
 import ListDepartamentos from "../../components/Departamentos/ListDepartamentos";
 import BasicModal from "../../components/Modal/BasicModal";
@@ -22,11 +22,6 @@ function Departamentos(props) {
     const rutaRegreso = () => {
         enrutamiento.push("/DashboardCatalogos")
     }
-
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalDepartamentos, setNoTotalDepartamentos] = useState(0);
 
     // Para almacenar los departamentos
     const [listDepartamentos, setListDepartamentos] = useState(null);
@@ -54,47 +49,24 @@ function Departamentos(props) {
 
     useEffect(() => {
         try {
-            totalDepartamentos().then(response => {
+            listarDepartamento().then(response => {
                 const { data } = response;
-                setNoTotalDepartamentos(data)
+
+                //console.log(data);
+
+                if (!listDepartamentos && data) {
+                    setListDepartamentos(formatModelDepartamento(data));
+                } else {
+                    const datosDepartamentos = formatModelDepartamento(data);
+                    setListDepartamentos(datosDepartamentos);
+                }
             }).catch(e => {
-                // console.log(e)
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(pagina, limite)
-
-            if (page === 0) {
-                setPage(1)
-
-                listarDepartamentosPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listDepartamentos && data) {
-                        setListDepartamentos(formatModelDepartamento(data));
-                    } else {
-                        const datosDepartamentos = formatModelDepartamento(data);
-                        setListDepartamentos(datosDepartamentos);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarDepartamentosPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response
-                    if (!listDepartamentos && data) {
-                        setListDepartamentos(formatModelDepartamento(data));
-                    } else {
-                        const datosDepartamentos = formatModelDepartamento(data);
-                        setListDepartamentos(datosDepartamentos);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     // Para guardar un nuevo dato
     const registraDepartamentos = (content) => {
@@ -102,7 +74,6 @@ function Departamentos(props) {
         setContentModal(content);
         setShowModal(true);
     }
-
 
     return (
         <>
@@ -116,6 +87,7 @@ function Departamentos(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar un nuevo departamento"
                             onClick={() => {
                                 registraDepartamentos(<RegistroDepartamentos setShowModal={setShowModal} history={history} />)
                             }}
@@ -124,6 +96,7 @@ function Departamentos(props) {
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú catalogos"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -144,11 +117,6 @@ function Departamentos(props) {
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
                                     location={location}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalDepartamentos={noTotalDepartamentos}
                                 />
                             </Suspense>
                         </>

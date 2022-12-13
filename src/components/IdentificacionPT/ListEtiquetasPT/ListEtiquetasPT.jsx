@@ -15,17 +15,8 @@ import DataTable from 'react-data-table-component';
 import { map } from "lodash";
 
 function ListEtiquetasPT(props) {
-    const { setRefreshCheckLogin, listEtiquetas, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalEtiquetas } = props;
+    const { setRefreshCheckLogin, listEtiquetas, history, location } = props;
     moment.locale("es");
-
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -226,10 +217,6 @@ function ListEtiquetasPT(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalEtiquetas}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                 />

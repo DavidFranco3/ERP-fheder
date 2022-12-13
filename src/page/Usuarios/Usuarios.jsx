@@ -4,7 +4,7 @@ import { faCirclePlus, faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/f
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { useHistory, withRouter } from "react-router-dom";
 import "./Usuarios.scss";
-import { totalUsuarios, listarUsuariosPaginacion } from "../../api/usuarios";
+import { listarUsuarios } from "../../api/usuarios";
 import { toast } from "react-toastify";
 import ListUsuarios from "../../components/Usuarios/ListUsuarios";
 import BasicModal from "../../components/Modal/BasicModal";
@@ -47,48 +47,24 @@ function Usuarios(props) {
 
     useEffect(() => {
         try {
-            totalUsuarios().then(response => {
+            listarUsuarios().then(response => {
                 const { data } = response;
-                setNoTotalUsuarios(data)
-            }).catch(e => {
-                // console.log(e)
-                if (e.message === 'Network Error') {
-                    toast.error("Conexión al servidor no disponible");
-                }
-            })
 
-            if (page === 0) {
-                setPage(1)
-                listarUsuariosPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    //console.log(data)
-                    if (!listUsuarios && data) {
-                        setListUsuarios(formatModelUsuarios(data));
-                    } else {
-                        const datosUsuarios = formatModelUsuarios(data);
-                        setListUsuarios(datosUsuarios)
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarUsuariosPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    //console.log(data)
-                    if (!listUsuarios && data) {
-                        setListUsuarios(formatModelUsuarios(data));
-                    } else {
-                        const datosUsuarios = formatModelUsuarios(data);
-                        setListUsuarios(datosUsuarios)
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
+                //console.log(data);
+
+                if (!listUsuarios && data) {
+                    setListUsuarios(formatModelUsuarios(data));
+                } else {
+                    const datosUsurios = formatModelUsuarios(data);
+                    setListUsuarios(datosUsurios);
+                }
+            }).catch(e => {
+                console.log(e)
+            })
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     // Para controlar el acceso a la ruta de registro y de modificacion
     const registraColaborador = () => {
@@ -108,14 +84,16 @@ function Usuarios(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar un nuevo usuario"
                             onClick={() => {
                                 registraColaborador()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar un nuevo usuario
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú catalogos"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -135,11 +113,6 @@ function Usuarios(props) {
                                 location={location}
                                 history={history}
                                 setRefreshCheckLogin={setRefreshCheckLogin}
-                                rowsPerPage={rowsPerPage}
-                                setRowsPerPage={setRowsPerPage}
-                                page={page}
-                                setPage={setPage}
-                                noTotalUsuarios={noTotalUsuarios}
                             />
                         </Suspense>
                     </>

@@ -16,19 +16,9 @@ import { map } from "lodash";
 import ListProductosCompras from '../ListProductosCompras';
 
 function ListCompras(props) {
-    const { setRefreshCheckLogin, listCompras, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalComprasDepto } = props;
-    const { folio } = listCompras;
-    console.log(listCompras)
+    const { setRefreshCheckLogin, listCompras, history, location } = props;
+
     moment.locale("es");
-
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -253,10 +243,6 @@ function ListCompras(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalComprasDepto}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                 />

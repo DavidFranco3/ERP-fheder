@@ -16,7 +16,7 @@ import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@
 import {estilos} from "../../../utils/tableStyled";
 
 function ListDepartamentos(props) {
-    const { listDepartamentos, setRefreshCheckLogin, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalDepartamentos } = props;
+    const { listDepartamentos, setRefreshCheckLogin, history, location } = props;
 
     //console.log(listDepartamentos)
     moment.locale("es");
@@ -104,15 +104,6 @@ function ListDepartamentos(props) {
         }, 0);
         return () => clearTimeout(timeout);
     }, []);
-
-    // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
 
     const paginationComponentOptions = {
 
@@ -233,10 +224,6 @@ function ListDepartamentos(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalDepartamentos}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
             />

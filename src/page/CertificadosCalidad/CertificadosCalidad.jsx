@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import ListCertificadosCalidad from '../../components/CertificadosCalidad/ListCertificadosCalidad';
-import { listarCertificadoPaginacion, totalCertificado } from "../../api/certificadosCalidad";
+import { listarCertificado } from "../../api/certificadosCalidad";
 import "./CertificadosCalidad.scss"
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import Lottie from 'react-lottie-player';
@@ -42,107 +42,80 @@ function CertificadosCalidad(props) {
     // Para almacenar la lista de pedidos de venta
     const [listCertificados, setListCertificados] = useState(null);
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalCertificado, setNoTotalCertificado] = useState(0);
-
     useEffect(() => {
         try {
-            totalCertificado().then(response => {
+            listarCertificado().then(response => {
                 const { data } = response;
-                setNoTotalCertificado(data)
+
+                //console.log(data);
+
+                if (!listCertificados && data) {
+                    setListCertificados(formatModelCertificadosCalidad(data));
+                } else {
+                    const datosCertificado = formatModelCertificadosCalidad(data);
+                    setListCertificados(datosCertificado);
+                }
+            }).catch(e => {
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(page, rowsPerPage)
-            if (page === 0) {
-                setPage(1)
-                listarCertificadoPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listCertificados && data) {
-                        setListCertificados(formatModelCertificadosCalidad(data));
-                    } else {
-                        const datosCertificados = formatModelCertificadosCalidad(data);
-                        setListCertificados(datosCertificados);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            } else {
-                listarCertificadoPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listCertificados && data) {
-                        setListCertificados(formatModelCertificadosCalidad(data));
-                    } else {
-                        const datosCertificados = formatModelCertificadosCalidad(data);
-                        setListCertificados(datosCertificados);
-                    }
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     return (
         <>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8}>
-                            <h1>
-                                Certificados de calidad
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegistro()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nuevo certificado
-                            </Button>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-                        </Col>
-                    </Row>
-                </Alert>
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8}>
+                        <h1>
+                            Certificados de calidad
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            title="Registrar un nuevo certificado de calidad"
+                            onClick={() => {
+                                rutaRegistro()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            title="Regresar al menú calidad"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
 
-                {
-                    listCertificados ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListCertificadosCalidad
-                                        listCertificados={listCertificados}
-                                        location={location}
-                                        history={history}
-                                        setRefreshCheckLogin={setRefreshCheckLogin}
-                                        rowsPerPage={rowsPerPage}
-                                        setRowsPerPage={setRowsPerPage}
-                                        page={page}
-                                        setPage={setPage}
-                                        noTotalCertificado={noTotalCertificado}
-                                    />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
+            {
+                listCertificados ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListCertificadosCalidad
+                                    listCertificados={listCertificados}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
         </>
     );
 }

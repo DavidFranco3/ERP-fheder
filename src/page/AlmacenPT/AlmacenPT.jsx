@@ -7,7 +7,7 @@ import RegistroExistenciasAlmacenPT from "../../components/AlmacenPT/RegistroExi
 import RegistroEntradaSalidaAlmacenPT from "../../components/AlmacenPT/RegistroEntradaSalidaAlmacenPT";
 import ListAlmacenPT from "../../components/AlmacenPT/ListAlmacenPT";
 import BasicModal from "../../components/Modal/BasicModal";
-import { listarPaginacionAlmacenPT, totalAlmacenPT } from "../../api/almacenPT";
+import { listarAlmacenPT } from "../../api/almacenPT";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -46,39 +46,22 @@ function AlmacenPt(props) {
 
     useEffect(() => {
         try {
-            totalAlmacenPT().then(response => {
+            listarAlmacenPT().then(response => {
                 const { data } = response;
-                setNoTotalAlmacenPT(data)
+
+                if (!listAlmacenPT && data) {
+                    setListAlmacenPT(formatModelAlmacenPT(data));
+                } else {
+                    const datosAlmacen = formatModelAlmacenPT(data);
+                    setListAlmacenPT(datosAlmacen);
+                }
+            }).catch(e => {
+                console.log(e)
             })
-            // listarPaginacionAlmacenMP(page,rowsPerPage)
-            if (page === 0) {
-                setPage(1)
-                listarPaginacionAlmacenPT(page, rowsPerPage).then(response => {
-                    const { data } = response;
-
-                    if (!listAlmacenPT && data) {
-                        setListAlmacenPT(formatModelAlmacenPT(data));
-                    } else {
-                        const datosUsuarios = formatModelAlmacenPT(data);
-                        setListAlmacenPT(datosUsuarios);
-                    }
-                })
-            } else {
-                listarPaginacionAlmacenPT(page, rowsPerPage).then(response => {
-                    const { data } = response;
-
-                    if (!listAlmacenPT && data) {
-                        setListAlmacenPT(formatModelAlmacenPT(data));
-                    } else {
-                        const datosUsuarios = formatModelAlmacenPT(data);
-                        setListAlmacenPT(datosUsuarios);
-                    }
-                })
-            }
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     const rutaRegreso = () => {
         enrutamiento.push("/DashboardAlmacenes")
@@ -96,6 +79,7 @@ function AlmacenPt(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una existencia"
                             onClick={() => {
                                 nuevoRegistro(
                                     <RegistroExistenciasAlmacenPT
@@ -106,11 +90,12 @@ function AlmacenPt(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nuevo registro
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
 
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una entrada/salida"
                             onClick={() => {
                                 nuevaEntradaSalida(
                                     <RegistroEntradaSalidaAlmacenPT
@@ -126,6 +111,7 @@ function AlmacenPt(props) {
 
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú almacenes"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -147,11 +133,6 @@ function AlmacenPt(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalAlmacenPT={noTotalAlmacenPT}
                                 />
                             </Suspense>
                         </>

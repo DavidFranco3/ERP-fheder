@@ -14,20 +14,9 @@ import "./ListLiberacionProducto.scss";
 import {estilos} from "../../../utils/tableStyled";
 
 function ListLiberacionProducto(props) {
-    const { setRefreshCheckLogin, listLiberacion, history, location, rowsPerPage, setRowsPerPage, page, setPage, noTotalLiberacion } = props;
+    const { setRefreshCheckLogin, listLiberacion, history, location } = props;
 
     const enrutamiento = useHistory();
-    
-       // Definicion de la paginacion
-    const handlePageChange = (page) => {
-        setPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setRowsPerPage(newPerPage)
-    }
-
-    //console.log(listPedidosVenta)
 
     moment.locale("es");
 
@@ -214,10 +203,6 @@ function ListLiberacionProducto(props) {
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}
-                    paginationServer
-                    paginationTotalRows={noTotalLiberacion}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
             />

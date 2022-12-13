@@ -31,14 +31,16 @@ function NoConformidad(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar una nueva no conformidad"
                             onClick={() => {
                                 rutaRegistro()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva no conformidad
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Nuevo reporte"
                             onClick={() => {
 
                             }}
@@ -47,6 +49,7 @@ function NoConformidad(props) {
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú calidad"
                             onClick={() => {
                                 rutaRegreso()
                             }}

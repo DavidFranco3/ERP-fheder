@@ -1,13 +1,13 @@
 import { useState, useEffect, Suspense } from 'react';
 import { withRouter, useHistory } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
-import {Alert, Button, Col, Row, Spinner} from "react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCirclePlus, faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
+import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import RegistroExistenciasAlmacenGeneral from "../../components/AlmacenGeneral/RegistroExistenciasAlmacenGeneral";
 import RegistroEntradaSalidaAlmacenGeneral from "../../components/AlmacenGeneral/RegistroEntradaSalidaAlmacenGeneral";
 import ListAlmacenGeneral from "../../components/AlmacenGeneral/ListAlmacenGeneral";
-import {listarPaginacionAlmacenGeneral, totalAlmacenGeneral} from "../../api/almacenGeneral";
+import { listarAlmacenGeneral } from "../../api/almacenGeneral";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -16,11 +16,6 @@ function AlmacenGeneral(props) {
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory();
-
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [page, setPage] = useState(1);
-    const [noTotalAlmacenGeneral, setNoTotalAlmacenGeneral] = useState(0);
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -46,48 +41,24 @@ function AlmacenGeneral(props) {
 
     useEffect(() => {
         try {
-            totalAlmacenGeneral().then(response => {
+            listarAlmacenGeneral().then(response => {
                 const { data } = response;
-                // console.log(data)
-                setNoTotalAlmacenGeneral(data)
+
+                //console.log(data);
+
+                if (!listAlmacenGeneral && data) {
+                    setListAlmacenGeneral(formatModelAlmacenGeneral(data));
+                } else {
+                    const datosAlmacen = formatModelAlmacenGeneral(data);
+                    setListAlmacenGeneral(datosAlmacen);
+                }
             }).catch(e => {
-                //console.log(e)
+                console.log(e)
             })
-
-            // listarPaginacionAlmacenGeneral(pagina, limite)
-
-            if(page === 0) {
-                setPage(1)
-                listarPaginacionAlmacenGeneral(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    if(!listAlmacenGeneral && data) {
-                        setListAlmacenGeneral(formatModelAlmacenGeneral(data));
-                    } else {
-                        const datosUsuarios = formatModelAlmacenGeneral(data);
-                        setListAlmacenGeneral(datosUsuarios);
-                    }
-                }).catch(e => {
-                    // console.log(e)
-                })
-            } else {
-                listarPaginacionAlmacenGeneral(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    if(!listAlmacenGeneral && data) {
-                        setListAlmacenGeneral(formatModelAlmacenGeneral(data));
-                    } else {
-                        const datosUsuarios = formatModelAlmacenGeneral(data);
-                        setListAlmacenGeneral(datosUsuarios);
-                    }
-                }).catch(e => {
-                    // console.log(e)
-                })
-            }
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     const rutaRegreso = () => {
         enrutamiento.push("/DashboardAlmacenes")
@@ -95,87 +66,83 @@ function AlmacenGeneral(props) {
 
     return (
         <>
-                <Alert>
-                    <Row>
-                        <Col xs={12} md={8} className="tituloPrincipal">
-                            <h1>
-                                Existencias de almacén general
-                            </h1>
-                        </Col>
-                        <Col xs={6} md={4}>
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    nuevoRegistro(
-                                        <RegistroExistenciasAlmacenGeneral
-                                            setShowModal={setShowModal}
-                                            location={location}
-                                            history={history}
-                                        />
-                                    )
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nuevo registro
-                            </Button>
-
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    nuevaEntradaSalida(
-                                        <RegistroEntradaSalidaAlmacenGeneral
-                                            setShowModal={setShowModal}
-                                            location={location}
-                                            history={history}
-                                        />
-                                    )
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faCirclePlus} /> Nueva E / S
-                            </Button>
-
-                            <Button
-                                className="btnRegistroVentas"
-                                onClick={() => {
-                                    rutaRegreso()
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                            </Button>
-
-                        </Col>
-                    </Row>
-                </Alert>
-
-                {
-                    listAlmacenGeneral ?
-                        (
-                            <>
-                                <Suspense fallback={<Spinner />}>
-                                    <ListAlmacenGeneral
-                                        listAlmacenGeneral={listAlmacenGeneral}
+            <Alert>
+                <Row>
+                    <Col xs={12} md={8} className="tituloPrincipal">
+                        <h1>
+                            Existencias de almacén general
+                        </h1>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button
+                            className="btnRegistroVentas"
+                            title="Registrar una existencia"
+                            onClick={() => {
+                                nuevoRegistro(
+                                    <RegistroExistenciasAlmacenGeneral
+                                        setShowModal={setShowModal}
                                         location={location}
                                         history={history}
-                                        setRefreshCheckLogin={setRefreshCheckLogin}
-                                        rowsPerPage={rowsPerPage}
-                                        setRowsPerPage={setRowsPerPage}
-                                        page={page}
-                                        setPage={setPage}
-                                        noTotalAlmacenGeneral={noTotalAlmacenGeneral}
                                     />
-                                </Suspense>
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                            </>
-                        )
-                }
+                                )
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                        </Button>
 
-                <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
-                    {contentModal}
-                </BasicModal>
+                        <Button
+                            className="btnRegistroVentas"
+                            title="Registrar una entrada/salida"
+                            onClick={() => {
+                                nuevaEntradaSalida(
+                                    <RegistroEntradaSalidaAlmacenGeneral
+                                        setShowModal={setShowModal}
+                                        location={location}
+                                        history={history}
+                                    />
+                                )
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva E / S
+                        </Button>
+                        <Button
+                            className="btnRegistroVentas"
+                            title="Regresar al menu de almacenes"
+                            onClick={() => {
+                                rutaRegreso()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                        </Button>
+                    </Col>
+                </Row>
+            </Alert>
+
+            {
+                listAlmacenGeneral ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListAlmacenGeneral
+                                    listAlmacenGeneral={listAlmacenGeneral}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
+
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }

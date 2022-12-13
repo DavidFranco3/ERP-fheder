@@ -25,6 +25,11 @@ function RegistraAsignacionPedido(props) {
 
     const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
 
+    const [producto, setProducto] = useState([]);
+
+    // Para almacenar la OV
+    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
+
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
@@ -198,6 +203,8 @@ function RegistraAsignacionPedido(props) {
                                                     setNombreCliente={setNombreCliente}
                                                     setFechaPedido={setFechaPedido}
                                                     setFechaEntrega={setFechaEntrega}
+                                                    setOrdenVentaPrincipal={setOrdenVentaPrincipal}
+                                                    setProducto={setProducto}
                                                     setShowModal={setShowModal2}
                                                 />)
                                         }}

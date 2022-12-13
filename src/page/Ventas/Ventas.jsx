@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import ListVentas from "../../components/Ventas/ListVentas";
-import { listarPedidosVentaPaginacion, totalPedidoVenta } from "../../api/pedidoVenta";
+import { listarPedidosVenta } from "../../api/pedidoVenta";
 import "./Ventas.scss"
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
@@ -19,11 +19,6 @@ function Ventas(props) {
 
     // Para almacenar la lista de pedidos de venta
     const [listPedidosVenta, setListPedidosVenta] = useState(null);
-
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalVentas, setNoTotalVentas] = useState(0);
 
     // Para determinar si hay conexion al servidor o a internet
     const [conexionInternet, setConexionInternet] = useState(true);
@@ -43,43 +38,24 @@ function Ventas(props) {
 
     useEffect(() => {
         try {
-            totalPedidoVenta().then(response => {
+            listarPedidosVenta().then(response => {
                 const { data } = response;
-                setNoTotalVentas(data)
+
+                //console.log(data);
+
+                if (!listPedidosVenta && data) {
+                    setListPedidosVenta(formatModelPedidosventa(data));
+                } else {
+                    const datosVentas= formatModelPedidosventa(data);
+                    setListPedidosVenta(datosVentas);
+                }
+            }).catch(e => {
+                console.log(e)
             })
-
-            // listarOrdenesCompraPaginacion(page, rowsPerPage)
-            if (page === 0) {
-                setPage(1)
-                listarPedidosVentaPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listPedidosVenta && data) {
-                        setListPedidosVenta(formatModelPedidosventa(data));
-                    } else {
-                        const datosVentas = formatModelPedidosventa(data);
-                        setListPedidosVenta(datosVentas);
-                    }
-                }).catch(e => {
-                    // console.log(e)
-                })
-            } else {
-                listarPedidosVentaPaginacion(page, rowsPerPage).then(response => {
-                    const { data } = response;
-                    if (!listPedidosVenta && data) {
-                        setListPedidosVenta(formatModelPedidosventa(data));
-                    } else {
-                        const datosVentas = formatModelPedidosventa(data);
-                        setListPedidosVenta(datosVentas);
-                    }
-                }).catch(e => {
-                    // console.log(e)
-                })
-            }
-
         } catch (e) {
             console.log(e)
         }
-    }, [location, page, rowsPerPage]);
+    }, [location]);
 
     // Para ir hacia la ruta de registro del pedido de venta
     const rutaRegistroPedidoVenta = () => {
@@ -120,14 +96,16 @@ function Ventas(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Registrar un nuevo pedido de venta"
                             onClick={() => {
                                 rutaRegistroPedidoVenta()
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Crear un nuevo pedido
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar al menú ventas"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -148,11 +126,6 @@ function Ventas(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    rowsPerPage={rowsPerPage}
-                                    setRowsPerPage={setRowsPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                    noTotalVentas={noTotalVentas}
                                 />
                             </Suspense>
                         </>
