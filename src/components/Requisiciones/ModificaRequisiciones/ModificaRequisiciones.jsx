@@ -422,7 +422,7 @@ function ModificaRequisiciones(props) {
                     <Row className="mb-3">
                         <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
                             <Form.Label>
-                                Fecha de requisición
+                                ¿Cuando se require?
                             </Form.Label>
                             <Form.Control
                                 type="date"
