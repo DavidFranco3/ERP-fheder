@@ -8,6 +8,7 @@ import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 // Importacion de imagenes para los iconos de los menus
 import LogoCompras from "../../../assets/png/menus/ordenCompra.png";
 import LogoRequisicion from "../../../assets/png/menus/requisiciones.png";
+import LogoRecepciones from "../../../assets/png/menus/recepcion.png"
 import LogoProveedores from "../../../assets/png/menus/proveedor.png";
 import LogoInsumos from "../../../assets/png/menus/insumos.png";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
@@ -72,7 +73,7 @@ function DashboardCompras(props) {
                     </Col>
                 </Row>
             </Alert>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-3">
                 <ItemCard
                     path={'/Compras'}
                     logo={LogoCompras}
@@ -82,6 +83,11 @@ function DashboardCompras(props) {
                     path={'/Requisiciones'}
                     logo={LogoRequisicion}
                     title={'Requisiciones'}
+                />
+                <ItemCard
+                    path={'/RecepcionMaterialInsumos'}
+                    logo={LogoRecepciones}
+                    title={'Recepcion de materiales e insumos'}
                 />
             </div>
         </>

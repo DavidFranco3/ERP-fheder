@@ -1,6 +1,7 @@
 // Rutas generales del sistema
 import Dashboard from "../page/Dashboard";
 import Tiquets from "../page/Tiquets";
+import RecepcionMaterialInsumos from "../page/RecepcionMaterialInsumos";
 import Compras from "../page/Compras";
 import Embarque from "../page/Embarque";
 import Facturacion from "../page/Facturacion";
@@ -736,6 +737,11 @@ export default [
         path: "/Tiquets",
         exact: true,
         page: Tiquets
+    },
+    {
+        path: "/RecepcionMaterialInsumos",
+        exact: true,
+        page: RecepcionMaterialInsumos
     },
     {
         path: "/Mes",
