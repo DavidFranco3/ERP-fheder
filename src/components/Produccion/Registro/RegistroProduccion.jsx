@@ -387,6 +387,7 @@ function RegistroProduccion(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -427,6 +428,7 @@ function RegistroProduccion(props) {
                                             />
                                             <FontAwesomeIcon
                                                 className="cursor-pointer py-2 -ml-6"
+                                                title="Agregar un resultado"
                                                 icon={faSearch}
                                                 onClick={() => {
                                                     buscarOV(
@@ -932,6 +934,7 @@ function RegistroProduccion(props) {
                                     <Col align="right">
                                         <Button
                                             variant="success"
+                                            title="Agregar un resultado"
                                             className="agregar"
                                             onClick={() => {
                                                 agregarResultado(
@@ -1014,6 +1017,7 @@ function RegistroProduccion(props) {
                                                     <td data-title="Eliminar">
                                                         <div
                                                             className="eliminarProductoListado"
+                                                            title="Eliminar el resultado"
                                                             onClick={() => {
                                                                 removeItemResultado(resultado)
                                                             }}
@@ -1043,6 +1047,7 @@ function RegistroProduccion(props) {
                                     <Col align="right">
                                         <Button
                                             variant="success"
+                                            title="Agregar un registro"
                                             className="agregar"
                                             onClick={() => {
                                                 agregarRegistro(
@@ -1121,6 +1126,7 @@ function RegistroProduccion(props) {
                                                     <td data-title="Eliminar">
                                                         <div
                                                             className="eliminarProductoListado"
+                                                            title="Eliminar el registro"
                                                             onClick={() => {
                                                                 removeItemRegistro(registro)
                                                             }}
@@ -1161,6 +1167,7 @@ function RegistroProduccion(props) {
                             <Col>
                                 <Button
                                     type="submit"
+                                    title="Guardar la información del formulario"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -1170,6 +1177,7 @@ function RegistroProduccion(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         rutaRegreso()

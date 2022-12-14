@@ -73,6 +73,7 @@ function ModificacionDepartamentos(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Actualizar el registro"
                                 variant="success"
                                 className="registrar"
                             >
@@ -82,6 +83,7 @@ function ModificacionDepartamentos(props) {
                         <Col>
                             <Button
                                 variant="danger"
+                                title="Cerrar el formulario"
                                 className="cancelar"
                                 onClick={() => {
                                     cancelarRegistro()

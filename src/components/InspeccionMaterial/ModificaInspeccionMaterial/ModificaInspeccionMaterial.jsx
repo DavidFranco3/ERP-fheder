@@ -981,6 +981,7 @@ function ModificaInspeccionMaterial(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -1209,6 +1210,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision1 == 0 ? "success" : revision1 == 1 ? "warning" : revision1 == 2 ? "secondary" : "danger"}
+                                                title={revision1 == 0 ? "Iniciar" : revision1 == 1 ? "Guardar" : revision1 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision1(revision1 + 1);
@@ -1232,6 +1234,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision2 == 0 ? "success" : revision2 == 1 ? "warning" : revision2 == 2 ? "secondary" : "danger"}
+                                                title={revision2 == 0 ? "Iniciar" : revision2 == 1 ? "Guardar" : revision2 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision2(revision2 + 1);
@@ -1255,6 +1258,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision3 == 0 ? "success" : revision3 == 1 ? "warning" : revision3 == 2 ? "secondary" : "danger"}
+                                                title={revision3 == 0 ? "Iniciar" : revision3 == 1 ? "Guardar" : revision3 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision3(revision3 + 1);
@@ -1278,6 +1282,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision4 == 0 ? "success" : revision4 == 1 ? "warning" : revision4 == 2 ? "secondary" : "danger"}
+                                                title={revision4 == 0 ? "Iniciar" : revision4 == 1 ? "Guardar" : revision4 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision4(revision4 + 1);
@@ -1301,6 +1306,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision5 == 0 ? "success" : revision5 == 1 ? "warning" : revision5 == 2 ? "secondary" : "danger"}
+                                                title={revision5 == 0 ? "Iniciar" : revision5 == 1 ? "Guardar" : revision5 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision5(revision5 + 1);
@@ -1324,6 +1330,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision6 == 0 ? "success" : revision6 == 1 ? "warning" : revision6 == 2 ? "secondary" : "danger"}
+                                                title={revision6 == 0 ? "Iniciar" : revision6 == 1 ? "Guardar" : revision6 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision6(revision6 + 1);
@@ -1347,6 +1354,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision7 == 0 ? "success" : revision7 == 1 ? "warning" : revision7 == 2 ? "secondary" : "danger"}
+                                                title={revision7 == 0 ? "Iniciar" : revision7 == 1 ? "Guardar" : revision7 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision7(revision7 + 1);
@@ -1370,6 +1378,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision8 == 0 ? "success" : revision8 == 1 ? "warning" : revision8 == 2 ? "secondary" : "danger"}
+                                                title={revision8 == 0 ? "Iniciar" : revision8 == 1 ? "Guardar" : revision8 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision8(revision8 + 1);
@@ -1393,6 +1402,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision9 == 0 ? "success" : revision9 == 1 ? "warning" : revision9 == 2 ? "secondary" : "danger"}
+                                                title={revision9 == 0 ? "Iniciar" : revision9 == 1 ? "Guardar" : revision9 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision9(revision9 + 1);
@@ -1416,6 +1426,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision10 == 0 ? "success" : revision10 == 1 ? "warning" : revision10 == 2 ? "secondary" : "danger"}
+                                                title={revision10 == 0 ? "Iniciar" : revision10 == 1 ? "Guardar" : revision10 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision10(revision10 + 1);
@@ -3329,6 +3340,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision11 == 0 ? "success" : revision11 == 1 ? "warning" : revision11 == 2 ? "secondary" : "danger"}
+                                                title={revision11 == 0 ? "Iniciar" : revision11 == 1 ? "Guardar" : revision11 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision11(revision11 + 1);
@@ -3352,6 +3364,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision21 == 0 ? "success" : revision21 == 1 ? "warning" : revision21 == 2 ? "secondary" : "danger"}
+                                                title={revision21 == 0 ? "Iniciar" : revision21 == 1 ? "Guardar" : revision21 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision21(revision21 + 1);
@@ -3375,6 +3388,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision31 == 0 ? "success" : revision31 == 1 ? "warning" : revision31 == 2 ? "secondary" : "danger"}
+                                                title={revision31 == 0 ? "Iniciar" : revision31 == 1 ? "Guardar" : revision31 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision31(revision31 + 1);
@@ -3398,6 +3412,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision41 == 0 ? "success" : revision41 == 1 ? "warning" : revision41 == 2 ? "secondary" : "danger"}
+                                                title={revision41 == 0 ? "Iniciar" : revision41 == 1 ? "Guardar" : revision41 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision41(revision41 + 1);
@@ -3421,6 +3436,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision51 == 0 ? "success" : revision51 == 1 ? "warning" : revision51 == 2 ? "secondary" : "danger"}
+                                                title={revision51 == 0 ? "Iniciar" : revision51 == 1 ? "Guardar" : revision51 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision51(revision51 + 1);
@@ -3445,6 +3461,7 @@ function ModificaInspeccionMaterial(props) {
                                             <Badge
                                                 bg={revision61 == 0 ? "success" : revision61 == 1 ? "warning" : revision61 == 2 ? "secondary" : "danger"}
                                                 className="boton"
+                                                title={revision61 == 0 ? "Iniciar" : revision61 == 1 ? "Guardar" : revision61 == 2 ? "Finalizado" : "Cancelado"}
                                                 onClick={() => {
                                                     setRevision61(revision61 + 1);
                                                     {
@@ -3467,6 +3484,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision71 == 0 ? "success" : revision71 == 1 ? "warning" : revision71 == 2 ? "secondary" : "danger"}
+                                                title={revision71 == 0 ? "Iniciar" : revision71 == 1 ? "Guardar" : revision71 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision71(revision71 + 1);
@@ -3490,6 +3508,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision81 == 0 ? "success" : revision81 == 1 ? "warning" : revision81 == 2 ? "secondary" : "danger"}
+                                                title={revision81 == 0 ? "Iniciar" : revision81 == 1 ? "Guardar" : revision81 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision81(revision81 + 1);
@@ -3513,6 +3532,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision91 == 0 ? "success" : revision91 == 1 ? "warning" : revision91 == 2 ? "secondary" : "danger"}
+                                                tile={revision91 == 0 ? "Iniciar" : revision91 == 1 ? "Guardar" : revision91 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision91(revision91 + 1);
@@ -3536,6 +3556,7 @@ function ModificaInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision101 == 0 ? "success" : revision101 == 1 ? "warning" : revision101 == 2 ? "secondary" : "danger"}
+                                                title={revision101 == 0 ? "Iniciar" : revision101 == 1 ? "Guardar" : revision101 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision101(revision101 + 1);
@@ -5418,6 +5439,7 @@ function ModificaInspeccionMaterial(props) {
                             <Col>
                                 <Button
                                     type="submit"
+                                    title="Actualizar el registro"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -5427,6 +5449,7 @@ function ModificaInspeccionMaterial(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         rutaRegreso()

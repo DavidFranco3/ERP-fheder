@@ -233,6 +233,7 @@ function ModificaProveedores(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Actualizar el registro"
                                 variant="success"
                                 className="registrar"
                             >
@@ -242,6 +243,7 @@ function ModificaProveedores(props) {
                         <Col>
                             <Button
                                 variant="danger"
+                                title="Cerrar el formulario"
                                 className="registrar"
                                 onClick={() => {
                                     cierraModal()

@@ -60,6 +60,7 @@ function CancelacionInspeccion(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Cancelar la inspección"
                                 variant="success"
                                 className="registrar"
                             >
@@ -69,6 +70,7 @@ function CancelacionInspeccion(props) {
                         <Col>
                             <Button
                                 variant="danger"
+                                title="Cerrar el formulario"
                                 className="cancelar"
                                 onClick={() => {
                                     cancelarCancelacion()

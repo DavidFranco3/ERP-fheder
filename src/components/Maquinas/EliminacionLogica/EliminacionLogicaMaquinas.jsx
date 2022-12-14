@@ -137,6 +137,7 @@ function EliminacionLogicaMaquinas(props) {
                     <Col>
                         <Button
                             variant="success"
+                            title={status === "true" ? "Deshabilitar" : "Habilitar"}
                             type="submit"
                             className="registrar">
                             {!loading ? (status === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
@@ -145,6 +146,7 @@ function EliminacionLogicaMaquinas(props) {
                     <Col>
                         <Button
                             variant="danger"
+                            title="Cerrar el formulario"
                             className="cancelar"
                             onClick={() => {
                                 cancelar()

@@ -114,6 +114,7 @@ function EliminacionFisicaUsuarios(props) {
                     <Col>
                         <Button
                             type="submit"
+                            title="Eliminar el registro"
                             variant="success"
                             className="registrar"
                         >
@@ -123,6 +124,7 @@ function EliminacionFisicaUsuarios(props) {
                     <Col>
                         <Button
                             variant="danger"
+                            title="Cerrar el formulario"
                             className="cancelar"
                             onClick={() => {
                                 cancelarEliminacion()

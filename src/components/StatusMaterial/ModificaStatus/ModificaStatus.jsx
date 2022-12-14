@@ -276,6 +276,7 @@ function ModificaStatus(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -296,6 +297,7 @@ function ModificaStatus(props) {
                             <Col align="right">
                                 <Button
                                     variant="success"
+                                    title="Buscar entre las inspecciones de calidad"
                                     className="agregar"
                                     onClick={() => {
                                         buscarInspeccionCalidad(
@@ -1102,6 +1104,7 @@ function ModificaStatus(props) {
                             <Col>
                                 <Button
                                     type="submit"
+                                    title="Actualizar el registro"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -1111,6 +1114,7 @@ function ModificaStatus(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         rutaRegreso()

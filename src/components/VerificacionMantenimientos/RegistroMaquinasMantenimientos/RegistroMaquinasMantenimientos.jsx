@@ -44,6 +44,7 @@ function RegistroMaquinasMantenimientos(props) {
                         <Col xs={6} md={4}>
                             <Button
                                 className="btnRegistroVentas"
+                                title="Regresar a la pagina anterior"
                                 onClick={() => {
                                     rutaRegreso()
                                 }}
@@ -115,6 +116,7 @@ function RegistroMaquinasMantenimientos(props) {
                                 <Col>
                                     <Button
                                         variant="success"
+                                        title="Guardar la información del formulario"
                                         className="registrar"
                                     >
                                         {"Registrar"}
@@ -123,6 +125,7 @@ function RegistroMaquinasMantenimientos(props) {
                                 <Col>
                                     <Button
                                         variant="danger"
+                                        title="Cerrar el formulario"
                                         className="cancelar"
                                         onClick={() => {
                                             rutaRegreso()

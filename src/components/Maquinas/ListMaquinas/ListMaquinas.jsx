@@ -94,7 +94,9 @@ function ListMaquinas(props) {
                 (
                     <>
                         <Badge
-                            bg="success" className="activo"
+                            bg="success" 
+                            className="activo"
+                            title="Deshabilitar"
                             onClick={() => {
                                 cambiaEstadoMaquina(
                                     <EliminacionLogicaMaquinas
@@ -114,7 +116,9 @@ function ListMaquinas(props) {
                 (
                     <>
                         <Badge
-                            bg="danger" className="obsoleto"
+                            bg="danger" 
+                            className="obsoleto"
+                            title="Habilitar"
                             onClick={() => {
                                 cambiaEstadoMaquina(
                                     <EliminacionLogicaMaquinas

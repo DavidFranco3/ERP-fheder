@@ -488,6 +488,7 @@ function ModificacionProduccion(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -606,6 +607,7 @@ function ModificacionProduccion(props) {
                                         />
                                         <FontAwesomeIcon
                                                 className="cursor-pointer py-2 -ml-6"
+                                                title="Buscar entre las ordenes de venta"
                                                 icon={faSearch}
                                                 onClick={() => {
                                                     buscarOV(
@@ -657,6 +659,7 @@ function ModificacionProduccion(props) {
                                             <Col>
                                                 <Button
                                                     variant="success"
+                                                    title="Agregar la orden de venta"
                                                     className="editar"
                                                     onClick={() => {
                                                         addItemsOV()
@@ -668,6 +671,7 @@ function ModificacionProduccion(props) {
                                             <Col>
                                                 <Button
                                                     variant="danger"
+                                                    title="Cancelar la orden de venta"
                                                     className="editar"
                                                     onClick={() => {
                                                         cancelarCargaOV()
@@ -720,6 +724,7 @@ function ModificacionProduccion(props) {
                                                 <td data-title="Eliminar">
                                                     <div
                                                         className="eliminarProductoListado"
+                                                        title="Eliminar la orden de venta"
                                                         onClick={() => {
                                                             removeItemOV(ordenVenta)
                                                         }}
@@ -1177,6 +1182,7 @@ function ModificacionProduccion(props) {
                             <Col>
                                 <Button
                                     type="submit"
+                                    title="Actualizar el registro"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -1186,6 +1192,7 @@ function ModificacionProduccion(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         rutaRegreso()

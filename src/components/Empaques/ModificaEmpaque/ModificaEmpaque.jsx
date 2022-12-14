@@ -153,6 +153,7 @@ function ModificaEmpaque(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Actualizar el registro"
                                 variant="success"
                                 className="registrar"
                             >
@@ -162,7 +163,8 @@ function ModificaEmpaque(props) {
                         <Col>
                             <Button
                                 variant="danger"
-                                className="cancelar"
+                                title="Cerrar el formulario"
+                                className="Cerrar el formulario"
                                 onClick={() => {
                                     cancelarRegistro()
                                 }}

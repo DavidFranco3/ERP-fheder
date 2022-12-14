@@ -153,6 +153,7 @@ function RegistraMes(props) {
                             <Col>
                                 <Button
                                     type="submit"
+                                    title="Guardar la información del formulario"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -162,6 +163,7 @@ function RegistraMes(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         cancelarRegistro()

@@ -134,7 +134,8 @@ function RegistraMaquinas(props) {
                         <Form.Group as={Row} className="botones">
                             <Col>
                                 <Button
-                                type="submit"
+                                    type="submit"
+                                    title="Guardar la información del formulario"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -144,6 +145,7 @@ function RegistraMaquinas(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         cancelarRegistro()

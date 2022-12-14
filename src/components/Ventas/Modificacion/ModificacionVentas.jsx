@@ -372,6 +372,7 @@ function ModificacionVentas(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 regresaListadoVentas()
                             }}
@@ -407,6 +408,7 @@ function ModificacionVentas(props) {
                                         />
                                         <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre los clientes"
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarOV(
@@ -644,6 +646,7 @@ function ModificacionVentas(props) {
                                 />
                                 <FontAwesomeIcon
                                     className="cursor-pointer py-2 -ml-6"
+                                    title="Buscar entre los productos"
                                     icon={faSearch}
                                     onClick={() => {
                                         buscarProducto(
@@ -737,6 +740,7 @@ function ModificacionVentas(props) {
                                     <Col>
                                         <Button
                                             variant="success"
+                                            title="Agregar el producto"
                                             className="editar"
                                             onClick={() => {
                                                 addItems()
@@ -748,6 +752,7 @@ function ModificacionVentas(props) {
                                     <Col>
                                         <Button
                                             variant="danger"
+                                            title="Cancelar el producto"
                                             className="editar"
                                             onClick={() => {
                                                 cancelarCargaProducto()
@@ -822,6 +827,7 @@ function ModificacionVentas(props) {
                                             <td data-title="Eliminar">
                                                 <div
                                                     className="eliminarProductoListado"
+                                                    title="Eliminar el producto"
                                                     onClick={() => {
                                                         removeItem(producto)
                                                     }}
@@ -860,6 +866,7 @@ function ModificacionVentas(props) {
                                 <Col>
                                     <Button
                                         type="submit"
+                                        title="Actualizar el registro"
                                         variant="success"
                                         className="registrar"
                                     >
@@ -869,6 +876,7 @@ function ModificacionVentas(props) {
                                 <Col>
                                     <Button
                                         variant="danger"
+                                        title="Cerrar el formulario"
                                         className="registrar"
                                         onClick={() => {
                                             regresaListadoVentas()

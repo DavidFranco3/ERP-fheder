@@ -413,6 +413,7 @@ function ProduccionPlaneacion(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -453,6 +454,7 @@ function ProduccionPlaneacion(props) {
                                             />
                                             <FontAwesomeIcon
                                                 className="cursor-pointer py-2 -ml-6"
+                                                title="Buscar entre las planeaciones"
                                                 icon={faSearch}
                                                 onClick={() => {
                                                     buscarOV(
@@ -958,6 +960,7 @@ function ProduccionPlaneacion(props) {
                                     <Col align="right">
                                         <Button
                                             variant="success"
+                                            title="Agregar un resultado"
                                             className="agregar"
                                             onClick={() => {
                                                 agregarResultado(
@@ -1040,6 +1043,7 @@ function ProduccionPlaneacion(props) {
                                                     <td data-title="Eliminar">
                                                         <div
                                                             className="eliminarProductoListado"
+                                                            title="Eliminar el resultado"
                                                             onClick={() => {
                                                                 removeItemResultado(resultado)
                                                             }}
@@ -1069,6 +1073,7 @@ function ProduccionPlaneacion(props) {
                                     <Col align="right">
                                         <Button
                                             variant="success"
+                                            title="Agregar un registro"
                                             className="agregar"
                                             onClick={() => {
                                                 agregarRegistro(
@@ -1147,6 +1152,7 @@ function ProduccionPlaneacion(props) {
                                                     <td data-title="Eliminar">
                                                         <div
                                                             className="eliminarProductoListado"
+                                                            title="Eliminar el registro"
                                                             onClick={() => {
                                                                 removeItemRegistro(registro)
                                                             }}
@@ -1187,6 +1193,7 @@ function ProduccionPlaneacion(props) {
                             <Col>
                                 <Button
                                     type="submit"
+                                    title="Guardar la planeación"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -1196,6 +1203,7 @@ function ProduccionPlaneacion(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         rutaRegreso()

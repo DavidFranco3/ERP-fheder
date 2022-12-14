@@ -152,6 +152,7 @@ function ListProveedores(props) {
                     <>
                         <Badge
                             bg="success"
+                            title="Deshabilitar"
                             className="editarProveedor"
                             onClick={() => {
                                 cambiarStatusProveedor(
@@ -172,6 +173,7 @@ function ListProveedores(props) {
                     <>
                         <Badge
                             bg="warning"
+                            title="Habilitar"
                             className="editarProveedor"
                             onClick={() => {
                                 cambiarStatusProveedor(

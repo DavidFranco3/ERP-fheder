@@ -176,6 +176,7 @@ function RegistroPigmento(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Guardar el registro"
                                 variant="success"
                                 className="registrar"
                             >
@@ -185,6 +186,7 @@ function RegistroPigmento(props) {
                         <Col>
                             <Button
                                 variant="danger"
+                                title="Cerrar el formulario"
                                 className="cancelar"
                                 onClick={() => {
                                     cancelarBusqueda()

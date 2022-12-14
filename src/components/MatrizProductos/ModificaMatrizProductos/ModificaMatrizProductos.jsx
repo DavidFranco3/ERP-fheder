@@ -366,6 +366,7 @@ function ModificaMatrizProductos(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 rutaRegresoProductos()
                             }}
@@ -420,6 +421,7 @@ function ModificaMatrizProductos(props) {
                                                                 />
                                                                 <FontAwesomeIcon
                                                                     className="cursor-pointer py-2 -ml-6"
+                                                                    title="Buscar entre los clientes"
                                                                     icon={faSearch}
                                                                     onClick={() => {
                                                                         buscarCliente(
@@ -647,26 +649,27 @@ function ModificaMatrizProductos(props) {
                                                             </Form.Label>
                                                         </Col>
                                                         <Col sm="3">
-                                                        <div className="flex items-center mb-1">
-                                                    <Form.Control
-                                                        type="text"
-                                                        defaultValue={dataMaterial.descripcion == "" ? temp2[1] : dataMaterial.descripcion}
-                                                        placeholder="Buscar material"
-                                                        name="descripcionMP"
-                                                    />
-                                                    <FontAwesomeIcon
-                                                        className="cursor-pointer py-2 -ml-6"
-                                                        icon={faSearch}
-                                                        onClick={() => {
-                                                            buscarMaterial(
-                                                                <BuscarMaterial
-                                                                    formData={dataMaterial}
-                                                                    setFormData={setDataMaterial}
-                                                                    setShowModal={setShowModal}
-                                                                />)
-                                                        }}
-                                                    />
-                                                </div>
+                                                            <div className="flex items-center mb-1">
+                                                                <Form.Control
+                                                                    type="text"
+                                                                    defaultValue={dataMaterial.descripcion == "" ? temp2[1] : dataMaterial.descripcion}
+                                                                    placeholder="Buscar material"
+                                                                    name="descripcionMP"
+                                                                />
+                                                                <FontAwesomeIcon
+                                                                    className="cursor-pointer py-2 -ml-6"
+                                                                    title="Buscar entre los materiales"
+                                                                    icon={faSearch}
+                                                                    onClick={() => {
+                                                                        buscarMaterial(
+                                                                            <BuscarMaterial
+                                                                                formData={dataMaterial}
+                                                                                setFormData={setDataMaterial}
+                                                                                setShowModal={setShowModal}
+                                                                            />)
+                                                                    }}
+                                                                />
+                                                            </div>
                                                         </Col>
                                                     </Form.Group>
                                                 </Row>
@@ -700,6 +703,7 @@ function ModificaMatrizProductos(props) {
                                                                 />
                                                                 <FontAwesomeIcon
                                                                     className="cursor-pointer py-2 -ml-6"
+                                                                    title="Buscar entre los pigmentos"
                                                                     icon={faSearch}
                                                                     onClick={() => {
                                                                         buscarPigmento(
@@ -747,6 +751,7 @@ function ModificaMatrizProductos(props) {
                                                                 />
                                                                 <FontAwesomeIcon
                                                                     className="cursor-pointer py-2 -ml-6"
+                                                                    title="Buscar entre los proveedores"
                                                                     icon={faSearch}
                                                                     onClick={() => {
                                                                         buscarProveedor(
@@ -862,26 +867,27 @@ function ModificaMatrizProductos(props) {
                                                             </Form.Label>
                                                         </Col>
                                                         <Col>
-                                                        <div className="flex items-center mb-1">
-                                                    <Form.Control
-                                                        type="text"
-                                                        defaultValue={dataEmpaque.descripcionEmpaque == "" ? formData.descripcionBolsa : dataEmpaque.descripcionEmpaque}
-                                                        placeholder="Buscar empaque"
-                                                        name="descripcionBolsa"
-                                                    />
-                                                    <FontAwesomeIcon
-                                                        className="cursor-pointer py-2 -ml-6"
-                                                        icon={faSearch}
-                                                        onClick={() => {
-                                                            buscarEmpaque(
-                                                                <BuscarEmpaque
-                                                                    formData={dataEmpaque}
-                                                                    setFormData={setDataEmpaque}
-                                                                    setShowModal={setShowModal}
-                                                                />)
-                                                        }}
-                                                    />
-                                                </div>
+                                                            <div className="flex items-center mb-1">
+                                                                <Form.Control
+                                                                    type="text"
+                                                                    defaultValue={dataEmpaque.descripcionEmpaque == "" ? formData.descripcionBolsa : dataEmpaque.descripcionEmpaque}
+                                                                    placeholder="Buscar empaque"
+                                                                    name="descripcionBolsa"
+                                                                />
+                                                                <FontAwesomeIcon
+                                                                    className="cursor-pointer py-2 -ml-6"
+                                                                    title="Buscar entre los empaques"
+                                                                    icon={faSearch}
+                                                                    onClick={() => {
+                                                                        buscarEmpaque(
+                                                                            <BuscarEmpaque
+                                                                                formData={dataEmpaque}
+                                                                                setFormData={setDataEmpaque}
+                                                                                setShowModal={setShowModal}
+                                                                            />)
+                                                                    }}
+                                                                />
+                                                            </div>
                                                         </Col>
 
                                                         <Col sm="2">
@@ -1145,6 +1151,7 @@ function ModificaMatrizProductos(props) {
                                                 <Col>
                                                     <Button
                                                         type="submit"
+                                                        title="Actualizar el registro"
                                                         variant="success"
                                                         className="registrar"
                                                     >
@@ -1154,6 +1161,7 @@ function ModificaMatrizProductos(props) {
                                                 <Col>
                                                     <Button
                                                         variant="danger"
+                                                        title="Cerrar el formulario"
                                                         className="cancelar"
                                                         onClick={() => {
                                                             rutaRegresoProductos()

@@ -79,6 +79,7 @@ function EstadoProveedor(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title=""
                                 variant="success"
                                 className="registrar"
                             >

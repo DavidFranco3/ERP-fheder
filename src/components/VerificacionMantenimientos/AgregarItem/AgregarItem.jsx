@@ -83,6 +83,7 @@ function AgregarItem(props) {
                             <Col>
                                 <Button
                                     variant="success"
+                                    title="Guardar el registro"
                                     className="registrar"
                                 >
                                     {"Registrar"}
@@ -91,6 +92,7 @@ function AgregarItem(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         cancelarRegistro()

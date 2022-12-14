@@ -258,6 +258,7 @@ function RegistraReporte(props) {
                             <Col>
                                 <Button
                                     variant="success"
+                                    title="Guardar la información del formulario"
                                     className="registrar"
                                 >
                                     {"Registrar"}
@@ -266,6 +267,7 @@ function RegistraReporte(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         rutaRegreso()

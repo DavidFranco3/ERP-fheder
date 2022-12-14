@@ -291,6 +291,7 @@ function ModificaRequisiciones(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -361,6 +362,7 @@ function ModificaRequisiciones(props) {
                                 </Form.Control>
                                 <FontAwesomeIcon
                                     className="cursor-pointer py-2 -ml-6"
+                                    title="Buscar entre los departamentos"
                                     icon={faSearch}
                                     onClick={() => {
                                         buscarDepartamento(
@@ -450,6 +452,7 @@ function ModificaRequisiciones(props) {
                                     <>
                                         <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre los materiales"
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarMaterial(
@@ -466,6 +469,7 @@ function ModificaRequisiciones(props) {
                                     <>
                                         <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre los insumos"
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarInsumo(
@@ -534,6 +538,7 @@ function ModificaRequisiciones(props) {
                                         />
                                         <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre las ordenes de venta"
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarOV(
@@ -589,6 +594,7 @@ function ModificaRequisiciones(props) {
                                 <Col>
                                     <Button
                                         variant="success"
+                                        title="Agregar el producto"
                                         className="editar"
                                         onClick={() => {
                                             addItems()
@@ -600,6 +606,7 @@ function ModificaRequisiciones(props) {
                                 <Col>
                                     <Button
                                         variant="danger"
+                                        title="Cancelar el producto"
                                         className="editar"
                                         onClick={() => {
                                             cancelarCargaProducto()
@@ -660,6 +667,7 @@ function ModificaRequisiciones(props) {
                                     <td data-title="Eliminar">
                                         <div
                                             className="eliminarProductoListado"
+                                            title="Eliminar el producto"
                                             onClick={() => {
                                                 removeItem(producto)
                                             }}
@@ -732,15 +740,17 @@ function ModificaRequisiciones(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Actualizar el registro"
                                 variant="success"
                                 className="registrar"
                             >
-                                {!loading ? "Modificar requisicion" : <Spinner animation="border" />}
+                                {!loading ? "Modificar" : <Spinner animation="border" />}
                             </Button>
                         </Col>
                         <Col>
                             <Button
                                 variant="danger"
+                                title="Cerrar el formulario"
                                 className="cancelar"
                                 onClick={() => {
                                     rutaRegreso()

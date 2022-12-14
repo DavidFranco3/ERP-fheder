@@ -143,6 +143,7 @@ function ModificacionUsuarios(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 regresaPagina()
                             }}
@@ -394,6 +395,7 @@ function ModificacionUsuarios(props) {
                                 <Col>
                                     <Button
                                         type="submit"
+                                        title="Actualizar el registro"
                                         variant="success"
                                         className="registrar"
                                     >
@@ -403,6 +405,7 @@ function ModificacionUsuarios(props) {
                                 <Col>
                                     <Button
                                         variant="danger"
+                                        title="Cerrar el formulario"
                                         className="cancelar"
                                         onClick={() => {
                                             regresaPagina()

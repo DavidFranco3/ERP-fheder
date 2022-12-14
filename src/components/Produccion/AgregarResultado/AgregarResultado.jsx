@@ -175,6 +175,7 @@ function AgregarResultado(props) {
                     <Col>
                         <Button
                             type="submit"
+                            title="Guardar el resultado"
                             variant="success"
                             className="registrar"
                             onClick={() => {
@@ -187,6 +188,7 @@ function AgregarResultado(props) {
                     <Col>
                         <Button
                             variant="danger"
+                            title="Cerrar el formulario"
                             className="cancelar"
                             onClick={() => {
                                 cancelarRegistro()

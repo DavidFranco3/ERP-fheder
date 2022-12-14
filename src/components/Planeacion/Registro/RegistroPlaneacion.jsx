@@ -92,7 +92,7 @@ function RegistroPlaneacion(props) {
                                 <Row>
                                     <Col>
                                         <Button
-
+    title="Guardar la información del formulario"
                                             variant="success"
                                             className="registrar"
                                         >
@@ -102,6 +102,7 @@ function RegistroPlaneacion(props) {
                                     <Col>
                                         <Button
                                             variant="danger"
+                                            title="Cerrar el formulario"
                                             className="cancelar"
                                             onClick={() => {
                                                 rutaRegresoPlaneacion()

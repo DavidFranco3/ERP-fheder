@@ -90,7 +90,7 @@ function RegistraRequisiciones(props) {
         obtenerRequerimiento(id).then(response => {
             const { data } = response;
             //console.log(data)
-            const {requerimiento, bom, datosRequisicion} = data;
+            const { requerimiento, bom, datosRequisicion } = data;
             map(requerimiento.ordenVenta, (ordenVenta, index) => {
                 cantidad = ordenVenta.cantidadPedidaOV
                 referencia = ordenVenta.ordenVenta
@@ -181,43 +181,43 @@ function RegistraRequisiciones(props) {
         }
     }, []);
 
-   // Para agregar productos al listado
-   const addItems = () => {
-    const cantidad = document.getElementById("cantidad").value
-    const um = document.getElementById("um").value
-    const descripcion = document.getElementById("descripcion").value
-    const proveedor = document.getElementById("proveedor").value
-    const referencia = document.getElementById("referencia").value
+    // Para agregar productos al listado
+    const addItems = () => {
+        const cantidad = document.getElementById("cantidad").value
+        const um = document.getElementById("um").value
+        const descripcion = document.getElementById("descripcion").value
+        const proveedor = document.getElementById("proveedor").value
+        const referencia = document.getElementById("referencia").value
 
-    if (!cantidad || !um || !descripcion || !proveedor || !referencia) {
-        toast.warning("Completa la informacion del producto");
-    } else {
-        const dataTemp = {
-            cantidad: cantidad,
-            um: um,
-            descripcion: descripcion,
-            proveedor: proveedor,
-            referencia: referencia,
+        if (!cantidad || !um || !descripcion || !proveedor || !referencia) {
+            toast.warning("Completa la informacion del producto");
+        } else {
+            const dataTemp = {
+                cantidad: cantidad,
+                um: um,
+                descripcion: descripcion,
+                proveedor: proveedor,
+                referencia: referencia,
+            }
+
+            setListProductosCargados(
+                [...listProductosCargados, dataTemp]
+            );
+
+            setFormDataArticulos(initialFormDataArticulos)
+            //setCargaProductos(initialFormDataProductos)
+            document.getElementById("cantidad").value = "0"
+            setOrdenVenta("")
         }
+    }
 
-        setListProductosCargados(
-            [...listProductosCargados, dataTemp]
-        );
-
+    // Para limpiar el formulario de detalles de producto
+    const cancelarCargaProducto = () => {
         setFormDataArticulos(initialFormDataArticulos)
         //setCargaProductos(initialFormDataProductos)
         document.getElementById("cantidad").value = "0"
         setOrdenVenta("")
     }
-}
-
-// Para limpiar el formulario de detalles de producto
-const cancelarCargaProducto = () => {
-    setFormDataArticulos(initialFormDataArticulos)
-    //setCargaProductos(initialFormDataProductos)
-    document.getElementById("cantidad").value = "0"
-    setOrdenVenta("")
-}
 
     // Para eliminar productos del listado
     const removeItem = (producto) => {
@@ -309,6 +309,7 @@ const cancelarCargaProducto = () => {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -321,7 +322,7 @@ const cancelarCargaProducto = () => {
 
             <Container>
                 <Form onChange={onChange} onSubmit={onSubmit}>
-                <Row className="mb-3">
+                    <Row className="mb-3">
                         <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
                             <Form.Label>
                                 Folio
@@ -379,6 +380,7 @@ const cancelarCargaProducto = () => {
                                 </Form.Control>
                                 <FontAwesomeIcon
                                     className="cursor-pointer py-2 -ml-6"
+                                    title="Buscar entre los departamentos"
                                     icon={faSearch}
                                     onClick={() => {
                                         buscarDepartamento(
@@ -468,6 +470,7 @@ const cancelarCargaProducto = () => {
                                     <>
                                         <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre los materiales"
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarMaterial(
@@ -484,6 +487,7 @@ const cancelarCargaProducto = () => {
                                     <>
                                         <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre los insumos"
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarInsumo(
@@ -552,13 +556,14 @@ const cancelarCargaProducto = () => {
                                         />
                                         <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre las ordenes de venta"
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarOV(
                                                     <BuscarOV
-                                                    setOrdenVenta={setOrdenVenta}
-                                                    setClienteOV={setClienteOV}
-                                                    setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                        setOrdenVenta={setOrdenVenta}
+                                                        setClienteOV={setClienteOV}
+                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
                                                         setShowModal={setShowModal}
                                                     />)
                                             }}
@@ -607,6 +612,7 @@ const cancelarCargaProducto = () => {
                                 <Col>
                                     <Button
                                         variant="success"
+                                        title="Guardar el producto"
                                         className="editar"
                                         onClick={() => {
                                             addItems()
@@ -618,6 +624,7 @@ const cancelarCargaProducto = () => {
                                 <Col>
                                     <Button
                                         variant="danger"
+                                        title="Cancelar el producto"
                                         className="editar"
                                         onClick={() => {
                                             cancelarCargaProducto()
@@ -678,6 +685,7 @@ const cancelarCargaProducto = () => {
                                     <td data-title="Eliminar">
                                         <div
                                             className="eliminarProductoListado"
+                                            title="Eliminar el registro"
                                             onClick={() => {
                                                 removeItem(producto)
                                             }}
@@ -749,15 +757,17 @@ const cancelarCargaProducto = () => {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Guardar la requisición"
                                 variant="success"
                                 className="registrar"
                             >
-                                {!loading ? "Registrar requisicion" : <Spinner animation="border" />}
+                                {!loading ? "Registrar" : <Spinner animation="border" />}
                             </Button>
                         </Col>
                         <Col>
                             <Button
                                 variant="danger"
+                                title="Cerrar el formulario"
                                 className="cancelar"
                                 onClick={() => {
                                     rutaRegreso()

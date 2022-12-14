@@ -221,6 +221,7 @@ function RegistraDevoluciones(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Guardar información del formulario"
                                 variant="success"
                                 className="registrar"
                             >
@@ -230,6 +231,7 @@ function RegistraDevoluciones(props) {
                         <Col>
                             <Button
                                 variant="danger"
+                                title="Cerrar el formulario"
                                 className="cancelar"
                                 onClick={() => {
                                     rutaRegreso()

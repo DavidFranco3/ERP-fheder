@@ -140,6 +140,7 @@ function EliminacionLogicaUsuarios(props) {
                     <Col>
                         <Button
                             variant="success"
+                            title={estadoUsuario === "true" ? "Deshabilitar" : "Habilitar"}
                             type="submit"
                             className="registrar">
                             {!loading ? (estadoUsuario === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
@@ -148,6 +149,7 @@ function EliminacionLogicaUsuarios(props) {
                     <Col>
                         <Button
                             variant="danger"
+                            title="Cerrar el formulario"
                             className="cancelar"
                             onClick={() => {
                                 cancelar()

@@ -116,6 +116,7 @@ function ListDetalles(props) {
                         <Col>
                             <Button
                                 variant="success"
+                                title="Autorizar la producción"
                                 className="registrar"
                                 onClick={(e) => {
                                     onSubmit(e)
@@ -127,6 +128,7 @@ function ListDetalles(props) {
                         <Col>
                             <Button
                                 variant="danger"
+                                title="Cerrar el formulario"
                                 className="registrar"
                                 onClick={() => {
                                     cancelar()

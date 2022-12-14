@@ -267,6 +267,7 @@ function RegistraStatus(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -287,6 +288,7 @@ function RegistraStatus(props) {
                             <Col align="right">
                                 <Button
                                     variant="success"
+                                    title="Buscar entre las inspecciones de calidad"
                                     className="agregar"
                                     onClick={() => {
                                         buscarInspeccionCalidad(
@@ -1084,6 +1086,7 @@ function RegistraStatus(props) {
                             <Col>
                                 <Button
                                     type="submit"
+                                    title="Guardar la información del formulario"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -1093,6 +1096,7 @@ function RegistraStatus(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         rutaRegreso()

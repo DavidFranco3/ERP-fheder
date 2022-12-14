@@ -98,7 +98,9 @@ function ListMatrizProductos(props) {
                 (
                     <>
                         <Badge
-                            bg="success" className="activo"
+                            bg="success" 
+                            title="Deshabilitar"
+                            className="activo"
                             onClick={() => {
                                 cambiaEstadoProducto(
                                     <EstadoMatrizProductos
@@ -118,7 +120,9 @@ function ListMatrizProductos(props) {
                 (
                     <>
                         <Badge
-                            bg="warning" className="obsoleto"
+                            bg="warning" 
+                            className="obsoleto"
+                            title="Habilitar"
                             onClick={() => {
                                 cambiaEstadoProducto(
                                     <EstadoMatrizProductos

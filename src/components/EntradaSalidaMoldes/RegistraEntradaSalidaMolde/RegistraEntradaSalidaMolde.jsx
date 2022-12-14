@@ -28,6 +28,7 @@ function RegistraEntradaSalidaMolde(props) {
                     </Col>
                     <Col xs={6} md={4}>
                         <Button
+                        title="Regresar a la pagina anterior"
                             className="btnRegistroVentas"
                             onClick={() => {
                                 rutaRegreso()
@@ -1057,6 +1058,7 @@ function RegistraEntradaSalidaMolde(props) {
                             <Col>
                                 <Button
                                     type="submit"
+                                    title="Guardar información del formulario"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -1066,6 +1068,7 @@ function RegistraEntradaSalidaMolde(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         rutaRegreso()

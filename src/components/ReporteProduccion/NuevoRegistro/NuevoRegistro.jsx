@@ -275,6 +275,7 @@ function NuevoRegistro(props) {
                             <Col>
                                 <Button
                                     variant="success"
+                                    title="Agregar registro"
                                     className="registrar"
                                     onClick={() => {
                                         addItems()
@@ -286,6 +287,7 @@ function NuevoRegistro(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         cancelarRegistro()

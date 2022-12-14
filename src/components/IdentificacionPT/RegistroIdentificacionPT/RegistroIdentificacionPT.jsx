@@ -318,6 +318,7 @@ function RegistroIdentificacionPT(props) {
                             <Col>
                                 <Button
                                     type="submit"
+                                    title="Guardar la informacion del formulario"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -327,6 +328,7 @@ function RegistroIdentificacionPT(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         cancelarRegistro()

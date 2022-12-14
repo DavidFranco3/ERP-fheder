@@ -11,7 +11,7 @@ import queryString from "query-string";
 function ModificaMaquinas(props) {
     const { setShowModal, history, data } = props;
 
-    const {id} = data;
+    const { id } = data;
 
     // Para almacenar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -158,7 +158,8 @@ function ModificaMaquinas(props) {
                         <Form.Group as={Row} className="botones">
                             <Col>
                                 <Button
-                                type="submit"
+                                    type="submit"
+                                    title="Actualizar el registro"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -168,6 +169,7 @@ function ModificaMaquinas(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         cancelarRegistro()

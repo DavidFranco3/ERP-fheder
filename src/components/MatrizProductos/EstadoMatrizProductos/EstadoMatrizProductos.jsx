@@ -99,6 +99,7 @@ function EstadoMatrizProductos(props) {
                     <Col>
                         <Button
                             type="submit"
+                            title={estado == "true" ? "Desactivar" : "Activar"}
                             variant="success"
                             className="registrar"
                         >
@@ -108,6 +109,7 @@ function EstadoMatrizProductos(props) {
                     <Col>
                         <Button
                             variant="danger"
+                            title="Cerrar el formulario"
                             className="cancelar"
                             onClick={() => {
                                 cancelarEliminacion()

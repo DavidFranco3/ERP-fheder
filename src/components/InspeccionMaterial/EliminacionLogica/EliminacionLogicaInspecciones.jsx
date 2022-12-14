@@ -218,6 +218,7 @@ function EliminacionLogicaInspecciones(props) {
                     <Col>
                         <Button
                             variant="success"
+                            title={status === "Activo" ? "Cancelar inspeccion" : "Habilitar"}
                             type="submit"
                             className="registrar">
                             {!loading ? (status === "Activo" ? "Cancelar inspeccion" : "Habilitar") : <Spinner animation="border" />}
@@ -226,6 +227,7 @@ function EliminacionLogicaInspecciones(props) {
                     <Col>
                         <Button
                             variant="danger"
+                            title="Cerrar el formulario"
                             className="cancelar"
                             onClick={() => {
                                 cancelar()

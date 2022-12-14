@@ -100,6 +100,7 @@ function ListProduccion(props) {
                 <>
                     <Badge
                         bg="primary"
+                        title="Generar una requsición"
                         className="editar"
                         onClick={() => {
                             requisicionPlaneacion(row.id)
@@ -114,11 +115,12 @@ function ListProduccion(props) {
             reorder: false
         },
         {
-            name: "Orden produccion",
+            name: "Orden producción",
             selector: row => (
                 <>
                     <Badge
                         bg="primary"
+                        title="Generar una orden de produción"
                         className="editar"
                         onClick={() => {
                             produccionPlaneacion(row.id)

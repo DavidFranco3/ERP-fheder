@@ -268,6 +268,7 @@ function RegistraProveedores(props) {
                         <Col>
                             <Button
                                 type="submit"
+                                title="Guardar la información del formulario"
                                 variant="success"
                                 className="registrar"
                             >
@@ -277,6 +278,7 @@ function RegistraProveedores(props) {
                         <Col>
                             <Button
                                 variant="danger"
+                                title="Cerrar el formulario"
                                 className="registrar"
                                 onClick={() => {
                                     cierraModal()

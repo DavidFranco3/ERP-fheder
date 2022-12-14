@@ -123,6 +123,7 @@ function RegistroReporteProduccion(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
+                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -220,6 +221,7 @@ function RegistroReporteProduccion(props) {
                                 <Col sm="2">
                                     <Button
                                         className="registrar"
+                                        title="Agregar un registro"
                                         variant="success"
                                         onClick={() => {
                                             nuevoRegistro(
@@ -284,6 +286,7 @@ function RegistroReporteProduccion(props) {
                                         <td data-title="Eliminar">
                                             <div
                                                 className="eliminarProductoListado"
+                                                title="Eliminar el registro"
                                                 onClick={() => {
                                                     removeItemRegistro(registro)
                                                 }}
@@ -338,6 +341,7 @@ function RegistroReporteProduccion(props) {
                             <Col>
                                 <Button
                                     type="submit"
+                                    title="Actualizar el registro"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -347,6 +351,7 @@ function RegistroReporteProduccion(props) {
                             <Col>
                                 <Button
                                     variant="danger"
+                                    title="Cerrar el formulario"
                                     className="cancelar"
                                     onClick={() => {
                                         rutaRegreso()
