@@ -113,7 +113,6 @@ function EliminacionFisicaVentas(props) {
                     <Col>
                         <Button
                             type="submit"
-                            title="Eliminar el registro"
                             variant="success"
                             className="registrar"
                         >
@@ -123,7 +122,6 @@ function EliminacionFisicaVentas(props) {
                     <Col>
                         <Button
                             variant="danger"
-                            title="Cerrar el formulario"
                             className="cancelar"
                             onClick={() => {
                                 cancelarEliminacion()

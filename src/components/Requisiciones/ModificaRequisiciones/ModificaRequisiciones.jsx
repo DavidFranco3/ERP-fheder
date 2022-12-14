@@ -50,6 +50,11 @@ function ModificaRequisiciones(props) {
 
     const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
 
+    // Para almacenar la OV
+    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
+
+    const [producto, setProducto] = useState([]);
+
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
     const [contentModal, setContentModal] = useState(null);
@@ -247,12 +252,13 @@ function ModificaRequisiciones(props) {
             try {
                 const dataTemp = {
                     fechaElaboracion: formData.fechaElaboracion,
+                    fechaRequisicion: formData.fechaRequisicion,
                     solicitante: formData.solicitante,
                     aprobo: formData.aprobo,
                     comentarios: formData.comentarios,
                     departamento: departamentoElegido.departamento == "" ? formData.departamento : departamentoElegido.departamento,
                     tipoRequisicion: formData.tipoRequisicion,
-                        tipoAplicacion: formData.tipoAplicacion,
+                    tipoAplicacion: formData.tipoAplicacion,
                     productosSolicitados: listProductosCargados,
                     status: formData.estado
                 }
@@ -291,7 +297,6 @@ function ModificaRequisiciones(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
-                            title="Regresar a la pagina anterior"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -362,7 +367,6 @@ function ModificaRequisiciones(props) {
                                 </Form.Control>
                                 <FontAwesomeIcon
                                     className="cursor-pointer py-2 -ml-6"
-                                    title="Buscar entre los departamentos"
                                     icon={faSearch}
                                     onClick={() => {
                                         buscarDepartamento(
@@ -413,6 +417,21 @@ function ModificaRequisiciones(props) {
                         )}
                     </Row>
 
+                    <Row className="mb-3">
+                        <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
+                            <Form.Label>
+                                Fecha de requisición
+                            </Form.Label>
+                            <Form.Control
+                                type="date"
+                                placeholder="Escribe la fecha"
+                                name="fechaRequisicion"
+                                defaultValue={formData.fechaRequisicion}
+                            >
+                            </Form.Control>
+                        </Form.Group>
+                    </Row>
+
                     <hr />
                     <Badge bg="secondary" className="tituloFormularioDetalles">
                         <h4>A continuación, especifica los detalles del artículo y agregalo</h4>
@@ -452,7 +471,6 @@ function ModificaRequisiciones(props) {
                                     <>
                                         <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
-                                            title="Buscar entre los materiales"
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarMaterial(
@@ -469,7 +487,6 @@ function ModificaRequisiciones(props) {
                                     <>
                                         <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
-                                            title="Buscar entre los insumos"
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarInsumo(
@@ -538,14 +555,15 @@ function ModificaRequisiciones(props) {
                                         />
                                         <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
-                                            title="Buscar entre las ordenes de venta"
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarOV(
                                                     <BuscarOV
                                                         setOrdenVenta={setOrdenVenta}
+                                                        setOrdenVentaPrincipal={setOrdenVentaPrincipal}
                                                         setClienteOV={setClienteOV}
                                                         setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                        setProducto={setProducto}
                                                         setShowModal={setShowModal}
                                                     />)
                                             }}
@@ -594,7 +612,6 @@ function ModificaRequisiciones(props) {
                                 <Col>
                                     <Button
                                         variant="success"
-                                        title="Agregar el producto"
                                         className="editar"
                                         onClick={() => {
                                             addItems()
@@ -606,7 +623,6 @@ function ModificaRequisiciones(props) {
                                 <Col>
                                     <Button
                                         variant="danger"
-                                        title="Cancelar el producto"
                                         className="editar"
                                         onClick={() => {
                                             cancelarCargaProducto()
@@ -667,7 +683,6 @@ function ModificaRequisiciones(props) {
                                     <td data-title="Eliminar">
                                         <div
                                             className="eliminarProductoListado"
-                                            title="Eliminar el producto"
                                             onClick={() => {
                                                 removeItem(producto)
                                             }}
@@ -740,17 +755,15 @@ function ModificaRequisiciones(props) {
                         <Col>
                             <Button
                                 type="submit"
-                                title="Actualizar el registro"
                                 variant="success"
                                 className="registrar"
                             >
-                                {!loading ? "Modificar" : <Spinner animation="border" />}
+                                {!loading ? "Modificar requisicion" : <Spinner animation="border" />}
                             </Button>
                         </Col>
                         <Col>
                             <Button
                                 variant="danger"
-                                title="Cerrar el formulario"
                                 className="cancelar"
                                 onClick={() => {
                                     rutaRegreso()
@@ -774,6 +787,7 @@ function initialFormData() {
     return {
         folio: "",
         fechaElaboracion: "",
+        fechaRequisicion: "",
         solicitante: "",
         aprobo: "",
         departamento: "",
@@ -794,6 +808,7 @@ function valoresAlmacenados(data) {
     return {
         folio: data.folio,
         fechaElaboracion: data.fechaElaboracion,
+        fechaRequisicion: data.fechaRequisicion,
         solicitante: data.solicitante,
         aprobo: data.aprobo,
         tipoRequisicion: data.tipoRequisicion,
