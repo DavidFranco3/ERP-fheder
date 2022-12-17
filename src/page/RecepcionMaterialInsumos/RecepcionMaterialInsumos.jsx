@@ -59,7 +59,7 @@ function RecepcionMaterialInsumos(props) {
 
     // Para ir hacia la ruta de registro del pedido de venta
     const rutaRegistroPedidoVenta = () => {
-        enrutamiento.push("/Pedido-de-Venta")
+        enrutamiento.push("/RegistroRecepcion")
     }
 
     const rutaRegreso = () => {
@@ -94,15 +94,15 @@ function RecepcionMaterialInsumos(props) {
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
-                        {/*<Button
+                        <Button
                             className="btnRegistroVentas"
-                            title="Registrar un nuevo pedido de venta"
+                            title="Registrar una nueva recepcion"
                             onClick={() => {
                                 rutaRegistroPedidoVenta()
                             }}
                         >
                             <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                        </Button>*/}
+                        </Button>
                         <Button
                             className="btnRegistroVentas"
                             title="Regresar al menú compras"

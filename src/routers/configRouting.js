@@ -129,6 +129,10 @@ import ModificacionFactura from "../components/Facturacion/Modificacion";
 import RegistroLogistica from "../components/Logistica/Registro";
 import ModificacionLogistica from "../components/Logistica/Modificacion";
 
+// Rutas para la logística
+import RegistroRecepcion from "../components/RecepcionMaterialInsumos/RegistroRecepcion";
+//import ModificacionLogistica from "../components/Logistica/Modificacion";
+
 // Rutas para planeación
 import RegistroPlaneacion from "../components/Planeacion/Registro";
 import ModificacionPlaneacion from "../components/Planeacion/Modificacion";
@@ -432,6 +436,11 @@ export default [
         path: "/ModificacionLogistica",
         exact: true,
         page: ModificacionLogistica
+    },
+    {
+        path: "/RegistroRecepcion",
+        exact: true,
+        page: RegistroRecepcion
     },
     {
         path: "/RegistroPlaneacion",

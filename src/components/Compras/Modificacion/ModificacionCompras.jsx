@@ -202,6 +202,7 @@ function ModificacionCompras(props) {
                 fechaSolicitud: formData.fechaSolicitud,
                 fechaEntrega: formData.fechaEntrega,
                 autoriza: formData.autorizo,
+                tipoCompra: formData.tipoCompra,
                 productos: listProductosCargados,
                 subtotal: subTotal,
                 iva: IVA,
