@@ -14,7 +14,7 @@ import AnimacionLoading from '../../assets/json/loading.json';
 const { map } = require("lodash");
 
 function BuscarOC(props) {
-    const { setFormData, formData, setShowModal, setRefreshCheckLogin, location, history } = props;
+    const { setFormData, totalUnitario, setTotalUnitario, formData, setShowModal, setRefreshCheckLogin, location, history } = props;
 
     const enrutamiento = useHistory();
 
@@ -72,6 +72,8 @@ function BuscarOC(props) {
                                     setRefreshCheckLogin={setRefreshCheckLogin}
                                     formData={formData}
                                     setFormData={setFormData}
+                                    totalUnitario={totalUnitario}
+                                    setTotalUnitario={setTotalUnitario}
                                 />
                             </Suspense>
                         </>

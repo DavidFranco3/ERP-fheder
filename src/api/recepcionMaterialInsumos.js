@@ -39,7 +39,7 @@ export async function totalRecepcion() {
 }
 
 // Para obtener todos los datos del pedido
-export async function obtenerNoRecepcion(params) {
+export async function obtenerRecepcion(params) {
     const config = {
         headers: {
             'Accept': 'application/json',

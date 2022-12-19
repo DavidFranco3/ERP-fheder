@@ -6,13 +6,14 @@ import "./ListRecepciones.scss"
 import { Badge, Button, Container, Navbar, Table, Form, Col } from "react-bootstrap";
 //import EliminacionLogicaUsuarios from "../EliminacionLogica";
 import BasicModal from '../../Modal/BasicModal';
-//import EliminacionFisicaUsuarios from "../EliminacionFisica";
+import EliminacionFisicaRecepcion from '../EliminacionFisica';
 import DataTable from 'react-data-table-component';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
 import { exportCSVFile } from "../../../utils/exportCSV";
+import ListProductosRecepcion from '../ListProductosRecepcion';
 
 function ListRecepciones(props) {
     const { listRecepciones, history, location, setRefreshCheckLogin } = props;
@@ -28,7 +29,7 @@ function ListRecepciones(props) {
 
     //Para la eliminacion fisica de usuarios
     const eliminaUsuarios = (content) => {
-        setTitulosModal("Eliminando el usuario");
+        setTitulosModal("Eliminando la recepcion");
         setContentModal(content);
         setShowModal(true);
     }
@@ -48,9 +49,15 @@ function ListRecepciones(props) {
     }
 
     //Para la modificacion de datos
-    const modificaUsuarios = (id) => {
-        enrutamiento.push(`/ModificacionUsuarios/${id}`);
+    const modificaRecepcion = (id) => {
+        enrutamiento.push(`/ModificaRecepcion/${id}`);
     }
+
+    const ExpandedComponent = ({ data }) => (
+        <ListProductosRecepcion
+            numeroRecepcion={data.folio}
+        />
+    );
 
     const columns = [
         {
@@ -63,20 +70,6 @@ function ListRecepciones(props) {
         {
             name: 'Fecha de recepción',
             selector: row => moment(row.fechaRecepcion).format("LL"),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Proveedor',
-            selector: row => row.proveedor,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Material/Insumo',
-            selector: row => row.materialInsumo,
             sortable: false,
             center: true,
             reorder: false
@@ -103,18 +96,42 @@ function ListRecepciones(props) {
             center: true,
             reorder: false
         },
-        /*{
+        {
+            name: 'Total',
+            selector: row => (
+                <>
+                    ${''}
+                    {new Intl.NumberFormat('es-MX', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    }).format(row.valorTotal)} MXN
+                </>
+            ),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
             name: 'Acciones',
             center: true,
             reorder: false,
             selector: row => (
                 <>
                     <Badge
+                        bg="primary"
+                        title="Generar PDF"
+                        className="ver"
+                        onClick={() => {
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faEye} className="text-lg" />
+                    </Badge>
+                    <Badge
                         bg="success"
                         title="Modificar"
                         className="editar"
                         onClick={() => {
-                            modificaUsuarios(row.id)
+                            modificaRecepcion(row.id)
                         }}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
@@ -125,8 +142,8 @@ function ListRecepciones(props) {
                         className="eliminar"
                         onClick={() => {
                             eliminaUsuarios(
-                                <EliminacionFisicaUsuarios
-                                    dataUsuario={row}
+                                <EliminacionFisicaRecepcion
+                                    datos={row}
                                     setShowModal={setShowModal}
                                     history={history}
                                 />)
@@ -136,7 +153,7 @@ function ListRecepciones(props) {
                     </Badge>
                 </>
             )
-        }*/
+        }
     ];
 
     // Configurando animacion de carga
@@ -264,6 +281,8 @@ function ListRecepciones(props) {
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
                     data={listRecepciones}
+                    expandableRows
+                    expandableRowsComponent={ExpandedComponent}
                     //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}

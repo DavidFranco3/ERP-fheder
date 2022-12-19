@@ -13,7 +13,7 @@ import { obtenerOrdenCompra } from "../../../api/compras";
 import { toast } from "react-toastify";
 
 function BuscarCompras(props) {
-    const { setFormData, formData, setShowModal, listProductosCompras } = props;
+    const { setFormData, totalUnitario, formData, setTotalUnitario, setShowModal, listProductosCompras } = props;
 
     // Para almacenar la informacion del formulario
     const [clienteSeleccionado, setClienteSeleccionado] = useState(initialFormData());
@@ -26,10 +26,9 @@ function BuscarCompras(props) {
 
     useEffect(() => {
         try {
-
-            obtenerOrdenCompra(clienteSeleccionado.seleccion).then(response => {
+            const temp = clienteSeleccionado.seleccion.split("/")
+            obtenerOrdenCompra(temp[0]).then(response => {
                 const { data } = response;
-                const { cliente, nombreCliente, fechaElaboracion, fechaEntrega, productos } = data;
                 setValoresCliente(valoresAlmacenados(data))
             }).catch(e => {
                 console.log(e)
@@ -49,6 +48,23 @@ function BuscarCompras(props) {
         setClienteSeleccionado({ ...clienteSeleccionado, [e.target.name]: e.target.value })
     }
 
+    const [datosProducto, setDatosProducto] = useState([]);
+
+    useEffect(() => {
+        const temp = clienteSeleccionado.seleccion.split("/")
+
+        // console.log(dataTemp)
+        setDatosProducto({
+            ordenCompra: temp[1],
+            producto: temp[2],
+            cantidad: temp[3],
+            um: temp[4],
+            precioUnitario: temp[5]
+        })
+        console.log(datosProducto)
+        setTotalUnitario(temp[6])
+    }, [clienteSeleccionado.seleccion]);
+
     const onSubmit = e => {
         //e.preventDefault();
         if (!clienteSeleccionado.seleccion) {
@@ -58,9 +74,13 @@ function BuscarCompras(props) {
             //console.log(formData)
             setLoading(true);
             const dataTemp = {
-                cliente: valoresCliente.cliente,
-                nombreCliente: valoresCliente.nombreCliente,
-                lugarEntrega: valoresCliente.lugarEntrega
+                ordenCompra: datosProducto.ordenCompra,
+                producto: datosProducto.producto,
+                cantidad: datosProducto.cantidad,
+                um: datosProducto.um,
+                precioUnitario: datosProducto.precioUnitario,
+                subtotal: totalUnitario,
+                proveedor: valoresCliente.proveedor,
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -75,7 +95,7 @@ function BuscarCompras(props) {
                     <Form.Group as={Row} controlId="formHorizontalNoInterno">
                         <Col>
                             <Form.Check
-                                value={row.id}
+                                value={row.id + "/" + row.folio + "/" + row.descripcion + "/" + row.cantidad + "/" + row.um + "/" + row.precio +"/"+ row.subtotal}
                                 type="radio"
                                 //label="Paletizado"
                                 name="seleccion"
@@ -95,7 +115,7 @@ function BuscarCompras(props) {
             reorder: false
         },
         {
-            name: 'Productos',
+            name: 'Producto',
             selector: row => row.descripcion,
             sortable: false,
             center: true,
@@ -262,10 +282,10 @@ function BuscarCompras(props) {
                     />
                 </Col>
                 <Col>
-                    <ClearButton 
-                    type="button" 
-                    title="Limpiar la busqueda"
-                    onClick={handleClear}>
+                    <ClearButton
+                        type="button"
+                        title="Limpiar la busqueda"
+                        onClick={handleClear}>
                         X
                     </ClearButton>
                 </Col>
@@ -331,17 +351,13 @@ function initialFormData() {
 
 function initialValues() {
     return {
-        cliente: "",
-        nombreCliente: "",
-        lugarEntrega: "",
+        proveedor: ""
     }
 }
 
 function valoresAlmacenados(data) {
     return {
-        cliente: data._id,
-        nombreCliente: data.nombre,
-        lugarEntrega: data.direccion.calle + ", " + data.direccion.numeroExterior + ", " + data.direccion.colonia + ", " + data.direccion.municipio + ", " + data.direccion.estado,
+        proveedor: data.nombreProveedor
     }
 }
 

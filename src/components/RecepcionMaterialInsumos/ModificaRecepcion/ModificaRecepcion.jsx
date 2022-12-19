@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
 import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
 import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import { listarClientes } from "../../../api/clientes";
-import { registraRecepcion, obtenerNumeroRecepcion } from "../../../api/recepcionMaterialInsumos";
+import { actualizaRecepcion, obtenerRecepcion } from "../../../api/recepcionMaterialInsumos";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
-import "./RegistroRecepcion.scss"
+import "./ModificaRecepcion.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
@@ -18,10 +18,13 @@ import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOC from '../../../page/BuscarOC';
 
-function RegistroRecepcion(props) {
+function ModificacionRecepcion(props) {
     const { setRefreshCheckLogin } = props;
 
     const enrutamiento = useHistory();
+
+    const params = useParams();
+    const { id } = params
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -62,25 +65,6 @@ function RegistroRecepcion(props) {
     const regresaListadoVentas = () => {
         enrutamiento.push("/RecepcionMaterialInsumos");
     }
-
-    // Para almacenar el folio actual
-    const [folioActual, setFolioActual] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerNumeroRecepcion().then(response => {
-                const { data } = response;
-                // console.log(data)
-                const { noRequerimiento } = data;
-                console.log(noRequerimiento)
-                setFolioActual(noRequerimiento)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
@@ -194,8 +178,18 @@ function RegistroRecepcion(props) {
         }
     }, [pdfCotizacion]);
 
-    console.log("cotizacion: " + pdfCotizacion)
-    console.log("ordenCompra: " + linkOrdenCompra)
+    useEffect(() => {
+        //
+        obtenerRecepcion(id).then(response => {
+            const { data } = response;
+            //console.log(data)
+            setFormData(valoresAlmacenados(data))
+            // setFechaCreacion(fechaElaboracion)
+            setListProductosCargados(data.productos)
+        }).catch(e => {
+            console.log(e)
+        })
+    }, []);
 
     const onSubmit = e => {
         e.preventDefault();
@@ -206,11 +200,7 @@ function RegistroRecepcion(props) {
             //console.log("Continuar")
             setLoading(true)
 
-            // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            obtenerNumeroRecepcion().then(response => {
-                const { data } = response;
                 const dataTemp = {
-                    folio: data.noRequerimiento,
                     fechaRecepcion: formData.fecha,
                     precio: precioTotal,
                     cantidad: cantidadTotal,
@@ -222,12 +212,12 @@ function RegistroRecepcion(props) {
                 //LogRegistroPlaneacion(data.noVenta, listProductosCargados)
                 // 
                 // Modificar el pedido creado recientemente
-                registraRecepcion(dataTemp).then(response => {
+                actualizaRecepcion(id, dataTemp).then(response => {
                     const { data: { mensaje, datos } } = response;
                     // console.log(response)
                     toast.success(mensaje)
                     // Log acerca del registro inicial del tracking
-                    LogsInformativos(`Se han registrado la recepcion de material e insumos ${data.noRequerimiento}`, datos)
+                    LogsInformativos(`Se han modificado la recepcion de material e insumos ${id}`, datos)
                     // Registro inicial del tracking
                     //LogTrackingRegistro(data.noVenta, clienteSeleccionado.id, formData.fechaElaboracion)
                     setLoading(false)
@@ -235,9 +225,6 @@ function RegistroRecepcion(props) {
                 }).catch(e => {
                     console.log(e)
                 })
-            }).catch(e => {
-                console.log(e)
-            })
         }
     }
 
@@ -716,7 +703,7 @@ function RegistroRecepcion(props) {
                                         variant="success"
                                         className="registrar"
                                     >
-                                        {!loading ? "Registrar" : <Spinner animation="border" />}
+                                        {!loading ? "Modificar" : <Spinner animation="border" />}
                                     </Button>
                                 </Col>
                                 <Col>
@@ -760,6 +747,12 @@ function initialFormData(folio, fecha) {
         cotizacion: "",
         numeroPedido: "",
         fecha: ""
+    }
+}
+
+function valoresAlmacenados(data) {
+    return {
+        fecha: data.fechaRecepcion
     }
 }
 
@@ -847,4 +840,4 @@ function formatModelMatrizProductos(data) {
     return dataTemp;
 }
 
-export default RegistroRecepcion;
+export default ModificacionRecepcion;

@@ -149,11 +149,10 @@ function formatModelRecepciones(data) {
             id: data._id,
             folio: data.folio,
             fechaRecepcion: data.fechaRecepcion,
-            proveedor: data.proveedor,
-            materialInsumo: data.materialInsumo,
             precio: data.precio,
             cantidad: data.cantidad,
             productos: data.productos,
+            valorTotal: data.valorTotal,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

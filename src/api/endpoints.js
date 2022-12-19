@@ -45,12 +45,12 @@ export const ENDPOINTTotalAlmacen = "/almacen/total";
 export const ENDPOINTRegistraPedidoVenta = "/ventas/registro";
 export const ENDPOINTListarPedidoVenta = "/ventas/listar";
 export const ENDPOINTObtenerPedidoVenta = "/ventas/obtener";
-export const ENDPOINTObtenerDatosPedidoVenta = "/ventas/obtenerDatosRecepcion";
+export const ENDPOINTObtenerDatosPedidoVenta = "/ventas/obtenerDatosPedido";
 export const ENDPOINTEliminarPedidoVenta = "/ventas/eliminar";
 export const ENDPOINTActualizarPedidoVenta = "/ventas/actualizar";
 export const ENDPOINTActualizarEstadoPedidoVenta = "/ventas/actualizarEstado";
 export const ENDPOINTListarPedidoVentaPaginacion = "/ventas/listarPaginando";
-export const ENDPOINTObtenerNoPedidoVenta = "/ventas/obtenerNoRecepcion";
+export const ENDPOINTObtenerNoPedidoVenta = "/ventas/obtenerNoVenta";
 export const ENDPOINTTotalPedidoVenta = "/ventas/total";
 
 // Recepcion de material e insumos
@@ -62,7 +62,7 @@ export const ENDPOINTEliminarRecepcion = "/recepcionMaterialInsumos/eliminar";
 export const ENDPOINTActualizarRecepcion = "/recepcionMaterialInsumos/actualizar";
 export const ENDPOINTActualizarEstadoRecepcion = "/recepcionMaterialInsumos/actualizarEstado";
 export const ENDPOINTListarRecepcionPaginacion = "/recepcionMaterialInsumos/listarPaginando";
-export const ENDPOINTObtenerNoRecepcion = "/recepcionMaterialInsumos/obtenerNoVenta";
+export const ENDPOINTObtenerNoRecepcion = "/recepcionMaterialInsumos/obtenerNoRecepcion";
 export const ENDPOINTTotalRecepcion = "/recepcionMaterialInsumos/total";
 
 // Inspeccion de pieza
