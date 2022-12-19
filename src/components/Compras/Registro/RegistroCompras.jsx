@@ -66,6 +66,11 @@ function RegistroCompras(props) {
     // Para almacenar el listado de ordenes de venta
     const [listOrdenesVenta, setListOrdenesVenta] = useState(null);
 
+    // Para almacenar la OV
+    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
+
+    const [producto, setProducto] = useState([]);
+
     useEffect(() => {
         try {
             listarPedidosVenta().then(response => {
@@ -568,8 +573,10 @@ function RegistroCompras(props) {
                                                 buscarOV(
                                                     <BuscarOV
                                                         setOrdenVenta={setOrdenVenta}
+                                                        setOrdenVentaPrincipal={setOrdenVentaPrincipal}
                                                         setClienteOV={setClienteOV}
                                                         setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                        setProducto={setProducto}
                                                         setShowModal={setShowModal}
                                                     />)
                                             }}
