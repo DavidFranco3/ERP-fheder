@@ -35,7 +35,7 @@ function ListProductosRecepcion(props) {
                         <>
                             <Container fluid className="tablaProductos">
                                 <Badge bg="secondary" className="tituloFormularioDetalles">
-                                    <h4>Detalles de los productos de la venta</h4>
+                                    <h4>Detalles de los productos de la recepcion</h4>
                                 </Badge>
                                 <table className="responsive-tableTrackingOV"
                                 >
