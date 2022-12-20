@@ -68,6 +68,20 @@ function ListRecepciones(props) {
             reorder: false
         },
         {
+            name: 'Orden de compra',
+            selector: row => row.ordenCompra,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Proveedor',
+            selector: row => row.nombreProveedor,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
             name: 'Fecha de recepción',
             selector: row => moment(row.fechaRecepcion).format("LL"),
             sortable: false,

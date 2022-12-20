@@ -26,8 +26,14 @@ function RegistroRecepcion(props) {
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
 
+    // Para guardar los datos del formulario
+    const [formDataOC, setFormDataOC] = useState(initialFormDataOC());
+
     // Para determinar el uso de la animacion de carga mientras se guarda el pedido
     const [loading, setLoading] = useState(false);
+
+    const [productosOC, setProductosOC] = useState();
+    console.log(productosOC)
 
     // Para determinar si hay conexion con el servidor o a internet
     const [conexionInternet, setConexionInternet] = useState(true);
@@ -211,6 +217,9 @@ function RegistroRecepcion(props) {
                 const { data } = response;
                 const dataTemp = {
                     folio: data.noRequerimiento,
+                    ordenCompra: formDataOC.ordenCompra,
+                    proveedor: formDataOC.proveedor,
+                    nombreProveedor: formDataOC.nombreProveedor,
                     fechaRecepcion: formData.fecha,
                     precio: precioTotal,
                     cantidad: cantidadTotal,
@@ -242,27 +251,28 @@ function RegistroRecepcion(props) {
     }
 
     const [cargaProductos, setCargaProductos] = useState(initialFormDataProductos());
+    console.log(cargaProductos)
+    const [productoCargado, setProductoCargado] = useState("");
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataOC({ ...formDataOC, [e.target.name]: e.target.value })
         setCargaProductos({ ...cargaProductos, [e.target.name]: e.target.value })
     }
-    console.log(cargaProductos)
     // Para la carga y el listado de productos
     const [listProductosCargados, setListProductosCargados] = useState([]);
-
+    console.log(cargaProductos.producto)
     // Gestion del producto seleccionado
-    const handleProducto = (producto) => {
-        const dataTempProductos = producto.split("/")
-        console.log(dataTempProductos)
+    useEffect(() => {
+        setProductoCargado(cargaProductos.producto)
+        const dataTempProductos = productoCargado.split("/")
         const dataTemp = {
-            idProducto: dataTempProductos[0],
-            ID: dataTempProductos[1],
-            item: dataTempProductos[2],
-            precioUnitario: dataTempProductos[3],
+            cantidad: dataTempProductos[0],
+            um: dataTempProductos[3],
+            precioUnitario: dataTempProductos[2],
         }
         setCargaProductos(cargaFormDataProductos(dataTemp))
-    }
+    }, [cargaProductos.producto]);
 
     // Para agregar productos al listado
 
@@ -276,23 +286,21 @@ function RegistroRecepcion(props) {
     }
 
     const addItems = () => {
-        const ordenCompra = cargaProductos.ordenCompra
         const producto = document.getElementById("producto").value
         const cantidad = document.getElementById("cantidad").value
         const um = document.getElementById("um").value
-        const proveedor = document.getElementById("proveedor").value
         const tipoMercancia = document.getElementById("tipoMercancia").value
         const precioUnitario = document.getElementById("precioUnitario").value
 
-        if (!ordenCompra || !producto || !cantidad || !um || !proveedor || !tipoMercancia || !precioUnitario) {
+        if (!producto || !cantidad || !um || !tipoMercancia || !precioUnitario) {
             toast.warning("Completa la información del producto");
         } else {
+            const temp = producto.split("/");
+
             const dataTemp = {
-                ordenCompra: ordenCompra,
-                producto: producto,
+                producto: temp[1],
                 cantidad: cantidad,
                 um: um,
-                proveedor: proveedor,
                 tipoMercancia: tipoMercancia,
                 precioUnitario: precioUnitario,
                 subtotal: parseFloat(cargaProductos.cantidad) * parseFloat(cargaProductos.precioUnitario)
@@ -303,6 +311,8 @@ function RegistroRecepcion(props) {
                 [...listProductosCargados, dataTemp]
             );
             setCargaProductos(initialFormDataProductos)
+            document.getElementById("producto").value = "Elige una opción"
+            document.getElementById("tipoMercancia").value = "Elige...."
             //document.getElementById("descripcion").value = ""
 
             setTotalUnitario(0)
@@ -312,6 +322,8 @@ function RegistroRecepcion(props) {
     // Para limpiar el formulario de detalles de producto
     const cancelarCargaProducto = () => {
         setCargaProductos(initialFormDataProductos)
+        document.getElementById("producto").value = "Elige una opción"
+        document.getElementById("tipoMercancia").value = "Elige...."
         //document.getElementById("descripcion").value = ""
 
         setTotalUnitario(0)
@@ -353,8 +365,6 @@ function RegistroRecepcion(props) {
 
     const renglon = listProductosCargados.length + 1;
 
-    console.log(cargaProductos)
-
     return (
         <>
             <Alert>
@@ -386,20 +396,69 @@ function RegistroRecepcion(props) {
                         <div className="encabezadoOrdenVenta">
 
                             <Row>
-                                <Form.Group as={Row} controlId="formGridCliente">
-                                    <Col sm="2">
-                                        <Form.Label>
-                                            Fecha
-                                        </Form.Label>
-                                    </Col>
-                                    <Col sm="4">
+                                <Form.Group as={Col} controlId="formGridCliente">
+                                    <Form.Label>
+                                        Numero de remision
+                                    </Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Folio"
+                                        name="folio"
+                                        value={folioActual}
+                                    />
+                                </Form.Group>
+
+                                <Form.Group as={Col} controlId="formGridCliente">
+                                    <Form.Label>
+                                        Fecha
+                                    </Form.Label>
+                                    <Form.Control
+                                        type="date"
+                                        placeholder="Fecha"
+                                        name="fecha"
+                                        defaultValue={formData.fecha}
+                                    />
+                                </Form.Group>
+
+                                <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                                    <Form.Label>
+                                        Orden compra
+                                    </Form.Label>
+                                    <div className="flex items-center mb-1">
                                         <Form.Control
-                                            type="date"
-                                            placeholder="Fecha"
-                                            name="fecha"
-                                            defaultValue={formData.fecha}
+                                            type="text"
+                                            placeholder="Orden de compra"
+                                            defaultValue={formDataOC.ordenCompra}
+                                            name="ordenCompra"
                                         />
-                                    </Col>
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre los productos"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarOC(
+                                                    <BuscarOC
+                                                        formData={formDataOC}
+                                                        setFormData={setFormDataOC}
+                                                        productosOC={productosOC}
+                                                        setProductosOC={setProductosOC}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        />
+                                    </div>
+                                </Form.Group>
+
+                                <Form.Group as={Col} controlId="formGridCliente">
+                                    <Form.Label>
+                                        Proveedor
+                                    </Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Proveedor"
+                                        name="nombreProveedor"
+                                        defaultValue={formDataOC.nombreProveedor}
+                                    />
                                 </Form.Group>
                             </Row>
 
@@ -429,47 +488,24 @@ function RegistroRecepcion(props) {
 
                             <Form.Group as={Col} controlId="formGridPorcentaje scrap">
                                 <Form.Label>
-                                    Orden compra
-                                </Form.Label>
-                                <div className="flex items-center mb-1">
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Orden de compra"
-                                        id="ordenCompra"
-                                        value={cargaProductos.ordenCompra}
-                                        onChange={e => cargaProductos.ordenCompra(e.target.value)}
-                                        name="ordenCompra"
-                                    />
-                                    <FontAwesomeIcon
-                                        className="cursor-pointer py-2 -ml-6"
-                                        title="Buscar entre los productos"
-                                        icon={faSearch}
-                                        onClick={() => {
-                                            buscarOC(
-                                                <BuscarOC
-                                                    formData={cargaProductos}
-                                                    setFormData={setCargaProductos}
-                                                    totalUnitario={totalUnitario}
-                                                    setTotalUnitario={setTotalUnitario}
-                                                    setShowModal={setShowModal}
-                                                />)
-                                        }}
-                                    />
-                                </div>
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridPorcentaje scrap">
-                                <Form.Label>
                                     Producto
                                 </Form.Label>
                                 <Form.Control
-                                    type="text"
-                                    placeholder="Producto"
                                     id="producto"
-                                    value={cargaProductos.producto}
-                                    onChange={e => cargaProductos.producto(e.target.value)}
+                                    as="select"
+                                    defaultValue={cargaProductos.producto}
                                     name="producto"
-                                />
+                                >
+                                    <option>Elige una opción</option>
+                                    {map(productosOC, (productos, index) => (
+                                        <option
+                                            key={index}
+                                            value={productos?.cantidad + "/" + productos?.descripcion + "/" + productos?.precio + "/" + productos?.subtotal + "/" + productos?.um}
+                                        >
+                                            {productos?.descripcion}
+                                        </option>
+                                    ))}
+                                </Form.Control>
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridCliente">
@@ -481,8 +517,7 @@ function RegistroRecepcion(props) {
                                     type="number"
                                     placeholder="Cantidad"
                                     name="cantidad"
-                                    value={cargaProductos.cantidad}
-                                    onChange={e => cargaProductos.cantidad(e.target.value)}
+                                    defaultValue={cargaProductos.cantidad}
                                 />
                             </Form.Group>
 
@@ -495,40 +530,8 @@ function RegistroRecepcion(props) {
                                     type="text"
                                     placeholder="Unidad de medida"
                                     name="um"
-                                    value={cargaProductos.um}
-                                    onChange={e => cargaProductos.um(e.target.value)}
+                                    defaultValue={cargaProductos.um}
                                 />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridCliente">
-                                <Form.Label>
-                                    Proveedor
-                                </Form.Label>
-                                <Form.Control
-                                    id="proveedor"
-                                    type="text"
-                                    placeholder="Proveedor"
-                                    name="proveedor"
-                                    value={cargaProductos.proveedor}
-                                    onChange={e => cargaProductos.proveedor(e.target.value)}
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formHorizontalNoInterno">
-                                <Form.Label>
-                                    Tipo de mercancia
-                                </Form.Label>
-                                <Form.Control
-                                    id="tipoMercancia"
-                                    as="select"
-                                    name="tipoMercancia"
-                                    value={cargaProductos.tipoMercancia}
-                                    onChange={e => cargaProductos.tipoMercancia(e.target.value)}
-                                >
-                                    <option >Elige....</option>
-                                    <option value="Material">Material</option>
-                                    <option value="Insumo">Insumo</option>
-                                </Form.Control>
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridCliente">
@@ -540,8 +543,7 @@ function RegistroRecepcion(props) {
                                     type="number"
                                     placeholder="Precio unitario"
                                     name="precioUnitario"
-                                    value={cargaProductos.precioUnitario}
-                                    onChange={e => cargaProductos.precioUnitario(e.target.value)}
+                                    defaultValue={cargaProductos.precioUnitario}
                                 />
                             </Form.Group>
 
@@ -554,10 +556,25 @@ function RegistroRecepcion(props) {
                                     type="text"
                                     placeholder="Total"
                                     name="subtotal"
-                                    onChange={(e) => { totalUnitario(e.target.value) }}
                                     value={parseFloat(cargaProductos.cantidad) * parseFloat(cargaProductos.precioUnitario)}
                                     disabled
                                 />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                <Form.Label>
+                                    Tipo de mercancia
+                                </Form.Label>
+                                <Form.Control
+                                    id="tipoMercancia"
+                                    as="select"
+                                    name="tipoMercancia"
+                                    defaultValue={cargaProductos.tipoMercancia}
+                                >
+                                    <option >Elige....</option>
+                                    <option value="Material">Material</option>
+                                    <option value="Insumo">Insumo</option>
+                                </Form.Control>
                             </Form.Group>
 
                             <Col sm="1">
@@ -614,14 +631,12 @@ function RegistroRecepcion(props) {
                                 <thead>
                                     <tr>
                                         <th scope="col">ITEM</th>
-                                        <th scope="col">Orden de compra</th>
                                         <th scope="col">Producto</th>
                                         <th scope="col">Cantidad</th>
                                         <th scope="col">U.M.</th>
-                                        <th scope="col">Proveedor</th>
-                                        <th scope="col">Tipo de mercancia</th>
                                         <th scope="col">Precio unitario</th>
                                         <th scope="col">Subtotal</th>
+                                        <th scope="col">Tipo de mercancia</th>
                                         <th scope="col">Eliminar</th>
                                     </tr>
                                 </thead>
@@ -633,9 +648,6 @@ function RegistroRecepcion(props) {
                                             <td scope="row">
                                                 {index + 1}
                                             </td>
-                                            <td data-title="ordenCompra">
-                                                {producto.ordenCompra}
-                                            </td>
                                             <td data-title="Producto">
                                                 {producto.producto}
                                             </td>
@@ -644,12 +656,6 @@ function RegistroRecepcion(props) {
                                             </td>
                                             <td data-title="um">
                                                 {producto.um}
-                                            </td>
-                                            <td data-title="proveedor">
-                                                {producto.proveedor}
-                                            </td>
-                                            <td data-title="tipoMercancia">
-                                                {producto.tipoMercancia}
                                             </td>
                                             <td data-title="precioUnitario">
                                                 {new Intl.NumberFormat('es-MX', {
@@ -662,6 +668,9 @@ function RegistroRecepcion(props) {
                                                     style: "currency",
                                                     currency: "MXN"
                                                 }).format(producto.subtotal)} MXN
+                                            </td>
+                                            <td data-title="tipoMercancia">
+                                                {producto.tipoMercancia}
                                             </td>
                                             <td data-title="Eliminar">
                                                 <div
@@ -744,50 +753,39 @@ function RegistroRecepcion(props) {
     );
 }
 
-function initialFormData(folio, fecha) {
+function initialFormData() {
     return {
-        folio: folio,
-        fechaPedido: "",
-        fechaEntrega: "",
-        cliente: "",
-        nombreCliente: "",
-        incoterms: "",
-        lugarEntrega: "",
-        especificaciones: "",
-        condicionesPago: "",
-        lugarEntrega: "",
+        fecha: "",
+    }
+}
+
+function initialFormDataOC() {
+    return {
         ordenCompra: "",
-        cotizacion: "",
-        numeroPedido: "",
-        fecha: ""
+        proveedor: "",
+        nombreProveedor: ""
     }
 }
 
 function initialFormDataProductos() {
     return {
-        ordenCompra: "",
-        producto: "",
-        cantidad: "",
-        um: "",
-        precioUnitario: "",
-        proveedor: "",
-        tipoMercancia: "",
+        cantidad: '',
+        precioUnitario: '',
+        producto: '',
+        tipoMercancia: '',
+        um: '',
     }
 }
 
 function cargaFormDataProductos(data) {
-    const { idProducto, ID, item, precioUnitario } = data;
+    const { producto, cantidad, um, precioUnitario } = data;
 
     return {
-        idProducto: idProducto,
-        ID: ID,
-        item: item,
-        cantidad: "",
-        um: "",
-        descripcion: "",
-        ordenCompra: "",
+        producto: "",
+        cantidad: cantidad,
+        um: um,
         precioUnitario: precioUnitario,
-        observaciones: ""
+        tipoMercancia: "",
     }
 }
 

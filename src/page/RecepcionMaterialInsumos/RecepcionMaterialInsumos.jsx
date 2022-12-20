@@ -147,6 +147,9 @@ function formatModelRecepciones(data) {
     data.forEach(data => {
         dataTemp.push({
             id: data._id,
+            ordenCompra: data.ordenCompra,
+            proveedor: data.proveedor,
+            nombreProveedor: data.nombreProveedor,
             folio: data.folio,
             fechaRecepcion: data.fechaRecepcion,
             precio: data.precio,

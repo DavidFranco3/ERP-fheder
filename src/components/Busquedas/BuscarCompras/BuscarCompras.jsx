@@ -13,7 +13,7 @@ import { obtenerOrdenCompra } from "../../../api/compras";
 import { toast } from "react-toastify";
 
 function BuscarCompras(props) {
-    const { setFormData, totalUnitario, formData, setTotalUnitario, setShowModal, listProductosCompras } = props;
+    const { setFormData, productosOC, formData, setProductosOC, setShowModal, listCompras } = props;
 
     // Para almacenar la informacion del formulario
     const [clienteSeleccionado, setClienteSeleccionado] = useState(initialFormData());
@@ -26,8 +26,7 @@ function BuscarCompras(props) {
 
     useEffect(() => {
         try {
-            const temp = clienteSeleccionado.seleccion.split("/")
-            obtenerOrdenCompra(temp[0]).then(response => {
+            obtenerOrdenCompra(clienteSeleccionado.seleccion).then(response => {
                 const { data } = response;
                 setValoresCliente(valoresAlmacenados(data))
             }).catch(e => {
@@ -48,22 +47,7 @@ function BuscarCompras(props) {
         setClienteSeleccionado({ ...clienteSeleccionado, [e.target.name]: e.target.value })
     }
 
-    const [datosProducto, setDatosProducto] = useState([]);
-
-    useEffect(() => {
-        const temp = clienteSeleccionado.seleccion.split("/")
-
-        // console.log(dataTemp)
-        setDatosProducto({
-            ordenCompra: temp[1],
-            producto: temp[2],
-            cantidad: temp[3],
-            um: temp[4],
-            precioUnitario: temp[5]
-        })
-        console.log(datosProducto)
-        setTotalUnitario(temp[6])
-    }, [clienteSeleccionado.seleccion]);
+    console.log(valoresCliente.productos)
 
     const onSubmit = e => {
         //e.preventDefault();
@@ -74,34 +58,33 @@ function BuscarCompras(props) {
             //console.log(formData)
             setLoading(true);
             const dataTemp = {
-                ordenCompra: datosProducto.ordenCompra,
-                producto: datosProducto.producto,
-                cantidad: datosProducto.cantidad,
-                um: datosProducto.um,
-                precioUnitario: datosProducto.precioUnitario,
-                subtotal: totalUnitario,
+                ordenCompra: valoresCliente.ordenCompra,
                 proveedor: valoresCliente.proveedor,
+                nombreProveedor: valoresCliente.nombreProveedor
             }
             setFormData(dataTemp)
+            setProductosOC(valoresCliente.productos)
+            console.log(dataTemp)
+            console.log(productosOC)
             setShowModal(false);
         }
     }
 
     const columns = [
         {
-            name: 'OC',
+            name: 'Orden de venta',
             selector: row => (
                 <>
                     <Form.Group as={Row} controlId="formHorizontalNoInterno">
                         <Col>
                             <Form.Check
-                                value={row.id + "/" + row.folio + "/" + row.descripcion + "/" + row.cantidad + "/" + row.um + "/" + row.precio +"/"+ row.subtotal}
+                                value={row.id}
                                 type="radio"
                                 //label="Paletizado"
                                 name="seleccion"
                                 onChange={onChange}
-                                id={row.id}
-                                defaultValue={clienteSeleccionado.seleccion}
+                                id={row.folio}
+                                defaultValue={formData.seleccion}
                             />
                         </Col>
                         <Col>
@@ -115,34 +98,60 @@ function BuscarCompras(props) {
             reorder: false
         },
         {
-            name: 'Producto',
-            selector: row => row.descripcion,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'UM',
-            selector: row => row.um,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Cantidad',
-            selector: row => row.cantidad,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Precio',
+            name: "Fecha de solicitud",
             selector: row => (
                 <>
-                    {row.precio ? new Intl.NumberFormat('es-MX', {
+                    {
+                        row.fechaSolicitud ?
+                            (
+                                moment(row.fechaSolicitud).format('LL')
+                            )
+                            :
+                            (
+                                "No disponible"
+                            )
+                    }
+                </>
+            ),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Proveedor",
+            selector: row => row.nombreProveedor,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Fecha de entrega",
+            selector: row => (
+                <>
+                    {
+                        row.fechaEntrega ?
+                            (
+                                moment(row.fechaEntrega).format('LL')
+                            )
+                            :
+                            (
+                                "No disponible"
+                            )
+                    }
+                </>
+            ),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Total",
+            selector: row => (
+                <>
+                    {row.total ? new Intl.NumberFormat('es-MX', {
                         style: "currency",
                         currency: "MXN"
-                    }).format(row.precio) : "No disponible"}
+                    }).format(row.total) : "No disponible"}
                     { } MXN
                 </>
             ),
@@ -151,20 +160,12 @@ function BuscarCompras(props) {
             reorder: false
         },
         {
-            name: 'Monto',
-            selector: row => (
-                <>
-                    {row.subtotal ? new Intl.NumberFormat('es-MX', {
-                        style: "currency",
-                        currency: "MXN"
-                    }).format(row.subtotal) : "No disponible"}
-                    { } MXN
-                </>
-            ),
+            name: "Autoriza",
+            selector: row => row.autoriza,
             sortable: false,
             center: true,
             reorder: false
-        },
+        }
     ];
 
     // Configurando animacion de carga
@@ -174,7 +175,7 @@ function BuscarCompras(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listProductosCompras);
+            setRows(listCompras);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -257,8 +258,8 @@ function BuscarCompras(props) {
     `;
 
 
-    const filteredItems = listProductosCompras.filter(
-        item => item.descripcion && item.descripcion.toLowerCase().includes(filterText.toLowerCase())
+    const filteredItems = listCompras.filter(
+        item => item.nombreProveedor && item.nombreProveedor.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const subHeaderComponentMemo = useMemo(() => {
@@ -275,7 +276,7 @@ function BuscarCompras(props) {
                     <Form.Control
                         id="search"
                         type="text"
-                        placeholder="Busqueda por producto"
+                        placeholder="Busqueda por proveedor"
                         aria-label="Search Input"
                         value={filterText}
                         onChange={e => setFilterText(e.target.value)}
@@ -351,13 +352,19 @@ function initialFormData() {
 
 function initialValues() {
     return {
-        proveedor: ""
+        ordenCompra: "",
+        proveedor: "",
+        nombreProveedor: "",
+        productos: ""
     }
 }
 
 function valoresAlmacenados(data) {
     return {
-        proveedor: data.nombreProveedor
+        ordenCompra: data.folio,
+        proveedor: data.proveedor,
+        nombreProveedor: data.nombreProveedor,
+        productos: data.productos
     }
 }
 

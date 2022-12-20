@@ -42,11 +42,9 @@ function ListProductosRecepcion(props) {
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Orden de compra</th>
                                             <th scope="col">Producto</th>
                                             <th scope="col">Cantidad</th>
                                             <th scope="col">U.M.</th>
-                                            <th scope="col">Proveedor</th>
                                             <th scope="col">Tipo de mercancia</th>
                                             <th scope="col">Precio unitario</th>
                                             <th scope="col">Subtotal</th>
@@ -61,9 +59,6 @@ function ListProductosRecepcion(props) {
                                                             <td scope="row">
                                                                 {index + 1}
                                                             </td>
-                                                            <td data-title="ordenCompra">
-                                                                {producto.ordenCompra}
-                                                            </td>
                                                             <td data-title="Producto">
                                                                 {producto.producto}
                                                             </td>
@@ -72,9 +67,6 @@ function ListProductosRecepcion(props) {
                                                             </td>
                                                             <td data-title="um">
                                                                 {producto.um}
-                                                            </td>
-                                                            <td data-title="proveedor">
-                                                                {producto.proveedor}
                                                             </td>
                                                             <td data-title="tipoMercancia">
                                                                 {producto.tipoMercancia}

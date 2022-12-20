@@ -14,7 +14,7 @@ import AnimacionLoading from '../../assets/json/loading.json';
 const { map } = require("lodash");
 
 function BuscarOC(props) {
-    const { setFormData, totalUnitario, setTotalUnitario, formData, setShowModal, setRefreshCheckLogin, location, history } = props;
+    const { setFormData, productosOC, setProductosOC, formData, setShowModal, setRefreshCheckLogin, location, history } = props;
 
     const enrutamiento = useHistory();
 
@@ -31,20 +31,20 @@ function BuscarOC(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-    const [listProductosCompras, setListProductosCompras] = useState(null);
+    const [listCompras, setListCompras] = useState(null);
 
     useEffect(() => {
         try {
-            listarProductosCompras().then(response => {
+            listarDeptoCompras("Compras").then(response => {
                 const { data } = response;
 
                 ///console.log(data);
 
-                if (!listProductosCompras && data) {
-                    setListProductosCompras(formatModelProductosCompras(data));
+                if (!listCompras && data) {
+                    setListCompras(formatModelCompras(data));
                 } else {
-                    const datosProductosCompras = formatModelProductosCompras(data);
-                    setListProductosCompras(datosProductosCompras);
+                    const datosCompras = formatModelCompras(data);
+                    setListCompras(datosCompras);
                 }
             }).catch(e => {
                 console.log(e)
@@ -54,26 +54,24 @@ function BuscarOC(props) {
         }
     }, [location]);
 
-    console.log(listProductosCompras)
-
     return (
         <>
 
             {
-                listProductosCompras ?
+                listCompras ?
                     (
                         <>
                             <Suspense fallback={<Spinner />}>
                                 <BuscarCompras
-                                    listProductosCompras={listProductosCompras}
+                                    listCompras={listCompras}
                                     setShowModal={setShowModal}
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
                                     formData={formData}
                                     setFormData={setFormData}
-                                    totalUnitario={totalUnitario}
-                                    setTotalUnitario={setTotalUnitario}
+                                    productosOC={productosOC}
+                                    setProductosOC={setProductosOC}
                                 />
                             </Suspense>
                         </>
@@ -97,6 +95,7 @@ function formatModelCompras(data) {
             item: data.item,
             folio: data.folio,
             proveedor: data.proveedor,
+            nombreProveedor: data.nombreProveedor,
             fechaSolicitud: data.fechaSolicitud,
             fechaEntrega: data.fechaEntrega,
             tipo: data.tipo,
