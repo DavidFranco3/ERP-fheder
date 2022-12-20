@@ -405,6 +405,7 @@ function RegistroRecepcion(props) {
                                         placeholder="Folio"
                                         name="folio"
                                         value={folioActual}
+                                        disabled
                                     />
                                 </Form.Group>
 

@@ -428,6 +428,7 @@ function ModificaRecepcion(props) {
                                         placeholder="Folio"
                                         name="folio"
                                         value={formData.folio}
+                                        disabled
                                     />
                                 </Form.Group>
 
