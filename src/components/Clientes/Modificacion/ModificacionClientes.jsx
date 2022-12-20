@@ -71,7 +71,9 @@ function ModificacionClientes(props) {
 
         try {
             const dataTempFinal = {
+                rfc: formData.rfc,
                 nombre: formData.nombre,
+                regimenFiscal: formData.regimenFiscal,
                 direccion: {
                     calle: formData.calle,
                     numeroExterior: formData.numeroExterior,
@@ -79,6 +81,8 @@ function ModificacionClientes(props) {
                     colonia: formData.colonia,
                     municipio: formData.municipio,
                     estado: formData.estado,
+                    pais: formData.pais,
+                    codigoPostal: formData.codigoPostal
                 },
                 correo: formData.correo,
                 telefonoCelular: formData.telefonoCelular,
@@ -171,9 +175,33 @@ function ModificacionClientes(props) {
                                     defaultValue={formData.correo}
                                 />
                             </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridCorreo">
+                                <Form.Label>
+                                    Regimen fiscal
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Regimen fiscal"
+                                    name="regimenFiscal"
+                                    defaultValue={formData.regimenFiscal}
+                                />
+                            </Form.Group>
                         </Row>
 
                         <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formHorizontalRFC">
+                                <Form.Label>
+                                    RFC
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Escribe el rfc"
+                                    name="rfc"
+                                    defaultValue={formData.rfc}
+                                />
+                            </Form.Group>
+
                             <Form.Group as={Col} controlId="formGridTelefonoCelular">
                                 <Form.Label>
                                     Telefono celular
@@ -238,6 +266,18 @@ function ModificacionClientes(props) {
                                     defaultValue={formData.numeroInterior}
                                 />
                             </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridNumeroInterior">
+                                <Form.Label>
+                                    Codigo postal
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Codigo postal"
+                                    name="codigoPostal"
+                                    defaultValue={formData.codigoPostal}
+                                />
+                            </Form.Group>
                         </Row>
 
                         <Row className="mb-3">
@@ -251,38 +291,38 @@ function ModificacionClientes(props) {
                                     name="estado"
                                 >
                                     <option>Elige una opción</option>
-                                    <option value="Aguascalientes" selected={formData.estado === ""}>Aguascalientes</option>
-                                    <option value="Baja California" selected={formData.estado === ""}>Baja California</option>
-                                    <option value="Baja California Sur" selected={formData.estado === ""}>Baja California Sur</option>
-                                    <option value="Campeche" selected={formData.estado === ""}>Campeche</option>
-                                    <option value="Chiapas" selected={formData.estado === ""}>Chiapas</option>
-                                    <option value="Chihuahua" selected={formData.estado === ""}>Chihuahua</option>
-                                    <option value="CDMX" selected={formData.estado === ""}>Ciudad de México</option>
-                                    <option value="Coahuila" selected={formData.estado === ""}>Coahuila</option>
-                                    <option value="Colima" selected={formData.estado === ""}>Colima</option>
-                                    <option value="Durango" selected={formData.estado === ""}>Durango</option>
-                                    <option value="Estado de México" selected={formData.estado === ""}>Estado de México</option>
-                                    <option value="Guanajuato" selected={formData.estado === ""}>Guanajuato</option>
-                                    <option value="Guerrero" selected={formData.estado === ""}>Guerrero</option>
-                                    <option value="Hidalgo" selected={formData.estado === ""}>Hidalgo</option>
-                                    <option value="Jalisco" selected={formData.estado === ""}>Jalisco</option>
-                                    <option value="Michoacán" selected={formData.estado === ""}>Michoacán</option>
-                                    <option value="Morelos" selected={formData.estado === ""}>Morelos</option>
-                                    <option value="Nayarit" selected={formData.estado === ""}>Nayarit</option>
-                                    <option value="Nuevo León" selected={formData.estado === ""}>Nuevo León</option>
-                                    <option value="Oaxaca" selected={formData.estado === ""}>Oaxaca</option>
-                                    <option value="Puebla" selected={formData.estado === ""}>Puebla</option>
+                                    <option value="Aguascalientes" selected={formData.estado === "Aguascalientes"}>Aguascalientes</option>
+                                    <option value="Baja California" selected={formData.estado === "Baja California"}>Baja California</option>
+                                    <option value="Baja California Sur" selected={formData.estado === "Baja California Sur"}>Baja California Sur</option>
+                                    <option value="Campeche" selected={formData.estado === "Campeche"}>Campeche</option>
+                                    <option value="Chiapas" selected={formData.estado === "Chiapas"}>Chiapas</option>
+                                    <option value="Chihuahua" selected={formData.estado === "Chihuahua"}>Chihuahua</option>
+                                    <option value="CDMX" selected={formData.estado === "CDMX"}>Ciudad de México</option>
+                                    <option value="Coahuila" selected={formData.estado === "Coahuila"}>Coahuila</option>
+                                    <option value="Colima" selected={formData.estado === "Colima"}>Colima</option>
+                                    <option value="Durango" selected={formData.estado === "Durango"}>Durango</option>
+                                    <option value="Estado de México" selected={formData.estado === "Estado de México"}>Estado de México</option>
+                                    <option value="Guanajuato" selected={formData.estado === "Guanajuato"}>Guanajuato</option>
+                                    <option value="Guerrero" selected={formData.estado === "Guerrero"}>Guerrero</option>
+                                    <option value="Hidalgo" selected={formData.estado === "Hidalgo"}>Hidalgo</option>
+                                    <option value="Jalisco" selected={formData.estado === "Jalisco"}>Jalisco</option>
+                                    <option value="Michoacán" selected={formData.estado === "Michoacán"}>Michoacán</option>
+                                    <option value="Morelos" selected={formData.estado === "Morelos"}>Morelos</option>
+                                    <option value="Nayarit" selected={formData.estado === "Nayarit"}>Nayarit</option>
+                                    <option value="Nuevo León" selected={formData.estado === "Nuevo León"}>Nuevo León</option>
+                                    <option value="Oaxaca" selected={formData.estado === "Oaxaca"}>Oaxaca</option>
+                                    <option value="Puebla" selected={formData.estado === "Puebla"}>Puebla</option>
                                     <option value="Querétaro" selected={formData.estado === "Querétaro"}>Querétaro</option>
-                                    <option value="Quintana Roo" selected={formData.estado === ""}>Quintana Roo</option>
-                                    <option value="San Luis Potosí" selected={formData.estado === ""}>San Luis Potosí</option>
-                                    <option value="Sinaloa" selected={formData.estado === ""}>Sinaloa</option>
-                                    <option value="Sonora" selected={formData.estado === ""}>Sonora</option>
-                                    <option value="Tabasco" selected={formData.estado === ""}>Tabasco</option>
-                                    <option value="Tamaulipas" selected={formData.estado === ""}>Tamaulipas</option>
-                                    <option value="Tlaxcala" selected={formData.estado === ""}>Tlaxcala</option>
-                                    <option value="Veracruz" selected={formData.estado === ""}>Veracruz</option>
-                                    <option value="Yucatán" selected={formData.estado === ""}>Yucatán</option>
-                                    <option value="Zacatecas" selected={formData.estado === ""}>Zacatecas</option>
+                                    <option value="Quintana Roo" selected={formData.estado === "Quintana Roo"}>Quintana Roo</option>
+                                    <option value="San Luis Potosí" selected={formData.estado === "San Luis Potosí"}>San Luis Potosí</option>
+                                    <option value="Sinaloa" selected={formData.estado === "Sinaloa"}>Sinaloa</option>
+                                    <option value="Sonora" selected={formData.estado === "Sonora"}>Sonora</option>
+                                    <option value="Tabasco" selected={formData.estado === "Tabasco"}>Tabasco</option>
+                                    <option value="Tamaulipas" selected={formData.estado === "Tamaulipas"}>Tamaulipas</option>
+                                    <option value="Tlaxcala" selected={formData.estado === "Tlaxcala"}>Tlaxcala</option>
+                                    <option value="Veracruz" selected={formData.estado === "Veracruz"}>Veracruz</option>
+                                    <option value="Yucatán" selected={formData.estado === "Yucatán"}>Yucatán</option>
+                                    <option value="Zacatecas" selected={formData.estado === "Zacatecas"}>Zacatecas</option>
                                 </Form.Control>
                             </Form.Group>
 
@@ -307,6 +347,18 @@ function ModificacionClientes(props) {
                                     placeholder="Colonia"
                                     name="colonia"
                                     defaultValue={formData.colonia}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridColonia">
+                                <Form.Label>
+                                    Pais
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Pais"
+                                    name="pais"
+                                    defaultValue={formData.pais}
                                 />
                             </Form.Group>
                         </Row>
@@ -351,6 +403,7 @@ function initialFormData() {
         curp: "",
         nss: "",
         rfc: "",
+        regimenFiscal: "",
         telefonoCelular: "",
         telefonoFijo: "",
         calle: "",
@@ -360,6 +413,7 @@ function initialFormData() {
         municipio: "",
         estado: "",
         pais: "",
+        codigoPostal: "",
         departamento: "",
         correo: "",
         password: "",
@@ -368,7 +422,7 @@ function initialFormData() {
 }
 
 function initialFormDataFinal(data) {
-    const { nombre, apellidos, curp, nss, rfc, telefonoCelular, telefonoFijo, direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais }, departamento, correo, password, tipo } = data;
+    const { nombre, apellidos, curp, nss, rfc, regimenFiscal, telefonoCelular, telefonoFijo, direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais, codigoPostal }, departamento, correo, password, tipo } = data;
 
     return {
         nombre: nombre,
@@ -376,6 +430,7 @@ function initialFormDataFinal(data) {
         curp: curp,
         nss: nss,
         rfc: rfc,
+        regimenFiscal: regimenFiscal,
         telefonoCelular: telefonoCelular,
         telefonoFijo: telefonoFijo,
         calle: calle,
@@ -385,6 +440,7 @@ function initialFormDataFinal(data) {
         municipio: municipio,
         estado: estado,
         pais: pais,
+        codigoPostal: codigoPostal,
         departamento: departamento,
         correo: correo,
         tipo: tipo,

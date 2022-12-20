@@ -209,7 +209,7 @@ function BuscarClientes(props) {
 
 
     const filteredItems = listClientes.filter(
-        item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase())
+        item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase()) || item.rfc && item.rfc.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const subHeaderComponentMemo = useMemo(() => {
@@ -226,7 +226,7 @@ function BuscarClientes(props) {
                     <Form.Control
                         id="search"
                         type="text"
-                        placeholder="Busqueda por nombre del cliente"
+                        placeholder="Busqueda por nombre del cliente o RFC"
                         aria-label="Search Input"
                         value={filterText}
                         onChange={e => setFilterText(e.target.value)}

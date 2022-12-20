@@ -47,6 +47,7 @@ function RegistroClientes(props) {
             const dataTempFinal = {
                 nombre: formData.nombre,
                 rfc: formData.rfc,
+                regimenFiscal: formData.regimenFiscal,
                 direccion: {
                     calle: formData.calle,
                     numeroExterior: formData.numeroExterior,
@@ -54,6 +55,8 @@ function RegistroClientes(props) {
                     colonia: formData.colonia,
                     municipio: formData.municipio,
                     estado: formData.estado,
+                    pais: formData.pais,
+                    codigoPostal: formData.codigoPostal
                 },
                 correo: formData.correo,
                 telefonoCelular: formData.telefonoCelular,
@@ -145,6 +148,18 @@ function RegistroClientes(props) {
                                     defaultValue={formData.correo}
                                 />
                             </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridCorreo">
+                                <Form.Label>
+                                    Regimen fiscal
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Regimen fiscal"
+                                    name="regimenFiscal"
+                                    defaultValue={formData.regimenFiscal}
+                                />
+                            </Form.Group>
                         </Row>
 
                         <Row className="mb-3">
@@ -178,15 +193,15 @@ function RegistroClientes(props) {
                                 </Form.Label>
                                 <Form.Control
                                     type="number"
-                                    placeholder="Numero interior"
-                                    name="numeroInterior"
+                                    placeholder="Telefono fijo"
+                                    name="telefonoFijo"
                                     defaultValue={formData.telefonoFijo}
                                 />
                             </Form.Group>
                         </Row>
 
                         <Row className="mb-3">
-                            <Form.Label>
+                            <Form.Label align="center">
                                 Datos del domicilio
                             </Form.Label>
                             <Form.Group as={Col} controlId="formHorizontalCalle">
@@ -222,6 +237,18 @@ function RegistroClientes(props) {
                                     placeholder="Numero interior"
                                     name="numeroInterior"
                                     defaultValue={formData.numeroInterior}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridNumeroInterior">
+                                <Form.Label>
+                                    Codigo postal
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Codigo postal"
+                                    name="codigoPostal"
+                                    defaultValue={formData.codigoPostal}
                                 />
                             </Form.Group>
                         </Row>
@@ -295,6 +322,18 @@ function RegistroClientes(props) {
                                     defaultValue={formData.colonia}
                                 />
                             </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridColonia">
+                                <Form.Label>
+                                    Pais
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Pais"
+                                    name="pais"
+                                    defaultValue={formData.pais}
+                                />
+                            </Form.Group>
                         </Row>
                         {/**/}
 
@@ -334,6 +373,7 @@ function initialFormData() {
         nombre: "",
         apellidos: "",
         rfc: "",
+        regimenFiscal: "",
         telefonoCelular: "",
         telefonoFijo: "",
         calle: "",
@@ -344,7 +384,8 @@ function initialFormData() {
         estado: "",
         pais: "",
         correo: "",
-        tipo: ""
+        tipo: "",
+        codigoPostal: ""
     }
 }
 
