@@ -315,7 +315,7 @@ function RegistroRecepcion(props) {
             setListProductosCargados(
                 [...listProductosCargados, dataTemp]
             );
-            console.log(folio)
+
             if (tipoMercancia == "Material") {
                 LogRegistroAlmacenMP(folio, temp[2], um, cantidad);
             } else {

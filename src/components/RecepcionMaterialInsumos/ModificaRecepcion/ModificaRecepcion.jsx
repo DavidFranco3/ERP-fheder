@@ -19,6 +19,7 @@ import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOC from '../../../page/BuscarOC';
 import { LogRegistroAlmacenMP } from '../../AlmacenMP/Gestion/GestionAlmacenMP';
+import { LogRegistroAlmacenGeneral } from '../../AlmacenGeneral/Gestion/GestionAlmacenGeneral';
 
 function ModificaRecepcion(props) {
     const { setRefreshCheckLogin } = props;
@@ -338,7 +339,11 @@ function ModificaRecepcion(props) {
                 [...listProductosCargados, dataTemp]
             );
 
-            LogRegistroAlmacenMP(folio, temp[2], um, cantidad);
+            if (tipoMercancia == "Material") {
+                LogRegistroAlmacenMP(folio, temp[2], um, cantidad);
+            } else {
+                LogRegistroAlmacenGeneral(folio, temp[2], um, cantidad);
+            }
 
             setCargaProductos(initialFormDataProductos)
             document.getElementById("producto").value = "Elige una opción"
