@@ -176,16 +176,37 @@ function ModificacionClientes(props) {
                                 />
                             </Form.Group>
 
-                            <Form.Group as={Col} controlId="formGridCorreo">
+                            <Form.Group as={Col} controlId="formGridEstado">
                                 <Form.Label>
                                     Regimen fiscal
                                 </Form.Label>
                                 <Form.Control
-                                    type="text"
-                                    placeholder="Regimen fiscal"
-                                    name="regimenFiscal"
+                                    as="select"
                                     defaultValue={formData.regimenFiscal}
-                                />
+                                    name="regimenFiscal"
+                                >
+                                    <option>Elige una opción</option>
+                                    <option value="601-General de Ley Personas Morales" selected={formData.regimenFiscal === "601-General de Ley Personas Morales"}>601-General de Ley Personas Morales</option>
+                                    <option value="603-Personas Morales con Fines no Lucrativos" selected={formData.regimenFiscal === "603-Personas Morales con Fines no Lucrativos"}>603-Personas Morales con Fines no Lucrativos</option>
+                                    <option value="605-Sueldos y Salarios e Ingresos Asimilados a Salarios" selected={formData.regimenFiscal === "605-Sueldos y Salarios e Ingresos Asimilados a Salarios"}>605-Sueldos y Salarios e Ingresos Asimilados a Salarios</option>
+                                    <option value="606-Arrendamiento" selected={formData.regimenFiscal === "606-Arrendamiento"}>606-Arrendamiento</option>
+                                    <option value="607-Régimen de Enajenación o Adquisición de Bienes" selected={formData.regimenFiscal === "607-Régimen de Enajenación o Adquisición de Bienes"}>607-Régimen de Enajenación o Adquisición de Bienes</option>
+                                    <option value="608-Demás ingresos" selected={formData.regimenFiscal === "608-Demás ingresos"}>608-Demás ingresos</option>
+                                    <option value="609-Consolidación" selected={formData.regimenFiscal === "609-Consolidación"}>609-Consolidación</option>
+                                    <option value="611-Ingresos por Dividendos (socios y accionistas)" selected={formData.regimenFiscal === "611-Ingresos por Dividendos (socios y accionistas)"}>611-Ingresos por Dividendos (socios y accionistas)</option>
+                                    <option value="612-Personas Físicas con Actividades Empresariales y Profesionales" selected={formData.regimenFiscal === "612-Personas Físicas con Actividades Empresariales y Profesionales"}>612-Personas Físicas con Actividades Empresariales y Profesionales</option>
+                                    <option value="614-Ingresos por intereses" selected={formData.regimenFiscal === "614-Ingresos por intereses"}>614-Ingresos por intereses</option>
+                                    <option value="615-Régimen de los ingresos por obtención de premios" selected={formData.regimenFiscal === "615-Régimen de los ingresos por obtención de premios"}>615-Régimen de los ingresos por obtención de premios</option>
+                                    <option value="616-Sin obligaciones fiscales" selected={formData.regimenFiscal === "616-Sin obligaciones fiscales"}>616-Sin obligaciones fiscales</option>
+                                    <option value="620-Sociedades Cooperativas de Producción que optan por Diferir sus Ingresos" selected={formData.regimenFiscal === "620-Sociedades Cooperativas de Producción que optan por Diferir sus Ingresos"}>620-Sociedades Cooperativas de Producción que optan por Diferir sus Ingresos</option>
+                                    <option value="621-Incorporación Fiscal" selected={formData.regimenFiscal === "621-Incorporación Fiscal"}>621-Incorporación Fiscal</option>
+                                    <option value="622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras" selected={formData.regimenFiscal === "622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras"}>622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras</option>
+                                    <option value="623-Opcional para Grupos de Sociedades" selected={formData.regimenFiscal === "623-Opcional para Grupos de Sociedades"}>623-Opcional para Grupos de Sociedades</option>
+                                    <option value="624-Coordinados" selected={formData.regimenFiscal === "624-Coordinado"}>624-Coordinados</option>
+                                    <option value="628-Hidrocarburos" selected={formData.regimenFiscal === "628-Hidrocarburos"}>628-Hidrocarburos</option>
+                                    <option value="629-De los Regímenes Fiscales Preferentes y de las Empresas Multinacionales" selected={formData.regimenFiscal === "629-De los Regímenes Fiscales Preferentes y de las Empresas Multinacionales"}>629-De los Regímenes Fiscales Preferentes y de las Empresas Multinacionales</option>
+                                    <option value="630-Enajenación de acciones en bolsa de valores" selected={formData.regimenFiscal === "630-Enajenación de acciones en bolsa de valores"}>630-Enajenación de acciones en bolsa de valores</option>
+                                </Form.Control>
                             </Form.Group>
                         </Row>
 
@@ -228,7 +249,7 @@ function ModificacionClientes(props) {
                         </Row>
 
                         <Row className="mb-3">
-                            <Form.Label>
+                            <Form.Label align="center">
                                 Datos del domicilio
                             </Form.Label>
                             <Form.Group as={Col} controlId="formHorizontalCalle">
