@@ -30,7 +30,6 @@ function BuscarInsumo(props) {
 
             obtenerInsumo(clienteSeleccionado.seleccion).then(response => {
                 const { data } = response;
-                const { cliente, nombreCliente, fechaElaboracion, fechaEntrega, productos } = data;
                 setValoresCliente(valoresAlmacenados(data))
             }).catch(e => {
                 console.log(e)
@@ -59,6 +58,7 @@ function BuscarInsumo(props) {
             //console.log(formData)
             setLoading(true);
             const dataTemp = {
+                folio: valoresCliente.folio,
                 descripcion: valoresCliente.descripcion,
                 um: valoresCliente.um,
                 proveedor: valoresCliente.proveedor,
@@ -319,6 +319,7 @@ function initialFormData() {
 function initialValues() {
     return {
         descripcion: "",
+        folio: "",
         um: "",
         proveedor: "",
         precio: ""
@@ -328,6 +329,7 @@ function initialValues() {
 function valoresAlmacenados(data) {
     return {
         descripcion: data.descripcion,
+        folio: data.folio,
         um: data.um,
         proveedor: data.proveedor,
         precio: data.precio

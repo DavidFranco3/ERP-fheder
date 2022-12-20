@@ -59,6 +59,7 @@ function BuscarMateriales(props) {
             //console.log(formData)
             setLoading(true);
             const dataTemp = {
+                folio: valoresCliente.folio,
                 idMaterial: valoresCliente.idMaterial,
                 descripcion: valoresCliente.descripcion,
                 um: valoresCliente.um,
@@ -322,6 +323,7 @@ function initialFormData() {
 function initialValues() {
     return {
         idMaterial: "",
+        folio: "",
         descripcion: "",
         um: "",
         proveedor: "",
@@ -332,6 +334,7 @@ function initialValues() {
 function valoresAlmacenados(data) {
     return {
         idMaterial: data._id,
+        folio: data.folio,
         descripcion: data.descripcion,
         um: data.um,
         proveedor: data.proveedor,

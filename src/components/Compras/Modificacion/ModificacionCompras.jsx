@@ -59,6 +59,11 @@ function ModificacionCompras(props) {
         setShowModal(true);
     }
 
+    // Para almacenar la OV
+    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
+
+    const [producto, setProducto] = useState([]);
+
     // Recupera la información de la compra
     useEffect(() => {
         try {
@@ -137,6 +142,7 @@ function ModificacionCompras(props) {
     // Para agregar productos al listado
     const addItems = () => {
         const cantidad = document.getElementById("cantidad").value
+        const folio = document.getElementById("folio").value
         const um = document.getElementById("um").value
         const descripcion = document.getElementById("descripcion").value
         const precio = document.getElementById("precio").value
@@ -146,6 +152,7 @@ function ModificacionCompras(props) {
             toast.warning("Completa la informacion del producto");
         } else {
             const dataTemp = {
+                folio: folio,
                 cantidad: cantidad,
                 um: um,
                 descripcion: descripcion,
@@ -421,6 +428,20 @@ function ModificacionCompras(props) {
 
                         <Form.Group as={Col}>
                             <Form.Label>
+                                Folio
+                            </Form.Label>
+                            <Form.Control
+                                type="text"
+                                id="folio"
+                                placeholder='Folio'
+                                name="folio"
+                                disabled
+                                defaultValue={formDataArticulos.folio}
+                            />
+                        </Form.Group>
+
+                        <Form.Group as={Col}>
+                            <Form.Label>
                                 Descripción
                             </Form.Label>
                             <div className="flex items-center mb-1">
@@ -474,6 +495,7 @@ function ModificacionCompras(props) {
                             </Form.Label>
                             <Form.Control
                                 type="text"
+                                placeholder="UM"
                                 id="um"
                                 name="um"
                                 defaultValue={formDataArticulos.um}
@@ -547,8 +569,10 @@ function ModificacionCompras(props) {
                                                 buscarOV(
                                                     <BuscarOV
                                                         setOrdenVenta={setOrdenVenta}
+                                                        setOrdenVentaPrincipal={setOrdenVentaPrincipal}
                                                         setClienteOV={setClienteOV}
                                                         setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                        setProducto={setProducto}
                                                         setShowModal={setShowModal}
                                                     />)
                                             }}
@@ -623,9 +647,10 @@ function ModificacionCompras(props) {
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Folio</th>
+                                <th scope="col">Descripción</th>
                                 <th scope="col">Cantidad</th>
                                 <th scope="col">UM</th>
-                                <th scope="col">Descripción</th>
                                 <th scope="col">Precio</th>
                                 <th scope="col">Subtotal</th>
                                 <th scope="col">Referencia</th>
@@ -640,14 +665,17 @@ function ModificacionCompras(props) {
                                     <th scope="row">
                                         {index + 1}
                                     </th>
+                                    <td data-title="Folio">
+                                        {producto.folio}
+                                    </td>
+                                    <td data-title="Descripción">
+                                        {producto.descripcion}
+                                    </td>
                                     <td data-title="Cantidad">
                                         {producto.cantidad}
                                     </td>
                                     <td data-title="UM">
                                         {producto.um}
-                                    </td>
-                                    <td data-title="Descripción">
-                                        {producto.descripcion}
                                     </td>
                                     <td data-title="Orden de compra">
                                         {new Intl.NumberFormat('es-MX', {

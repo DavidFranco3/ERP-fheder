@@ -184,6 +184,7 @@ function RegistroCompras(props) {
     // Para agregar productos al listado
     const addItems = () => {
         const cantidad = document.getElementById("cantidad").value
+        const folio = document.getElementById("folio").value
         const um = document.getElementById("um").value
         const descripcion = document.getElementById("descripcion").value
         const precio = document.getElementById("precio").value
@@ -193,6 +194,7 @@ function RegistroCompras(props) {
             toast.warning("Completa la informacion del producto");
         } else {
             const dataTemp = {
+                folio: folio,
                 cantidad: cantidad,
                 um: um,
                 descripcion: descripcion,
@@ -447,6 +449,20 @@ function RegistroCompras(props) {
 
                         <Form.Group as={Col}>
                             <Form.Label>
+                                Folio
+                            </Form.Label>
+                            <Form.Control
+                                type="text"
+                                id="folio"
+                                placeholder='Folio'
+                                name="folio"
+                                disabled
+                                defaultValue={formDataArticulos.folio}
+                            />
+                        </Form.Group>
+
+                        <Form.Group as={Col}>
+                            <Form.Label>
                                 Descripción
                             </Form.Label>
                             <div className="flex items-center mb-1">
@@ -501,6 +517,7 @@ function RegistroCompras(props) {
                             <Form.Control
                                 type="text"
                                 id="um"
+                                placeholder="UM"
                                 name="um"
                                 defaultValue={formDataArticulos.um}
                             />
@@ -650,9 +667,10 @@ function RegistroCompras(props) {
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Folio</th>
+                                <th scope="col">Descripción</th>
                                 <th scope="col">Cantidad</th>
                                 <th scope="col">UM</th>
-                                <th scope="col">Descripción</th>
                                 <th scope="col">Precio</th>
                                 <th scope="col">Subtotal</th>
                                 <th scope="col">Referencia</th>
@@ -667,14 +685,17 @@ function RegistroCompras(props) {
                                     <th scope="row">
                                         {index + 1}
                                     </th>
+                                    <td data-title="Folio">
+                                        {producto.folio}
+                                    </td>
+                                    <td data-title="Descripción">
+                                        {producto.descripcion}
+                                    </td>
                                     <td data-title="Cantidad">
                                         {producto.cantidad}
                                     </td>
                                     <td data-title="UM">
                                         {producto.um}
-                                    </td>
-                                    <td data-title="Descripción">
-                                        {producto.descripcion}
                                     </td>
                                     <td data-title="Orden de compra">
                                         {new Intl.NumberFormat('es-MX', {
@@ -806,6 +827,7 @@ function initialProveedor() {
 function initialFormDataArticulos() {
     return {
         cantidad: "",
+        folio: "",
         um: "",
         descripcion: "",
         precio: "",

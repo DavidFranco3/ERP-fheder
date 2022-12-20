@@ -18,6 +18,7 @@ import { LogRegistroPlaneacion } from "../../Planeacion/Gestion/GestionPlaneacio
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOC from '../../../page/BuscarOC';
+import { LogRegistroAlmacenMP } from '../../AlmacenMP/Gestion/GestionAlmacenMP';
 
 function ModificaRecepcion(props) {
     const { setRefreshCheckLogin } = props;
@@ -290,9 +291,10 @@ function ModificaRecepcion(props) {
         setProductoCargado(cargaProductos.producto)
         const dataTempProductos = productoCargado.split("/")
         const dataTemp = {
-            cantidad: dataTempProductos[0],
-            um: dataTempProductos[3],
-            precioUnitario: dataTempProductos[2],
+            folio: dataTempProductos[0],
+            cantidad: dataTempProductos[1],
+            um: dataTempProductos[5],
+            precioUnitario: dataTempProductos[3],
         }
         setCargaProductos(cargaFormDataProductos(dataTemp))
     }, [cargaProductos.producto]);
@@ -309,6 +311,7 @@ function ModificaRecepcion(props) {
     }
 
     const addItems = () => {
+        const folio = document.getElementById("folio").value
         const producto = document.getElementById("producto").value
         const cantidad = document.getElementById("cantidad").value
         const um = document.getElementById("um").value
@@ -321,7 +324,8 @@ function ModificaRecepcion(props) {
             const temp = producto.split("/");
 
             const dataTemp = {
-                producto: temp[1],
+                folio: folio,
+                producto: temp[2],
                 cantidad: cantidad,
                 um: um,
                 tipoMercancia: tipoMercancia,
@@ -333,6 +337,9 @@ function ModificaRecepcion(props) {
             setListProductosCargados(
                 [...listProductosCargados, dataTemp]
             );
+
+            LogRegistroAlmacenMP(folio, temp[2], um, cantidad);
+
             setCargaProductos(initialFormDataProductos)
             document.getElementById("producto").value = "Elige una opción"
             document.getElementById("tipoMercancia").value = "Elige...."
@@ -510,6 +517,20 @@ function ModificaRecepcion(props) {
                                 />
                             </Form.Group>
 
+                            <Form.Group as={Col} controlId="formGridCliente">
+                                <Form.Label>
+                                    Folio
+                                </Form.Label>
+                                <Form.Control
+                                    id="folio"
+                                    type="text"
+                                    placeholder="Folio"
+                                    name="folio"
+                                    defaultValue={cargaProductos.folio}
+                                    disabled
+                                />
+                            </Form.Group>
+
                             <Form.Group as={Col} controlId="formGridPorcentaje scrap">
                                 <Form.Label>
                                     Producto
@@ -524,7 +545,7 @@ function ModificaRecepcion(props) {
                                     {map(productosOC, (productos, index) => (
                                         <option
                                             key={index}
-                                            value={productos?.cantidad + "/" + productos?.descripcion + "/" + productos?.precio + "/" + productos?.subtotal + "/" + productos?.um}
+                                            value={productos?.folio +"/"+ productos?.cantidad + "/" + productos?.descripcion + "/" + productos?.precio + "/" + productos?.subtotal + "/" + productos?.um}
                                         >
                                             {productos?.descripcion}
                                         </option>
@@ -654,7 +675,8 @@ function ModificaRecepcion(props) {
                             >
                                 <thead>
                                     <tr>
-                                        <th scope="col">ITEM</th>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Folio</th>
                                         <th scope="col">Producto</th>
                                         <th scope="col">Cantidad</th>
                                         <th scope="col">U.M.</th>
@@ -671,6 +693,9 @@ function ModificaRecepcion(props) {
                                         <tr key={index}>
                                             <td scope="row">
                                                 {index + 1}
+                                            </td>
+                                            <td data-title="Folio">
+                                                {producto.folio}
                                             </td>
                                             <td data-title="Producto">
                                                 {producto.producto}
@@ -810,6 +835,7 @@ function cargaFormDataOC(data) {
 function initialFormDataProductos() {
     return {
         cantidad: '',
+        folio: '',
         precioUnitario: '',
         producto: '',
         tipoMercancia: '',
@@ -818,10 +844,11 @@ function initialFormDataProductos() {
 }
 
 function cargaFormDataProductos(data) {
-    const { producto, cantidad, um, precioUnitario } = data;
+    const { producto, folio, cantidad, um, precioUnitario } = data;
 
     return {
         producto: "",
+        folio: folio,
         cantidad: cantidad,
         um: um,
         precioUnitario: precioUnitario,
