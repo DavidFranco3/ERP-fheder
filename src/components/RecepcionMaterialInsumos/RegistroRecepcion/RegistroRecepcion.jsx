@@ -318,10 +318,10 @@ function RegistroRecepcion(props) {
 
             if (tipoMercancia == "Material") {
                 LogRegistroAlmacenMP(folio, temp[2], um, cantidad);
-                LogRegistroMovimientoAlmacenMP(formData.fecha, folio, temp[2], um, cantidad)
+                LogRegistroMovimientoAlmacenMP(formData.fecha, folio, temp[2], um, cantidad);
             } else {
                 LogRegistroAlmacenGeneral(folio, temp[2], um, cantidad);
-                LogRegistroMovimientoAlmacenGeneral(formData.fecha, folio, temp[2], um, cantidad)
+                LogRegistroMovimientoAlmacenGeneral(formData.fecha, folio, temp[2], um, cantidad);
             }
 
             setCargaProductos(initialFormDataProductos)

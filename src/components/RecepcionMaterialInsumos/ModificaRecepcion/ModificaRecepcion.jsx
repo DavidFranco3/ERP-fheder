@@ -18,8 +18,8 @@ import { LogRegistroPlaneacion } from "../../Planeacion/Gestion/GestionPlaneacio
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOC from '../../../page/BuscarOC';
-import { LogRegistroAlmacenMP } from '../../AlmacenMP/Gestion/GestionAlmacenMP';
-import { LogRegistroAlmacenGeneral } from '../../AlmacenGeneral/Gestion/GestionAlmacenGeneral';
+import { LogRegistroAlmacenMP, LogRegistroMovimientoAlmacenMP } from '../../AlmacenMP/Gestion/GestionAlmacenMP';
+import { LogRegistroAlmacenGeneral, LogRegistroMovimientoAlmacenGeneral } from '../../AlmacenGeneral/Gestion/GestionAlmacenGeneral';
 
 function ModificaRecepcion(props) {
     const { setRefreshCheckLogin } = props;
@@ -341,8 +341,10 @@ function ModificaRecepcion(props) {
 
             if (tipoMercancia == "Material") {
                 LogRegistroAlmacenMP(folio, temp[2], um, cantidad);
+                LogRegistroMovimientoAlmacenMP(formData.fecha, folio, temp[2], um, cantidad);
             } else {
                 LogRegistroAlmacenGeneral(folio, temp[2], um, cantidad);
+                LogRegistroMovimientoAlmacenGeneral(formData.fecha, folio, temp[2], um, cantidad);
             }
 
             setCargaProductos(initialFormDataProductos)
