@@ -1,6 +1,7 @@
 import { API_HOST } from "../utils/constants";
 import {
     ENDPOINTRegistroInicialAlmacenMP,
+    ENDPOINTRegistroGestionAlmacenMP,
     ENDPOINTListarAlmacenMP,
     ENDPOINTObtenerFolioAlmacenMP,
     ENDPOINTListarPaginandoAlmacenMP,
@@ -29,6 +30,19 @@ export async function registroInicialAlmacenMP(data) {
     };
 
     return await axios.post(API_HOST + ENDPOINTRegistroInicialAlmacenMP, data, config);
+}
+
+// Registro inicial de almacen de materia prima
+export async function registroGestionAlmacenMP(data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.post(API_HOST + ENDPOINTRegistroGestionAlmacenMP, data, config);
 }
 
 // Obten el total de registros de la colección

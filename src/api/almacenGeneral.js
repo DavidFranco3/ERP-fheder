@@ -1,6 +1,7 @@
 import { API_HOST } from "../utils/constants";
 import {
     ENDPOINTRegistroAlmacenGeneral,
+    ENDPOINTRegistroGestionAlmacenGeneral,
     ENDPOINTListarAlmacenGeneral,
     ENDPOINTObtenerFolioAlmacenGeneral,
     ENDPOINTListarPaginandoAlmacenGeneral,
@@ -11,7 +12,8 @@ import {
     ENDPOINTActualizarAlmacenGeneral,
     ENDPOINTRegistraMovimientosAlmacenGeneral,
     ENDPOINTModificaExistenciasAlmacenGeneral,
-    ENDPOINTObtenerDatosxFolioAlmacenGeneral
+    ENDPOINTObtenerDatosxFolioAlmacenGeneral,
+    ENDPOINTObtenerDatosxFolioInsumo
 } from "./endpoints";
 import axios from 'axios';
 import { getTokenApi } from "./auth";
@@ -27,6 +29,19 @@ export async function registraAlmacenGeneral(data) {
     };
 
     return await axios.post(API_HOST + ENDPOINTRegistroAlmacenGeneral, data, config);
+}
+
+// Registro en el almacen general
+export async function registraGestionAlmacenGeneral(data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.post(API_HOST + ENDPOINTRegistroGestionAlmacenGeneral, data, config);
 }
 
 // Listar completa los elementos del almacen general
@@ -164,4 +179,16 @@ export async function obtenerDatosxFolioAlmacenGeneral(dato) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTObtenerDatosxFolioAlmacenGeneral + `/${dato}`, config);
+}
+
+// Obtener toda la información de un articulo segun el folio del almacen especificado -- ENDPOINTObtenerDatosxFolioAlmacenGeneral
+export async function obtenerDatosxFolioInsumo(folioInsumo) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTObtenerDatosxFolioInsumo + `/${folioInsumo}`, config);
 }

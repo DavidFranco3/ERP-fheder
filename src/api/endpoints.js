@@ -574,6 +574,7 @@ export const ENDPOINTTotalPlaneacion = "/planeacion/total"
 
 // Almacen MP
 export const ENDPOINTRegistroInicialAlmacenMP = "/almacenMP/registroInicial"
+export const ENDPOINTRegistroGestionAlmacenMP = "/almacenMP/registroGestion"
 export const ENDPOINTListarAlmacenMP = "/almacenMP/listar"
 export const ENDPOINTObtenerFolioAlmacenMP = "/almacenMP/obtenerFolio"
 export const ENDPOINTObtenerItemAlmacenMP = "/almacenMP/obtenerItem";
@@ -604,6 +605,7 @@ export const ENDPOINTModificaExistenciasAlmacenPT = "/almacenPT/modificaExistenc
 
 // Almacen General
 export const ENDPOINTRegistroAlmacenGeneral = "/almacenGeneral/registroInicial"
+export const ENDPOINTRegistroGestionAlmacenGeneral = "/almacenGeneral/registroGestion"
 export const ENDPOINTListarAlmacenGeneral = "/almacenGeneral/listar"
 export const ENDPOINTObtenerFolioAlmacenGeneral = "/almacenGeneral/obtenerFolio"
 export const ENDPOINTListarPaginandoAlmacenGeneral = "/almacenGeneral/listarPaginando"
@@ -615,6 +617,7 @@ export const ENDPOINTActualizarAlmacenGeneral = "/almacenGeneral/actualizarEstad
 export const ENDPOINTRegistraMovimientosAlmacenGeneral = "/almacenGeneral/registraMovimientos"
 export const ENDPOINTModificaExistenciasAlmacenGeneral = "/almacenGeneral/modificaExistencias"
 export const ENDPOINTObtenerDatosxFolioAlmacenGeneral = "/almacenGeneral/obtenerDatosAG"
+export const ENDPOINTObtenerDatosxFolioInsumo = "/almacenGeneral/obtenerDatosFolioInsumo"
 
 // Movimientos Almacen MP
 export const ENDPOINTRegistroMovimientosAMP = "/movimientosAMP/registroInicial"

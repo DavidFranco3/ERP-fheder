@@ -4,8 +4,6 @@ import {
     listarAlmacenGeneral,
     obtenerDatosAlmacenGeneral,
     obtenerDatosxFolioAlmacenGeneral,
-    obtenerFolioActualAlmacenGeneral,
-    registraAlmacenGeneral,
     registraMovimientosAlmacenGeneral,
 } from "../../../api/almacenGeneral";
 import {map, size, values} from "lodash";

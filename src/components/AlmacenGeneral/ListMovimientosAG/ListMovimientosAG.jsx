@@ -18,7 +18,14 @@ function ListMovimientosAg(props) {
 
     const columns = [
         {
-            name: ' UM',
+            name: 'Insumo',
+            selector: row => row.materiaPrima,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'UM',
             selector: row => row.um,
             sortable: false,
             center: true,
@@ -59,27 +66,6 @@ function ListMovimientosAg(props) {
             center: true,
             reorder: false
         },
-        {
-            name: 'Existencias para OV',
-            selector: row => row.existenciasOV,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Existencias stock',
-            selector: row => row.existenciasStock,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Existencias totales',
-            selector: row => row.existenciasTotales,
-            sortable: false,
-            center: true,
-            reorder: false
-        }
     ];
 
     // Configurando animacion de carga

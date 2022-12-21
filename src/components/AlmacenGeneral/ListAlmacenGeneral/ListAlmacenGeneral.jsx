@@ -127,33 +127,6 @@ function ListAlmacenGeneral(props) {
             reorder: false
         },
         {
-            name: "Cantidad",
-            selector: row => (
-                <>
-                    {
-                        row.movimientos.length !== 0 ?
-                            (
-                                <>
-                                    {/* Cantidad del ultimo movimiento */}
-                                    <CantidadUltimoMovimientoAG
-                                        movimientos={row.movimientos}
-                                    />
-                                </>
-                            )
-                            :
-                            (
-                                <>
-                                    No hay movimientos
-                                </>
-                            )
-                    }
-                </>
-            ),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
             name: "Existencias Totales",
             selector: row => row.existenciasTotales,
             sortable: false,

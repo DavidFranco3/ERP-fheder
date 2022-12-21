@@ -1,4 +1,4 @@
-import { obtenerFolioActualAlmacenMP, registroInicialAlmacenMP, obtenerItem } from "../../../api/almacenMP";
+import { obtenerFolioActualAlmacenMP, registroGestionAlmacenMP, obtenerItem, obtenerDatosMP, listarAlmacenMP, listarMovimientosAlmacenMP, obtenerDatosAlmacenMPFolio, registraMovimientosAlmacenMP } from "../../../api/almacenMP";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 // Para definir el registro de la información inicial de la planeación -- Metodo desarrollado para funcionalidad interno en registro de ventas
@@ -26,7 +26,7 @@ export function LogRegistroAlmacenMP(folioMP, nombreMP, um, cantidadExistencia) 
                 }
                 // console.log(dataTemp)
 
-                registroInicialAlmacenMP(dataTemp).then(response => {
+                registroGestionAlmacenMP(dataTemp).then(response => {
                     const { data } = response;
                     const { mensaje, datos } = data;
                     const { folioAlmacen, _id } = datos
@@ -35,6 +35,57 @@ export function LogRegistroAlmacenMP(folioMP, nombreMP, um, cantidadExistencia) 
 
                 }).catch(e => {
                     console.log(e)
+                })
+            }).catch(e => {
+                console.log(e)
+            })
+        }).catch(e => {
+            console.log(e)
+        })
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+// Para definir el registro de la información inicial de la planeación -- Metodo desarrollado para funcionalidad interno en registro de ventas
+export function LogRegistroMovimientoAlmacenMP(fecha, folioMP, nombreMP, um, cantidad) {
+    try {
+        obtenerDatosMP(folioMP).then(response => {
+            const { data } = response;
+            const { _id, folioAlmacen, cantidadExistencia } = data;
+
+            listarMovimientosAlmacenMP(folioAlmacen).then(response => {
+                const { data } = response;
+
+                const nuevaExistenciaTotal = parseInt(cantidadExistencia) + parseInt(cantidad)
+
+                const dataMovimiento = {
+                    fecha: fecha,
+                    materiaPrima: nombreMP,
+                    um: um,
+                    tipo: "Entrada",
+                    referencia: "No disponible",
+                    ordenVenta: "No disponible",
+                    lote: "No disponible",
+                    descripcion: "No disponible",
+                    cantidadExistencia: cantidad,
+                }
+
+                const finalEntrada = data.concat(dataMovimiento)
+
+                const dataTempFinal = {
+                    fecha: fecha,
+                    movimientos: finalEntrada,
+                    cantidadExistencia: nuevaExistenciaTotal.toString()
+                }
+
+                registraMovimientosAlmacenMP(_id, dataTempFinal).then(response => {
+                    const { data } = response;
+
+                    //LogTrackingActualizacion(ordenVenta, "En almacen de materia prima", "5")
+                    //console.log(response)
+                    const { mensaje, datos } = data;
+                    LogsInformativos(`Se han actualizado el movimiento de la materia prima ${data.folioAlmacen}`, datos)
                 })
             }).catch(e => {
                 console.log(e)

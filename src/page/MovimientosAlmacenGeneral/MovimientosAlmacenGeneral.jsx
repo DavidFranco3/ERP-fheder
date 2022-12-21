@@ -106,6 +106,7 @@ function formatModelMovimientosAG(data) {
         dataTemp.push({
             id: data._id,
             folio: data.folio,
+            materiaPrima: data.materiaPrima,
             folioAG: data.folioAG,
             um: data.um,
             tipo: data.tipo,
