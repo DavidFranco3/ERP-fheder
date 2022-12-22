@@ -256,9 +256,10 @@ function ModificaMatrizProductos(props) {
                     porcentajeMolido: formData.porcentajeMolido
                 },
                 materiaPrima: {
+                    folioMaterial: dataMaterial.descripcion == "" ? temp2[2] : dataMaterial.folio,
                     idMaterial: dataMaterial.descripcion == "" ? temp2[0] : dataMaterial.idMaterial,
                     descripcion: dataMaterial.descripcion == "" ? temp2[1] : dataMaterial.descripcion,
-
+                    precioMaterial: dataMaterial.descripcion == "" ? temp2[3] : dataMaterial.precioUnitario,
                 },
                 pigmentoMasterBach: {
                     descripcion: dataPigmento.descripcionPigmento == "" ? formData.descripcionPigmento : dataPigmento.descripcionPigmento,
@@ -1237,7 +1238,9 @@ function initialClientes() {
 function initialMaterial() {
     return {
         idMaterial: "",
-        descripcion: ""
+        folio: "",
+        descripcion: "",
+        precioUnitario: ""
     }
 }
 
@@ -1275,7 +1278,7 @@ function valoresAlmacenados(data) {
         pesoTotalInyeccion: data.datosPieza.pesoTotalInyeccion,
         porcentajeScrap: data.datosPieza.porcentajeScrap,
         porcentajeMolido: data.datosPieza.porcentajeMolido,
-        descripcionMP: data.materiaPrima.idMaterial + "/" + data.materiaPrima.descripcion,
+        descripcionMP: data.materiaPrima.idMaterial + "/" + data.materiaPrima.descripcion +"/"+ data.materiaPrima.folioMaterial +"/"+ data.materiaPrima.precioMaterial,
         descripcionPigmento: data.pigmentoMasterBach.descripcion,
         aplicacionGxKG: data.pigmentoMasterBach.aplicacionGxKG,
         proveedor: data.pigmentoMasterBach.proveedor + "/" + data.pigmentoMasterBach.nombreProveedor,

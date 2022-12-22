@@ -175,28 +175,30 @@ function ModificaRequisiciones(props) {
 
     // Para agregar productos al listado
     const addItems = () => {
+        const folio = document.getElementById("folio").value
         const cantidad = document.getElementById("cantidad").value
         const um = document.getElementById("um").value
         const descripcion = document.getElementById("descripcion").value
-        const proveedor = document.getElementById("proveedor").value
         const referencia = document.getElementById("referencia").value
+        const precioUnitario = document.getElementById("precioUnitario").value
 
-        if (!cantidad || !um || !descripcion || !proveedor || !referencia) {
+        if (!cantidad || !um || !descripcion || !precioUnitario || !referencia) {
             toast.warning("Completa la informacion del producto");
         } else {
             const dataTemp = {
+                folio: folio,
                 cantidad: cantidad,
                 um: um,
                 descripcion: descripcion,
-                proveedor: proveedor,
                 referencia: referencia,
+                precioUnitario: precioUnitario,
+                subtotal: parseFloat(precioUnitario) * parseFloat(cantidad)
             }
 
             setListProductosCargados(
                 [...listProductosCargados, dataTemp]
             );
 
-            //setCargaProductos(initialFormDataProductos)
             setFormDataArticulos(initialFormDataArticulos)
             //setCargaProductos(initialFormDataProductos)
             document.getElementById("cantidad").value = "0"
@@ -281,6 +283,7 @@ function ModificaRequisiciones(props) {
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataArticulos({ ...formDataArticulos, [e.target.name]: e.target.value })
     }
 
     const renglon = listProductosCargados.length + 1;
@@ -457,9 +460,23 @@ function ModificaRequisiciones(props) {
                             />
                         </Form.Group>
 
+                        <Form.Group as={Col} controlId="formGridCliente">
+                            <Form.Label>
+                                Folio
+                            </Form.Label>
+                            <Form.Control
+                                id="folio"
+                                type="text"
+                                placeholder="Folio"
+                                name="folio"
+                                defaultValue={formDataArticulos.folio}
+                                disabled
+                            />
+                        </Form.Group>
+
                         <Form.Group as={Col}>
                             <Form.Label>
-                                Producto y/o servicio
+                                Descripcion
                             </Form.Label>
                             <div className="flex items-center mb-1">
                                 <Form.Control
@@ -512,6 +529,7 @@ function ModificaRequisiciones(props) {
                             </Form.Label>
                             <Form.Control
                                 type="text"
+                                placeholder="UM"
                                 id="um"
                                 name="um"
                                 defaultValue={formDataArticulos.um}
@@ -532,15 +550,30 @@ function ModificaRequisiciones(props) {
                             />
                         </Form.Group>
 
-                        <Form.Group as={Col}>
+                        <Form.Group as={Col} controlId="formGridCliente">
                             <Form.Label>
-                                Proveedor sugerido
+                                Precio
                             </Form.Label>
                             <Form.Control
-                                id="proveedor"
+                                id="precioUnitario"
+                                type="number"
+                                placeholder="Precio unitario"
+                                name="precioUnitario"
+                                defaultValue={formDataArticulos.precioUnitario}
+                            />
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridCliente">
+                            <Form.Label>
+                                Subtotal
+                            </Form.Label>
+                            <Form.Control
+                                id="subtotal"
                                 type="text"
-                                defaultValue={formDataArticulos.proveedor}
-                                name="proveedor"
+                                placeholder="Total"
+                                name="subtotal"
+                                value={parseFloat(formDataArticulos.cantidad) * parseFloat(formDataArticulos.precioUnitario)}
+                                disabled
                             />
                         </Form.Group>
 
@@ -656,10 +689,12 @@ function ModificaRequisiciones(props) {
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Producto y/o servicio</th>
+                                <th scope="col">Folio</th>
+                                <th scope="col">Descripcion</th>
                                 <th scope="col">UM</th>
                                 <th scope="col">Cantidad</th>
-                                <th scope="col">Proveedor</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Subtotal</th>
                                 <th scope="col">Referencia</th>
                                 <th scope="col">Eliminar</th>
                             </tr>
@@ -669,9 +704,12 @@ function ModificaRequisiciones(props) {
                         <tbody>
                             {map(listProductosCargados, (producto, index) => (
                                 <tr key={index}>
-                                    <th scope="row">
+                                    <td scope="row">
                                         {index + 1}
-                                    </th>
+                                    </td>
+                                    <td data-title="Folio">
+                                        {producto.folio}
+                                    </td>
                                     <td data-title="Cantidad">
                                         {producto.descripcion}
                                     </td>
@@ -681,8 +719,23 @@ function ModificaRequisiciones(props) {
                                     <td data-title="Descripción">
                                         {producto.cantidad}
                                     </td>
-                                    <td data-title="Proveedor">
-                                        {producto.proveedor}
+                                    <td data-title="Precio unitario">
+                                        <>
+                                            {producto.precioUnitario ? new Intl.NumberFormat('es-MX', {
+                                                style: "currency",
+                                                currency: "MXN"
+                                            }).format(producto.precioUnitario) : "No disponible"}
+                                            { } MXN
+                                        </>
+                                    </td>
+                                    <td data-title="Subtotal">
+                                        <>
+                                            {producto.subtotal ? new Intl.NumberFormat('es-MX', {
+                                                style: "currency",
+                                                currency: "MXN"
+                                            }).format(producto.subtotal) : "No disponible"}
+                                            { } MXN
+                                        </>
                                     </td>
                                     <td data-title="Referencia">
                                         {producto.referencia}
@@ -831,11 +884,13 @@ function valoresAlmacenados(data) {
 
 function initialFormDataArticulos() {
     return {
+        folio: "",
         cantidad: "",
         um: "",
         descripcion: "",
         referencia: "",
         proveedor: "",
+        precioUnitario: ""
     }
 }
 

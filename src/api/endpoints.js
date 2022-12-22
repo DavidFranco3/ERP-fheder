@@ -268,6 +268,7 @@ export const ENDPOINTListarRequisicion = "/requisicion/listar";
 export const ENDPOINTListarPaginandoRequisicion = "/requisicion/listarPaginando";
 export const ENDPOINTListarPorDepartamento = "/requisicion/listarDepartamento";
 export const ENDPOINTObtenerRequisicion = "/requisicion/obtener";
+export const ENDPOINTObtenerDatosRequisicion = "/requisicion/obtenerDatos";
 export const ENDPOINTObtenerNoRequisicion = "/requisicion/obtenerNoRequisicion";
 export const ENDPOINTObtenerItemRequisicion = "/requisicion/obtenerItem";
 export const ENDPOINTEliminarRequisicion = "/requisicion/eliminar";

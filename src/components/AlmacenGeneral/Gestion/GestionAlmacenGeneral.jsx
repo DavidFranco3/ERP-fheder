@@ -33,7 +33,7 @@ export function LogRegistroAlmacenGeneral(folioInsumo, nombreInsumo, um, cantida
                     const { mensaje, datos } = data;
                     const { folio, _id } = datos
                     //console.log("se ha registrado la materia prima en el almacen")
-                    LogsInformativos(`Se ha registrado el insumo en el almacen general ${folio}`, datos)
+                    LogsInformativos(`Se ha registrado el insumo en el almacen general ${folio}`, datos);
 
                 }).catch(e => {
                     console.log(e)

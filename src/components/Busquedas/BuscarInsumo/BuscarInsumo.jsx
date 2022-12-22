@@ -62,7 +62,7 @@ function BuscarInsumo(props) {
                 descripcion: valoresCliente.descripcion,
                 um: valoresCliente.um,
                 proveedor: valoresCliente.proveedor,
-                precio: valoresCliente.precio
+                precioUnitario: valoresCliente.precio
             }
             setFormData(dataTemp)
             setShowModal(false);

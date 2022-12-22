@@ -3,6 +3,7 @@ import { Alert, Badge, Button, Col, Form, Row, Spinner, Container } from "react-
 import { useHistory, useParams } from "react-router-dom";
 import { map, size, values } from "lodash";
 import { actualizaOrdenCompra, obtenerDatosCompra } from "../../../api/compras";
+import { obtenerDatosRequisiciones } from "../../../api/requisicion";
 import { listarProveedores } from "../../../api/proveedores";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -14,6 +15,7 @@ import BasicModal from "../../Modal/BasicModal";
 import BuscarMaterial from '../../../page/BuscarMaterial';
 import BuscarInsumos from '../../../page/BuscarInsumos';
 import BuscarOV from '../../../page/BuscarOV';
+import BuscarRequisicion from '../../../page/BuscarRequisicion';
 
 function ModificacionCompras(props) {
     const { setRefreshCheckLogin } = props;
@@ -26,6 +28,11 @@ function ModificacionCompras(props) {
         enrutamiento.push("/Compras")
     }
 
+    // Para guardar los datos del formulario
+    const [formDataOC, setFormDataOC] = useState(initialFormDataOC());
+
+    const [productosRequisicion, setProductosRequisicion] = useState();
+
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
     const [contentModal, setContentModal] = useState(null);
@@ -34,6 +41,13 @@ function ModificacionCompras(props) {
     // Para la eliminacion fisica de usuarios
     const buscarProveedor = (content) => {
         setTitulosModal("Buscar proveedor");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarRequisicion = (content) => {
+        setTitulosModal("Buscar requisicion");
         setContentModal(content);
         setShowModal(true);
     }
@@ -72,6 +86,7 @@ function ModificacionCompras(props) {
                 // console.log(data)
                 const { fechaSolicitud, proveedor, nombreProveedor, tipoCompra, fechaEntrega, autoriza, productos } = data;
                 setListProductosCargados(productos)
+                setFormDataOC(cargaFormDataOC(data))
                 setFormData(dataCompras(fechaSolicitud, proveedor, nombreProveedor, tipoCompra, fechaEntrega, autoriza, productos))
             }).catch(e => {
                 console.log(e)
@@ -80,6 +95,22 @@ function ModificacionCompras(props) {
             console.log(e)
         }
     }, []);
+
+    // Recupera la información de la compra
+    useEffect(() => {
+        try {
+            obtenerDatosRequisiciones(formDataOC.requisicion).then(response => {
+                const { data } = response;
+                // console.log(data)
+                const { productosSolicitados } = data;
+                setProductosRequisicion(productosSolicitados)
+                }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataOC.requisicion]);
 
 
     // Define el uso de los parametros
@@ -151,11 +182,13 @@ function ModificacionCompras(props) {
         if (!cantidad || !um || !descripcion || !precio || !referencia) {
             toast.warning("Completa la informacion del producto");
         } else {
+            const temp = descripcion.split("/");
+            
             const dataTemp = {
                 folio: folio,
                 cantidad: cantidad,
                 um: um,
-                descripcion: descripcion,
+                descripcion: temp[2],
                 precio: precio,
                 referencia: referencia,
                 subtotal: parseInt(cantidad) * parseInt(precio)
@@ -166,12 +199,15 @@ function ModificacionCompras(props) {
                 [...listProductosCargados, dataTemp]
             );
 
+            // Actualizacion del tracking
+            //LogTrackingActualizacion(referencia, "En orden de compra", "3")
+
             //setCargaProductos(initialFormDataProductos)
             setFormDataArticulos(initialFormDataArticulos)
+            document.getElementById("descripcion").value = "Elige una opción"
             //setCargaProductos(initialFormDataProductos)
-            document.getElementById("cantidad").value = "0"
-            setOrdenVenta("")
-            setTotalUnitario(0)
+            //document.getElementById("cantidad").value = "0"
+
         }
     }
 
@@ -179,10 +215,8 @@ function ModificacionCompras(props) {
     const cancelarCargaProducto = () => {
         //setCargaProductos(initialFormDataProductos)
         setFormDataArticulos(initialFormDataArticulos)
+        document.getElementById("descripcion").value = "Elige una opción"
         //setCargaProductos(initialFormDataProductos)
-        document.getElementById("cantidad").value = "0"
-        setOrdenVenta("")
-        setTotalUnitario(0)
     }
 
     // Para eliminar productos del listado
@@ -281,7 +315,23 @@ function ModificacionCompras(props) {
     // Define el uso del cambio de informacion
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataArticulos({ ...formDataArticulos, [e.target.name]: e.target.value })
     }
+
+    const [productoCargado, setProductoCargado] = useState("");
+
+    useEffect(() => {
+        setProductoCargado(formDataArticulos.descripcion)
+        const dataTempProductos = productoCargado.split("/")
+        const dataTemp = {
+            folio: dataTempProductos[0],
+            cantidad: dataTempProductos[1],
+            um: dataTempProductos[5],
+            precioUnitario: dataTempProductos[3],
+            referencia: dataTempProductos[6]
+        }
+        setFormDataArticulos(cargaFormDataArticulos(dataTemp))
+    }, [formDataArticulos.descripcion]);
 
     return (
         <>
@@ -323,6 +373,35 @@ function ModificacionCompras(props) {
                                 defaultValue={folio}
                                 disabled
                             />
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                            <Form.Label>
+                                Requisicion
+                            </Form.Label>
+                            <div className="flex items-center mb-1">
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Requisicion"
+                                    defaultValue={formDataOC.requisicion}
+                                    name="requisicion"
+                                />
+                                <FontAwesomeIcon
+                                    className="cursor-pointer py-2 -ml-6"
+                                    title="Buscar entre los productos"
+                                    icon={faSearch}
+                                    onClick={() => {
+                                        buscarRequisicion(
+                                            <BuscarRequisicion
+                                                formData={formDataOC}
+                                                setFormData={setFormDataOC}
+                                                productosRequisicion={productosRequisicion}
+                                                setProductosRequisicion={setProductosRequisicion}
+                                                setShowModal={setShowModal}
+                                            />)
+                                    }}
+                                />
+                            </div>
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="formGridFolio">
@@ -412,7 +491,7 @@ function ModificacionCompras(props) {
                     {/* Cantidad, um, descripción */}
                     <Row className="mb-3">
 
-                        <Form.Group as={Col}>
+                    <Form.Group as={Col}>
                             <Form.Label>
                                 ITEM
                             </Form.Label>
@@ -440,53 +519,26 @@ function ModificacionCompras(props) {
                             />
                         </Form.Group>
 
-                        <Form.Group as={Col}>
+                        <Form.Group as={Col} controlId="formGridPorcentaje scrap">
                             <Form.Label>
-                                Descripción
+                                Descripcion
                             </Form.Label>
-                            <div className="flex items-center mb-1">
-                                <Form.Control
-                                    id="descripcion"
-                                    type="text"
-                                    placeholder="Escribe la descripcion"
-                                    name="descripcion"
-                                    defaultValue={formDataArticulos.descripcion}
-                                />
-                                {formData.tipoCompra == "Material" && (
-                                    <>
-                                        <FontAwesomeIcon
-                                            className="cursor-pointer py-2 -ml-6"
-                                            title="Buscar entre los materiales"
-                                            icon={faSearch}
-                                            onClick={() => {
-                                                buscarMaterial(
-                                                    <BuscarMaterial
-                                                        formData={formDataArticulos}
-                                                        setFormData={setFormDataArticulos}
-                                                        setShowModal={setShowModal}
-                                                    />)
-                                            }}
-                                        />
-                                    </>
-                                )}
-                                {formData.tipoCompra == "Insumos" && (
-                                    <>
-                                        <FontAwesomeIcon
-                                            className="cursor-pointer py-2 -ml-6"
-                                            title="Buscar entre los insumos"
-                                            icon={faSearch}
-                                            onClick={() => {
-                                                buscarInsumo(
-                                                    <BuscarInsumos
-                                                        formData={formDataArticulos}
-                                                        setFormData={setFormDataArticulos}
-                                                        setShowModal={setShowModal}
-                                                    />)
-                                            }}
-                                        />
-                                    </>
-                                )}
-                            </div>
+                            <Form.Control
+                                id="descripcion"
+                                as="select"
+                                defaultValue={formDataArticulos.descripcion}
+                                name="descripcion"
+                            >
+                                <option>Elige una opción</option>
+                                {map(productosRequisicion, (productos, index) => (
+                                    <option
+                                        key={index}
+                                        value={productos?.folio + "/" + productos?.cantidad + "/" + productos?.descripcion + "/" + productos?.precioUnitario + "/" + productos?.subtotal + "/" + productos?.um + "/" + productos?.referencia}
+                                    >
+                                        {productos?.descripcion}
+                                    </option>
+                                ))}
+                            </Form.Control>
                         </Form.Group>
 
                         <Form.Group as={Col}>
@@ -495,8 +547,8 @@ function ModificacionCompras(props) {
                             </Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="UM"
                                 id="um"
+                                placeholder="UM"
                                 name="um"
                                 defaultValue={formDataArticulos.um}
                             />
@@ -512,7 +564,6 @@ function ModificacionCompras(props) {
                                 min="0"
                                 placeholder="Escribe la cantidad"
                                 name="cantidad"
-                                onChange={(e) => { calcularTotalUnitario(e.target.value) }}
                                 defaultValue={formDataArticulos.cantidad}
                             />
                         </Form.Group>
@@ -527,7 +578,6 @@ function ModificacionCompras(props) {
                                 min="0"
                                 name="precio"
                                 placeholder="Escribe el precio"
-                                onChange={(e) => { calcularTotalUnitario(e.target.value) }}
                                 defaultValue={formDataArticulos.precio}
                             />
                         </Form.Group>
@@ -542,59 +592,22 @@ function ModificacionCompras(props) {
                                 min="0"
                                 name="subtotal"
                                 placeholder="Escribe el subtotal"
-                                onChange={(e) => { calcularTotalUnitario(e.target.value) }}
                                 disabled
-                                value={totalUnitario}
+                                value={parseFloat(formDataArticulos.precio) * parseFloat(formDataArticulos.cantidad)}
                             />
                         </Form.Group>
 
                         <Form.Group as={Col}>
-                            {formData.tipoCompra == "Material" && (
-                                <>
-                                    <Form.Label>
-                                        Referencia
-                                    </Form.Label>
-                                    <div className="flex items-center mb-1">
-                                        <Form.Control
-                                            id="referencia"
-                                            type="text"
-                                            defaultValue={ordenVenta}
-                                            name="referencia"
-                                        />
-                                        <FontAwesomeIcon
-                                            className="cursor-pointer py-2 -ml-6"
-                                            title="Buscar entre las ordenes de venta"
-                                            icon={faSearch}
-                                            onClick={() => {
-                                                buscarOV(
-                                                    <BuscarOV
-                                                        setOrdenVenta={setOrdenVenta}
-                                                        setOrdenVentaPrincipal={setOrdenVentaPrincipal}
-                                                        setClienteOV={setClienteOV}
-                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
-                                                        setProducto={setProducto}
-                                                        setShowModal={setShowModal}
-                                                    />)
-                                            }}
-                                        />
-                                    </div>
-                                </>
-                            )}
-
-                            {formData.tipoCompra == "Insumos" && (
-                                <>
-                                    <Form.Label>
-                                        Referencia
-                                    </Form.Label>
-                                    <Form.Control
-                                        id="referencia"
-                                        type="text"
-                                        value="Stock"
-                                        name="referencia"
-                                        disabled
-                                    />
-                                </>
-                            )}
+                            <Form.Label>
+                                Referencia
+                            </Form.Label>
+                            <Form.Control
+                                id="referencia"
+                                placeholder="Referencia"
+                                type="text"
+                                defaultValue={formDataArticulos.referencia}
+                                name="referencia"
+                            />
                         </Form.Group>
 
                         <Col sm="1">
@@ -798,6 +811,19 @@ function initialFormData() {
         autorizo: ""
     }
 }
+
+function initialFormDataOC() {
+    return {
+        requisicion: "",
+    }
+}
+
+function cargaFormDataOC(data) {
+    return {
+        requisicion: data.requisicion,
+    }
+}
+
 function dataCompras(fechaSolicitud, proveedor, nombreProveedor, tipoCompra, fechaEntrega, autorizo) {
     return {
         fechaSolicitud: fechaSolicitud,
@@ -819,11 +845,25 @@ function initialProveedor() {
 function initialFormDataArticulos() {
     return {
         cantidad: "",
+        folio: "",
         um: "",
         descripcion: "",
         precio: "",
         subtotal: "",
         referencia: ""
+    }
+}
+
+function cargaFormDataArticulos(data) {
+    const { producto, folio, cantidad, um, precioUnitario, referencia } = data;
+
+    return {
+        descripcion: "",
+        cantidad: cantidad,
+        folio: folio,
+        um: um,
+        precio: precioUnitario,
+        referencia: referencia,
     }
 }
 

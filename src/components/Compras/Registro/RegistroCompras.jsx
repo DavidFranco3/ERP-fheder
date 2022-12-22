@@ -16,6 +16,7 @@ import BasicModal from "../../Modal/BasicModal";
 import BuscarMaterial from '../../../page/BuscarMaterial';
 import BuscarInsumos from '../../../page/BuscarInsumos';
 import BuscarOV from '../../../page/BuscarOV';
+import BuscarRequisicion from '../../../page/BuscarRequisicion';
 
 function RegistroCompras(props) {
     const { } = props;
@@ -30,6 +31,11 @@ function RegistroCompras(props) {
         enrutamiento.push("/Compras")
     }
 
+    // Para guardar los datos del formulario
+    const [formDataOC, setFormDataOC] = useState(initialFormDataOC());
+
+    const [productosRequisicion, setProductosRequisicion] = useState();
+
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
     const [contentModal, setContentModal] = useState(null);
@@ -38,6 +44,13 @@ function RegistroCompras(props) {
     // Para la eliminacion fisica de usuarios
     const buscarProveedor = (content) => {
         setTitulosModal("Buscar proveedor");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarRequisicion = (content) => {
+        setTitulosModal("Buscar requisicion");
         setContentModal(content);
         setShowModal(true);
     }
@@ -193,11 +206,13 @@ function RegistroCompras(props) {
         if (!cantidad || !um || !descripcion || !precio || !referencia) {
             toast.warning("Completa la informacion del producto");
         } else {
+            const temp = descripcion.split("/");
+            
             const dataTemp = {
                 folio: folio,
                 cantidad: cantidad,
                 um: um,
-                descripcion: descripcion,
+                descripcion: temp[2],
                 precio: precio,
                 referencia: referencia,
                 subtotal: parseInt(cantidad) * parseInt(precio)
@@ -213,10 +228,9 @@ function RegistroCompras(props) {
 
             //setCargaProductos(initialFormDataProductos)
             setFormDataArticulos(initialFormDataArticulos)
+            document.getElementById("descripcion").value = "Elige una opción"
             //setCargaProductos(initialFormDataProductos)
-            document.getElementById("cantidad").value = "0"
-            setOrdenVenta("")
-            setTotalUnitario(0)
+            //document.getElementById("cantidad").value = "0"
 
         }
     }
@@ -225,11 +239,8 @@ function RegistroCompras(props) {
     const cancelarCargaProducto = () => {
         //setCargaProductos(initialFormDataProductos)
         setFormDataArticulos(initialFormDataArticulos)
+        document.getElementById("descripcion").value = "Elige una opción"
         //setCargaProductos(initialFormDataProductos)
-        document.getElementById("cantidad").value = "0"
-        setOrdenVenta("")
-        setTotalUnitario(0)
-
     }
 
     // Para eliminar productos del listado
@@ -257,6 +268,7 @@ function RegistroCompras(props) {
                         item: itemActual,
                         folio: data.noCompra,
                         proveedor: proveedorSeleccionado.proveedor,
+                        requisicion: formDataOC.requisicion,
                         nombreProveedor: proveedorSeleccionado.nombreProveedor,
                         fechaSolicitud: formData.fechaSolicitud,
                         fechaEntrega: formData.fechaEntrega,
@@ -291,7 +303,23 @@ function RegistroCompras(props) {
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataArticulos({ ...formDataArticulos, [e.target.name]: e.target.value })
     }
+
+    const [productoCargado, setProductoCargado] = useState("");
+
+    useEffect(() => {
+        setProductoCargado(formDataArticulos.descripcion)
+        const dataTempProductos = productoCargado.split("/")
+        const dataTemp = {
+            folio: dataTempProductos[0],
+            cantidad: dataTempProductos[1],
+            um: dataTempProductos[5],
+            precioUnitario: dataTempProductos[3],
+            referencia: dataTempProductos[6]
+        }
+        setFormDataArticulos(cargaFormDataArticulos(dataTemp))
+    }, [formDataArticulos.descripcion]);
 
     // Calcula el subtotal de la lista de artículos cargados
     const subTotal = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.subtotal)), 0);
@@ -344,6 +372,35 @@ function RegistroCompras(props) {
                                 defaultValue={folioActual}
                                 disabled
                             />
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                            <Form.Label>
+                                Requisicion
+                            </Form.Label>
+                            <div className="flex items-center mb-1">
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Requisicion"
+                                    defaultValue={formDataOC.requisicion}
+                                    name="requisicion"
+                                />
+                                <FontAwesomeIcon
+                                    className="cursor-pointer py-2 -ml-6"
+                                    title="Buscar entre los productos"
+                                    icon={faSearch}
+                                    onClick={() => {
+                                        buscarRequisicion(
+                                            <BuscarRequisicion
+                                                formData={formDataOC}
+                                                setFormData={setFormDataOC}
+                                                productosRequisicion={productosRequisicion}
+                                                setProductosRequisicion={setProductosRequisicion}
+                                                setShowModal={setShowModal}
+                                            />)
+                                    }}
+                                />
+                            </div>
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="formGridFolio">
@@ -461,53 +518,26 @@ function RegistroCompras(props) {
                             />
                         </Form.Group>
 
-                        <Form.Group as={Col}>
+                        <Form.Group as={Col} controlId="formGridPorcentaje scrap">
                             <Form.Label>
-                                Descripción
+                                Descripcion
                             </Form.Label>
-                            <div className="flex items-center mb-1">
-                                <Form.Control
-                                    id="descripcion"
-                                    type="text"
-                                    placeholder="Escribe la descripcion"
-                                    name="descripcion"
-                                    defaultValue={formDataArticulos.descripcion}
-                                />
-                                {formData.tipoCompra == "Material" && (
-                                    <>
-                                        <FontAwesomeIcon
-                                            className="cursor-pointer py-2 -ml-6"
-                                            title="Buscar entre los materiales"
-                                            icon={faSearch}
-                                            onClick={() => {
-                                                buscarMaterial(
-                                                    <BuscarMaterial
-                                                        formData={formDataArticulos}
-                                                        setFormData={setFormDataArticulos}
-                                                        setShowModal={setShowModal}
-                                                    />)
-                                            }}
-                                        />
-                                    </>
-                                )}
-                                {formData.tipoCompra == "Insumos" && (
-                                    <>
-                                        <FontAwesomeIcon
-                                            className="cursor-pointer py-2 -ml-6"
-                                            title="Buscar entre los insumos"
-                                            icon={faSearch}
-                                            onClick={() => {
-                                                buscarInsumo(
-                                                    <BuscarInsumos
-                                                        formData={formDataArticulos}
-                                                        setFormData={setFormDataArticulos}
-                                                        setShowModal={setShowModal}
-                                                    />)
-                                            }}
-                                        />
-                                    </>
-                                )}
-                            </div>
+                            <Form.Control
+                                id="descripcion"
+                                as="select"
+                                defaultValue={formDataArticulos.descripcion}
+                                name="descripcion"
+                            >
+                                <option>Elige una opción</option>
+                                {map(productosRequisicion, (productos, index) => (
+                                    <option
+                                        key={index}
+                                        value={productos?.folio + "/" + productos?.cantidad + "/" + productos?.descripcion + "/" + productos?.precioUnitario + "/" + productos?.subtotal + "/" + productos?.um + "/" + productos?.referencia}
+                                    >
+                                        {productos?.descripcion}
+                                    </option>
+                                ))}
+                            </Form.Control>
                         </Form.Group>
 
                         <Form.Group as={Col}>
@@ -533,7 +563,6 @@ function RegistroCompras(props) {
                                 min="0"
                                 placeholder="Escribe la cantidad"
                                 name="cantidad"
-                                onChange={(e) => { calcularTotalUnitario(e.target.value) }}
                                 defaultValue={formDataArticulos.cantidad}
                             />
                         </Form.Group>
@@ -548,7 +577,6 @@ function RegistroCompras(props) {
                                 min="0"
                                 name="precio"
                                 placeholder="Escribe el precio"
-                                onChange={(e) => { calcularTotalUnitario(e.target.value) }}
                                 defaultValue={formDataArticulos.precio}
                             />
                         </Form.Group>
@@ -563,59 +591,22 @@ function RegistroCompras(props) {
                                 min="0"
                                 name="subtotal"
                                 placeholder="Escribe el subtotal"
-                                onChange={(e) => { calcularTotalUnitario(e.target.value) }}
                                 disabled
-                                value={totalUnitario}
+                                value={parseFloat(formDataArticulos.precio) * parseFloat(formDataArticulos.cantidad)}
                             />
                         </Form.Group>
 
                         <Form.Group as={Col}>
-                            {formData.tipoCompra == "Material" && (
-                                <>
-                                    <Form.Label>
-                                        Referencia
-                                    </Form.Label>
-                                    <div className="flex items-center mb-1">
-                                        <Form.Control
-                                            id="referencia"
-                                            type="text"
-                                            defaultValue={ordenVenta}
-                                            name="referencia"
-                                        />
-                                        <FontAwesomeIcon
-                                            className="cursor-pointer py-2 -ml-6"
-                                            title="Buscar entre las ordenes de venta"
-                                            icon={faSearch}
-                                            onClick={() => {
-                                                buscarOV(
-                                                    <BuscarOV
-                                                        setOrdenVenta={setOrdenVenta}
-                                                        setOrdenVentaPrincipal={setOrdenVentaPrincipal}
-                                                        setClienteOV={setClienteOV}
-                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
-                                                        setProducto={setProducto}
-                                                        setShowModal={setShowModal}
-                                                    />)
-                                            }}
-                                        />
-                                    </div>
-                                </>
-                            )}
-
-                            {formData.tipoCompra == "Insumos" && (
-                                <>
-                                    <Form.Label>
-                                        Referencia
-                                    </Form.Label>
-                                    <Form.Control
-                                        id="referencia"
-                                        type="text"
-                                        value="Stock"
-                                        name="referencia"
-                                        disabled
-                                    />
-                                </>
-                            )}
+                            <Form.Label>
+                                Referencia
+                            </Form.Label>
+                            <Form.Control
+                                id="referencia"
+                                placeholder="Referencia"
+                                type="text"
+                                defaultValue={formDataArticulos.referencia}
+                                name="referencia"
+                            />
                         </Form.Group>
 
                         <Col sm="1">
@@ -817,6 +808,12 @@ function initialFormData() {
     }
 }
 
+function initialFormDataOC() {
+    return {
+        requisicion: "",
+    }
+}
+
 function initialProveedor() {
     return {
         proveedor: "",
@@ -833,6 +830,19 @@ function initialFormDataArticulos() {
         precio: "",
         subtotal: "",
         referencia: ""
+    }
+}
+
+function cargaFormDataArticulos(data) {
+    const { producto, folio, cantidad, um, precioUnitario, referencia } = data;
+
+    return {
+        descripcion: "",
+        cantidad: cantidad,
+        folio: folio,
+        um: um,
+        precio: precioUnitario,
+        referencia: referencia,
     }
 }
 

@@ -402,6 +402,8 @@ function ModificaRecepcion(props) {
 
     const renglon = listProductosCargados.length + 1;
 
+    const temp = cargaProductos.folio.split("-")
+
     return (
         <>
             <Alert>
@@ -624,8 +626,8 @@ function ModificaRecepcion(props) {
                                     defaultValue={cargaProductos.tipoMercancia}
                                 >
                                     <option >Elige....</option>
-                                    <option value="Material">Material</option>
-                                    <option value="Insumo">Insumo</option>
+                                    <option value="Material" selected={temp[0] == "MP"}>Material</option>
+                                    <option value="Insumo" selected={temp[0] == "INS"}>Insumo</option>
                                 </Form.Control>
                             </Form.Group>
 

@@ -3,17 +3,17 @@ import { Row, Col, Container, Form, Button, Spinner } from "react-bootstrap"
 import moment from "moment";
 //import NombreCliente from "../../ListTracking/NombreCliente";
 import { map } from "lodash";
-import "./BuscarMateriales.scss"
+import "./BuscarRequisiciones.scss"
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { estilos } from "../../../utils/tableStyled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
-import { obtenerMateriaPrima } from "../../../api/materiaPrima";
+import { obtenerRequisiciones } from "../../../api/requisicion";
 import { toast } from "react-toastify";
 
-function BuscarMateriales(props) {
-    const { setFormData, formData, setShowModal, listMateriales } = props;
+function BuscarRequisiciones(props) {
+    const { setFormData, formData, productosRequisicion, setProductosRequisicion, setShowModal, listRequisiciones } = props;
     // console.log(ordenVenta)
 
     // Para almacenar la informacion del formulario
@@ -28,7 +28,7 @@ function BuscarMateriales(props) {
     useEffect(() => {
         try {
 
-            obtenerMateriaPrima(clienteSeleccionado.seleccion).then(response => {
+            obtenerRequisiciones(clienteSeleccionado.seleccion).then(response => {
                 const { data } = response;
                 const { cliente, nombreCliente, fechaElaboracion, fechaEntrega, productos } = data;
                 setValoresCliente(valoresAlmacenados(data))
@@ -59,14 +59,10 @@ function BuscarMateriales(props) {
             //console.log(formData)
             setLoading(true);
             const dataTemp = {
-                folio: valoresCliente.folio,
-                idMaterial: valoresCliente.idMaterial,
-                descripcion: valoresCliente.descripcion,
-                um: valoresCliente.um,
-                proveedor: valoresCliente.proveedor,
-                precioUnitario: valoresCliente.precio
+                requisicion: valoresCliente.folio,
             }
             setFormData(dataTemp)
+            setProductosRequisicion(valoresCliente.productos)
             setShowModal(false);
         }
     }
@@ -101,37 +97,22 @@ function BuscarMateriales(props) {
             reorder: false
         },
         {
-            name: 'Nombre',
-            selector: row => row.descripcion,
+            name: 'Fecha elaboracion',
+            selector: row => moment(row.fechaElaboracion).format('LL'),
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'UM',
-            selector: row => row.um,
+            name: 'Solicitante',
+            selector: row => row.solicitante,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Precio",
-            selector: row => (
-                <>
-                    {row.precio ? new Intl.NumberFormat('es-MX', {
-                        style: "currency",
-                        currency: "MXN"
-                    }).format(row.precio) : "No disponible"}
-                    { } MXN
-                </>
-            ),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Proveedor',
-            selector: row => row.proveedor,
+            name: 'Departamento',
+            selector: row => row.departamento,
             sortable: false,
             center: true,
             reorder: false
@@ -145,7 +126,7 @@ function BuscarMateriales(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listMateriales);
+            setRows(listRequisiciones);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -228,8 +209,8 @@ function BuscarMateriales(props) {
     `;
 
 
-    const filteredItems = listMateriales.filter(
-        item => item.descripcion && item.descripcion.toLowerCase().includes(filterText.toLowerCase())
+    const filteredItems = listRequisiciones.filter(
+        item => item.folio && item.folio.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const subHeaderComponentMemo = useMemo(() => {
@@ -322,24 +303,16 @@ function initialFormData() {
 
 function initialValues() {
     return {
-        idMaterial: "",
         folio: "",
-        descripcion: "",
-        um: "",
-        proveedor: "",
-        precio: ""
+        productos: ""
     }
 }
 
 function valoresAlmacenados(data) {
     return {
-        idMaterial: data._id,
         folio: data.folio,
-        descripcion: data.descripcion,
-        um: data.um,
-        proveedor: data.proveedor,
-        precio: data.precio
+        productos: data.productosSolicitados
     }
 }
 
-export default BuscarMateriales;
+export default BuscarRequisiciones;

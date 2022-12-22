@@ -5,6 +5,7 @@ import {
     ENDPOINTListarPaginandoRequisicion,
     ENDPOINTListarPorDepartamento,
     ENDPOINTObtenerRequisicion,
+    ENDPOINTObtenerDatosRequisicion,
     ENDPOINTObtenerNoRequisicion,
     ENDPOINTEliminarRequisicion,
     ENDPOINTObtenerItemRequisicion,
@@ -64,6 +65,19 @@ export async function obtenerRequisiciones(id) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTObtenerRequisicion + `/${id}`, config);
+}
+
+// Para obtener todos los datos de la requisición
+export async function obtenerDatosRequisiciones(folio) {
+    //console.log(params)
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTObtenerDatosRequisicion + `/${folio}`, config);
 }
 
 // Para obtener el numero de requisicion actual

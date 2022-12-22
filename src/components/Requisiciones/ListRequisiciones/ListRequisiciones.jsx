@@ -13,6 +13,7 @@ import DataTable from 'react-data-table-component';
 import moment from "moment";
 import ModificaRequisiciones from '../ModificaRequisiciones';
 import { useHistory } from "react-router-dom";
+import ListProductosRequisicion from '../ListProductosRequisicion';
 
 function ListRequisiciones(props) {
     const { listRequisiciones, setRefreshCheckLogin, history, location } = props;
@@ -48,6 +49,12 @@ function ListRequisiciones(props) {
     // Para llenar la evaluación del proveedor
     const registraEvaluacion = (idProveedor) => {
     }
+
+    const ExpandedComponent = ({ data }) => (
+        <ListProductosRequisicion
+            requisicion={data.folio}
+        />
+    );
 
     const columns = [
         {
@@ -177,6 +184,8 @@ function ListRequisiciones(props) {
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
                     data={listRequisiciones}
+                    expandableRows
+                    expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}

@@ -219,8 +219,10 @@ function RegistraMatrizProductos(props) {
                     porcentajeMolido: molido,
                 },
                 materiaPrima: {
+                    folioMaterial: dataMaterial.folio,
                     idMaterial: dataMaterial.idMaterial,
                     descripcion: dataMaterial.descripcion,
+                    precioMaterial: dataMaterial.precioUnitario
                 },
                 pigmentoMasterBach: {
                     descripcion: dataPigmento.descripcionPigmento,
@@ -1182,7 +1184,9 @@ function initialClientes() {
 function initialMaterial() {
     return {
         idMaterial: "",
-        descripcion: ""
+        folio: "",
+        descripcion: "",
+        precioUnitario: ""
     }
 }
 

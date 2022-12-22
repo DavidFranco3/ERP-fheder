@@ -35,7 +35,6 @@ function RegistroRecepcion(props) {
     const [loading, setLoading] = useState(false);
 
     const [productosOC, setProductosOC] = useState();
-    console.log(productosOC)
 
     // Para determinar si hay conexion con el servidor o a internet
     const [conexionInternet, setConexionInternet] = useState(true);
@@ -379,6 +378,8 @@ function RegistroRecepcion(props) {
 
     const renglon = listProductosCargados.length + 1;
 
+    const temp = cargaProductos.folio.split("-")
+
     return (
         <>
             <Alert>
@@ -601,8 +602,8 @@ function RegistroRecepcion(props) {
                                     defaultValue={cargaProductos.tipoMercancia}
                                 >
                                     <option >Elige....</option>
-                                    <option value="Material">Material</option>
-                                    <option value="Insumo">Insumo</option>
+                                    <option value="Material" selected={temp[0] == "MP"}>Material</option>
+                                    <option value="Insumo" selected={temp[0] == "INS"}>Insumo</option>
                                 </Form.Control>
                             </Form.Group>
 

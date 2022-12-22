@@ -93,7 +93,7 @@ function ModificacionProduccion(props) {
         })
     }, []);
 
-    
+
 
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
@@ -341,6 +341,9 @@ function ModificacionProduccion(props) {
                 },
                 bom: {
                     material: formDataPlaneacion.descripcionMP,
+                    idMaterial: formDataPlaneacion.idMaterial,
+                    folioMaterial: formDataPlaneacion.folioMaterial,
+                    precioMaterial: formDataPlaneacion.precioMaterial,
                     molido: formDataPlaneacion.porcentajeMolido,
                     pesoPieza: formDataPlaneacion.pesoPiezas,
                     pesoColada: formDataPlaneacion.pesoColada,
@@ -544,8 +547,8 @@ function ModificacionProduccion(props) {
                                             {map(listProductosActivos, (producto, index) => (
                                                 <option
                                                     key={index}
-                                                    value={producto?.id +"/"+ producto?.descripcion +"/"+ producto.pigmentoMasterBach?.nombreProveedor}
-                                                    selected={producto?.id +"/"+ producto?.descripcion +"/"+ producto.pigmentoMasterBach?.nombreProveedor == informacionRequerimiento.producto}
+                                                    value={producto?.id + "/" + producto?.descripcion + "/" + producto.pigmentoMasterBach?.nombreProveedor}
+                                                    selected={producto?.id + "/" + producto?.descripcion + "/" + producto.pigmentoMasterBach?.nombreProveedor == informacionRequerimiento.producto}
                                                 >
                                                     {producto?.descripcion}
                                                 </option>
@@ -597,15 +600,15 @@ function ModificacionProduccion(props) {
                                             Orden de venta
                                         </Form.Label>
                                         <div className="flex items-center mb-1">
-                                        <Form.Control
-                                            id="ordenVenta"
-                                            type="text"
-                                            placeholder="Orden de venta"
-                                            name="ordenVenta"
-                                            value={ordenVenta}
-                                            disabled
-                                        />
-                                        <FontAwesomeIcon
+                                            <Form.Control
+                                                id="ordenVenta"
+                                                type="text"
+                                                placeholder="Orden de venta"
+                                                name="ordenVenta"
+                                                value={ordenVenta}
+                                                disabled
+                                            />
+                                            <FontAwesomeIcon
                                                 className="cursor-pointer py-2 -ml-6"
                                                 title="Buscar entre las ordenes de venta"
                                                 icon={faSearch}
@@ -620,7 +623,7 @@ function ModificacionProduccion(props) {
                                                         />)
                                                 }}
                                             />
-                                            </div>
+                                        </div>
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -1176,7 +1179,7 @@ function ModificacionProduccion(props) {
                             </Container>
                         </div>
 
-                        < br / >
+                        < br />
 
                         <Form.Group as={Row} className="botones">
                             <Col>
@@ -1230,6 +1233,9 @@ function initialFormDataPlaneacion(data) {
         porcentajeScrap: data.datosPieza.porcentajeScrap,
         porcentajeMolido: data.datosPieza.porcentajeMolido,
         descripcionMP: data.materiaPrima.descripcion,
+        idMaterial: data.materiaPrima.idMaterial,
+        folioMaterial: data.materiaPrima.folioMaterial,
+        precioMaterial: data.materiaPrima.precioMaterial,
         descripcionPigmento: data.pigmentoMasterBach.descripcion,
         aplicacionGxKG: data.pigmentoMasterBach.aplicacionGxKG,
         proveedor: data.pigmentoMasterBach.proveedor,
@@ -1269,6 +1275,9 @@ function initialFormDataPlaneacionInitial() {
         porcentajeScrap: "",
         porcentajeMolido: "",
         descripcionMP: "",
+        idMaterial: "",
+        folioMaterial: "",
+        precioMaterial: "",
         descripcionPigmento: "",
         aplicacionGxKG: "",
         proveedor: "",
@@ -1376,7 +1385,7 @@ function valoresAlmacenados(data) {
         folio: folio,
         requerimiento: requerimiento,
         semana: requerimiento.semana,
-        producto: requerimiento.producto +"/"+ requerimiento.nombreProducto +"/"+ requerimiento.nombreProveedor,
+        producto: requerimiento.producto + "/" + requerimiento.nombreProducto + "/" + requerimiento.nombreProveedor,
         um: requerimiento.um,
         almacenProductoTerminado: requerimiento.almacenProductoTerminado,
         ordenVenta: requerimiento.ordenVenta,
