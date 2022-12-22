@@ -317,6 +317,13 @@ function ModificaMatrizProductos(props) {
                     if (e.message === 'Network Error') {
                         //console.log("No hay internet")
                         toast.error("Conexión al servidor no disponible");
+                        setLoading(false);
+                    } else {
+                        if (e.response && e.response.status === 401) {
+                            const { mensaje } = e.response.data;
+                            toast.error(mensaje);
+                            setLoading(false);
+                        }
                     }
                 })
             } catch (e) {
