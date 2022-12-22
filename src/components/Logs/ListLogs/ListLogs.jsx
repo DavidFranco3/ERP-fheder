@@ -31,13 +31,14 @@ function ListLogs(props) {
             sortable: false,
             center: true,
             reorder: false
+
         },
         {
             name: "Dispositivo",
             selector: row => row.dispositivo,
             sortable: false,
             center: true,
-            reorder: false
+            reorder: false,
         },
         {
             name: "IP",

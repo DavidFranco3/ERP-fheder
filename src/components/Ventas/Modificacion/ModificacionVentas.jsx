@@ -209,7 +209,7 @@ function ModificacionVentas(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        if (!informacionPedido.cliente || !informacionPedido.numeroPedido || !informacionPedido.fechaPedido || !informacionPedido.fechaEntrega || !informacionPedido.incoterms || !informacionPedido.condicionesPago || !informacionPedido.especificaciones) {
+        if (!informacionPedido.cliente || !informacionPedido.numeroPedido || !informacionPedido.fechaPedido || !informacionPedido.fechaEntrega || !informacionPedido.condicionesPago || !informacionPedido.especificaciones) {
             // console.log("Valores del form ", size(informacionPedido) )
             // console.log("Valores de validacion ", validCount )
             toast.warning("Completa el formulario");
@@ -479,26 +479,6 @@ function ModificacionVentas(props) {
                                             placeholder="Fecha de entrega"
                                             name="fechaEntrega"
                                             defaultValue={informacionPedido.fechaEntrega}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Row>
-
-                            <br />
-
-                            <Row>
-                                <Form.Group as={Row} controlId="formGridCliente">
-                                    <Col sm="2">
-                                        <Form.Label>
-                                            Inconterms
-                                        </Form.Label>
-                                    </Col>
-                                    <Col sm="4">
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Incoterms"
-                                            name="incoterms"
-                                            defaultValue={informacionPedido.incoterms}
                                         />
                                     </Col>
                                 </Form.Group>

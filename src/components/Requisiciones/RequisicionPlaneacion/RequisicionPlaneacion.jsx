@@ -313,6 +313,7 @@ function RegistraRequisiciones(props) {
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataArticulos({ ...formDataArticulos, [e.target.name]: e.target.value })
     }
 
     const renglon = listProductosCargados.length + 1;
@@ -886,11 +887,13 @@ function initialFormData() {
 
 function initialFormDataArticulos() {
     return {
+        folio: "",
         cantidad: "",
         um: "",
         descripcion: "",
         referencia: "",
         proveedor: "",
+        precioUnitario: ""
     }
 }
 

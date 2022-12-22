@@ -191,7 +191,7 @@ function RegistroVentas(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        if (!formData.cliente || !formData.numeroPedido || !formData.fechaPedido || !formData.fechaEntrega || !formData.incoterms || !formData.condicionesPago || !formData.especificaciones) {
+        if (!formData.cliente || !formData.numeroPedido || !formData.fechaPedido || !formData.fechaEntrega || !formData.condicionesPago || !formData.especificaciones) {
             toast.warning("Completa el formulario");
         } else {
             //console.log("Continuar")
@@ -470,26 +470,6 @@ function RegistroVentas(props) {
                                             placeholder="Fecha de entrega"
                                             name="fechaEntrega"
                                             defaultValue={formData.fechaEntrega}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Row>
-
-                            <br />
-
-                            <Row>
-                                <Form.Group as={Row} controlId="formGridCliente">
-                                    <Col sm="2">
-                                        <Form.Label>
-                                            Inconterms
-                                        </Form.Label>
-                                    </Col>
-                                    <Col sm="4">
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Incoterms"
-                                            name="incoterms"
-                                            defaultValue={formData.incoterms}
                                         />
                                     </Col>
                                 </Form.Group>
