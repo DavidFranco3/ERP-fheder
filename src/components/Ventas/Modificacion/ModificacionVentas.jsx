@@ -18,6 +18,7 @@ import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/fre
 import BasicModal from "../../Modal/BasicModal";
 import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
 import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
+import Dropzone from "../../Dropzone";
 
 function ModificacionVentas(props) {
     const { datos, setRefreshCheckLogin } = props;
@@ -35,6 +36,8 @@ function ModificacionVentas(props) {
 
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
+
+    const [pdfCotizacion, setPdfCotizacion] = useState(null);
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -95,6 +98,7 @@ function ModificacionVentas(props) {
             setlugarEntregaInicial(valoresAlmacenados(lugarEntrega))
             // setFechaCreacion(fechaElaboracion)
             setListProductosCargados(productos)
+            setPdfCotizacion(cotizacion)
         }).catch(e => {
             console.log(e)
         })
@@ -220,6 +224,8 @@ function ModificacionVentas(props) {
             //
 
             // Inicia proceso de modificacion de pedido de venta
+            subeArchivosCloudinary(pdfCotizacion, "ventas").then(response => {
+                const { data } = response;
             const dataTempPrincipalOV = {
                 fechaElaboracion: informacionPedido.fechaPedido,
                 fechaEntrega: informacionPedido.fechaEntrega,
@@ -230,7 +236,7 @@ function ModificacionVentas(props) {
                 moneda: "M.N.",
                 numeroPedido: informacionPedido.numeroPedido,
                 lugarEntrega: formData.lugarEntrega == "" ? informacionPedido.lugarEntrega : formData.lugarEntrega,
-                cotizacion: linkCotizacion,
+                cotizacion: data.secure_url,
                 ordenCompra: linkOrdenCompra,
                 total: totalSinIVA,
                 especificaciones: informacionPedido.especificaciones,
@@ -258,6 +264,9 @@ function ModificacionVentas(props) {
                 }).catch(e => {
                     console.log(e)
                 })
+            }).catch(e => {
+                console.log(e)
+            })
             }).catch(e => {
                 console.log(e)
             })
@@ -573,17 +582,13 @@ function ModificacionVentas(props) {
 
                             <Row>
                                 <Form.Group as={Row} className="botonesPDF">
-                                    <Col sm="3">
+                                    <Col sm="5">
                                         <div
                                             className="custom-input-file col-md-6 col-sm-6 col-xs-6">
-                                            <Form.Control
-                                                type="file"
-                                                accept='.pdf, image/*'
-                                                name="cotizacion"
-                                                defaultValue={informacionPedido.cotizacion}
-                                                className="input-file"
+                                            <Dropzone
+                                                setImagen={setPdfCotizacion} imagenBD={informacionPedido.cotizacion}
                                             />
-                                            Adjuntar cotizacion
+                                            Adjuntar orden de venta
                                         </div>
                                     </Col>
                                 </Form.Group>

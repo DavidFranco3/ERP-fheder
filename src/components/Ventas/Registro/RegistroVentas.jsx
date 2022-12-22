@@ -16,6 +16,7 @@ import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
 import { LogRegistroPlaneacion } from "../../Planeacion/Gestion/GestionPlaneacion";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
+import Dropzone from "../../Dropzone";
 
 function RegistroVentas(props) {
     const { setRefreshCheckLogin } = props;
@@ -135,6 +136,7 @@ function RegistroVentas(props) {
 
     // Para almacenar la foto de perfil del usuario
     const [pdfCotizacion, setPdfCotizacion] = useState(null);
+    console.log(pdfCotizacion)
 
     useEffect(() => {
         setPdfCotizacion(formData.cotizacion)
@@ -195,13 +197,18 @@ function RegistroVentas(props) {
             toast.warning("Completa el formulario");
         } else {
             //console.log("Continuar")
-            setLoading(true)
+            setLoading(true);
+            const temp = String(formData.cotizacion).split('\
+            ');
+            console.log(temp[2])
+            const namePDF = "name: " + temp[2]
+            console.log(namePDF)
 
             // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            obtenerNumeroPedidoVenta().then(response => {
+            subeArchivosCloudinary(pdfCotizacion, "ventas").then(response => {
                 const { data } = response;
                 const dataTemp = {
-                    folio: data.noVenta,
+                    folio: folioActual,
                     fechaElaboracion: formData.fechaPedido,
                     fechaEntrega: formData.fechaEntrega,
                     cliente: formData.cliente,
@@ -211,8 +218,7 @@ function RegistroVentas(props) {
                     moneda: "M.N.",
                     numeroPedido: formData.numeroPedido,
                     lugarEntrega: formData.lugarEntrega,
-                    cotizacion: linkCotizacion,
-                    ordenCompra: linkOrdenCompra,
+                    cotizacion: data.secure_url,
                     total: totalSinIVA,
                     especificaciones: formData.especificaciones,
                     productos: listProductosCargados,
@@ -563,15 +569,11 @@ function RegistroVentas(props) {
 
                             <Row>
                                 <Form.Group as={Row} className="botonesPDF">
-                                    <Col sm="3">
+                                    <Col sm="5">
                                         <div
                                             className="custom-input-file col-md-6 col-sm-6 col-xs-6">
-                                            <Form.Control
-                                                type="file"
-                                                accept='.pdf, image/*'
-                                                name="cotizacion"
-                                                defaultValue={formData.cotizacion}
-                                                className="input-file"
+                                            <Dropzone
+                                                setImagen={setPdfCotizacion}
                                             />
                                             Adjuntar orden de venta
                                         </div>
@@ -608,25 +610,25 @@ function RegistroVentas(props) {
                                     Descripción
                                 </Form.Label>
                                 <div className="flex items-center mb-1">
-                                <Form.Control
-                                    type="text"
-                                    id="descripcion"
-                                    defaultValue={cargaProductos.item}
-                                    name="descripcion"
-                                />
-                                <FontAwesomeIcon
-                                    className="cursor-pointer py-2 -ml-6"
-                                    title="Buscar entre los productos"
-                                    icon={faSearch}
-                                    onClick={() => {
-                                        buscarProducto(
-                                            <BuscarProducto
-                                                formData={cargaProductos}
-                                                setFormData={setCargaProductos}
-                                                setShowModal={setShowModal}
-                                            />)
-                                    }}
-                                />
+                                    <Form.Control
+                                        type="text"
+                                        id="descripcion"
+                                        defaultValue={cargaProductos.item}
+                                        name="descripcion"
+                                    />
+                                    <FontAwesomeIcon
+                                        className="cursor-pointer py-2 -ml-6"
+                                        title="Buscar entre los productos"
+                                        icon={faSearch}
+                                        onClick={() => {
+                                            buscarProducto(
+                                                <BuscarProducto
+                                                    formData={cargaProductos}
+                                                    setFormData={setCargaProductos}
+                                                    setShowModal={setShowModal}
+                                                />)
+                                        }}
+                                    />
                                 </div>
                             </Form.Group>
 

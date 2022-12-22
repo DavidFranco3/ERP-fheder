@@ -107,6 +107,23 @@ function ListVentas(props) {
             reorder: false
         },
         {
+            name: "Descargar cotizacion",
+            selector: row => (
+                <>
+                <a
+                            className="text-emerald-700 no-underline"
+                            title="Ir al sitio web de la empresa"
+                            href={row.cotizacion}
+                            target="_blank"
+                            rel="noreferrer"
+                        >Descargar cotizacion</a>
+                </>
+                ),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
             name: "Acciones",
             center: true,
             reorder: false,
