@@ -566,20 +566,14 @@ function RegistroVentas(props) {
                             </Row>
 
                             <br />
-
-                            <Row>
-                                <Form.Group as={Row} className="botonesPDF">
-                                    <Col sm="5">
-                                        <div
-                                            className="custom-input-file col-md-6 col-sm-6 col-xs-6">
-                                            <Dropzone
-                                                setImagen={setPdfCotizacion}
-                                            />
-                                            Adjuntar orden de venta
-                                        </div>
-                                    </Col>
-                                </Form.Group>
-                            </Row>
+                            <div className="subeFotoPerfil">
+                                <h4>Adjuntar orden de venta</h4>
+                                <div className="fotoPerfil">
+                                    <Dropzone
+                                        setImagen={setPdfCotizacion}
+                                    />
+                                </div>
+                            </div>
                         </div>
                         <br />
                         {/* Seleccion de productos */}

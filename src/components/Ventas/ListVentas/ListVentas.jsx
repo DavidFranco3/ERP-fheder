@@ -107,18 +107,18 @@ function ListVentas(props) {
             reorder: false
         },
         {
-            name: "Descargar cotizacion",
+            name: "Orden venta",
             selector: row => (
                 <>
-                <a
-                            className="text-emerald-700 no-underline"
-                            title="Ir al sitio web de la empresa"
-                            href={row.cotizacion}
-                            target="_blank"
-                            rel="noreferrer"
-                        >Descargar cotizacion</a>
+                    <a
+                        className="text-emerald-700 no-underline"
+                        title="Ir al sitio web de la empresa"
+                        href={row.cotizacion}
+                        target="_blank"
+                        rel="noreferrer"
+                    >Descargar</a>
                 </>
-                ),
+            ),
             sortable: false,
             center: true,
             reorder: false

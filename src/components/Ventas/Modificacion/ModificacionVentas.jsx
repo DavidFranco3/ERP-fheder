@@ -580,19 +580,14 @@ function ModificacionVentas(props) {
 
                             <br />
 
-                            <Row>
-                                <Form.Group as={Row} className="botonesPDF">
-                                    <Col sm="5">
-                                        <div
-                                            className="custom-input-file col-md-6 col-sm-6 col-xs-6">
-                                            <Dropzone
-                                                setImagen={setPdfCotizacion} imagenBD={informacionPedido.cotizacion}
-                                            />
-                                            Adjuntar orden de venta
-                                        </div>
-                                    </Col>
-                                </Form.Group>
-                            </Row>
+                            <div className="subeFotoPerfil">
+                                <h4>Adjuntar orden de venta</h4>
+                                <div className="fotoPerfil">
+                                    <Dropzone
+                                        setImagen={setPdfCotizacion} imagenBD={informacionPedido.cotizacion}
+                                    />
+                                </div>
+                            </div>
                         </div>
                         <br />
                         {/* Seleccion de productos */}
