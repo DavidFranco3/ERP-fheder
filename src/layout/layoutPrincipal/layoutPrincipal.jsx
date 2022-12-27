@@ -57,7 +57,7 @@ function LayoutPrincipal(props) {
 
     // Para almacenar en localstorage la razon social
     const almacenaSucursal = (sucursal) => {
-        if (sucursal != "Elige una opción") {
+        if (sucursal != "Selecciona una de las sucursales registradas") {
             setSucursal(sucursal)
         }
         window.location.reload()
@@ -113,13 +113,14 @@ return (
                                         <Form.Control
                                             as="select"
                                             aria-label="indicadorSucursal"
+                                            className="cajaSucursal"
                                             name="sucursal"
                                             defaultValue={sucursalElegida}
                                             onChange={(e) => {
                                                 almacenaSucursal(e.target.value)
                                             }}
                                         >
-                                            <option>Elige una opción</option>
+                                            <option>Selecciona una de las sucursales registradas</option>
                                             {map(sucursalesRegistradas, (sucursal, index) => (
                                                 <option key={index} value={sucursal?.id} selected={sucursalElegida == sucursal?.id}>{sucursal?.nombre}</option>
                                             ))}
@@ -191,12 +192,13 @@ return (
                                     as="select"
                                     aria-label="indicadorSucursal"
                                     name="sucursal"
+                                    className="cajaSucursal"
                                     defaultValue={sucursalElegida}
                                     onChange={(e) => {
                                         almacenaSucursal(e.target.value)
                                     }}
                                 >
-                                    <option>Elige una opción</option>
+                                    <option>Selecciona una de las sucursales registradas</option>
                                     {map(sucursalesRegistradas, (sucursal, index) => (
                                         <option key={index} value={sucursal?.id} selected={sucursalElegida == sucursal?.id}>{sucursal?.nombre}</option>
                                     ))}

@@ -10,14 +10,17 @@
 
 .indicadorSucursal {
   color: $font-dark !important;
-
+  cursor: pointer !important;
   -webkit-appearance: none;
   -moz-appearance: none;
 }
 
+.cajaSucursal {
+  width: 100%;
+}
+
 
 .logoPrincipal {
-  margin-left: 45px !important;
   cursor: pointer !important;
 }
 
