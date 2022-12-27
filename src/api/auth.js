@@ -1,4 +1,4 @@
-import { API_HOST, TOKEN } from "../utils/constants";
+import { API_HOST, TOKEN, SUCURSAL } from "../utils/constants";
 import { ENDPOINTLoginAdministrador } from "./endpoints";
 import jwtDecode from "jwt-decode";
 import axios from 'axios';
@@ -18,6 +18,18 @@ export async function login(data) {
     return await axios.post(API_HOST + ENDPOINTLoginAdministrador, dataTemp, config);
 }
 
+export function setSucursal(sucursal) {
+    localStorage.setItem(SUCURSAL, sucursal)
+}
+
+export function getSucursal() {
+    return localStorage.getItem(SUCURSAL)
+}
+
+function eliminaSucursal() {
+    return localStorage.removeItem(SUCURSAL)
+}
+
 export function setTokenApi(token) {
     localStorage.setItem(TOKEN, token);
 }
@@ -27,6 +39,7 @@ export function getTokenApi() {
 }
 
 export function logoutApi() {
+    eliminaSucursal();
     return localStorage.removeItem(TOKEN);
 }
 

@@ -10,3 +10,5 @@ export const API_CLOUDINARY = "https://api.cloudinary.com/v1_1/omarlestrella/ima
 export const  API_IP = "https://api.ipify.org";
 
 export const TOKEN = "token";
+
+export const SUCURSAL = "sucursal";

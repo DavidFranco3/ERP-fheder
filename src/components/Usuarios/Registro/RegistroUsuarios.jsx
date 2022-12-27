@@ -29,14 +29,11 @@ function RegistroUsuarios(props) {
     // Para almacenar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
 
+        // Para el icono de cargando del boton
+        const [loading, setLoading] = useState(false);
+
     // Para almacenar los departamentos registrados
     const [departamentosregistrados, setDepartamentosregistrados] = useState(null);
-
-    // Para almacenar los municipios del estado
-    const [municipiosEstado, setMunicipiosEstado] = useState(null);
-
-    // Para el icono de cargando del boton
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         try {
