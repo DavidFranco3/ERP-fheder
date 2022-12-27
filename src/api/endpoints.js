@@ -13,6 +13,16 @@ export const ENDPOINTDeshabilitaUsuario = "/usuarios/deshabilitar";
 export const ENDPOINTListarUsuariosPaginacion = "/usuarios/listarPaginando";
 export const ENDPOINTTotalUsuarios = "/usuarios/total";
 
+// Sucursales
+export const ENDPOINTRegistraSucursal = "/sucursales/registro";
+export const ENDPOINTListarSucursales = "/sucursales/listar";
+export const ENDPOINTObtenerSucursal = "/sucursales/obtener";
+export const ENDPOINTEliminarSucursal = "/sucursales/eliminar";
+export const ENDPOINTActualizarSucursal = "/sucursales/actualizar";
+export const ENDPOINTDeshabilitaSucursal = "/sucursales/deshabilitar";
+export const ENDPOINTListarSucursalesPaginacion = "/sucursales/listarPaginando";
+export const ENDPOINTTotalSucursales = "/sucursales/total";
+
 // Departamentos
 export const ENDPOINTRegistraDepartamentos = "/departamentos/registro";
 export const ENDPOINTListarDepartamentos = "/departamentos/listar";

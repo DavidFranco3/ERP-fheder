@@ -54,6 +54,7 @@ import RequerimientosPlaneacion from "../page/RequerimientosPlaneacion";
 import VentasGastos from "../page/VentasGastos";
 import Pigmento from "../page/Pigmento";
 import Empaques from "../page/Empaques";
+import Sucursales from "../page/Sucursales";
 import Error404 from "../page/Error404";
 
 // importacion de dashboards
@@ -64,7 +65,8 @@ import DashboardPlaneacion from "../components/Dashboards/DashboardPlaneacion";
 import DashboardProduccion from "../components/Dashboards/DashboardProduccion";
 import DashboardCalidad from "../components/Dashboards/DashboardCalidad";
 import DashboardMantenimiento from "../components/Dashboards/DashboardMantenimiento";
-import DashboardCatalogos from "../components/Dashboards/DashboardCatalogos"
+import DashboardCatalogos from "../components/Dashboards/DashboardCatalogos";
+import DashboardConfiguracion from "../components/Dashboards/DashboardConfiguracion";
 
 // Importacion de almacenes
 import AlmacenMP from "../page/AlmacenMP";
@@ -573,6 +575,11 @@ export default [
         page: Rechazos
     },
     {
+        path: "/Sucursales",
+        exact: true,
+        page: Sucursales
+    },
+    {
         path: "/FichaTecnica",
         exact: true,
         page: FichaTecnica
@@ -881,6 +888,11 @@ export default [
         path: "/DashboardCatalogos",
         exact: true,
         page: DashboardCatalogos
+    },
+    {
+        path: "/DashboardConfiguracion",
+        exact: true,
+        page: DashboardConfiguracion
     },
     {
         path: "/",

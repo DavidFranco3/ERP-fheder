@@ -4,25 +4,21 @@ import "./Dashboard.scss";
 import { Card, Image } from "react-bootstrap";
 // Importacion de imagenes para los iconos de los menus
 import LogoVentas from "../../assets/png/principales/ventas.png";
-import LogoMaquinas from "../../assets/png/principales/maquinas.png";
-import LogoClientes from "../../assets/png/principales/clientes.png";
 import LogoCompras from "../../assets/png/principales/compras.png";
 import LogoFacturacion from "../../assets/png/principales/facturacion.png";
 import LogoPlaneacion from "../../assets/png/principales/planeacion.png"
 import LogoLogistica from "../../assets/png/principales/logistica.png";
 import LogoEmbarque from "../../assets/png/principales/embarque.png";
-import LogoUsuarios from "../../assets/png/principales/usuarios.png";
 import LogoProduccion from "../../assets/png/principales/produccion.png";
-import LogoDepartamentos from "../../assets/png/principales/departamentos.png";
 import LogoAlmacen from "../../assets/png/principales/almacen.png";
 import LogoTiquet from "../../assets/png/principales/tiquet.png";
-import LogoProductos from "../../assets/png/principales/productos.png"
 import LogoCotizaciones from "../../assets/png/principales/cotizaciones.png"
 import LogoCalidad from "../../assets/png/principales/calidad.png";
-import Tracking from "../../assets/png/tracking.png"
+import Tracking from "../../assets/png/tracking.png";
 import LogoLogs from "../../assets/png/principales/logs.png";
 import LogoMantenimiento from "../../assets/png/principales/mantenimiento.png";
 import LogoCatalogos from "../../assets/png/principales/catalogos.png";
+import LogoConfiguracion  from "../../assets/png/principales/configuracion.png";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
 import { toast } from "react-toastify";
 import { obtenerUsuario } from "../../api/usuarios";
@@ -131,6 +127,11 @@ function Dashboard(props) {
                     path={'/Facturacion'}
                     logo={LogoFacturacion}
                     title={'Facturación'}
+                />
+                <ItemCard
+                    path={'/DashboardConfiguracion'}
+                    logo={LogoConfiguracion}
+                    title={'Configuración'}
                 />
                 <ItemCard
                     path={'/Logs'}
