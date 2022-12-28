@@ -107,7 +107,7 @@ return (
                                             }}
                                         />
                                     </div>
-                                    <div className="hidden sm:block sm:ml-6">
+                                    <div className="hidden sm:block sm:ml-72">
                                         {/* Informacion en el menu principal */}
                                         {/* Seleccionable con razones sociales */}
                                         <Form.Control
@@ -122,7 +122,7 @@ return (
                                         >
                                             <option>Selecciona una de las sucursales registradas</option>
                                             {map(sucursalesRegistradas, (sucursal, index) => (
-                                                <option key={index} value={sucursal?.id} selected={sucursalElegida == sucursal?.id}>{sucursal?.nombre}</option>
+                                                <option key={index} value={sucursal?.nombre} selected={sucursalElegida == sucursal?.nombre}>{sucursal?.nombre}</option>
                                             ))}
                                         </Form.Control>
                                     </div>
@@ -200,7 +200,7 @@ return (
                                 >
                                     <option>Selecciona una de las sucursales registradas</option>
                                     {map(sucursalesRegistradas, (sucursal, index) => (
-                                        <option key={index} value={sucursal?.id} selected={sucursalElegida == sucursal?.id}>{sucursal?.nombre}</option>
+                                        <option key={index} value={sucursal?.nombre} selected={sucursalElegida == sucursal?.nombre}>{sucursal?.nombre}</option>
                                     ))}
                                 </Form.Control>
                             </div>
