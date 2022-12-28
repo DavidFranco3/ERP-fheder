@@ -12,6 +12,7 @@ import { obtenerNumeroInspeccionPieza, registraInspeccionPieza } from "../../../
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import moment from "moment";
+import {getSucursal} from "../../../api/auth";
 
 function RegistraInspeccionMaterial(props) {
 
@@ -159,6 +160,7 @@ function RegistraInspeccionMaterial(props) {
                     noMaquina: formData.numeroMaquina,
                     cliente: nombreCliente,
                     descripcionPieza: producto,
+                    sucursal: getSucursal(),
                     noParte: numeroParte,
                     material: material,
                     cantidadLote: formData.cantidadLote,

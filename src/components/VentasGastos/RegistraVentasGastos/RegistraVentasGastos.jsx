@@ -5,6 +5,7 @@ import { map } from "lodash";
 import { registraIntegracion, obtenerItemIntegraciones, obtenerFacturaIntegracion } from "../../../api/integracionVentasGastos";
 import { toast } from "react-toastify";
 import queryString from "query-string";
+import {getSucursal} from "../../../api/auth";
 
 function RegistraVentasGastos(props) {
     const { setShowModal, history } = props;
@@ -88,6 +89,7 @@ function RegistraVentasGastos(props) {
                     item: item,
                     folio: facturaActual,
                     fechaFactura: formData.fechaFactura,
+                    sucursal: getSucursal(),
                     cliente: formData.cliente,
                     importe: formData.importe,
                     iva: formData.importe != "" ? parseFloat(formData.importe) * parseFloat(0.16) : "0",

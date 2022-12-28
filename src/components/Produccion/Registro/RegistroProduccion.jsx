@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import BuscarPlaneacion from '../../../page/BuscarPlaneacion';
 import { obtenerMaquina } from "../../../api/maquinas";
+import {getSucursal} from "../../../api/auth";
 
 function RegistroProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -250,6 +251,7 @@ function RegistroProduccion(props) {
             const dataTemp = {
                 item: data.item,
                 folio: folioActual,
+                sucursal: getSucursal(),
                 generalidades: {
                     ordenVenta: formDataPlaneacion.ordenVenta,
                     noInterno: formDataProduccion.noInterno,

@@ -11,6 +11,7 @@ import BuscarOV from "../../../page/BuscarOV";
 import BasicModal from "../../Modal/BasicModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {getSucursal} from "../../../api/auth";
 
 function RegistraAsignacionPedido(props) {
     const { setShowModal, location, history } = props;
@@ -133,6 +134,7 @@ function RegistraAsignacionPedido(props) {
                     cliente: idCliente,
                     fechaPedido: fechaPedido,
                     fechaEntrega: fechaEntrega,
+                    sucursal: getSucursal(),
                     um: almacenPT.um,
                     cantidadPedida: almacenPT.cantidadPedida,
                     cantidadAsignada: "N/A",

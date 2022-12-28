@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
-
 import "./RegistroDepartamentos.scss";
-import { size, values } from "lodash";
 import { toast } from "react-toastify";
 import { registraDepartamento } from "../../../api/departamentos";
 import queryString from "query-string";
+import { getSucursal } from "../../../api/auth";
 
 function RegistroDepartamentos(props) {
     const { setShowModal, history } = props;
@@ -35,8 +34,13 @@ function RegistroDepartamentos(props) {
         } else {
             setLoading(true);
 
+            const dataTemp = {
+                ...formData,
+                sucursal: getSucursal()
+            }
+
             try {
-                registraDepartamento(formData).then(response => {
+                registraDepartamento(dataTemp).then(response => {
                     const { data } = response;
 
                     toast.success(data.mensaje);

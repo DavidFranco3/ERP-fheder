@@ -5,6 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory } from "react-router-dom";
 import { registraCertificado, obtenerNumeroCertificado, obtenerItemCertificado } from "../../../api/certificadosCalidad";
 import { toast } from "react-toastify";
+import {getSucursal} from "../../../api/auth";
 
 function RegistraReporte(props) {
 
@@ -60,6 +61,7 @@ function RegistraReporte(props) {
                     cliente: formData.cliente,
                     descripcion: formData.descripcion,
                     numeroParte: formData.numeroParte,
+                    sucursal: getSucursal(),
                     especificacionInforme: formData.especificacion,
                     revisionAtributos: {
                         1: {

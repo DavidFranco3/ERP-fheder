@@ -14,6 +14,7 @@ import { registraRequerimiento, obtenerNumeroRequerimiento, obtenerItemRequerimi
 import { toast } from "react-toastify";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { obtenerMaquina } from "../../../api/maquinas";
+import {getSucursal} from "../../../api/auth";
 
 function RegistraRequerimientosPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
@@ -294,6 +295,7 @@ function RegistraRequerimientosPlaneacion(props) {
                 const dataTemp = {
                     item: item,
                     folio: data.noRequerimiento,
+                    sucursal: getSucursal(),
                     requerimiento: {
                         semana: formData.semana,
                         producto: formDataPlaneacion.id,

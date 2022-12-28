@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { listarProveedores } from "../../../api/proveedores";
+import {getSucursal} from "../../../api/auth";
 
 function RegistroInsumos(props) {
     const { setShowModal2, setShowModal, location, history } = props;
@@ -74,6 +75,7 @@ function RegistroInsumos(props) {
                 folio: folioActualInsumo,
                 descripcion: formData.descripcion,
                 um: formData.um,
+                sucursal: getSucursal(),
                 precio: formData.precio,
                 proveedor: formData.proveedor
             }

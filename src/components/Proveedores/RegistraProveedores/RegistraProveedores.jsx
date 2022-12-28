@@ -4,6 +4,7 @@ import { obtenerFolioActualProveedores, registraProveedores, obtenerItem } from 
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
+import {getSucursal} from "../../../api/auth";
 
 function RegistraProveedores(props) {
     const { setShowModal, history } = props;
@@ -52,6 +53,7 @@ function RegistraProveedores(props) {
                     item: data.item,
                     folio: folioActual,
                     nombre: formData.nombre,
+                    sucursal: getSucursal(),
                     productoServicio: formData.productoServicio,
                     categoria: formData.categoria,
                     personalContacto: formData.personalContacto,

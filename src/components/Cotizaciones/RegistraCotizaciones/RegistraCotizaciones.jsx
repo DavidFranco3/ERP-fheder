@@ -18,6 +18,7 @@ import { listarProveedores } from "../../../api/proveedores";
 import { toast } from "react-toastify";
 import { map } from "lodash";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import {getSucursal} from "../../../api/auth";
 
 function RegistraCotizaciones(props) {
 
@@ -133,6 +134,7 @@ function RegistraCotizaciones(props) {
                         folio: data.folioCotizacion,
                         fechaCreacion: formData.fecha,
                         vendedor: formData.proveedor,
+                        sucursal: getSucursal(),
                         cliente: formData.cliente,
                         status: "true"
                     }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Container, Form, Image, Row, Spinner, Table } from "react-bootstrap";
 import { withRouter, useHistory } from "react-router-dom";
+import {getSucursal} from "../../../api/auth";
 
 function RegistroPlaneacion(props) {
     const { setRefreshCheckLogin } = props;

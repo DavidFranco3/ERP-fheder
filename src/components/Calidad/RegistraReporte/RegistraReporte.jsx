@@ -8,6 +8,7 @@ import BasicModal from "../../Modal/BasicModal";
 import { obtenerNumeroInspeccion, registraInspeccion, obtenerItemInspeccion } from "../../../api/inspeccionMaterial";
 import { toast } from "react-toastify";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
+import {getSucursal} from "../../../api/auth";
 
 function RegistraReporte(props) {
 
@@ -76,6 +77,7 @@ function RegistraReporte(props) {
                     ordenVenta: ordenVenta,
                     fecha: formData.fecha,
                     lote: formData.lote,
+                    sucursal: getSucursal(),
                     propiedad: formData.propiedad,
                     tipoMaterial: formData.tipoMaterial,
                     nombre: formData.nombreDescripcion,

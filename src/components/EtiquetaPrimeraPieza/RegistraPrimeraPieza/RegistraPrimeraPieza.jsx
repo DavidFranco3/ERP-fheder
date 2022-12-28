@@ -6,6 +6,7 @@ import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { obtenerCliente } from '../../../api/clientes';
 import {registraEtiquetaPieza, obtenerNoEtiqueta} from '../../../api/etiquetaPrimeraPieza'
 import queryString from "query-string";
+import {getSucursal} from "../../../api/auth";
 
 function RegistraReporte(props) {
     const { setShowModal, history } = props;
@@ -99,6 +100,7 @@ function RegistraReporte(props) {
                     cliente: productoSeleccionado.cliente,
                     peso: productoSeleccionado.peso,
                     noCavidades: productoSeleccionado.noCavidades,
+                    sucursal: getSucursal(),
                     turno: formData.turno,
                     inspector: formData.inspector,
                     supervisor: formData.supervisor

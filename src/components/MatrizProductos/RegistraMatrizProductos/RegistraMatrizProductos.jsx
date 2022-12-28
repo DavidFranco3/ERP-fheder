@@ -18,6 +18,7 @@ import BuscarCliente from '../../../page/BuscarCliente';
 import BuscarPigmento from '../../../page/BuscarPigmento';
 import BuscarProveedor from "../../../page/BuscarProveedor";
 import BuscarEmpaque from '../../../page/BuscarEmpaque';
+import {getSucursal} from "../../../api/auth";
 
 function RegistraMatrizProductos(props) {
 
@@ -203,6 +204,7 @@ function RegistraMatrizProductos(props) {
             const dataTemp = {
                 noInterno: formData.noInterno,
                 cliente: dataCliente.cliente,
+                sucursal: getSucursal(),
                 nombreCliente: dataCliente.nombreCliente,
                 datosMolde: {
                     noMolde: formData.noMolde,

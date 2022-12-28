@@ -7,6 +7,7 @@ import { listarProduccion } from "../../../api/produccion";
 import { registraEtiquetaPT, obtenerNoEtiquetaPT, obtenerItemEtiquetaPT } from "../../../api/etiquetaIdentificacionPT";
 import { map } from "lodash";
 import { toast } from "react-toastify";
+import {getSucursal} from "../../../api/auth";
 
 function RegistroIdentificacionPT(props) {
     const { setShowModal } = props;
@@ -100,6 +101,7 @@ function RegistroIdentificacionPT(props) {
                     descripcion: producto.descripcionProducto,
                     noParte: producto.numeroParte,
                     noOrden: producto.ordenProduccion,
+                    sucursal: getSucursal(),
                     cantidad: formData.cantidad,
                     turno: formData.turno,
                     operador: formData.operador,

@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { map } from "lodash";
+import {getSucursal} from "../../../api/auth";
 
 function RegistroReporteProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -71,6 +72,7 @@ function RegistroReporteProduccion(props) {
                     faltas: formData.faltas,
                     supervisor: formData.supervisor,
                     turno: formData.turno,
+                    sucursal: getSucursal,
                     registros: listRegistros,
                     eficienciaGeneralMaquinas: formData.eficiencia,
                     observacionesTurno: formData.observaciones

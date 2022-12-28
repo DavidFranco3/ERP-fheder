@@ -3,6 +3,7 @@ import { Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { registraMes, obtenerNumeroMes } from "../../../api/mes";
 import { toast } from "react-toastify";
 import queryString from "query-string";
+import {getSucursal} from "../../../api/auth";
 
 function RegistraMes(props) {
     const { setShowModal, history } = props
@@ -55,6 +56,7 @@ function RegistraMes(props) {
                 const dataTemp = {
                     folio: noMes,
                     mes: formData.mes,
+                    sucursal: getSucursal(),
                     dias: formData.diasMes,
                     noMaquinas: "0",
                 }

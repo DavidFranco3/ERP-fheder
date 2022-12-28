@@ -13,6 +13,7 @@ import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import {getSucursal} from "../../../api/auth";
 
 function RegistroClientes(props) {
     const { setRefreshCheckLogin, history } = props;
@@ -48,6 +49,7 @@ function RegistroClientes(props) {
                 nombre: formData.nombre,
                 rfc: formData.rfc,
                 regimenFiscal: formData.regimenFiscal,
+                sucursal: getSucursal(),
                 direccion: {
                     calle: formData.calle,
                     numeroExterior: formData.numeroExterior,

@@ -15,6 +15,7 @@ import BasicModal from "../../Modal/BasicModal";
 import BuscarMaterial from '../../../page/BuscarMaterial';
 import BuscarInsumos from '../../../page/BuscarInsumos';
 import BuscarOV from '../../../page/BuscarOV';
+import {getSucursal} from "../../../api/auth";
 
 function RegistraRequisiciones(props) {
 
@@ -252,6 +253,7 @@ function RegistraRequisiciones(props) {
                         fechaRequisicion: formData.fechaRequisicion,
                         solicitante: formData.solicitante,
                         aprobo: formData.aprobo,
+                        sucursal: getSucursal(),
                         comentarios: formData.comentarios,
                         departamento: departamentoElegido.departamento,
                         tipoRequisicion: formData.tipoRequisicion,

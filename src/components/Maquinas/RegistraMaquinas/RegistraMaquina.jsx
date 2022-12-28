@@ -7,6 +7,7 @@ import { registraMaquina } from "../../../api/maquinas";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
+import {getSucursal} from "../../../api/auth";
 
 function RegistraMaquinas(props) {
     const { setShowModal, history } = props;
@@ -34,6 +35,7 @@ function RegistraMaquinas(props) {
                 numeroMaquina: formData.numeroMaquina,
                 marca: formData.marca,
                 tonelaje: formData.tonelaje,
+                sucursal: getSucursal(),
                 lugar: formData.lugar,
                 status: "true"
             }

@@ -7,6 +7,7 @@ import BuscarInspeccionCalidad from "../BuscarInspeccionCalidad";
 import BasicModal from "../../Modal/BasicModal";
 import { registraStatusMaterial, obtenerNumeroStatusMaterial, obtenerItemStatusMaterial } from "../../../api/statusMaterial";
 import { toast } from "react-toastify";
+import {getSucursal} from "../../../api/auth";
 
 function RegistraStatus(props) {
 
@@ -110,6 +111,7 @@ function RegistraStatus(props) {
                         nombreInspeccion: nombre,
                         resultadoInspeccion: resultadoFinal,
                         etiqueta: formData.etiqueta,
+                        sucursal: getSucursal(),
                         fecha: formData.fecha,
                         clienteProveedor: formData.clienteProveedor,
                         lote: formData.lote,

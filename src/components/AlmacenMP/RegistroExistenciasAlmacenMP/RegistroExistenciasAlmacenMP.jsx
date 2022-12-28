@@ -9,6 +9,7 @@ import { obtenerDatosInspeccion } from "../../../api/inspeccionMaterial";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
 import { set } from 'lodash';
+import {getSucursal} from "../../../api/auth";
 
 function RegistroExistenciasAlmacenMp(props) {
     const { setShowModal, location, history } = props;
@@ -120,6 +121,7 @@ function RegistroExistenciasAlmacenMp(props) {
                         folioMP: temp[0],
                         nombreMP: temp[1],
                         um: temp[2],
+                        sucursal: getSucursal(),
                         fecha: "",
                         cantidadExistencia: "0",
                         estado: "true"

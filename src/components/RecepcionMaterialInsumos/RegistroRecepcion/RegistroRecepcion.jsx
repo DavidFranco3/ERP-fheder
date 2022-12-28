@@ -19,6 +19,7 @@ import BasicModal from "../../Modal/BasicModal";
 import BuscarOC from '../../../page/BuscarOC';
 import { LogRegistroAlmacenMP, LogRegistroMovimientoAlmacenMP } from '../../AlmacenMP/Gestion/GestionAlmacenMP';
 import { LogRegistroAlmacenGeneral, LogRegistroMovimientoAlmacenGeneral } from '../../AlmacenGeneral/Gestion/GestionAlmacenGeneral';
+import {getSucursal} from "../../../api/auth";
 
 function RegistroRecepcion(props) {
     const { setRefreshCheckLogin } = props;
@@ -223,6 +224,7 @@ function RegistroRecepcion(props) {
                     nombreProveedor: formDataOC.nombreProveedor,
                     fechaRecepcion: formData.fecha,
                     precio: precioTotal,
+                    sucursal: getSucursal(),
                     cantidad: cantidadTotal,
                     valorTotal: totalSinIVA,
                     productos: listProductosCargados

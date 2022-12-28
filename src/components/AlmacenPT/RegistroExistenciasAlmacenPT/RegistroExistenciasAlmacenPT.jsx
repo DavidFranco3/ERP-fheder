@@ -6,6 +6,7 @@ import {obtenerFolioActualAlmacenPT, registraAlmacenPT} from "../../../api/almac
 import {toast} from "react-toastify";
 import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
+import {getSucursal} from "../../../api/auth";
 
 function RegistroExistenciasAlmacenPt(props) {
     const { setShowModal, location, history } = props;
@@ -66,6 +67,7 @@ function RegistroExistenciasAlmacenPt(props) {
                         folioMP: temp[1],
                         nombre: temp[2],
                         descripcion: formData.descripcion,
+                        sucursal: getSucursal(),
                         um: formData.um,
                         existenciasOV: "0",
                         existenciasStock: "0",

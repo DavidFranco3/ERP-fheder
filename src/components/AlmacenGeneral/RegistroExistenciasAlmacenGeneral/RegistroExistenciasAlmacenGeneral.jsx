@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { obtenerFolioActualAlmacenGeneral, registraAlmacenGeneral } from "../../../api/almacenGeneral";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
+import {getSucursal} from "../../../api/auth";
 
 function RegistroExistenciasAlmacenGeneral(props) {
     const { setShowModal, location, history } = props;
@@ -80,6 +81,7 @@ function RegistroExistenciasAlmacenGeneral(props) {
                 nombre: temp[2],
                 descripcion: formData.descripcion,
                 um: temp[3],
+                sucursal: getSucursal(),
                 tipo: formData.tipo,
                 existenciasOV: "0",
                 existenciasStock: "0",

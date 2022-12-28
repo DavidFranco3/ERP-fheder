@@ -17,6 +17,7 @@ import { LogRegistroPlaneacion } from "../../Planeacion/Gestion/GestionPlaneacio
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import Dropzone from "../../Dropzone";
+import {getSucursal} from "../../../api/auth";
 
 function RegistroVentas(props) {
     const { setRefreshCheckLogin } = props;
@@ -215,6 +216,7 @@ function RegistroVentas(props) {
                     nombreCliente: formData.nombreCliente,
                     condicionesPago: formData.condicionesPago,
                     incoterms: formData.incoterms,
+                    sucursal: getSucursal(),
                     moneda: "M.N.",
                     numeroPedido: formData.numeroPedido,
                     lugarEntrega: formData.lugarEntrega,

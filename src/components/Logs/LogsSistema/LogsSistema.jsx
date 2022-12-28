@@ -1,7 +1,7 @@
 import { obtenerNumeroLog, obtenIP } from "../../../api/logsGenerales";
 import { registraLog } from "../../../api/logsGenerales";
 import { obtenerUsuario } from "../../../api/usuarios";
-import { getTokenApi, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
+import { getTokenApi, logoutApi, obtenidusuarioLogueado, getSucursal } from "../../../api/auth";
 
 export function LogsInformativos(mensaje, datos){
     try {
@@ -22,6 +22,7 @@ export function LogsInformativos(mensaje, datos){
                             folio: noLog,
                             usuario: nombre + " " + apellidos,
                             correo: correo,
+                            sucursal: getSucursal(),
                             dispositivo: navigator.platform,
                             ip: IpTemp,
                             descripcion: navigator.userAgent,

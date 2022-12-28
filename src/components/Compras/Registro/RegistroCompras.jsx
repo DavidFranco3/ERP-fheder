@@ -17,6 +17,7 @@ import BuscarMaterial from '../../../page/BuscarMaterial';
 import BuscarInsumos from '../../../page/BuscarInsumos';
 import BuscarOV from '../../../page/BuscarOV';
 import BuscarRequisicion from '../../../page/BuscarRequisicion';
+import {getSucursal} from "../../../api/auth";
 
 function RegistroCompras(props) {
     const { } = props;
@@ -267,6 +268,7 @@ function RegistroCompras(props) {
                     const dataTemp = {
                         item: itemActual,
                         folio: data.noCompra,
+                        sucursal: getSucursal(),
                         proveedor: proveedorSeleccionado.proveedor,
                         requisicion: formDataOC.requisicion,
                         nombreProveedor: proveedorSeleccionado.nombreProveedor,

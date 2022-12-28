@@ -4,6 +4,7 @@ import "./RegistroMaterialMolido.scss";
 import { registraEtiquetaMolido, obtenerItemEtiquetaMolido, obtenerNoEtiqueta } from '../../../api/etiquetaMolido'
 import queryString from "query-string";
 import { toast } from "react-toastify";
+import {getSucursal} from "../../../api/auth";
 
 function RegistraMaterialMolido(props) {
     const { setShowModal, history } = props;
@@ -55,6 +56,7 @@ function RegistraMaterialMolido(props) {
                     folio: folioActual,
                     fecha: formData.fecha,
                     turno: formData.turno,
+                    sucursal: getSucursal(),
                     descripcion: formData.descripcion,
                     color: formData.color,
                     peso: formData.peso,

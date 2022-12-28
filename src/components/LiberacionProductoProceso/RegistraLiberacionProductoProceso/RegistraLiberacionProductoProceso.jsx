@@ -9,6 +9,7 @@ import { listarClientes } from "../../../api/clientes";
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { map } from "lodash";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import {getSucursal} from "../../../api/auth";
 
 function RegistraLiberacionProductoProceso(props) {
 
@@ -131,6 +132,7 @@ function RegistraLiberacionProductoProceso(props) {
                     folio: folioActual,
                     cliente: formData.cliente,
                     descripcionPieza: productoSeleccionado.descripcion,
+                    sucursal: getSucursal(),
                     noParteMolde: productoSeleccionado.noParte,
                     procesoRealizado: formData.proceso,
                     fechaElaboracion: formData.fechaElaboracion,
