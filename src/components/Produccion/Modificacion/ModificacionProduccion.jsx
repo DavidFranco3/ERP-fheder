@@ -18,6 +18,7 @@ import BuscarPlaneacion from '../../../page/BuscarPlaneacion';
 import { obtenerMaquina } from "../../../api/maquinas";
 import { obtenerRequerimiento } from "../../../api/requerimientosPlaneacion";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function ModificacionProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -41,11 +42,11 @@ function ModificacionProduccion(props) {
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
 
-     // Para almacenar la informacion del formulario
-     const [formDataPlaneacion, setFormDataPlaneacion] = useState(initialPlaneacion());
+    // Para almacenar la informacion del formulario
+    const [formDataPlaneacion, setFormDataPlaneacion] = useState(initialPlaneacion());
 
-     // Para almacenar la informacion del formulario
-     const [formDataProduccion, setFormDataProduccion] = useState(initialFormDataPlaneacionInitial());
+    // Para almacenar la informacion del formulario
+    const [formDataProduccion, setFormDataProduccion] = useState(initialFormDataPlaneacionInitial());
 
     const [listResultados, setListResultados] = useState([]);
 
@@ -79,7 +80,7 @@ function ModificacionProduccion(props) {
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
         try {
-            obtenerMatrizProducto(formDataPlaneacion.producto=="" ? formData.idProducto : formDataPlaneacion.producto ).then(response => {
+            obtenerMatrizProducto(formDataPlaneacion.producto == "" ? formData.idProducto : formDataPlaneacion.producto).then(response => {
                 const { data } = response;
                 // console.log(data)
                 // initialData
@@ -96,7 +97,7 @@ function ModificacionProduccion(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [formDataPlaneacion.producto=="" ? formData.idProducto : formDataPlaneacion.producto]);
+    }, [formDataPlaneacion.producto == "" ? formData.idProducto : formDataPlaneacion.producto]);
 
     const [numeroMaquina1, setNumeroMaquina1] = useState("");
 
@@ -267,86 +268,86 @@ function ModificacionProduccion(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-            //console.log("Continuar")
-            setLoading(true)
+        //console.log("Continuar")
+        setLoading(true)
 
-            // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            const dataTemp = {
-                generalidades: {
-                    ordenVenta: formDataPlaneacion.ordenVenta == "" ? formData.ordenVenta : formDataPlaneacion.ordenVenta,
-                    noInterno: formDataProduccion.noInterno,
-                    noParte: formDataProduccion.noParte,
-                    idProducto: formDataPlaneacion.producto == "" ? formData.idProducto : formDataPlaneacion.producto,
-                    producto: formDataPlaneacion.nombreProducto == "" ? formData.producto : formDataPlaneacion.nombreProducto,
-                    cliente: formDataProduccion.cliente,
-                    nombreCliente: formDataProduccion.nombreCliente
-                },
-                planeacion: {
-                    ordenProduccion: folioActual,
-                    fecha: formData.fecha,
-                    noParte: formDataProduccion.noParte,
-                    noCavidades: formDataProduccion.cavMolde,
-                    cantidadProducir: formDataPlaneacion.cantidadProducir == "" ? formData.cantidadProducir : formData.cantidadProducir,
-                    opcionesMaquinaria: {
-                        1: {
-                            numeroMaquina1: numeroMaquina1,
-                            maquina1: nombreMaquina1,
-                            ciclo1: formDataProduccion.tiempoCiclo1,
-                            pieza1: piezasTurno1,
-                            bolsa1: formDataProduccion.noPiezasxEmpaque,
-                        },
-                        2: {
-                            numeroMaquina2: numeroMaquina2,
-                            maquina2: nombreMaquina2,
-                            ciclo2: formDataProduccion.tiempoCiclo2,
-                            pieza2: piezasTurno2,
-                            bolsa2: formDataProduccion.noPiezasxEmpaque,
-                        },
-                        3: {
-                            numeroMaquina3: numeroMaquina3,
-                            maquina3: nombreMaquina3,
-                            ciclo3: formDataProduccion.tiempoCiclo3,
-                            pieza3: piezasTurno3,
-                            bolsa3: formDataProduccion.noPiezasxEmpaque,
-                        },
+        // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
+        const dataTemp = {
+            generalidades: {
+                ordenVenta: formDataPlaneacion.ordenVenta == "" ? formData.ordenVenta : formDataPlaneacion.ordenVenta,
+                noInterno: formDataProduccion.noInterno,
+                noParte: formDataProduccion.noParte,
+                idProducto: formDataPlaneacion.producto == "" ? formData.idProducto : formDataPlaneacion.producto,
+                producto: formDataPlaneacion.nombreProducto == "" ? formData.producto : formDataPlaneacion.nombreProducto,
+                cliente: formDataProduccion.cliente,
+                nombreCliente: formDataProduccion.nombreCliente
+            },
+            planeacion: {
+                ordenProduccion: folioActual,
+                fecha: formData.fecha,
+                noParte: formDataProduccion.noParte,
+                noCavidades: formDataProduccion.cavMolde,
+                cantidadProducir: formDataPlaneacion.cantidadProducir == "" ? formData.cantidadProducir : formData.cantidadProducir,
+                opcionesMaquinaria: {
+                    1: {
+                        numeroMaquina1: numeroMaquina1,
+                        maquina1: nombreMaquina1,
+                        ciclo1: formDataProduccion.tiempoCiclo1,
+                        pieza1: piezasTurno1,
+                        bolsa1: formDataProduccion.noPiezasxEmpaque,
+                    },
+                    2: {
+                        numeroMaquina2: numeroMaquina2,
+                        maquina2: nombreMaquina2,
+                        ciclo2: formDataProduccion.tiempoCiclo2,
+                        pieza2: piezasTurno2,
+                        bolsa2: formDataProduccion.noPiezasxEmpaque,
+                    },
+                    3: {
+                        numeroMaquina3: numeroMaquina3,
+                        maquina3: nombreMaquina3,
+                        ciclo3: formDataProduccion.tiempoCiclo3,
+                        pieza3: piezasTurno3,
+                        bolsa3: formDataProduccion.noPiezasxEmpaque,
                     },
                 },
-                bom: {
-                    material: formDataProduccion.descripcionMP,
-                    molido: formDataProduccion.porcentajeMolido,
-                    pesoPieza: formDataProduccion.pesoPiezas,
-                    pesoColada: formDataProduccion.pesoColada,
-                    kgMaterial: kgMaterial,
-                    pigmento: formDataProduccion.descripcionPigmento,
-                    aplicacion: formDataProduccion.aplicacionGxKG,
-                    pigMb: pigMB,
-                    materialxTurno: materialTurno,
-                    merma: formDataProduccion.porcentajeScrap,
-                    empaque: formDataProduccion.descripcionBolsa,
-                    bolsasCajasUtilizar: bolsasCajasUtilizar,
-                    notas: formData.notasImportantes,
-                    elaboro: formData.elaboro,
-                },
-                resultados: listResultados,
-                materiaPrima: listRegistros,
-                observaciones: formData.observaciones,
-                estado: "true"
-            }
-            // console.log(dataTemp)
-            // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
-            // 
-            // Modificar el pedido creado recientemente
-            actualizaProduccion(id, dataTemp).then(response => {
-                const { data: { mensaje, datos } } = response;
-
-                LogTrackingActualizacion(ordenVenta == "" ? formData.ordenVenta : ordenVenta, "En produccion", "6")
-                // console.log(response)
-                toast.success(mensaje)
-                setLoading(false)
-                rutaRegreso()
-            }).catch(e => {
-                console.log(e)
-            })
+            },
+            bom: {
+                material: formDataProduccion.descripcionMP,
+                molido: formDataProduccion.porcentajeMolido,
+                pesoPieza: formDataProduccion.pesoPiezas,
+                pesoColada: formDataProduccion.pesoColada,
+                kgMaterial: kgMaterial,
+                pigmento: formDataProduccion.descripcionPigmento,
+                aplicacion: formDataProduccion.aplicacionGxKG,
+                pigMb: pigMB,
+                materialxTurno: materialTurno,
+                merma: formDataProduccion.porcentajeScrap,
+                empaque: formDataProduccion.descripcionBolsa,
+                bolsasCajasUtilizar: bolsasCajasUtilizar,
+                notas: formData.notasImportantes,
+                elaboro: formData.elaboro,
+            },
+            resultados: listResultados,
+            materiaPrima: listRegistros,
+            observaciones: formData.observaciones,
+            estado: "true"
+        }
+        // console.log(dataTemp)
+        // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
+        // 
+        // Modificar el pedido creado recientemente
+        actualizaProduccion(id, dataTemp).then(response => {
+            const { data: { mensaje, datos } } = response;
+            LogsInformativos("Se a actualizado la orden de produccion " + id, dataTemp);
+            LogTrackingActualizacion(ordenVenta == "" ? formData.ordenVenta : ordenVenta, "En produccion", "6")
+            // console.log(response)
+            toast.success(mensaje)
+            setLoading(false)
+            rutaRegreso()
+        }).catch(e => {
+            console.log(e)
+        })
 
     }
 
@@ -492,7 +493,7 @@ function ModificacionProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="nombre del producto"
-                                            defaultValue={formDataPlaneacion.nombreProducto=="" ? formData.producto : formDataPlaneacion.nombreProducto}
+                                            defaultValue={formDataPlaneacion.nombreProducto == "" ? formData.producto : formDataPlaneacion.nombreProducto}
                                             name="nombreProducto"
                                         />
                                     </Form.Group>

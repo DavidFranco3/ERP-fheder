@@ -52,7 +52,7 @@ function ModificacionSucursales(props) {
             try {
                 actualizaSucursal(id, dataTemp).then(response => {
                     const { data } = response;
-                    LogsInformativos("Se ha modificado la sucursal " + dataTemp.nombre);
+                    LogsInformativos("Se ha modificado la sucursal " + dataTemp.nombre, dataTemp);
                     history.push({
                         search: queryString.stringify(""),
                     });

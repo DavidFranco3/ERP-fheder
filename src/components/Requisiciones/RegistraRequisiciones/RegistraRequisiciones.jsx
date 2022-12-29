@@ -15,6 +15,7 @@ import BuscarMaterial from '../../../page/BuscarMaterial';
 import BuscarInsumos from '../../../page/BuscarInsumos';
 import BuscarOV from '../../../page/BuscarOV';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
 
 function RegistraRequisiciones(props) {
     const { setRefreshCheckLogin } = props;
@@ -256,6 +257,7 @@ function RegistraRequisiciones(props) {
                     registraRequisicion(dataTemp).then(response => {
                         const { data: { mensaje, datos } } = response;
                         // console.log(response)
+                        LogsInformativos("Se ha registrado una nueva requisición con folio " + dataTemp.folio, dataTemp);
                         toast.success(mensaje)
                         //LogsInformativos(`Se han actualizado los datos de la orden de compra con folio ${data.noCompra}`, datos)
                         setLoading(false)

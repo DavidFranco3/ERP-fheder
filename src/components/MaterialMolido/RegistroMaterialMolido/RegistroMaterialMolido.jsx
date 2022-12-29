@@ -4,7 +4,8 @@ import "./RegistroMaterialMolido.scss";
 import { registraEtiquetaMolido, obtenerItemEtiquetaMolido, obtenerNoEtiqueta } from '../../../api/etiquetaMolido'
 import queryString from "query-string";
 import { toast } from "react-toastify";
-import {getSucursal} from "../../../api/auth";
+import { getSucursal } from "../../../api/auth";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistraMaterialMolido(props) {
     const { setShowModal, history } = props;
@@ -65,7 +66,7 @@ function RegistraMaterialMolido(props) {
 
                 registraEtiquetaMolido(dataTemp).then(response => {
                     const { data } = response;
-
+                    LogsInformativos("Se a registrado el material molido " + folioActual, dataTemp);
                     toast.success(data.mensaje)
                     setTimeout(() => {
                         setLoading(false)

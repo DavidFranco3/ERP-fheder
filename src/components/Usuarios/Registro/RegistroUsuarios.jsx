@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { registraUsuarios } from "../../../api/usuarios";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { getSucursal } from '../../../api/auth';
 
 function RegistroUsuarios(props) {
     const { setRefreshCheckLogin } = props;
@@ -37,7 +38,7 @@ function RegistroUsuarios(props) {
 
     useEffect(() => {
         try {
-            listarDepartamento().then(response => {
+            listarDepartamento(getSucursal()).then(response => {
                 const { data } = response;
                 //console.log(data)
                 const dataTemp = formatModelDepartamentos(data);
@@ -85,7 +86,7 @@ function RegistroUsuarios(props) {
             try {
                 registraUsuarios(dataTemp).then(response => {
                     const { data } = response;
-                    LogsInformativos("Se ha registrado un nuevo usuario " + dataTemp.nombre + " " + dataTemp.apellidos)
+                    LogsInformativos("Se ha registrado un nuevo usuario " + dataTemp.nombre, dataTemp);
                     toast.success(data.mensaje)
                     setLoading(false);
                     regresaPagina();

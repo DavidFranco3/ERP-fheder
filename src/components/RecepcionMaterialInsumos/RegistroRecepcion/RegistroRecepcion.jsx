@@ -252,7 +252,7 @@ function RegistroRecepcion(props) {
                     // console.log(response)
                     toast.success(mensaje)
                     // Log acerca del registro inicial del tracking
-                    LogsInformativos(`Se han registrado la recepcion de material e insumos ${data.noRequerimiento}`, datos)
+                    LogsInformativos("Se han registrado la recepcion de material e insumos " + dataTemp.folio, dataTemp)
                     // Registro inicial del tracking
                     //LogTrackingRegistro(data.noVenta, clienteSeleccionado.id, formData.fechaElaboracion)
                     setLoading(false)

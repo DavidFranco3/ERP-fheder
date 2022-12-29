@@ -55,7 +55,7 @@ function ModificaMateriasPrimas(props) {
             try {
                 actualizaMateriaPrima(id, formData).then(response => {
                     const { data } = response;
-                    LogsInformativos("El material con descripción: " + descripcion + " fue modificado", dataMateriaPrima)
+                    LogsInformativos("El material con descripción: " + descripcion + " fue modificado", formData)
                     toast.success(data.mensaje)
                     setLoading(false)
                     setShowModal(false)

@@ -67,7 +67,7 @@ function ModificaMaquinas(props) {
                 actualizaMaquina(id, dataTemp).then(response => {
                     const { data } = response;
                     toast.success(data.mensaje)
-                    LogsInformativos("Se ha modificadp una maquina", dataTemp)
+                    LogsInformativos("Se ha modificadp la maquina " + formData.numeroMaquina, dataTemp)
                     history.push({
                         search: queryString.stringify(""),
                     });

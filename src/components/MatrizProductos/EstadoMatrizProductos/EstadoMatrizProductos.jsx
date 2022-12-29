@@ -29,11 +29,11 @@ function EstadoMatrizProductos(props) {
                 const { data } = response;
                 //console.log(data)
                 if (dataTemp.estado === "true") {
-                    LogsInformativos("El producto de la matriz con no. interno " + noInterno + " cambio su estado a activo", dataProducto)
+                    LogsInformativos("El producto de la matriz con no. interno " + noInterno + " cambio su estado a activo", dataTemp)
                     toast.success("Producto cambio a estado activo");
                 }
                 if (dataTemp.estado === "false") {
-                    LogsInformativos("El producto de la matriz con no. interno " + noInterno + " cambio su estado a obsoleto", dataProducto)
+                    LogsInformativos("El producto de la matriz con no. interno " + noInterno + " cambio su estado a obsoleto", dataTemp)
                     toast.success("Producto cambio a estado obsoleto");
                 }
                 setLoading(false);

@@ -37,11 +37,11 @@ function EliminacionLogicaMaquinas(props) {
                 //console.log(data)
                 if (dataTemp.status === "true") {
                     toast.success("Maquina habilitada");
-                    LogsInformativos("Se ha activado la inspeccion " + numeroMaquina)
+                    LogsInformativos("Se ha habilitado la maquina " + numeroMaquina, data)
                 }
                 if (dataTemp.status === "false") {
                     toast.success("Maquina deshabilitada");
-                    LogsInformativos("Se ha deshabilitado la maquina " + numeroMaquina)
+                    LogsInformativos("Se ha deshabilitado la maquina " + numeroMaquina, data)
                 }
                 setShowModal(false);
                 setLoading(false);

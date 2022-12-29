@@ -8,6 +8,7 @@ import BasicModal from "../../Modal/BasicModal";
 import { obtenerStatusMaterial, actualizaStatusMaterial } from "../../../api/statusMaterial";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
 
 function ModificaStatus(props) {
     const { setRefreshCheckLogin } = props;
@@ -41,40 +42,7 @@ function ModificaStatus(props) {
         obtenerStatusMaterial(id).then(response => {
             const { data } = response;
             //console.log(data)
-            const { folioInspeccion, propiedadInspeccion, cantidadInspeccion, fechaInspeccion, tipoMaterialInspeccion, recibioInspeccion, loteInspeccion, nombreInspeccion, resultadoInspeccion, etiqueta, fecha, descripcionMaterial, rechazo, nombre, auditor, supervisor, descripcionDefecto, cantidad, tipoRechazo, correccion, clienteProveedor, lote, recibio, turno, propiedad, liberacion, descripcion, comentarios, condicion, observaciones } = data;
-            const dataTemp = {
-                folioInspeccion: folioInspeccion,
-                propiedadInspeccion: propiedadInspeccion,
-                cantidadInspeccion: cantidadInspeccion,
-                fechaInspeccion: fechaInspeccion,
-                tipoMaterialInspeccion: tipoMaterialInspeccion,
-                recibioInspeccion: recibioInspeccion,
-                loteInspeccion: loteInspeccion,
-                nombreInspeccion: nombreInspeccion,
-                resultadoInspeccion: resultadoInspeccion,
-                etiqueta: etiqueta,
-                fecha: fecha,
-                descripcionMaterial: descripcionMaterial,
-                rechazo: rechazo,
-                nombre: nombre,
-                auditor: auditor,
-                supervisor: supervisor,
-                descripcionDefecto: descripcionDefecto,
-                cantidad: cantidad,
-                tipoRechazo: tipoRechazo,
-                correccion: correccion,
-                clienteProveedor: clienteProveedor,
-                lote: lote,
-                recibio: recibio,
-                turno: turno,
-                propiedad: propiedad,
-                liberacion: liberacion,
-                descripcion: descripcion,
-                comentarios: comentarios,
-                condicion: condicion,
-                observaciones: observaciones
-            }
-            setFormData(valoresAlmacenados(dataTemp))
+            setFormData(valoresAlmacenados(data))
             // setFechaCreacion(fechaElaboracion)
         }).catch(e => {
             console.log(e)
@@ -164,7 +132,8 @@ function ModificaStatus(props) {
                 actualizaStatusMaterial(id, dataTemp).then(response => {
                     const { data: { mensaje, datos } } = response;
                     // console.log(response)
-                    toast.success(mensaje)
+                    toast.success(mensaje);
+                    LogsInformativos("Se a modificado el status de material " + dataTemp.folioInspeccion, dataTemp);
                     // Log acerca del registro inicial del tracking
                     //LogsInformativos(`Se han registrado la orden de venta con folio ${data.noVenta}`, datos)
                     // Registro inicial del tracking

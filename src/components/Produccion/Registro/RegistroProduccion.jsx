@@ -17,6 +17,7 @@ import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/fre
 import BuscarPlaneacion from '../../../page/BuscarPlaneacion';
 import { obtenerMaquina } from "../../../api/maquinas";
 import {getSucursal} from "../../../api/auth";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistroProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -319,6 +320,7 @@ function RegistroProduccion(props) {
             registraProduccion(dataTemp).then(response => {
                 const { data: { mensaje, datos } } = response;
 
+                LogsInformativos("Se a registrado la produccion " + folioActual, dataTemp)
                 // Actualizacion del tracking
                 LogTrackingActualizacion(formDataPlaneacion.ordenVenta, "En produccion", "6")
                 // console.log(response)

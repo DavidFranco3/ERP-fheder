@@ -82,7 +82,7 @@ function RegistroInsumos(props) {
             try {
                 registraInsumo(dataTemp).then(response => {
                     const { data } = response;
-                    LogsInformativos("Nuevo insumo registrado", formData)
+                    LogsInformativos("Nuevo insumo registrado " + folioActualInsumo, dataTemp)
                     toast.success(data.mensaje)
                     setLoading(false)
                     history.push({

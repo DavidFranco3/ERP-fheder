@@ -4,11 +4,12 @@ import "./ModificaMaterialMolido.scss";
 import { actualizaEtiquetaMolido, obtenerEtiquetaMolido } from '../../../api/etiquetaMolido'
 import queryString from "query-string";
 import { toast } from "react-toastify";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function ModificaMaterialMolido(props) {
     const { data, setShowModal, history } = props;
 
-    const {id} = data;
+    const { id } = data;
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -51,30 +52,30 @@ function ModificaMaterialMolido(props) {
 
             setLoading(true)
             // Realiza registro de la aportación
-                const dataTemp = {
-                    fecha: formData.fecha,
-                    turno: formData.turno,
-                    descripcion: formData.descripcion,
-                    color: formData.color,
-                    peso: formData.peso,
-                    nombreMolinero: formData.molinero
-                }
+            const dataTemp = {
+                fecha: formData.fecha,
+                turno: formData.turno,
+                descripcion: formData.descripcion,
+                color: formData.color,
+                peso: formData.peso,
+                nombreMolinero: formData.molinero
+            }
 
-                actualizaEtiquetaMolido(id, dataTemp).then(response => {
-                    const { data } = response;
+            actualizaEtiquetaMolido(id, dataTemp).then(response => {
+                const { data } = response;
+                LogsInformativos("Se a modificado el material molido " + data.folio, dataTemp);
+                toast.success(data.mensaje)
+                setTimeout(() => {
+                    setLoading(false)
+                    history.push({
+                        search: queryString.stringify(""),
+                    });
+                    setShowModal(false)
+                }, 0)
 
-                    toast.success(data.mensaje)
-                    setTimeout(() => {
-                        setLoading(false)
-                        history.push({
-                            search: queryString.stringify(""),
-                        });
-                        setShowModal(false)
-                    }, 0)
-
-                }).catch(e => {
-                    console.log(e)
-                })
+            }).catch(e => {
+                console.log(e)
+            })
         }
     }
 

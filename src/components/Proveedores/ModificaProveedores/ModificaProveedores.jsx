@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
-import {size, values} from "lodash";
 import {toast} from "react-toastify";
 import {actualizaProveedores} from "../../../api/proveedores";
 import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
@@ -19,13 +18,7 @@ function ModificaProveedores(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        let validCount = 0;
-        values(formData).some(value => {
-            value && validCount++;
-            return null;
-        });
-
-        if (size(formData) !== validCount) {
+        if (!formData.nombre || !formData.productoServicio || !formData.categoria || !formData.personalContacto || !formData.telefono || !formData.correo || !formData.tiempoCredito || !formData.tiempoRespuesta || !formData.lugarRecoleccion || !formData.horario || !formData.comentarios) {
             toast.warning("Completa el formulario");
         } else {
             setLoading(true)
@@ -33,7 +26,7 @@ function ModificaProveedores(props) {
                 actualizaProveedores(id, formData).then(response => {
                     const { data } = response;
                     toast.success(data.mensaje)
-                    LogsInformativos(`Se ha modificado la información del proveedor ${folio}`, formData)
+                    LogsInformativos("Se ha modificado la información del proveedor " + formData.nombre, formData)
                     setLoading(false)
                     history.push({
                         search: queryString.stringify(""),

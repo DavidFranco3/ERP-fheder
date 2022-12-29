@@ -8,6 +8,7 @@ import BasicModal from "../../Modal/BasicModal";
 import { registraStatusMaterial, obtenerNumeroStatusMaterial, obtenerItemStatusMaterial } from "../../../api/statusMaterial";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
 
 function RegistraStatus(props) {
     const { setRefreshCheckLogin } = props;
@@ -141,7 +142,8 @@ function RegistraStatus(props) {
                     registraStatusMaterial(dataTemp).then(response => {
                         const { data: { mensaje, datos } } = response;
                         // console.log(response)
-                        toast.success(mensaje)
+                        toast.success(mensaje);
+                        LogsInformativos("Nuevo registro de status de material " + dataTemp.folio, dataTemp);
                         // Log acerca del registro inicial del tracking
                         //LogsInformativos(`Se han registrado la orden de venta con folio ${data.noVenta}`, datos)
                         // Registro inicial del tracking

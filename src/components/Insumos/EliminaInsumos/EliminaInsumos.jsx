@@ -24,7 +24,7 @@ function EliminaInsumos(props) {
         try {
             eliminaInsumo(id).then(response => {
                 const { data } = response;
-                LogsInformativos("El insumo con descripción " + descripcion + " fue eliminado")
+                LogsInformativos("El insumo con descripción " + descripcion + " fue eliminado", dataInsumos);
                 toast.success(data.mensaje)
                 setLoading(false)
                 setShowModal(false)

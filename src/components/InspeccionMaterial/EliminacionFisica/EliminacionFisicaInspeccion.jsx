@@ -28,7 +28,7 @@ function EliminacionFisicaInspeccionPieza(props) {
                 const { data } = response;
                 // console.log(data)
                 toast.success(data.mensaje)
-                LogsInformativos(`Se ha eliminado la inspeccion de pieza con folio ${folio}`, data)
+                LogsInformativos("Se ha eliminado la inspeccion de pieza con folio " + folio, data)
                 setShowModal(false);
                 setLoading(false);
                 history.push({

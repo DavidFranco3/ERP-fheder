@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { obtenerMaquina } from "../../../api/maquinas";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistraRequerimientosPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
@@ -374,7 +375,7 @@ function RegistraRequerimientosPlaneacion(props) {
                 }
                 // console.log(dataTemp)
                 // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
-                // 
+                LogsInformativos("Se ha registrado una nueva planeación con folio " + dataTemp.folio, dataTemp)
                 // Modificar el pedido creado recientemente
                 registraRequerimiento(dataTemp).then(response => {
                     const { data: { mensaje, datos } } = response;

@@ -25,7 +25,7 @@ function RegistraReporte(props) {
     // Para traer el listado de productos activos
     useEffect(() => {
         try {
-            listarMatrizProductosActivos().then(response => {
+            listarMatrizProductosActivos(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
 

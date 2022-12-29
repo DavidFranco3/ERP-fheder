@@ -599,7 +599,7 @@ function RegistraInspeccionMaterial(props) {
                 try {
                     registraInspeccionPieza(dataTemp).then(response => {
                         const { data } = response;
-                        LogsInformativos("Inspeccion de pieza realizada ", dataTemp)
+                        LogsInformativos("Inspeccion de pieza realizada " + dataTemp.folio, dataTemp)
                         setLoading(false)
                         toast.success(data.mensaje)
                         rutaRegreso()

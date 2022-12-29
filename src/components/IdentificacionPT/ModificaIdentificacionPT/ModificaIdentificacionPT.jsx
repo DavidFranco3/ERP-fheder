@@ -8,6 +8,7 @@ import { actualizaEtiquetaPT, obtenerEtiquetaPT } from "../../../api/etiquetaIde
 import { map } from "lodash";
 import { toast } from "react-toastify";
 import queryString from "query-string";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function ModificaIdentificacionPT(props) {
     const { history, setShowModal, data } = props;
@@ -104,7 +105,7 @@ function ModificaIdentificacionPT(props) {
                 fecha: formData.fecha,
                 descripcion: producto == "" ? formData.descripcion : producto.descripcionProducto,
                 noParte: producto == "" ? formData.noParte : producto.numeroParte,
-                noOrden: producto == "" ? formData.noorden : producto.ordenProduccion,
+                noOrden: producto == "" ? formData.noOrden : producto.ordenProduccion,
                 cantidad: formData.cantidad,
                 turno: formData.turno,
                 operador: formData.operador,
@@ -117,7 +118,7 @@ function ModificaIdentificacionPT(props) {
             // Modificar el pedido creado recientemente
             actualizaEtiquetaPT(id, dataTemp).then(response => {
                 const { data: { mensaje, datos } } = response;
-
+                LogsInformativos("Se a modificado la etiqueta de identificacion" + dataTemp.folio, dataTemp)
                 // console.log(response)
                 toast.success(mensaje);
                 setShowModal(false);
@@ -257,9 +258,9 @@ function ModificaIdentificacionPT(props) {
                                         defaultValue={formData.turno}
                                     >
                                         <option >Elige</option>
-                                        <option value="1" selected={formData.turno=="1"}>1</option>
-                                        <option value="2" selected={formData.turno=="2"}>2</option>
-                                        <option value="3" selected={formData.turno=="3"}>3</option>
+                                        <option value="1" selected={formData.turno == "1"}>1</option>
+                                        <option value="2" selected={formData.turno == "2"}>2</option>
+                                        <option value="3" selected={formData.turno == "3"}>3</option>
                                     </Form.Control>
                                 </Col>
                             </Form.Group>

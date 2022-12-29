@@ -738,7 +738,7 @@ function ModificaInspeccionMaterial(props) {
             try {
                 actualizaInspeccionPieza(id, dataTemp).then(response => {
                     const { data } = response;
-                    LogsInformativos("Inspeccion de pieza realizada ", dataTemp)
+                    LogsInformativos("Inspeccion de pieza actualizada " + id, dataTemp)
                     setLoading(false)
                     toast.success(data.mensaje)
                     rutaRegreso()

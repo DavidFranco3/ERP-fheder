@@ -229,7 +229,7 @@ function RegistraLiberacionProductoProceso(props) {
                     // console.log(response)
                     toast.success(mensaje)
                     // Log acerca del registro inicial del tracking
-                    LogsInformativos(`Se han registrado la liberacion de producto y proceso ${data.noliberacion}`, datos)
+                    LogsInformativos("Se han registrado la liberacion de producto y proceso " + folioActual, dataTemp)
                     // Registro inicial del tracking
                     rutaRegreso()
                 }).catch(e => {

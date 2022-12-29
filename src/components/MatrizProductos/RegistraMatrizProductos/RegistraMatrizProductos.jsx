@@ -164,7 +164,7 @@ function RegistraMatrizProductos(props) {
         }
 
         try {
-            listarMaquina().then(response => {
+            listarMaquina(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
 

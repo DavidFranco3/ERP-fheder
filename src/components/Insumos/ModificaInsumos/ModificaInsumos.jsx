@@ -55,7 +55,7 @@ function ModificaInsumos(props) {
             try {
                 actualizaInsumo(id, formData).then(response => {
                     const { data } = response;
-                    LogsInformativos("El insumo con descripción: " + descripcion + " fue modificado", dataInsumos)
+                    LogsInformativos("El insumo con descripción: " + formData.descripcion + " fue modificado", formData)
                     toast.success(data.mensaje)
                     setLoading(false)
                     setShowModal(false)

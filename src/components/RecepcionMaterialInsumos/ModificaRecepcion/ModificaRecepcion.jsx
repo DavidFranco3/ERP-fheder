@@ -278,7 +278,7 @@ function ModificaRecepcion(props) {
                 // console.log(response)
                 toast.success(mensaje)
                 // Log acerca del registro inicial del tracking
-                LogsInformativos(`Se han modificado la recepcion de material e insumos ${id}`, datos)
+                LogsInformativos("Se han modificado la recepcion de material e insumos " + id, dataTemp)
                 // Registro inicial del tracking
                 //LogTrackingRegistro(data.noVenta, clienteSeleccionado.id, formData.fechaElaboracion)
                 setLoading(false)

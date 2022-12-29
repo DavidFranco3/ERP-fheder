@@ -10,6 +10,8 @@ import { map } from "lodash";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { getSucursal } from '../../../api/auth';
+import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
 
 function ModificacionUsuarios(props) {
     const { setRefreshCheckLogin } = props;
@@ -48,7 +50,7 @@ function ModificacionUsuarios(props) {
 
     useEffect(() => {
         try {
-            listarDepartamento().then(response => {
+            listarDepartamento(getSucursal()).then(response => {
                 const { data } = response;
                 //console.log(data)
                 const dataTemp = formatModelDepartamentos(data);
@@ -109,10 +111,10 @@ function ModificacionUsuarios(props) {
         try {
             actualizaUsuario(params.id, dataTemp).then(response => {
                 const { data } = response;
-
+                LogsInformativos("Se a modificado el usuario " + dataTemp.nombre, dataTemp);
                 toast.success(data.mensaje)
                 setLoading(false);
-                enrutamiento.push("/Colaboradores");
+                regresaPagina();
             }).catch(e => {
                 console.log(e)
                 if (e.message == 'Network Error') {

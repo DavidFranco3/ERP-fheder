@@ -3,6 +3,7 @@ import { Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { actualizaMes } from "../../../api/mes";
 import { toast } from "react-toastify";
 import queryString from "query-string";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function ModificacionMes(props) {
     const { data, setShowModal, history } = props;
@@ -31,27 +32,27 @@ function ModificacionMes(props) {
 
             setLoading(true)
             // Realiza registro de la aportación
-                const dataTemp = {
-                    mes: formData.mes,
-                    dias: formData.diasMes,
-                    noMaquinas: "0",
-                }
+            const dataTemp = {
+                mes: formData.mes,
+                dias: formData.dias,
+                noMaquinas: "0",
+            }
 
-                actualizaMes(id, dataTemp).then(response => {
-                    const { data } = response;
+            actualizaMes(id, dataTemp).then(response => {
+                const { data } = response;
+                LogsInformativos("Se a modificado el mes " + data.folio, dataTemp);
+                toast.success(data.mensaje)
+                setTimeout(() => {
+                    setLoading(false)
+                    history.push({
+                        search: queryString.stringify(""),
+                    });
+                    setShowModal(false)
+                }, 2000)
 
-                    toast.success('Mes Actualizado')
-                    setTimeout(() => {
-                        setLoading(false)
-                        history.push({
-                            search: queryString.stringify(""),
-                        });
-                        setShowModal(false)
-                    }, 2000)
-
-                }).catch(e => {
-                    console.log(e)
-                })
+            }).catch(e => {
+                console.log(e)
+            })
         }
     }
 
@@ -97,7 +98,7 @@ function ModificacionMes(props) {
                                         type="text"
                                         placeholder="Mes"
                                         name="mes"
-                                        defualtValue={formData.mes}
+                                        defaultValue={formData.mes}
                                     />
                                 </Col>
                             </Form.Group>
@@ -117,7 +118,7 @@ function ModificacionMes(props) {
                                         type="number"
                                         placeholder="Dias del mes"
                                         name="dias"
-                                        defaultVale={formData.dias}
+                                        defaultValue={formData.dias}
                                     />
                                 </Col>
                             </Form.Group>
@@ -131,7 +132,7 @@ function ModificacionMes(props) {
                                     variant="success"
                                     className="registrar"
                                 >
-                                     {!loading ? "Modificar" : <Spinner animation="border" />}
+                                    {!loading ? "Modificar" : <Spinner animation="border" />}
                                 </Button>
                             </Col>
                             <Col>
@@ -155,13 +156,11 @@ function ModificacionMes(props) {
 }
 
 function initialFormData(data) {
-    
-    const {folio, mes, dias} = data;
 
     return {
-        folio: folio,
-        mes: mes,
-        dias: dias,
+        folio: data.folio,
+        mes: data.mes,
+        dias: data.dias,
     }
 }
 

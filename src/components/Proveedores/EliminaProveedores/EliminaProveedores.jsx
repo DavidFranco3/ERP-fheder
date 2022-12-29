@@ -20,7 +20,7 @@ function EliminaProveedores(props) {
                 const { data } = response;
                 toast.success(data.mensaje)
                 setLoading(false)
-                LogsInformativos(`Se ha eliminado al proveedor con folio ${folio}`, data)
+                LogsInformativos("Se ha eliminado al proveedor con folio " + folio, dataProveedor)
                 history.push({
                     search: queryString.stringify(""),
                 });

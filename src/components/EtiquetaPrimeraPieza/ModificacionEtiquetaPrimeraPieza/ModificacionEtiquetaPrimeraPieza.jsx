@@ -6,6 +6,8 @@ import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { obtenerCliente } from '../../../api/clientes';
 import { actualizaEtiquetasPiezas } from '../../../api/etiquetaPrimeraPieza'
 import queryString from "query-string";
+import {getSucursal} from "../../../api/auth";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistraReporte(props) {
     const { data, setShowModal, history } = props;
@@ -25,7 +27,7 @@ function RegistraReporte(props) {
     // Para traer el listado de productos activos
     useEffect(() => {
         try {
-            listarMatrizProductosActivos().then(response => {
+            listarMatrizProductosActivos(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
 
@@ -105,8 +107,8 @@ function RegistraReporte(props) {
 
             actualizaEtiquetasPiezas(id, dataTemp).then(response => {
                 const { data } = response;
-
-                toast.success('Etiqueta de primera pieza actualizada')
+                LogsInformativos("Informacion de la primera pieza actualizada " + id, dataTemp)
+                toast.success(data.mensaje);
                 setTimeout(() => {
                     setLoading(false)
                     history.push({

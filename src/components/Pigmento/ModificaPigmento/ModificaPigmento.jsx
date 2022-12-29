@@ -55,7 +55,7 @@ function ModificaPigmento(props) {
             try {
                 actualizaPigmento(id, formData).then(response => {
                     const { data } = response;
-                    LogsInformativos("El pigmento con nombre: " + nombre + " fue modificado", dataPigmento)
+                    LogsInformativos("El pigmento con nombre: " + nombre + " fue modificado", formData)
                     toast.success(data.mensaje)
                     setLoading(false)
                     setShowModal(false)

@@ -24,7 +24,7 @@ function EliminaPigmento(props) {
         try {
             eliminaPigmento(id).then(response => {
                 const { data } = response;
-                LogsInformativos("El material con nombre " + nombre + " fue eliminado")
+                LogsInformativos("El pigmento con nombre " + nombre + " fue eliminado", dataPigmento)
                 toast.success(data.mensaje)
                 setLoading(false)
                 setShowModal(false)

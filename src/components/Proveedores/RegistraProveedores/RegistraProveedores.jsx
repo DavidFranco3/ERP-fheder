@@ -72,7 +72,7 @@ function RegistraProveedores(props) {
                     registraProveedores(dataTemp).then(response => {
                         const { data } = response;
                         toast.success(data.mensaje)
-                        LogsInformativos("Se ha registrado un nuevo proveedor", dataTemp)
+                        LogsInformativos("Se ha registrado un nuevo proveedor " + formData.nombre, dataTemp)
                         setLoading(false)
                         history.push({
                             search: queryString.stringify(""),

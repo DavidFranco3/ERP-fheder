@@ -18,6 +18,7 @@ import BuscarPlaneacion from '../../../page/BuscarPlaneacion';
 import { obtenerMaquina } from "../../../api/maquinas";
 import { obtenerRequerimiento } from "../../../api/requerimientosPlaneacion";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function ProduccionPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
@@ -355,7 +356,7 @@ function ProduccionPlaneacion(props) {
             // Modificar el pedido creado recientemente
             registraProduccion(dataTemp).then(response => {
                 const { data: { mensaje, datos } } = response;
-
+                LogsInformativos("Se a registrado la produccion " + folioActual, dataTemp)
                 // Actualizacion del tracking
                 LogTrackingActualizacion(formDataPlaneacion.ordenVenta, "En produccion", "6")
                 // console.log(response)

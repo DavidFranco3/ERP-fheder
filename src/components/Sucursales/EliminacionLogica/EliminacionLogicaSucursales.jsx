@@ -39,11 +39,11 @@ function EliminacionLogicaSucursales(props) {
                 //console.log(data)
                 if (dataTemp.estadoSucursal === "true") {
                     toast.success("Sucursal habilitada");
-                    LogsInformativos("Se ha habilitado la sucursal " + formData.nombre)
+                    LogsInformativos("Se ha habilitado la sucursal " + formData.nombre, data)
                 }
                 if (dataTemp.estadoSucursal === "false") {
                     toast.success("Sucursal deshabilitada");
-                    LogsInformativos("Se ha habilitado la sucursal " + formData.nombre)
+                    LogsInformativos("Se ha habilitado la sucursal " + formData.nombre, data)
                 }
                 setShowModal(false);
                 setLoading(false);

@@ -50,7 +50,7 @@ function RegistroSucursales(props) {
             try {
                 registraSucursales(dataTemp).then(response => {
                     const { data } = response;
-                    LogsInformativos("Se ha registrado una nueva sucursal " + dataTemp.nombre);
+                    LogsInformativos("Se ha registrado una nueva sucursal " + dataTemp.nombre, dataTemp);
                     history.push({
                         search: queryString.stringify(""),
                     });

@@ -35,7 +35,7 @@ function EliminacionFisicaProduccion(props) {
                 const { data } = response;
                 // console.log(data)
                 toast.success(data.mensaje)
-                LogsInformativos(`Se ha eliminado el requerimiento y planeacion con el folio ${folio}`, datos)
+                LogsInformativos("Se ha eliminado la produccion con el folio " + folio, datos)
                 setShowModal(false);
                 setLoading(false);
                 history.push({

@@ -7,7 +7,8 @@ import { listarProduccion } from "../../../api/produccion";
 import { registraEtiquetaPT, obtenerNoEtiquetaPT, obtenerItemEtiquetaPT } from "../../../api/etiquetaIdentificacionPT";
 import { map } from "lodash";
 import { toast } from "react-toastify";
-import {getSucursal} from "../../../api/auth";
+import { getSucursal } from "../../../api/auth";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistroIdentificacionPT(props) {
     const { setShowModal } = props;
@@ -114,7 +115,7 @@ function RegistroIdentificacionPT(props) {
                 // Modificar el pedido creado recientemente
                 registraEtiquetaPT(dataTemp).then(response => {
                     const { data: { mensaje, datos } } = response;
-
+                    LogsInformativos("Nueva etiqueta de identificacion de PT" + folioActual, dataTemp)
                     // console.log(response)
                     toast.success(mensaje);
                     setShowModal(false);

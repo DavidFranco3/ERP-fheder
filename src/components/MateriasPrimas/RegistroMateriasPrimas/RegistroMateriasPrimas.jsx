@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { listarProveedores } from "../../../api/proveedores";
-import {getSucursal} from "../../../api/auth";
+import { getSucursal } from "../../../api/auth";
 
 function RegistroMateriasPrimas(props) {
     const { setShowModal2, setShowModal, location, history } = props;
@@ -82,7 +82,7 @@ function RegistroMateriasPrimas(props) {
             try {
                 registraMateriaPrima(dataTemp).then(response => {
                     const { data } = response;
-                    LogsInformativos("Nuevo material registrado", formData)
+                    LogsInformativos("Nuevo material registrado " + formData.descripcion, formData)
                     toast.success(data.mensaje)
                     setLoading(false)
                     history.push({
@@ -165,11 +165,11 @@ function RegistroMateriasPrimas(props) {
                                 </Form.Label>
                             </Col>
                             <Col>
-                                <Form.Control 
-                                type="text"
+                                <Form.Control
+                                    type="text"
                                     defaultValue={formData.proveedor}
                                     name="proveedor"
-                               />
+                                />
                             </Col>
                         </Form.Group>
                     </Row>

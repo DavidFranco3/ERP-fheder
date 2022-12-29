@@ -35,7 +35,7 @@ function EliminacionFisicaUsuarios(props) {
                 const { data } = response;
                 //console.log(data)
                 toast.success(data.status);
-                LogsInformativos("Se ha eliminado el usuario " + formData.nombre + " " + formData.apellidos)
+                LogsInformativos("Se ha eliminado el usuario " + formData.nombre, dataUsuario);
                 setShowModal(false);
                 setLoading(false);
                 history.push({

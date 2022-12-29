@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { obtenerMaquina } from "../../../api/maquinas";
 import { obtenerDatosMP } from "../../../api/almacenMP";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
 
 function ModificacionProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -384,6 +385,8 @@ function ModificacionProduccion(props) {
                 // Modificar el pedido creado recientemente
                 actualizaRequerimiento(_id, dataTemp).then(response => {
                     const { data: { mensaje, datos } } = response;
+
+                    LogsInformativos("Se a modificado la planeación " + datos.folio, dataTemp);
                     // console.log(response)
                     toast.success(mensaje)
                     setLoading(false)

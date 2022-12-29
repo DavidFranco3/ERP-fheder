@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { map } from "lodash";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistroReporteProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -90,6 +91,7 @@ function RegistroReporteProduccion(props) {
                     eficienciaGeneralMaquinas: formData.eficiencia,
                     observacionesTurno: formData.observaciones
                 }
+                LogsInformativos("Se a registrado un nuevo reporte de producción " + dataTemp.folio, dataTemp)
                 // Modificar el pedido creado recientemente
                 registraReporteProducción(dataTemp).then(response => {
                     const { data: { mensaje, datos } } = response;

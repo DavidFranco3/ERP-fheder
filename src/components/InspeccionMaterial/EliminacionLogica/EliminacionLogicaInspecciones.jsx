@@ -41,12 +41,12 @@ function EliminacionLogicaInspecciones(props) {
                 const { data } = response;
                 //console.log(data)
                 if (status === "Activo") {
-                    toast.success("Inspeccion cancelada");
-                    LogsInformativos("Se ha activado la inspeccion " + folio)
+                    toast.success("Inspeccion activada");
+                    LogsInformativos("Se ha activado la inspeccion " + folio, dataTemp)
                 }
                 if (dataTemp.estadoUsuario === "Cancelado") {
                     toast.success("Inspeccion cancelada");
-                    LogsInformativos("Se ha cancelado la inspeccion " + folio)
+                    LogsInformativos("Se ha cancelado la inspeccion " + folio, dataTemp)
                 }
                 setShowModal(false);
                 setLoading(false);

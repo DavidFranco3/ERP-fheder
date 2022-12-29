@@ -1,1 +1,1 @@
-export { default } from "./EliminacionFisicaCompras";
+export { default } from "./EliminacionFisicaEtiquetasPT";

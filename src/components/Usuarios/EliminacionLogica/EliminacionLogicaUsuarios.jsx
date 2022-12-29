@@ -40,11 +40,11 @@ function EliminacionLogicaUsuarios(props) {
                 //console.log(data)
                 if (dataTemp.estadoUsuario === "true") {
                     toast.success("Usuario habilitado");
-                    LogsInformativos("Se ha habilitado el usuario " + formData.nombre + " " + formData.apellidos)
+                    LogsInformativos("Se ha habilitado el usuario " + formData.nombre, dataTemp);
                 }
                 if (dataTemp.estadoUsuario === "false") {
                     toast.success("Usuario deshabilitado");
-                    LogsInformativos("Se ha deshabilitado el usuario " + formData.nombre + " " + formData.apellidos)
+                    LogsInformativos("Se ha deshabilitado el usuario " + formData.nombre, dataTemp);
                 }
                 setShowModal(false);
                 setLoading(false);

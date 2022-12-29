@@ -3,7 +3,8 @@ import { Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { registraMes, obtenerNumeroMes } from "../../../api/mes";
 import { toast } from "react-toastify";
 import queryString from "query-string";
-import {getSucursal} from "../../../api/auth";
+import { getSucursal } from "../../../api/auth";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistraMes(props) {
     const { setShowModal, history } = props
@@ -63,8 +64,8 @@ function RegistraMes(props) {
 
                 registraMes(dataTemp).then(response => {
                     const { data } = response;
-
-                    toast.success('Mes registrado')
+                    LogsInformativos("Se a registrado el nuevo mes " + dataTemp.folio, dataTemp)
+                    toast.success(data.mensaje)
                     setTimeout(() => {
                         setLoading(false)
                         history.push({
@@ -159,7 +160,7 @@ function RegistraMes(props) {
                                     variant="success"
                                     className="registrar"
                                 >
-                                     {!loading ? "Registrar" : <Spinner animation="border" />}
+                                    {!loading ? "Registrar" : <Spinner animation="border" />}
                                 </Button>
                             </Col>
                             <Col>

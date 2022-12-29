@@ -32,7 +32,7 @@ function EliminacionFisicaVentas(props) {
                 const { data } = response;
                 // console.log(data)
                 toast.success(data.mensaje)
-                LogsInformativos(`Se ha eliminado la venta con el folio ${folio}`, datos)
+                LogsInformativos("Se ha eliminado la venta con el folio " + folio, datos)
                 LogTrackingEliminacion(folio)
                 setShowModal(false);
                 setLoading(false);

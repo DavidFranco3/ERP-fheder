@@ -5,7 +5,8 @@ import { map } from "lodash";
 import { registraIntegracion, obtenerItemIntegraciones, obtenerFacturaIntegracion } from "../../../api/integracionVentasGastos";
 import { toast } from "react-toastify";
 import queryString from "query-string";
-import {getSucursal} from "../../../api/auth";
+import { getSucursal } from "../../../api/auth";
+import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
 
 function RegistraVentasGastos(props) {
     const { setShowModal, history } = props;
@@ -99,8 +100,8 @@ function RegistraVentasGastos(props) {
 
                 registraIntegracion(dataTemp).then(response => {
                     const { data } = response;
-
-                    toast.success('Integracion de ventas y gastos registrada')
+                    LogsInformativos("Se a registrado la integracion de ventas y gastos " + facturaActual, dataTemp);
+                    toast.success(data.mensaje)
                     setTimeout(() => {
                         setLoading(false)
                         history.push({

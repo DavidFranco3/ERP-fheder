@@ -1,5 +1,6 @@
 import {actualizaTracking, obtenerDatosTracking, obtenerNumeroTracking, registraTracking, eliminaPedidoVenta} from "../../../api/tracking";
 import { getSucursal } from "../../../api/auth";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 // Para el registro del tracking
 export function LogTrackingRegistro(ordenVenta, cliente, fechaElaboracion){
@@ -23,6 +24,7 @@ export function LogTrackingRegistro(ordenVenta, cliente, fechaElaboracion){
             // Inicia el registro del tracking
             registraTracking(dataTemp).then(response => {
                 const { data } = response;
+                LogsInformativos("Se a creado el proceso de tranking, para la OV" + ordenVenta, dataTemp);
             }).catch(e => {
                 console.log(e)
             })
@@ -49,6 +51,7 @@ export function LogTrackingActualizacion (ordenVenta, status, indicador) {
             // Inicia actualización de saldos de los socios
             actualizaTracking(ordenVenta, dataTemp).then(response => {
                 const { data } = response;
+                LogsInformativos("Se a actualizado el proceso del tranking de la OV " + ordenVenta, dataTemp)
                 // console.log("Actualización de saldo personal")
             }).catch(e => {
                 // console.log(e)

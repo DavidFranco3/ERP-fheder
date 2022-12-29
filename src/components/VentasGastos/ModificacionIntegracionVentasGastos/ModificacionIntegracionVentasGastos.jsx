@@ -5,6 +5,7 @@ import { map } from "lodash";
 import { actualizaIntegraciones } from "../../../api/integracionVentasGastos";
 import { toast } from "react-toastify";
 import queryString from "query-string";
+import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
 
 function ModificacionIntegracionVentasGastos(props) {
     const { data, setShowModal, history } = props;
@@ -68,30 +69,30 @@ function ModificacionIntegracionVentasGastos(props) {
             setLoading(true)
             // Realiza registro de la aportación
 
-                const dataTemp = {
-                    fechaFactura: formData.fechaFactura,
-                    cliente: formData.cliente,
-                    importe: formData.importe,
-                    iva: formData.importe != "" ? parseFloat(formData.importe) * parseFloat(0.16) : "0",
-                    total: formData.importe != "" ? (parseFloat(formData.importe) + parseFloat(formData.importe) * parseFloat(0.16)) : "0",
-                    observaciones: formData.observaciones
-                }
+            const dataTemp = {
+                fechaFactura: formData.fechaFactura,
+                cliente: formData.cliente,
+                importe: formData.importe,
+                iva: formData.importe != "" ? parseFloat(formData.importe) * parseFloat(0.16) : "0",
+                total: formData.importe != "" ? (parseFloat(formData.importe) + parseFloat(formData.importe) * parseFloat(0.16)) : "0",
+                observaciones: formData.observaciones
+            }
 
-                actualizaIntegraciones(id, dataTemp).then(response => {
-                    const { data } = response;
+            actualizaIntegraciones(id, dataTemp).then(response => {
+                const { data } = response;
+                LogsInformativos("Se a modificado la integracion de ventas y gastos " + data.folio, dataTemp);
+                toast.success(data.mensaje);
+                setTimeout(() => {
+                    setLoading(false)
+                    history.push({
+                        search: queryString.stringify(""),
+                    });
+                    setShowModal(false)
+                }, 2000)
 
-                    toast.success('Integracion de ventas y gastos actualizada')
-                    setTimeout(() => {
-                        setLoading(false)
-                        history.push({
-                            search: queryString.stringify(""),
-                        });
-                        setShowModal(false)
-                    }, 2000)
-
-                }).catch(e => {
-                    console.log(e)
-                })
+            }).catch(e => {
+                console.log(e)
+            })
         }
     }
 
@@ -277,7 +278,7 @@ function ModificacionIntegracionVentasGastos(props) {
 
 function initialFormData(data) {
     const { folio, fechaFactura, cliente, importe, observaciones } = data;
-    
+
     return {
         folio: folio,
         fechaFactura: fechaFactura,

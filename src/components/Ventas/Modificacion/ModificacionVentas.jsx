@@ -270,7 +270,7 @@ function ModificacionVentas(props) {
                         // console.log(response)
                         toast.success(mensaje)
                         // Registro de log para la actualizacion de orden de venta
-                        LogsInformativos(`Se han actualizado los datos de la orden de venta con folio ${folio}`, datos)
+                        LogsInformativos("Se han actualizado los datos de la orden de venta con folio " + folio, datos)
                         // Registro del tracking para orden de venta
                         // LogTrackingRegistro(_id, folio, formData.cliente, formData.fechaElaboracion)
                         setLoading(false)

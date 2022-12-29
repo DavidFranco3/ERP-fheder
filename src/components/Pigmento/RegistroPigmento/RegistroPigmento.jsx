@@ -81,7 +81,7 @@ function RegistroPigmento(props) {
             try {
                 registraPigmento(dataTemp).then(response => {
                     const { data } = response;
-                    LogsInformativos("Nuevo pigmento registrado", formData)
+                    LogsInformativos("Nuevo pigmento registrado " + folioActualPigmento, formData)
                     toast.success(data.mensaje)
                     setLoading(false)
                     history.push({

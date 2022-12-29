@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
-import {deshabilitaProveedores} from "../../../api/proveedores";
-import {toast} from "react-toastify";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
+import { deshabilitaProveedores } from "../../../api/proveedores";
+import { toast } from "react-toastify";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
 
 function EstadoProveedor(props) {
@@ -24,7 +24,7 @@ function EstadoProveedor(props) {
                 const { data } = response;
                 toast.success(data.mensaje)
                 setLoading(false)
-                LogsInformativos(`Se ha cambiado el status del proveedor con folio ${folio}`, data)
+                LogsInformativos("Se ha cambiado el estado del proveedor con folio " + folio, dataTemp)
                 history.push({
                     search: queryString.stringify(""),
                 });

@@ -24,7 +24,7 @@ function EliminaMateriasPrimas(props) {
         try {
             eliminaMateriaPrima(id).then(response => {
                 const { data } = response;
-                LogsInformativos("El material con descripción " + descripcion + " fue eliminado")
+                LogsInformativos("El material con descripción " + descripcion + " fue eliminado", dataMaterial)
                 toast.success(data.mensaje)
                 setLoading(false)
                 setShowModal(false)

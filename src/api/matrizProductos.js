@@ -79,7 +79,7 @@ export async function listarMatrizProductos(sucursal) {
 }
 
 // Para listar los productos activos
-export async function listarMatrizProductosActivos(params) {
+export async function listarMatrizProductosActivos(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -87,7 +87,7 @@ export async function listarMatrizProductosActivos(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarActivosMatrizProductos, config);
+    return await axios.get(API_HOST + ENDPOINTListarActivosMatrizProductos +`/?sucursal=${sucursal}`, config);
 }
 
 // Para listar los productos obsoletos

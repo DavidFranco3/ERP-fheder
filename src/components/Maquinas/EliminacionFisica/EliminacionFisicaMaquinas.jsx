@@ -28,7 +28,7 @@ function EliminacionFisicaMaquinas(props) {
                 const { data } = response;
                 // console.log(data)
                 toast.success(data.mensaje)
-                LogsInformativos(`Se ha eliminado la maquina con el numero ${numeroMaquina}`, data)
+                LogsInformativos("Se ha eliminado la maquina con el numero " + numeroMaquina, data)
                 setShowModal(false);
                 history.push({
                     search: queryString.stringify(""),

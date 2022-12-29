@@ -35,7 +35,7 @@ function EliminaReporte(props) {
                 const { data } = response;
                 // console.log(data)
                 toast.success(data.mensaje)
-                LogsInformativos(`Se ha eliminado el status del material con el folio ${data.folio}`, datos)
+                LogsInformativos("Se ha eliminado el status del material con el folio " + folio, datosStatus);
                 setShowModal(false);
                 history.push({
                     search: queryString.stringify(""),
