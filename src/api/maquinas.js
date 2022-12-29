@@ -65,7 +65,7 @@ export async function obtenerMaquinaNumero(folio) {
 }
 
 // Para listar todos los productos
-export async function listarMaquina(params) {
+export async function listarMaquina(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -73,7 +73,7 @@ export async function listarMaquina(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarMaquina, config);
+    return await axios.get(API_HOST + ENDPOINTListarMaquina +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista la materia prima paginando

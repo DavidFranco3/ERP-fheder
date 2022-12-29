@@ -6,35 +6,13 @@ import { withRouter, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
 import { listarRequisiciones } from "../../api/requisicion";
 import ListRequisiciones from '../../components/Requisiciones/ListRequisiciones';
 
 function Requisiciones(props) {
     const { setRefreshCheckLogin, location, history } = props;
-
-    const [departamentoUsuario, setDepartamentoUsuario] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerUsuario(obtenidusuarioLogueado(getTokenApi())).then(response => {
-                const { data } = response;
-                const { departamento } = data;
-                //console.log(data)
-                setDepartamentoUsuario(departamento);
-            }).catch((e) => {
-                if (e.message === "Request failed with status code 400") {
-                }
-                if (e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión al servidor no disponible");
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     const enrutamiento = useHistory();
 
@@ -48,7 +26,7 @@ function Requisiciones(props) {
 
     useEffect(() => {
         try {
-            listarRequisiciones().then(response => {
+            listarRequisiciones(getSucursal()).then(response => {
                 const { data } = response;
 
                 if (!listRequisiciones && data) {
@@ -146,6 +124,7 @@ function formatModelRequisiciones(data) {
             id: data._id,
             item: data.item,
             folio: data.folio,
+            sucursal: data.sucursal,
             fechaElaboracion: data.fechaElaboracion,
             solicitante: data.solicitante,
             aprobo: data.aprobo,

@@ -2,7 +2,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import { listarInspeccion } from "../../api/inspeccionMaterial";
 import { withRouter, useHistory } from "react-router-dom";
@@ -39,7 +39,7 @@ function Calidad(props) {
 
     useEffect(() => {
         try {
-            listarInspeccion().then(response => {
+            listarInspeccion(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -126,6 +126,7 @@ function formatModelInspeccion(data) {
             id: data._id,
             item: data.item,
             folio: data.folio,
+            sucursal: data.sucursal,
             ordenVenta: data.ordenVenta,
             fecha: data.fecha,
             lote: data.lote,

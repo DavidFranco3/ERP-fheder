@@ -90,7 +90,7 @@ export async function obtenerItemLiberacionProducto() {
 }
 
 // Para listar todas las órdenes de compra
-export async function listarLiberacionProducto(params) {
+export async function listarLiberacionProducto(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -98,7 +98,7 @@ export async function listarLiberacionProducto(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarLiberacionProducto, config);
+    return await axios.get(API_HOST + ENDPOINTListarLiberacionProducto +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista las ordenes de compra paginándolas

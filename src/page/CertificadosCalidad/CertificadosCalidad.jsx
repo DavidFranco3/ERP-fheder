@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import ListCertificadosCalidad from '../../components/CertificadosCalidad/ListCertificadosCalidad';
 import { listarCertificado } from "../../api/certificadosCalidad";
 import "./CertificadosCalidad.scss"
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -44,7 +44,7 @@ function CertificadosCalidad(props) {
 
     useEffect(() => {
         try {
-            listarCertificado().then(response => {
+            listarCertificado(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -129,6 +129,7 @@ function formatModelCertificadosCalidad(data) {
             item: data.item,
             folio: data.folio,
             fecha: data.fecha,
+            sucursal: data.sucursal,
             noOrdenInterna: data.noOrdenInterna,
             tamañoLote: data.tamañoLote,
             cliente: data.cliente,

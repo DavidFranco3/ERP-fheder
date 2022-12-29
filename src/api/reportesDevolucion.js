@@ -62,7 +62,7 @@ export async function obtenerNumeroReporteDevolucion() {
 }
 
 // Para listar todos los reportes de devoluciones
-export async function listarReportesDevolucion(params) {
+export async function listarReportesDevolucion(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -70,7 +70,7 @@ export async function listarReportesDevolucion(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarReporteDevoluciones, config);
+    return await axios.get(API_HOST + ENDPOINTListarReporteDevoluciones +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista los reportes de devolución paginándolos

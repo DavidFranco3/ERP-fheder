@@ -87,7 +87,7 @@ export async function obtenerNoEtiqueta(params) {
 }
 
 // Para listar todos los pedidos
-export async function listarEtiquetasPiezas(params) {
+export async function listarEtiquetasPiezas(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -95,7 +95,7 @@ export async function listarEtiquetasPiezas(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarEtiquetasPiezas, config);
+    return await axios.get(API_HOST + ENDPOINTListarEtiquetasPiezas +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los pedidos de venta paginandolos

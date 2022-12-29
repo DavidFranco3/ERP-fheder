@@ -63,7 +63,7 @@ export async function obtenerNumeroCotizacion(params) {
 }
 
 // Para listar todos las cotizaciones
-export async function listarCotizacion(params) {
+export async function listarCotizacion(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -71,7 +71,7 @@ export async function listarCotizacion(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarCotizaciones, config);
+    return await axios.get(API_HOST + ENDPOINTListarCotizaciones +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar las cotizaciones paginandolas

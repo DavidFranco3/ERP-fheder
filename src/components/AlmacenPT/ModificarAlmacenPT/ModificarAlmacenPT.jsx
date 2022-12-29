@@ -66,7 +66,7 @@ function ModificarAlmacenPt(props) {
                     const { mensaje, datos } = data;
                     toast.success(mensaje)
                     setLoading(false)
-                    LogsInformativos("Se ha modificado la materia en el almacen de MP", datos)
+                    LogsInformativos("Se ha modificado la materia en el almacen de MP " + formData.descripcion, dataTemp)
                     history.push({
                         search: queryString.stringify(""),
                     });

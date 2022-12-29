@@ -2,9 +2,24 @@ import { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import { Alert, Button, Col, Row, Form, Container, Badge } from "react-bootstrap";
 import "./RegistroTiquets.scss";
+import { toast } from "react-toastify";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function RegistroTiquets(props) {
     const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     const [loading, setLoading] = useState(false);
 

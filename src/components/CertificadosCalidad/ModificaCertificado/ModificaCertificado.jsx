@@ -5,8 +5,23 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, useParams } from "react-router-dom";
 import { obtenerCertificado, actualizaCertificado } from "../../../api/certificadosCalidad";
 import { toast } from "react-toastify";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
 
 function ModificaCertificado(props) {
+    const { setRefreshCheckLogin } = props;
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -184,6 +199,7 @@ function ModificaCertificado(props) {
             // Modificar el pedido creado recientemente
             actualizaCertificado(id, dataTemp).then(response => {
                 const { data: { mensaje, datos } } = response;
+                LogsInformativos("Se ha modificado el certificado de calidad " + formData.folio, dataTemp);
                 // console.log(response)
                 toast.success(mensaje)
                 setLoading(false)
@@ -1526,6 +1542,7 @@ function ModificaCertificado(props) {
 
 function initialFormData() {
     return {
+        folio: "",
         fecha: "",
         descripcion: "",
         ordenInterna: "",
@@ -1611,6 +1628,7 @@ function initialFormData() {
 
 function valoresAlmacenados(data) {
     return {
+        folio: data.folio,
         fecha: data.fecha,
         descripcion: data.descripcion,
         ordenInterna: data.noOrdenInterna,

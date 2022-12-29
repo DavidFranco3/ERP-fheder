@@ -3,6 +3,8 @@ import { Alert, Button, Col, Form, Row, Spinner, Container } from "react-bootstr
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
+import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
+import { toast } from "react-toastify";
 
 function MaquinasMantenimientos(props) {
     const { setRefreshCheckLogin } = props;
@@ -19,6 +21,19 @@ function MaquinasMantenimientos(props) {
     const rutaRegreso = () => {
         enrutamiento.push("/VerificacionMantenimientos")
     }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     return (
         <>

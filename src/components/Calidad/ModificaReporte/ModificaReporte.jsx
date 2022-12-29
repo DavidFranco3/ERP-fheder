@@ -7,8 +7,24 @@ import BuscarOV from "../../../page/BuscarOV";
 import BasicModal from "../../Modal/BasicModal";
 import { obtenerInspeccion, actualizaInspeccion } from "../../../api/inspeccionMaterial";
 import { toast } from "react-toastify";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
 
 function ModificaReporte(props) {
+    const { setRefreshCheckLogin } = props;
+    
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -30,27 +46,7 @@ function ModificaReporte(props) {
         obtenerInspeccion(id).then(response => {
             const { data } = response;
             //console.log(data)
-            const { folio, ordenVenta, fecha, nombre, lote, cantidad, propiedad, unidadMedida, tipoMaterial, nombreRecibio, estadoMateriaPrima, contaminacion, presentaHumedad, certificadoCalidad, empaqueDañado, resultadoFinalInspeccion, observaciones } = data;
-            const dataTemp = {
-                folio: folio,
-                ordenVenta: ordenVenta,
-                fecha: fecha,
-                nombre: nombre,
-                lote: lote,
-                cantidad: cantidad,
-                propiedad: propiedad,
-                unidadMedida: unidadMedida,
-                tipoMaterial: tipoMaterial,
-                nombreRecibio: nombreRecibio,
-                estadoMateriaPrima: estadoMateriaPrima,
-                contaminacion: contaminacion,
-                presentaHumedad: presentaHumedad,
-                certificadoCalidad: certificadoCalidad,
-                empaqueDañado: empaqueDañado,
-                resultadoFinalInspeccion: resultadoFinalInspeccion,
-                observaciones: observaciones,
-            }
-            setFormData(valoresAlmacenados(dataTemp))
+            setFormData(valoresAlmacenados(data))
             // setFechaCreacion(fechaElaboracion)
         }).catch(e => {
             console.log(e)
@@ -103,8 +99,8 @@ function ModificaReporte(props) {
                 observaciones: formData.observaciones
             }
             // console.log(dataTemp)
-            // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
-            // 
+            LogsInformativos("Se ha modificado el reporte de calidad " +  formData.folio, dataTemp);
+
             // Modificar el pedido creado recientemente
             actualizaInspeccion(id, dataTemp).then(response => {
                 const { data: { mensaje, datos } } = response;

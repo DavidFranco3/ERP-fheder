@@ -63,7 +63,7 @@ export async function obtenerNumeroDevolucion() {
 }
 
 // Para listar todas las devoluciones
-export async function listarDevoluciones(params) {
+export async function listarDevoluciones(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -71,7 +71,7 @@ export async function listarDevoluciones(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarDevoluciones, config);
+    return await axios.get(API_HOST + ENDPOINTListarDevoluciones +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista las devoluciones paginandolos

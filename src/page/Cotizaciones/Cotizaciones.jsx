@@ -9,6 +9,7 @@ import queryString from "query-string";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 
 function Cotizaciones(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -19,22 +20,30 @@ function Cotizaciones(props) {
         enrutamiento.push("/")
     }
 
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
+
     // Ruta de acceso
     const rutaRegistroCotizaciones = () => {
         enrutamiento.push("/RegistroCotizaciones")
     }
-
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalCotizaciones, setNoTotalCotizaciones] = useState(0);
 
     // Para almacenar el listado de cotizaciones
     const [listCotizaciones, setListCotizaciones] = useState(null);
 
     useEffect(() => {
         try {
-            listarCotizacion().then(response => {
+            listarCotizacion(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -119,6 +128,7 @@ function formatModelCotizacion(data) {
             id: data._id,
             folio: data.folio,
             cliente: data.cliente,
+            sucursal: data.sucursal,
             vendedor: data.vendedor,
             fechaCreacion: data.fechaCreacion,
             partida: data.partida,

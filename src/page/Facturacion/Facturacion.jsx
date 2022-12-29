@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faPlus, faUsers } from "@fortawesome/free-solid-svg-icons";
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";

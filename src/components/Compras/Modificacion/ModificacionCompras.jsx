@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Alert, Badge, Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
-import { map, size, values } from "lodash";
+import { map } from "lodash";
 import { actualizaOrdenCompra, obtenerDatosCompra } from "../../../api/compras";
 import { obtenerDatosRequisiciones } from "../../../api/requisicion";
 import { listarProveedores } from "../../../api/proveedores";
@@ -16,6 +16,7 @@ import BuscarMaterial from '../../../page/BuscarMaterial';
 import BuscarInsumos from '../../../page/BuscarInsumos';
 import BuscarOV from '../../../page/BuscarOV';
 import BuscarRequisicion from '../../../page/BuscarRequisicion';
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function ModificacionCompras(props) {
     const { setRefreshCheckLogin } = props;
@@ -27,6 +28,19 @@ function ModificacionCompras(props) {
     const regresaCompras = () => {
         enrutamiento.push("/Compras")
     }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para guardar los datos del formulario
     const [formDataOC, setFormDataOC] = useState(initialFormDataOC());
@@ -259,7 +273,7 @@ function ModificacionCompras(props) {
                         const { data: { mensaje, datos } } = response;
                         // console.log(response)
                         toast.success(mensaje)
-                        LogsInformativos(`Se han actualizado los datos de la orden de compra con folio ${folio}`, datos)
+                        LogsInformativos("Se han actualizado los datos de la orden de compra con folio " + folio, dataTemp)
                         setLoading(false)
                         regresaCompras()
                     }).catch(e => {

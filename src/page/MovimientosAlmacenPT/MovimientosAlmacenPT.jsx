@@ -7,11 +7,27 @@ import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { toast } from "react-toastify";
 
 function MovimientosAlmacenPt(props) {
     const { setRefreshCheckLogin, location, history } = props;
+   
     // Define el uso del enrutamiento
     const enrutamiento = useHistory();
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Define la ruta de regreso hacia las existencias de almacen de MP
     const regresaExistenciasAlmacenMP = () => {
@@ -131,6 +147,7 @@ function formatModelMovimientosAlmacenPT(data) {
             um: data.um,
             fecha: data.fecha,
             tipo: data.tipo,
+            sucursal: data.sucursal,
             descripcion: data.descripcion,
             referencia: data.referencia,
             cantidad: data.cantidad,
@@ -150,6 +167,7 @@ function formatModelAlmacenMateriasPrimas(data) {
             id: data._id,
             folioAlmacen: data.folioAlmacen,
             folioMP: data.folioMP,
+            sucursal: data.sucursal,
             nombre: data.nombre,
             descripcion: data.descripcion,
             um: data.um,

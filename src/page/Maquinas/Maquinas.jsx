@@ -8,7 +8,7 @@ import RegistraMaquinas from '../../components/Maquinas/RegistraMaquinas';
 import { listarMaquina } from "../../api/maquinas";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import ListMaquinas from "../../components/Maquinas/ListMaquinas"
 
@@ -52,7 +52,7 @@ function Maquinas(props) {
 
     useEffect(() => {
         try {
-            listarMaquina().then(response => {
+            listarMaquina(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -146,6 +146,7 @@ function formatModelMaquinas(data) {
         dataTemp.push({
             id: data._id,
             numeroMaquina: data.numeroMaquina,
+            sucursal: data.sucursal,
             marca: data.marca,
             tonelaje: data.tonelaje,
             lugar: data.lugar,

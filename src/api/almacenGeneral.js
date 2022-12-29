@@ -45,7 +45,7 @@ export async function registraGestionAlmacenGeneral(data) {
 }
 
 // Listar completa los elementos del almacen general
-export async function listarAlmacenGeneral(params) {
+export async function listarAlmacenGeneral(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -53,7 +53,7 @@ export async function listarAlmacenGeneral(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarAlmacenGeneral, config);
+    return await axios.get(API_HOST + ENDPOINTListarAlmacenGeneral +`/?sucursal=${sucursal}`, config);
 }
 
 // Obtener el folio actual de el articulo en el almacen general

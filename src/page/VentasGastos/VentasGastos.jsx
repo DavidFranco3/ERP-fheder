@@ -7,7 +7,7 @@ import BasicModal from "../../components/Modal/BasicModal";
 import RegistroVentasGastos from "../../components/VentasGastos/RegistraVentasGastos";
 import ListIntegracionVentasGastos from '../../components/VentasGastos/ListIntegracionVentasGastos';
 import { listarIntegraciones } from "../../api/integracionVentasGastos";
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -46,7 +46,7 @@ function VentasGastos(props) {
 
     useEffect(() => {
         try {
-            listarIntegraciones().then(response => {
+            listarIntegraciones(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -157,6 +157,7 @@ function formatModelIntegracionesVentasGastos(data) {
             id: data._id,
             item: data.item,
             folio: data.folio,
+            sucursal: data.sucursal,
             fechaFactura: data.fechaFactura,
             cliente: data.cliente,
             importe: data.importe,

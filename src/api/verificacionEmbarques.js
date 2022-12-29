@@ -39,7 +39,7 @@ export async function totalVerificacionEmbarques() {
 }
 
 // Listar todas las verificaciones de embarques registradas
-export async function listarVerificacionEmbarque(params) {
+export async function listarVerificacionEmbarque(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -47,7 +47,7 @@ export async function listarVerificacionEmbarque(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarVerificacionEmbarques, config);
+    return await axios.get(API_HOST + ENDPOINTListarVerificacionEmbarques +`/?sucursal=${sucursal}`, config);
 }
 
 // Obtener el folio actual de la verificación de embarque

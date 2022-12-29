@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import BuscarClientes from '../../components/Busquedas/BuscarClientes';
 import { listarProveedores, totalPedidoVenta } from "../../api/proveedores";
 import "./BuscarProveedor.scss"
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -36,7 +36,7 @@ function BuscarProveedor(props) {
 
     useEffect(() => {
         try {
-            listarProveedores().then(response => {
+            listarProveedores(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

@@ -1,4 +1,5 @@
 import {actualizaTracking, obtenerDatosTracking, obtenerNumeroTracking, registraTracking, eliminaPedidoVenta} from "../../../api/tracking";
+import { getSucursal } from "../../../api/auth";
 
 // Para el registro del tracking
 export function LogTrackingRegistro(ordenVenta, cliente, fechaElaboracion){
@@ -12,6 +13,7 @@ export function LogTrackingRegistro(ordenVenta, cliente, fechaElaboracion){
                 folio: data.noTracking,
                 ordenVenta: ordenVenta,
                 cliente: cliente,
+                sucursal: getSucursal(),
                 fechaElaboracion: fechaElaboracion,
                 // fechaEntrega: fechaEntrega,
                 status: "En Orden de Venta",

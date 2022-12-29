@@ -75,7 +75,7 @@ export async function obtenerNumeroPedidoVenta(params) {
 }
 
 // Para listar todos los pedidos
-export async function listarPedidosVenta(params) {
+export async function listarPedidosVenta(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -83,7 +83,7 @@ export async function listarPedidosVenta(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarPedidoVenta, config);
+    return await axios.get(API_HOST + ENDPOINTListarPedidoVenta +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los pedidos de venta paginandolos

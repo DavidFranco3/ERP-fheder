@@ -6,7 +6,7 @@ import { useHistory, withRouter } from "react-router-dom";
 import { listarLiberacionProducto } from "../../api/liberacionProductoProceso";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import ListLiberacionProducto from '../../components/LiberacionProductoProceso/ListLiberacionProducto';
 
@@ -43,7 +43,7 @@ function LiberacionProductoProceso(props) {
 
     useEffect(() => {
         try {
-            listarLiberacionProducto().then(response => {
+            listarLiberacionProducto(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -127,6 +127,7 @@ function formatModelLiberacionProducto(data) {
             id: data._id,
             item: data.item,
             folio: data.folio,
+            sucursal: data.sucursal,
             cliente: data.cliente,
             descripcionPieza: data.descripcionPieza,
             noParteMolde: data.noParteMolde,

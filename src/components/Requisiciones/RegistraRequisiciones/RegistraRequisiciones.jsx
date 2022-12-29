@@ -8,16 +8,29 @@ import { listarPedidosVenta } from "../../../api/pedidoVenta";
 import { listarProveedores } from "../../../api/proveedores";
 import { obtenerNumeroRequisicion, registraRequisicion, obtenerItem } from "../../../api/requisicion";
 import { toast } from "react-toastify";
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
 import { obtenerUsuario } from "../../../api/usuarios";
 import BuscarDepartamento from '../../../page/BuscarDepartamento';
 import BasicModal from "../../Modal/BasicModal";
 import BuscarMaterial from '../../../page/BuscarMaterial';
 import BuscarInsumos from '../../../page/BuscarInsumos';
 import BuscarOV from '../../../page/BuscarOV';
-import {getSucursal} from "../../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function RegistraRequisiciones(props) {
+    const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -85,28 +98,6 @@ function RegistraRequisiciones(props) {
         setContentModal(content);
         setShowModal(true);
     }
-
-    const [departamentoUsuario, setDepartamentoUsuario] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerUsuario(obtenidusuarioLogueado(getTokenApi())).then(response => {
-                const { data } = response;
-                const { departamento } = data;
-                //console.log(data)
-                setDepartamentoUsuario(departamento);
-            }).catch((e) => {
-                if (e.message === "Request failed with status code 400") {
-                }
-                if (e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión al servidor no disponible");
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     // Para almacenar el listado de ordenes de venta
     const [listOrdenesVenta, setListOrdenesVenta] = useState(null);

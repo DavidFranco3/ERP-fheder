@@ -9,9 +9,24 @@ import RegistroPigmento from '../../components/Pigmento/RegistroPigmento';
 import BasicModal from "../../components/Modal/BasicModal";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
+import { toast } from "react-toastify";
 
 function Pigmento(props) {
     const { setRefreshCheckLogin, location, history } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -24,7 +39,7 @@ function Pigmento(props) {
     // Para traer la lista de materiales
     useEffect(() => {
         try {
-            listarPigmento().then(response => {
+            listarPigmento(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -132,6 +147,7 @@ function formatModelPigmento(data) {
         dataTemp.push({
             id: data._id,
             folio: data.folio,
+            sucursal: data.sucursal,
             nombre: data.nombre,
             precio: data.precio,
             um: data.um,

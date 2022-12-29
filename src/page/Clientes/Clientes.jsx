@@ -7,7 +7,7 @@ import { listarClientes } from "../../api/clientes";
 import { toast } from "react-toastify";
 import ListClientes from "../../components/Clientes/ListClientes";
 import { useHistory, withRouter } from "react-router-dom";
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -46,7 +46,7 @@ function Clientes(props) {
 
     useEffect(() => {
         try {
-            listarClientes().then(response => {
+            listarClientes(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -132,6 +132,7 @@ function formatModelClientes(data) {
             id: data._id,
             nombre: data.nombre,
             apellidos: data.apellidos,
+            sucursal: data.sucursal,
             rfc: data.rfc,
             telefonoCelular: data.telefonoCelular,
             calle: calle,

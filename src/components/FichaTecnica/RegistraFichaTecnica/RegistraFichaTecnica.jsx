@@ -4,11 +4,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
 import "./RegistraFichaTecnica.scss";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { toast } from "react-toastify";
 
 function RegistraFichaTecnica(props) {
-
+    const { setRefreshCheckLogin } = props;
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useHistory();
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Define la ruta de registro
     const rutaRegreso = () => {

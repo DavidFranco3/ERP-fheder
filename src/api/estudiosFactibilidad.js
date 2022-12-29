@@ -40,7 +40,7 @@ export async function totalEstudiosFactibilidad() {
 }
 
 // Listar todos los estudios de factibilidad
-export async function listarEstudioFactibilidad(params) {
+export async function listarEstudioFactibilidad(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -48,7 +48,7 @@ export async function listarEstudioFactibilidad(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarEstudioFactibilidad, config);
+    return await axios.get(API_HOST + ENDPOINTListarEstudioFactibilidad +`/?sucursal=${sucursal}`, config);
 }
 
 // Obtener el folio actual del estudio de factibilidad

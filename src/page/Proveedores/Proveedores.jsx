@@ -2,7 +2,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import { listarProveedores } from "../../api/proveedores";
 import { withRouter, useHistory } from "react-router-dom";
@@ -44,7 +44,7 @@ function Proveedores(props) {
 
     useEffect(() => {
         try {
-            listarProveedores().then(response => {
+            listarProveedores(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

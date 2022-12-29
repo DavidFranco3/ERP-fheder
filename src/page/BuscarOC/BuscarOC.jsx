@@ -5,13 +5,13 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import BuscarCompras from '../../components/Busquedas/BuscarCompras';
-import { listarDeptoCompras, listarProductosCompras } from "../../api/compras";
+import { listarOrdenesCompra, listarProductosCompras } from "../../api/compras";
 import "./BuscarOC.scss"
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
-const { map } = require("lodash");
+import { map } from "lodash";
 
 function BuscarOC(props) {
     const { setFormData, productosOC, setProductosOC, formData, setShowModal, setRefreshCheckLogin, location, history } = props;
@@ -35,7 +35,7 @@ function BuscarOC(props) {
 
     useEffect(() => {
         try {
-            listarDeptoCompras("Compras").then(response => {
+            listarOrdenesCompra(getSucursal()).then(response => {
                 const { data } = response;
 
                 ///console.log(data);

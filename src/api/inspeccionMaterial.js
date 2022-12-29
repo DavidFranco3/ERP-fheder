@@ -90,7 +90,7 @@ export async function obtenerItemInspeccion() {
 }
 
 // Para listar todas las órdenes de compra
-export async function listarInspeccion(params) {
+export async function listarInspeccion(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -98,7 +98,7 @@ export async function listarInspeccion(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarInspeccion, config);
+    return await axios.get(API_HOST + ENDPOINTListarInspeccion +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista las ordenes de compra paginándolas

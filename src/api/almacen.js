@@ -49,7 +49,7 @@ export async function obtenerArticuloAlmacen(params) {
 }
 
 // Para listar todos los articulos del almacen
-export async function listarArticuloAlmacen(params) {
+export async function listarArticuloAlmacen(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -57,7 +57,7 @@ export async function listarArticuloAlmacen(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarAlmacen, config);
+    return await axios.get(API_HOST + ENDPOINTListarAlmacen +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista los articulos del almacen paginando

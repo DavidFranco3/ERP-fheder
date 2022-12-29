@@ -132,7 +132,7 @@ function RegistroExistenciasAlmacenMp(props) {
                         const { data } = response;
                         const { mensaje, datos } = data;
                         toast.success(mensaje)
-                        LogsInformativos("Se ha registrado la materia en el almacen de MP", datos)
+                        LogsInformativos("Se ha registrado la materia en el almacen de MP " + temp[1], dataTemp)
                         history.push({
                             search: queryString.stringify(""),
                         });

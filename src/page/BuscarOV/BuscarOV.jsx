@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import BuscarOrdenVenta from "../../components/Busquedas/BuscarOrdenVenta"
 import { listarPedidosVenta, totalPedidoVenta } from "../../api/pedidoVenta";
 import "./BuscarOV.scss"
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -35,7 +35,7 @@ function BuscarOV(props) {
 
     useEffect(() => {
         try {
-            listarPedidosVenta().then(response => {
+            listarPedidosVenta(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

@@ -142,7 +142,7 @@ function RegistroEntradaSalida(props) {
                                 const { mensaje, datos } = data;
                                 toast.success(mensaje)
                                 setLoading(false)
-                                LogsInformativos(`Se han actualizado las existencias de la materia prima ${data.folioAlmacen}`, datos)
+                                LogsInformativos("Se han actualizado las existencias de la materia prima " + almacenMP.nombreMP, dataTempFinal)
                                 history.push({
                                     search: queryString.stringify(""),
                                 });
@@ -194,7 +194,7 @@ function RegistroEntradaSalida(props) {
                                     const { mensaje, datos } = data;
                                     toast.success(mensaje)
                                     setLoading(false)
-                                    LogsInformativos(`Se han actualizado las existencias de la materia prima ${formData.referencia}`, datos)
+                                    LogsInformativos("Se han actualizado las existencias de la materia prima " + almacenMP.nombreMP, dataTempFinal)
                                     history.push({
                                         search: queryString.stringify(""),
                                     });

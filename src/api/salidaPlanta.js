@@ -40,7 +40,7 @@ export async function totalSalidaPlanta() {
 
 
 // Listar los registros de salidas de la planta
-export async function listarSalidaPlanta() {
+export async function listarSalidaPlanta(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -48,7 +48,7 @@ export async function listarSalidaPlanta() {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarSalidaPlanta, config);
+    return await axios.get(API_HOST + ENDPOINTListarSalidaPlanta +`/?sucursal=${sucursal}`, config);
 }
 
 // Obtener el folio actual de salidas de la planta

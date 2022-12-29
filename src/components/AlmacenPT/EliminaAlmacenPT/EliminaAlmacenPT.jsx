@@ -27,7 +27,7 @@ function EliminaAlmacenPt(props) {
                 const { data } = response;
                 toast.success(data.mensaje)
                 setLoading(false)
-                LogsInformativos(`Se ha eliminado del almacen de materia prima el articulo con folio ${folioMP}`, datos)
+                LogsInformativos("Se ha eliminado del almacen de materia prima el articulo con folio " + folioMP, datos)
                 history.push({
                     search: queryString.stringify(""),
                 });

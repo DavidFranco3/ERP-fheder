@@ -1,6 +1,6 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useHistory, withRouter } from "react-router-dom";
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import { listarTracking } from "../../api/tracking";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
@@ -38,7 +38,7 @@ function Tracking(props) {
 
     useEffect(() => {
         try {
-            listarTracking().then(response => {
+            listarTracking(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -113,6 +113,7 @@ function formatModelTracking(data) {
             id: data._id,
             folio: data.folio,
             ordenVenta: data.ordenVenta,
+            sucursal: data.sucursal,
             cliente: data.cliente,
             fechaElaboracion: data.fechaElaboracion,
             fechaEntrega: data.fechaEntrega,

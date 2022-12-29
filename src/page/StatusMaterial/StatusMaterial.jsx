@@ -6,7 +6,7 @@ import { useHistory, withRouter } from "react-router-dom";
 import { listarStatusMaterial } from "../../api/statusMaterial";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import ListCalidad from '../../components/StatusMaterial/ListStatusCalidad';
 
@@ -42,7 +42,7 @@ function StatusMaterial(props) {
 
     useEffect(() => {
         try {
-            listarStatusMaterial().then(response => {
+            listarStatusMaterial(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -126,6 +126,7 @@ function formatModelStatusMaterial(data) {
             id: data._id,
             item: data.item,
             folio: data.folio,
+            sucursal: data.sucursal,
             folioInspeccion: data.folioInspeccion,
             propiedadInspeccion: data.propiedadInspeccion,
             cantidadInspeccion: data.cantidadInspeccion,

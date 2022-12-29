@@ -1,5 +1,6 @@
 import { obtenerFolioActualAlmacenMP, registroGestionAlmacenMP, obtenerItem, obtenerDatosMP, listarAlmacenMP, listarMovimientosAlmacenMP, obtenerDatosAlmacenMPFolio, registraMovimientosAlmacenMP } from "../../../api/almacenMP";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { getSucursal } from "../../../api/auth";
 
 // Para definir el registro de la información inicial de la planeación -- Metodo desarrollado para funcionalidad interno en registro de ventas
 export function LogRegistroAlmacenMP(folioMP, nombreMP, um, cantidadExistencia) {
@@ -19,6 +20,7 @@ export function LogRegistroAlmacenMP(folioMP, nombreMP, um, cantidadExistencia) 
                     folioAlmacen: noAlmacen,
                     folioMP: folioMP,
                     nombreMP: nombreMP,
+                    sucursal: getSucursal(),
                     um: um,
                     fecha: "",
                     cantidadExistencia: cantidadExistencia,
@@ -31,7 +33,7 @@ export function LogRegistroAlmacenMP(folioMP, nombreMP, um, cantidadExistencia) 
                     const { mensaje, datos } = data;
                     const { folioAlmacen, _id } = datos
                     //console.log("se ha registrado la materia prima en el almacen")
-                    LogsInformativos(`Se ha registrado la materia en el almacen de MP ${folioAlmacen}`, datos)
+                    LogsInformativos("Se ha registrado la materia en el almacen de MP " + folioAlmacen, dataTemp)
 
                 }).catch(e => {
                     console.log(e)

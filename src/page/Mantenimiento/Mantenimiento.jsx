@@ -3,6 +3,8 @@ import { Alert, Button, Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
+import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
+import { toast } from "react-toastify";
 
 function Mantenimiento(props) {
     const { setRefreshCheckLogin } = props;
@@ -18,6 +20,19 @@ function Mantenimiento(props) {
     const rutaRegreso = () => {
         enrutamiento.push("/DashboardMantenimiento")
     }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     return (
         <>

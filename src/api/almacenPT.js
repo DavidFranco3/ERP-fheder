@@ -31,7 +31,7 @@ export async function registraAlmacenPT(data) {
 }
 
 // Listar completo el contenido de almacen de pt
-export async function listarAlmacenPT() {
+export async function listarAlmacenPT(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -39,7 +39,7 @@ export async function listarAlmacenPT() {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarAlmacenPT, config);
+    return await axios.get(API_HOST + ENDPOINTListarAlmacenPT +`/?sucursal=${sucursal}`, config);
 }
 
 // Obtener el folio actual

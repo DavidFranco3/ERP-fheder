@@ -76,7 +76,7 @@ export async function obtenerNumeroTracking(params) {
 }
 
 // Para listar todos los tracking registrados
-export async function listarTracking(params) {
+export async function listarTracking(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -84,7 +84,7 @@ export async function listarTracking(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarTracking, config);
+    return await axios.get(API_HOST + ENDPOINTListarTracking +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los tracking paginandolos

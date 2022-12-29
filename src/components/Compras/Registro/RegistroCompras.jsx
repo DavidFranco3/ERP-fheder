@@ -17,13 +17,26 @@ import BuscarMaterial from '../../../page/BuscarMaterial';
 import BuscarInsumos from '../../../page/BuscarInsumos';
 import BuscarOV from '../../../page/BuscarOV';
 import BuscarRequisicion from '../../../page/BuscarRequisicion';
-import {getSucursal} from "../../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function RegistroCompras(props) {
-    const { } = props;
+    const { setRefreshCheckLogin } = props;
 
     // Para definir el uso de la animación
     const [loading, setLoading] = useState(false);
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory();
@@ -288,7 +301,7 @@ function RegistroCompras(props) {
                         const { data: { mensaje, datos } } = response;
                         // console.log(response)
                         toast.success(mensaje)
-                        LogsInformativos(`Se han actualizado los datos de la orden de compra con folio ${data.noCompra}`, datos)
+                        LogsInformativos("Se han actualizado los datos de la orden de compra con folio " + dataTemp.folio, dataTemp)
                         setLoading(false)
                         regresaCompras()
                     }).catch(e => {

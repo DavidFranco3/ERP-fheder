@@ -63,7 +63,7 @@ export async function obtenerDatosUsoEmpaque(clave) {
 }
 
 // Para listar todos los usos de empaque
-export async function listarUsosEmpaque(params) {
+export async function listarUsosEmpaque(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -71,7 +71,7 @@ export async function listarUsosEmpaque(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarUsoEmpaque, config);
+    return await axios.get(API_HOST + ENDPOINTListarUsoEmpaque +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los usos de empaque paginandolos

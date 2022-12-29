@@ -3,8 +3,24 @@ import { Alert, Button, Col, Form, Row, Container, Spinner, Badge } from "react-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { toast } from "react-toastify";
 
 function RegistraSolicitudMaterialInsumo(props) {
+    const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory()

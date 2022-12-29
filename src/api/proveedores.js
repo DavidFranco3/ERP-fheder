@@ -77,7 +77,7 @@ export async function obtenerFolioActualProveedores() {
 }
 
 // Para listar todos los proveedores
-export async function listarProveedores(params) {
+export async function listarProveedores(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -85,7 +85,7 @@ export async function listarProveedores(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarProveedores, config);
+    return await axios.get(API_HOST + ENDPOINTListarProveedores +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista los proveedores paginandolos

@@ -40,7 +40,7 @@ export async function totalRequerimientosEspecificos() {
 }
 
 // Listar todos los requerimientos especificos
-export async function listarRequerimientosEspecificos(params) {
+export async function listarRequerimientosEspecificos(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -48,7 +48,7 @@ export async function listarRequerimientosEspecificos(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarRequerimientosEspecificos, config);
+    return await axios.get(API_HOST + ENDPOINTListarRequerimientosEspecificos +`/?sucursal=${sucursal}`, config);
 }
 
 // Obtener el folio actual del requerimiento especifico

@@ -10,6 +10,8 @@ import BasicModal from "../../components/Modal/BasicModal";
 import { listarAlmacenPT } from "../../api/almacenPT";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import { toast } from "react-toastify";
+import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 
 function AlmacenPt(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -17,10 +19,18 @@ function AlmacenPt(props) {
     // Para definir el enrutamiento
     const enrutamiento = useHistory();
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalAlmacenPT, setNoTotalAlmacenPT] = useState(0);
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -46,7 +56,7 @@ function AlmacenPt(props) {
 
     useEffect(() => {
         try {
-            listarAlmacenPT().then(response => {
+            listarAlmacenPT(getSucursal()).then(response => {
                 const { data } = response;
 
                 if (!listAlmacenPT && data) {
@@ -159,6 +169,7 @@ function formatModelAlmacenPT(data) {
             id: data._id,
             folioAlmacen: data.folioAlmacen,
             folioMP: data.folioMP,
+            sucursal: data.sucursal,
             nombre: data.nombre,
             descripcion: data.descripcion,
             um: data.um,

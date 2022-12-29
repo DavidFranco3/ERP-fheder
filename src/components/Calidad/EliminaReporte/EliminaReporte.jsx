@@ -28,7 +28,7 @@ function EliminaReporte(props) {
                 const { data } = response;
                 // console.log(data)
                 toast.success(data.mensaje)
-                LogsInformativos(`Se ha eliminado la inspeccion de calidad de material con el folio ${folio}`, data)
+                LogsInformativos("Se ha eliminado la inspeccion de calidad de material con el folio " + folio, data);
                 setShowModal(false);
                 setLoading(false);
                 history.push({

@@ -8,11 +8,10 @@ import { useHistory, withRouter } from "react-router-dom";
 import ListDepartamentos from "../../components/Departamentos/ListDepartamentos";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroDepartamentos from "../../components/Departamentos/Registro";
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
-
 
 function Departamentos(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -49,7 +48,7 @@ function Departamentos(props) {
 
     useEffect(() => {
         try {
-            listarDepartamento().then(response => {
+            listarDepartamento(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -142,6 +141,7 @@ function formatModelDepartamento(data) {
         dataTemp.push({
             id: data._id,
             nombre: data.nombre,
+            sucursal: data.sucursal,
             fechaActualizacion: data.updatedAt
         });
     });

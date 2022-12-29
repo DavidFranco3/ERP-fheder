@@ -63,7 +63,7 @@ export async function obtenerNumeroReporteCalidad() {
 }
 
 // Para listar todas los reportes
-export async function listarReportesCalidad(params) {
+export async function listarReportesCalidad(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -71,7 +71,7 @@ export async function listarReportesCalidad(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarReportesCalidad, config);
+    return await axios.get(API_HOST + ENDPOINTListarReportesCalidad +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista los reportes paginandolos

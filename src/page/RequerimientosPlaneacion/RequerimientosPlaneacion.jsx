@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import ListRequerimientosPlaneacion from "../../components/RequerimientosPlaneacion/ListProduccion/";
 import { listarRequerimiento } from "../../api/requerimientosPlaneacion";
 import "./RequerimientosPlaneacion.scss"
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -43,7 +43,7 @@ function RequerimientosPlaneacion(props) {
 
     useEffect(() => {
         try {
-            listarRequerimiento().then(response => {
+            listarRequerimiento(getSucursal()).then(response => {
                 const { data } = response;
 
                 if (!listRequerimientosPlaneacion && data) {
@@ -129,6 +129,7 @@ function formatModelRequerimientosPlaneacion(data) {
             id: data._id,
             item: data.item,
             folio: data.folio,
+            sucursal: data.sucursal,
             requerimiento: data.requerimiento,
             planeacion: data.planeacion,
             bom: data.bom,

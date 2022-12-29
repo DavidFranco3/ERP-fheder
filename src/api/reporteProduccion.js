@@ -63,7 +63,7 @@ export async function obtenerNumeroReporteProduccion() {
 }
 
 // Para listar todos los reportes de producción
-export async function listarReportesProduccion(params) {
+export async function listarReportesProduccion(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -71,7 +71,7 @@ export async function listarReportesProduccion(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarReportesProduccion, config);
+    return await axios.get(API_HOST + ENDPOINTListarReportesProduccion +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista los reportes de producción paginándolos

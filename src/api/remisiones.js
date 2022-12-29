@@ -63,7 +63,7 @@ export async function obtenerNumeroRemision() {
 }
 
 // Para listar todas las remisiones
-export async function listarRemisiones(params) {
+export async function listarRemisiones(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -71,7 +71,7 @@ export async function listarRemisiones(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarRemisiones, config);
+    return await axios.get(API_HOST + ENDPOINTListarRemisiones +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista las remisiones paginandolos

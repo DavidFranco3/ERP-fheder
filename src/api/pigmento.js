@@ -77,7 +77,7 @@ export async function obtenerFolioActualPigmento() {
 }
 
 // Para listar todos los productos
-export async function listarPigmento(params) {
+export async function listarPigmento(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -85,7 +85,7 @@ export async function listarPigmento(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarPigmento, config);
+    return await axios.get(API_HOST + ENDPOINTListarPigmento +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista la materia prima paginando

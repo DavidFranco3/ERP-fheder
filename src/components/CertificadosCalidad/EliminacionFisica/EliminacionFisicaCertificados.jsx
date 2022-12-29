@@ -31,7 +31,7 @@ function EliminacionFisicaCertificados(props) {
                 const { data } = response;
                 // console.log(data)
                 toast.success(data.mensaje)
-                LogsInformativos(`Se ha eliminado el certificado de calidad con el folio ${folio}`, datos)
+                LogsInformativos("Se ha eliminado el certificado de calidad con el folio " + folio, datos)
                 setShowModal(false);
                 setLoading(false);
                 history.push({

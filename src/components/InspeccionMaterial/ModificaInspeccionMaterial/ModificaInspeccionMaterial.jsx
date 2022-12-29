@@ -11,8 +11,23 @@ import { obtenerCliente } from "../../../api/clientes";
 import { obtenerInspeccionPieza, actualizaInspeccionPieza } from "../../../api/inspeccionPieza";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function ModificaInspeccionMaterial(props) {
+    const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());

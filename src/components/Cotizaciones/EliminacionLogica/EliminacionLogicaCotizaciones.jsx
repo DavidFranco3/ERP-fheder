@@ -39,11 +39,11 @@ function EliminacionLogicaCotizaciones(props) {
                 //console.log(data)
                 if (dataTemp.status === "true") {
                     toast.success("Cotización habilitada");
-                    LogsInformativos("Se ha habilitado la cotización " + formData.cliente + " " + formData.vendedor)
+                    LogsInformativos("Se ha habilitado la cotización " + formData.cliente + " " + formData.vendedor, dataTemp)
                 }
                 if (dataTemp.status === "false") {
                     toast.success("Cotización deshabilitada");
-                    LogsInformativos("Se ha deshabilitado el cotización " + formData.cliente + " " + formData.vendedor)
+                    LogsInformativos("Se ha deshabilitado el cotización " + formData.cliente + " " + formData.vendedor, dataTemp)
                 }
                 setShowModal(false);
                 setLoading(false);

@@ -7,9 +7,24 @@ import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { toast } from "react-toastify";
 
 function MovimientosAlmacenGeneral(props) {
     const { setRefreshCheckLogin, location, history } = props;
+
+     // Cerrado de sesión automatico
+     useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Define el uso del enrutamiento
     const enrutamiento = useHistory()
@@ -108,6 +123,7 @@ function formatModelMovimientosAG(data) {
             folio: data.folio,
             materiaPrima: data.materiaPrima,
             folioAG: data.folioAG,
+            sucursal: data.sucursal,
             um: data.um,
             tipo: data.tipo,
             descripcion: data.descripcion,

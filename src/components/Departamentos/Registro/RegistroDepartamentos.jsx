@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { registraDepartamento } from "../../../api/departamentos";
 import queryString from "query-string";
 import { getSucursal } from "../../../api/auth";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistroDepartamentos(props) {
     const { setShowModal, history } = props;
@@ -42,7 +43,7 @@ function RegistroDepartamentos(props) {
             try {
                 registraDepartamento(dataTemp).then(response => {
                     const { data } = response;
-
+                    LogsInformativos("Se a registrado un nuevo departamento " + formData.nombre, dataTemp);
                     toast.success(data.mensaje);
                     setShowModal(false);
                     setLoading(false);

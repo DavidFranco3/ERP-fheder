@@ -1,8 +1,24 @@
 import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { toast } from "react-toastify";
 
 function RegistraRemisiones(props) {
+    const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para la animacion del spinner
     const [loading, setLoading] = useState(false);

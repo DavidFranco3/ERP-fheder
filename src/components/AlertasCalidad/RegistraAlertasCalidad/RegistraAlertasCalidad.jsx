@@ -4,11 +4,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
 import DropzoneFormularios from "../../DropzoneFormularios";
+import { toast } from "react-toastify";
+import { getTokenApi, isExpiredToken, logoutApi } from "../../../api/auth";
 
 function RegistraAlertasCalidad(props) {
-
+    const { setRefreshCheckLogin } = props;
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useHistory();
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para almacenar la foto de perfil del usuario
     const [fotoUsuario, setFotoUsuario] = useState(null);

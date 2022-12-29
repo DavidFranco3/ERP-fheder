@@ -24,7 +24,7 @@ function EliminaEmpaque(props) {
         try {
             eliminaEmpaque(id).then(response => {
                 const { data } = response;
-                LogsInformativos("El empaque con nombre " + nombre + " fue eliminado")
+                LogsInformativos("El empaque con nombre " + nombre + " fue eliminado", dataEmpaque)
                 toast.success(data.mensaje)
                 setLoading(false)
                 setShowModal(false)

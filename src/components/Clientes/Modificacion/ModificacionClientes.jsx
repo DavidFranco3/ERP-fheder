@@ -12,6 +12,7 @@ import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function ModificacionClientes(props) {
     const { setRefreshCheckLogin } = props;
@@ -20,7 +21,18 @@ function ModificacionClientes(props) {
 
     const params = useParams();
 
-    //console.log(params)
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Ruta para enlazar a pagina de usuarios
     const regresaPagina = () => {
@@ -94,7 +106,7 @@ function ModificacionClientes(props) {
             try {
                 actualizaCliente(params.id, dataTempFinal).then(response => {
                     const { data } = response;
-                    LogsInformativos("Los datos del cliente " + dataTempFinal.nombre + " " + dataTempFinal.apellidos + " fueron modificados")
+                    LogsInformativos("Los datos del cliente " + dataTempFinal.nombre  + " fueron modificados", dataTempFinal)
                     toast.success(data.mensaje)
                     setLoading(false);
                     enrutamiento.push("/Clientes");

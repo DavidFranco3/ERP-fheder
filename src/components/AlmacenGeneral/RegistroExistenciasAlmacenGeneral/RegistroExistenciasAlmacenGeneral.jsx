@@ -94,7 +94,7 @@ function RegistroExistenciasAlmacenGeneral(props) {
                     const { mensaje, datos } = data;
                     toast.success(mensaje)
                     setLoading(false)
-                    LogsInformativos("Se ha registrado un articulo en el almacen general", datos)
+                    LogsInformativos("Se ha registrado un articulo en el almacen general con nombre " + temp[2], dataTemp)
                     history.push({
                         search: queryString.stringify(""),
                     });

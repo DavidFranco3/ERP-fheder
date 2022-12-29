@@ -2,7 +2,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import { useHistory, withRouter } from "react-router-dom";
 import { listarReportesProduccion } from "../../api/reporteProduccion";
@@ -44,7 +44,7 @@ function ReporteProduccion(props) {
 
     useEffect(() => {
         try {
-            listarReportesProduccion().then(response => {
+            listarReportesProduccion(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -128,6 +128,7 @@ function formatModelProduccion(data) {
         dataTemp.push({
             id: data._id,
             folio: data.folio,
+            sucursal: data.sucursal,
             fecha: data.fecha,
             asistencias: data.asistencias,
             faltas: data.faltas,

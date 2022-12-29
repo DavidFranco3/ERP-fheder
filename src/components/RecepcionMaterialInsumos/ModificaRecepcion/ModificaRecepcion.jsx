@@ -20,9 +20,23 @@ import BasicModal from "../../Modal/BasicModal";
 import BuscarOC from '../../../page/BuscarOC';
 import { LogRegistroAlmacenMP, LogRegistroMovimientoAlmacenMP } from '../../AlmacenMP/Gestion/GestionAlmacenMP';
 import { LogRegistroAlmacenGeneral, LogRegistroMovimientoAlmacenGeneral } from '../../AlmacenGeneral/Gestion/GestionAlmacenGeneral';
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function ModificaRecepcion(props) {
     const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     const enrutamiento = useHistory();
 
@@ -554,7 +568,7 @@ function ModificaRecepcion(props) {
                                     {map(productosOC, (productos, index) => (
                                         <option
                                             key={index}
-                                            value={productos?.folio +"/"+ productos?.cantidad + "/" + productos?.descripcion + "/" + productos?.precio + "/" + productos?.subtotal + "/" + productos?.um}
+                                            value={productos?.folio + "/" + productos?.cantidad + "/" + productos?.descripcion + "/" + productos?.precio + "/" + productos?.subtotal + "/" + productos?.um}
                                         >
                                             {productos?.descripcion}
                                         </option>

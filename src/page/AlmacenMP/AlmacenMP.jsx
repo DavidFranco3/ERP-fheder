@@ -10,6 +10,8 @@ import RegistroExistenciasAlmacenMP from "../../components/AlmacenMP/RegistroExi
 import RegistroEntradaSalida from "../../components/AlmacenMP/RegistroEntradaSalida";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import { toast } from "react-toastify";
+import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 
 function AlmacenMp(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -21,6 +23,19 @@ function AlmacenMp(props) {
     const rutaHaciaComprasAlmacen = () => {
         enrutamiento.push("/Compras/AlmacenMP")
     }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -46,7 +61,7 @@ function AlmacenMp(props) {
 
     useEffect(() => {
         try {
-            listarAlmacenMP().then(response => {
+            listarAlmacenMP(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -161,6 +176,7 @@ function formatModelAlmacenMP(data) {
         dataTemp.push({
             id: data._id,
             item: data.item,
+            sucursal: data.sucursal,
             folioAlmacen: data.folioAlmacen,
             nombreMP: data.nombreMP,
             um: data.um,

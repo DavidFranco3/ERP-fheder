@@ -18,9 +18,23 @@ import BuscarCliente from '../../../page/BuscarCliente';
 import BuscarPigmento from '../../../page/BuscarPigmento';
 import BuscarProveedor from "../../../page/BuscarProveedor";
 import BuscarEmpaque from '../../../page/BuscarEmpaque';
-import {getSucursal} from "../../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function RegistraMatrizProductos(props) {
+    const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para la animacion del spinner
     const [loading, setLoading] = useState(false);

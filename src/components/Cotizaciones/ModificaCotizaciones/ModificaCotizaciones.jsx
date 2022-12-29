@@ -12,12 +12,26 @@ import { listarProveedores } from "../../../api/proveedores";
 import { toast } from "react-toastify";
 import { map } from "lodash";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function ModificacionesCotizaciones(props) {
-
+    const { setRefreshCheckLogin } = props;
     // Define la extraccion de los parametros
     const parametros = useParams()
     const { id } = parametros;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     const enrutamiento = useHistory();
 
@@ -138,7 +152,7 @@ function ModificacionesCotizaciones(props) {
 
                     actualizaCotizacion(id, dataTemp).then(response => {
                         const { data } = response;
-                        LogsInformativos("Se actualizo la cotización con folio ", folioCotizacion)
+                        LogsInformativos("Se actualizo la cotización con folio ", folioCotizacion, dataTemp)
                         setLoading(false)
                         toast.success(data.mensaje)
                         regresaListadoCotizaciones()

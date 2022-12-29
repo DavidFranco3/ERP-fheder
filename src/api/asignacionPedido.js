@@ -88,7 +88,7 @@ export async function obtenerNumeroAsignacionPedido(params) {
 }
 
 // Para listar todos los pedidos
-export async function listarAsignacionPedidos(params) {
+export async function listarAsignacionPedidos(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -96,7 +96,7 @@ export async function listarAsignacionPedidos(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarAsignacionPedido, config);
+    return await axios.get(API_HOST + ENDPOINTListarAsignacionPedido +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los pedidos de venta paginandolos

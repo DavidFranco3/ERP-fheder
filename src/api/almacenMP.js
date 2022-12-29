@@ -83,7 +83,7 @@ export async function registraMovimientosAlmacenMP(id, data) {
 }
 
 // Listar todas las materias primas
-export async function listarAlmacenMP(params) {
+export async function listarAlmacenMP(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -91,7 +91,7 @@ export async function listarAlmacenMP(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarAlmacenMP, config);
+    return await axios.get(API_HOST + ENDPOINTListarAlmacenMP +`/?sucursal=${sucursal}`, config);
 }
 
 // Obtener el folio actual del almacen

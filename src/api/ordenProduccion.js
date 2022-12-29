@@ -40,7 +40,7 @@ export async function totalOrdenProduccion() {
 }
 
 // Listar todas las ordenes de producción
-export async function listarOrdenesProduccion(params) {
+export async function listarOrdenesProduccion(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -48,7 +48,7 @@ export async function listarOrdenesProduccion(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarOrdenProduccion, config);
+    return await axios.get(API_HOST + ENDPOINTListarOrdenProduccion +`/?sucursal=${sucursal}`, config);
 }
 
 // Obtener el folio actual de la orden de producción

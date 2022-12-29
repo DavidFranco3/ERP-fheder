@@ -153,6 +153,7 @@ function formatModelSucursales(data) {
         dataTemp.push({
             id: data._id,
             nombre: data.nombre,
+            sucursal: data.sucursal,
             calle: calle,
             numeroExterior: numeroExterior,
             numeroInterior: numeroInterior,

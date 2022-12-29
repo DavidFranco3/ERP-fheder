@@ -87,7 +87,7 @@ export async function obtenerFacturaIntegracion(params) {
 }
 
 // Para listar todos los pedidos
-export async function listarIntegraciones(params) {
+export async function listarIntegraciones(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -95,7 +95,7 @@ export async function listarIntegraciones(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarIntegraciones, config);
+    return await axios.get(API_HOST + ENDPOINTListarIntegraciones +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los pedidos de venta paginandolos

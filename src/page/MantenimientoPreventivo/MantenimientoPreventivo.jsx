@@ -5,6 +5,8 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistraMantenimientoPreventivo from "../../components/MantenimientoPreventivo/RegistraMantenimientoPreventivo";
+import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
+import { toast } from "react-toastify";
 
 function MantenimientoPreventivo(props) {
     const { setRefreshCheckLogin } = props;
@@ -24,6 +26,18 @@ function MantenimientoPreventivo(props) {
         setShowModal(true);
     }
 
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Define la ruta de registro
     const rutaRegistro = () => {

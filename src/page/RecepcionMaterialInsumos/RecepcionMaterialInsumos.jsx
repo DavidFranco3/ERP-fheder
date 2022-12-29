@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import ListRecepciones from "../../components/RecepcionMaterialInsumos/ListRecepciones";
 import { listarRecepcion } from "../../api/recepcionMaterialInsumos";
 import "./RecepcionMaterialInsumos.scss"
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -38,7 +38,7 @@ function RecepcionMaterialInsumos(props) {
 
     useEffect(() => {
         try {
-            listarRecepcion().then(response => {
+            listarRecepcion(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -65,24 +65,6 @@ function RecepcionMaterialInsumos(props) {
     const rutaRegreso = () => {
         enrutamiento.push("/DashboardCompras")
     }
-
-    // Validar el tipo de usuario que accede a la vista
-    const [tipoUsuario, setTipoUsuario] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerUsuario(obtenidusuarioLogueado(getTokenApi())).then(response => {
-                const { data } = response;
-                // console.log(data)
-                setTipoUsuario(data.departamento);
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
 
     return (
         <>
@@ -148,6 +130,7 @@ function formatModelRecepciones(data) {
         dataTemp.push({
             id: data._id,
             ordenCompra: data.ordenCompra,
+            sucursal: data.sucursal,
             proveedor: data.proveedor,
             nombreProveedor: data.nombreProveedor,
             folio: data.folio,

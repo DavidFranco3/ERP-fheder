@@ -5,12 +5,27 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory } from "react-router-dom";
 import { registraCertificado, obtenerNumeroCertificado, obtenerItemCertificado } from "../../../api/certificadosCalidad";
 import { toast } from "react-toastify";
-import {getSucursal} from "../../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistraReporte(props) {
-
+    const { setRefreshCheckLogin } = props;
+    
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory()
@@ -183,6 +198,7 @@ function RegistraReporte(props) {
                 // Modificar el pedido creado recientemente
                 registraCertificado(dataTemp).then(response => {
                     const { data: { mensaje, datos } } = response;
+                    LogsInformativos("Se ha registrado el certificado de calidad " + dataTemp.folio, dataTemp);
                     // console.log(response)
                     toast.success(mensaje)
                     setLoading(false)

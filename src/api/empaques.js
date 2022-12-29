@@ -77,7 +77,7 @@ export async function obtenerFolioActualEmpaque() {
 }
 
 // Para listar todos los productos
-export async function listarEmpaque(params) {
+export async function listarEmpaque(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -85,7 +85,7 @@ export async function listarEmpaque(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarEmpaque, config);
+    return await axios.get(API_HOST + ENDPOINTListarEmpaque +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista la materia prima paginando

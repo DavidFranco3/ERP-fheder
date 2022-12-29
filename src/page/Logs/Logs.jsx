@@ -7,6 +7,7 @@ import { listarLogs } from "../../api/logsGenerales";
 import ListLogs from "../../components/Logs/ListLogs";
 import moment from "moment";
 import "./Logs.scss";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -15,6 +16,19 @@ function Logs(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     const enrutamiento = useHistory();
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     const rutaRegreso = () => {
         enrutamiento.push("/")
@@ -27,7 +41,7 @@ function Logs(props) {
 
     useEffect(() => {
         try {
-            listarLogs().then(response => {
+            listarLogs(getSucursal()).then(response => {
                 const { data } = response;
 
                 if (!listLog && data) {
@@ -47,7 +61,7 @@ function Logs(props) {
 
     return (
         <>
-            <Alert className="alertLogsSistema">
+            <Alert>
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
@@ -68,7 +82,7 @@ function Logs(props) {
                 </Row>
             </Alert>
 
-            <div className="listadoLogs">
+            
                 {
                     listLog ?
                         (
@@ -90,7 +104,6 @@ function Logs(props) {
                             </>
                         )
                 }
-            </div>
         </>
     );
 }
@@ -103,6 +116,7 @@ function formatModelLogs(data) {
             id: data._id,
             folio: data.folio,
             usuario: data.usuario,
+            sucursal: data.sucursal,
             correo: data.correo,
             ip: data.ip,
             dispositivo: data.dispositivo,

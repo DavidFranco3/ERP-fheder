@@ -93,7 +93,7 @@ export async function obtenerNumeroRequisicion() {
 }
 
 // Para listar todas las requisiciones
-export async function listarRequisiciones(params) {
+export async function listarRequisiciones(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -101,7 +101,7 @@ export async function listarRequisiciones(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarRequisicion, config);
+    return await axios.get(API_HOST + ENDPOINTListarRequisicion +`/?sucursal=${sucursal}`, config);
 }
 
 // Para listar las requisiciones por departamentos

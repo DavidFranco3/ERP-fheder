@@ -115,7 +115,7 @@ function RegistroEntradaSalidaAlmacenGeneral(props) {
                                 const { mensaje, datos } = data;
                                 toast.success(mensaje)
                                 setLoading(false)
-                                LogsInformativos(`Se han actualizado las existencias del almacen general ${articuloSeleccionado.materiaPrima}`, datos)
+                                LogsInformativos("Se han actualizado las existencias del almacen general " + articuloSeleccionado.materiaPrima, dataTempFinal)
                                 history.push({
                                     search: queryString.stringify(""),
                                 });
@@ -170,7 +170,7 @@ function RegistroEntradaSalidaAlmacenGeneral(props) {
                                         const { mensaje, datos } = data;
                                         toast.success(mensaje)
                                         setLoading(false)
-                                        LogsInformativos(`Se han actualizado las existencias del almacen general ${articuloSeleccionado.materiaPrima}`, datos)
+                                        LogsInformativos("Se han actualizado las existencias del almacen general " + articuloSeleccionado.materiaPrima, dataTempFinal)
                                         history.push({
                                             search: queryString.stringify(""),
                                         });
@@ -225,7 +225,7 @@ function RegistroEntradaSalidaAlmacenGeneral(props) {
                                         const { mensaje, datos } = data;
                                         toast.success(mensaje)
                                         setLoading(false)
-                                        LogsInformativos(`Se han actualizado las existencias del almacen general ${articuloSeleccionado.materiaPrima}`, datos)
+                                        LogsInformativos("Se han actualizado las existencias del almacen general " + articuloSeleccionado.materiaPrima, dataTempFinal)
                                         history.push({
                                             search: queryString.stringify(""),
                                         });

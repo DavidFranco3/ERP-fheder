@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
-import {size, values} from "lodash";
-import {toast} from "react-toastify";
-import {actualizaDepartamento, registraDepartamento} from "../../../api/departamentos";
+import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
+import { toast } from "react-toastify";
+import { actualizaDepartamento, registraDepartamento } from "../../../api/departamentos";
 import queryString from "query-string";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function ModificacionDepartamentos(props) {
     const { dataDepto, setShowModal, history } = props;
@@ -23,14 +23,7 @@ function ModificacionDepartamentos(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        //console.log(e);
-        let validCount = 0;
-        values(formData).some(value => {
-            value && validCount++;
-            return null;
-        });
-
-        if(size(formData) !== validCount) {
+        if (!formData.nombre) {
             toast.warning("Completa el formulario")
         } else {
             setLoading(true);
@@ -38,7 +31,7 @@ function ModificacionDepartamentos(props) {
             try {
                 actualizaDepartamento(id, formData).then(response => {
                     const { data } = response;
-
+                    LogsInformativos("Se a modificado el departamento " + formData.nombre, formData);
                     toast.success(data.status);
                     setShowModal(false);
                     setLoading(false);
@@ -62,37 +55,38 @@ function ModificacionDepartamentos(props) {
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridNombre">
                         <Form.Label>Nombre</Form.Label>
-                        <Form.Control type="text"
-                                      name="nombre"
-                                      defaultValue={formData.nombre}
+                        <Form.Control
+                            type="text"
+                            name="nombre"
+                            defaultValue={formData.nombre}
                         />
                     </Form.Group>
                 </Row>
 
                 <Form.Group as={Row} className="botones">
-                        <Col>
-                            <Button
-                                type="submit"
-                                title="Actualizar el registro"
-                                variant="success"
-                                className="registrar"
-                            >
-                                {!loading ? "Actualizar" : <Spinner animation="border" />}
-                            </Button>
-                        </Col>
-                        <Col>
-                            <Button
-                                variant="danger"
-                                title="Cerrar el formulario"
-                                className="cancelar"
-                                onClick={() => {
-                                    cancelarRegistro()
-                                }}
-                            >
-                                Cancelar
-                            </Button>
-                        </Col>
-                    </Form.Group>
+                    <Col>
+                        <Button
+                            type="submit"
+                            title="Actualizar el registro"
+                            variant="success"
+                            className="registrar"
+                        >
+                            {!loading ? "Actualizar" : <Spinner animation="border" />}
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button
+                            variant="danger"
+                            title="Cerrar el formulario"
+                            className="cancelar"
+                            onClick={() => {
+                                cancelarRegistro()
+                            }}
+                        >
+                            Cancelar
+                        </Button>
+                    </Col>
+                </Form.Group>
             </Form>
         </>
     );

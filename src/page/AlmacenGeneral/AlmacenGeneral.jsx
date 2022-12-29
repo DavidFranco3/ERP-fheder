@@ -10,12 +10,27 @@ import ListAlmacenGeneral from "../../components/AlmacenGeneral/ListAlmacenGener
 import { listarAlmacenGeneral } from "../../api/almacenGeneral";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import { toast } from "react-toastify";
+import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 
 function AlmacenGeneral(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory();
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -41,7 +56,7 @@ function AlmacenGeneral(props) {
 
     useEffect(() => {
         try {
-            listarAlmacenGeneral().then(response => {
+            listarAlmacenGeneral(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -157,6 +172,7 @@ function formatModelAlmacenGeneral(data) {
             nombre: data.nombre,
             descripcion: data.descripcion,
             um: data.um,
+            sucursal: data.sucursal,
             tipo: data.tipo,
             movimientos: data.movimientos,
             existenciasTotales: data.existenciasTotales,

@@ -75,7 +75,7 @@ export async function obtenerNumeroMes(params) {
 }
 
 // Para listar todos los pedidos
-export async function listarMeses(params) {
+export async function listarMeses(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -83,7 +83,7 @@ export async function listarMeses(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarMeses, config);
+    return await axios.get(API_HOST + ENDPOINTListarMeses +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los pedidos de venta paginandolos

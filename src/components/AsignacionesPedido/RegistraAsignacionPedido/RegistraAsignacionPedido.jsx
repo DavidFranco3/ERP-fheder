@@ -11,7 +11,8 @@ import BuscarOV from "../../../page/BuscarOV";
 import BasicModal from "../../Modal/BasicModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
-import {getSucursal} from "../../../api/auth";
+import { getSucursal } from "../../../api/auth";
+import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistraAsignacionPedido(props) {
     const { setShowModal, location, history } = props;
@@ -145,7 +146,8 @@ function RegistraAsignacionPedido(props) {
                 registraAsignacionPedido(dataTemp).then(response => {
                     const { data } = response;
 
-                    toast.success('Asignacion de pedido registrada')
+                    toast.success(data.mensaje);
+                    LogsInformativos("Se ha registrado la asignacion de pedido " + ordenVenta, dataTemp)
                     setTimeout(() => {
                         setLoading(false)
                         history.push({
@@ -185,32 +187,32 @@ function RegistraAsignacionPedido(props) {
                                     <Form.Label>Orden de venta:</Form.Label>
                                 </Col>
                                 <Col>
-                                <div className="flex items-center mb-1">
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Orden de venta"
-                                        name="ordenVenta"
-                                        value={ordenVenta}
-                                        disabled
-                                    />
-                                    <FontAwesomeIcon
-                                        className="cursor-pointer py-2 -ml-6"
-                                        icon={faSearch}
-                                        onClick={() => {
-                                            buscarOV(
-                                                <BuscarOV
-                                                    setOrdenVenta={setOrdenVenta}
-                                                    setCantidadRequeridaOV={setCantidadRequeridaOV}
-                                                    setIdCliente={setIdCliente}
-                                                    setNombreCliente={setNombreCliente}
-                                                    setFechaPedido={setFechaPedido}
-                                                    setFechaEntrega={setFechaEntrega}
-                                                    setOrdenVentaPrincipal={setOrdenVentaPrincipal}
-                                                    setProducto={setProducto}
-                                                    setShowModal={setShowModal2}
-                                                />)
-                                        }}
-                                    />
+                                    <div className="flex items-center mb-1">
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Orden de venta"
+                                            name="ordenVenta"
+                                            value={ordenVenta}
+                                            disabled
+                                        />
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarOV(
+                                                    <BuscarOV
+                                                        setOrdenVenta={setOrdenVenta}
+                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                        setIdCliente={setIdCliente}
+                                                        setNombreCliente={setNombreCliente}
+                                                        setFechaPedido={setFechaPedido}
+                                                        setFechaEntrega={setFechaEntrega}
+                                                        setOrdenVentaPrincipal={setOrdenVentaPrincipal}
+                                                        setProducto={setProducto}
+                                                        setShowModal={setShowModal2}
+                                                    />)
+                                            }}
+                                        />
                                     </div>
                                 </Col>
                             </Form.Group>

@@ -20,8 +20,23 @@ import BuscarCliente from '../../../page/BuscarCliente';
 import BuscarPigmento from '../../../page/BuscarPigmento';
 import BuscarProveedor from "../../../page/BuscarProveedor";
 import BuscarEmpaque from '../../../page/BuscarEmpaque';
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function ModificaMatrizProductos(props) {
+    const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory();
@@ -30,8 +45,6 @@ function ModificaMatrizProductos(props) {
     const parametros = useParams();
 
     const { producto } = parametros;
-
-    console.log(producto);
 
     // Para la animacion del spinner
     const [loading, setLoading] = useState(false);
@@ -1285,7 +1298,7 @@ function valoresAlmacenados(data) {
         pesoTotalInyeccion: data.datosPieza.pesoTotalInyeccion,
         porcentajeScrap: data.datosPieza.porcentajeScrap,
         porcentajeMolido: data.datosPieza.porcentajeMolido,
-        descripcionMP: data.materiaPrima.idMaterial + "/" + data.materiaPrima.descripcion +"/"+ data.materiaPrima.folioMaterial +"/"+ data.materiaPrima.precioMaterial,
+        descripcionMP: data.materiaPrima.idMaterial + "/" + data.materiaPrima.descripcion + "/" + data.materiaPrima.folioMaterial + "/" + data.materiaPrima.precioMaterial,
         descripcionPigmento: data.pigmentoMasterBach.descripcion,
         aplicacionGxKG: data.pigmentoMasterBach.aplicacionGxKG,
         proveedor: data.pigmentoMasterBach.proveedor + "/" + data.pigmentoMasterBach.nombreProveedor,

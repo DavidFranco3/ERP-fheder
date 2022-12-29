@@ -75,7 +75,7 @@ export async function obtenerNumeroInspeccionPieza(params) {
 }
 
 // Para listar todos los pedidos
-export async function listarInspeccionPieza(params) {
+export async function listarInspeccionPieza(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -83,7 +83,7 @@ export async function listarInspeccionPieza(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarInspeccionPieza, config);
+    return await axios.get(API_HOST + ENDPOINTListarInspeccionPieza +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los pedidos de venta paginandolos

@@ -17,9 +17,23 @@ import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/fre
 import BuscarPlaneacion from '../../../page/BuscarPlaneacion';
 import { obtenerMaquina } from "../../../api/maquinas";
 import { obtenerRequerimiento } from "../../../api/requerimientosPlaneacion";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function ProduccionPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     const params = useParams();
     const { id } = params
@@ -274,6 +288,7 @@ function ProduccionPlaneacion(props) {
             const dataTemp = {
                 item: data.item,
                 folio: folioActual,
+                sucursal: getSucursal(),
                 generalidades: {
                     ordenVenta: formDataPlaneacion.ordenVenta,
                     noInterno: formDataProduccion.noInterno,

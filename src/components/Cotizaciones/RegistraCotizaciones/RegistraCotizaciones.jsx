@@ -18,9 +18,23 @@ import { listarProveedores } from "../../../api/proveedores";
 import { toast } from "react-toastify";
 import { map } from "lodash";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import {getSucursal} from "../../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function RegistraCotizaciones(props) {
+    const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     const enrutamiento = useHistory();
 
@@ -141,7 +155,7 @@ function RegistraCotizaciones(props) {
 
                     registraCotizacion(dataTemp).then(response => {
                         const { data } = response;
-                        LogsInformativos("Se ha registrado una cotizacion con folio ", data.folioCotizacion)
+                        LogsInformativos("Se ha registrado una cotizacion con folio ", data.folioCotizacion, dataTemp)
                         setLoading(false)
                         toast.success(data.mensaje)
                         regresaListadoCotizaciones()

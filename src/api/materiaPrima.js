@@ -77,7 +77,7 @@ export async function obtenerFolioActualMP() {
 }
 
 // Para listar todos los productos
-export async function listarMateriaPrima(params) {
+export async function listarMateriaPrima(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -85,7 +85,7 @@ export async function listarMateriaPrima(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarMateriaPrima, config);
+    return await axios.get(API_HOST + ENDPOINTListarMateriaPrima +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista la materia prima paginando

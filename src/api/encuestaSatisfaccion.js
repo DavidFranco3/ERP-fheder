@@ -39,7 +39,7 @@ export async function totalEncuestaSatisfaccion() {
 }
 
 // Listar todas las encuestas de satisfación
-export async function listarEncuestasSatisfaccion(params) {
+export async function listarEncuestasSatisfaccion(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -47,7 +47,7 @@ export async function listarEncuestasSatisfaccion(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarEncuestaSatisfaccion, config);
+    return await axios.get(API_HOST + ENDPOINTListarEncuestaSatisfaccion +`/?sucursal=${sucursal}`, config);
 }
 
 // Obtener el folio actual de las encuestas de satisfaccion

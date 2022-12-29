@@ -9,9 +9,24 @@ import RegistroEmpaque from '../../components/Empaques/RegistroEmpaque';
 import BasicModal from "../../components/Modal/BasicModal";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
+import { toast } from "react-toastify";
 
 function Empaques(props) {
     const { setRefreshCheckLogin, location, history } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -24,7 +39,7 @@ function Empaques(props) {
     // Para traer la lista de materiales
     useEffect(() => {
         try {
-            listarEmpaque().then(response => {
+            listarEmpaque(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -132,6 +147,7 @@ function formatModelEmpaques(data) {
         dataTemp.push({
             id: data._id,
             folio: data.folio,
+            sucursal: data.sucursal,
             nombre: data.nombre,
             precio: data.precio,
             um: data.um,

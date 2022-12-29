@@ -90,7 +90,7 @@ export async function obtenerItemProduccion() {
 }
 
 // Para listar todas las órdenes de compra
-export async function listarProduccion(params) {
+export async function listarProduccion(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -98,7 +98,7 @@ export async function listarProduccion(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarProduccion, config);
+    return await axios.get(API_HOST + ENDPOINTListarProduccion +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista las ordenes de compra paginándolas

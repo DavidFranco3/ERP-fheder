@@ -90,7 +90,7 @@ export async function obtenerItemStatusMaterial() {
 }
 
 // Para listar todas las órdenes de compra
-export async function listarStatusMaterial(params) {
+export async function listarStatusMaterial(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -98,7 +98,7 @@ export async function listarStatusMaterial(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarStatusMaterial, config);
+    return await axios.get(API_HOST + ENDPOINTListarStatusMaterial +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista las ordenes de compra paginándolas

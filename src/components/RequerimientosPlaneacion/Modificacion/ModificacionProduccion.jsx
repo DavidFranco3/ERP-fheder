@@ -13,9 +13,23 @@ import { obtenerRequerimiento, actualizaRequerimiento } from "../../../api/reque
 import { toast } from "react-toastify";
 import { obtenerMaquina } from "../../../api/maquinas";
 import { obtenerDatosMP } from "../../../api/almacenMP";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function ModificacionProduccion(props) {
     const { setRefreshCheckLogin } = props;
+
+     // Cerrado de sesión automatico
+     useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     const [listOVCargadas, setListOVCargadas] = useState([]);
 

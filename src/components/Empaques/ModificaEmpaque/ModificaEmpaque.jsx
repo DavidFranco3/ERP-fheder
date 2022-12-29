@@ -55,7 +55,7 @@ function ModificaEmpaque(props) {
             try {
                 actualizaEmpaque(id, formData).then(response => {
                     const { data } = response;
-                    LogsInformativos("El empaque con nombre: " + nombre + " fue modificado", dataEmpaque)
+                    LogsInformativos("El empaque con nombre: " + nombre + " fue modificado", formData)
                     toast.success(data.mensaje)
                     setLoading(false)
                     setShowModal(false)

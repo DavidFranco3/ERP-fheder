@@ -1,11 +1,26 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { Alert, Button, Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { withRouter, useHistory } from "react-router-dom";
+import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
+import { toast } from "react-toastify";
 
 function Devoluciones(props) {
     const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     const enrutamiento = useHistory();
 

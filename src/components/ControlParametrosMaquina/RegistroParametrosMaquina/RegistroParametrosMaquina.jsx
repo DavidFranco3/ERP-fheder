@@ -3,9 +3,24 @@ import {Alert, Button, Col, Row, Form, Container, Badge} from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import { useHistory } from "react-router-dom";
 import DropzoneFormularios from "../../DropzoneFormularios";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { toast } from "react-toastify";
 
 function RegistroParametrosMaquina(props) {
     const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
     
         // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);

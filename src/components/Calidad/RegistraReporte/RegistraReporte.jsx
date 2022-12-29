@@ -8,10 +8,25 @@ import BasicModal from "../../Modal/BasicModal";
 import { obtenerNumeroInspeccion, registraInspeccion, obtenerItemInspeccion } from "../../../api/inspeccionMaterial";
 import { toast } from "react-toastify";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
-import {getSucursal} from "../../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistraReporte(props) {
+    const { setRefreshCheckLogin } = props;
 
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
+    
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
 
@@ -98,6 +113,8 @@ function RegistraReporte(props) {
                 // Modificar el pedido creado recientemente
                 registraInspeccion(dataTemp).then(response => {
                     const { data: { mensaje, datos } } = response;
+
+                    LogsInformativos("Se ha registrado el reporte de calidad " +  folioActual, dataTemp);
 
                     // Actualizacion del tracking
                     LogTrackingActualizacion(ordenVenta, "En inspeccion de calidad", "4")

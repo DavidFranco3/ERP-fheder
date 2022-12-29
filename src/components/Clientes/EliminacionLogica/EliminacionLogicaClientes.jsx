@@ -38,11 +38,11 @@ function EliminacionLogicaClientes(props) {
                 const { data } = response;
                 //console.log(data)
                 if (dataTemp.estadoCliente === "true") {
-                    LogsInformativos("El cliente " + formData.nombre + " " + formData.apellidos + " se habilito", dataCliente)
+                    LogsInformativos("El cliente " + formData.nombre + " se habilito", dataCliente)
                     toast.success("Cliente habilitado");
                 }
                 if (dataTemp.estadoCliente === "false") {
-                    LogsInformativos("El cliente " + formData.nombre + " " + formData.apellidos + " se inhabilito", dataCliente)
+                    LogsInformativos("El cliente " + formData.nombre + " se inhabilito", dataCliente)
                     toast.success("Cliente deshabilitado");
                 }
                 setShowModal(false);

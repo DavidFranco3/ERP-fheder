@@ -14,10 +14,23 @@ import { registraRequerimiento, obtenerNumeroRequerimiento, obtenerItemRequerimi
 import { toast } from "react-toastify";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { obtenerMaquina } from "../../../api/maquinas";
-import {getSucursal} from "../../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function RegistraRequerimientosPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -620,34 +633,34 @@ function RegistraRequerimientosPlaneacion(props) {
                                         <Form.Label>
                                             Producto
                                         </Form.Label>
-                                        { producto.length == 1 ? (
+                                        {producto.length == 1 ? (
                                             <>
-                                            <Form.Control 
-                                            type="text"
-                                                defaultValue={formDataPlaneacion.descripcion}
-                                                name="materiaPrima"
-                                            />
+                                                <Form.Control
+                                                    type="text"
+                                                    defaultValue={formDataPlaneacion.descripcion}
+                                                    name="materiaPrima"
+                                                />
                                             </>
-                                        ):(
+                                        ) : (
                                             <>
-                                            <Form.Control as="select"
-                                                onChange={(e) => {
-                                                    handleMateriaPrima(e.target.value)
-                                                }}
-                                                defaultValue={formData.materiaPrima}
-                                                name="materiaPrima"
-                                            >
-                                                <option>Elige una opción</option>
-                                                {map(producto, (productos, index) => (
-                                                    <option
-                                                        key={index}
-                                                        value={productos?.ID + "/" + productos?.item }
-                                                    >
-                                                        {productos?.item}
-                                                    </option>
-                                                ))}
-                                            </Form.Control>
-                                            </> 
+                                                <Form.Control as="select"
+                                                    onChange={(e) => {
+                                                        handleMateriaPrima(e.target.value)
+                                                    }}
+                                                    defaultValue={formData.materiaPrima}
+                                                    name="materiaPrima"
+                                                >
+                                                    <option>Elige una opción</option>
+                                                    {map(producto, (productos, index) => (
+                                                        <option
+                                                            key={index}
+                                                            value={productos?.ID + "/" + productos?.item}
+                                                        >
+                                                            {productos?.item}
+                                                        </option>
+                                                    ))}
+                                                </Form.Control>
+                                            </>
                                         )}
                                     </Form.Group>
 

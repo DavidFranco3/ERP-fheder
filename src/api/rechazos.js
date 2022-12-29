@@ -63,7 +63,7 @@ export async function obtenerNumeroRechazo() {
 }
 
 // Para listar todos los rechazos
-export async function listarRechazos(params) {
+export async function listarRechazos(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -71,7 +71,7 @@ export async function listarRechazos(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarRechazos, config);
+    return await axios.get(API_HOST + ENDPOINTListarRechazos +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista los rechazos paginandolos

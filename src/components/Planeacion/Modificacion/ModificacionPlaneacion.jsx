@@ -1,32 +1,28 @@
 import { useState, useEffect } from 'react';
 import LayoutPrincipal from "../../../layout/layoutPrincipal";
-import {Alert, Badge, Col, Container, Form, Row} from "react-bootstrap";
+import { Alert, Badge, Col, Container, Form, Row } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
 import "./ModificacionPlaneacion.scss"
 import { obtenerPlaneacionFolio } from "../../../api/planeacion";
-import {map} from "lodash";
-// Inician importaciones para la tabla
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import BasicModal from "../../Modal/BasicModal";
-import EliminacionFisicaPlaneacion from "../EliminacionFisica";
-// Terminan importaciones para la tabla
-import {obtenerProductoPorNoInternoCatalogo} from "../../../api/catalogoProductos";
-import moment from "moment";
 import ListDetalles from "./ListDetalles";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { toast } from "react-toastify";
 
 function ModificacionPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Define el uso del enrutamiento
     const enrutamiento = useHistory()

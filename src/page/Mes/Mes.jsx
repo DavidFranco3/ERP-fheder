@@ -7,7 +7,7 @@ import BasicModal from "../../components/Modal/BasicModal";
 import RegistrarMes from "../../components/Mes/RegistraMes";
 import ListMeses from "../../components/Mes/ListMeses";
 import { listarMeses } from "../../api/mes";
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -40,17 +40,12 @@ function Mes(props) {
         setShowModal(true);
     }
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalMes, setNoTotalMes] = useState(0);
-
     // Para almacenar la lista de las integraciones de ventas y gastos
     const [listMeses, setListMeses] = useState(null);
 
     useEffect(() => {
         try {
-            listarMeses().then(response => {
+            listarMeses(getSucursal()).then(response => {
                 const { data } = response;
 
                 if (!listMeses && data) {
@@ -149,6 +144,7 @@ function formatModelMeses(data) {
         dataTemp.push({
             id: data._id,
             folio: data.folio,
+            sucursal: data.sucursal,
             mes: data.mes,
             dias: data.dias,
             noMaquinas: data.noMaquinas,

@@ -40,7 +40,7 @@ export async function obtenerNotificaciones(params) {
 }
 
 // Para listar todas las notificaciones
-export async function listarNotificaciones(params) {
+export async function listarNotificaciones(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -48,7 +48,7 @@ export async function listarNotificaciones(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarNotificaciones, config);
+    return await axios.get(API_HOST + ENDPOINTListarNotificaciones +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar las notificaciones paginandolas

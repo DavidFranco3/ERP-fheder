@@ -49,7 +49,7 @@ export async function obtenerDepartamento(params) {
 }
 
 // Para listar todos los departamentos
-export async function listarDepartamento(params) {
+export async function listarDepartamento(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -57,7 +57,7 @@ export async function listarDepartamento(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarDepartamentos, config);
+    return await axios.get(API_HOST + ENDPOINTListarDepartamentos +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los departamentos paginandolos

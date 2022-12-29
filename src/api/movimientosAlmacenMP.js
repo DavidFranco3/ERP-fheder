@@ -26,7 +26,7 @@ export async function registraMovimentoAMP(data) {
 }
 
 // Obtener el listado de todos los movimientos del almacen
-export async function listarMovimientosAMP(params) {
+export async function listarMovimientosAMP(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -34,7 +34,7 @@ export async function listarMovimientosAMP(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarMovimientosAMP, config);
+    return await axios.get(API_HOST + ENDPOINTListarMovimientosAMP +`/?sucursal=${sucursal}`, config);
 }
 
 // Obtener el folio actual

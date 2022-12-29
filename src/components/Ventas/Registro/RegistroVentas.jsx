@@ -13,14 +13,26 @@ import "./RegistroVentas.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
-import { LogRegistroPlaneacion } from "../../Planeacion/Gestion/GestionPlaneacion";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import Dropzone from "../../Dropzone";
-import {getSucursal} from "../../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function RegistroVentas(props) {
     const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     const enrutamiento = useHistory();
 
@@ -199,11 +211,6 @@ function RegistroVentas(props) {
         } else {
             //console.log("Continuar")
             setLoading(true);
-            const temp = String(formData.cotizacion).split('\
-            ');
-            console.log(temp[2])
-            const namePDF = "name: " + temp[2]
-            console.log(namePDF)
 
             // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
             subeArchivosCloudinary(pdfCotizacion, "ventas").then(response => {
@@ -227,9 +234,7 @@ function RegistroVentas(props) {
                     status: "true"
                 }
                 // console.log(dataTemp)
-                // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos)
-                LogRegistroPlaneacion(data.noVenta, listProductosCargados)
-                // 
+
                 // Modificar el pedido creado recientemente
                 registraPedidoVenta(dataTemp).then(response => {
                     const { data: { mensaje, datos } } = response;

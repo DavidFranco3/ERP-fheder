@@ -8,7 +8,7 @@ import { listarInspeccionPieza } from "../../api/inspeccionPieza";
 import ListInspeccion from '../../components/InspeccionMaterial/ListInspeccionPieza';
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 
 function InspeccionPieza(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -43,7 +43,7 @@ function InspeccionPieza(props) {
 
     useEffect(() => {
         try {
-            listarInspeccionPieza().then(response => {
+            listarInspeccionPieza(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -127,6 +127,7 @@ function formatModelInspeccion(data) {
             folio: data.folio,
             fechaElaboracion: data.fechaElaboracion,
             noOP: data.noOP,
+            sucursal: data.sucursal,
             fechaArranqueMaquina: data.fechaArranqueMaquina,
             noMaquina: data.noMaquina,
             cliente: data.cliente,

@@ -13,13 +13,25 @@ import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import {getSucursal} from "../../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function RegistroClientes(props) {
     const { setRefreshCheckLogin, history } = props;
 
     const enrutamiento = useHistory();
 
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Ruta para enlazar a pagina de usuarios
     const regresaPagina = () => {
@@ -70,7 +82,7 @@ function RegistroClientes(props) {
             try {
                 registraClientes(dataTempFinal).then(response => {
                     const { data } = response;
-                    LogsInformativos("Se ha registrado al cliente " + dataTempFinal.nombre + " " + dataTempFinal.apellidos, dataTempFinal)
+                    LogsInformativos("Se ha registrado al cliente " + dataTempFinal.nombre, dataTempFinal)
                     toast.success(data.mensaje)
                     setLoading(false);
                     enrutamiento.push("/Clientes");

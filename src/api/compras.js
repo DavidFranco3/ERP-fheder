@@ -96,7 +96,7 @@ export async function obtenerItem() {
 }
 
 // Para listar todas las órdenes de compra
-export async function listarOrdenesCompra(params) {
+export async function listarOrdenesCompra(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -104,7 +104,7 @@ export async function listarOrdenesCompra(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarCompras, config);
+    return await axios.get(API_HOST + ENDPOINTListarCompras +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los productos de cada orden de compra con detalles

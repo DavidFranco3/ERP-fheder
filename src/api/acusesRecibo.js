@@ -63,7 +63,7 @@ export async function obtenerNumeroAcuseRecibo() {
 }
 
 // Para listar todos los acuses de recibo
-export async function listarAcuseRecibo(params) {
+export async function listarAcuseRecibo(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -71,7 +71,7 @@ export async function listarAcuseRecibo(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarAcusesRecibos, config);
+    return await axios.get(API_HOST + ENDPOINTListarAcusesRecibos +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista los acuses de recibo paginandolos

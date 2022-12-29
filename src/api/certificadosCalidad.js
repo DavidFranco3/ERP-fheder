@@ -90,7 +90,7 @@ export async function obtenerItemCertificado() {
 }
 
 // Para listar todas las órdenes de compra
-export async function listarCertificado(params) {
+export async function listarCertificado(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -98,7 +98,7 @@ export async function listarCertificado(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarCertificado, config);
+    return await axios.get(API_HOST + ENDPOINTListarCertificado +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista las ordenes de compra paginándolas

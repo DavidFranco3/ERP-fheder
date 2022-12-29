@@ -5,6 +5,8 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroEtiquetasMoldes from "../../components/EtiquetasMoldes/RegistraEtiquetasMoldes";
+import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
+import { toast } from "react-toastify";
 
 function EtiquetasMoldes(props) {
     const { setRefreshCheckLogin } = props;
@@ -23,6 +25,19 @@ function EtiquetasMoldes(props) {
         setContentModal(content);
         setShowModal(true);
     }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
 
     // Define la ruta de registro

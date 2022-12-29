@@ -5,6 +5,8 @@ import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroPrimeraPieza from "../../components/PrimeraPieza/RegistraPrimeraPieza";
+import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
+import { toast } from "react-toastify";
 
 function PrimeraPieza(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -20,6 +22,19 @@ function PrimeraPieza(props) {
         setContentModal(content);
         setShowModal(true);
     }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     return (
         <>

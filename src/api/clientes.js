@@ -53,7 +53,7 @@ export async function obtenerCliente(params) {
 }
 
 // Para listar todos los clientes
-export async function listarClientes(params) {
+export async function listarClientes(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -61,7 +61,7 @@ export async function listarClientes(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarClientes, config);
+    return await axios.get(API_HOST + ENDPOINTListarClientes +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista los clientes paginandolos

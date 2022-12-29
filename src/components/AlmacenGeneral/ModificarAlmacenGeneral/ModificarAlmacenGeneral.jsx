@@ -36,7 +36,7 @@ function ModificarAlmacenGeneral(props) {
                     const { mensaje, datos } = data;
                     toast.success(mensaje)
                     setLoading(false)
-                    LogsInformativos("Se ha modificado un articulo en el almacen general", datos)
+                    LogsInformativos("Se ha modificado un articulo en el almacen general " + formData.nombre, formData)
                     history.push({
                         search: queryString.stringify(""),
                     });

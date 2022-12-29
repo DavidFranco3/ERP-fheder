@@ -6,7 +6,7 @@ import { useHistory, withRouter } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroPrimeraPieza from "../../components/EtiquetaPrimeraPieza/RegistraPrimeraPieza";
 import { listarEtiquetasPiezas } from "../../api/etiquetaPrimeraPieza";
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal} from "../../api/auth";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -45,7 +45,7 @@ function EtiquetaPrimeraPieza(props) {
 
     useEffect(() => {
         try {
-            listarEtiquetasPiezas().then(response => {
+            listarEtiquetasPiezas(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -145,6 +145,7 @@ function formatModelEtiquetaPrimeraPieza(data) {
         dataTemp.push({
             id: data._id,
             folio: data.folio,
+            sucursal: data.sucursal,
             fecha: data.fecha,
             noMaquina: data.noMaquina,
             descripcionProducto: data.descripcionProducto,

@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import BuscarPlaneaciones from '../../components/Busquedas/BuscarPlaneaciones';
 import { listarRequerimiento, totalPedidoVenta } from "../../api/requerimientosPlaneacion";
 import "./BuscarPlaneacion.scss"
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -35,7 +35,7 @@ function BuscarPlaneacion(props) {
 
     useEffect(() => {
         try {
-            listarRequerimiento().then(response => {
+            listarRequerimiento(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

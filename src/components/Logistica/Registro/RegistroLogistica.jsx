@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { toast } from "react-toastify";
 
 function RegistroLogistica(props) {
     const { setRefreshCheckLogin } = props;
@@ -12,6 +14,19 @@ function RegistroLogistica(props) {
     const rutaRegreso = () => {
         enrutamiento.push("/Logistica")
     }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);

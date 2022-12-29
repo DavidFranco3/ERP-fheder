@@ -63,7 +63,7 @@ export async function obtenerNumeroLog() {
 }
 
 // Para listar todos los log
-export async function listarLogs(params) {
+export async function listarLogs(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -71,7 +71,7 @@ export async function listarLogs(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarLogs, config);
+    return await axios.get(API_HOST + ENDPOINTListarLogs +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista los log paginandolos

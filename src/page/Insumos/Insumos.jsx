@@ -9,9 +9,24 @@ import RegistroInsumos from '../../components/Insumos/RegistroInsumos';
 import BasicModal from "../../components/Modal/BasicModal";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
+import { toast } from "react-toastify";
 
 function Insumos(props) {
     const { setRefreshCheckLogin, location, history } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -23,7 +38,7 @@ function Insumos(props) {
 
     useEffect(() => {
         try {
-            listarInsumo().then(response => {
+            listarInsumo(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -131,6 +146,7 @@ function formatModelInsumos(data) {
         dataTemp.push({
             id: data._id,
             folio: data.folio,
+            sucursal: data.sucursal,
             descripcion: data.descripcion,
             precio: data.precio,
             um: data.um,

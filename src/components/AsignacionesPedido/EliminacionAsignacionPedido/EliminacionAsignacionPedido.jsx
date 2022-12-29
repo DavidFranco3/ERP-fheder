@@ -28,9 +28,8 @@ function EliminacionAsignacionPedido(props) {
                 const { data } = response;
                 // console.log(data)
                 toast.success(data.mensaje)
-                //LogsInformativos(`Se ha eliminado la compra con el folio ${folio}`, data)
+                LogsInformativos("Se ha eliminado la asignacion de pedido con el folio " +  folio, data);
                 setShowModal(false);
-                setLoading(false);
                 history.push({
                     search: queryString.stringify(""),
                 });

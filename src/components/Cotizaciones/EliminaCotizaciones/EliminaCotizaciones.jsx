@@ -92,7 +92,7 @@ function EliminaCotizaciones(props) {
         try {
             eliminaCotizacion(id).then(response => {
                 const { data } = response;
-                LogsInformativos("Se elimino la cotización con folio ", folio)
+                LogsInformativos("Se elimino la cotización con folio " + folio, datosCotizacion)
                 toast.success(data.mensaje)
                 setLoading(false)
                 setShowModal(false)

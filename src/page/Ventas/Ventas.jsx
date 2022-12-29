@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import ListVentas from "../../components/Ventas/ListVentas";
 import { listarPedidosVenta } from "../../api/pedidoVenta";
 import "./Ventas.scss"
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -38,7 +38,7 @@ function Ventas(props) {
 
     useEffect(() => {
         try {
-            listarPedidosVenta().then(response => {
+            listarPedidosVenta(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -65,24 +65,6 @@ function Ventas(props) {
     const rutaRegreso = () => {
         enrutamiento.push("/DashboardVentas")
     }
-
-    // Validar el tipo de usuario que accede a la vista
-    const [tipoUsuario, setTipoUsuario] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerUsuario(obtenidusuarioLogueado(getTokenApi())).then(response => {
-                const { data } = response;
-                // console.log(data)
-                setTipoUsuario(data.departamento);
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
 
     return (
         <>
@@ -148,6 +130,7 @@ function formatModelPedidosventa(data) {
         dataTemp.push({
             id: data._id,
             folio: data.folio,
+            sucursal: data.sucursal,
             fechaElaboracion: data.fechaElaboracion,
             fechaEntrega: data.fechaEntrega,
             cliente: data.cliente,

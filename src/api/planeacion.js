@@ -40,7 +40,7 @@ export async function totalPlaneacion() {
 }
 
 // Obtener todas las planeaciones
-export async function listarPlaneaciones(params) {
+export async function listarPlaneaciones(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -48,7 +48,7 @@ export async function listarPlaneaciones(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarPlaneacion, config);
+    return await axios.get(API_HOST + ENDPOINTListarPlaneacion +`/?sucursal=${sucursal}`, config);
 }
 
 // Obtener el folio actual de la planeación

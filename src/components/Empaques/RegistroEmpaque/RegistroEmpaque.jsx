@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { listarProveedores } from "../../../api/proveedores";
+import { getSucursal } from '../../../api/auth';
 
 function RegistroEmpaque(props) {
     const { setShowModal2, setShowModal, location, history } = props;
@@ -72,6 +73,7 @@ function RegistroEmpaque(props) {
             setLoading(true)
             const dataTemp = {
                 folio: folioActualEmpaque,
+                sucursal: getSucursal(),
                 nombre: formData.nombre,
                 precio: formData.precio,
                 um: formData.um,
@@ -79,7 +81,7 @@ function RegistroEmpaque(props) {
             try {
                 registraEmpaque(dataTemp).then(response => {
                     const { data } = response;
-                    LogsInformativos("Nuevo empaque registrado", formData)
+                    LogsInformativos("Nuevo empaque registrado con nombre " + formData.nombre, dataTemp)
                     toast.success(data.mensaje)
                     setLoading(false)
                     history.push({

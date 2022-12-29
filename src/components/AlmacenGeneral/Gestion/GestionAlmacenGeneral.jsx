@@ -1,6 +1,7 @@
 import { obtenerFolioActualAlmacenGeneral, registraGestionAlmacenGeneral, listarAlmacenGeneral, obtenerDatosAlmacenGeneral, obtenerDatosxFolioAlmacenGeneral, registraMovimientosAlmacenGeneral, obtenerDatosxFolioInsumo } from "../../../api/almacenGeneral";
 import { obtenerInsumoPrimaPorFolio } from "../../../api/insumos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { getSucursal } from "../../../api/auth";
 
 // Para definir el registro de la información inicial de la planeación -- Metodo desarrollado para funcionalidad interno en registro de ventas
 export function LogRegistroAlmacenGeneral(folioInsumo, nombreInsumo, um, cantidadExistencia) {
@@ -19,6 +20,7 @@ export function LogRegistroAlmacenGeneral(folioInsumo, nombreInsumo, um, cantida
                     idInsumo: _id,
                     folioInsumo: folioInsumo,
                     nombre: nombreInsumo,
+                    sucursal: getSucursal(),
                     descripcion: "No disponible",
                     um: um,
                     existenciasOV: cantidadExistencia,
@@ -33,7 +35,7 @@ export function LogRegistroAlmacenGeneral(folioInsumo, nombreInsumo, um, cantida
                     const { mensaje, datos } = data;
                     const { folio, _id } = datos
                     //console.log("se ha registrado la materia prima en el almacen")
-                    LogsInformativos(`Se ha registrado el insumo en el almacen general ${folio}`, datos);
+                    LogsInformativos("Se ha registrado el insumo en el almacen general " + folio, dataTemp);
 
                 }).catch(e => {
                     console.log(e)

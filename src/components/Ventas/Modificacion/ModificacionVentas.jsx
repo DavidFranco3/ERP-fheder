@@ -19,9 +19,23 @@ import BasicModal from "../../Modal/BasicModal";
 import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
 import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import Dropzone from "../../Dropzone";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function ModificacionVentas(props) {
-    const { datos, setRefreshCheckLogin } = props;
+    const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     const enrutamiento = useHistory();
 
@@ -51,8 +65,8 @@ function ModificacionVentas(props) {
         setShowModal(true);
     }
 
-     // Para la eliminacion fisica de usuarios
-     const buscarProducto = (content) => {
+    // Para la eliminacion fisica de usuarios
+    const buscarProducto = (content) => {
         setTitulosModal("Buscar producto");
         setContentModal(content);
         setShowModal(true);
@@ -226,47 +240,47 @@ function ModificacionVentas(props) {
             // Inicia proceso de modificacion de pedido de venta
             subeArchivosCloudinary(pdfCotizacion, "ventas").then(response => {
                 const { data } = response;
-            const dataTempPrincipalOV = {
-                fechaElaboracion: informacionPedido.fechaPedido,
-                fechaEntrega: informacionPedido.fechaEntrega,
-                cliente: formData.cliente == "" ? informacionPedido.cliente : formData.cliente,
-                nombreCliente: formData.nombreCliente == "" ? informacionPedido.nombreCliente : formData.nombreCliente,
-                condicionesPago: informacionPedido.condicionesPago,
-                incoterms: informacionPedido.incoterms,
-                moneda: "M.N.",
-                numeroPedido: informacionPedido.numeroPedido,
-                lugarEntrega: formData.lugarEntrega == "" ? informacionPedido.lugarEntrega : formData.lugarEntrega,
-                cotizacion: data.secure_url,
-                ordenCompra: linkOrdenCompra,
-                total: totalSinIVA,
-                especificaciones: informacionPedido.especificaciones,
-                productos: listProductosCargados,
-                status: "true"
-            }
-            //console.log(dataTemp)
+                const dataTempPrincipalOV = {
+                    fechaElaboracion: informacionPedido.fechaPedido,
+                    fechaEntrega: informacionPedido.fechaEntrega,
+                    cliente: formData.cliente == "" ? informacionPedido.cliente : formData.cliente,
+                    nombreCliente: formData.nombreCliente == "" ? informacionPedido.nombreCliente : formData.nombreCliente,
+                    condicionesPago: informacionPedido.condicionesPago,
+                    incoterms: informacionPedido.incoterms,
+                    moneda: "M.N.",
+                    numeroPedido: informacionPedido.numeroPedido,
+                    lugarEntrega: formData.lugarEntrega == "" ? informacionPedido.lugarEntrega : formData.lugarEntrega,
+                    cotizacion: data.secure_url,
+                    ordenCompra: linkOrdenCompra,
+                    total: totalSinIVA,
+                    especificaciones: informacionPedido.especificaciones,
+                    productos: listProductosCargados,
+                    status: "true"
+                }
+                //console.log(dataTemp)
 
-            // Inicia el proceso de modificacion de orden de venta
-            // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            obtenerDatosPedidoVenta(folio).then(response => {
-                const { data: { _id, folio } } = response;
-                // console.log(response.data)
-                // Modificar el pedido creado recientemente
-                actualizaPedidoVenta(_id, dataTempPrincipalOV).then(response => {
-                    const { data: { mensaje, datos } } = response;
-                    // console.log(response)
-                    toast.success(mensaje)
-                    // Registro de log para la actualizacion de orden de venta
-                    LogsInformativos(`Se han actualizado los datos de la orden de venta con folio ${folio}`, datos)
-                    // Registro del tracking para orden de venta
-                    // LogTrackingRegistro(_id, folio, formData.cliente, formData.fechaElaboracion)
-                    setLoading(false)
-                    regresaListadoVentas()
+                // Inicia el proceso de modificacion de orden de venta
+                // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
+                obtenerDatosPedidoVenta(folio).then(response => {
+                    const { data: { _id, folio } } = response;
+                    // console.log(response.data)
+                    // Modificar el pedido creado recientemente
+                    actualizaPedidoVenta(_id, dataTempPrincipalOV).then(response => {
+                        const { data: { mensaje, datos } } = response;
+                        // console.log(response)
+                        toast.success(mensaje)
+                        // Registro de log para la actualizacion de orden de venta
+                        LogsInformativos(`Se han actualizado los datos de la orden de venta con folio ${folio}`, datos)
+                        // Registro del tracking para orden de venta
+                        // LogTrackingRegistro(_id, folio, formData.cliente, formData.fechaElaboracion)
+                        setLoading(false)
+                        regresaListadoVentas()
+                    }).catch(e => {
+                        console.log(e)
+                    })
                 }).catch(e => {
                     console.log(e)
                 })
-            }).catch(e => {
-                console.log(e)
-            })
             }).catch(e => {
                 console.log(e)
             })
@@ -408,27 +422,27 @@ function ModificacionVentas(props) {
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                    <div className="flex items-center mb-1">
-                                        <Form.Control 
-                                        type="text"
-                                            defaultValue={formData.nombreCliente == "" ? informacionPedido.nombreCliente : formData.nombreCliente}
-                                            placeholder="Buscar cliente"
-                                            name="cliente"
-                                        />
-                                        <FontAwesomeIcon
-                                            className="cursor-pointer py-2 -ml-6"
-                                            title="Buscar entre los clientes"
-                                            icon={faSearch}
-                                            onClick={() => {
-                                                buscarOV(
-                                                    <BuscarCliente
-                                                        formData={formData}
-                                                        setFormData={setFormData}
-                                                        setShowModal={setShowModal}
-                                                    />)
-                                            }}
-                                        />
-                                    </div>
+                                        <div className="flex items-center mb-1">
+                                            <Form.Control
+                                                type="text"
+                                                defaultValue={formData.nombreCliente == "" ? informacionPedido.nombreCliente : formData.nombreCliente}
+                                                placeholder="Buscar cliente"
+                                                name="cliente"
+                                            />
+                                            <FontAwesomeIcon
+                                                className="cursor-pointer py-2 -ml-6"
+                                                title="Buscar entre los clientes"
+                                                icon={faSearch}
+                                                onClick={() => {
+                                                    buscarOV(
+                                                        <BuscarCliente
+                                                            formData={formData}
+                                                            setFormData={setFormData}
+                                                            setShowModal={setShowModal}
+                                                        />)
+                                                }}
+                                            />
+                                        </div>
                                     </Col>
                                 </Form.Group>
                             </Row>
@@ -618,25 +632,25 @@ function ModificacionVentas(props) {
                                     Descripción
                                 </Form.Label>
                                 <div className="flex items-center mb-1">
-                                <Form.Control
-                                    type="text"
-                                    id="descripcion"
-                                    defaultValue={cargaProductos.item}
-                                    name="descripcion"
-                                />
-                                <FontAwesomeIcon
-                                    className="cursor-pointer py-2 -ml-6"
-                                    title="Buscar entre los productos"
-                                    icon={faSearch}
-                                    onClick={() => {
-                                        buscarProducto(
-                                            <BuscarProducto
-                                                formData={cargaProductos}
-                                                setFormData={setCargaProductos}
-                                                setShowModal={setShowModal}
-                                            />)
-                                    }}
-                                />
+                                    <Form.Control
+                                        type="text"
+                                        id="descripcion"
+                                        defaultValue={cargaProductos.item}
+                                        name="descripcion"
+                                    />
+                                    <FontAwesomeIcon
+                                        className="cursor-pointer py-2 -ml-6"
+                                        title="Buscar entre los productos"
+                                        icon={faSearch}
+                                        onClick={() => {
+                                            buscarProducto(
+                                                <BuscarProducto
+                                                    formData={cargaProductos}
+                                                    setFormData={setCargaProductos}
+                                                    setShowModal={setShowModal}
+                                                />)
+                                        }}
+                                    />
                                 </div>
                             </Form.Group>
 

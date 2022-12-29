@@ -67,7 +67,7 @@ export async function obtenerProductoPorNoInternoCatalogo(numerointerno) {
 }
 
 // Para listar todos los productos
-export async function listarCatalogoProductos(params) {
+export async function listarCatalogoProductos(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -75,7 +75,7 @@ export async function listarCatalogoProductos(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarCatalogoProductos, config);
+    return await axios.get(API_HOST + ENDPOINTListarCatalogoProductos +`/?sucursal=${sucursal}`, config);
 }
 
 // Para listar los productos activos

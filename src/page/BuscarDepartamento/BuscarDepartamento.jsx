@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import BuscarDepartamentos from '../../components/Busquedas/BuscarDepartamentos';
 import { listarDepartamento, totalPedidoVenta } from "../../api/departamentos";
 import "./BuscarDepartamento.scss"
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -35,7 +35,7 @@ function BuscarDepartamento(props) {
 
     useEffect(() => {
         try {
-            listarDepartamento().then(response => {
+            listarDepartamento(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

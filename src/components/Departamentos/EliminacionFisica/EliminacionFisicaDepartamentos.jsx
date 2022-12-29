@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {Button, Col, Form, Row, Spinner, Alert} from "react-bootstrap";
-
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import "./EliminacionFisicaDepartamentos.scss";
 import {actualizaDepartamento, eliminaDepartamento} from "../../../api/departamentos";
 import {toast} from "react-toastify";
@@ -32,7 +32,7 @@ function EliminacionFisicaDepartamentos(props) {
         try {
             eliminaDepartamento(id).then(response => {
                 const { data } = response;
-
+                LogsInformativos("Se a eliminado el departamento " + nombre, dataDepto);
                 toast.success(data.status);
                 setShowModal(false);
                 setLoading(false);

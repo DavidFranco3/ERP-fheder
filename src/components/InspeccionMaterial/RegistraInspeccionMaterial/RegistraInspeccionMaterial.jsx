@@ -12,9 +12,23 @@ import { obtenerNumeroInspeccionPieza, registraInspeccionPieza } from "../../../
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import moment from "moment";
-import {getSucursal} from "../../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function RegistraInspeccionMaterial(props) {
+    const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -1267,7 +1281,7 @@ function RegistraInspeccionMaterial(props) {
                                         <Col>
                                             <Badge
                                                 bg={revision9 == 0 ? "success" : revision9 == 1 ? "warning" : revision9 == 2 ? "secondary" : "danger"}
-                                                title={revision9 == 0 ? "Iniciar" : revision9 == 1 ? "Guardar" : revision9 == 2 ? "Finalizado" : "Cancelado"} 
+                                                title={revision9 == 0 ? "Iniciar" : revision9 == 1 ? "Guardar" : revision9 == 2 ? "Finalizado" : "Cancelado"}
                                                 className="boton"
                                                 onClick={() => {
                                                     setRevision9(revision9 + 1);
@@ -3445,7 +3459,7 @@ function RegistraInspeccionMaterial(props) {
                                         </Col>
                                     </Form.Group>
                                 </Row>
-                                
+
 
                                 <Row className="mb-3">
                                     <Form.Group as={Row} controlId="formHorizontalNoInterno">

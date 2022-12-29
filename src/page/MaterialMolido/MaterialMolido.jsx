@@ -7,7 +7,7 @@ import BasicModal from "../../components/Modal/BasicModal";
 import RegistroMaterialMolido from "../../components/MaterialMolido/RegistroMaterialMolido";
 import ListEtiquetaMolido from '../../components/MaterialMolido/ListEtiquetaMolido';
 import { listarEtiquetaMolido } from "../../api/etiquetaMolido";
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -57,7 +57,7 @@ function MaterialMolido(props) {
 
     useEffect(() => {
         try {
-            listarEtiquetaMolido().then(response => {
+            listarEtiquetaMolido(getSucursal()).then(response => {
                 const { data } = response;
 
                 if (!listEtiquetas && data) {
@@ -149,6 +149,7 @@ function formatModelEtiquetaMolido(data) {
             id: data._id,
             item: data.item,
             folio: data.folio,
+            sucursal: data.sucursal,
             fecha: data.fecha,
             turno: data.turno,
             descripcion: data.descripcion,

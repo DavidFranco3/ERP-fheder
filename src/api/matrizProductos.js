@@ -67,7 +67,7 @@ export async function obtenerPorNoInternoMatrizProducto(numeroInterno) {
 }
 
 // Para listar todos los productos
-export async function listarMatrizProductos(params) {
+export async function listarMatrizProductos(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -75,7 +75,7 @@ export async function listarMatrizProductos(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarMatrizProductos, config);
+    return await axios.get(API_HOST + ENDPOINTListarMatrizProductos +`/?sucursal=${sucursal}`, config);
 }
 
 // Para listar los productos activos

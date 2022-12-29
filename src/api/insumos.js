@@ -77,7 +77,7 @@ export async function obtenerFolioActualInsumo() {
 }
 
 // Para listar todos los productos
-export async function listarInsumo(params) {
+export async function listarInsumo(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -85,7 +85,7 @@ export async function listarInsumo(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarInsumo, config);
+    return await axios.get(API_HOST + ENDPOINTListarInsumo +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista la materia prima paginando

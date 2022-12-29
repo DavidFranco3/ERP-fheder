@@ -62,7 +62,7 @@ export async function obtenerDatosExistenciaAlmacen(clave) {
 }
 
 // Para listar todas las existencias del alamcen
-export async function listarExistenciasAlmacen(params) {
+export async function listarExistenciasAlmacen(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -70,7 +70,7 @@ export async function listarExistenciasAlmacen(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarExistenciasAlmacen, config);
+    return await axios.get(API_HOST + ENDPOINTListarExistenciasAlmacen +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar las existencias del almacen paginandolos

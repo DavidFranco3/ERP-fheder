@@ -26,7 +26,7 @@ export async function registraMovimientoAG(data) {
 }
 
 // Obtener el listado de todos los movimientos del almacen
-export async function listarMovimientosAG(params) {
+export async function listarMovimientosAG(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -34,7 +34,7 @@ export async function listarMovimientosAG(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarMovimientosAG, config);
+    return await axios.get(API_HOST + ENDPOINTListarMovimientosAG +`/?sucursal=${sucursal}`, config);
 }
 
 // Obtener el folio actual

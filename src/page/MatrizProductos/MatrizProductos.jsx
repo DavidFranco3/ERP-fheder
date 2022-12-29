@@ -1,6 +1,6 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useHistory, withRouter } from "react-router-dom";
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -39,7 +39,7 @@ function MatrizProductos(props) {
 
     useEffect(() => {
         try {
-            listarMatrizProductos().then(response => {
+            listarMatrizProductos(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -128,6 +128,7 @@ function formatModelMatrizProductos(data) {
             noInterno: data.noInterno,
             cliente: data.cliente,
             datosMolde: data.datosMolde,
+            sucursal: data.sucursal,
             noParte: data.noParte,
             descripcion: data.descripcion,
             datosPieza: data.datosPieza,

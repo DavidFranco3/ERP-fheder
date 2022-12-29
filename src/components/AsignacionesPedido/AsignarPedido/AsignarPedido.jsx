@@ -5,6 +5,7 @@ import { map } from "lodash";
 import { actualizaPedidoVenta } from "../../../api/asignacionPedido";
 import { toast } from "react-toastify";
 import queryString from "query-string";
+import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
 
 function AsignarPedido(props) {
     const { setShowModal, location, history, data } = props;
@@ -55,8 +56,8 @@ function AsignarPedido(props) {
 
             actualizaPedidoVenta(id, dataTemp).then(response => {
                 const { data } = response;
-
-                toast.success('Pedido asignado')
+                toast.success(data.mensaje)
+                LogsInformativos("Se asigno el pedido " + data.folio + " a la planta" + formData.plantaAsignada, dataTemp)
                 setTimeout(() => {
                     setLoading(false)
                     history.push({

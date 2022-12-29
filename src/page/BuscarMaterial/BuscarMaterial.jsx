@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 //import BuscarClientes from '../../components/Busquedas/BuscarClientes';
 import { listarMateriaPrima, totalPedidoVenta } from "../../api/materiaPrima";
 import "./BuscarMaterial.scss"
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -36,7 +36,7 @@ function BuscarMaterial(props) {
 
     useEffect(() => {
         try {
-            listarMateriaPrima().then(response => {
+            listarMateriaPrima(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

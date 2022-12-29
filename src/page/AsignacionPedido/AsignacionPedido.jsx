@@ -9,7 +9,8 @@ import { listarAsignacionPedidos } from "../../api/asignacionPedido";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import ListAsignacionPedido from "../../components/AsignacionesPedido/ListAsignacionPedido";
-
+import { toast } from "react-toastify";
+import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 
 function AsignacionPedido(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -26,17 +27,25 @@ function AsignacionPedido(props) {
         setShowModal(true);
     }
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalAsignaciones, setNoTotalAsignaciones] = useState(0);
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para almacenar el listado de objetos en el almacen de pt
     const [listAsignacionPedido, setListAsignacionPedido] = useState(null);
 
     useEffect(() => {
         try {
-            listarAsignacionPedidos().then(response => {
+            listarAsignacionPedidos(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -137,6 +146,7 @@ function formatModelAsignacionPedido(data) {
             id: data._id,
             item: data.item,
             folio: data.folio,
+            sucursal: data.sucursal,
             cliente: data.cliente,
             fechaPedido: data.fechaPedido,
             fechaEntrega: data.fechaEntrega,

@@ -148,7 +148,7 @@ function RegistroEntradaSalidaAlmacenPt(props) {
                                 const { mensaje, datos } = data;
                                 toast.success(mensaje)
                                 setLoading(false)
-                                LogsInformativos(`Se han actualizado las existencias de producto terminado ${almacenPT.folioMP}`, datos)
+                                LogsInformativos("Se han actualizado las existencias de producto terminado " + almacenPT.folioMP, dataTempFinal)
                                 history.push({
                                     search: queryString.stringify(""),
                                 });
@@ -206,7 +206,7 @@ function RegistroEntradaSalidaAlmacenPt(props) {
                                         const { mensaje, datos } = data;
                                         toast.success(mensaje)
                                         setLoading(false)
-                                        LogsInformativos(`Se han actualizado las existencias de la materia prima ${almacenPT.materiaPrima}`, datos)
+                                        LogsInformativos("Se han actualizado las existencias de producto terminado " + almacenPT.folioMP, dataTempFinal)
                                         history.push({
                                             search: queryString.stringify(""),
                                         });
@@ -261,7 +261,7 @@ function RegistroEntradaSalidaAlmacenPt(props) {
                                         const { mensaje, datos } = data;
                                         toast.success(mensaje)
                                         setLoading(false)
-                                        LogsInformativos(`Se han actualizado las existencias de la materia prima ${almacenPT.materiaPrima}`, datos)
+                                        LogsInformativos("Se han actualizado las existencias de producto terminado " + almacenPT.folioMP, dataTempFinal)
                                         history.push({
                                             search: queryString.stringify(""),
                                         });

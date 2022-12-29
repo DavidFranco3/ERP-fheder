@@ -1,10 +1,24 @@
 import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Container, Form, Image, Row, Spinner, Table } from "react-bootstrap";
 import { withRouter, useHistory } from "react-router-dom";
-import {getSucursal} from "../../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { toast } from "react-toastify";
 
 function RegistroPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para la animacion del spinner
     const [loading, setLoading] = useState(false);
@@ -93,7 +107,7 @@ function RegistroPlaneacion(props) {
                                 <Row>
                                     <Col>
                                         <Button
-    title="Guardar la información del formulario"
+                                            title="Guardar la información del formulario"
                                             variant="success"
                                             className="registrar"
                                         >

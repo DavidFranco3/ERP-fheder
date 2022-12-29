@@ -31,7 +31,7 @@ function EliminacionFisicaClientes(props) {
             eliminaCliente(id).then(response => {
                 const { data } = response;
                 //console.log(data)
-                LogsInformativos("El cliente " + formData.nombre + " " + formData.apellidos + " fue eliminado del sistema", dataCliente)
+                LogsInformativos("El cliente " + formData.nombre + " fue eliminado del sistema", dataCliente)
                 toast.success(data.mensaje);
                 setShowModal(false);
                 setLoading(false);
