@@ -55,6 +55,7 @@ import VentasGastos from "../page/VentasGastos";
 import Pigmento from "../page/Pigmento";
 import Empaques from "../page/Empaques";
 import Sucursales from "../page/Sucursales";
+import GestionAlmacen from "../page/GestionAlmacen";
 import Error404 from "../page/Error404";
 
 // importacion de dashboards
@@ -648,6 +649,11 @@ export default [
         path: "/Usuarios",
         exact: true,
         page: Usuarios
+    },
+    {
+        path: "/GestionAlmacen",
+        exact: true,
+        page: GestionAlmacen
     },
     {
         path: "/Materiales",

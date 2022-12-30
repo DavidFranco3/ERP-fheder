@@ -1,18 +1,21 @@
 import { API_HOST } from "../utils/constants";
 import {
     ENDPOINTRegistraAlmacen,
-    ENDPOINTListarAlmacen,
+    ENDPOINTListarAlmacenes,
     ENDPOINTObtenerAlmacen,
     ENDPOINTEliminarAlmacen,
     ENDPOINTActualizarAlmacen,
-    ENDPOINTListarAlmacenPaginacion,
-    ENDPOINTTotalAlmacen
+    ENDPOINTDeshabilitaAlmacen,
+    ENDPOINTListarAlmacenesPaginacion,
+    ENDPOINTTotalAlmacenes
 } from "./endpoints";
 import axios from 'axios';
-import { getTokenApi } from "./auth";
+import {getTokenApi} from "./auth";
 
-// Registra articulo del almacen
-export async function registraArticuloAlmacen(data) {
+// Registra usuarios
+export async function registraAlmacenes(data) {
+    //console.log(data)
+
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -24,20 +27,8 @@ export async function registraArticuloAlmacen(data) {
     return await axios.post(API_HOST + ENDPOINTRegistraAlmacen, data, config);
 }
 
-// Obten el total de registros de la colección
-export async function totalAlmacenMP() {
-    const config = {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${getTokenApi()}`
-        }
-    };
-    return await axios.get(API_HOST + ENDPOINTTotalAlmacen, config);
-}
-
-// Para obtener todos los articulos del almacen
-export async function obtenerArticuloAlmacen(params) {
+// Para obtener todos los datos del usuario
+export async function obtenerAlmacen(params) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -48,8 +39,8 @@ export async function obtenerArticuloAlmacen(params) {
     return await axios.get(API_HOST + ENDPOINTObtenerAlmacen + `/${params}`, config);
 }
 
-// Para listar todos los articulos del almacen
-export async function listarArticuloAlmacen(sucursal) {
+// Obten el total de registros de la colección
+export async function totalAlmacenes() {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -57,11 +48,11 @@ export async function listarArticuloAlmacen(sucursal) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarAlmacen +`/?sucursal=${sucursal}`, config);
+    return await axios.get(API_HOST + ENDPOINTTotalAlmacenes, config);
 }
 
-// Lista los articulos del almacen paginando
-export async function listarArticuloAlmacenPaginacion(pagina, limite) {
+// Para listar todos los usuarios
+export async function listarAlmacenes(sucursal) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -69,11 +60,23 @@ export async function listarArticuloAlmacenPaginacion(pagina, limite) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarAlmacenPaginacion + `/?pagina=${pagina}&&limite=${limite}`, config);
+    return await axios.get(API_HOST + ENDPOINTListarAlmacenes +`/?sucursal=${sucursal}`, config);
 }
 
-// Elimina articulo del almacen
-export async function eliminaArticuloAlmacen(id) {
+// Listar los usuarios paginandolos
+export async function listarAlmacenesPaginacion(pagina, limite) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarAlmacenesPaginacion + `/?pagina=${pagina}&&limite=${limite}`, config);
+}
+
+// Elimina cliente fisicamente de la bd
+export async function eliminaAlmacen(id) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -85,8 +88,23 @@ export async function eliminaArticuloAlmacen(id) {
     return await axios.delete(API_HOST + ENDPOINTEliminarAlmacen + `/${id}`, config);
 }
 
-// Modifica datos de articulos del almacen
-export async function actualizaArticuloAlmacen(id, data) {
+// Deshabilita el usuario
+export async function deshabilitaAlmacen(id, data) {
+    //console.log(data)
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTDeshabilitaAlmacen + `/${id}`, data, config);
+}
+
+// Modifica datos del usuario
+export async function actualizaAlmacen(id, data) {
+
     const config = {
         headers: {
             'Accept': 'application/json',

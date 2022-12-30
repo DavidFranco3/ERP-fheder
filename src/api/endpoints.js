@@ -23,6 +23,16 @@ export const ENDPOINTDeshabilitaSucursal = "/sucursales/deshabilitar";
 export const ENDPOINTListarSucursalesPaginacion = "/sucursales/listarPaginando";
 export const ENDPOINTTotalSucursales = "/sucursales/total";
 
+// Gestion almacenes
+export const ENDPOINTRegistraAlmacen = "/gestionAlmacen/registro";
+export const ENDPOINTListarAlmacenes = "/gestionAlmacen/listar";
+export const ENDPOINTObtenerAlmacen = "/gestionAlmacen/obtener";
+export const ENDPOINTEliminarAlmacen = "/gestionAlmacen/eliminar";
+export const ENDPOINTActualizarAlmacen = "/gestionAlmacen/actualizar";
+export const ENDPOINTDeshabilitaAlmacen = "/gestionAlmacen/deshabilitar";
+export const ENDPOINTListarAlmacenesPaginacion = "/gestionAlmacen/listarPaginando";
+export const ENDPOINTTotalAlmacenes = "/gestionAlmacen/total";
+
 // Departamentos
 export const ENDPOINTRegistraDepartamentos = "/departamentos/registro";
 export const ENDPOINTListarDepartamentos = "/departamentos/listar";
@@ -41,15 +51,6 @@ export const ENDPOINTActualizarClientes = "/clientes/actualizar";
 export const ENDPOINTDeshabilitaCliente = "/clientes/deshabilitar";
 export const ENDPOINTListarClientesPaginacion = "/clientes/listarPaginando";
 export const ENDPOINTTotalClientes = "/clientes/total";
-
-// Almacen
-export const ENDPOINTRegistraAlmacen = "/almacen/registro";
-export const ENDPOINTListarAlmacen = "/almacen/listar";
-export const ENDPOINTObtenerAlmacen = "/almacen/obtener";
-export const ENDPOINTEliminarAlmacen = "/almacen/eliminar";
-export const ENDPOINTActualizarAlmacen = "/almacen/actualizar"
-export const ENDPOINTListarAlmacenPaginacion = "/almacen/listarPaginando";
-export const ENDPOINTTotalAlmacen = "/almacen/total";
 
 // Pedidos de venta
 export const ENDPOINTRegistraPedidoVenta = "/ventas/registro";
