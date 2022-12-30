@@ -17,6 +17,7 @@ import { listarProduccion } from "../../../api/produccion";
 import { obtenerDatosInspeccion } from "../../../api/inspeccionMaterial";
 import { obtenerDatosProduccion } from "../../../api/produccion";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
+import { getSucursal } from '../../../api/auth';
 
 function RegistroEntradaSalida(props) {
     const { setShowModal, location, history } = props;
@@ -36,7 +37,7 @@ function RegistroEntradaSalida(props) {
     // Para traer el listado de productos activos
     useEffect(() => {
         try {
-            listarProduccion().then(response => {
+            listarProduccion(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
 
@@ -67,7 +68,7 @@ function RegistroEntradaSalida(props) {
 
     useEffect(() => {
         try {
-            listarAlmacenMP().then(response => {
+            listarAlmacenMP(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
                 if (!listMateriasPrimas && data) {

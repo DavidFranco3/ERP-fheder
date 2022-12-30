@@ -11,6 +11,7 @@ import {toast} from "react-toastify";
 import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
 import {obtenerFolioActualMovimientoAG, registraMovimientoAG} from "../../../api/movimientosAlmacenGeneral";
+import { getSucursal } from '../../../api/auth';
 
 function RegistroEntradaSalidaAlmacenGeneral(props) {
     const { setShowModal, location, history } = props;
@@ -37,7 +38,7 @@ function RegistroEntradaSalidaAlmacenGeneral(props) {
 
     useEffect(() => {
         try {
-            listarAlmacenGeneral().then(response => {
+            listarAlmacenGeneral(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
                 if(!listAlmacenGeneral && data) {

@@ -8,6 +8,7 @@ import { map } from "lodash";
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { listarProduccion } from "../../../api/produccion";
 import { toast } from "react-toastify";
+import { getSucursal } from '../../../api/auth';
 
 function NuevoRegistro(props) {
     const { listRegistros, setListRegistros, setShowModal } = props;
@@ -23,7 +24,7 @@ function NuevoRegistro(props) {
     // Para traer el listado de productos activos
     useEffect(() => {
         try {
-            listarMatrizProductosActivos().then(response => {
+            listarMatrizProductosActivos(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
 
@@ -47,7 +48,7 @@ function NuevoRegistro(props) {
     // Para traer el listado de productos activos
     useEffect(() => {
         try {
-            listarProduccion().then(response => {
+            listarProduccion(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
 

@@ -155,7 +155,7 @@ function RegistroReporteProduccion(props) {
             <Container fluid>
                 <div className="formularioDatos">
                     <Form onChange={onChange} onSubmit={onSubmit}>
-
+                        <br />
                         <Row className="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="1">

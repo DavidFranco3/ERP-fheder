@@ -23,7 +23,7 @@ function RegistraVentasGastos(props) {
     // Obtener los clientes registrados
     useEffect(() => {
         try {
-            listarClientes().then(response => {
+            listarClientes(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -185,7 +185,7 @@ function RegistraVentasGastos(props) {
                                                 key={index}
                                                 value={cliente.id}
                                             >
-                                                {cliente.nombre + " " + cliente.apellidos}
+                                                {cliente.nombre}
                                             </option>
                                         ))}
                                     </Form.Control>

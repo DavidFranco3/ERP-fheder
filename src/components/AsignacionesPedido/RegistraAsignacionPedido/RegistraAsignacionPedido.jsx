@@ -81,7 +81,7 @@ function RegistraAsignacionPedido(props) {
 
     useEffect(() => {
         try {
-            listarAlmacenPT().then(response => {
+            listarAlmacenPT(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
                 if (!listMateriasPrimas && data) {

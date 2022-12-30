@@ -11,7 +11,7 @@ function ModificacionMes(props) {
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData(data));
 
-    const { id } = data;
+    const { id, folio } = data;
     // Para determinar si hay conexion con el servidor o a internet
     const [conexionInternet, setConexionInternet] = useState(true);
 
@@ -40,7 +40,7 @@ function ModificacionMes(props) {
 
             actualizaMes(id, dataTemp).then(response => {
                 const { data } = response;
-                LogsInformativos("Se a modificado el mes " + data.folio, dataTemp);
+                LogsInformativos("Se a modificado el mes " + folio, dataTemp);
                 toast.success(data.mensaje)
                 setTimeout(() => {
                     setLoading(false)
@@ -48,7 +48,7 @@ function ModificacionMes(props) {
                         search: queryString.stringify(""),
                     });
                     setShowModal(false)
-                }, 2000)
+                }, 0)
 
             }).catch(e => {
                 console.log(e)

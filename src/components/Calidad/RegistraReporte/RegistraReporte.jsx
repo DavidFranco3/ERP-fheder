@@ -160,6 +160,7 @@ function RegistraReporte(props) {
             </Alert>
 
             <br />
+            <br />
 
             <Container fluid>
                 <div className="formularioDatos">

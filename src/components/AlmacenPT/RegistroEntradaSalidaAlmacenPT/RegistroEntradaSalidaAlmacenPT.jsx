@@ -12,6 +12,7 @@ import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
 import { listarPedidosVenta } from "../../../api/pedidoVenta";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
+import { getSucursal } from '../../../api/auth';
 
 function RegistroEntradaSalidaAlmacenPt(props) {
     const { setShowModal, location, history } = props;
@@ -41,7 +42,7 @@ function RegistroEntradaSalidaAlmacenPt(props) {
 
     useEffect(() => {
         try {
-            listarPedidosVenta().then(response => {
+            listarPedidosVenta(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data);
                 if (!listOrdenesVenta && data) {
@@ -68,7 +69,7 @@ function RegistroEntradaSalidaAlmacenPt(props) {
 
     useEffect(() => {
         try {
-            listarAlmacenPT().then(response => {
+            listarAlmacenPT(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
                 if(!listMateriasPrimas &&data) {

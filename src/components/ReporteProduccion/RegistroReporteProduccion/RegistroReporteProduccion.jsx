@@ -86,7 +86,7 @@ function RegistroReporteProduccion(props) {
                     faltas: formData.faltas,
                     supervisor: formData.supervisor,
                     turno: formData.turno,
-                    sucursal: getSucursal,
+                    sucursal: getSucursal(),
                     registros: listRegistros,
                     eficienciaGeneralMaquinas: formData.eficiencia,
                     observacionesTurno: formData.observaciones
@@ -133,10 +133,11 @@ function RegistroReporteProduccion(props) {
 
             <br />
 
+
             <Container fluid>
                 <div className="formularioDatos">
                     <Form onChange={onChange} onSubmit={onSubmit}>
-
+                        <br />
                         <Row className="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="1">

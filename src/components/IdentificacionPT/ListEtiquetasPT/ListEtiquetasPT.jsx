@@ -58,6 +58,13 @@ function ListEtiquetasPT(props) {
             reorder: false
         },
         {
+            name: "Folio",
+            selector: row => row.folio,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
             name: "Fecha",
             selector: row => moment(row.fecha).format('LL'),
             sortable: false,

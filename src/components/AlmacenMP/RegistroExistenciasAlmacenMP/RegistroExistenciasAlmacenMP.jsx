@@ -80,7 +80,7 @@ function RegistroExistenciasAlmacenMp(props) {
 
     useEffect(() => {
         try {
-            listarMateriaPrima().then(response => {
+            listarMateriaPrima(getSucursal()).then(response => {
                 const { data } = response;
                 //console.log(data)
                 if(!listMateriasPrimas &&data) {

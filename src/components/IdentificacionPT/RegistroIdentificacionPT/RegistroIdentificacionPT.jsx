@@ -9,9 +9,10 @@ import { map } from "lodash";
 import { toast } from "react-toastify";
 import { getSucursal } from "../../../api/auth";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import queryString from "query-string";
 
 function RegistroIdentificacionPT(props) {
-    const { setShowModal } = props;
+    const { setShowModal, history } = props;
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -45,7 +46,7 @@ function RegistroIdentificacionPT(props) {
     // Para traer el listado de productos activos
     useEffect(() => {
         try {
-            listarProduccion().then(response => {
+            listarProduccion(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
 
@@ -118,6 +119,9 @@ function RegistroIdentificacionPT(props) {
                     LogsInformativos("Nueva etiqueta de identificacion de PT" + folioActual, dataTemp)
                     // console.log(response)
                     toast.success(mensaje);
+                    history.push({
+                        search: queryString.stringify(""),
+                    });
                     setShowModal(false);
                 }).catch(e => {
                     console.log(e)

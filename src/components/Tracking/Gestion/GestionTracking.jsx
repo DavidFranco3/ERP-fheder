@@ -69,7 +69,8 @@ export function LogTrackingEliminacion (ordenVenta) {
             // Inicia actualización de saldos de los socios
             eliminaPedidoVenta(ordenVenta).then(response => {
                 const { data } = response;
-                console.log("Actualización de saldo personal")
+                LogsInformativos("Se a eliminado del proceso de tranking de la OV " + ordenVenta, data)
+                //console.log("Actualización de saldo personal")
             }).catch(e => {
                 console.log(e)
             })

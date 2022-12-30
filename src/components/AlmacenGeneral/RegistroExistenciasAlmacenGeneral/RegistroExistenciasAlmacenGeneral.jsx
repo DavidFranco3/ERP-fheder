@@ -37,7 +37,7 @@ function RegistroExistenciasAlmacenGeneral(props) {
 
     useEffect(() => {
         try {
-            listarInsumo().then(response => {
+            listarInsumo(getSucursal()).then(response => {
                 const { data } = response;
                 //console.log(data)
                 if (!listInsumos && data) {

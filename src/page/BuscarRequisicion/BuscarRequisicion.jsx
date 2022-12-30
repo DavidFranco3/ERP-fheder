@@ -36,7 +36,7 @@ function BuscarRequisicion(props) {
 
     useEffect(() => {
         try {
-            listarRequisiciones(getSucursal).then(response => {
+            listarRequisiciones(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

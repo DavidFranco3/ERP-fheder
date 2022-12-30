@@ -9,8 +9,23 @@ import { listarClientes } from "../../../api/clientes";
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { map } from "lodash";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function RegistraLiberacionProductoProceso(props) {
+    const { setRefreshCheckLogin } = props;
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory();
@@ -38,7 +53,7 @@ function RegistraLiberacionProductoProceso(props) {
     // Obtener los clientes registrados
     useEffect(() => {
         try {
-            listarClientes().then(response => {
+            listarClientes(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -68,7 +83,7 @@ function RegistraLiberacionProductoProceso(props) {
     // Para traer el listado de productos activos
     useEffect(() => {
         try {
-            listarMatrizProductosActivos().then(response => {
+            listarMatrizProductosActivos(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
 

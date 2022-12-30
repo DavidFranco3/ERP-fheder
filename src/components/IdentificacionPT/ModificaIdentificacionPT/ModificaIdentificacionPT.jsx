@@ -9,6 +9,7 @@ import { map } from "lodash";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { getSucursal } from '../../../api/auth';
 
 function ModificaIdentificacionPT(props) {
     const { history, setShowModal, data } = props;
@@ -53,7 +54,7 @@ function ModificaIdentificacionPT(props) {
     // Para traer el listado de productos activos
     useEffect(() => {
         try {
-            listarProduccion().then(response => {
+            listarProduccion(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
 

@@ -60,7 +60,7 @@ function ModificacionesCotizaciones(props) {
     // Obtener los clientes registrados
     useEffect(() => {
         try {
-            listarClientes().then(response => {
+            listarClientes(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -90,7 +90,7 @@ function ModificacionesCotizaciones(props) {
     // Obtener los clientes registrados
     useEffect(() => {
         try {
-            listarProveedores().then(response => {
+            listarProveedores(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

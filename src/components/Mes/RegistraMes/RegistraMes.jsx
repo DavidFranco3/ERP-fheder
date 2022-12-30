@@ -72,7 +72,7 @@ function RegistraMes(props) {
                             search: queryString.stringify(""),
                         });
                         setShowModal(false)
-                    }, 2000)
+                    }, 0)
 
                 }).catch(e => {
                     console.log(e)

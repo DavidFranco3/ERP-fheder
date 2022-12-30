@@ -6,6 +6,7 @@ import { actualizaIntegraciones } from "../../../api/integracionVentasGastos";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
+import { getSucursal } from '../../../api/auth';
 
 function ModificacionIntegracionVentasGastos(props) {
     const { data, setShowModal, history } = props;
@@ -24,7 +25,7 @@ function ModificacionIntegracionVentasGastos(props) {
     // Obtener los clientes registrados
     useEffect(() => {
         try {
-            listarClientes().then(response => {
+            listarClientes(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -109,7 +110,7 @@ function ModificacionIntegracionVentasGastos(props) {
                         <Row className="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                    <Form.Label align="center">
+                                    <Form.Label>
                                         No. Factura
                                     </Form.Label>
                                 </Col>
@@ -128,7 +129,7 @@ function ModificacionIntegracionVentasGastos(props) {
                         <Row className="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                    <Form.Label align="center">
+                                    <Form.Label>
                                         Fecha factura
                                     </Form.Label>
                                 </Col>
@@ -146,7 +147,7 @@ function ModificacionIntegracionVentasGastos(props) {
                         <Row className="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                    <Form.Label align="center">
+                                    <Form.Label>
                                         Cliente
                                     </Form.Label>
                                 </Col>
@@ -161,7 +162,7 @@ function ModificacionIntegracionVentasGastos(props) {
                                                 key={index}
                                                 value={cliente.id} selected={cliente?.id === formData.cliente}
                                             >
-                                                {cliente.nombre + " " + cliente.apellidos}
+                                                {cliente.nombre}
                                             </option>
                                         ))}
                                     </Form.Control>
@@ -172,7 +173,7 @@ function ModificacionIntegracionVentasGastos(props) {
                         <Row className="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                    <Form.Label align="center">
+                                    <Form.Label>
                                         Importe
                                     </Form.Label>
                                 </Col>
@@ -190,7 +191,7 @@ function ModificacionIntegracionVentasGastos(props) {
                         <Row className="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                    <Form.Label align="center">
+                                    <Form.Label>
                                         IVA
                                     </Form.Label>
                                 </Col>
@@ -209,7 +210,7 @@ function ModificacionIntegracionVentasGastos(props) {
                         <Row className="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                    <Form.Label align="center">
+                                    <Form.Label>
                                         Total
                                     </Form.Label>
                                 </Col>
@@ -228,7 +229,7 @@ function ModificacionIntegracionVentasGastos(props) {
                         <Row className="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                    <Form.Label align="center">
+                                    <Form.Label>
                                         Observaciones
                                     </Form.Label>
                                 </Col>

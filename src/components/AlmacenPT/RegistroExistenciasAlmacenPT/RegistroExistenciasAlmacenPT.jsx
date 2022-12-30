@@ -19,7 +19,7 @@ function RegistroExistenciasAlmacenPt(props) {
 
     useEffect(() => {
         try {
-            listarMatrizProductosActivos().then(response => {
+            listarMatrizProductosActivos(getSucursal()).then(response => {
                 const { data } = response;
                 //console.log(data)
                 if(!listProductos &&data) {
@@ -81,7 +81,6 @@ function RegistroExistenciasAlmacenPt(props) {
                         const { data } = response;
                         const { mensaje, datos } = data;
                         toast.success(mensaje)
-                        setLoading(false)
                         LogsInformativos("Se ha registrado la materia en el almacen de MP " + temp[2], dataTemp)
                         history.push({
                             search: queryString.stringify(""),

@@ -872,9 +872,11 @@ function RegistraInspeccionMaterial(props) {
             </Alert>
 
             <br />
+            <br />
 
             <Container fluid>
                 <div className="formularioDatos">
+                    <br/>
                     <Form onChange={onChange} onSubmit={onSubmit}>
                         <div className="encabezado">
                             <Container fluid>

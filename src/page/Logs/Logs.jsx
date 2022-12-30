@@ -81,7 +81,6 @@ function Logs(props) {
                     </Col>
                 </Row>
             </Alert>
-
             
                 {
                     listLog ?

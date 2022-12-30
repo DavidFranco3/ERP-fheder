@@ -7,7 +7,7 @@ import { Button, Form, Spinner, Alert, Row, Col } from "react-bootstrap";
 
 function EliminacionFisicaEtiquetasPT(props) {
     const { data, setShowModal, history } = props;
-    const { id, folio } = data;
+    const { id, folio, fecha, noOrden, noParte } = data;
 
     //console.log(data)
 
@@ -51,6 +51,54 @@ function EliminacionFisicaEtiquetasPT(props) {
                         Esta acción eliminara del sistema la etiqueta de PT.
                     </p>
                 </Alert>
+
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Folio
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={folio}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            fecha
+                        </Form.Label>
+                        <Form.Control
+                            type="date"
+                            value={fecha}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <br />
+
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Numero de noParte
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={noParte}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Orden de producción
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={noOrden}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
 
                 <Form.Group as={Row} className="botones">
                     <Col>

@@ -50,7 +50,7 @@ function RegistraLiberacionProductoProceso(props) {
     // Obtener los clientes registrados
     useEffect(() => {
         try {
-            listarClientes().then(response => {
+            listarClientes(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -80,7 +80,7 @@ function RegistraLiberacionProductoProceso(props) {
     // Para traer el listado de productos activos
     useEffect(() => {
         try {
-            listarMatrizProductosActivos().then(response => {
+            listarMatrizProductosActivos(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
 
@@ -274,6 +274,7 @@ function RegistraLiberacionProductoProceso(props) {
 
             <Container fluid>
                 <div className="formularioDatos">
+                    <br/>
                     <Form onChange={onChange} onSubmit={onSubmit}>
                         <div className="encabezado">
                             <Container fluid>
@@ -292,7 +293,7 @@ function RegistraLiberacionProductoProceso(props) {
                                             >
                                                 <option>Elige una opción</option>
                                                 {map(listClientes, (cliente, index) => (
-                                                    <option key={index} value={cliente?.nombre + " " + cliente.apellidos}>{cliente?.nombre + " " + cliente.apellidos}</option>
+                                                    <option key={index} value={cliente?.nombre}>{cliente?.nombre}</option>
                                                 ))}
                                             </Form.Control>
                                         </Col>
