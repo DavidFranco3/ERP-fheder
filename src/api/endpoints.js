@@ -584,6 +584,23 @@ export const ENDPOINTEliminarPlaneacion = "/planeacion/eliminar"
 export const ENDPOINTActualizarPlaneacion = "/planeacion/actualizar"
 export const ENDPOINTTotalPlaneacion = "/planeacion/total"
 
+// Almacenes
+export const ENDPOINTRegistroInicialAlmacenes = "/almacenes/registroInicial"
+export const ENDPOINTRegistroGestionAlmacenes = "/almacenes/registroGestion"
+export const ENDPOINTListarRegistrosAlmacenes = "/almacenes/listar"
+export const ENDPOINTObtenerFolioAlmacenes = "/almacenes/obtenerFolio"
+export const ENDPOINTObtenerItemAlmacenes = "/almacenes/obtenerItem";
+export const ENDPOINTListarPaginandoAlmacenes = "/almacenes/listarPaginando"
+export const ENDPOINTObtenerAlmacenes = "/almacenes/obtener"
+export const ENDPOINTObtenerDatosFolioAlmacenes = "/almacenes/obtenerDatosFolio"
+export const ENDPOINTObtenerDatosArticulo = "/almacenes/obtenerDatosArticulo"
+export const ENDPOINTListarMovimientosArticulos = "/almacenes/listarMovimientosArticulos"
+export const ENDPOINTEliminarAlmacenes = "/almacenes/eliminar"
+export const ENDPOINTActualizarEstadoAlmacenes = "/almacenes/actualizarEstado"
+export const ENDPOINTActualizaExistenciasAlmacenes = "/almacenes/modificaExistencias"
+export const ENDPOINTRegistraMovimientosAlmacenes = "/almacenes/registraMovimientos"
+export const ENDPOINTTotalMovimientosAlmacenes = "/almacenes/total"
+
 // Almacen MP
 export const ENDPOINTRegistroInicialAlmacenMP = "/almacenMP/registroInicial"
 export const ENDPOINTRegistroGestionAlmacenMP = "/almacenMP/registroGestion"
