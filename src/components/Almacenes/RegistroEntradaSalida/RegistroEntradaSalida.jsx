@@ -107,7 +107,7 @@ function RegistroEntradaSalida(props) {
                             articulo: almacenMP.nombreMP,
                             almacen: getAlmacen(),
                             sucursal: getSucursal(),
-                            um: almacenMP.um,
+                            um: formData.um == "" ? almacenMP?.um : formData.um,
                             tipo: formData.tipoOperacion,
                             descripcion: formData.descripcion,
                             cantidadExistencia: formData.cantidad,
@@ -160,7 +160,7 @@ function RegistroEntradaSalida(props) {
                                 articulo: almacenMP.nombreMP,
                                 almacen: getAlmacen(),
                                 sucursal: getSucursal(),
-                                um: almacenMP.um,
+                                um: formData.um == "" ? almacenMP?.um : formData.um,
                                 tipo: formData.tipoOperacion,
                                 descripcion: formData.descripcion,
                                 cantidadExistencia: formData.cantidad,
@@ -207,10 +207,6 @@ function RegistroEntradaSalida(props) {
         }
     }
 
-    const onChange = e => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-    }
-
     // Para almacenar la materia prima seleccionada
     const [almacenMP, setAlmacenMP] = useState([]);
 
@@ -227,6 +223,10 @@ function RegistroEntradaSalida(props) {
             um: temp[2],
             cantidadExistencia: temp[3]
         })
+    }
+
+    const onChange = e => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
     // Para almacenar el lote 
@@ -260,6 +260,8 @@ function RegistroEntradaSalida(props) {
             console.log(e)
         }
     }, [formData.referencia, formData.tipoOperacion]);
+
+    const temp = formData.articulo.split("/")
 
     return (
         <>
@@ -311,9 +313,8 @@ function RegistroEntradaSalida(props) {
                             <Form.Control
                                 type="text"
                                 placeholder="Escribe la unidad de medida"
-                                name="unidadMedida"
-                                value={almacenMP?.um}
-                                disabled
+                                name="um"
+                                defaultValue={formData.um == "" ? almacenMP?.um : formData.um}
                             />
                         </Form.Group>
 
@@ -415,7 +416,8 @@ function initialFormData() {
         referencia: "",
         tipoOperacion: "",
         referenciaOP: "",
-        lote: ""
+        lote: "",
+        um: "",
     }
 }
 
