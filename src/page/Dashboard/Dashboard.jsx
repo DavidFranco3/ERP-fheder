@@ -79,7 +79,7 @@ function Dashboard(props) {
                     title={'Catálogos'}
                 />
                 <ItemCard
-                    path={'/DashboardAlmacenes'}
+                    path={'/Almacenes'}
                     logo={LogoAlmacen}
                     title={'Almacén'}
                 />

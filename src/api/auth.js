@@ -1,4 +1,4 @@
-import { API_HOST, TOKEN, SUCURSAL } from "../utils/constants";
+import { API_HOST, TOKEN, SUCURSAL, ALMACEN } from "../utils/constants";
 import { ENDPOINTLoginAdministrador } from "./endpoints";
 import jwtDecode from "jwt-decode";
 import axios from 'axios';
@@ -30,6 +30,18 @@ function eliminaSucursal() {
     return localStorage.removeItem(SUCURSAL)
 }
 
+export function setAlmacen(almacen) {
+    localStorage.setItem(ALMACEN, almacen)
+}
+
+export function getAlmacen() {
+    return localStorage.getItem(ALMACEN)
+}
+
+function eliminaAlmacen() {
+    return localStorage.removeItem(ALMACEN)
+}
+
 export function setTokenApi(token) {
     localStorage.setItem(TOKEN, token);
 }
@@ -40,6 +52,7 @@ export function getTokenApi() {
 
 export function logoutApi() {
     eliminaSucursal();
+    eliminaAlmacen();
     return localStorage.removeItem(TOKEN);
 }
 

@@ -58,11 +58,16 @@ function BuscarInsumo(props) {
             //console.log(formData)
             setLoading(true);
             const dataTemp = {
+                id: valoresCliente.id,
                 folio: valoresCliente.folio,
                 descripcion: valoresCliente.descripcion,
                 um: valoresCliente.um,
                 proveedor: valoresCliente.proveedor,
-                precioUnitario: valoresCliente.precio
+                precioUnitario: valoresCliente.precio,
+
+                idArticulo: valoresCliente.id,
+                folioArticulo: valoresCliente.folio,
+                nombreArticulo: valoresCliente.descripcion,
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -249,10 +254,10 @@ function BuscarInsumo(props) {
                     />
                 </Col>
                 <Col>
-                    <ClearButton 
-                    title="Limpiar la busqueda"
-                    type="button" 
-                    onClick={handleClear}>
+                    <ClearButton
+                        title="Limpiar la busqueda"
+                        type="button"
+                        onClick={handleClear}>
                         X
                     </ClearButton>
                 </Col>
@@ -318,6 +323,7 @@ function initialFormData() {
 
 function initialValues() {
     return {
+        id: "",
         descripcion: "",
         folio: "",
         um: "",
@@ -328,6 +334,7 @@ function initialValues() {
 
 function valoresAlmacenados(data) {
     return {
+        id: data._id,
         descripcion: data.descripcion,
         folio: data.folio,
         um: data.um,

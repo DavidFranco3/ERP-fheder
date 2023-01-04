@@ -261,6 +261,7 @@ function ModificaMatrizProductos(props) {
                 noParte: formData.noParte,
                 descripcion: formData.descripcion,
                 precioVenta: formData.precioVenta,
+                um: formData.um,
                 datosPieza: {
                     pesoPiezas: formData.pesoPiezas,
                     pesoColada: formData.pesoColada,
@@ -540,6 +541,25 @@ function ModificaMatrizProductos(props) {
                                                                 name="precioVenta"
                                                                 defaultValue={formData.precioVenta}
                                                             />
+                                                        </Col>
+
+                                                        <Col sm="2">
+                                                            <Form.Label align="center">
+                                                                Unidad de medida
+                                                            </Form.Label>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Control
+                                                                as="select"
+                                                                name="um"
+                                                                defaultValue={formData.um}
+                                                            >
+                                                                <option >Elige....</option>
+                                                                <option value="KG" selected={formData.um == "KG"}>KG</option>
+                                                                <option value="Litros" selected={formData.um == "Litros"}>Litros</option>
+                                                                <option value="Piezas" selected={formData.um == "Piezas"}>Pieza</option>
+                                                                <option value="Otros" selected={formData.um == "Otros"}>Otros</option>
+                                                            </Form.Control>
                                                         </Col>
                                                     </Form.Group>
                                                 </Row>
@@ -1216,6 +1236,7 @@ function initialFormData(data) {
         noMolde: "",
         cavMolde: "",
         noParte: "",
+        um: "",
         descripcion: "",
         precioVenta: "",
         pesoPiezas: "",
@@ -1291,6 +1312,7 @@ function valoresAlmacenados(data) {
         noMolde: data.datosMolde.noMolde,
         cavMolde: data.datosMolde.cavMolde,
         noParte: data.noParte,
+        um: data.um,
         descripcion: data.descripcion,
         precioVenta: data.precioVenta,
         pesoPiezas: data.datosPieza.pesoPiezas,

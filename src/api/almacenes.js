@@ -14,7 +14,7 @@ import {
     ENDPOINTActualizaExistenciasAlmacenes,
     ENDPOINTRegistraMovimientosAlmacenes,
     ENDPOINTTotalMovimientosAlmacenes,
-    ENDPOINTObtenerItemAlmacenes
+    ENDPOINTObtenerItemAlmacenes,
 } from "./endpoints";
 import axios from 'axios';
 import { getTokenApi } from "./auth";
@@ -91,7 +91,7 @@ export async function listarRegistrosAlmacen(sucursal, almacen) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarAlmacenMP +`/?sucursal=${sucursal}&&almacen=${almacen}`, config);
+    return await axios.get(API_HOST + ENDPOINTListarRegistrosAlmacenes + `/?sucursal=${sucursal}&&almacen=${almacen}`, config);
 }
 
 // Obtener el folio actual del almacen

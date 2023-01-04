@@ -2,14 +2,11 @@ import { useState, useEffect } from 'react';
 import BasicModal from "../../Modal/BasicModal";
 // Terminan importaciones para la tabla
 import { useHistory } from "react-router-dom";
-import "./ListAlmacenMP.scss"
+import "./ListAlmacenes.scss"
 import moment from "moment";
 import { Badge, Container } from "react-bootstrap";
-import EliminaAlmacenMateriaPrima from "../EliminaAlmacenMateriaPrima";
-import FechaUltimaModificacion from "./fechaUltimaModificacion";
-import TipoUltimoMovimiento from "./TipoUltimoMovimiento";
-import CantidadUltimoMovimiento from "./CantidadUltimoMovimiento";
-import ModificarAlmacenMP from "../ModificarAlmacenMP";
+import EliminaAlmacenes from '../EliminaAlmacenes';
+import ModificarAlmacenes from '../ModificarAlmacenes';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
@@ -17,7 +14,7 @@ import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 
 function ListAlmacenMp(props) {
-    const { listAlmacenMP, location, history, setRefreshCheckLogin } = props;
+    const { listAlmacenes, location, history, setRefreshCheckLogin } = props;
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -28,14 +25,14 @@ function ListAlmacenMp(props) {
     const enrutamiento = useHistory()
 
     // Para el modal de eliminación de materias primas
-    const eliminacionMateriasprimas = (content) => {
+    const eliminacionAlmacenes = (content) => {
         setTitulosModal("Eliminando el articulo");
         setContentModal(content);
         setShowModal(true);
     }
 
     // Para editar los detalles de la materia prima que esta en almacen
-    const modificarMateriasPrimas = (content) => {
+    const modificarAlmacenes = (content) => {
         setTitulosModal("Modificando");
         setContentModal(content);
         setShowModal(true);
@@ -57,14 +54,14 @@ function ListAlmacenMp(props) {
         },
         {
             name: "Folio",
-            selector: row => row.folioAlmacen,
+            selector: row => row.folio,
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: "Articulo",
-            selector: row => row.nombreMP,
+            selector: row => row.nombreArticulo,
             sortable: false,
             center: true,
             reorder: false
@@ -133,8 +130,8 @@ function ListAlmacenMp(props) {
                         className="editarProveedor"
                         title="Modificar"
                         onClick={() => {
-                            modificarMateriasPrimas(
-                                <ModificarAlmacenMP
+                            modificarAlmacenes(
+                                <ModificarAlmacenes
                                     datos={row}
                                     setShowModal={setShowModal}
                                     location={location}
@@ -150,8 +147,8 @@ function ListAlmacenMp(props) {
                         className="eliminarProveedor"
                         title="Eliminar"
                         onClick={() => {
-                            eliminacionMateriasprimas(
-                                <EliminaAlmacenMateriaPrima
+                            eliminacionAlmacenes(
+                                <EliminaAlmacenes
                                     datos={row}
                                     setShowModal={setShowModal}
                                     location={location}
@@ -175,7 +172,7 @@ function ListAlmacenMp(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listAlmacenMP);
+            setRows(listAlmacenes);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -194,7 +191,7 @@ function ListAlmacenMp(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={listAlmacenMP}
+                    data={listAlmacenes}
                     progressPending={pending}
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import "./EliminaAlmacenMateriaPrima.scss"
+import "./EliminaAlmacenes.scss"
 import { Alert, Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import { eliminaAlmacenes } from "../../../api/almacenes";
 import { toast } from "react-toastify";

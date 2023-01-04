@@ -56,6 +56,7 @@ import Pigmento from "../page/Pigmento";
 import Empaques from "../page/Empaques";
 import Sucursales from "../page/Sucursales";
 import GestionAlmacen from "../page/GestionAlmacen";
+import Almacenes from "../page/Almacenes";
 import Error404 from "../page/Error404";
 
 // importacion de dashboards
@@ -214,6 +215,11 @@ import ModificaRequerimientosPlaneacion from "../components/RequerimientosPlanea
 import RequisicionPlaneacion from "../components/Requisiciones/RequisicionPlaneacion";
 
 export default [
+    {
+        path: "/Almacenes",
+        exact: true,
+        page: Almacenes
+    },
     {
         path: "/RegistraRequerimientosPlaneacion",
         exact: true,

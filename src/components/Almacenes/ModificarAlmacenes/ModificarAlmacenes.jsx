@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import "./ModificarAlmacenMP.scss"
+import "./ModificarAlmacenes.scss"
 import { listarMateriaPrima } from "../../../api/materiaPrima";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import { map } from "lodash";
@@ -9,7 +9,7 @@ import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
 import { obtenerDatosInspeccion } from "../../../api/inspeccionMaterial";
 
-function ModificarAlmacenMp(props) {
+function ModificarAlmacenes(props) {
     const { datos, setShowModal, location, history } = props;
     const { id, nombreMP, referencia, um, lote } = datos;
 
@@ -175,4 +175,4 @@ function formatModelMateriasPrimas(data) {
     return dataTemp;
 }
 
-export default ModificarAlmacenMp;
+export default ModificarAlmacenes;

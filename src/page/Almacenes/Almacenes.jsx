@@ -1,5 +1,5 @@
 import { useState, useEffect, Suspense } from 'react';
-import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
+import { Alert, Button, Col, Row, Spinner, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { listarRegistrosAlmacen } from "../../api/almacenes";
@@ -11,7 +11,9 @@ import RegistroEntradaSalida from "../../components/Almacenes/RegistroEntradaSal
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import { toast } from "react-toastify";
-import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
+import { getSucursal, getTokenApi, isExpiredToken, logoutApi, getAlmacen, setAlmacen } from '../../api/auth';
+import { listarAlmacenes } from '../../api/gestionAlmacen';
+import { map } from "lodash";
 
 function Almacenes(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -31,6 +33,40 @@ function Almacenes(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
+
+    // Para almacenar las sucursales registradas
+    const [almacenesRegistrados, setAlmacenesRegistrados] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarAlmacenes(getSucursal()).then(response => {
+                const { data } = response;
+                //console.log(data)
+                const dataTemp = formatModelGestionAlmacen(data);
+                //console.log(data)
+                setAlmacenesRegistrados(dataTemp);
+            })
+        } catch (e) {
+
+        }
+    }, []);
+
+    // Almacena la razón social, si ya fue elegida
+    const [almacenElegido, setAlmacenElegido] = useState("");
+
+    // Para almacenar en localstorage la razon social
+    const almacenaAlmacen = (almacen) => {
+        if (almacen != "Elige una opción") {
+            setAlmacen(almacen)
+        }
+        window.location.reload()
+    }
+
+    useEffect(() => {
+        if (getAlmacen()) {
+            setAlmacenElegido(getAlmacen)
+        }
+    }, []);
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -56,7 +92,7 @@ function Almacenes(props) {
 
     useEffect(() => {
         try {
-            listarRegistrosAlmacen(getSucursal()).then(response => {
+            listarRegistrosAlmacen(getSucursal(), getAlmacen()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -135,6 +171,29 @@ function Almacenes(props) {
                 </Row>
             </Alert>
 
+            <Row>
+                <Col xs={6} md={4}>
+
+                </Col>
+                <Col xs={6} md={4}>
+                    <Form.Control
+                        as="select"
+                        aria-label="indicadorAlmacen"
+                        name="almacen"
+                        className="cajaSucursal"
+                        defaultValue={almacenElegido}
+                        onChange={(e) => {
+                            almacenaAlmacen(e.target.value)
+                        }}
+                    >
+                        <option>Elige una opcion</option>
+                        {map(almacenesRegistrados, (almacen, index) => (
+                            <option key={index} value={almacen?.nombre} selected={almacenElegido == almacen?.nombre}>{almacen?.nombre}</option>
+                        ))}
+                    </Form.Control>
+                </Col>
+            </Row>
+
             {
                 listAlmacenes ?
                     (
@@ -162,6 +221,23 @@ function Almacenes(props) {
             </BasicModal>
         </>
     );
+}
+
+function formatModelGestionAlmacen(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            nombre: data.nombre,
+            descripcion: data.descripcion,
+            sucursal: data.sucursal,
+            status: data.status,
+            fechaCreacion: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
 }
 
 function formatModelAlmacenes(data) {

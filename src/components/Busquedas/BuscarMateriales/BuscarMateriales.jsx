@@ -64,7 +64,11 @@ function BuscarMateriales(props) {
                 descripcion: valoresCliente.descripcion,
                 um: valoresCliente.um,
                 proveedor: valoresCliente.proveedor,
-                precioUnitario: valoresCliente.precio
+                precioUnitario: valoresCliente.precio,
+
+                idArticulo: valoresCliente.idMaterial,
+                folioArticulo: valoresCliente.folio,
+                nombreArticulo: valoresCliente.descripcion,
             }
             setFormData(dataTemp)
             setShowModal(false);

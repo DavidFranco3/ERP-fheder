@@ -227,6 +227,7 @@ function RegistraMatrizProductos(props) {
                 noParte: formData.noParte,
                 descripcion: formData.descripcion,
                 precioVenta: formData.precioVenta,
+                um: formData.um,
                 datosPieza: {
                     pesoPiezas: formData.pesoPiezas,
                     pesoColada: formData.pesoColada,
@@ -500,7 +501,27 @@ function RegistraMatrizProductos(props) {
                                                     defaultValue={formData.precioVenta}
                                                 />
                                             </Col>
+                                            <Col sm="2">
+                                                <Form.Label align="center">
+                                                    Unidad de medida
+                                                </Form.Label>
+                                            </Col>
+                                            <Col>
+                                                <Form.Control
+                                                    as="select"
+                                                    name="um"
+                                                    defaultValue={formData.um}
+                                                >
+                                                    <option >Elige....</option>
+                                                    <option value="KG">KG</option>
+                                                    <option value="Litros">Litros</option>
+                                                    <option value="Piezas">Pieza</option>
+                                                    <option value="Otros">Otros</option>
+                                                </Form.Control>
+                                            </Col>
                                         </Form.Group>
+
+
                                     </Row>
                                 </Container>
                             </div>
@@ -1164,6 +1185,7 @@ function initialFormData() {
         cliente: "",
         noMolde: "",
         cavMolde: "",
+        um: "",
         noParte: "",
         descripcion: "",
         precioVenta: "",

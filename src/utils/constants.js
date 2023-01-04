@@ -12,3 +12,5 @@ export const  API_IP = "https://api.ipify.org";
 export const TOKEN = "token";
 
 export const SUCURSAL = "sucursal";
+
+export const ALMACEN = "almacen";

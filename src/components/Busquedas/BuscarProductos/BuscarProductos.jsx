@@ -61,7 +61,12 @@ function BuscarProductos(props) {
             const dataTemp = {
                 item: valoresProducto.item,
                 ID: valoresProducto.ID,
-                precioUnitario: valoresProducto.precioUnitario
+                precioUnitario: valoresProducto.precioUnitario,
+
+                idArticulo: valoresProducto.idProducto,
+                folioArticulo: valoresProducto.ID,
+                nombreArticulo: valoresProducto.item,
+                um: valoresProducto.um,
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -233,10 +238,10 @@ function BuscarProductos(props) {
                     />
                 </Col>
                 <Col>
-                    <ClearButton 
-                    title="Limpiar busqueda"
-                    type="button" 
-                    onClick={handleClear}>
+                    <ClearButton
+                        title="Limpiar busqueda"
+                        type="button"
+                        onClick={handleClear}>
                         X
                     </ClearButton>
                 </Col>
@@ -302,17 +307,21 @@ function initialFormData() {
 
 function initialValues() {
     return {
+        idProducto: "",
         item: "",
         ID: "",
-        precioUnitario:  "",
+        precioUnitario: "",
+        um: "",
     }
 }
 
 function valoresAlmacenados(data) {
     return {
+        idProducto: data._id,
         item: data.descripcion,
         ID: data.noInterno,
-        precioUnitario: data.precioVenta
+        precioUnitario: data.precioVenta,
+        um: data.um,
     }
 }
 
