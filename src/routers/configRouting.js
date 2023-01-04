@@ -57,6 +57,7 @@ import Empaques from "../page/Empaques";
 import Sucursales from "../page/Sucursales";
 import GestionAlmacen from "../page/GestionAlmacen";
 import Almacenes from "../page/Almacenes";
+import MovimientosAlmacenes from "../page/MovimientosAlmacenes";
 import Error404 from "../page/Error404";
 
 // importacion de dashboards
@@ -219,6 +220,11 @@ export default [
         path: "/Almacenes",
         exact: true,
         page: Almacenes
+    },
+    {
+        path: "/MovimientosAlmacenes/:folio",
+        exact: true,
+        page: MovimientosAlmacenes
     },
     {
         path: "/RegistraRequerimientosPlaneacion",

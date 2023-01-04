@@ -79,6 +79,8 @@ function MovimientosAlmacenes(props) {
         }
     }, []);
 
+    console.log(listMovimientosAlmacenes)
+
     const rutaRegreso = () => {
         enrutamiento.push("/Almacenes")
     }
@@ -111,7 +113,7 @@ function MovimientosAlmacenes(props) {
                     (
                         <>
                             <Suspense fallback={<Spinner />}>
-                                <listMovimientosAlmacenes
+                                <ListMovimientosAlmacenes
                                     listMovimientosAlmacenes={listMovimientosAlmacenes}
                                     infoAlmacenes={infoAlmacenes}
                                     location={location}

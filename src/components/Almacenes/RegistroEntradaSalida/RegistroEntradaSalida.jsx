@@ -3,13 +3,7 @@ import "./RegistroEntradaSalida.scss"
 import { listarMateriaPrima } from "../../../api/materiaPrima";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import { map, size, values } from "lodash";
-import DatePicker, { CalendarContainer } from "react-datepicker";
-import {
-    actualizaExistenciasAlmacenMP,
-    listarAlmacenMP,
-    listarMovimientosAlmacenMP,
-    obtenerAlmacenMPID, obtenerDatosAlmacenMPFolio, registraMovimientosAlmacenMP
-} from "../../../api/almacenMP";
+import { listarRegistrosAlmacen, listarMovimientosAlmacenes, obtenerDatosAlmacenesFolio, registraMovimientosAlmacenes } from "../../../api/almacenes";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
@@ -17,7 +11,7 @@ import { listarProduccion } from "../../../api/produccion";
 import { obtenerDatosInspeccion } from "../../../api/inspeccionMaterial";
 import { obtenerDatosProduccion } from "../../../api/produccion";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
-import { getSucursal } from '../../../api/auth';
+import { getSucursal, getAlmacen } from '../../../api/auth';
 
 function RegistroEntradaSalida(props) {
     const { setShowModal, location, history } = props;
@@ -64,18 +58,18 @@ function RegistroEntradaSalida(props) {
     const [fechaActual, setFechaActual] = useState(new Date);
 
     // Para almacenar el listado de materias primas
-    const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
+    const [listArticulos, setListArticulos] = useState(null);
 
     useEffect(() => {
         try {
-            listarAlmacenMP(getSucursal()).then(response => {
+            listarRegistrosAlmacen(getSucursal(), getAlmacen()).then(response => {
                 const { data } = response;
                 // console.log(data)
-                if (!listMateriasPrimas && data) {
-                    setListMateriasPrimas(formatModelAlmacenMateriasPrimas(data));
+                if (!listArticulos && data) {
+                    setListArticulos(formatModelAlmacenes(data));
                 } else {
-                    const datosProductos = formatModelAlmacenMateriasPrimas(data);
-                    setListMateriasPrimas(datosProductos);
+                    const datosArticulos = formatModelAlmacenes(data);
+                    setListArticulos(datosArticulos);
                 }
             }).catch(e => {
                 console.log(e)
@@ -89,7 +83,7 @@ function RegistroEntradaSalida(props) {
         e.preventDefault()
 
 
-        if (!formData.fecha || !formData.referencia || !formData.tipoOperacion || !formData.cantidad || !formData.descripcion) {
+        if (!formData.fecha || !formData.tipoOperacion || !formData.cantidad || !formData.descripcion) {
             // console.log("Valores "+ validCount + " del form " + size(formData))
             toast.warning("Completa el formulario")
         } else {
@@ -97,7 +91,7 @@ function RegistroEntradaSalida(props) {
 
             try {
                 // Obtener los datos de la materia prima, para recuperar todos los movimientos y almacenar uno nuevo
-                listarMovimientosAlmacenMP(almacenMP?.folioAlmacen).then(response => {
+                listarMovimientosAlmacenes(almacenMP?.folio).then(response => {
                     const { data } = response;
                     // console.log(data)
                     // const final = data.concat(dataMovimiento)
@@ -110,12 +104,11 @@ function RegistroEntradaSalida(props) {
 
                         const dataMovimiento = {
                             fecha: formData.fecha,
-                            materiaPrima: almacenMP.nombreMP,
+                            articulo: almacenMP.nombreMP,
+                            almacen: getAlmacen(),
+                            sucursal: getSucursal(),
                             um: almacenMP.um,
                             tipo: formData.tipoOperacion,
-                            referencia: formData.referencia,
-                            ordenVenta: ordenVenta,
-                            lote: lote,
                             descripcion: formData.descripcion,
                             cantidadExistencia: formData.cantidad,
                         }
@@ -131,14 +124,14 @@ function RegistroEntradaSalida(props) {
                         //console.log("datos finales ", movimientosFinal)
 
                         // console.log(dataTempFinal)
-                        obtenerDatosAlmacenMPFolio(almacenMP?.folioAlmacen).then(response => {
+                        obtenerDatosAlmacenesFolio(almacenMP?.folio).then(response => {
                             const { data } = response;
                             // console.log(data)
                             const { _id } = data;
-                            registraMovimientosAlmacenMP(_id, dataTempFinal).then(response => {
+                            registraMovimientosAlmacenes(_id, dataTempFinal).then(response => {
                                 const { data } = response;
 
-                                LogTrackingActualizacion(ordenVenta, "En almacen de materia prima", "5")
+                                //LogTrackingActualizacion(ordenVenta, "En almacen de materia prima", "5")
                                 //console.log(response)
                                 const { mensaje, datos } = data;
                                 toast.success(mensaje)
@@ -164,12 +157,11 @@ function RegistroEntradaSalida(props) {
 
                             const dataMovimientoSalida = {
                                 fecha: formData.fecha,
-                                materiaPrima: almacenMP.nombreMP,
+                                articulo: almacenMP.nombreMP,
+                                almacen: getAlmacen(),
+                                sucursal: getSucursal(),
                                 um: almacenMP.um,
                                 tipo: formData.tipoOperacion,
-                                referencia: formData.referencia,
-                                ordenVenta: ordenVenta,
-                                lote: formData.lote,
                                 descripcion: formData.descripcion,
                                 cantidadExistencia: formData.cantidad,
                             }
@@ -183,11 +175,11 @@ function RegistroEntradaSalida(props) {
                                 cantidadExistencia: nuevaExistenciaTotal.toString()
                             }
 
-                            obtenerDatosAlmacenMPFolio(almacenMP?.folioAlmacen).then(response => {
+                            obtenerDatosAlmacenesFolio(almacenMP?.folio).then(response => {
                                 const { data } = response;
                                 // console.log(data)
                                 const { _id } = data;
-                                registraMovimientosAlmacenMP(_id, dataTempFinal).then(response => {
+                                registraMovimientosAlmacenes(_id, dataTempFinal).then(response => {
                                     const { data } = response;
 
                                     LogTrackingActualizacion(ordenVenta, "En almacen de materia prima", "5")
@@ -230,7 +222,7 @@ function RegistroEntradaSalida(props) {
 
         // console.log(dataTemp)
         setAlmacenMP({
-            folioAlmacen: temp[0],
+            folio: temp[0],
             nombreMP: temp[1],
             um: temp[2],
             cantidadExistencia: temp[3]
@@ -294,22 +286,24 @@ function RegistroEntradaSalida(props) {
                                 onChange={(e) => {
                                     handleMateriaPrima(e.target.value)
                                 }}
-                                defaultValue={formData.materiaPrima}
-                                name="materiaPrima"
+                                defaultValue={formData.articulo}
+                                name="articulo"
                                 required
                             >
                                 <option>Elige una opción</option>
-                                {map(listMateriasPrimas, (materiaprima, index) => (
+                                {map(listArticulos, (articulo, index) => (
                                     <option
                                         key={index}
-                                        value={materiaprima?.folioAlmacen + "/" + materiaprima?.nombreMP + "/" + materiaprima?.um + "/" + materiaprima?.cantidadExistencia + "/" + materiaprima?.existenciasStock + "/" + materiaprima?.existenciasTotales}
+                                        value={articulo?.folio + "/" + articulo?.nombreArticulo + "/" + articulo?.um + "/" + articulo?.cantidadExistencia}
                                     >
-                                        {materiaprima?.nombreMP}
+                                        {articulo?.nombreArticulo}
                                     </option>
                                 ))}
                             </Form.Control>
                         </Form.Group>
+                    </Row>
 
+                    <Row className="mb-3">
                         <Form.Group as={Col} controlId="formGridPorcentaje scrap">
                             <Form.Label>
                                 U.M
@@ -322,9 +316,7 @@ function RegistroEntradaSalida(props) {
                                 disabled
                             />
                         </Form.Group>
-                    </Row>
 
-                    <Row className="mb-3">
                         <Form.Group as={Col} className="mb-3 motivoSalida">
                             <Form.Label>
                                 Tipo operacion
@@ -350,54 +342,9 @@ function RegistroEntradaSalida(props) {
                                 />
                             </Col>
                         </Form.Group>
-
-                        {(formData.tipoOperacion == "Entrada" &&
-                            <>
-                                <Form.Group as={Col} controlId="formHorizontalDescripcion">
-                                    <Form.Label>
-                                        Referencia
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Escribe la referencia de RM"
-                                        name="referencia"
-                                        defaultValue={formData.referencia}
-                                    />
-                                </Form.Group>
-                            </>
-                        )}
-
-                        {(formData.tipoOperacion == "Salida" &&
-                            <>
-                                <Form.Group as={Col} controlId="formHorizontalDescripcion">
-                                    <Form.Label>
-                                        Referencia
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Escribe la referencia de OP"
-                                        name="referencia"
-                                        defaultValue={formData.referencia}
-                                    />
-                                </Form.Group>
-                            </>
-                        )}
                     </Row>
 
                     <Row className="mb-3">
-                        <Form.Group as={Col} controlId="formGridPorcentaje scrap">
-                            <Form.Label>
-                                Lote
-                            </Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Escribe el lote"
-                                name="lote"
-                                value={formData.tipoOperacion == "Entrada" && formData.referencia.length >= 4 ? lote : formData.lote}
-                                disabled={formData.tipoOperacion == "Entrada"}
-                            />
-                        </Form.Group>
-
                         <Form.Group as={Col} controlId="formGridPorcentaje scrap">
                             <Form.Label>
                                 {formData.tipoOperacion == "Entrada" ? "Cantidad entrada" : formData.tipoOperacion == "Salida" ? "Cantidad salida" : "Cantidad"}
@@ -410,9 +357,7 @@ function RegistroEntradaSalida(props) {
 
                             />
                         </Form.Group>
-                    </Row>
 
-                    <Row className="mb-3">
                         <Form.Group as={Col} controlId="formHorizontalDescripcion" className="descripcionMP">
                             <Form.Label>
                                 Descripción
@@ -461,7 +406,7 @@ function RegistroEntradaSalida(props) {
 
 function initialFormData() {
     return {
-        materiaPrima: "",
+        articulo: "",
         tipo: "",
         descripcion: "",
         referencia: "",
@@ -474,15 +419,19 @@ function initialFormData() {
     }
 }
 
-function formatModelAlmacenMateriasPrimas(data) {
+function formatModelAlmacenes(data) {
     // console.log(data)
     const dataTemp = []
     data.forEach(data => {
         dataTemp.push({
             id: data._id,
             item: data.item,
-            folioAlmacen: data.folioAlmacen,
-            nombreMP: data.nombreMP,
+            folio: data.folio,
+            idArticulo: data.idArticulo,
+            folioArticulo: data.folioArticulo,
+            nombreArticulo: data.nombreArticulo,
+            sucursal: data.sucursal,
+            almacen: data.almacen,
             um: data.um,
             movimientos: data.movimientos,
             cantidadExistencia: data.cantidadExistencia,
