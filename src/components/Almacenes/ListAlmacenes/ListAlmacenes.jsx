@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import BasicModal from "../../Modal/BasicModal";
 // Terminan importaciones para la tabla
 import { useHistory } from "react-router-dom";
 import "./ListAlmacenes.scss"
 import moment from "moment";
-import { Badge, Container } from "react-bootstrap";
+import { Badge, Container, Button, Col, Form } from "react-bootstrap";
 import EliminaAlmacenes from '../EliminaAlmacenes';
 import ModificarAlmacenes from '../ModificarAlmacenes';
 import CambiarEstadoAlmacenes from '../CambiarEstadoAlmacenes';
@@ -223,7 +223,79 @@ function ListAlmacenMp(props) {
         rangeSeparatorText: 'de',
     };
 
+    const [filterText, setFilterText] = useState("");
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
+
+    // Defino barra de busqueda
+    const ClearButton = styled(Button)` 
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        height: 34px;
+        width: 32px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `;
+
+    const TextField = styled.input` 
+        height: 32px;
+        border-radius: 3px;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border: 1px solid #e5e5e5;
+        padding: 0 32px 0 16px;
+      &:hover {
+        cursor: pointer;
+      }
+    `;
+
+
+    const filteredItems = listAlmacenes.filter(
+        item => filterText == "" ? item.nombreArticulo.toLowerCase().includes(filterText.toLowerCase()) : item.nombreArticulo == filterText
+    );
+
+    const subHeaderComponentMemo = useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToogle(!resetPaginationToogle);
+                setFilterText('');
+            }
+        };
+
+        return (
+            <>
+                <Col></Col>
+                <Col>
+                    <div className="flex items-center mb-1">
+                        <Form.Control
+                            id="search"
+                            type="text"
+                            placeholder="Busqueda por nombre del articulo"
+                            aria-label="Search Input"
+                            value={filterText}
+                            onChange={e => setFilterText(e.target.value)}
+                        />
+                        <ClearButton
+                            type="button"
+                            variant="info"
+                            title="Limpiar la busqueda"
+                            onClick={handleClear}>
+                            X
+                        </ClearButton>
+                    </div>
+                </Col>
+                <Col></Col>
+            </>
+        );
+    }, [filterText, resetPaginationToogle]);
+
+
+
 
     return (
         <>
@@ -231,7 +303,9 @@ function ListAlmacenMp(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={listAlmacenes}
+                    data={filteredItems}
+                    subHeader
+                    subHeaderComponent={subHeaderComponentMemo}
                     progressPending={pending}
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}

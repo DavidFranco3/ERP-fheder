@@ -173,7 +173,7 @@ function Almacenes(props) {
                             almacenaAlmacen(e.target.value)
                         }}
                     >
-                        <option>Elige una opcion</option>
+                        <option>Elige una opción</option>
                         {map(almacenesRegistrados, (almacen, index) => (
                             <option key={index} value={almacen?.nombre} selected={almacenElegido == almacen?.nombre}>{almacen?.nombre}</option>
                         ))}

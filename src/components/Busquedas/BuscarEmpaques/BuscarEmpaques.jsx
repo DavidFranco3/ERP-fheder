@@ -59,7 +59,12 @@ function BuscarEmpaques(props) {
             //console.log(formData)
             setLoading(true);
             const dataTemp = {
-                descripcionEmpaque: valoresCliente.descripcionEmpaque
+                descripcionEmpaque: valoresCliente.descripcionEmpaque,
+
+                idArticulo: valoresCliente.id,
+                folioArticulo: valoresCliente.folio,
+                nombreArticulo: valoresCliente.descripcionEmpaque,
+                um: valoresCliente.um
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -310,12 +315,18 @@ function initialFormData() {
 
 function initialValues() {
     return {
-        descripcionPigmento: "",
+        id: "",
+        folio: "",
+        um: "",
+        descripcionEmpaque: "",
     }
 }
 
 function valoresAlmacenados(data) {
     return {
+        id: data._id,
+        folio: data.folio,
+        um: data.um,
         descripcionEmpaque: data.nombre,
     }
 }

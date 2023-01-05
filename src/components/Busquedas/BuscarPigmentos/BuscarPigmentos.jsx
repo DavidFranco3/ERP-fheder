@@ -59,7 +59,12 @@ function BuscarPigmentos(props) {
             //console.log(formData)
             setLoading(true);
             const dataTemp = {
-                descripcionPigmento: valoresCliente.descripcionPigmento
+                descripcionPigmento: valoresCliente.descripcionPigmento,
+                
+                idArticulo: valoresCliente.id,
+                folioArticulo: valoresCliente.folio,
+                nombreArticulo: valoresCliente.descripcionPigmento,
+                um: valoresCliente.um
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -311,12 +316,18 @@ function initialFormData() {
 function initialValues() {
     return {
         descripcionPigmento: "",
+        id: "",
+        folio: "",
+        um: "",
     }
 }
 
 function valoresAlmacenados(data) {
     return {
         descripcionPigmento: data.nombre,
+        id: data._id,
+        folio: data.folio,
+        um: data.um,
     }
 }
 

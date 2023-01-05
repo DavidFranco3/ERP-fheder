@@ -12,10 +12,11 @@ import { obtenerDatosInspeccion } from "../../../api/inspeccionMaterial";
 import { obtenerDatosProduccion } from "../../../api/produccion";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { getSucursal, getAlmacen } from '../../../api/auth';
-import BuscarEmpaque from '../../../page/BuscarArticuloAlmacen';
 import BuscarInsumos from '../../../page/BuscarInsumos';
 import BuscarMaterial from '../../../page/BuscarMaterial';
 import BuscarProducto from '../../../page/BuscarProducto';
+import BuscarEmpaque from '../../../page/BuscarEmpaque';
+import BuscarPigmento from '../../../page/BuscarPigmento';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import BasicModal from "../../Modal/BasicModal";
@@ -64,6 +65,20 @@ function RegistroEntradaSalida(props) {
     // Para la eliminacion fisica de usuarios
     const buscarProducto = (content) => {
         setTitulosModal("Buscar producto");
+        setContentModal(content);
+        setShowModal2(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarEmpaque = (content) => {
+        setTitulosModal("Buscar empaque");
+        setContentModal(content);
+        setShowModal2(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarPigmento = (content) => {
+        setTitulosModal("Buscar pigmento");
         setContentModal(content);
         setShowModal2(true);
     }
@@ -247,6 +262,8 @@ function RegistroEntradaSalida(props) {
                                 <option value="Materias primas">Materias primas</option>
                                 <option value="Insumos">Insumos</option>
                                 <option value="Productos">Productos</option>
+                                <option value="Empaques">Empaques</option>
+                                <option value="Pigmentos">Pigmentos</option>
                             </Form.Control>
                         </Form.Group>
 
@@ -342,6 +359,76 @@ function RegistroEntradaSalida(props) {
                                                     onClick={() => {
                                                         buscarProducto(
                                                             <BuscarProducto
+                                                                formData={formDataBusqueda}
+                                                                setFormData={setFormDataBusqueda}
+                                                                setShowModal={setShowModal2}
+                                                            />)
+                                                    }}
+                                                />
+                                            </div>
+                                        </Col>
+                                    </Form.Group>
+                                </>
+                            )
+                        }
+
+{
+                            formData.tipo === "Empaques" &&
+                            (
+                                <>
+                                    <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                                        <Form.Label>
+                                            Busqueda
+                                        </Form.Label>
+                                        <Col>
+                                            <div className="flex items-center mb-1">
+                                                <Form.Control
+                                                    type="text"
+                                                    defaultValue={formDataBusqueda.nombreArticulo}
+                                                    placeholder="Buscar empaque"
+                                                    name="nombreArticulo"
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="cursor-pointer py-2 -ml-6"
+                                                    icon={faSearch}
+                                                    onClick={() => {
+                                                        buscarEmpaque(
+                                                            <BuscarEmpaque
+                                                                formData={formDataBusqueda}
+                                                                setFormData={setFormDataBusqueda}
+                                                                setShowModal={setShowModal2}
+                                                            />)
+                                                    }}
+                                                />
+                                            </div>
+                                        </Col>
+                                    </Form.Group>
+                                </>
+                            )
+                        }
+
+{
+                            formData.tipo === "Pigmentos" &&
+                            (
+                                <>
+                                    <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                                        <Form.Label>
+                                            Busqueda
+                                        </Form.Label>
+                                        <Col>
+                                            <div className="flex items-center mb-1">
+                                                <Form.Control
+                                                    type="text"
+                                                    defaultValue={formDataBusqueda.nombreArticulo}
+                                                    placeholder="Buscar pigmento"
+                                                    name="nombreArticulo"
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="cursor-pointer py-2 -ml-6"
+                                                    icon={faSearch}
+                                                    onClick={() => {
+                                                        buscarPigmento(
+                                                            <BuscarPigmento
                                                                 formData={formDataBusqueda}
                                                                 setFormData={setFormDataBusqueda}
                                                                 setShowModal={setShowModal2}
