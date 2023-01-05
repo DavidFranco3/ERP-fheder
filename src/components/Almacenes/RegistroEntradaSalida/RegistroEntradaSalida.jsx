@@ -12,9 +12,26 @@ import { obtenerDatosInspeccion } from "../../../api/inspeccionMaterial";
 import { obtenerDatosProduccion } from "../../../api/produccion";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { getSucursal, getAlmacen } from '../../../api/auth';
+import BuscarEmpaque from '../../../page/BuscarArticuloAlmacen';
+import BuscarArticuloAlmacen from '../../../page/BuscarArticuloAlmacen';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
+import BasicModal from "../../Modal/BasicModal";
 
 function RegistroEntradaSalida(props) {
     const { setShowModal, location, history } = props;
+
+    // Para hacer uso del modal
+    const [showModal2, setShowModal2] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+        // Para la eliminacion fisica de usuarios
+        const buscarArticulo = (content) => {
+            setTitulosModal("Buscar articulo");
+            setContentModal(content);
+            setShowModal2(true);
+        }
 
     // Define el motivo de la salida
     const [motivoSalida, setMotivoSalida] = useState("");
@@ -91,7 +108,7 @@ function RegistroEntradaSalida(props) {
 
             try {
                 // Obtener los datos de la materia prima, para recuperar todos los movimientos y almacenar uno nuevo
-                listarMovimientosAlmacenes(almacenMP?.folio).then(response => {
+                listarMovimientosAlmacenes(formDataArticulo.folioArticulo).then(response => {
                     const { data } = response;
                     // console.log(data)
                     // const final = data.concat(dataMovimiento)
@@ -100,14 +117,14 @@ function RegistroEntradaSalida(props) {
 
                     // Validar tipo y determinar nuevas existencias
                     if (formData.tipoOperacion === "Entrada") {
-                        const nuevaExistenciaTotal = parseInt(almacenMP?.cantidadExistencia) + parseInt(formData.cantidad)
+                        const nuevaExistenciaTotal = parseInt(formDataArticulo.cantidadExistencia) + parseInt(formData.cantidad)
 
                         const dataMovimiento = {
                             fecha: formData.fecha,
-                            articulo: almacenMP.nombreMP,
+                            articulo: formDataArticulo.nombreArticulo,
                             almacen: getAlmacen(),
                             sucursal: getSucursal(),
-                            um: formData.um == "" ? almacenMP?.um : formData.um,
+                            um: formDataArticulo.um,
                             tipo: formData.tipoOperacion,
                             descripcion: formData.descripcion,
                             cantidadExistencia: formData.cantidad,
@@ -124,7 +141,7 @@ function RegistroEntradaSalida(props) {
                         //console.log("datos finales ", movimientosFinal)
 
                         // console.log(dataTempFinal)
-                        obtenerDatosAlmacenesFolio(almacenMP?.folio).then(response => {
+                        obtenerDatosAlmacenesFolio(formDataArticulo.folioArticulo).then(response => {
                             const { data } = response;
                             // console.log(data)
                             const { _id } = data;
@@ -136,7 +153,7 @@ function RegistroEntradaSalida(props) {
                                 const { mensaje, datos } = data;
                                 toast.success(mensaje)
                                 setLoading(false)
-                                LogsInformativos("Se han actualizado las existencias de la materia prima " + almacenMP.nombreMP, dataTempFinal)
+                                LogsInformativos("Se han actualizado las existencias de la materia prima " + formDataArticulo.nombreArticulo, dataTempFinal)
                                 history.push({
                                     search: queryString.stringify(""),
                                 });
@@ -149,18 +166,18 @@ function RegistroEntradaSalida(props) {
                     if (formData.tipoOperacion === "Salida") {
 
                         // console.log("Afecta existencias ov")
-                        if (parseInt(almacenMP?.cantidadExistencia) - parseInt(formData.cantidad) < 0) {
+                        if (parseInt(formDataArticulo.cantidadExistencia) - parseInt(formData.cantidad) < 0) {
                             toast.warning("Las existencias en el almacen no pueden satisfacer la solicitud")
                             setLoading(false);
                         } else {
-                            const nuevaExistenciaTotal = parseInt(almacenMP?.cantidadExistencia) - parseInt(formData.cantidad)
+                            const nuevaExistenciaTotal = parseInt(formDataArticulo.cantidadExistencia) - parseInt(formData.cantidad)
 
                             const dataMovimientoSalida = {
                                 fecha: formData.fecha,
-                                articulo: almacenMP.nombreMP,
+                                articulo: formDataArticulo.nombreArticulo,
                                 almacen: getAlmacen(),
                                 sucursal: getSucursal(),
-                                um: formData.um == "" ? almacenMP?.um : formData.um,
+                                um: formDataArticulo.um,
                                 tipo: formData.tipoOperacion,
                                 descripcion: formData.descripcion,
                                 cantidadExistencia: formData.cantidad,
@@ -175,7 +192,7 @@ function RegistroEntradaSalida(props) {
                                 cantidadExistencia: nuevaExistenciaTotal.toString()
                             }
 
-                            obtenerDatosAlmacenesFolio(almacenMP?.folio).then(response => {
+                            obtenerDatosAlmacenesFolio(formDataArticulo.folioArticulo).then(response => {
                                 const { data } = response;
                                 // console.log(data)
                                 const { _id } = data;
@@ -187,7 +204,7 @@ function RegistroEntradaSalida(props) {
                                     const { mensaje, datos } = data;
                                     toast.success(mensaje)
                                     setLoading(false)
-                                    LogsInformativos("Se han actualizado las existencias de la materia prima " + almacenMP.nombreMP, dataTempFinal)
+                                    LogsInformativos("Se han actualizado las existencias de la materia prima " + formDataArticulo.nombreArticulo, dataTempFinal)
                                     history.push({
                                         search: queryString.stringify(""),
                                     });
@@ -207,26 +224,13 @@ function RegistroEntradaSalida(props) {
         }
     }
 
-    // Para almacenar la materia prima seleccionada
-    const [almacenMP, setAlmacenMP] = useState([]);
-
-    const handleMateriaPrima = (articulo) => {
-        // console.log(articulo)
-        // {materiaprima?.folioMP + "/" + materiaprima?.nombre + "/" + materiaprima?.um + "/" + materiaprima?.existenciasOV + "/" + materiaprima?.existenciasStock + "/" + materiaprima?.existenciasTotales}
-        const temp = articulo.split("/")
-        // console.log(temp)
-
-        // console.log(dataTemp)
-        setAlmacenMP({
-            folio: temp[0],
-            nombreMP: temp[1],
-            um: temp[2],
-            cantidadExistencia: temp[3]
-        })
-    }
+    // Para almacenar la informacion del formulario
+    const [formDataArticulo, setFormDataArticulo] = useState(initialFormDataArticulo());
+    console.log(formDataArticulo)
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataArticulo({ ...formDataArticulo, [e.target.name]: e.target.value })
     }
 
     // Para almacenar el lote 
@@ -282,26 +286,30 @@ function RegistroEntradaSalida(props) {
 
                         <Form.Group as={Col} controlId="formGridMateriaPrima" className="materiaPrim">
                             <Form.Label>
-                                Selecciona
+                                Articulo
                             </Form.Label>
-                            <Form.Control as="select"
-                                onChange={(e) => {
-                                    handleMateriaPrima(e.target.value)
-                                }}
-                                defaultValue={formData.articulo}
-                                name="articulo"
-                                required
-                            >
-                                <option>Elige una opción</option>
-                                {map(listArticulos, (articulo, index) => (
-                                    <option
-                                        key={index}
-                                        value={articulo?.folio + "/" + articulo?.nombreArticulo + "/" + articulo?.um + "/" + articulo?.cantidadExistencia}
-                                    >
-                                        {articulo?.nombreArticulo}
-                                    </option>
-                                ))}
-                            </Form.Control>
+                            <Col>
+                                <div className="flex items-center mb-1">
+                                    <Form.Control
+                                        type="text"
+                                        defaultValue={formDataArticulo.nombreArticulo}
+                                        placeholder="Buscar articulo"
+                                        name="nombreArticulo"
+                                    />
+                                    <FontAwesomeIcon
+                                        className="cursor-pointer py-2 -ml-6"
+                                        icon={faSearch}
+                                        onClick={() => {
+                                            buscarArticulo(
+                                                <BuscarArticuloAlmacen
+                                                    formData={formDataArticulo}
+                                                    setFormData={setFormDataArticulo}
+                                                    setShowModal={setShowModal2}
+                                                />)
+                                        }}
+                                    />
+                                </div>
+                            </Col>
                         </Form.Group>
                     </Row>
 
@@ -314,7 +322,7 @@ function RegistroEntradaSalida(props) {
                                 type="text"
                                 placeholder="Escribe la unidad de medida"
                                 name="um"
-                                defaultValue={formData.um == "" ? almacenMP?.um : formData.um}
+                                defaultValue={formDataArticulo.um}
                             />
                         </Form.Group>
 
@@ -398,7 +406,9 @@ function RegistroEntradaSalida(props) {
                             </Button>
                         </Col>
                     </Form.Group>
-
+                    <BasicModal show={showModal2} setShow={setShowModal} title={titulosModal}>
+                        {contentModal}
+                    </BasicModal>
                 </Form>
             </div>
         </>
@@ -418,6 +428,15 @@ function initialFormData() {
         referenciaOP: "",
         lote: "",
         um: "",
+    }
+}
+
+function initialFormDataArticulo() {
+    return {
+        folioArticulo: "",
+        nombreArticulo: "",
+        um: "",
+        cantidadExistencia: ""
     }
 }
 

@@ -143,6 +143,7 @@ function ListClientes(props) {
             reorder: false,
             selector: row => (
                 <>
+                <div className="flex justify-end items-center space-x-4">
                     <Badge
                         bg="success"
                         title="Modificar"
@@ -168,6 +169,7 @@ function ListClientes(props) {
                     >
                         <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
                     </Badge>
+                    </div>
                 </>
             )
         }
