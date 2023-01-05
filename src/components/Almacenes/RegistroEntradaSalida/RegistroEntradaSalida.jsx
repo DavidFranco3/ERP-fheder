@@ -3,7 +3,7 @@ import "./RegistroEntradaSalida.scss"
 import { listarMateriaPrima } from "../../../api/materiaPrima";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import { map, size, values } from "lodash";
-import { listarRegistrosAlmacen, listarMovimientosAlmacenes, obtenerDatosAlmacenesFolio, registraMovimientosAlmacenes } from "../../../api/almacenes";
+import { obtenerItemAlmacen, obtenerFolioActualAlmacenes, registroInicialAlmacenes } from "../../../api/almacenes";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
@@ -13,7 +13,9 @@ import { obtenerDatosProduccion } from "../../../api/produccion";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { getSucursal, getAlmacen } from '../../../api/auth';
 import BuscarEmpaque from '../../../page/BuscarArticuloAlmacen';
-import BuscarArticuloAlmacen from '../../../page/BuscarArticuloAlmacen';
+import BuscarInsumos from '../../../page/BuscarInsumos';
+import BuscarMaterial from '../../../page/BuscarMaterial';
+import BuscarProducto from '../../../page/BuscarProducto';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import BasicModal from "../../Modal/BasicModal";
@@ -41,6 +43,30 @@ function RegistroEntradaSalida(props) {
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+    // Para almacenar los datos del formulario
+    const [formDataBusqueda, setFormDataBusqueda] = useState(initialFormDataBusqueda());
+
+    // Para la eliminacion fisica de usuarios
+    const buscarMaterial = (content) => {
+        setTitulosModal("Buscar material");
+        setContentModal(content);
+        setShowModal2(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarInsumo = (content) => {
+        setTitulosModal("Buscar insumo");
+        setContentModal(content);
+        setShowModal2(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarProducto = (content) => {
+        setTitulosModal("Buscar producto");
+        setContentModal(content);
+        setShowModal2(true);
+    }
 
     // Para almacenar el listado de productos activos
     const [listProduccion, setListProduccion] = useState(null);
@@ -74,20 +100,16 @@ function RegistroEntradaSalida(props) {
     // Para almacenar la fecha actual
     const [fechaActual, setFechaActual] = useState(new Date);
 
-    // Para almacenar el listado de materias primas
-    const [listArticulos, setListArticulos] = useState(null);
+    // Para almacenar el folio actual
+    const [itemActual, setItemActual] = useState("");
 
     useEffect(() => {
         try {
-            listarRegistrosAlmacen(getSucursal(), getAlmacen()).then(response => {
+            obtenerItemAlmacen().then(response => {
                 const { data } = response;
                 // console.log(data)
-                if (!listArticulos && data) {
-                    setListArticulos(formatModelAlmacenes(data));
-                } else {
-                    const datosArticulos = formatModelAlmacenes(data);
-                    setListArticulos(datosArticulos);
-                }
+                const { item } = data;
+                setItemActual(item)
             }).catch(e => {
                 console.log(e)
             })
@@ -98,125 +120,51 @@ function RegistroEntradaSalida(props) {
 
     const onSubmit = (e) => {
         e.preventDefault()
+        // console.log(formData)
 
-
-        if (!formData.fecha || !formData.tipoOperacion || !formData.cantidad || !formData.descripcion) {
-            // console.log("Valores "+ validCount + " del form " + size(formData))
+        if (!formDataBusqueda.folioArticulo) {
             toast.warning("Completa el formulario")
         } else {
             setLoading(true)
-
             try {
-                // Obtener los datos de la materia prima, para recuperar todos los movimientos y almacenar uno nuevo
-                listarMovimientosAlmacenes(formDataArticulo.folioArticulo).then(response => {
+                obtenerFolioActualAlmacenes().then(response => {
                     const { data } = response;
                     // console.log(data)
-                    // const final = data.concat(dataMovimiento)
-                    const dataAlmacenada = data
-                    // console.log(final)
+                    const { noAlmacen } = data;
 
-                    // Validar tipo y determinar nuevas existencias
-                    if (formData.tipoOperacion === "Entrada") {
-                        const nuevaExistenciaTotal = parseInt(formDataArticulo.cantidadExistencia) + parseInt(formData.cantidad)
+                    // console.log(temp)
 
-                        const dataMovimiento = {
-                            fecha: formData.fecha,
-                            articulo: formDataArticulo.nombreArticulo,
-                            almacen: getAlmacen(),
-                            sucursal: getSucursal(),
-                            um: formDataArticulo.um,
-                            tipo: formData.tipoOperacion,
-                            descripcion: formData.descripcion,
-                            cantidadExistencia: formData.cantidad,
-                        }
-
-                        const finalEntrada = data.concat(dataMovimiento)
-
-                        const dataTempFinal = {
-                            fecha: formData.fecha,
-                            movimientos: finalEntrada,
-                            cantidadExistencia: nuevaExistenciaTotal.toString()
-                        }
-
-                        //console.log("datos finales ", movimientosFinal)
-
-                        // console.log(dataTempFinal)
-                        obtenerDatosAlmacenesFolio(formDataArticulo.folioArticulo).then(response => {
-                            const { data } = response;
-                            // console.log(data)
-                            const { _id } = data;
-                            registraMovimientosAlmacenes(_id, dataTempFinal).then(response => {
-                                const { data } = response;
-
-                                //LogTrackingActualizacion(ordenVenta, "En almacen de materia prima", "5")
-                                //console.log(response)
-                                const { mensaje, datos } = data;
-                                toast.success(mensaje)
-                                setLoading(false)
-                                LogsInformativos("Se han actualizado las existencias de la materia prima " + formDataArticulo.nombreArticulo, dataTempFinal)
-                                history.push({
-                                    search: queryString.stringify(""),
-                                });
-                                setShowModal(false)
-                            })
-
-                        })
-
-                    }
-                    if (formData.tipoOperacion === "Salida") {
-
-                        // console.log("Afecta existencias ov")
-                        if (parseInt(formDataArticulo.cantidadExistencia) - parseInt(formData.cantidad) < 0) {
-                            toast.warning("Las existencias en el almacen no pueden satisfacer la solicitud")
-                            setLoading(false);
-                        } else {
-                            const nuevaExistenciaTotal = parseInt(formDataArticulo.cantidadExistencia) - parseInt(formData.cantidad)
-
-                            const dataMovimientoSalida = {
-                                fecha: formData.fecha,
-                                articulo: formDataArticulo.nombreArticulo,
-                                almacen: getAlmacen(),
-                                sucursal: getSucursal(),
-                                um: formDataArticulo.um,
-                                tipo: formData.tipoOperacion,
-                                descripcion: formData.descripcion,
-                                cantidadExistencia: formData.cantidad,
-                            }
-
-                            const finalSalida = data.concat(dataMovimientoSalida)
-
-
-                            const dataTempFinal = {
-                                fecha: formData.fecha,
-                                movimientos: finalSalida,
-                                cantidadExistencia: nuevaExistenciaTotal.toString()
-                            }
-
-                            obtenerDatosAlmacenesFolio(formDataArticulo.folioArticulo).then(response => {
-                                const { data } = response;
-                                // console.log(data)
-                                const { _id } = data;
-                                registraMovimientosAlmacenes(_id, dataTempFinal).then(response => {
-                                    const { data } = response;
-
-                                    LogTrackingActualizacion(ordenVenta, "En almacen de materia prima", "5")
-
-                                    const { mensaje, datos } = data;
-                                    toast.success(mensaje)
-                                    setLoading(false)
-                                    LogsInformativos("Se han actualizado las existencias de la materia prima " + formDataArticulo.nombreArticulo, dataTempFinal)
-                                    history.push({
-                                        search: queryString.stringify(""),
-                                    });
-                                    setShowModal(false)
-                                })
-
-                            })
-                        }
-                        // Termina afectaciones en existencias de ov para salida
-
+                    const dataTemp = {
+                        item: itemActual,
+                        folio: noAlmacen,
+                        idArticulo: formDataBusqueda.idArticulo,
+                        folioArticulo: formDataBusqueda.folioArticulo,
+                        nombreArticulo: formDataBusqueda.nombreArticulo,
+                        tipo: formData.tipoOperacion,
+                        sucursal: getSucursal(),
+                        almacen: getAlmacen(),
+                        fecha: formData.fecha,
+                        descripcion: formData.descripcion,
+                        um: formDataBusqueda.um,
+                        cantidadExistencia: formData.cantidad,
+                        estado: "true"
                     }
 
+                    // console.log(dataTemp)
+                    registroInicialAlmacenes(dataTemp).then(response => {
+                        const { data } = response;
+                        const { mensaje, datos } = data;
+                        toast.success(mensaje);
+                        LogsInformativos("Se ha registrado el articulo " + formData.nombreArticulo, dataTemp)
+                        history.push({
+                            search: queryString.stringify(""),
+                        });
+                        setShowModal(false)
+                    }).catch(e => {
+                        console.log(e)
+                    })
+                }).catch(e => {
+                    console.log(e)
                 })
             } catch (e) {
                 console.log(e)
@@ -231,6 +179,7 @@ function RegistroEntradaSalida(props) {
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
         setFormDataArticulo({ ...formDataArticulo, [e.target.name]: e.target.value })
+        setFormDataBusqueda({ ...formDataBusqueda, [e.target.name]: e.target.value })
     }
 
     // Para almacenar el lote 
@@ -284,33 +233,126 @@ function RegistroEntradaSalida(props) {
                             />
                         </Form.Group>
 
-                        <Form.Group as={Col} controlId="formGridMateriaPrima" className="materiaPrim">
-                            <Form.Label>
-                                Articulo
+                        <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                            <Form.Label align="center">
+                                Que es lo que se registra
                             </Form.Label>
-                            <Col>
-                                <div className="flex items-center mb-1">
-                                    <Form.Control
-                                        type="text"
-                                        defaultValue={formDataArticulo.nombreArticulo}
-                                        placeholder="Buscar articulo"
-                                        name="nombreArticulo"
-                                    />
-                                    <FontAwesomeIcon
-                                        className="cursor-pointer py-2 -ml-6"
-                                        icon={faSearch}
-                                        onClick={() => {
-                                            buscarArticulo(
-                                                <BuscarArticuloAlmacen
-                                                    formData={formDataArticulo}
-                                                    setFormData={setFormDataArticulo}
-                                                    setShowModal={setShowModal2}
-                                                />)
-                                        }}
-                                    />
-                                </div>
-                            </Col>
+                            <Form.Control
+                                as="select"
+                                name="tipo"
+                                defaultValue={formData.tipo}
+                            >
+                                <option >Elige....</option>
+                                <option value="Materias primas">Materias primas</option>
+                                <option value="Insumos">Insumos</option>
+                                <option value="Productos">Productos</option>
+                            </Form.Control>
                         </Form.Group>
+
+                        {
+                            formData.tipo === "Materias primas" &&
+                            (
+                                <>
+                                    <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                                        <Form.Label>
+                                            Busqueda
+                                        </Form.Label>
+                                        <Col>
+                                            <div className="flex items-center mb-1">
+                                                <Form.Control
+                                                    type="text"
+                                                    defaultValue={formDataBusqueda.nombreArticulo}
+                                                    placeholder="Buscar materia prima"
+                                                    name="nombreArticulo"
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="cursor-pointer py-2 -ml-6"
+                                                    icon={faSearch}
+                                                    onClick={() => {
+                                                        buscarMaterial(
+                                                            <BuscarMaterial
+                                                                formData={formDataBusqueda}
+                                                                setFormData={setFormDataBusqueda}
+                                                                setShowModal={setShowModal2}
+                                                            />)
+                                                    }}
+                                                />
+                                            </div>
+                                        </Col>
+                                    </Form.Group>
+                                </>
+                            )
+                        }
+
+                        {
+                            formData.tipo === "Insumos" &&
+                            (
+                                <>
+                                    <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                                        <Form.Label>
+                                            Busqueda
+                                        </Form.Label>
+                                        <Col>
+                                            <div className="flex items-center mb-1">
+                                                <Form.Control
+                                                    type="text"
+                                                    defaultValue={formDataBusqueda.nombreArticulo}
+                                                    placeholder="Buscar insumo"
+                                                    name="nombreArticulo"
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="cursor-pointer py-2 -ml-6"
+                                                    icon={faSearch}
+                                                    onClick={() => {
+                                                        buscarInsumo(
+                                                            <BuscarInsumos
+                                                                formData={formDataBusqueda}
+                                                                setFormData={setFormDataBusqueda}
+                                                                setShowModal={setShowModal2}
+                                                            />)
+                                                    }}
+                                                />
+                                            </div>
+                                        </Col>
+                                    </Form.Group>
+                                </>
+                            )
+                        }
+
+                        {
+                            formData.tipo === "Productos" &&
+                            (
+                                <>
+                                    <Form.Group as={Col} controlId="formGridPorcentaje scrap">
+                                        <Form.Label>
+                                            Busqueda
+                                        </Form.Label>
+                                        <Col>
+                                            <div className="flex items-center mb-1">
+                                                <Form.Control
+                                                    type="text"
+                                                    defaultValue={formDataBusqueda.nombreArticulo}
+                                                    placeholder="Buscar producto"
+                                                    name="nombreArticulo"
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="cursor-pointer py-2 -ml-6"
+                                                    icon={faSearch}
+                                                    onClick={() => {
+                                                        buscarProducto(
+                                                            <BuscarProducto
+                                                                formData={formDataBusqueda}
+                                                                setFormData={setFormDataBusqueda}
+                                                                setShowModal={setShowModal2}
+                                                            />)
+                                                    }}
+                                                />
+                                            </div>
+                                        </Col>
+                                    </Form.Group>
+                                </>
+                            )
+                        }
                     </Row>
 
                     <Row className="mb-3">
@@ -322,7 +364,7 @@ function RegistroEntradaSalida(props) {
                                 type="text"
                                 placeholder="Escribe la unidad de medida"
                                 name="um"
-                                defaultValue={formDataArticulo.um}
+                                defaultValue={formDataBusqueda.um}
                             />
                         </Form.Group>
 
@@ -437,6 +479,15 @@ function initialFormDataArticulo() {
         nombreArticulo: "",
         um: "",
         cantidadExistencia: ""
+    }
+}
+
+function initialFormDataBusqueda() {
+    return {
+        idArticulo: "",
+        folioArticulo: "",
+        nombreArticulo: "",
+        um: "",
     }
 }
 

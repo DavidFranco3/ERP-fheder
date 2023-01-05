@@ -68,29 +68,29 @@ function ListAlmacenMp(props) {
             reorder: false
         },
         {
-            name: "Existencia",
+            name: "Tipo",
+            selector: row => row.tipo,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Cantidad E/S",
             selector: row => row.cantidadExistencia,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Último movimiento",
-            selector: row => (
-                <>
-                    {
-                        row.movimientos.length !== 0 ?
-                            (
-                                moment(row.fecha).format('LL')
-                            )
-                            :
-                            (
-                                <>
-                                    No hay movimientos
-                                </>
-                            )
-                    }
-                </>
+            name: "Descripción",
+            selector: row => row.descripcion,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Fecha",
+            selector: row => (moment(row.fecha).format('LL')
             ),
             sortable: false,
             center: true,

@@ -131,22 +131,6 @@ function Almacenes(props) {
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
-                            title="Registrar una existencia"
-                            onClick={() => {
-                                nuevoRegistro(
-                                    <RegistroExistenciasAlmacenes
-                                        setShowModal={setShowModal}
-                                        location={location}
-                                        history={history}
-                                    />
-                                )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                        </Button>
-
-                        <Button
-                            className="btnRegistroVentas"
                             title="Registrar una entrada/salida"
                             onClick={() => {
                                 nuevaEntradaSalida(
@@ -159,16 +143,6 @@ function Almacenes(props) {
                             }}
                         >
                             <FontAwesomeIcon icon={faCirclePlus} /> Nueva E / S
-                        </Button>
-
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú almacenes"
-                            onClick={() => {
-                                rutaMovimientos()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Movimientos
                         </Button>
 
                         <Button
@@ -268,6 +242,8 @@ function formatModelAlmacenes(data) {
             sucursal: data.sucursal,
             almacen: data.almacen,
             um: data.um,
+            tipo: data.tipo,
+            descripcion: data.descripcion,
             movimientos: data.movimientos,
             cantidadExistencia: data.cantidadExistencia,
             estado: data.estado,
