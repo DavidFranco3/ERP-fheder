@@ -141,6 +141,7 @@ function RegistroEntradaSalida(props) {
                         folioArticulo: formDataBusqueda.folioArticulo,
                         nombreArticulo: formDataBusqueda.nombreArticulo,
                         tipo: formData.tipoOperacion,
+                        tipoArticulo: formData.tipo,
                         sucursal: getSucursal(),
                         almacen: getAlmacen(),
                         fecha: formData.fecha,

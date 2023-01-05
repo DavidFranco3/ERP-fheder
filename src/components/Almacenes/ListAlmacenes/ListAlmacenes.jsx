@@ -102,7 +102,7 @@ function ListAlmacenMp(props) {
             reorder: false,
             selector: row => (
                 <>
-                    {/*<Badge
+                    <Badge
                         bg="success"
                         className="editarProveedor"
                         title="Modificar"
@@ -118,7 +118,7 @@ function ListAlmacenMp(props) {
                         }}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>*/}
+                    </Badge>
                     <Badge
                         bg="danger"
                         className="eliminarProveedor"

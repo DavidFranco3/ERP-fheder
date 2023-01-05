@@ -57,7 +57,6 @@ import Empaques from "../page/Empaques";
 import Sucursales from "../page/Sucursales";
 import GestionAlmacen from "../page/GestionAlmacen";
 import Almacenes from "../page/Almacenes";
-import MovimientosAlmacenes from "../page/MovimientosAlmacenes";
 import Error404 from "../page/Error404";
 
 // importacion de dashboards
@@ -70,16 +69,6 @@ import DashboardCalidad from "../components/Dashboards/DashboardCalidad";
 import DashboardMantenimiento from "../components/Dashboards/DashboardMantenimiento";
 import DashboardCatalogos from "../components/Dashboards/DashboardCatalogos";
 import DashboardConfiguracion from "../components/Dashboards/DashboardConfiguracion";
-
-// Importacion de almacenes
-import AlmacenMP from "../page/AlmacenMP";
-import AlmacenPt from "../page/AlmacenPT";
-import AlmacenGeneral from "../page/AlmacenGeneral";
-
-// Listado de movimientos de materia prima en almacen
-import MovimientosAlmacenMP from "../page/MovimientosAlmacenMP";
-import MovimientosAlmacenPT from "../page/MovimientosAlmacenPT";
-import MovimientosAlmacenGeneral from "../page/MovimientosAlmacenGeneral";
 
 // Importacion de componentes de vista previa de vista PDF
 import VistaPrevia from "../components/Ventas/VistaPrevia";
@@ -220,11 +209,6 @@ export default [
         path: "/Almacenes",
         exact: true,
         page: Almacenes
-    },
-    {
-        path: "/MovimientosAlmacenes",
-        exact: true,
-        page: MovimientosAlmacenes
     },
     {
         path: "/RegistraRequerimientosPlaneacion",
@@ -406,12 +390,6 @@ export default [
         exact: true,
         page: ModificaReporteProduccion
     },
-    //
-    {
-        path: "/AlmacenGeneral/Movimientos/:folioAlmacen",
-        exact: true,
-        page: MovimientosAlmacenGeneral
-    },
     {
         path: "/RegistroCompras",
         exact: true,
@@ -543,24 +521,9 @@ export default [
         page: MatrizProductos
     },
     {
-        path: "/MovimientosAlmacenGeneral/:folioAlmacen",
-        exact: true,
-        page: MovimientosAlmacenGeneral
-    },
-    {
-        path: "/MovimientosAlmacenPT/:folioMP",
-        exact: true,
-        page: MovimientosAlmacenPT
-    },
-    {
         path: "/AlertasCalidad",
         exact: true,
         page: AlertasCalidad
-    },
-    {
-        path: "/MovimientosAlmacenMP/:folioAlmacen",
-        exact: true,
-        page: MovimientosAlmacenMP
     },
     {
         path: "/Devoluciones",
@@ -701,21 +664,6 @@ export default [
         path: "/Clientes",
         exact: true,
         page: Clientes
-    },
-    {
-        path: "/AlmacenGeneral",
-        exact: true,
-        page: AlmacenGeneral
-    },
-    {
-        path: "/AlmacenPT",
-        exact: true,
-        page: AlmacenPt
-    },
-    {
-        path: "/AlmacenMP",
-        exact: true,
-        page: AlmacenMP
     },
     {
         path: "/Tracking",

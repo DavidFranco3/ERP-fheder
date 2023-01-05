@@ -6,7 +6,6 @@ import { listarRegistrosAlmacen } from "../../api/almacenes";
 import ListAlmacenes from "../../components/Almacenes/ListAlmacenes";
 import { withRouter, useHistory } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
-import RegistroExistenciasAlmacenes from "../../components/Almacenes/RegistroExistenciasAlmacenes";
 import RegistroEntradaSalida from "../../components/Almacenes/RegistroEntradaSalida";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -243,6 +242,8 @@ function formatModelAlmacenes(data) {
             almacen: data.almacen,
             um: data.um,
             tipo: data.tipo,
+            fecha: data.fecha,
+            tipoArticulo: data.tipoArticulo,
             descripcion: data.descripcion,
             movimientos: data.movimientos,
             cantidadExistencia: data.cantidadExistencia,

@@ -103,11 +103,10 @@ function EliminaAlmacenes(props) {
 
                 {/* Botones de acciones */}
                 <Form.Group as={Row} className="botones">
-                    <Row>
                         <Col>
                             <Button
                                 type="submit"
-                                title="Eliminar el registro"
+                                title="Eliminar información del movimiento"
                                 variant="success"
                                 className="registrar"
                             >
@@ -126,8 +125,7 @@ function EliminaAlmacenes(props) {
                                 Cancelar
                             </Button>
                         </Col>
-                    </Row>
-                </Form.Group>
+                    </Form.Group>
             </Form>
         </>
     );

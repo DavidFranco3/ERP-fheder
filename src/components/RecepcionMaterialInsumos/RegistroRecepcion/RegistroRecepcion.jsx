@@ -17,8 +17,6 @@ import { LogRegistroPlaneacion } from "../../Planeacion/Gestion/GestionPlaneacio
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOC from '../../../page/BuscarOC';
-import { LogRegistroAlmacenMP, LogRegistroMovimientoAlmacenMP } from '../../AlmacenMP/Gestion/GestionAlmacenMP';
-import { LogRegistroAlmacenGeneral, LogRegistroMovimientoAlmacenGeneral } from '../../AlmacenGeneral/Gestion/GestionAlmacenGeneral';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function RegistroRecepcion(props) {
@@ -329,14 +327,6 @@ function RegistroRecepcion(props) {
             setListProductosCargados(
                 [...listProductosCargados, dataTemp]
             );
-
-            if (tipoMercancia == "Material") {
-                LogRegistroAlmacenMP(folio, temp[2], um, cantidad);
-                LogRegistroMovimientoAlmacenMP(formData.fecha, folio, temp[2], um, cantidad);
-            } else {
-                LogRegistroAlmacenGeneral(folio, temp[2], um, cantidad);
-                LogRegistroMovimientoAlmacenGeneral(formData.fecha, folio, temp[2], um, cantidad);
-            }
 
             setCargaProductos(initialFormDataProductos)
             document.getElementById("producto").value = "Elige una opción"
