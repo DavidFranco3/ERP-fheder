@@ -7,6 +7,7 @@ import moment from "moment";
 import { Badge, Container } from "react-bootstrap";
 import EliminaAlmacenes from '../EliminaAlmacenes';
 import ModificarAlmacenes from '../ModificarAlmacenes';
+import CambiarEstadoAlmacenes from '../CambiarEstadoAlmacenes';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
@@ -34,6 +35,20 @@ function ListAlmacenMp(props) {
     // Para editar los detalles de la materia prima que esta en almacen
     const modificarAlmacenes = (content) => {
         setTitulosModal("Modificando");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de clientes
+    const eliminaLogicaArticulos = (content) => {
+        setTitulosModal("Deshabilitando articulo");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de clientes
+    const habilitaArticulos = (content) => {
+        setTitulosModal("Habilitando articulo");
         setContentModal(content);
         setShowModal(true);
     }
@@ -95,6 +110,54 @@ function ListAlmacenMp(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            sortable: false,
+            center: true,
+            reorder: false,
+            selector: row => row.estado === "true" ?
+                (
+                    <>
+                        <Badge
+                            bg="success" 
+                            className="editar"
+                            title="Deshabilitar articulo"
+                            onClick={() => {
+                                eliminaLogicaArticulos(
+                                    <CambiarEstadoAlmacenes
+                                        datos={row}
+                                        setShowModal={setShowModal}
+                                        history={history}
+                                    />
+                                )
+                            }}
+                        >
+                            Activo
+                        </Badge>
+                    </>
+                )
+                :
+                (
+                    <>
+                        <Badge
+                            bg="danger"
+                            className="eliminar"
+                            title="Habilitar articulo"
+                            onClick={() => {
+                                habilitaArticulos(
+                                    <CambiarEstadoAlmacenes
+                                        datos={row}
+                                        setShowModal={setShowModal}
+                                        history={history}
+                                    />
+                                )
+                            }}
+                        >
+                            Inactivo
+                        </Badge>
+                    </>
+                )
         },
         {
             name: 'Acciones',

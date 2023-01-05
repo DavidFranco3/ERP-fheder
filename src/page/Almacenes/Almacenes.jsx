@@ -124,7 +124,7 @@ function Almacenes(props) {
                 <Row>
                     <Col xs={12} md={8} className="tituloPrincipal">
                         <h1>
-                            Existencias de almacenes
+                            Almacenes
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
@@ -141,7 +141,7 @@ function Almacenes(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Nueva E / S
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar E / S
                         </Button>
 
                         <Button
