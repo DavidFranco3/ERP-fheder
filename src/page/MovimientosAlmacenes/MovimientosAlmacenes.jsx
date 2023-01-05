@@ -1,13 +1,13 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useHistory, useParams, withRouter } from "react-router-dom";
-import { listarMovimientosAlmacenes, obtenerDatosAlmacenesFolio } from "../../api/almacenes";
+import { listarMovimientosGeneral, obtenerDatosAlmacenesFolio } from "../../api/almacenes";
 import { Alert, Badge, Button, Col, Row, Spinner } from "react-bootstrap";
 import ListMovimientosAlmacenes from "../../components/Almacenes/ListMovimientosAlmacenes";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getAlmacen, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 
 function MovimientosAlmacenes(props) {
@@ -37,9 +37,9 @@ function MovimientosAlmacenes(props) {
 
     useEffect(() => {
         try {
-            listarMovimientosAlmacenes(folio).then(response => {
+            listarMovimientosGeneral(getSucursal(), getAlmacen()).then(response => {
                 const { data } = response;
-                //console.log(response)
+                // console.log(response)
                 // console.log(data)
                 if (!listMovimientosAlmacenes && data) {
                     setListMovimientosAlmacenes(formatModelMovimientosAlmacenes(data));
@@ -53,27 +53,6 @@ function MovimientosAlmacenes(props) {
 
             // Lista datos del alamcen
             // Termina listado de datos del almacen
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
-    // Almacena la informacion de la materia prima en el almacen
-    const [infoAlmacenes, setInfoAlmacenes] = useState(null);
-
-    useEffect(() => {
-        try {
-            obtenerDatosAlmacenesFolio(folio).then(response => {
-                const { data } = response;
-                // console.log(data)
-                if (!infoAlmacenes && data) {
-                    setInfoAlmacenes(formatModelAlmacenes(data));
-                } else {
-                    setInfoAlmacenes(formatModelAlmacenes(data));
-                }
-            }).catch(e => {
-                console.log(e)
-            })
         } catch (e) {
             console.log(e)
         }
@@ -115,7 +94,6 @@ function MovimientosAlmacenes(props) {
                             <Suspense fallback={<Spinner />}>
                                 <ListMovimientosAlmacenes
                                     listMovimientosAlmacenes={listMovimientosAlmacenes}
-                                    infoAlmacenes={infoAlmacenes}
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}

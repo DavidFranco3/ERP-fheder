@@ -222,7 +222,7 @@ export default [
         page: Almacenes
     },
     {
-        path: "/MovimientosAlmacenes/:folio",
+        path: "/MovimientosAlmacenes",
         exact: true,
         page: MovimientosAlmacenes
     },

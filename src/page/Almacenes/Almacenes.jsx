@@ -115,6 +115,10 @@ function Almacenes(props) {
         enrutamiento.push("/")
     }
 
+    const rutaMovimientos = () => {
+        enrutamiento.push("/MovimientosAlmacenes");
+    }
+
     return (
         <>
             <Alert>
@@ -155,6 +159,16 @@ function Almacenes(props) {
                             }}
                         >
                             <FontAwesomeIcon icon={faCirclePlus} /> Nueva E / S
+                        </Button>
+
+                        <Button
+                            className="btnRegistroVentas"
+                            title="Regresar al menú almacenes"
+                            onClick={() => {
+                                rutaMovimientos()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Movimientos
                         </Button>
 
                         <Button

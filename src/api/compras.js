@@ -5,7 +5,7 @@ import {
     ENDPOINTListarPaginandoCompras,
     ENDPOINTObtenerCompras,
     ENDPOINTObtenerDatosCompras,
-    ENDOPOINTListarProductosCompras,
+    ENDPOINTListarProductosCompras,
     ENDPOINTObtenerNoCompra,
     ENDPOINTObtenerItem,
     ENDPOINTEliminarCompras,
@@ -116,7 +116,7 @@ export async function listarProductosCompras(params) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDOPOINTListarProductosCompras, config);
+    return await axios.get(API_HOST + ENDPOINTListarProductosCompras, config);
 }
 
 // Lista las ordenes de compra paginándolas

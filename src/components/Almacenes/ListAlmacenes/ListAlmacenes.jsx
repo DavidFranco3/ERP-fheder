@@ -38,12 +38,6 @@ function ListAlmacenMp(props) {
         setShowModal(true);
     }
 
-    // Para ir hacia la ruta de ver los movimientos de la materia prima
-    const irRutaverMovimientos = (folio) => {
-        enrutamiento.push(`/MovimientosAlmacenes/${folio}`)
-    }
-
-
     const columns = [
         {
             name: "ITEM",
@@ -108,23 +102,6 @@ function ListAlmacenMp(props) {
             reorder: false,
             selector: row => (
                 <>
-                    {
-                        row.movimientos.length !== 0 &&
-                        (
-                            <>
-                                <Badge
-                                    bg="info"
-                                    title="Ver movimientos"
-                                    className="evaluacionProveedor"
-                                    onClick={() => {
-                                        irRutaverMovimientos(row.folio)
-                                    }}
-                                >
-                                    <FontAwesomeIcon icon={faEye} className="text-lg" />
-                                </Badge>
-                            </>
-                        )
-                    }
                     {/*<Badge
                         bg="success"
                         className="editarProveedor"
