@@ -13,6 +13,7 @@ import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from 
 import { estilos } from "../../../utils/tableStyled";
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
+import { map } from "lodash";
 
 function ListAlmacenMp(props) {
     const { listAlmacenes, location, history, setRefreshCheckLogin } = props;
@@ -120,7 +121,7 @@ function ListAlmacenMp(props) {
                 (
                     <>
                         <Badge
-                            bg="success" 
+                            bg="success"
                             className="editar"
                             title="Deshabilitar articulo"
                             onClick={() => {
@@ -294,8 +295,29 @@ function ListAlmacenMp(props) {
         );
     }, [filterText, resetPaginationToogle]);
 
+    const [totalEntrada, setTotalEntrada] = useState(0);
+    
+    let cantidadTotalEntrada = 0;
+
+    const [totalSalida, setTotalSalida] = useState(0);
+    
+    let cantidadTotalSalida = 0;
 
 
+    useEffect(() => {
+        map(filteredItems, (articulos, index) => {
+            const {estado, cantidadExistencia, tipo} = articulos
+            if (estado == "true") {
+                if (tipo == "Entrada") {
+                cantidadTotalEntrada += parseFloat(cantidadExistencia);
+                } else if (tipo == "Salida") {
+                    cantidadTotalSalida += parseFloat(cantidadExistencia);
+                    }
+            }
+            setTotalEntrada(cantidadTotalEntrada)
+            setTotalSalida(cantidadTotalSalida)
+        })
+    }, [filteredItems]);
 
     return (
         <>
@@ -313,6 +335,7 @@ function ListAlmacenMp(props) {
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                     pagination
                 />
+                Existencias de articulos: { parseFloat(totalEntrada - totalSalida) }
             </Container>
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
