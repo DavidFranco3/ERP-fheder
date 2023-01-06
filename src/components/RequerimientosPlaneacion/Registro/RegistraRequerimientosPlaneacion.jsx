@@ -369,7 +369,7 @@ function RegistraRequerimientosPlaneacion(props) {
                         kgMaterial: kgMaterial,
                         almacenMP: cantidadAlmacen,
                         cantidadSugerida: Number(kgMaterial) - Number(cantidadAlmacen),
-                        cantidadPedir: formData.cantidadMP
+                        cantidadPedir: cantidadPedir
                     },
                     estado: "true"
                 }
@@ -1173,7 +1173,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                             step="0.01"
                                             placeholder="cantidad a pedir"
                                             name="cantidadMP"
-                                            value={cantidadPedir}
+                                            value={ Number(kgMaterial) - Number(cantidadAlmacen)}
                                             disabled
                                         />
                                     </Form.Group>
@@ -1186,8 +1186,9 @@ function RegistraRequerimientosPlaneacion(props) {
                                             type="number"
                                             step="0.01"
                                             placeholder="cantidad a pedir"
-                                            name="cantidadMP"
-                                            defaulValue={cantidadPedir}
+                                            name="cantidadPedir"
+                                            onChange={e => setCantidadPedir(e.target.value)}
+                                            value={cantidadPedir}
                                         />
                                     </Form.Group>
                                 </Row>

@@ -96,11 +96,15 @@ function ModificacionProduccion(props) {
                 materialxTurno: bom.materialxTurno,
                 merma: bom.merma,
                 empaque: bom.empaque,
-                bolsasCajasUtilizar: bom.bolsasCajasUtilizar
+                bolsasCajasUtilizar: bom.bolsasCajasUtilizar,
+                datosRequisicion: datosRequisicion,
+                cantidadPedir: datosRequisicion.cantidadPedir
             }
+            //console.log(dataTemp.cantidadPedir)
             setInformacionRequerimiento(valoresAlmacenados(dataTemp))
             setListOVCargadas(requerimiento.ordenVenta)
             setCantidadAlmacen(datosRequisicion.almacenMP)
+            setCantidadPedir(datosRequisicion.cantidadPedir)
 
             // setFechaCreacion(fechaElaboracion)
         }).catch(e => {
@@ -373,8 +377,9 @@ function ModificacionProduccion(props) {
                 },
                 datosRequisicion: {
                     kgMaterial: kgMaterial,
-                    almacenMP: cantidadAlmacen,
-                    cantidadPedir: Number(kgMaterial) - Number(cantidadAlmacen)
+                        almacenMP: cantidadAlmacen,
+                        cantidadSugerida: Number(kgMaterial) - Number(cantidadAlmacen),
+                        cantidadPedir: cantidadPedir
                 },
                 estado: "true"
             }
@@ -463,9 +468,6 @@ function ModificacionProduccion(props) {
     let piezasTurno3 = (((3600 / Number(formDataPlaneacion.tiempoCiclo3)) * Number(formDataPlaneacion.cavMolde)) * 12);
 
     const [cantidadPedir, setCantidadPedir] = useState(0);
-    useEffect(() => {
-        setCantidadPedir(Number(kgMaterial) - Number(cantidadAlmacen))
-    }, [kgMaterial, cantidadAlmacen]);
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -1181,15 +1183,29 @@ function ModificacionProduccion(props) {
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
                                         <Form.Label align="center">
-                                            Cantidad a pedir
+                                            Cantidad sugerida
                                         </Form.Label>
                                         <Form.Control
                                             type="number"
                                             step="0.01"
                                             placeholder="cantidad a pedir"
                                             name="cantidadMP"
-                                            value={cantidadPedir}
+                                            value={ Number(kgMaterial) - Number(cantidadAlmacen)}
                                             disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Cantidad a pedir
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            step="0.01"
+                                            placeholder="cantidad a pedir"
+                                            name="cantidadPedir"
+                                            onChange={e => setCantidadPedir(e.target.value)}
+                                            value={cantidadPedir}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1342,7 +1358,8 @@ function initialFormData() {
         materialTurno: "",
         merma: "",
         kgMaterial: "",
-        kgPIGMB: ""
+        kgPIGMB: "",
+        cantidadPedir: "",
     }
 }
 
@@ -1390,13 +1407,14 @@ function initialValues() {
         materialxTurno: "",
         merma: "",
         empaque: "",
-        bolsasCajasUtilizar: ""
+        bolsasCajasUtilizar: "",
+        cantidadPedir: "",
     }
 }
 
 // Valores almacenados
 function valoresAlmacenados(data) {
-    const { folio, requerimiento, planeacion, bom } = data;
+    const { folio, requerimiento, planeacion, bom, datosRequisicion } = data;
 
     return {
         folio: folio,
@@ -1438,7 +1456,9 @@ function valoresAlmacenados(data) {
         materialxTurno: bom.materialxTurno,
         merma: bom.merma,
         empaque: bom.empaque,
-        bolsasCajasUtilizar: bom.bolsasCajasUtilizar
+        bolsasCajasUtilizar: bom.bolsasCajasUtilizar,
+        datosRequisicion: datosRequisicion,
+        cantidadPedir: datosRequisicion.cantidadPedir,
     }
 }
 
