@@ -1,0 +1,30 @@
+@import "../../../scss/index";
+
+.subeFotoPerfil {
+  text-align: center;
+
+  .textoFotoPerfil {
+
+  }
+  .fotoPerfil {
+    margin-top: 45px;
+  }
+}
+
+.formularioDatos {
+  margin-top: -32px;
+}
+
+.botones {
+  margin-top: 5px;
+
+  .registrar {
+    margin-top: 7px !important;
+    //float: right;
+  }
+
+  .cancelar {
+    margin-top: 7px !important;
+    //float: right;
+  }
+}

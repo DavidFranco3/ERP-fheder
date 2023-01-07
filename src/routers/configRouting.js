@@ -16,6 +16,7 @@ import UnidadesMedida from "../page/UnidadesMedida";
 import Departamentos from "../page/Departamentos";
 import MateriasPrimas from "../page/MateriasPrimas";
 import Insumos from "../page/Insumos";
+import ClasificacionMateriales from "../page/ClasificacionMateriales";
 import Cotizaciones from "../page/Cotizaciones";
 import Proveedores from "../page/Proveedores";
 import Requisiciones from "../page/Requisiciones";
@@ -620,6 +621,11 @@ export default [
         path: "/Calidad",
         exact: true,
         page: Calidad
+    },
+    {
+        path: "/ClasificacionMateriales",
+        exact: true,
+        page: ClasificacionMateriales
     },
     {
         path: "/Logs",

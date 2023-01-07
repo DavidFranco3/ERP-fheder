@@ -23,6 +23,16 @@ export const ENDPOINTDeshabilitaSucursal = "/sucursales/deshabilitar";
 export const ENDPOINTListarSucursalesPaginacion = "/sucursales/listarPaginando";
 export const ENDPOINTTotalSucursales = "/sucursales/total";
 
+// Clasificacion de materiales
+export const ENDPOINTRegistraClasificacionMaterial = "/clasificacionMateriales/registro";
+export const ENDPOINTListarClasificacionMaterial = "/clasificacionMateriales/listar";
+export const ENDPOINTObtenerClasificacionMaterial = "/clasificacionMateriales/obtener";
+export const ENDPOINTEliminarClasificacionMaterial = "/clasificacionMateriales/eliminar";
+export const ENDPOINTActualizarClasificacionMaterial = "/clasificacionMateriales/actualizar";
+export const ENDPOINTDeshabilitaClasificacionMaterial = "/clasificacionMateriales/deshabilitar";
+export const ENDPOINTListarClasificacionMaterialPaginacion = "/clasificacionMateriales/listarPaginando";
+export const ENDPOINTTotalClasificacionMaterial = "/clasificacionMateriales/total";
+
 // Unidades medida
 export const ENDPOINTRegistraUM = "/unidadesMedida/registro";
 export const ENDPOINTListarUM = "/unidadesMedida/listar";

@@ -10,6 +10,7 @@ import LogoSucursales from "../../../assets/png/menus/sucursales.png";
 import LogoAlmacen from "../../../assets/png/menus/almacenGeneral.png";
 import LogoRazonSocial from "../../../assets/png/menus/razonSocial.png";
 import LogoUnidadesMedida from "../../../assets/png/menus/unidadesMedida.png";
+import LogoClasificacionMateriales from "../../../assets/png/menus/clasificacionMateriales.png";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
 import { toast } from "react-toastify";
 
@@ -72,7 +73,7 @@ function DashboardConfiguracion(props) {
                     </Col>
                 </Row>
             </Alert>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-5 gap-5">
             <ItemCard
                     path={'/RazonesSociales'}
                     logo={LogoRazonSocial}
@@ -92,6 +93,11 @@ function DashboardConfiguracion(props) {
                     path={'/UnidadesMedida'}
                     logo={LogoUnidadesMedida}
                     title={'Unidades de medida'}
+                />
+                <ItemCard
+                    path={'/ClasificacionMateriales'}
+                    logo={LogoClasificacionMateriales}
+                    title={'Clasificacion de materiales'}
                 />
             </div>
         </>
