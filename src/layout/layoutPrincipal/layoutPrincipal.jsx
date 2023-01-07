@@ -57,7 +57,7 @@ function LayoutPrincipal(props) {
 
     // Para almacenar en localstorage la razon social
     const almacenaSucursal = (sucursal) => {
-        if (sucursal != "Selecciona una de las sucursales registradas") {
+        if (sucursal != "Selecciona una de las razones sociales registradas") {
             setSucursal(sucursal)
         }
         window.location.reload()
@@ -120,7 +120,7 @@ return (
                                                 almacenaSucursal(e.target.value)
                                             }}
                                         >
-                                            <option>Selecciona una de las sucursales registradas</option>
+                                            <option>Selecciona una de las razones sociales registradas</option>
                                             {map(sucursalesRegistradas, (sucursal, index) => (
                                                 <option key={index} value={sucursal?.nombre} selected={sucursalElegida == sucursal?.nombre}>{sucursal?.nombre}</option>
                                             ))}
