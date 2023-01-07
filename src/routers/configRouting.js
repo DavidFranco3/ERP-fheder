@@ -12,6 +12,7 @@ import Ventas from "../page/Ventas";
 import Usuarios from "../page/Usuarios";
 import Clientes from "../page/Clientes";
 import RazonesSociales from "../page/RazonesSociales";
+import UnidadesMedida from "../page/UnidadesMedida";
 import Departamentos from "../page/Departamentos";
 import MateriasPrimas from "../page/MateriasPrimas";
 import Insumos from "../page/Insumos";
@@ -554,6 +555,11 @@ export default [
         path: "/StatusMaterial",
         exact: true,
         page: StatusMaterial
+    },
+    {
+        path: "/UnidadesMedida",
+        exact: true,
+        page: UnidadesMedida
     },
     {
         path: "/Acuses_de_Recibos",

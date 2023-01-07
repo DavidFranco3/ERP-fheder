@@ -23,6 +23,16 @@ export const ENDPOINTDeshabilitaSucursal = "/sucursales/deshabilitar";
 export const ENDPOINTListarSucursalesPaginacion = "/sucursales/listarPaginando";
 export const ENDPOINTTotalSucursales = "/sucursales/total";
 
+// Unidades medida
+export const ENDPOINTRegistraUM = "/unidadesMedida/registro";
+export const ENDPOINTListarUM = "/unidadesMedida/listar";
+export const ENDPOINTObtenerUM = "/unidadesMedida/obtener";
+export const ENDPOINTEliminarUM = "/unidadesMedida/eliminar";
+export const ENDPOINTActualizarUM = "/unidadesMedida/actualizar";
+export const ENDPOINTDeshabilitaUM = "/unidadesMedida/deshabilitar";
+export const ENDPOINTListarUMPaginacion = "/unidadesMedida/listarPaginando";
+export const ENDPOINTTotalUM = "/unidadesMedida/total";
+
 // Gestion almacenes
 export const ENDPOINTRegistraAlmacen = "/gestionAlmacen/registro";
 export const ENDPOINTListarAlmacenes = "/gestionAlmacen/listar";

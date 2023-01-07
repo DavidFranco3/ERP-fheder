@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
-import "./RegistroDepartamentos.scss";
+import "./RegistroUnidadesMedida.scss";
 import { toast } from "react-toastify";
-import { registraDepartamento } from "../../../api/departamentos";
+import { registraUM } from "../../../api/unidadesMedida";
 import queryString from "query-string";
 import { getSucursal } from "../../../api/auth";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
-function RegistroDepartamentos(props) {
+function RegistroUnidadesMedida(props) {
     const { setShowModal, history } = props;
 
     //setShowModal={setShowModal} history={history}
@@ -37,13 +37,14 @@ function RegistroDepartamentos(props) {
 
             const dataTemp = {
                 ...formData,
-                sucursal: getSucursal()
+                sucursal: getSucursal(),
+                estadoUM: "true"
             }
 
             try {
-                registraDepartamento(dataTemp).then(response => {
+                registraUM(dataTemp).then(response => {
                     const { data } = response;
-                    LogsInformativos("Se a registrado un nuevo departamento " + formData.nombre, dataTemp);
+                    LogsInformativos("Se a registrado una unidad de medida " + formData.nombre, dataTemp);
                     toast.success(data.mensaje);
                     setShowModal(false);
                     setLoading(false);
@@ -66,11 +67,11 @@ function RegistroDepartamentos(props) {
             <Form onSubmit={onSubmit} onChange={onChange}>
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridNombre">
-                        <Form.Label>Nombre del departamento</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder='Departamento'
+                        <Form.Label>Nombre</Form.Label>
+                        <Form.Control 
+                        type="text"
                             name="nombre"
+                            placeholder='Unidad de medida'
                             defaultValue={formData.nombre}
                         />
                     </Form.Group>
@@ -111,4 +112,4 @@ function initialFormData() {
     }
 }
 
-export default RegistroDepartamentos;
+export default RegistroUnidadesMedida;

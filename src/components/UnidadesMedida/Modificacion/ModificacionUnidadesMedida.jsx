@@ -1,50 +1,38 @@
 import { useState, useEffect } from 'react';
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
-import "./RegistroDepartamentos.scss";
 import { toast } from "react-toastify";
-import { registraDepartamento } from "../../../api/departamentos";
+import { actualizaUM } from "../../../api/unidadesMedida";
 import queryString from "query-string";
-import { getSucursal } from "../../../api/auth";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
-function RegistroDepartamentos(props) {
-    const { setShowModal, history } = props;
+function ModificacionUnidadesMedida(props) {
+    const { dataUM, setShowModal, history } = props;
+    const { id, nombre } = dataUM;
 
-    //setShowModal={setShowModal} history={history}
+    // Para almacenar datos del departamento
+    const [formData, setFormData] = useState(initialFormValue(dataUM));
 
-    // Para almacenar los datos del formulario
-    const [formData, setFormData] = useState(initialFormData());
-
-    // Para determinar el uso de la animacion
-    const [loading, setLoading] = useState(false);
-
-    // Para cancelar la actualizacion
-    const cancelarEliminacion = () => {
-        setShowModal(false)
-    }
-
-    // Para cancelar la actualizacion
+    // Cancelar y cerrar el formulario
     const cancelarRegistro = () => {
         setShowModal(false)
     }
 
+    // Para la animacion de carga
+    const [loading, setLoading] = useState(false);
+
     const onSubmit = e => {
         e.preventDefault();
+
         if (!formData.nombre) {
             toast.warning("Completa el formulario")
         } else {
             setLoading(true);
 
-            const dataTemp = {
-                ...formData,
-                sucursal: getSucursal()
-            }
-
             try {
-                registraDepartamento(dataTemp).then(response => {
+                actualizaUM(id, formData).then(response => {
                     const { data } = response;
-                    LogsInformativos("Se a registrado un nuevo departamento " + formData.nombre, dataTemp);
-                    toast.success(data.mensaje);
+                    LogsInformativos("Se a modificado la unidad de medida " + formData.nombre, formData);
+                    toast.success(data.status);
                     setShowModal(false);
                     setLoading(false);
                     history.push({
@@ -66,10 +54,9 @@ function RegistroDepartamentos(props) {
             <Form onSubmit={onSubmit} onChange={onChange}>
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridNombre">
-                        <Form.Label>Nombre del departamento</Form.Label>
+                        <Form.Label>Nombre</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder='Departamento'
                             name="nombre"
                             defaultValue={formData.nombre}
                         />
@@ -80,11 +67,11 @@ function RegistroDepartamentos(props) {
                     <Col>
                         <Button
                             type="submit"
-                            title="Guardar la información del formulario"
+                            title="Actualizar el registro"
                             variant="success"
                             className="registrar"
                         >
-                            {!loading ? "Registrar" : <Spinner animation="border" />}
+                            {!loading ? "Actualizar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -105,10 +92,13 @@ function RegistroDepartamentos(props) {
     );
 }
 
-function initialFormData() {
+function initialFormValue(data) {
+    const { nombre } = data;
+    //console.log(nombre)
+
     return {
-        nombre: ""
+        nombre: nombre
     }
 }
 
-export default RegistroDepartamentos;
+export default ModificacionUnidadesMedida;
