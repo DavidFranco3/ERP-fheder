@@ -11,6 +11,7 @@ import Produccion from "../page/Produccion";
 import Ventas from "../page/Ventas";
 import Usuarios from "../page/Usuarios";
 import Clientes from "../page/Clientes";
+import RazonesSociales from "../page/RazonesSociales";
 import Departamentos from "../page/Departamentos";
 import MateriasPrimas from "../page/MateriasPrimas";
 import Insumos from "../page/Insumos";
@@ -102,6 +103,10 @@ import ModificacionUsuarios from "../components/Usuarios/Modificacion";
 // Rutas para los clientes
 import RegistroClientes from "../components/Clientes/Registro";
 import ModificacionClientes from "../components/Clientes/Modificacion";
+
+// Rutas para las razones sociales
+import RegistroRazonSocial from "../components/RazonesSociales/Registro";
+import ModificacionRazonSocial from "../components/RazonesSociales/Modificacion";
 
 // Rutas para los tiquets
 import RegistroTiquets from "../components/Tiquets/Registro";
@@ -346,6 +351,11 @@ export default [
         page: RegistroClientes
     },
     {
+        path: "/RegistroRazonesSociales",
+        exact: true,
+        page: RegistroRazonSocial
+    },
+    {
         path: "/RegistroNoConformidad",
         exact: true,
         page: RegistroNoConformidad
@@ -354,6 +364,11 @@ export default [
         path: "/ModificacionClientes/:id",
         exact: true,
         page: ModificacionClientes
+    },
+    {
+        path: "/ModificacionRazonesSociales/:id",
+        exact: true,
+        page: ModificacionRazonSocial
     },
     {
         path: "/ModificacionClientes",
@@ -664,6 +679,11 @@ export default [
         path: "/Clientes",
         exact: true,
         page: Clientes
+    },
+    {
+        path: "/RazonesSociales",
+        exact: true,
+        page: RazonesSociales
     },
     {
         path: "/Tracking",

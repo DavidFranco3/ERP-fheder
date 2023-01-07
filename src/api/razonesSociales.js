@@ -1,21 +1,21 @@
 import { API_HOST } from "../utils/constants";
 import {
-    ENDPOINTRegistraSucursal,
-    ENDPOINTListarSucursales,
-    ENDPOINTObtenerSucursal,
-    ENDPOINTEliminarSucursal,
-    ENDPOINTActualizarSucursal,
-    ENDPOINTDeshabilitaSucursal,
-    ENDPOINTListarSucursalesPaginacion,
-    ENDPOINTTotalSucursales
+    ENDPOINTRegistraRazonSocial,
+    ENDPOINTListarRazonSocial,
+    ENDPOINTObtenerRazonSocial,
+    ENDPOINTEliminarRazonSocial,
+    ENDPOINTActualizarRazonSocial,
+    ENDPOINTDeshabilitarRazonSocial,
+    ENDPOINTListarRazonSocialPaginacion,
+    ENDPOINTTotalRazonSocial
 } from "./endpoints";
 import axios from 'axios';
-import {getTokenApi} from "./auth";
+import { getTokenApi } from "./auth";
+export let nombreUsuario = "";
+export let apellidosUsuario = "";
 
-// Registra usuarios
-export async function registraSucursales(data) {
-    //console.log(data)
-
+// Registra clientes
+export async function registraRazonSocial(data) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -24,23 +24,11 @@ export async function registraSucursales(data) {
         }
     };
 
-    return await axios.post(API_HOST + ENDPOINTRegistraSucursal, data, config);
-}
-
-// Para obtener todos los datos del usuario
-export async function obtenerSucursal(params) {
-    const config = {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${getTokenApi()}`
-        }
-    };
-    return await axios.get(API_HOST + ENDPOINTObtenerSucursal + `/${params}`, config);
+    return await axios.post(API_HOST + ENDPOINTRegistraRazonSocial, data, config);
 }
 
 // Obten el total de registros de la colección
-export async function totalSucursales() {
+export async function totalRazonSocial() {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -48,11 +36,12 @@ export async function totalSucursales() {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTTotalSucursales, config);
+    return await axios.get(API_HOST + ENDPOINTTotalRazonSocial, config);
 }
 
-// Para listar todos los usuarios
-export async function listarSucursales(sucursal) {
+// Para obtener todos los datos del cliente
+export async function obtenerRazonSocial(params) {
+    //console.log(params)
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -60,11 +49,11 @@ export async function listarSucursales(sucursal) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarSucursales +`/?sucursal=${sucursal}`, config);
+    return await axios.get(API_HOST + ENDPOINTObtenerRazonSocial + `/${params}`, config);
 }
 
-// Listar los usuarios paginandolos
-export async function listarSucursalesPaginacion(pagina, limite) {
+// Para listar todos los clientes
+export async function listarRazonSocial() {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -72,11 +61,23 @@ export async function listarSucursalesPaginacion(pagina, limite) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarSucursalesPaginacion + `/?pagina=${pagina}&&limite=${limite}`, config);
+    return await axios.get(API_HOST + ENDPOINTListarRazonSocial, config);
+}
+
+// Lista los clientes paginandolos
+export async function listarRazonSocialPaginacion(pagina, limite) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarRazonSocialPaginacion + `/?pagina=${pagina}&&limite=${limite}`, config);
 }
 
 // Elimina cliente fisicamente de la bd
-export async function eliminaSucursal(id) {
+export async function eliminaRazonSocial(id) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -85,11 +86,11 @@ export async function eliminaSucursal(id) {
         }
     };
 
-    return await axios.delete(API_HOST + ENDPOINTEliminarSucursal + `/${id}`, config);
+    return await axios.delete(API_HOST + ENDPOINTEliminarRazonSocial + `/${id}`, config);
 }
 
 // Deshabilita el usuario
-export async function deshabilitaSucursal(id, data) {
+export async function deshabilitaRazonSocial(id, data) {
     //console.log(data)
     const config = {
         headers: {
@@ -99,11 +100,11 @@ export async function deshabilitaSucursal(id, data) {
         }
     };
 
-    return await axios.put(API_HOST + ENDPOINTDeshabilitaSucursal + `/${id}`, data, config);
+    return await axios.put(API_HOST + ENDPOINTDeshabilitarRazonSocial + `/${id}`, data, config);
 }
 
-// Modifica datos del usuario
-export async function actualizaSucursal(id, data) {
+// Modifica datos del cliente
+export async function actualizaRazonSocial(id, data) {
 
     const config = {
         headers: {
@@ -113,5 +114,5 @@ export async function actualizaSucursal(id, data) {
         }
     };
 
-    return await axios.put(API_HOST + ENDPOINTActualizarSucursal + `/${id}`, data, config);
+    return await axios.put(API_HOST + ENDPOINTActualizarRazonSocial + `/${id}`, data, config);
 }

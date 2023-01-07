@@ -38,11 +38,9 @@ function ModificacionSucursales(props) {
                     calle: formData.calle,
                     numeroExterior: formData.numeroExterior,
                     numeroInterior: formData.numeroInterior,
-                    colonia: formData.colonia,
+                    codigoPostal: formData.codigoPostal,
                     municipio: formData.municipio,
                     estado: formData.estado,
-                    otro: formData.pais == "Otro" ? formData.pais : "",
-                    pais: formData.pais == "México" ? formData.pais : formData.paisElegido
                 },
                 estadoSucursal: "true",
             }
@@ -101,40 +99,6 @@ function ModificacionSucursales(props) {
                                     defaultValue={formData.nombre}
                                 />
                             </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridEstado">
-                                <Form.Label>
-                                    País
-                                </Form.Label>
-
-                                <Form.Control as="select"
-                                    defaultValue={formData.pais}
-                                    name="pais"
-                                >
-                                    <option>Elige una opción</option>
-                                    <option value="México">México</option>
-                                    <option value="Otro">Otro</option>
-                                </Form.Control>
-                            </Form.Group>
-
-                            {
-                                formData.pais === "Otro" &&
-                                (
-                                    <>
-                                        <Form.Group as={Col} controlId="formHorizontalNombre">
-                                            <Form.Label>
-                                                Cúal
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Escribe el nombre del pais"
-                                                name="paisElegido"
-                                                defaultValue={formData.paisElegido}
-                                            />
-                                        </Form.Group>
-                                    </>
-                                )
-                            }
                         </Row>
 
                         <Row className="mb-3">
@@ -179,10 +143,6 @@ function ModificacionSucursales(props) {
                         </Row>
 
                         <Row className="mb-3">
-                        {
-                                formData.pais === "México" ?
-                                (
-                                    <>
                                         <Form.Group as={Col} controlId="formGridEstado">
                                 <Form.Label>
                                     Estado
@@ -227,23 +187,6 @@ function ModificacionSucursales(props) {
                                     <option value="Zacatecas">Zacatecas</option>
                                 </Form.Control>
                             </Form.Group>
-                                    </>
-                                ):(
-                                <>
-                                <Form.Group as={Col} controlId="formGridMunicipio">
-                                <Form.Label>
-                                    Estado
-                                </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Escribe el nombre del estado"
-                                    name="estado"
-                                    defaultValue={formData.estado}
-                                />
-                            </Form.Group>
-                                </>
-                                )
-                            }
 
                             <Form.Group as={Col} controlId="formGridMunicipio">
                                 <Form.Label>
@@ -259,18 +202,18 @@ function ModificacionSucursales(props) {
 
                             <Form.Group as={Col} controlId="formGridColonia">
                                 <Form.Label>
-                                    Colonia
+                                    Codigo postal
                                 </Form.Label>
                                 <Form.Control
                                     type="text"
-                                    placeholder="Colonia"
-                                    name="colonia"
-                                    defaultValue={formData.colonia}
+                                    placeholder="Codigo postal"
+                                    name="codigoPostal"
+                                    defaultValue={formData.codigoPostal}
                                 />
                             </Form.Group>
                         </Row>
 
-                        <Form.Group as={Row} className="botones">
+                        <Form.Group as={Col} className="botones">
                             <Row>
                                 <Col>
                                     <Button
@@ -278,7 +221,7 @@ function ModificacionSucursales(props) {
                                         variant="success"
                                         className="registrar"
                                     >
-                                        {!loading ? "Modificar" : <Spinner animation="border" />}
+                                        {!loading ? "Registrar" : <Spinner animation="border" />}
                                     </Button>
                                 </Col>
                                 <Col>
@@ -309,6 +252,7 @@ function initialFormData(data) {
         numeroInterior: data.numeroInterior,
         colonia: data.colonia,
         municipio: data.municipio,
+        codigoPostal: data.codigoPostal,
         estado: data.estado,
         pais: data.pais == "México" ? data.pais : data.otro,
         paisElegido: data.otro == "Otro" ? data.pais : "",

@@ -4,6 +4,7 @@ import "./Calidad.scss";
 import { map } from "lodash";
 import { listarInspeccion } from "../../../../api/inspeccionMaterial";
 import moment from "moment";
+import { getSucursal } from '../../../../api/auth';
 
 function Calidad(props) {
     const { ordenVenta } = props;
@@ -14,7 +15,7 @@ function Calidad(props) {
     // Obtener los clientes registrados
     useEffect(() => {
         try {
-            listarInspeccion().then(response => {
+            listarInspeccion(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

@@ -7,7 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 // Importacion de imagenes para los iconos de los menus
 import LogoSucursales from "../../../assets/png/menus/sucursales.png";
-import LogoAlmacen from "../../../assets/png/menus/almacenGeneral.png"
+import LogoAlmacen from "../../../assets/png/menus/almacenGeneral.png";
+import LogoRazonSocial from "../../../assets/png/menus/razonSocial.png"
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
 import { toast } from "react-toastify";
 
@@ -70,7 +71,12 @@ function DashboardConfiguracion(props) {
                     </Col>
                 </Row>
             </Alert>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-3">
+            <ItemCard
+                    path={'/RazonesSociales'}
+                    logo={LogoRazonSocial}
+                    title={'Razones sociales'}
+                />
                 <ItemCard
                     path={'/Sucursales'}
                     logo={LogoSucursales}

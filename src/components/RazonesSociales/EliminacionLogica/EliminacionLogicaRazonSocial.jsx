@@ -3,12 +3,12 @@ import { deshabilitaUsuario } from "../../../api/usuarios";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
-import { deshabilitaCliente } from "../../../api/clientes";
+import { deshabilitaRazonSocial } from "../../../api/razonesSociales";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
-function EliminacionLogicaClientes(props) {
-    const { history, dataCliente, setShowModal } = props;
-    const { id, nombre, apellidos, estadoCliente } = dataCliente;
+function EliminacionLogicaRazonSocial(props) {
+    const { history, dataRazonSocial, setShowModal } = props;
+    const { id, nombre, apellidos, estadoRazonSocial } = dataRazonSocial;
 
     //console.log(dataUsuario)
 
@@ -18,7 +18,7 @@ function EliminacionLogicaClientes(props) {
     }
 
     // Para almacenar datos del formulario
-    const [formData, setFormData] = useState(initialFormData(dataCliente));
+    const [formData, setFormData] = useState(initialFormData(dataRazonSocial));
 
     // Para determinar el uso de la animacion
     const [loading, setLoading] = useState(false);
@@ -29,21 +29,21 @@ function EliminacionLogicaClientes(props) {
         setLoading(true);
 
         const dataTemp = {
-            estadoCliente: estadoCliente === "false" ? "true" : "false"
+            estadoRazonSocial: estadoRazonSocial === "false" ? "true" : "false"
         }
         //console.log(dataTemp)
 
         try {
-            deshabilitaCliente(id, dataTemp).then(response => {
+            deshabilitaRazonSocial(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.estadoCliente === "true") {
-                    LogsInformativos("El cliente " + formData.nombre + " se habilito", dataCliente)
-                    toast.success("Cliente habilitado");
+                if (dataTemp.estadoRazonSocial === "true") {
+                    LogsInformativos("La razón social " + formData.nombre + " se habilito", dataRazonSocial)
+                    toast.success(data.mensaje);
                 }
-                if (dataTemp.estadoCliente === "false") {
-                    LogsInformativos("El cliente " + formData.nombre + " se inhabilito", dataCliente)
-                    toast.success("Cliente deshabilitado");
+                if (dataTemp.estadoRazonSocial === "false") {
+                    LogsInformativos("La razón social " + formData.nombre + " se inhabilito", dataRazonSocial)
+                    toast.success(data.mensaje);
                 }
                 setShowModal(false);
                 setLoading(false);
@@ -63,13 +63,13 @@ function EliminacionLogicaClientes(props) {
     return (
         <>
             <Form onSubmit={onSubmit} onChange={onChange}>
-                {estadoCliente == "true" ?
+                {estadoRazonSocial == "true" ?
                     (
                         <>
                             <Alert variant="danger">
                                 <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
                                 <p className="mensaje">
-                                    Esta acción deshabilitara en el sistema al cliente.
+                                    Esta acción deshabilitara en el sistema a la razón social.
                                 </p>
                             </Alert>
                         </>
@@ -78,7 +78,7 @@ function EliminacionLogicaClientes(props) {
                             <Alert variant="success">
                                 <Alert.Heading>Atención! Acción constructiva!</Alert.Heading>
                                 <p className="mensaje">
-                                    Esta acción habilitara en el sistema al cliente.
+                                    Esta acción habilitara en el sistema a la razón social.
                                 </p>
                             </Alert>
                         </>)
@@ -135,11 +135,11 @@ function EliminacionLogicaClientes(props) {
                     <Col>
                         <Button
                             variant="success"
-                            title={estadoCliente === "true" ? "Deshabilitar" : "Habilitar"}
+                            title={estadoRazonSocial === "true" ? "Deshabilitar" : "Habilitar"}
                             type="submit"
                             className='registrar'
                         >
-                            {!loading ? (estadoCliente === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
+                            {!loading ? (estadoRazonSocial === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -172,4 +172,4 @@ function initialFormData(data) {
     }
 }
 
-export default EliminacionLogicaClientes;
+export default EliminacionLogicaRazonSocial;

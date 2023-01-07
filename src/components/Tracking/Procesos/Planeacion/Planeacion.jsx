@@ -4,6 +4,7 @@ import { map } from "lodash";
 import { withRouter } from "react-router-dom";
 import "./Planeacion.scss"
 import { listarRequerimiento } from "../../../../api/requerimientosPlaneacion";
+import { getSucursal } from '../../../../api/auth';
 
 function Compras(props) {
     const { ordenVenta } = props;
@@ -14,7 +15,7 @@ function Compras(props) {
     // Obtener los clientes registrados
     useEffect(() => {
         try {
-            listarRequerimiento().then(response => {
+            listarRequerimiento(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -32,6 +33,8 @@ function Compras(props) {
             console.log(e)
         }
     }, []);
+
+    console.log(listPlaneaciones)
 
     return (
         <>

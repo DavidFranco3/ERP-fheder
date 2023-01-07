@@ -2,25 +2,23 @@ import { useState, useEffect, useMemo } from 'react';
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 import 'moment/locale/es';
-import "./ListSucursales.scss"
-import { Badge, Button, Container, Form, Col } from "react-bootstrap";
-import BasicModal from "../../Modal/BasicModal";
-import DataTable, { ExpanderComponentProps } from 'react-data-table-component';
+import "./ListProgramaProduccion.scss"
+import { Badge, Button, Container, Navbar, Table, Form, Col } from "react-bootstrap";
+//import EliminacionLogicaUsuarios from "../EliminacionLogica";
+import BasicModal from '../../Modal/BasicModal';
+import EliminacionFisicaRecepcion from '../EliminacionFisica';
+import DataTable from 'react-data-table-component';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
 import { exportCSVFile } from "../../../utils/exportCSV";
-import ModificacionSucursales from "../Modificacion";
-import EliminacionFisicaSucursales from '../EliminacionFisica';
-import EliminacionLogicaSucursales from '../EliminacionLogica';
+//import ListProductosRecepcion from '../ListProductosRecepcion';
 
-function ListSucursales(props) {
-    const { listSucursales, history, location, setRefreshCheckLogin } = props;
+function ListProgramaProduccion(props) {
+    const { listProgramaProduccion, history, location, setRefreshCheckLogin } = props;
 
     const enrutamiento = useHistory();
-
-    //console.log(listUsuarios)
 
     moment.locale("es");
 
@@ -30,169 +28,214 @@ function ListSucursales(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     //Para la eliminacion fisica de usuarios
-    const eliminaSucursal = (content) => {
-        setTitulosModal("Eliminando la sucursal");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion fisica de usuarios
-    const modificaSucursales = (content) => {
-        setTitulosModal("Modificando la sucursal");
+    const eliminaUsuarios = (content) => {
+        setTitulosModal("Eliminando la recepcion");
         setContentModal(content);
         setShowModal(true);
     }
 
     //Para la eliminacion logica de usuarios
-    const eliminaLogicaSucursales = (content) => {
-        setTitulosModal("Deshabilitando la sucursal");
+    const eliminaLogicaUsuarios = (content) => {
+        setTitulosModal("Deshabilitando usuario");
         setContentModal(content);
         setShowModal(true);
     }
 
     //Para la eliminacion logica de usuarios
-    const habilitaSucursales = (content) => {
-        setTitulosModal("Habilitando la sucursal");
+    const habilitaUsuarios = (content) => {
+        setTitulosModal("Habilitando usuario");
         setContentModal(content);
         setShowModal(true);
     }
 
     //Para la modificacion de datos
-    const modificaUsuarios = (id) => {
-        enrutamiento.push(`/ModificacionUsuarios/${id}`);
+    const modificaRecepcion = (id) => {
+        enrutamiento.push(`/ModificaRecepcion/${id}`);
     }
-
-    // Definicion de tabla
-    //const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
 
     const columns = [
         {
-            name: 'Nombre',
-            selector: row => row.nombre,
+            name: 'Folio',
+            selector: row => row.folio,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Calle',
-            selector: row => row.calle,
+            name: 'Fecha de inicio',
+            selector: row => moment(row.ordenProduccion.fechaInicio).format("LL"),
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Numero exterior',
-            selector: row => row.numeroExterior ? row.numeroExterior : "S/N",
+            name: 'OP',
+            selector: row => row.folioOP,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Numero interior',
-            selector: row => row.numeroInterior ? row.numeroInterior : "S/N",
+            name: 'Descripción',
+            selector: row => row.ordenProduccion.nombreProducto,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Calle',
-            selector: row => row.calle,
+            name: 'Cantidad a fabricar',
+            selector: row => row.ordenProduccion.cantidadFabricar,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Municipio',
-            selector: row => row.municipio,
+            name: 'Acumulado',
+            selector: row => row.ordenProduccion.acumulado,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Codigo postal',
-            selector: row => row.codigoPostal,
+            name: 'Pendiente de fabricar',
+            selector: row => row.ordenProduccion.pendienteFabricar,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Estado',
-            selector: row => row.estado,
+            name: 'Ciclo',
+            selector: row => row.ordenProduccion.ciclo,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Modificación',
-            selector: row => moment(row.fechaActualizacion).format("LL"),
+            name: 'cav',
+            selector: row => row.ordenProduccion.cavidades,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Estado',
+            name: 'Turnos req',
+            selector: row => row.ordenProduccion.turnosRequeridos,
+            sortable: false,
             center: true,
-            reorder: false,
-            selector: row =>
-                row.estadoSucursal === "true" ?
-                    (
-                        <>
-                            <Badge
-                                bg="success"
-                                title="Deshabilitar"
-                                className="editar"
-                                onClick={() => {
-                                    eliminaLogicaSucursales(
-                                        <EliminacionLogicaSucursales
-                                            data={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />)
-                                }}
-                            >
-                                Activo
-                            </Badge>
-                        </>
-                    )
-                    :
-                    (
-                        <>
-                            <Badge
-                                bg="danger"
-                                title="Habilitar"
-                                className="eliminar"
-                                onClick={() => {
-                                    habilitaSucursales(
-                                        <EliminacionLogicaSucursales
-                                            data={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
-                            >
-                                Inactivo
-                            </Badge>
-                        </>
-                    )
+            reorder: false
         },
         {
+            name: 'Operadores',
+            selector: row => row.ordenProduccion.operadores,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'No. interno',
+            selector: row => row.ordenProduccion.noInterno,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Lunes T1',
+            selector: row => moment(row.programa.lunesT1).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Lunes T2',
+            selector: row => moment(row.programa.lunesT2).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Martes T1',
+            selector: row => moment(row.programa.martesT1).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Martes T2',
+            selector: row => moment(row.programa.martesT2).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Miercoles T1',
+            selector: row => moment(row.programa.miercolesT1).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Miercoles T2',
+            selector: row => moment(row.programa.miercolesT2).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Jueves T1',
+            selector: row => moment(row.programa.juevesT1).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Jueves T2',
+            selector: row => moment(row.programa.juevesT2).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Viernes T1',
+            selector: row => moment(row.programa.viernesT1).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Viernes T2',
+            selector: row => moment(row.programa.viernesT2).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Sabado T1',
+            selector: row => moment(row.programa.sabadoT1).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        /*{
             name: 'Acciones',
             center: true,
             reorder: false,
             selector: row => (
                 <>
                     <Badge
+                        bg="primary"
+                        title="Generar PDF"
+                        className="ver"
+                        onClick={() => {
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faEye} className="text-lg" />
+                    </Badge>
+                    <Badge
                         bg="success"
                         title="Modificar"
                         className="editar"
                         onClick={() => {
-                            modificaSucursales(
-                                <ModificacionSucursales
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
+                            modificaRecepcion(row.id)
                         }}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
@@ -202,9 +245,9 @@ function ListSucursales(props) {
                         title="Eliminar"
                         className="eliminar"
                         onClick={() => {
-                            eliminaSucursal(
-                                <EliminacionFisicaSucursales
-                                    data={row}
+                            eliminaUsuarios(
+                                <EliminacionFisicaRecepcion
+                                    datos={row}
                                     setShowModal={setShowModal}
                                     history={history}
                                 />)
@@ -214,7 +257,7 @@ function ListSucursales(props) {
                     </Badge>
                 </>
             )
-        }
+        }*/
     ];
 
     // Configurando animacion de carga
@@ -224,7 +267,7 @@ function ListSucursales(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listSucursales);
+            setRows(listProgramaProduccion);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -268,7 +311,7 @@ function ListSucursales(props) {
         fechaActualizacion: "Fecha actualizcion"
     };
 
-    const descargaCSV = useMemo(() => <Export onExport={() => exportCSVFile(headers, listSucursales, "USUARIOS")} />, []);
+    const descargaCSV = useMemo(() => <Export onExport={() => exportCSVFile(headers, listProgramaProduccion, "USUARIOS")} />, []);
 
     const [filterText, setFilterText] = useState("");
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
@@ -304,7 +347,7 @@ function ListSucursales(props) {
     `;
 
 
-    const filteredItems = listSucursales.filter(
+    const filteredItems = listProgramaProduccion.filter(
         item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase())
     );
 
@@ -341,7 +384,7 @@ function ListSucursales(props) {
                 <DataTable
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
-                    data={listSucursales}
+                    data={listProgramaProduccion}
                     //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}
@@ -361,4 +404,4 @@ function ListSucursales(props) {
     );
 }
 
-export default ListSucursales;
+export default ListProgramaProduccion;

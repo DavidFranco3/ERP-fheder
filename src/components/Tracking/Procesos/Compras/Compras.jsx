@@ -6,7 +6,8 @@ import "./Compras.scss"
 import { listarOrdenesCompra } from "../../../../api/compras";
 import { listarRequisiciones } from "../../../../api/requisicion";
 import moment from "moment";
-import Proveedor from "../../../Compras/ListCompras/ProveedoresenCompras"
+import Proveedor from "../../../Compras/ListCompras/ProveedoresenCompras";
+import { getSucursal } from '../../../../api/auth';
 
 function Compras(props) {
     const { ordenVenta, location, history } = props;
@@ -17,7 +18,7 @@ function Compras(props) {
     // Obtener los clientes registrados
     useEffect(() => {
         try {
-            listarRequisiciones().then(response => {
+            listarRequisiciones(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

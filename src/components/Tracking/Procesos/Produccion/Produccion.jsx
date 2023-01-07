@@ -4,6 +4,7 @@ import { map } from "lodash";
 import "./Produccion.scss"
 import { listarProduccion } from "../../../../api/produccion";
 import Cliente from "../../../Produccion/ListProduccion/Cliente";
+import { getSucursal } from '../../../../api/auth';
 
 function Produccion(props) {
     const { ordenVenta } = props;
@@ -14,7 +15,7 @@ function Produccion(props) {
     // Obtener los clientes registrados
     useEffect(() => {
         try {
-            listarProduccion().then(response => {
+            listarProduccion(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

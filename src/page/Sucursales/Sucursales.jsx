@@ -12,6 +12,7 @@ import BasicModal from "../../components/Modal/BasicModal";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import { getSucursal } from '../../api/auth';
 
 function Sucursales(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -43,7 +44,7 @@ function Sucursales(props) {
 
     useEffect(() => {
         try {
-            listarSucursales().then(response => {
+            listarSucursales(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -149,7 +150,7 @@ function formatModelSucursales(data) {
     //console.log(data)
     const dataTemp = []
     data.forEach(data => {
-        const { direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais, otro } } = data;
+        const { direccion: { calle, numeroExterior, numeroInterior, municipio, estado, codigoPostal } } = data;
         dataTemp.push({
             id: data._id,
             nombre: data.nombre,
@@ -157,11 +158,9 @@ function formatModelSucursales(data) {
             calle: calle,
             numeroExterior: numeroExterior,
             numeroInterior: numeroInterior,
-            colonia: colonia,
             municipio: municipio,
             estado: estado,
-            pais: pais,
-            otro: otro,
+            codigoPostal: codigoPostal,
             estadoSucursal: data.estadoSucursal,
             fechaCreacion: data.createdAt,
             fechaActualizacion: data.updatedAt

@@ -66,7 +66,7 @@ function EliminacionFisicaClientes(props) {
                         </Form.Label>
                         <Form.Control
                             type="text"
-                            value={formData.nombre + " " + formData.apellidos}
+                            value={formData.nombre}
                             disabled
                         />
                     </Form.Group>

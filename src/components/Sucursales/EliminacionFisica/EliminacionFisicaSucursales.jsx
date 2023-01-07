@@ -87,42 +87,6 @@ function EliminacionFisicaSucursales(props) {
                                     defaultValue={formData.nombre}
                                 />
                             </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridEstado">
-                                <Form.Label>
-                                    País
-                                </Form.Label>
-
-                                <Form.Control as="select"
-                                    defaultValue={formData.pais}
-                                    name="pais"
-                                    disabled
-                                >
-                                    <option>Elige una opción</option>
-                                    <option value="México">México</option>
-                                    <option value="Otro">Otro</option>
-                                </Form.Control>
-                            </Form.Group>
-
-                            {
-                                formData.pais === "Otro" &&
-                                (
-                                    <>
-                                        <Form.Group as={Col} controlId="formHorizontalNombre">
-                                            <Form.Label>
-                                                Cúal
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Escribe el nombre del pais"
-                                                name="paisElegido"
-                                                disabled
-                                                defaultValue={formData.paisElegido}
-                                            />
-                                        </Form.Group>
-                                    </>
-                                )
-                            }
                         </Row>
 
                         <Row className="mb-3">
@@ -170,74 +134,52 @@ function EliminacionFisicaSucursales(props) {
                         </Row>
 
                         <Row className="mb-3">
-                            {
-                                formData.pais === "México" ?
-                                    (
-                                        <>
-                                            <Form.Group as={Col} controlId="formGridEstado">
-                                                <Form.Label>
-                                                    Estado
-                                                </Form.Label>
+                            <Form.Group as={Col} controlId="formGridEstado">
+                                <Form.Label>
+                                    Estado
+                                </Form.Label>
 
-                                                <Form.Control
-                                                    as="select"
-                                                    defaultValue={formData.estado}
-                                                    name="estado"
-                                                    disabled
-                                                >
-                                                    <option>Elige una opción</option>
-                                                    <option value="Aguascalientes">Aguascalientes</option>
-                                                    <option value="Baja California">Baja California</option>
-                                                    <option value="Baja California Sur">Baja California Sur</option>
-                                                    <option value="Campeche">Campeche</option>
-                                                    <option value="Chiapas">Chiapas</option>
-                                                    <option value="Chihuahua">Chihuahua</option>
-                                                    <option value="CDMX">Ciudad de México</option>
-                                                    <option value="Coahuila">Coahuila</option>
-                                                    <option value="Colima">Colima</option>
-                                                    <option value="Durango">Durango</option>
-                                                    <option value="Estado de México">Estado de México</option>
-                                                    <option value="Guanajuato">Guanajuato</option>
-                                                    <option value="Guerrero">Guerrero</option>
-                                                    <option value="Hidalgo">Hidalgo</option>
-                                                    <option value="Jalisco">Jalisco</option>
-                                                    <option value="Michoacán">Michoacán</option>
-                                                    <option value="Morelos">Morelos</option>
-                                                    <option value="Nayarit">Nayarit</option>
-                                                    <option value="Nuevo León">Nuevo León</option>
-                                                    <option value="Oaxaca">Oaxaca</option>
-                                                    <option value="Puebla">Puebla</option>
-                                                    <option value="Querétaro">Querétaro</option>
-                                                    <option value="Quintana Roo">Quintana Roo</option>
-                                                    <option value="San Luis Potosí">San Luis Potosí</option>
-                                                    <option value="Sinaloa">Sinaloa</option>
-                                                    <option value="Sonora">Sonora</option>
-                                                    <option value="Tabasco">Tabasco</option>
-                                                    <option value="Tamaulipas">Tamaulipas</option>
-                                                    <option value="Tlaxcala">Tlaxcala</option>
-                                                    <option value="Veracruz">Veracruz</option>
-                                                    <option value="Yucatán">Yucatán</option>
-                                                    <option value="Zacatecas">Zacatecas</option>
-                                                </Form.Control>
-                                            </Form.Group>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Form.Group as={Col} controlId="formGridMunicipio">
-                                                <Form.Label>
-                                                    Estado
-                                                </Form.Label>
-                                                <Form.Control
-                                                    type="text"
-                                                    disabled
-                                                    placeholder="Escribe el nombre del estado"
-                                                    name="estado"
-                                                    defaultValue={formData.estado}
-                                                />
-                                            </Form.Group>
-                                        </>
-                                    )
-                            }
+                                <Form.Control
+                                    as="select"
+                                    defaultValue={formData.estado}
+                                    name="estado"
+                                    disabled
+                                >
+                                    <option>Elige una opción</option>
+                                    <option value="Aguascalientes">Aguascalientes</option>
+                                    <option value="Baja California">Baja California</option>
+                                    <option value="Baja California Sur">Baja California Sur</option>
+                                    <option value="Campeche">Campeche</option>
+                                    <option value="Chiapas">Chiapas</option>
+                                    <option value="Chihuahua">Chihuahua</option>
+                                    <option value="CDMX">Ciudad de México</option>
+                                    <option value="Coahuila">Coahuila</option>
+                                    <option value="Colima">Colima</option>
+                                    <option value="Durango">Durango</option>
+                                    <option value="Estado de México">Estado de México</option>
+                                    <option value="Guanajuato">Guanajuato</option>
+                                    <option value="Guerrero">Guerrero</option>
+                                    <option value="Hidalgo">Hidalgo</option>
+                                    <option value="Jalisco">Jalisco</option>
+                                    <option value="Michoacán">Michoacán</option>
+                                    <option value="Morelos">Morelos</option>
+                                    <option value="Nayarit">Nayarit</option>
+                                    <option value="Nuevo León">Nuevo León</option>
+                                    <option value="Oaxaca">Oaxaca</option>
+                                    <option value="Puebla">Puebla</option>
+                                    <option value="Querétaro">Querétaro</option>
+                                    <option value="Quintana Roo">Quintana Roo</option>
+                                    <option value="San Luis Potosí">San Luis Potosí</option>
+                                    <option value="Sinaloa">Sinaloa</option>
+                                    <option value="Sonora">Sonora</option>
+                                    <option value="Tabasco">Tabasco</option>
+                                    <option value="Tamaulipas">Tamaulipas</option>
+                                    <option value="Tlaxcala">Tlaxcala</option>
+                                    <option value="Veracruz">Veracruz</option>
+                                    <option value="Yucatán">Yucatán</option>
+                                    <option value="Zacatecas">Zacatecas</option>
+                                </Form.Control>
+                            </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridMunicipio">
                                 <Form.Label>
@@ -254,19 +196,19 @@ function EliminacionFisicaSucursales(props) {
 
                             <Form.Group as={Col} controlId="formGridColonia">
                                 <Form.Label>
-                                    Colonia
+                                    Codigo postal
                                 </Form.Label>
                                 <Form.Control
                                     type="text"
-                                    placeholder="Colonia"
-                                    name="colonia"
+                                    placeholder="Codigo postal"
+                                    name="codigoPostal"
                                     disabled
-                                    defaultValue={formData.colonia}
+                                    defaultValue={formData.codigoPostal}
                                 />
                             </Form.Group>
                         </Row>
 
-                        <Form.Group as={Row} className="botones">
+                        <Form.Group as={Col} className="botones">
                             <Row>
                                 <Col>
                                     <Button
@@ -303,11 +245,9 @@ function initialFormData(data) {
         calle: data.calle,
         numeroExterior: data.numeroExterior,
         numeroInterior: data.numeroInterior,
-        colonia: data.colonia,
         municipio: data.municipio,
         estado: data.estado,
-        pais: data.pais == "México" ? data.pais : data.otro,
-        paisElegido: data.otro == "Otro" ? data.pais : "",
+        codigoPostal: data.codigoPostal
     }
 }
 

@@ -52,6 +52,16 @@ export const ENDPOINTDeshabilitaCliente = "/clientes/deshabilitar";
 export const ENDPOINTListarClientesPaginacion = "/clientes/listarPaginando";
 export const ENDPOINTTotalClientes = "/clientes/total";
 
+// Razones sociales
+export const ENDPOINTRegistraRazonSocial = "/razonesSociales/registro";
+export const ENDPOINTListarRazonSocial= "/razonesSociales/listar";
+export const ENDPOINTObtenerRazonSocial = "/razonesSociales/obtener";
+export const ENDPOINTEliminarRazonSocial = "/razonesSociales/eliminar";
+export const ENDPOINTActualizarRazonSocial = "/razonesSociales/actualizar";
+export const ENDPOINTDeshabilitarRazonSocial = "/razonesSociales/deshabilitar";
+export const ENDPOINTListarRazonSocialPaginacion = "/razonesSociales/listarPaginando";
+export const ENDPOINTTotalRazonSocial = "/razonesSociales/total";
+
 // Pedidos de venta
 export const ENDPOINTRegistraPedidoVenta = "/ventas/registro";
 export const ENDPOINTListarPedidoVenta = "/ventas/listar";
@@ -398,6 +408,19 @@ export const ENDPOINTActualizarEstadoRequerimiento = "/requerimientosPlaneacion/
 export const ENDPOINTActualizarRequerimiento = "/requerimientosPlaneacion/actualizar";
 export const ENDPOINTObtenerDatosRequerimiento = "/requerimientosPlaneacion/obtenerDatosRequerimiento";
 export const ENDPOINTTotalRequerimiento = "/requerimientosPlaneacion/total";
+
+//Programa de produccion
+export const ENDPOINTRegistroPrograma = "/programaProduccion/registro";
+export const ENDPOINTListarPrograma = "/programaProduccion/listar";
+export const ENDPOINTListarPaginandoPrograma = "/programaProduccion/listarPaginando";
+export const ENDPOINTObtenerPrograma = "/programaProduccion/obtener";
+export const ENDPOINTObtenerNoPrograma = "/programaProduccion/obtenerNoPrograma";
+export const ENDPOINTObtenerItemPrograma = "/programaProduccion/obtenerItem";
+export const ENDPOINTEliminarPrograma = "/programaProduccion/eliminar";
+export const ENDPOINTActualizarEstadoPrograma = "/programaProduccion/actualizarEstado";
+export const ENDPOINTActualizarPrograma = "/programaProduccion/actualizar";
+export const ENDPOINTObtenerDatosPrograma = "/programaProduccion/obtenerDatosPrograma";
+export const ENDPOINTTotalPrograma = "/programaProduccion/total";
 
 //Certificados de calidad
 export const ENDPOINTRegistroCertificado = "/certificadosCalidad/registro";

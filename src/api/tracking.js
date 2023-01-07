@@ -84,7 +84,7 @@ export async function listarTracking(sucursal) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarTracking +`/?sucursal=${sucursal}`, config);
+    return await axios.get(API_HOST + ENDPOINTListarTracking + `/?sucursal=${sucursal}`, config);
 }
 
 // Listar los tracking paginandolos
