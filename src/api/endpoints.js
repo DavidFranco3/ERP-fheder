@@ -33,6 +33,16 @@ export const ENDPOINTDeshabilitaClasificacionMaterial = "/clasificacionMateriale
 export const ENDPOINTListarClasificacionMaterialPaginacion = "/clasificacionMateriales/listarPaginando";
 export const ENDPOINTTotalClasificacionMaterial = "/clasificacionMateriales/total";
 
+// Clasificacion de maquinaria
+export const ENDPOINTRegistraClasificacionMaquinaria = "/clasificacionMaquinaria/registro";
+export const ENDPOINTListarClasificacionMaquinaria = "/clasificacionMaquinaria/listar";
+export const ENDPOINTObtenerClasificacionMaquinaria = "/clasificacionMaquinaria/obtener";
+export const ENDPOINTEliminarClasificacionMaquinaria = "/clasificacionMaquinaria/eliminar";
+export const ENDPOINTActualizarClasificacionMaquinaria = "/clasificacionMaquinaria/actualizar";
+export const ENDPOINTDeshabilitaClasificacionMaquinaria = "/clasificacionMaquinaria/deshabilitar";
+export const ENDPOINTListarClasificacionMaquinariaPaginacion = "/clasificacionMaquinaria/listarPaginando";
+export const ENDPOINTTotalClasificacionMaquinaria = "/clasificacionMaquinaria/total";
+
 // Unidades medida
 export const ENDPOINTRegistraUM = "/unidadesMedida/registro";
 export const ENDPOINTListarUM = "/unidadesMedida/listar";

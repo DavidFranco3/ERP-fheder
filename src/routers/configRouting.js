@@ -17,6 +17,7 @@ import Departamentos from "../page/Departamentos";
 import MateriasPrimas from "../page/MateriasPrimas";
 import Insumos from "../page/Insumos";
 import ClasificacionMateriales from "../page/ClasificacionMateriales";
+import ClasificacionMaquinaria from "../page/ClasificacionMaquinaria";
 import Cotizaciones from "../page/Cotizaciones";
 import Proveedores from "../page/Proveedores";
 import Requisiciones from "../page/Requisiciones";
@@ -626,6 +627,11 @@ export default [
         path: "/ClasificacionMateriales",
         exact: true,
         page: ClasificacionMateriales
+    },
+    {
+        path: "/ClasificacionMaquinaria",
+        exact: true,
+        page: ClasificacionMaquinaria
     },
     {
         path: "/Logs",

@@ -11,6 +11,7 @@ import LogoAlmacen from "../../../assets/png/menus/almacenGeneral.png";
 import LogoRazonSocial from "../../../assets/png/menus/razonSocial.png";
 import LogoUnidadesMedida from "../../../assets/png/menus/unidadesMedida.png";
 import LogoClasificacionMateriales from "../../../assets/png/menus/clasificacionMateriales.png";
+import LogoClasificacionMaquinaria from "../../../assets/png/menus/maquinas.png";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
 import { toast } from "react-toastify";
 
@@ -73,7 +74,7 @@ function DashboardConfiguracion(props) {
                     </Col>
                 </Row>
             </Alert>
-            <div className="grid grid-cols-5 gap-5">
+            <div className="grid grid-cols-3 gap-3">
             <ItemCard
                     path={'/RazonesSociales'}
                     logo={LogoRazonSocial}
@@ -98,6 +99,11 @@ function DashboardConfiguracion(props) {
                     path={'/ClasificacionMateriales'}
                     logo={LogoClasificacionMateriales}
                     title={'Clasificacion de materiales'}
+                />
+                <ItemCard
+                    path={'/ClasificacionMaquinaria'}
+                    logo={LogoClasificacionMaquinaria}
+                    title={'Clasificacion de maquinaria'}
                 />
             </div>
         </>
