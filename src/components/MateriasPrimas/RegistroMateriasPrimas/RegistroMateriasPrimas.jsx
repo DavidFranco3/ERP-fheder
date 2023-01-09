@@ -6,6 +6,9 @@ import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { listarProveedores } from "../../../api/proveedores";
 import { getSucursal } from "../../../api/auth";
+import { listarUM } from "../../../api/unidadesMedida";
+import { listarClasificacionMaterial } from "../../../api/clasificacionMateriales"
+import { map } from "lodash";
 
 function RegistroMateriasPrimas(props) {
     const { setShowModal2, setShowModal, location, history } = props;
@@ -47,6 +50,51 @@ function RegistroMateriasPrimas(props) {
         }
     }, []);
 
+    // Para almacenar el listado de proveedores
+    const [listUM, setListUM] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarUM(getSucursal()).then(response => {
+                const { data } = response;
+                // console.log(data)
+                if (!listarUM() && data) {
+                    setListUM(formatModelUM(data));
+                } else {
+                    const datosUM = formatModelUM(data);
+                    setListUM(datosUM);
+                }
+
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
+    const [listTipoMaterial, setListTipoMaterial] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarClasificacionMaterial(getSucursal()).then(response => {
+                const { data } = response;
+                // console.log(data)
+                if (!listarClasificacionMaterial() && data) {
+                    setListTipoMaterial(formatModelClasificacionMateriales(data));
+                } else {
+                    const datosTipoMaterial = formatModelClasificacionMateriales(data);
+                    setListTipoMaterial(datosTipoMaterial);
+                }
+
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
     useEffect(() => {
         try {
             obtenerFolioActualMP().then(response => {
@@ -76,13 +124,14 @@ function RegistroMateriasPrimas(props) {
                 descripcion: formData.descripcion,
                 precio: formData.precio,
                 sucursal: getSucursal(),
+                tipoMaterial: formData.tipoMaterial,
                 um: formData.um,
                 proveedor: formData.proveedor
             }
             try {
                 registraMateriaPrima(dataTemp).then(response => {
                     const { data } = response;
-                    LogsInformativos("Nuevo material registrado " + formData.descripcion, formData)
+                    LogsInformativos("Nuevo material registrado " + formData.descripcion, dataTemp)
                     toast.success(data.mensaje)
                     setLoading(false)
                     history.push({
@@ -110,6 +159,43 @@ function RegistroMateriasPrimas(props) {
                         <Form.Group as={Row} controlId="formHorizontalNoInterno">
                             <Col sm="2">
                                 <Form.Label align="center">
+                                    Folio
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Folio"
+                                    name="folio"
+                                    value={folioActualMP}
+                                    disabled
+                                />
+                            </Col>
+
+                            <Col sm="2">
+                                <Form.Label align="center">
+                                   Tipo de material
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    as="select"
+                                    name="tipoMaterial"
+                                    defaultValue={formData.tipoMaterial}
+                                >
+                                    <option>Elige una opción</option>
+                                    {map(listTipoMaterial, (material, index) => (
+                                        <option key={index} value={material?.nombre}>{material?.nombre}</option>
+                                    ))}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+                    </Row>
+
+                    <Row className="mb-3">
+                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            <Col sm="2">
+                                <Form.Label align="center">
                                     Descripcion
                                 </Form.Label>
                             </Col>
@@ -133,11 +219,10 @@ function RegistroMateriasPrimas(props) {
                                     name="um"
                                     defaultValue={formData.um}
                                 >
-                                    <option >Elige....</option>
-                                    <option value="KG">KG</option>
-                                    <option value="Litros">Litros</option>
-                                    <option value="Piezas">Pieza</option>
-                                    <option value="Otros">Otros</option>
+                                    <option>Elige una opción</option>
+                                    {map(listUM, (um, index) => (
+                                        <option key={index} value={um?.nombre}>{um?.nombre}</option>
+                                    ))}
                                 </Form.Control>
                             </Col>
                         </Form.Group>
@@ -169,6 +254,7 @@ function RegistroMateriasPrimas(props) {
                                     type="text"
                                     defaultValue={formData.proveedor}
                                     name="proveedor"
+                                    placeholder='Proveedor'
                                 />
                             </Col>
                         </Form.Group>
@@ -209,6 +295,7 @@ function initialFormData() {
         descripcion: "",
         precio: "",
         proveedor: "",
+        tipoMaterial: "",
         um: ""
     }
 }
@@ -231,6 +318,38 @@ function formatModelProveedores(data) {
             lugarRecoleccion: data.lugarRecoleccion,
             horario: data.horario,
             comentarios: data.comentarios,
+            estado: data.estado,
+            fechaCreacion: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelUM(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            nombre: data.nombre,
+            sucursal: data.sucursal,
+            estadoUM: data.estadoUM,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelClasificacionMateriales(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            nombre: data.nombre,
+            descripcion: data.descripcion,
+            sucursal: data.sucursal,
             estado: data.estado,
             fechaCreacion: data.createdAt,
             fechaActualizacion: data.updatedAt

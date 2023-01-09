@@ -146,6 +146,7 @@ function formatModelMateriales(data) {
             folio: data.folio,
             sucursal: data.sucursal,
             descripcion: data.descripcion,
+            tipoMaterial: data.tipoMaterial,
             precio: data.precio,
             um: data.um,
             proveedor: data.proveedor,

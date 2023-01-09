@@ -5,6 +5,10 @@ import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { listarProveedores } from "../../../api/proveedores";
+import { listarUM } from "../../../api/unidadesMedida";
+import { listarClasificacionMaterial } from "../../../api/clasificacionMateriales"
+import { map } from "lodash";
+import { getSucursal } from "../../../api/auth";
 
 function ModificaMateriasPrimas(props) {
     const { dataMateriaPrima, location, history, setShowModal } = props;
@@ -34,6 +38,51 @@ function ModificaMateriasPrimas(props) {
                 } else {
                     const datosProveedores = formatModelProveedores(data);
                     setListProveedores(datosProveedores);
+                }
+
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
+    // Para almacenar el listado de proveedores
+    const [listUM, setListUM] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarUM(getSucursal()).then(response => {
+                const { data } = response;
+                // console.log(data)
+                if (!listarUM() && data) {
+                    setListUM(formatModelUM(data));
+                } else {
+                    const datosUM = formatModelUM(data);
+                    setListUM(datosUM);
+                }
+
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
+    const [listTipoMaterial, setListTipoMaterial] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarClasificacionMaterial(getSucursal()).then(response => {
+                const { data } = response;
+                // console.log(data)
+                if (!listarClasificacionMaterial() && data) {
+                    setListTipoMaterial(formatModelClasificacionMateriales(data));
+                } else {
+                    const datosTipoMaterial = formatModelClasificacionMateriales(data);
+                    setListTipoMaterial(datosTipoMaterial);
                 }
 
             }).catch(e => {
@@ -79,6 +128,43 @@ function ModificaMateriasPrimas(props) {
         <>
             <div className="formularioDatos">
             <Form onChange={onChange} onSubmit={onSubmit}>
+            <Row className="mb-3">
+                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                            <Col sm="2">
+                                <Form.Label align="center">
+                                    Folio
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Folio"
+                                    name="folio"
+                                    value={folio}
+                                    disabled
+                                />
+                            </Col>
+
+                            <Col sm="2">
+                                <Form.Label align="center">
+                                   Tipo de material
+                                </Form.Label>
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    as="select"
+                                    name="tipoMaterial"
+                                    defaultValue={formData.tipoMaterial}
+                                >
+                                    <option>Elige una opción</option>
+                                    {map(listTipoMaterial, (material, index) => (
+                                        <option key={index} value={material?.nombre} selected={formData.tipoMaterial == material?.nombre}>{material?.nombre}</option>
+                                    ))}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+                    </Row>
+                    
                     <Row className="mb-3">
                         <Form.Group as={Row} controlId="formHorizontalNoInterno">
                             <Col sm="2">
@@ -105,11 +191,10 @@ function ModificaMateriasPrimas(props) {
                                     name="um"
                                     defaultValue={formData.um}
                                 >
-                                    <option >Elige....</option>
-                                    <option value="KG" selected="KG">KG</option>
-                                    <option value="Litros" selected="Litros">Litros</option>
-                                    <option value="Piezas" selected="Piezas">Pieza</option>
-                                    <option value="Otros" selected="Otros">Otros</option>
+                                    <option>Elige una opción</option>
+                                    {map(listUM, (um, index) => (
+                                        <option key={index} value={um?.nombre} selected={formData.um == um?.nombre}>{um?.nombre}</option>
+                                    ))}
                                 </Form.Control>
                             </Col>
                         </Form.Group>
@@ -178,12 +263,13 @@ function ModificaMateriasPrimas(props) {
 }
 
 function initialFormData(data) {
-    const { id, descripcion, precio, um, proveedor } = data;
+    const { id, folio, descripcion, tipoMaterial, precio, um, proveedor } = data;
 
     return {
         descripcion: descripcion,
         precio: precio,
         um: um,
+        tipoMaterial: tipoMaterial,
         proveedor: proveedor
     }
 }
@@ -214,5 +300,36 @@ function formatModelProveedores(data) {
     return dataTemp;
 }
 
+function formatModelUM(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            nombre: data.nombre,
+            sucursal: data.sucursal,
+            estadoUM: data.estadoUM,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelClasificacionMateriales(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            nombre: data.nombre,
+            descripcion: data.descripcion,
+            sucursal: data.sucursal,
+            estado: data.estado,
+            fechaCreacion: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
 
 export default ModificaMateriasPrimas;

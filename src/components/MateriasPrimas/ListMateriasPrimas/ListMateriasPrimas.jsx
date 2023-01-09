@@ -75,6 +75,13 @@ function ListMateriasPrimas(props) {
             reorder: false
         },
         {
+            name: "Tipo de material",
+            selector: row => row.tipoMaterial,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
             name: 'Acciones',
             center: true,
             reorder: false,
