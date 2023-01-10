@@ -146,10 +146,14 @@ function formatModelMaquinas(data) {
         dataTemp.push({
             id: data._id,
             numeroMaquina: data.numeroMaquina,
-            sucursal: data.sucursal,
+            tipoMaquina: data.tipoMaquina,
+            nombre: data.nombre,
             marca: data.marca,
-            tonelaje: data.tonelaje,
+            modelo: data.modelo,
+            noSerie: data.noSerie,
             lugar: data.lugar,
+            sucursal: data.sucursal,
+            fechaAdquisicion: data.fechaAdquisicion,
             status: data.status,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt

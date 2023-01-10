@@ -61,8 +61,22 @@ function ListMaquinas(props) {
 
     const columns = [
         {
-            name: "Numero de maquina",
+            name: "# Maquina",
             selector: row => row.numeroMaquina,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Tipo",
+            selector: row => row.tipoMaquina,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Nombre",
+            selector: row => row.nombre,
             sortable: false,
             center: true,
             reorder: false
@@ -75,14 +89,21 @@ function ListMaquinas(props) {
             reorder: false
         },
         {
-            name: "Tonelaje",
-            selector: row => row.tonelaje,
+            name: "Modelo",
+            selector: row => row.modelo,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Lugar donde se encuentra",
+            name: "# Serie",
+            selector: row => row.noSerie,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Donde se encuentra",
             selector: row => row.lugar,
             sortable: false,
             center: true,
@@ -139,15 +160,8 @@ function ListMaquinas(props) {
             reorder: false
         },
         {
-            name: "Fecha de registro",
-            selector: row => moment(row.fechaRegistro).format('LL'),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: "Ultima modificacion",
-            selector: row => moment(row.fechaActualizacion).format('LL'),
+            name: "Fecha de adquisición",
+            selector: row => moment(row.fechaAdquisicion).format('LL'),
             sortable: false,
             center: true,
             reorder: false

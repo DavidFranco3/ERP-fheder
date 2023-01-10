@@ -85,7 +85,7 @@ function DashboardCatalogos(props) {
                 <ItemCard
                     path={'/Maquinas'}
                     logo={LogoMaquinas}
-                    title={'Maquinas'}
+                    title={'Maquinaria'}
                 />
                 <ItemCard
                     path={'/MatrizProductos'}

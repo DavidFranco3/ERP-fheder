@@ -8,7 +8,7 @@ import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function EliminacionLogicaMaquinas(props) {
     const { data, setShowModal, history } = props;
-    const { id, numeroMaquina, marca, tonelaje, lugar, status } = data;
+    const { id, numeroMaquina, marca, nombre, lugar, status } = data;
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -96,11 +96,11 @@ function EliminacionLogicaMaquinas(props) {
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Marca
+                            Nombre
                         </Form.Label>
                         <Form.Control
                             type="text"
-                            value={marca}
+                            value={nombre}
                             disabled
                         />
                     </Form.Group>
@@ -111,11 +111,11 @@ function EliminacionLogicaMaquinas(props) {
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Tonelaje
+                            Marca
                         </Form.Label>
                         <Form.Control
                             type="text"
-                            value={tonelaje}
+                            value={marca}
                             disabled
                         />
                     </Form.Group>

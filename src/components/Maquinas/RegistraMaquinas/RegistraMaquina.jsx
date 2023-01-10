@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom";
+import { Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { registraMaquina } from "../../../api/maquinas";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
-import {getSucursal} from "../../../api/auth";
+import { getSucursal } from "../../../api/auth";
+import { listarClasificacionMaquinaria } from '../../../api/clasificacionMaquinaria';
+import { listarSucursales } from "../../../api/sucursales";
+import { map } from "lodash";
 
 function RegistraMaquinas(props) {
     const { setShowModal, history } = props;
@@ -23,6 +23,52 @@ function RegistraMaquinas(props) {
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
+    // Para almacenar el listado de proveedores
+    const [listTipoMaquina, setListTipoMaquina] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarClasificacionMaquinaria(getSucursal()).then(response => {
+                const { data } = response;
+                // console.log(data)
+                if (!listarClasificacionMaquinaria() && data) {
+                    setListTipoMaquina(formatModelClasificacionMaquinaria(data));
+                } else {
+                    const datosMaquinas = formatModelClasificacionMaquinaria(data);
+                    setListTipoMaquina(datosMaquinas);
+                }
+
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
+    // Para almacenar el listado de proveedores
+    const [listSucursales, setListSucursales] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarSucursales(getSucursal()).then(response => {
+                const { data } = response;
+                // console.log(data)
+                if (!listarSucursales() && data) {
+                    setListSucursales(formatModelSucursales(data));
+                } else {
+                    const datosSucursales = formatModelSucursales(data);
+                    setListSucursales(datosSucursales);
+                }
+
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
     const onSubmit = (e) => {
         e.preventDefault()
 
@@ -33,10 +79,14 @@ function RegistraMaquinas(props) {
 
             const dataTemp = {
                 numeroMaquina: formData.numeroMaquina,
+                tipoMaquina: formData.tipoMaquina,
+                nombre: formData.nombreMaquina,
                 marca: formData.marca,
-                tonelaje: formData.tonelaje,
-                sucursal: getSucursal(),
+                modelo: formData.modelo,
+                noSerie: formData.noSerie,
                 lugar: formData.lugar,
+                sucursal: getSucursal(),
+                fechaAdquisicion: formData.fechaAdquisicion,
                 status: "true"
             }
             // console.log(dataTemp)
@@ -81,66 +131,98 @@ function RegistraMaquinas(props) {
                     <Form onChange={onChange} onSubmit={onSubmit}>
 
                         <Row className="mb-3">
-                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                <Col sm="3">
-                                    <Form.Label>
-                                        Numero de maquina
-                                    </Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Numero de maquina"
-                                        name="numeroMaquina"
-                                        defaultValue={formData.numeroMaquina}
-                                    />
-                                </Col>
+                            <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                <Form.Label>Numero de maquina</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Numero de maquina"
+                                    name="numeroMaquina"
+                                    defaultValue={formData.numeroMaquina}
+                                />
+                            </Form.Group>
 
-                                <Col sm="3">
-                                    <Form.Label>
-                                        Marca
-                                    </Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Marca"
-                                        name="marca"
-                                        defaultValue={formData.marca}
-                                    />
-                                </Col>
+                            <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                <Form.Label>Tipo de maquina</Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    name="tipoMaquina"
+                                    defaultValue={formData.tipoMaquina}
+                                >
+                                    <option>Elige una opción</option>
+                                    {map(listTipoMaquina, (maquina, index) => (
+                                        <option key={index} value={maquina?.nombre}>{maquina?.nombre}</option>
+                                    ))}
+                                </Form.Control>
                             </Form.Group>
                         </Row>
 
                         <Row className="mb-3">
-                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                <Col sm="3">
-                                    <Form.Label>
-                                        Tonelaje
-                                    </Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Tonelaje"
-                                        name="tonelaje"
-                                        defaultValue={formData.tonelaje}
-                                    />
-                                </Col>
+                            <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                <Form.Label>Nombre de la maquina</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Nombre de la maquina"
+                                    name="nombreMaquina"
+                                    defaultValue={formData.nombreMaquina}
+                                />
+                            </Form.Group>
 
-                                <Col sm="3">
-                                    <Form.Label>
-                                        Lugar donde se encuentra
-                                    </Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Lugar donde se encuentra"
-                                        name="lugar"
-                                        defaultValue={formData.lugar}
-                                    />
-                                </Col>
+                            <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                <Form.Label>No. Serie</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Numero de serie"
+                                    name="noSerie"
+                                    defaultValue={formData.noSerie}
+                                />
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                <Form.Label>Marca</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Marca"
+                                    name="marca"
+                                    defaultValue={formData.marca}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                <Form.Label>Modelo</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Modelo"
+                                    name="modelo"
+                                    defaultValue={formData.modelo}
+                                />
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                <Form.Label>Lugar en el que se encuentra</Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    name="lugar"
+                                    defaultValue={formData.lugar}
+                                >
+                                    <option>Elige una opción</option>
+                                    {map(listSucursales, (sucursal, index) => (
+                                        <option key={index} value={sucursal?.nombre}>{sucursal?.nombre}</option>
+                                    ))}
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                <Form.Label>Fecha de adquisición</Form.Label>
+                                <Form.Control
+                                    type="date"
+                                    placeholder="Fecha de adquisicion"
+                                    name="fechaAdquisicion"
+                                    defaultValue={formData.fechaAdquisicion}
+                                />
                             </Form.Group>
                         </Row>
 
@@ -178,11 +260,54 @@ function RegistraMaquinas(props) {
 function initialFormData() {
     return {
         numeroMaquina: "",
+        tipoMaquina: "",
+        nombreMaquina: "",
         marca: "",
-        tonelaje: "",
+        modelo: "",
+        noSerie: "",
+        fechaAdquisicion: "",
         lugar: ""
-
     }
+}
+
+function formatModelClasificacionMaquinaria(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            nombre: data.nombre,
+            descripcion: data.descripcion,
+            sucursal: data.sucursal,
+            estado: data.estado,
+            fechaCreacion: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelSucursales(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        const { direccion: { calle, numeroExterior, numeroInterior, municipio, estado, codigoPostal } } = data;
+        dataTemp.push({
+            id: data._id,
+            nombre: data.nombre,
+            sucursal: data.sucursal,
+            calle: calle,
+            numeroExterior: numeroExterior,
+            numeroInterior: numeroInterior,
+            municipio: municipio,
+            estado: estado,
+            codigoPostal: codigoPostal,
+            estadoSucursal: data.estadoSucursal,
+            fechaCreacion: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
 }
 
 export default RegistraMaquinas;

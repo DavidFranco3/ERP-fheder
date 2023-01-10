@@ -85,8 +85,7 @@ function RegistroClientes(props) {
                     const { data } = response;
                     LogsInformativos("Se ha registrado al cliente " + dataTempFinal.nombre, dataTempFinal)
                     toast.success(data.mensaje)
-                    setLoading(false);
-                    enrutamiento.push("/Clientes");
+                    regresaPagina();
                 }).catch(e => {
                     console.log(e)
                     if (e.message === 'Network Error') {

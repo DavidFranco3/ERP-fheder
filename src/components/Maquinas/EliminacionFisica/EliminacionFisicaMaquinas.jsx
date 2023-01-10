@@ -7,7 +7,7 @@ import { Button, Form, Spinner, Alert, Row, Col } from "react-bootstrap";
 
 function EliminacionFisicaMaquinas(props) {
     const { data, setShowModal, history } = props;
-    const { id, numeroMaquina, marca, tonelaje, lugar } = data;
+    const { id, numeroMaquina, marca, nombre, lugar } = data;
 
     //console.log(data)
 
@@ -65,11 +65,11 @@ function EliminacionFisicaMaquinas(props) {
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Marca
+                            Nombre
                         </Form.Label>
                         <Form.Control
                             type="text"
-                            value={marca}
+                            value={nombre}
                             disabled
                         />
                     </Form.Group>
@@ -80,11 +80,11 @@ function EliminacionFisicaMaquinas(props) {
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Tonelaje
+                            Marca
                         </Form.Label>
                         <Form.Control
                             type="text"
-                            value={tonelaje}
+                            value={marca}
                             disabled
                         />
                     </Form.Group>
