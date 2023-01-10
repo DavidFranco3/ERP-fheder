@@ -7,6 +7,7 @@ import { Badge, Button, Container } from "react-bootstrap";
 import EliminacionLogicaClientes from "../EliminacionLogica";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaClientes from "../EliminacionFisica";
+import ListDomiciliosEntrega from '../ListDomiciliosEntrega';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
@@ -51,6 +52,12 @@ function ListClientes(props) {
         setContentModal(content);
         setShowModal(true);
     }
+
+    const ExpandedComponent = ({ data }) => (
+        <ListDomiciliosEntrega
+            id={data.id}
+        />
+    );
 
     const columns = [
         {
@@ -301,6 +308,8 @@ function ListClientes(props) {
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
                     data={listClientes}
+                    expandableRows
+                    expandableRowsComponent={ExpandedComponent}
                     //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}

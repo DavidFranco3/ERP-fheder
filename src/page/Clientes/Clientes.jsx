@@ -135,6 +135,7 @@ function formatModelClientes(data) {
             sucursal: data.sucursal,
             rfc: data.rfc,
             telefonoCelular: data.telefonoCelular,
+            count: data.count,
             calle: calle,
             numeroExterior: numeroExterior,
             numeroInterior: numeroInterior,
@@ -145,6 +146,7 @@ function formatModelClientes(data) {
             correo: data.correo,
             foto: data.foto,
             estadoCliente: data.estadoCliente,
+            domiciliosEntrega: data.domiciliosEntrega,
             fechaActualizacion: data.updatedAt
         });
     });
