@@ -46,7 +46,7 @@ function EtiquetasMoldes(props) {
     }
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardMantenimiento")
+        enrutamiento.push("/DashboardCatalogos")
     }
 
     return (

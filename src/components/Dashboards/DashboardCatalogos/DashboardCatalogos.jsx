@@ -14,6 +14,7 @@ import LogoClientes from "../../../assets/png/menus/clientes.png";
 import LogoMateriales from "../../../assets/png/menus/materiales.png";
 import LogoDepartamentos from "../../../assets/png/menus/departamentos.png";
 import LogoUsuarios from "../../../assets/png/menus/usuarios.png";
+import LogoEtiqueta from "../../../assets/png/menus/etiquetaPT.png";
 import LogoPigmento from "../../../assets/png/menus/pigmento.png";
 import LogoEmpaques from "../../../assets/png/menus/empaques.png";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
@@ -80,13 +81,12 @@ function DashboardCatalogos(props) {
                     </Col>
                 </Row>
             </Alert>
-            <div className="grid grid-cols-5 gap-5">
+            <div className="grid grid-cols-4 gap-4">
                 <ItemCard
                     path={'/Maquinas'}
                     logo={LogoMaquinas}
                     title={'Maquinas'}
                 />
-                
                 <ItemCard
                     path={'/MatrizProductos'}
                     logo={LogoProductos}
@@ -116,6 +116,11 @@ function DashboardCatalogos(props) {
                     path={'/Proveedores'}
                     logo={LogoProveedores}
                     title={'Proveedores'}
+                />
+                <ItemCard
+                    path={'/EtiquetasMoldes'}
+                    logo={LogoEtiqueta}
+                    title={'Etiquetas de moldes'}
                 />
             </div>
         </>

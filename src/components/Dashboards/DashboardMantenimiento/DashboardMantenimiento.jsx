@@ -85,11 +85,6 @@ function DashboardMantenimiento(props) {
                         title={'Orden de mantenimiento'}
                     />
                     <ItemCard
-                        path={'/EtiquetasMoldes'}
-                        logo={LogoEtiqueta}
-                        title={'Etiquetas de moldes'}
-                    />
-                    <ItemCard
                         //path={'/'}
                         logo={LogoLayout}
                         title={'Layout de maquinas'}
