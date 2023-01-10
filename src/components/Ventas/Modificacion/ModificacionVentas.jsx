@@ -458,7 +458,7 @@ function ModificacionVentas(props) {
                                     </Col>
                                     <Col sm="4">
                                         <Form.Control
-                                            type="number"
+                                            type="text"
                                             placeholder="Numero de pedido"
                                             name="numeroPedido"
                                             defaultValue={informacionPedido.numeroPedido}

@@ -1,24 +1,24 @@
 @import "../../scss/index";
 
 .archivo {
-  position: relative;
-  top: -40px;
+  position: left;
+  top: 0px;
   display: block;
   margin: auto;
   background-image: url("../../assets/png/adjuntar.png");
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  border-radius: 0%;
   background-size: cover;
-  background-position: center;
+  background-position: left;
   background-repeat: no-repeat;
-  align-items: center;
-  justify-content: center;
+  align-items: left;
+  justify-content: left;
 
   img {
-    width: 140px !important;
-    height: 140px !important;
-    border-radius: 50%;
+    width: 70px !important;
+    height: 70px !important;
+    border-radius: 0%;
   }
 
   &:hover {
@@ -30,7 +30,7 @@
     margin: auto;
     //margin-left: 45px;
     //margin-top: 25px;
-    width: 30px;
+    width: 0px;
     fill: $font-dark;
     &:hover {
       fill: $font-light;

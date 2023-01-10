@@ -6,7 +6,7 @@ import fotoNoDisponible from "../../assets/png/adjuntar.png"
 
 import "./DropzoneFormularios.scss";
 
-function Dropzone(props) {
+function DropzoneFormularios(props) {
     const { setImagen, imagenBD } = props;
 
     const [slide, setSlide] = useState([]);
@@ -97,4 +97,4 @@ function Dropzone(props) {
     );
 }
 
-export default Dropzone;
+export default DropzoneFormularios;

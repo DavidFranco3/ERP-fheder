@@ -439,7 +439,7 @@ function RegistroVentas(props) {
                                     </Col>
                                     <Col sm="4">
                                         <Form.Control
-                                            type="number"
+                                            type="text"
                                             placeholder="Numero de pedido"
                                             name="numeroPedido"
                                             defaultValue={formData.numeroPedido}
@@ -573,9 +573,9 @@ function RegistroVentas(props) {
                             </Row>
 
                             <br />
-                            <div className="subeFotoPerfil">
+                            <div className="subeOrdenVenta">
                                 <h4>Adjuntar orden de venta</h4>
-                                <div className="fotoPerfil">
+                                <div className="ordenVenta">
                                     <Dropzone
                                         setImagen={setPdfCotizacion}
                                     />
