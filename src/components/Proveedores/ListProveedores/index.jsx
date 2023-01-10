@@ -1,1 +1,1 @@
-export { default } from "./ListProveedores"
+export { default } from "./ListProveedores";

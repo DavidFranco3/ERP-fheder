@@ -86,16 +86,7 @@ function DashboardCatalogos(props) {
                     logo={LogoMaquinas}
                     title={'Maquinas'}
                 />
-                <ItemCard
-                    path={'/Proveedores'}
-                    logo={LogoProveedores}
-                    title={'Proveedores'}
-                />
-                <ItemCard
-                    path={'/Insumos'}
-                    logo={LogoInsumos}
-                    title={'Insumos'}
-                />
+                
                 <ItemCard
                     path={'/MatrizProductos'}
                     logo={LogoProductos}
@@ -122,14 +113,9 @@ function DashboardCatalogos(props) {
                     title={'Usuarios'}
                 />
                 <ItemCard
-                    path={'/Pigmento'}
-                    logo={LogoPigmento}
-                    title={'Pigmento'}
-                />
-                <ItemCard
-                    path={'/Empaques'}
-                    logo={LogoEmpaques}
-                    title={'Empaques'}
+                    path={'/Proveedores'}
+                    logo={LogoProveedores}
+                    title={'Proveedores'}
                 />
             </div>
         </>

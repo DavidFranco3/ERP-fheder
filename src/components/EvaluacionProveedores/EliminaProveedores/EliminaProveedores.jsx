@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import {Button, Col, Form, Row, Spinner, Alert} from "react-bootstrap";
-import {eliminaProveedores} from "../../../api/proveedores";
-import {toast} from "react-toastify";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
+import { eliminaEvaluacionProveedores } from "../../../api/evaluacionProveedores";
+import { toast } from "react-toastify";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
 
 function EliminaProveedores(props) {
@@ -16,7 +16,7 @@ function EliminaProveedores(props) {
 
         setLoading(true)
         try {
-            eliminaProveedores(id).then(response => {
+            eliminaEvaluacionProveedores(id).then(response => {
                 const { data } = response;
                 toast.success(data.mensaje)
                 setLoading(false)
@@ -40,14 +40,14 @@ function EliminaProveedores(props) {
     return (
         <>
             <Form onSubmit={onSubmit}>
-            
-            <Alert variant="danger">
-                <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
-                <p className="mensaje">
-                    Esta acción eliminara del sistema al proveedor.
-                </p>
-            </Alert>
-            
+
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción eliminara del sistema al proveedor.
+                    </p>
+                </Alert>
+
                 {/* ID proveedor, nombre/servicio */}
                 <Row>
                     <Form.Group as={Col} controlId="formGridFolio">
@@ -77,7 +77,6 @@ function EliminaProveedores(props) {
 
                 {/* Botones de acciones */}
                 <Form.Group as={Row} className="botones">
-                    <Row>
                         <Col>
                             <Button
                                 type="submit"
@@ -100,7 +99,6 @@ function EliminaProveedores(props) {
                                 Cancelar
                             </Button>
                         </Col>
-                    </Row>
                 </Form.Group>
             </Form>
         </>

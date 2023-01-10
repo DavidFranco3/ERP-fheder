@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { registraMatrizProductos } from "../../../api/matrizProductos";
 import "./RegistraMatrizProductos.scss"
-import { listarProveedores } from "../../../api/proveedores";
 import { listarMaquina } from "../../../api/maquinas";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarMaterial from '../../../page/BuscarMaterial';
@@ -65,9 +64,6 @@ function RegistraMatrizProductos(props) {
 
     // para almacenar los datos del formulario
     const [dataEmpaque, setDataEmpaque] = useState(initialEmpaque());
-
-    // para almacenar el listado de porveedores
-    const [listProveedores, setListProveedores] = useState(null);
 
     // Para definir el enrutamiento hacia productos
     const enrutamiento = useHistory();
@@ -180,25 +176,6 @@ function RegistraMatrizProductos(props) {
                     //console.log("No hay internet")
                     toast.error("Conexión al servidor no disponible");
                 }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-
-        // Para obtener el listado de proveedores
-        try {
-            listarProveedores().then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProveedores && data) {
-                    setListProveedores(formatModelProveedores(data));
-                } else {
-                    const datosProductos = formatModelProveedores(data);
-                    setListProveedores(datosProductos);
-                }
-            }).catch(e => {
-                console.log(e)
             })
         } catch (e) {
             console.log(e)

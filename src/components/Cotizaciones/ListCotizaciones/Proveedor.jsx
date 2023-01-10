@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {obtenerProveedores} from "../../../api/proveedores";
+import {obtenerEvaluacionProveedores} from "../../../api/evaluacionProveedores";
 import {toast} from "react-toastify";
 
 function Proveedor(props) {
@@ -11,7 +11,7 @@ function Proveedor(props) {
     useEffect(() => {
         //
         try {
-            obtenerProveedores(id).then(response => {
+            obtenerEvaluacionProveedores(id).then(response => {
                 const { data } = response;
                 // console.log(data)
                 const { nombre } = data;

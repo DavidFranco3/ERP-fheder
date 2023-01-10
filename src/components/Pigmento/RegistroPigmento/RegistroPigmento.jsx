@@ -4,7 +4,6 @@ import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { listarProveedores } from "../../../api/proveedores";
 import {getSucursal} from "../../../api/auth";
 
 function RegistroPigmento(props) {
@@ -23,29 +22,6 @@ function RegistroPigmento(props) {
     const cancelarBusqueda = () => {
         setShowModal(false)
     }
-
-    // Para almacenar el listado de proveedores
-    const [listProveedores, setListProveedores] = useState(null);
-
-    useEffect(() => {
-        try {
-            listarProveedores().then(response => {
-                const { data } = response;
-                // console.log(data)
-                if (!listarProveedores() && data) {
-                    setListProveedores(formatModelProveedores(data));
-                } else {
-                    const datosProveedores = formatModelProveedores(data);
-                    setListProveedores(datosProveedores);
-                }
-
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     useEffect(() => {
         try {

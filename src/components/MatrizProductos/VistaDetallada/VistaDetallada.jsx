@@ -3,7 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import {listarMateriaPrima} from "../../../api/materiaPrima";
 import {toast} from "react-toastify";
 import {listarClientes} from "../../../api/clientes";
-import {listarProveedores} from "../../../api/proveedores";
+import {listarEvaluacionProveedores} from "../../../api/evaluacionProveedores";
 import {Alert, Button, Col, Container, Form, Image, Row, Spinner} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeftLong, faArrowLeftRotate, faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
@@ -127,7 +127,7 @@ function VistaDetallada(props) {
 
         // Para obtener el listado de proveedores
         try {
-            listarProveedores().then(response => {
+            listarEvaluacionProveedores().then(response => {
                 const { data } = response;
                 // console.log(data)
 

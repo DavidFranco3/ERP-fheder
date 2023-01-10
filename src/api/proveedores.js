@@ -1,20 +1,20 @@
 import { API_HOST } from "../utils/constants";
 import {
-    ENDPOINTRegistroProveedores,
+    ENDPOINTRegistraProveedores,
     ENDPOINTListarProveedores,
-    ENDPOINTListarPaginandoProveedores,
     ENDPOINTObtenerProveedores,
-    ENDPOINTObtenNoActualProveedores,
     ENDPOINTEliminarProveedores,
-    ENDPOINTDeshabilitarProveedores,
     ENDPOINTActualizarProveedores,
-    ENDPOINTObtenerItemProveedor,
+    ENDPOINTDeshabilitaProveedores,
+    ENDPOINTListarProveedoresPaginacion,
     ENDPOINTTotalProveedores
 } from "./endpoints";
 import axios from 'axios';
 import { getTokenApi } from "./auth";
+export let nombreUsuario = "";
+export let apellidosUsuario = "";
 
-// Registra proveedores
+// Registra clientes
 export async function registraProveedores(data) {
     const config = {
         headers: {
@@ -24,19 +24,7 @@ export async function registraProveedores(data) {
         }
     };
 
-    return await axios.post(API_HOST + ENDPOINTRegistroProveedores, data, config);
-}
-
-// Para obtener el número de orden de compra actual
-export async function obtenerItem() {
-    const config = {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${getTokenApi()}`
-        }
-    };
-    return await axios.get(API_HOST + ENDPOINTObtenerItemProveedor, config);
+    return await axios.post(API_HOST + ENDPOINTRegistraProveedores, data, config);
 }
 
 // Obten el total de registros de la colección
@@ -51,8 +39,8 @@ export async function totalProveedores() {
     return await axios.get(API_HOST + ENDPOINTTotalProveedores, config);
 }
 
-// Para obtener todos los datos del proveedor
-export async function obtenerProveedores(id) {
+// Para obtener todos los datos del cliente
+export async function obtenerProveedores(params) {
     //console.log(params)
     const config = {
         headers: {
@@ -61,22 +49,10 @@ export async function obtenerProveedores(id) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTObtenerProveedores + `/${id}`, config);
+    return await axios.get(API_HOST + ENDPOINTObtenerProveedores + `/${params}`, config);
 }
 
-// Obtener el numero de folio actual del proveedor
-export async function obtenerFolioActualProveedores() {
-    const config = {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${getTokenApi()}`
-        }
-    };
-    return await axios.get(API_HOST + ENDPOINTObtenNoActualProveedores, config);
-}
-
-// Para listar todos los proveedores
+// Para listar todos los clientes
 export async function listarProveedores(sucursal) {
     const config = {
         headers: {
@@ -88,7 +64,7 @@ export async function listarProveedores(sucursal) {
     return await axios.get(API_HOST + ENDPOINTListarProveedores +`/?sucursal=${sucursal}`, config);
 }
 
-// Lista los proveedores paginandolos
+// Lista los clientes paginandolos
 export async function listarProveedoresPaginacion(pagina, limite) {
     const config = {
         headers: {
@@ -97,10 +73,10 @@ export async function listarProveedoresPaginacion(pagina, limite) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarPaginandoProveedores + `/?pagina=${pagina}&&limite=${limite}`, config);
+    return await axios.get(API_HOST + ENDPOINTListarProveedoresPaginacion + `/?pagina=${pagina}&&limite=${limite}`, config);
 }
 
-// Elimina proveedores
+// Elimina cliente fisicamente de la bd
 export async function eliminaProveedores(id) {
     const config = {
         headers: {
@@ -113,7 +89,7 @@ export async function eliminaProveedores(id) {
     return await axios.delete(API_HOST + ENDPOINTEliminarProveedores + `/${id}`, config);
 }
 
-// Deshabilita a proveedores
+// Deshabilita el usuario
 export async function deshabilitaProveedores(id, data) {
     //console.log(data)
     const config = {
@@ -124,10 +100,10 @@ export async function deshabilitaProveedores(id, data) {
         }
     };
 
-    return await axios.put(API_HOST + ENDPOINTDeshabilitarProveedores + `/${id}`, data, config);
+    return await axios.put(API_HOST + ENDPOINTDeshabilitaProveedores + `/${id}`, data, config);
 }
 
-// Modifica datos del proveedor
+// Modifica datos del cliente
 export async function actualizaProveedores(id, data) {
 
     const config = {

@@ -82,6 +82,16 @@ export const ENDPOINTDeshabilitaCliente = "/clientes/deshabilitar";
 export const ENDPOINTListarClientesPaginacion = "/clientes/listarPaginando";
 export const ENDPOINTTotalClientes = "/clientes/total";
 
+// Proveedores
+export const ENDPOINTRegistraProveedores = "/proveedores/registro";
+export const ENDPOINTListarProveedores = "/proveedores/listar";
+export const ENDPOINTObtenerProveedores = "/proveedores/obtener";
+export const ENDPOINTEliminarProveedores = "/proveedores/eliminar";
+export const ENDPOINTActualizarProveedores = "/proveedores/actualizar";
+export const ENDPOINTDeshabilitaProveedores = "/proveedores/deshabilitar";
+export const ENDPOINTListarProveedoresPaginacion = "/proveedores/listarPaginando";
+export const ENDPOINTTotalProveedores = "/proveedores/total";
+
 // Razones sociales
 export const ENDPOINTRegistraRazonSocial = "/razonesSociales/registro";
 export const ENDPOINTListarRazonSocial= "/razonesSociales/listar";
@@ -301,17 +311,17 @@ export const ENDPOINTCambiarStatusCotizaciones = "/cotizacion/cambiarStatus";
 export const ENDPOINTActualizarCotizaciones = "/cotizacion/actualizar";
 export const ENDPOINTTotalCotizaciones = "/cotizacion/total"
 
-// Proveedores
-export const ENDPOINTRegistroProveedores = "/proveedores/registro";
-export const ENDPOINTListarProveedores = "/proveedores/listar";
-export const ENDPOINTListarPaginandoProveedores = "/proveedores/listarPaginando";
-export const ENDPOINTObtenerProveedores = "/proveedores/obtener";
-export const ENDPOINTEliminarProveedores = "/proveedores/eliminar";
-export const ENDPOINTDeshabilitarProveedores = "/proveedores/deshabilitar";
-export const ENDPOINTActualizarProveedores = "/proveedores/actualizar";
-export const ENDPOINTObtenNoActualProveedores = "/proveedores/generarFolio";
-export const ENDPOINTTotalProveedores = "/proveedores/total";
-export const ENDPOINTObtenerItemProveedor = "/proveedores/obtenerItem";
+// Evaluacion de proveedores
+export const ENDPOINTRegistroEvaluacionProveedores = "/evaluacionProveedores/registro";
+export const ENDPOINTListarEvaluacionProveedores = "/evaluacionProveedores/listar";
+export const ENDPOINTListarPaginandoEvaluacionProveedores = "/evaluacionProveedores/listarPaginando";
+export const ENDPOINTObtenerEvaluacionProveedores = "/evaluacionProveedores/obtener";
+export const ENDPOINTEliminarEvaluacionProveedores = "/evaluacionProveedores/eliminar";
+export const ENDPOINTDeshabilitarEvaluacionProveedores = "/evaluacionProveedores/deshabilitar";
+export const ENDPOINTActualizarEvaluacionProveedores = "/evaluacionProveedores/actualizar";
+export const ENDPOINTObtenNoActualEvaluacionProveedores = "/evaluacionProveedores/generarFolio";
+export const ENDPOINTTotalEvaluacionProveedores = "/evaluacionProveedores/total";
+export const ENDPOINTObtenerItemEvaluacionProveedor = "/evaluacionProveedores/obtenerItem";
 
 // Requisicion
 export const ENDPOINTRegistroRequisicion = "/requisicion/registro";

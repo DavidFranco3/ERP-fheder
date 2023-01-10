@@ -3,7 +3,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Image, Row, Spinner, Table, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import "./RegistroCompras.scss"
-import { listarProveedores } from "../../../api/proveedores";
+import { listarEvaluacionProveedores } from "../../../api/evaluacionProveedores";
 import { toast } from "react-toastify";
 import { obtenerNumeroOrdenCompra, registraOrdenCompra, obtenerItem } from "../../../api/compras";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -163,10 +163,10 @@ function RegistroCompras(props) {
 
     useEffect(() => {
         try {
-            listarProveedores().then(response => {
+            listarEvaluacionProveedores().then(response => {
                 const { data } = response;
                 // console.log(data)
-                if (!listarProveedores() && data) {
+                if (!listarEvaluacionProveedores() && data) {
                     setListProveedores(formatModelProveedores(data));
                 } else {
                     const datosProveedores = formatModelProveedores(data);
@@ -189,6 +189,7 @@ function RegistroCompras(props) {
 
     // Para guardar los datos de los articulos
     const [formDataArticulos, setFormDataArticulos] = useState(initialFormDataArticulos());
+    
     const [listProductosCargados, setListProductosCargados] = useState([]);
 
     // Para almacenar la OV
@@ -294,7 +295,7 @@ function RegistroCompras(props) {
                         subtotal: subTotal,
                         iva: IVA,
                         total: total,
-                        status: "True"
+                        status: "true"
                     }
                     // console.log(data)
                     registraOrdenCompra(dataTemp).then(response => {

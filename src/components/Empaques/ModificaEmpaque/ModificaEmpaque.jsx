@@ -4,7 +4,6 @@ import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { listarProveedores } from "../../../api/proveedores";
 
 function ModificaEmpaque(props) {
     const { dataEmpaque, location, history, setShowModal } = props;
@@ -20,29 +19,6 @@ function ModificaEmpaque(props) {
 
     // Para almacenar los datos del formulario
     const [formData, setFormData] = useState(initialFormData(dataEmpaque));
-
-    // Para almacenar el listado de proveedores
-    const [listProveedores, setListProveedores] = useState(null);
-
-    useEffect(() => {
-        try {
-            listarProveedores().then(response => {
-                const { data } = response;
-                // console.log(data)
-                if (!listarProveedores() && data) {
-                    setListProveedores(formatModelProveedores(data));
-                } else {
-                    const datosProveedores = formatModelProveedores(data);
-                    setListProveedores(datosProveedores);
-                }
-
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     const onSubmit = e => {
         e.preventDefault();

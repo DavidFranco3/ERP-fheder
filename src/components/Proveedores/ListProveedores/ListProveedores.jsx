@@ -1,66 +1,58 @@
-import { useState, useEffect } from 'react';
-import { Badge, Container } from "react-bootstrap";
-import "./ListProveedores.scss"
+import { useState, useEffect, useMemo } from 'react';
+import moment from "moment";
+import 'moment/locale/es';
+import { useHistory } from "react-router-dom";
+import { map } from "lodash";
+import { Badge, Button, Container } from "react-bootstrap";
+import EliminacionLogicaProveedores from "../EliminacionLogica";
 import BasicModal from "../../Modal/BasicModal";
-import EstadoProveedor from "../EstadoProveedor";
-import ModificaProveedores from "../ModificaProveedores";
-import EliminaProveedores from "../EliminaProveedores";
+import EliminacionFisicaProveedores from "../EliminacionFisica";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
-import { estilos } from "../../../utils/tableStyled";
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
+import { estilos } from "../../../utils/tableStyled";
 
 function ListProveedores(props) {
-    const { listProveedores, setRefreshCheckLogin, history, location } = props;
+    const { listProveedores, history, location, setRefreshCheckLogin } = props;
 
-    // console.log(listProveedores)
+    moment.locale("es");
+    //console.log(listClientes);
+
+    const enrutamiento = useHistory();
+
+    // Para ir hacia la ruta de modificacion
+    const irHaciaModificacion = (id) => {
+        enrutamiento.push(`/ModificacionProveedores/${id}`);
+    }
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
     const [contentModal, setContentModal] = useState(null);
     const [titulosModal, setTitulosModal] = useState(null);
 
-    //Para la eliminacion de proveedores
-    const eliminacionProveedor = (content) => {
-        setTitulosModal("Eliminando proveedor");
+    //Para la eliminacion fisica de clientes
+    const eliminaProveedores = (content) => {
+        setTitulosModal("Eliminando el proveedor");
         setContentModal(content);
         setShowModal(true);
     }
 
-    //Para cambiar el status del proveedor
-    const cambiarStatusProveedor = (content) => {
-        setTitulosModal("Cambiando status del vendedor");
+    //Para la eliminacion logica de clientes
+    const eliminaLogicaProveedores = (content) => {
+        setTitulosModal("Deshabilitando proveedor");
         setContentModal(content);
         setShowModal(true);
     }
 
-    //Para la eliminacion de proveedores
-    const modificacionProveedor = (content) => {
-        setTitulosModal("Modificando datos proveedor");
+    //Para la eliminacion logica de clientes
+    const habilitaProveedores = (content) => {
+        setTitulosModal("Habilitando proveedor");
         setContentModal(content);
         setShowModal(true);
-    }
-
-    // Para llenar la evaluación del proveedor
-    const registraEvaluacion = (idProveedor) => {
     }
 
     const columns = [
-        {
-            name: 'ITEM',
-            selector: row => row.item,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Folio',
-            selector: row => row.folio,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
         {
             name: 'Nombre',
             selector: row => row.nombre,
@@ -69,94 +61,41 @@ function ListProveedores(props) {
             reorder: false
         },
         {
-            name: 'Producto/Servicio que proporciona',
-            selector: row => row.productoServicio,
+            name: 'RFC',
+            selector: row => row.rfc,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Categoría',
-            selector: row => row.categoria,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Personal de contacto',
-            selector: row => row.personalContacto,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Telefono',
-            selector: row => row.telefono,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Email',
+            name: 'Correo',
             selector: row => row.correo,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Tiempo credito',
-            selector: row => row.tiempoCredito + " dias",
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Tiempo respuesta',
-            selector: row => row.tiempoRespuesta + " dias",
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Personal de contacto',
-            selector: row => row.personalContacto,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Lugar de recolección',
-            selector: row => row.lugarRecoleccion,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Horario',
-            selector: row => row.horario,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Observaciones',
-            selector: row => row.comentarios,
+            name: 'Telefono celular',
+            selector: row => row.telefonoCelular,
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Estado',
-            selector: row => row.estado === "true" ?
+            sortable: false,
+            center: true,
+            reorder: false,
+            selector: row => row.estadoProveedor === "true" ?
                 (
                     <>
                         <Badge
-                            bg="success"
-                            title="Deshabilitar"
-                            className="editarProveedor"
+                            bg="success" 
+                            className="editar"
+                            title="Deshabilitar proveedores"
                             onClick={() => {
-                                cambiarStatusProveedor(
-                                    <EstadoProveedor
+                                eliminaLogicaProveedores(
+                                    <EliminacionLogicaProveedores
                                         dataProveedor={row}
                                         setShowModal={setShowModal}
                                         history={history}
@@ -164,7 +103,7 @@ function ListProveedores(props) {
                                 )
                             }}
                         >
-                            Habilitado
+                            Activo
                         </Badge>
                     </>
                 )
@@ -172,12 +111,12 @@ function ListProveedores(props) {
                 (
                     <>
                         <Badge
-                            bg="warning"
-                            title="Habilitar"
-                            className="editarProveedor"
+                            bg="danger"
+                            className="eliminar"
+                            title="Habilitar proveedor"
                             onClick={() => {
-                                cambiarStatusProveedor(
-                                    <EstadoProveedor
+                                habilitaProveedores(
+                                    <EliminacionLogicaProveedores
                                         dataProveedor={row}
                                         setShowModal={setShowModal}
                                         history={history}
@@ -185,59 +124,53 @@ function ListProveedores(props) {
                                 )
                             }}
                         >
-                            Deshabilitado
+                            Inactivo
                         </Badge>
                     </>
-                ),
+                )
+        },
+        {
+            name: 'Última modificación',
+            selector: row => moment(row.fechaActualizacion).format("LL"),
             sortable: false,
             center: true,
             reorder: false
-        },
+        }
+        ,
         {
             name: 'Acciones',
             center: true,
             reorder: false,
             selector: row => (
                 <>
-                    <Badge
-                        bg="info"
-                        title="Generar PDF"
-                        className="evaluacionProveedor"
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
+                <div className="flex justify-end items-center space-x-4">
                     <Badge
                         bg="success"
                         title="Modificar"
-                        className="editarProveedor"
+                        className="editar"
                         onClick={() => {
-                            modificacionProveedor(
-                                <ModificaProveedores
-                                    dataProveedor={row}
-                                    history={history}
-                                    setShowModal={setShowModal}
-                                />
-                            )
+                            irHaciaModificacion(row.id)
                         }}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
                     </Badge>
                     <Badge
                         bg="danger"
-                        title="Eliminar"
-                        className="eliminarProveedor"
+                        className="eliminar"
                         onClick={() => {
-                            eliminacionProveedor(
-                                <EliminaProveedores
-                                    dataProveedor={row}
-                                    history={history}
-                                    setShowModal={setShowModal}
-                                />
+                            eliminaProveedores(
+                            <EliminacionFisicaProveedores
+                                dataProveedor={row}
+                                title="Eliminar"
+                                setShowModal={setShowModal}
+                                history={history}
+                            />
                             )
                         }}
                     >
                         <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
                     </Badge>
+                    </div>
                 </>
             )
         }
@@ -261,7 +194,106 @@ function ListProveedores(props) {
         rangeSeparatorText: 'de'
     };
 
+    // Procesa documento para descargar en csv
+    function convertArrayOfObjectsToCSV(array) {
+        let result;
+        const columnDelimiter = ',';
+        const lineDelimiter = '\n';
+        const keys = Object.keys(filteredItems[0]);
+        result = '';
+        result += keys.join(columnDelimiter);
+        result += lineDelimiter;
+        array.forEach(item => {
+            let ctr = 0;
+            keys.forEach(key => {
+                if (ctr > 0) result += columnDelimiter;
+                result += item[key];
+                ctr++;
+            });
+            result += lineDelimiter;
+        });
+        return result;
+    }
+
+    function downloadCSV(array) {
+        const link = document.createElement('a');
+        let csv = convertArrayOfObjectsToCSV(array);
+        if (csv == null) return;
+        const filename = 'Datos.csv';
+        if (!csv.match(/^data:text\/csv/i)) {
+            csv = `data:text/csv;charset=utf-8,${csv}`;
+        }
+        link.setAttribute('href', encodeURI(csv));
+        link.setAttribute('download', filename);
+        link.click();
+    }
+
+    const Export = ({ onExport }) => <Button onClick={e => onExport(e.target.value)}>Descargar CSV</Button>;
+
+    const descargaCSV = useMemo(() => <Export onExport={() => downloadCSV(filteredItems)} />, []);
+
+    const [filterText, setFilterText] = useState("");
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
+
+
+
+    // Defino barra de busqueda
+    const ClearButton = styled(Button)` 
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        height: 34px;
+        width: 32px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `;
+
+    const TextField = styled.input` 
+        height: 32px;
+        border-radius: 3px;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border: 1px solid #e5e5e5;
+        padding: 0 32px 0 16px;
+      &:hover {
+        cursor: pointer;
+      }
+    `;
+
+
+    const filteredItems = listProveedores.filter(
+        item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+    const subHeaderComponentMemo = useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToogle(!resetPaginationToogle);
+                setFilterText('');
+            }
+        };
+
+        return (
+            <>
+                <TextField
+                    id="search"
+                    type="text"
+                    placeholder="Busqueda por nombre"
+                    aria-label="Search Input"
+                    value={filterText}
+                    onChange={e => setFilterText(e.target.value)}
+                />
+                <ClearButton type="button" onClick={handleClear}>
+                    X
+                </ClearButton>
+            </>
+        );
+    }, [filterText, resetPaginationToogle]);
 
     return (
         <>
@@ -270,6 +302,9 @@ function ListProveedores(props) {
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
                     data={listProveedores}
+                    //actions={descargaCSV}
+                    //subHeader
+                    //subHeaderComponent={subHeaderComponentMemo}
                     progressPending={pending}
                     paginationComponentOptions={paginationComponentOptions}
                     paginationResetDefaultPage={resetPaginationToogle}

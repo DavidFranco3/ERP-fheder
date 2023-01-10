@@ -66,6 +66,9 @@ function BuscarProductos(props) {
                 idArticulo: valoresProducto.idProducto,
                 folioArticulo: valoresProducto.ID,
                 nombreArticulo: valoresProducto.item,
+
+                nombreProducto: valoresProducto.nombreProducto,
+                folioProdcuto: valoresProducto.folioProdcuto,
                 um: valoresProducto.um,
             }
             setFormData(dataTemp)
@@ -312,6 +315,9 @@ function initialValues() {
         ID: "",
         precioUnitario: "",
         um: "",
+        nombreProducto: "",
+        folioProdcuto: "",
+        um: ""
     }
 }
 
@@ -322,6 +328,8 @@ function valoresAlmacenados(data) {
         ID: data.noInterno,
         precioUnitario: data.precioVenta,
         um: data.um,
+        nombreProducto: data.descripcion,
+        folioProdcuto: data.noInterno,
     }
 }
 

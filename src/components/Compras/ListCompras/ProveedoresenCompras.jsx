@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {obtenerProveedores} from "../../../api/proveedores";
+import {obtenerEvaluacionProveedores} from "../../../api/evaluacionProveedores";
 
 function ProveedoresenCompras(props) {
     const { id } = props;
@@ -9,7 +9,7 @@ function ProveedoresenCompras(props) {
 
     useEffect(() => {
         try {
-            obtenerProveedores(id).then(response => {
+            obtenerEvaluacionProveedores(id).then(response => {
                 const { data } = response;
                 const { nombre } = data;
                 setNombreProveedor(nombre)

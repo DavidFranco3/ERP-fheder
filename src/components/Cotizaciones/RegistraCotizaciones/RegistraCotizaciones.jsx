@@ -14,7 +14,7 @@ import Inicial from "./Pasos/Cotizacion/Inicial";
 import Partidas from "./Pasos/Cotizacion/Partidas";
 import VistaPrevia from "./Pasos/Cotizacion/VistaPrevia";
 import { listarClientes } from "../../../api/clientes";
-import { listarProveedores } from "../../../api/proveedores";
+import { listarEvaluacionProveedores } from "../../../api/evaluacionProveedores";
 import { toast } from "react-toastify";
 import { map } from "lodash";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -108,7 +108,7 @@ function RegistraCotizaciones(props) {
     // Obtener los clientes registrados
     useEffect(() => {
         try {
-            listarProveedores(getSucursal()).then(response => {
+            listarEvaluacionProveedores(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

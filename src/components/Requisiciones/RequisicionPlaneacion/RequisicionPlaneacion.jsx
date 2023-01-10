@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { map } from "lodash";
 import { listarPedidosVenta } from "../../../api/pedidoVenta";
-import { listarProveedores } from "../../../api/proveedores";
 import { obtenerNumeroRequisicion, registraRequisicion, obtenerItem } from "../../../api/requisicion";
 import { toast } from "react-toastify";
 import { obtenerUsuario } from "../../../api/usuarios";
@@ -153,29 +152,6 @@ function RegistraRequisiciones(props) {
                     toast.error("Conexión a Internet no Disponible");
                     // setConexionInternet(false);
                 }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
-    // Para almacenar el listado de proveedores
-    const [listProveedores, setListProveedores] = useState(null);
-
-    useEffect(() => {
-        try {
-            listarProveedores().then(response => {
-                const { data } = response;
-                // console.log(data)
-                if (!listarProveedores() && data) {
-                    setListProveedores(formatModelProveedores(data));
-                } else {
-                    const datosProveedores = formatModelProveedores(data);
-                    setListProveedores(datosProveedores);
-                }
-
-            }).catch(e => {
-                console.log(e)
             })
         } catch (e) {
             console.log(e)

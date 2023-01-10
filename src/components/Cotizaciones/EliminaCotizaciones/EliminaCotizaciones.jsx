@@ -4,7 +4,7 @@ import {Alert, Button, Col, Form, Row, Spinner} from "react-bootstrap";
 import {toast} from "react-toastify";
 import queryString from "query-string";
 import {listarClientes} from "../../../api/clientes";
-import {listarProveedores} from "../../../api/proveedores";
+import {listarEvaluacionProveedores} from "../../../api/evaluacionProveedores";
 import {map} from "lodash";
 import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
 
@@ -61,7 +61,7 @@ function EliminaCotizaciones(props) {
     // Obtener los clientes registrados
     useEffect(() => {
         try {
-            listarProveedores().then(response => {
+            listarEvaluacionProveedores().then(response => {
                 const { data } = response;
 
                 //console.log(data);

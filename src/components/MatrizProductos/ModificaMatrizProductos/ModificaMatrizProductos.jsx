@@ -12,7 +12,6 @@ import { listarMateriaPrima } from "../../../api/materiaPrima";
 import { toast } from "react-toastify";
 import { listarClientes } from "../../../api/clientes";
 import { listarMaquina } from "../../../api/maquinas";
-import { listarProveedores } from "../../../api/proveedores";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarMaterial from '../../../page/BuscarMaterial';
@@ -75,9 +74,6 @@ function ModificaMatrizProductos(props) {
 
     // para almacenar los datos del formulario
     const [dataEmpaque, setDataEmpaque] = useState(initialEmpaque());
-
-    // para almacenar el listado de porveedores
-    const [listProveedores, setListProveedores] = useState(null);
 
     // Define el regreso hacia los productos
     const rutaRegresoProductos = () => {
@@ -218,24 +214,6 @@ function ModificaMatrizProductos(props) {
             console.log(e)
         }
 
-        // Para obtener el listado de proveedores
-        try {
-            listarProveedores().then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProveedores && data) {
-                    setListProveedores(formatModelProveedores(data));
-                } else {
-                    const datosProductos = formatModelProveedores(data);
-                    setListProveedores(datosProductos);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
     }, []);
 
     const onSubmit = e => {

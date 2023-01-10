@@ -8,7 +8,7 @@ import DetallesMateriaPrima from "../../Ventas/Registro/Pasos/OrdenVenta/Detalle
 import TiemposEspera from "../../Ventas/Registro/Pasos/OrdenVenta/TiemposEspera";
 import { obtenerCotizacion, registraCotizacion, obtenerNumeroCotizacion, actualizaCotizacion } from "../../../api/cotizaciones";
 import { listarClientes } from "../../../api/clientes";
-import { listarProveedores } from "../../../api/proveedores";
+import { listarEvaluacionProveedores } from "../../../api/evaluacionProveedores";
 import { toast } from "react-toastify";
 import { map } from "lodash";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -90,7 +90,7 @@ function ModificacionesCotizaciones(props) {
     // Obtener los clientes registrados
     useEffect(() => {
         try {
-            listarProveedores(getSucursal()).then(response => {
+            listarEvaluacionProveedores(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

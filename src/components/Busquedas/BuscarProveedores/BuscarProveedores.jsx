@@ -59,7 +59,9 @@ function BuscarProveedores(props) {
             setLoading(true);
             const dataTemp = {
                 proveedor: valoresCliente.proveedor,
-                nombreProveedor: valoresCliente.nombreProveedor
+                correoProveedor: valoresCliente.correoProveedor,
+                nombreProveedor: valoresCliente.nombreProveedor,
+                telefonoProveedor: valoresCliente.telefonoProveedor
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -301,6 +303,8 @@ function initialFormData() {
 function initialValues() {
     return {
         proveedor: "",
+        correoProveedor: "",
+        telefonoProveedor: "",
         nombreProveedor: ""
     }
 }
@@ -308,6 +312,8 @@ function initialValues() {
 function valoresAlmacenados(data) {
     return {
         proveedor: data._id,
+        correoProveedor: data.correo,
+        telefonoProveedor: data.telefonoCelular,
         nombreProveedor: data.nombre
     }
 }

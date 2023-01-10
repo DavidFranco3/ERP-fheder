@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
-import { deshabilitaProveedores } from "../../../api/proveedores";
+import { deshabilitaEvaluacionProveedores } from "../../../api/evaluacionProveedores";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
@@ -20,7 +20,7 @@ function EstadoProveedor(props) {
                 estado: estado === "true" ? "false" : "true"
             }
 
-            deshabilitaProveedores(id, dataTemp).then(response => {
+            deshabilitaEvaluacionProveedores(id, dataTemp).then(response => {
                 const { data } = response;
                 toast.success(data.mensaje)
                 setLoading(false)
@@ -75,7 +75,6 @@ function EstadoProveedor(props) {
 
                 {/* Botones de acciones */}
                 <Form.Group as={Row} className="botones">
-                    <Row>
                         <Col>
                             <Button
                                 type="submit"
@@ -97,7 +96,6 @@ function EstadoProveedor(props) {
                                 Cancelar
                             </Button>
                         </Col>
-                    </Row>
                 </Form.Group>
             </Form>
         </>

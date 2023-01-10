@@ -4,7 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { map } from "lodash";
 import { actualizaOrdenCompra, obtenerDatosCompra } from "../../../api/compras";
 import { obtenerDatosRequisiciones } from "../../../api/requisicion";
-import { listarProveedores } from "../../../api/proveedores";
+import { listarEvaluacionProveedores } from "../../../api/evaluacionProveedores";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { listarPedidosVenta } from "../../../api/pedidoVenta";
@@ -139,10 +139,10 @@ function ModificacionCompras(props) {
 
     useEffect(() => {
         try {
-            listarProveedores().then(response => {
+            listarEvaluacionProveedores().then(response => {
                 const { data } = response;
                 // console.log(data)
-                if (!listarProveedores() && data) {
+                if (!listarEvaluacionProveedores() && data) {
                     setListProveedores(formatModelProveedores(data));
                 } else {
                     const datosProveedores = formatModelProveedores(data);

@@ -11,6 +11,7 @@ import Produccion from "../page/Produccion";
 import Ventas from "../page/Ventas";
 import Usuarios from "../page/Usuarios";
 import Clientes from "../page/Clientes";
+import Proveedores from "../page/Proveedores";
 import RazonesSociales from "../page/RazonesSociales";
 import UnidadesMedida from "../page/UnidadesMedida";
 import Departamentos from "../page/Departamentos";
@@ -19,7 +20,7 @@ import Insumos from "../page/Insumos";
 import ClasificacionMateriales from "../page/ClasificacionMateriales";
 import ClasificacionMaquinaria from "../page/ClasificacionMaquinaria";
 import Cotizaciones from "../page/Cotizaciones";
-import Proveedores from "../page/Proveedores";
+import EvaluacionProveedores from "../page/EvaluacionProveedores";
 import Requisiciones from "../page/Requisiciones";
 import Logs from "../page/Logs";
 import Calidad from "../page/Calidad";
@@ -106,6 +107,14 @@ import ModificacionUsuarios from "../components/Usuarios/Modificacion";
 // Rutas para los clientes
 import RegistroClientes from "../components/Clientes/Registro";
 import ModificacionClientes from "../components/Clientes/Modificacion";
+
+// Rutas para los proveedores
+import RegistroProveedores from "../components/Proveedores/Registro";
+import ModificacionProveedores from "../components/Proveedores/Modificacion";
+
+// Rutas para las evaluaciones de proveedores
+import RegistroEvaluacionProveedores from "../components/EvaluacionProveedores/RegistraProveedores";
+import ModificacionEvaluacionProveedores from "../components/EvaluacionProveedores/ModificaProveedores";
 
 // Rutas para las razones sociales
 import RegistroRazonSocial from "../components/RazonesSociales/Registro";
@@ -354,6 +363,16 @@ export default [
         page: RegistroClientes
     },
     {
+        path: "/RegistroProveedores",
+        exact: true,
+        page: RegistroProveedores
+    },
+    {
+        path: "/RegistroEvaluacionProveedores",
+        exact: true,
+        page: RegistroEvaluacionProveedores
+    },
+    {
         path: "/RegistroRazonesSociales",
         exact: true,
         page: RegistroRazonSocial
@@ -367,6 +386,16 @@ export default [
         path: "/ModificacionClientes/:id",
         exact: true,
         page: ModificacionClientes
+    },
+    {
+        path: "/ModificacionEvaluacionProveedores/:id",
+        exact: true,
+        page: ModificacionEvaluacionProveedores
+    },
+    {
+        path: "/ModificacionProveedores/:id",
+        exact: true,
+        page: ModificacionProveedores
     },
     {
         path: "/ModificacionRazonesSociales/:id",
@@ -649,9 +678,9 @@ export default [
         page: EtiquetaPrimeraPieza
     },
     {
-        path: "/Proveedores",
+        path: "/EvaluacionProveedores",
         exact: true,
-        page: Proveedores
+        page: EvaluacionProveedores
     },
     {
         path: "/Usuarios",
@@ -697,6 +726,11 @@ export default [
         path: "/Clientes",
         exact: true,
         page: Clientes
+    },
+    {
+        path: "/Proveedores",
+        exact: true,
+        page: Proveedores
     },
     {
         path: "/RazonesSociales",
