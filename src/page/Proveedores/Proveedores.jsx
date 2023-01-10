@@ -132,6 +132,7 @@ function formatModelProveedores(data) {
             sucursal: data.sucursal,
             rfc: data.rfc,
             telefonoCelular: data.telefonoCelular,
+            personalContacto: data.personalContacto,
             calle: calle,
             numeroExterior: numeroExterior,
             numeroInterior: numeroInterior,

@@ -63,6 +63,7 @@ function RegistroProveedores(props) {
                 tipoPersona: formData.tipoPersona,
                 regimenFiscal: formData.regimenFiscal,
                 sucursal: getSucursal(),
+                personalContacto: formData.personalContacto,
                 direccion: {
                     calle: formData.calle,
                     numeroExterior: formData.numeroExterior,
@@ -278,6 +279,18 @@ function RegistroProveedores(props) {
                                     defaultValue={formData.telefonoFijo}
                                 />
                             </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridTelefonoFijo">
+                                <Form.Label>
+                                    Personal de contacto
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Personal de contacto"
+                                    name="personalContacto"
+                                    defaultValue={formData.personalContacto}
+                                />
+                            </Form.Group>
                         </Row>
 
                         <Row className="mb-3">
@@ -456,6 +469,7 @@ function initialFormData() {
         regimenFiscal: "",
         telefonoCelular: "",
         telefonoFijo: "",
+        personalContacto: "",
         tipoPersona: "",
         calle: "",
         numeroExterior: "",

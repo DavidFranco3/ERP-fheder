@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers, faArrowCircleLeft, faSearch, faCirclePlus, faX } from "@fortawesome/free-solid-svg-icons";
 import BuscarProveedor from '../../../page/BuscarProveedor';
 import BuscarProducto from '../../../page/BuscarProducto';
+import BuscarMaterial from "../../../page/BuscarMaterial";
 import BasicModal from "../../Modal/BasicModal";
 import { map } from "lodash";
 
@@ -52,8 +53,8 @@ function RegistraProveedores(props) {
     }
 
     // Para la eliminacion fisica de usuarios
-    const buscarProducto = (content) => {
-        setTitulosModal("Buscar producto");
+    const buscarMaterial = (content) => {
+        setTitulosModal("Buscar material");
         setContentModal(content);
         setShowModal(true);
     }
@@ -128,14 +129,13 @@ function RegistraProveedores(props) {
     const cancelarCargaProducto = () => {
         //setCargaProductos(initialFormDataProductos)
         setFormDataOC(initialFormDataOC)
-        document.getElementById("descripcion").value = "Elige una opción"
         //setCargaProductos(initialFormDataProductos)
     }
 
     // Para eliminar productos del listado
     const removeItem = (producto) => {
         let newArray = listProductosCargados;
-        newArray.splice(newArray.findIndex(a => a.descripcion === producto.descripcion), 1);
+        newArray.splice(newArray.findIndex(a => a.folio === producto.folio), 1);
         setListProductosCargados([...newArray]);
     }
     // Termina gestión de los articulos cargados
@@ -145,7 +145,7 @@ function RegistraProveedores(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!formData.personalContacto || !formData.tiempoCredito || !formData.tiempoRespuesta || !formData.lugarRecoleccion || !formData.horario || !formData.comentarios) {
+        if (!formData.tiempoCredito || !formData.tiempoRespuesta || !formData.lugarRecoleccion || !formData.horario || !formData.comentarios) {
             toast.warning("Completa el formulario");
         } else {
             setLoading(true)
@@ -159,7 +159,7 @@ function RegistraProveedores(props) {
                     sucursal: getSucursal(),
                     productoServicio: formData.productoServicio,
                     categoria: formData.categoria,
-                    personalContacto: formData.personalContacto,
+                    personalContacto: proveedorSeleccionado.personalContacto,
                     telefono: proveedorSeleccionado.telefonoProveedor,
                     correo: proveedorSeleccionado.correoProveedor,
                     tiempoCredito: formData.tiempoCredito,
@@ -289,7 +289,7 @@ function RegistraProveedores(props) {
                                     type="text"
                                     name="personalContacto"
                                     placeholder="Escribe el personal de contacto"
-                                    defaultValue={formData.personalContacto}
+                                    defaultValue={proveedorSeleccionado.personalContacto}
                                 />
                             </Form.Group>
 
@@ -476,8 +476,8 @@ function RegistraProveedores(props) {
                                                         title="Buscar entre los productos"
                                                         icon={faSearch}
                                                         onClick={() => {
-                                                            buscarProducto(
-                                                                <BuscarProducto
+                                                            buscarMaterial(
+                                                                <BuscarMaterial
                                                                     formData={formDataOC}
                                                                     setFormData={setFormDataOC}
                                                                     setShowModal={setShowModal}
@@ -560,9 +560,9 @@ function RegistraProveedores(props) {
                                             <tbody>
                                                 {map(listProductosCargados, (producto, index) => (
                                                     <tr key={index}>
-                                                        <th scope="row">
+                                                        <td scope="row">
                                                             {index + 1}
-                                                        </th>
+                                                        </td>
                                                         <td data-title="Folio">
                                                             {producto.folio}
                                                         </td>
@@ -658,7 +658,8 @@ function initialProveedor() {
         proveedor: "",
         correoProveedor: "",
         telefonoProveedor: "",
-        nombreProveedor: ""
+        nombreProveedor: "",
+        personalContacto: ""
     }
 }
 

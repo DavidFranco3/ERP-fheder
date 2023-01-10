@@ -87,6 +87,7 @@ function ModificacionProveedores(props) {
                 nombre: formData.nombre,
                 tipoPersona: formData.tipoPersona,
                 regimenFiscal: formData.regimenFiscal,
+                personalContacto: formData.personalContacto,
                 direccion: {
                     calle: formData.calle,
                     numeroExterior: formData.numeroExterior,
@@ -304,6 +305,18 @@ function ModificacionProveedores(props) {
                                     defaultValue={formData.telefonoFijo}
                                 />
                             </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridTelefonoFijo">
+                                <Form.Label>
+                                    Personal de contacto
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Personal de contacto"
+                                    name="personalContacto"
+                                    defaultValue={formData.personalContacto}
+                                />
+                            </Form.Group>
                         </Row>
 
                         <Row className="mb-3">
@@ -489,6 +502,7 @@ function initialFormData() {
         calle: "",
         numeroExterior: "",
         numeroInterior: "",
+        personalContacto: "",
         colonia: "",
         municipio: "",
         estado: "",
@@ -502,13 +516,14 @@ function initialFormData() {
 }
 
 function initialFormDataFinal(data) {
-    const { nombre, apellidos, curp, nss, rfc, regimenFiscal, tipoPersona, telefonoCelular, telefonoFijo, direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais, codigoPostal }, departamento, correo, password, tipo } = data;
+    const { nombre, apellidos, curp, nss, rfc, personalContacto, regimenFiscal, tipoPersona, telefonoCelular, telefonoFijo, direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais, codigoPostal }, departamento, correo, password, tipo } = data;
 
     return {
         nombre: nombre,
         apellidos: apellidos,
         curp: curp,
         nss: nss,
+        personalContacto: personalContacto,
         tipoPersona: tipoPersona,
         rfc: rfc,
         regimenFiscal: regimenFiscal,

@@ -61,7 +61,8 @@ function BuscarProveedores(props) {
                 proveedor: valoresCliente.proveedor,
                 correoProveedor: valoresCliente.correoProveedor,
                 nombreProveedor: valoresCliente.nombreProveedor,
-                telefonoProveedor: valoresCliente.telefonoProveedor
+                telefonoProveedor: valoresCliente.telefonoProveedor,
+                personalContacto: valoresCliente.personalContacto
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -104,7 +105,7 @@ function BuscarProveedores(props) {
         },
         {
             name: 'Telefono',
-            selector: row => row.telefono,
+            selector: row => row.telefonoCelular,
             sortable: false,
             center: true,
             reorder: false
@@ -305,7 +306,8 @@ function initialValues() {
         proveedor: "",
         correoProveedor: "",
         telefonoProveedor: "",
-        nombreProveedor: ""
+        nombreProveedor: "",
+        personalContacto: ""
     }
 }
 
@@ -314,7 +316,8 @@ function valoresAlmacenados(data) {
         proveedor: data._id,
         correoProveedor: data.correo,
         telefonoProveedor: data.telefonoCelular,
-        nombreProveedor: data.nombre
+        nombreProveedor: data.nombre,
+        personalContacto: data.personalContacto,
     }
 }
 

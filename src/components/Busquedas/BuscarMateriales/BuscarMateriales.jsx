@@ -69,6 +69,9 @@ function BuscarMateriales(props) {
                 idArticulo: valoresCliente.idMaterial,
                 folioArticulo: valoresCliente.folio,
                 nombreArticulo: valoresCliente.descripcion,
+
+                nombreProducto: valoresCliente.nombreProducto,
+                folioProdcuto: valoresCliente.folioProdcuto,
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -331,7 +334,9 @@ function initialValues() {
         descripcion: "",
         um: "",
         proveedor: "",
-        precio: ""
+        precio: "",
+        nombreProducto: "",
+        folioProdcuto: "",
     }
 }
 
@@ -342,7 +347,9 @@ function valoresAlmacenados(data) {
         descripcion: data.descripcion,
         um: data.um,
         proveedor: data.proveedor,
-        precio: data.precio
+        precio: data.precio,
+        nombreProducto: data.descripcion,
+        folioProdcuto: data.folio,
     }
 }
 

@@ -317,7 +317,6 @@ function initialValues() {
         um: "",
         nombreProducto: "",
         folioProdcuto: "",
-        um: ""
     }
 }
 

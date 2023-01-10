@@ -89,24 +89,25 @@ function BuscarProveedor(props) {
 function formatModelProveedores(data) {
     const dataTemp = []
     data.forEach(data => {
+        const { direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais } } = data;
         dataTemp.push({
             id: data._id,
-            item: data.item,
-            folio: data.folio,
             nombre: data.nombre,
-            tipo: data.tipo,
-            productoServicio: data.productoServicio,
-            categoria: data.categoria,
+            apellidos: data.apellidos,
+            sucursal: data.sucursal,
+            rfc: data.rfc,
+            telefonoCelular: data.telefonoCelular,
             personalContacto: data.personalContacto,
-            telefono: data.telefono,
+            calle: calle,
+            numeroExterior: numeroExterior,
+            numeroInterior: numeroInterior,
+            colonia: colonia,
+            municipio: municipio,
+            estado: estado,
+            pais: pais,
             correo: data.correo,
-            tiempoCredito: data.tiempoCredito,
-            tiempoRespuesta: data.tiempoRespuesta,
-            lugarRecoleccion: data.lugarRecoleccion,
-            horario: data.horario,
-            comentarios: data.comentarios,
-            estado: data.estado,
-            fechaCreacion: data.createdAt,
+            foto: data.foto,
+            estadoProveedor: data.estadoProveedor,
             fechaActualizacion: data.updatedAt
         });
     });

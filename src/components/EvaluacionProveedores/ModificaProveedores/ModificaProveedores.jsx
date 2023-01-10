@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers, faArrowCircleLeft, faSearch, faCirclePlus, faX } from "@fortawesome/free-solid-svg-icons";
 import BuscarProveedor from '../../../page/BuscarProveedor';
 import BuscarProducto from '../../../page/BuscarProducto';
+import BuscarMaterial from "../../../page/BuscarMaterial";
 import BasicModal from "../../Modal/BasicModal";
 import { map } from "lodash";
 
@@ -65,8 +66,8 @@ function ModificaProveedores(props) {
     }
 
     // Para la eliminacion fisica de usuarios
-    const buscarProducto = (content) => {
-        setTitulosModal("Buscar producto");
+    const buscarMaterial = (content) => {
+        setTitulosModal("Buscar material");
         setContentModal(content);
         setShowModal(true);
     }
@@ -153,14 +154,14 @@ function ModificaProveedores(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!formData.personalContacto || !formData.tiempoCredito || !formData.tiempoRespuesta || !formData.lugarRecoleccion || !formData.horario || !formData.comentarios) {
+        if (!formData.tiempoCredito || !formData.tiempoRespuesta || !formData.lugarRecoleccion || !formData.horario || !formData.comentarios) {
             toast.warning("Completa el formulario");
         } else {
             const dataTemp = {
                 nombre: proveedorSeleccionado.nombreProveedor,
                 productoServicio: formData.productoServicio,
                 categoria: formData.categoria,
-                personalContacto: formData.personalContacto,
+                personalContacto: proveedorSeleccionado.personalContacto,
                 telefono: proveedorSeleccionado.telefonoProveedor,
                 correo: proveedorSeleccionado.correoProveedor,
                 tiempoCredito: formData.tiempoCredito,
@@ -287,7 +288,7 @@ function ModificaProveedores(props) {
                                     type="text"
                                     name="personalContacto"
                                     placeholder="Escribe el personal de contacto"
-                                    defaultValue={formData.personalContacto}
+                                    defaultValue={proveedorSeleccionado.personalContacto}
                                 />
                             </Form.Group>
 
@@ -476,8 +477,8 @@ function ModificaProveedores(props) {
                                                         title="Buscar entre los productos"
                                                         icon={faSearch}
                                                         onClick={() => {
-                                                            buscarProducto(
-                                                                <BuscarProducto
+                                                            buscarMaterial(
+                                                                <BuscarMaterial
                                                                     formData={formDataOC}
                                                                     setFormData={setFormDataOC}
                                                                     setShowModal={setShowModal}
@@ -686,7 +687,8 @@ function initialProveedor() {
         proveedor: "",
         correoProveedor: "",
         telefonoProveedor: "",
-        nombreProveedor: ""
+        nombreProveedor: "",
+        personalContacto: ""
     }
 }
 
@@ -695,7 +697,8 @@ function initialProveedorFinal(data) {
         proveedor: "",
         correoProveedor: data.correo,
         telefonoProveedor: data.telefono,
-        nombreProveedor: data.nombre
+        nombreProveedor: data.nombre,
+        personalContacto: data.personalContacto
     }
 }
 
