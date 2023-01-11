@@ -13,14 +13,15 @@ import { obtenerRequerimiento, actualizaRequerimiento } from "../../../api/reque
 import { toast } from "react-toastify";
 import { obtenerMaquina } from "../../../api/maquinas";
 import { obtenerDatosMP } from "../../../api/almacenMP";
+import {obtenerDatosPedidoVenta} from "../../../api/pedidoVenta"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
 
 function ModificacionProduccion(props) {
     const { setRefreshCheckLogin } = props;
 
-     // Cerrado de sesión automatico
-     useEffect(() => {
+    // Cerrado de sesión automatico
+    useEffect(() => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
                 toast.warning("Sesión expirada");
@@ -50,69 +51,20 @@ function ModificacionProduccion(props) {
         //
         obtenerRequerimiento(id).then(response => {
             const { data } = response;
-            //console.log(data)
-            const { folio, requerimiento, planeacion, bom, datosRequisicion } = data;
-            const dataTemp = {
-                folio: folio,
-                requerimiento: requerimiento,
-                semana: requerimiento.semana,
-                producto: requerimiento.producto,
-                nombreProducto: requerimiento.nombreProducto,
-                nombreProveedor: requerimiento.nombreProveedor,
-                um: requerimiento.um,
-                almacenProductoTerminado: requerimiento.almacenProductoTerminado,
-                ordenVenta: requerimiento.ordenVenta,
-                ordenCompra: requerimiento.ordenCompra,
-                release: requerimiento.release,
-                totalProducir: requerimiento.totalProducir,
-                planeacion: planeacion,
-                numeroMolde: planeacion.numeroMolde,
-                numeroCavidades: planeacion.numeroCavidades,
-                opcionesMaquinaria: planeacion.opcionesMaquiaria,
-                numeroMaquina1: planeacion.opcionesMaquinaria.numeroMaquina1,
-                maquina1: planeacion.opcionesMaquinaria.maquina1,
-                ciclo1: planeacion.opcionesMaquinaria.ciclo1,
-                pieza1: planeacion.opcionesMaquinaria.pieza1,
-                bolsa1: planeacion.opcionesMaquinaria.bolsa1,
-                numeroMaquina2: planeacion.opcionesMaquinaria.numeroMaquina2,
-                maquina2: planeacion.opcionesMaquinaria.maquina2,
-                ciclo2: planeacion.opcionesMaquinaria.ciclo2,
-                pieza2: planeacion.opcionesMaquinaria.pieza2,
-                bolsa2: planeacion.opcionesMaquinaria.bolsa2,
-                numeroMaquina3: planeacion.opcionesMaquinaria.numeroMaquina3,
-                maquina3: planeacion.opcionesMaquinaria.maquina3,
-                ciclo3: planeacion.opcionesMaquinaria.ciclo3,
-                pieza3: planeacion.opcionesMaquinaria.pieza3,
-                bolsa3: planeacion.opcionesMaquinaria.bolsa3,
-                bom: bom,
-                material: bom.material,
-                molida: bom.molido,
-                pesoPieza: bom.pesoPieza,
-                pesoColada: bom.pesoColada,
-                kgMaterial: bom.kgMaterial,
-                pigmento: bom.pigmento,
-                apliacion: bom.aplicacion,
-                pigMb: bom.pigMb,
-                materialxTurno: bom.materialxTurno,
-                merma: bom.merma,
-                empaque: bom.empaque,
-                bolsasCajasUtilizar: bom.bolsasCajasUtilizar,
-                datosRequisicion: datosRequisicion,
-                cantidadPedir: datosRequisicion.cantidadPedir
-            }
-            //console.log(dataTemp.cantidadPedir)
-            setInformacionRequerimiento(valoresAlmacenados(dataTemp))
-            setListOVCargadas(requerimiento.ordenVenta)
-            setCantidadAlmacen(datosRequisicion.almacenMP)
-            setCantidadPedir(datosRequisicion.cantidadPedir)
+
+            setInformacionRequerimiento(valoresAlmacenados(data));
+            setListOVCargadas(data.requerimiento.ordenVenta);
+            setCantidadAlmacen(data.datosRequisicion.almacenMP);
+            setCantidadPedir(data.datosRequisicion.cantidadPedir);
+            setCantidadPedirEmpaques(data.datosRequisicion.cantidadPedirEmpaques);
+            setCantidadPedirMB(data.datosRequisicion.cantidadPedirMB);
+            setOrdenVentaPrincipal(data.requerimiento.ov);
 
             // setFechaCreacion(fechaElaboracion)
         }).catch(e => {
             console.log(e)
         })
     }, []);
-
-
 
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
@@ -145,6 +97,22 @@ function ModificacionProduccion(props) {
     const [cantidadAlmacen, setCantidadAlmacen] = useState("0");
 
     const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerDatosPedidoVenta(ordenVentaPrincipal).then(response => {
+                const { data } = response;
+                console.log(data)
+                setProducto(data.productos)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
     // Para la eliminacion fisica de usuarios
     const buscarOV = (content) => {
         setTitulosModal("Buscar orden de venta");
@@ -190,6 +158,19 @@ function ModificacionProduccion(props) {
     const [unidadMedida, setUnidadMedida] = useState("Piezas");
 
     const [cantidad, setCantidad] = useState("0");
+
+    const [producto, setProducto] = useState([]);
+
+    // Para almacenar la cantidad en el almacen de materia prima
+    const [cantidadMBAlmacen, setCantidadMBAlmacen] = useState(0);
+
+    // Para almacenar la cantidad en el almacen de materia prima
+    const [cantidadEmpaquesAlmacen, setCantidadEmpaquesAlmacen] = useState(0);
+
+    // Para almacenar la cantidad en el almacen de materia prima
+    const [cantidadProductoAlmacen, setCantidadProductoAlmacen] = useState(0);
+
+    console.log(ordenVentaPrincipal)
 
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
@@ -308,6 +289,8 @@ function ModificacionProduccion(props) {
         })
     }
 
+    console.log(informacionRequerimiento.producto)
+
     const onSubmit = e => {
         e.preventDefault();
 
@@ -317,7 +300,7 @@ function ModificacionProduccion(props) {
             //console.log("Continuar")
             setLoading(true)
 
-            const temp = informacionRequerimiento.producto.split("/")
+            const temp = informacionRequerimiento.producto.split("/");
 
             const dataTemp = {
                 requerimiento: {
@@ -367,19 +350,38 @@ function ModificacionProduccion(props) {
                     pesoPieza: formDataPlaneacion.pesoPiezas,
                     pesoColada: formDataPlaneacion.pesoColada,
                     kgMaterial: kgMaterial,
+                    idPigmento: formDataPlaneacion.idPigmento,
+                    folioPigmento: formDataPlaneacion.folioPigmento,
+                    precioPigmento: formDataPlaneacion.precioPigmento,
                     pigmento: formDataPlaneacion.descripcionPigmento,
                     aplicacion: formDataPlaneacion.aplicacionGxKG,
                     pigMb: pigMB,
                     materialxTurno: materialTurno,
                     merma: formDataPlaneacion.porcentajeScrap,
+                    idEmpaque: formDataPlaneacion.idEmpaque,
+                    folioEmpaque: formDataPlaneacion.folioEmpaque,
+                    precioEmpaque: formDataPlaneacion.precioEmpaque,
                     empaque: formDataPlaneacion.descripcionBolsa,
                     bolsasCajasUtilizar: bolsasCajasUtilizar
                 },
                 datosRequisicion: {
+                    material: formDataPlaneacion.descripcionMP,
                     kgMaterial: kgMaterial,
-                        almacenMP: cantidadAlmacen,
-                        cantidadSugerida: Number(kgMaterial) - Number(cantidadAlmacen),
-                        cantidadPedir: cantidadPedir
+                    almacenMP: cantidadProductoAlmacen,
+                    cantidadSugerida: Number(kgMaterial) - Number(cantidadProductoAlmacen),
+                    cantidadPedir: cantidadPedir,
+
+                    pigmentoMB: formDataPlaneacion.descripcionPigmento,
+                    kgPigMB: pigMB,
+                    MbAlmacen: cantidadMBAlmacen,
+                    cantidadSugeridaMB: Number(pigMB) - Number(cantidadMBAlmacen),
+                    cantidadPedirMB: cantidadPedirMB,
+
+                    empaque: formDataPlaneacion.descripcionBolsa,
+                    empaquesNecesarios: bolsasCajasUtilizar,
+                    empaquesAlmacen: cantidadEmpaquesAlmacen,
+                    cantidadSugeridaEmpaques: Number(bolsasCajasUtilizar) - Number(cantidadEmpaquesAlmacen),
+                    cantidadPedirEmpaques: cantidadPedirEmpaques
                 },
                 estado: "true"
             }
@@ -469,6 +471,22 @@ function ModificacionProduccion(props) {
 
     const [cantidadPedir, setCantidadPedir] = useState(0);
 
+    useEffect(() => {
+        setCantidadPedir(Number(kgMaterial) - Number(cantidadProductoAlmacen))
+    }, [formData.materiaPrima, formDataPlaneacion.idMaterial, totalProducir]);
+
+    const [cantidadPedirMB, setCantidadPedirMB] = useState(0);
+
+    useEffect(() => {
+        setCantidadPedirMB(Number(pigMB) - Number(cantidadMBAlmacen))
+    }, [formData.materiaPrima, formDataPlaneacion.idMaterial, totalProducir]);
+
+    const [cantidadPedirEmpaques, setCantidadPedirEmpaques] = useState(0);
+
+    useEffect(() => {
+        setCantidadPedirEmpaques(Number(bolsasCajasUtilizar) - Number(cantidadEmpaquesAlmacen))
+    }, [formData.materiaPrima, formDataPlaneacion.idMaterial, totalProducir]);
+
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
         setFormDataPlaneacion({ ...formDataPlaneacion, [e.target.name]: e.target.value })
@@ -539,70 +557,6 @@ function ModificacionProduccion(props) {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
-                                            Semana
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="number"
-                                            min="0"
-                                            placeholder="Semana"
-                                            name="semana"
-                                            defaultValue={informacionRequerimiento.semana}
-                                        />
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formGridMateriaPrima" className="producto">
-                                        <Form.Label>
-                                            Producto
-                                        </Form.Label>
-                                        <Form.Control
-                                            as="select"
-                                            onChange={(e) => {
-                                                handleMateriaPrima(e.target.value)
-                                            }}
-                                            defaultValue={informacionRequerimiento.producto}
-                                            name="producto"
-                                        >
-                                            <option>Elige una opción</option>
-                                            {map(listProductosActivos, (producto, index) => (
-                                                <option
-                                                    key={index}
-                                                    value={producto?.id + "/" + producto?.descripcion + "/" + producto.pigmentoMasterBach?.nombreProveedor}
-                                                    selected={producto?.id + "/" + producto?.descripcion + "/" + producto.pigmentoMasterBach?.nombreProveedor == informacionRequerimiento.producto}
-                                                >
-                                                    {producto?.descripcion}
-                                                </option>
-                                            ))}
-                                        </Form.Control>
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formHorizontalProducto">
-                                        <Form.Label align="center">
-                                            UM
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            defaultValue={unidadMedida}
-                                            placeholder="UM"
-                                            name="um"
-                                        />
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formHorizontalProducto">
-                                        <Form.Label align="center">
-                                            Almacen producto terminado
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            defaultValue={cantidad}
-                                            placeholder="Almacen producto terminado"
-                                            name="almacenPT"
-                                        />
-                                    </Form.Group>
-                                </Row>
-
-                                <Row className="mb-3">
-                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
-                                        <Form.Label align="center">
                                             ITEM
                                         </Form.Label>
                                         <Form.Control
@@ -635,10 +589,11 @@ function ModificacionProduccion(props) {
                                                     buscarOV(
                                                         <BuscarOV
                                                             setOrdenVenta={setOrdenVenta}
+                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
                                                             setClienteOV={setClienteOV}
                                                             setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                            setProducto={setProducto}
                                                             setShowModal={setShowModal}
-                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
                                                         />)
                                                 }}
                                             />
@@ -681,7 +636,7 @@ function ModificacionProduccion(props) {
                                             <Col>
                                                 <Button
                                                     variant="success"
-                                                    title="Agregar la orden de venta"
+                                                    title=" Agregar la orden de venta"
                                                     className="editar"
                                                     onClick={() => {
                                                         addItemsOV()
@@ -705,6 +660,80 @@ function ModificacionProduccion(props) {
                                         </Form.Group>
                                     </Col>
 
+                                </Row>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label align="center">
+                                            Semana
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            min="0"
+                                            placeholder="Semana"
+                                            name="semana"
+                                            defaultValue={informacionRequerimiento.semana}
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formGridMateriaPrima" className="producto">
+                                        <Form.Label>
+                                            Producto
+                                        </Form.Label>
+                                        {producto.length == 1 ? (
+                                            <>
+                                                <Form.Control
+                                                    type="text"
+                                                    defaultValue={formDataPlaneacion.descripcion}
+                                                    name="materiaPrima"
+                                                />
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Form.Control as="select"
+                                                    onChange={(e) => {
+                                                        handleMateriaPrima(e.target.value)
+                                                    }}
+                                                    defaultValue={formData.materiaPrima}
+                                                    name="materiaPrima"
+                                                >
+                                                    <option>Elige una opción</option>
+                                                    {map(producto, (productos, index) => (
+                                                        <option
+                                                            key={index}
+                                                            value={productos?.ID + "/" + productos?.item}
+                                                        >
+                                                            {productos?.item}
+                                                        </option>
+                                                    ))}
+                                                </Form.Control>
+                                            </>
+                                        )}
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            UM
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={unidadMedida}
+                                            placeholder="UM"
+                                            name="um"
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Almacen producto terminado
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={cantidad}
+                                            placeholder="Almacen producto terminado"
+                                            name="almacenPT"
+                                        />
+                                    </Form.Group>
                                 </Row>
 
                                 <hr />
@@ -921,7 +950,7 @@ function ModificacionProduccion(props) {
                                         <Col>
                                             <Form.Control
                                                 type="text"
-                                                name="pieza1"
+                                                name="pieza2"
                                                 value={piezasTurno2.toFixed(2)}
                                             />
                                         </Col>
@@ -966,7 +995,7 @@ function ModificacionProduccion(props) {
                                         <Col>
                                             <Form.Control
                                                 type="text"
-                                                name="pieza1"
+                                                name="pieza3"
                                                 value={piezasTurno3.toFixed(2)}
                                             />
                                         </Col>
@@ -1150,14 +1179,27 @@ function ModificacionProduccion(props) {
                                 <br />
                                 <div className="tituloSeccion">
                                     <h4>
-                                        Datos de la requisición
+                                        Resumen
                                     </h4>
                                 </div>
 
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
                                         <Form.Label align="center">
-                                            Kg de material
+                                            Material
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Material"
+                                            name="material"
+                                            value={formDataPlaneacion.descripcionMP}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            KG necesarios
                                         </Form.Label>
                                         <Form.Control
                                             type="number"
@@ -1170,13 +1212,13 @@ function ModificacionProduccion(props) {
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
                                         <Form.Label align="center">
-                                            Almacen MP
+                                            Cantidad en almacen
                                         </Form.Label>
                                         <Form.Control
                                             type="number"
                                             placeholder="Kg de material"
                                             name="CantidadMP"
-                                            value={Number(cantidadAlmacen)}
+                                            value={Number(cantidadProductoAlmacen)}
                                             disabled
                                         />
                                     </Form.Group>
@@ -1190,7 +1232,7 @@ function ModificacionProduccion(props) {
                                             step="0.01"
                                             placeholder="cantidad a pedir"
                                             name="cantidadMP"
-                                            value={ Number(kgMaterial) - Number(cantidadAlmacen)}
+                                            value={Number(kgMaterial) - Number(cantidadProductoAlmacen)}
                                             disabled
                                         />
                                     </Form.Group>
@@ -1209,16 +1251,154 @@ function ModificacionProduccion(props) {
                                         />
                                     </Form.Group>
                                 </Row>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Pigmento/Master Bach
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Pigmento"
+                                            name="pigmento"
+                                            value={formDataPlaneacion.descripcionPigmento}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            KG necesarios
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Kg de material"
+                                            name="kgMaterial"
+                                            value={pigMB.toFixed(2)}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Disponible en almacen
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Kg de material"
+                                            name="CantidadMP"
+                                            value={Number(cantidadMBAlmacen)}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Cantidad sugerida
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            step="0.01"
+                                            placeholder="cantidad a pedir"
+                                            name="cantidadMB"
+                                            value={Number(pigMB) - Number(cantidadMBAlmacen)}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Cantidad a pedir
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            step="0.01"
+                                            placeholder="cantidad a pedir"
+                                            name="cantidadPedirMB"
+                                            onChange={e => setCantidadPedirMB(e.target.value)}
+                                            value={cantidadPedirMB}
+                                        />
+                                    </Form.Group>
+                                </Row>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Empaque
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Empaque"
+                                            name="empaque"
+                                            value={formDataPlaneacion.descripcionBolsa}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Cantidad necesaria
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Cantidad necesaria"
+                                            name="cantidadNecesaria"
+                                            value={Math.ceil(bolsasCajasUtilizar)}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Disponible en almacen
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Empaques"
+                                            name="CantidadEmpaques"
+                                            value={Number(cantidadEmpaquesAlmacen)}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Cantidad sugerida
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            step="0.01"
+                                            placeholder="cantidad a pedir"
+                                            name="cantidadEmpaques"
+                                            value={Number(bolsasCajasUtilizar) - Number(cantidadEmpaquesAlmacen)}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Cantidad a pedir
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            step="0.01"
+                                            placeholder="cantidad a pedir"
+                                            name="cantidadPedirEmpaques"
+                                            onChange={e => setCantidadPedirEmpaques(e.target.value)}
+                                            value={cantidadPedirEmpaques}
+                                        />
+                                    </Form.Group>
+                                </Row>
                             </Container>
                         </div>
 
-                        < br />
+                        <br />
 
                         <Form.Group as={Row} className="botones">
                             <Col>
                                 <Button
                                     type="submit"
-                                    title="Actualizar el registro"
+                                    title="Guardar la información del formulario"
                                     variant="success"
                                     className="registrar"
                                 >
@@ -1243,6 +1423,7 @@ function ModificacionProduccion(props) {
 
                     </Form>
                 </div>
+
             </Container>
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
@@ -1269,14 +1450,20 @@ function initialFormDataPlaneacion(data) {
         idMaterial: data.materiaPrima.idMaterial,
         folioMaterial: data.materiaPrima.folioMaterial,
         precioMaterial: data.materiaPrima.precioMaterial,
+        idPigmento: data.pigmentoMasterBach.idPigmento,
+        folioPigmento: data.pigmentoMasterBach.folioPigmento,
         descripcionPigmento: data.pigmentoMasterBach.descripcion,
+        precioPigmento: data.pigmentoMasterBach.precioPigmento,
         aplicacionGxKG: data.pigmentoMasterBach.aplicacionGxKG,
         proveedor: data.pigmentoMasterBach.proveedor,
         tiempoCiclo: data.tiempoCiclo,
         noOperadores: data.noOperadores,
         piezasxHora: data.piezasxHora,
         piezasxTurno: data.piezasxTurno,
+        idEmpaque: data.materialEmpaque.idEmpaque,
+        folioEmpaque: data.materialEmpaque.folioEmpaque,
         descripcionBolsa: data.materialEmpaque.descripcionBolsa,
+        precioEmpaque: data.materialEmpaque.precioEmpaque,
         noPiezasxEmpaque: data.materialEmpaque.noPiezasxEmpaque,
         opcionMaquinaria: data.opcionMaquinaria,
         opcion1: data.opcionMaquinaria[0][1].opcion1,

@@ -22,16 +22,16 @@ function RegistraRequisiciones(props) {
 
     // Cerrado de sesión automatico
     useEffect(() => {
-       if (getTokenApi()) {
-           if (isExpiredToken(getTokenApi())) {
-               toast.warning("Sesión expirada");
-               toast.success("Sesión cerrada por seguridad");
-               logoutApi();
-               setRefreshCheckLogin(true);
-           }
-       }
-   }, []);
-   // Termina cerrado de sesión automatico
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }, []);
+    // Termina cerrado de sesión automatico
 
     const params = useParams();
     const { id } = params
@@ -114,16 +114,39 @@ function RegistraRequisiciones(props) {
                 cantidad = ordenVenta.cantidadPedidaOV
                 referencia = ordenVenta.ordenVenta
             })
-            const dataTemp = [{
-                folio: bom.folioMaterial,
-                descripcion: bom.material,
-                um: requerimiento.um,
-                cantidad: datosRequisicion.cantidadPedir,
-                proveedor: requerimiento.nombreProveedor,
-                precioUnitario: bom.precioMaterial,
-                subtotal: parseFloat(bom.precioMaterial) * parseFloat(datosRequisicion.cantidadPedir),
-                referencia: referencia
-            }]
+            const dataTemp = [
+                {
+                    folio: bom.folioMaterial,
+                    descripcion: bom.material,
+                    um: requerimiento.um,
+                    cantidad: datosRequisicion.cantidadPedir,
+                    proveedor: requerimiento.nombreProveedor,
+                    precioUnitario: bom.precioMaterial,
+                    subtotal: parseFloat(bom.precioMaterial) * parseFloat(datosRequisicion.cantidadPedir),
+                    referencia: referencia
+                },
+                {
+                    folio: bom.folioEmpaque,
+                    descripcion: bom.empaque,
+                    um: requerimiento.um,
+                    cantidad: datosRequisicion.cantidadPedirEmpaques,
+                    proveedor: requerimiento.nombreProveedor,
+                    precioUnitario: bom.precioEmpaque,
+                    subtotal: parseFloat(bom.precioEmpaque) * parseFloat(datosRequisicion.cantidadPedirEmpaques),
+                    referencia: referencia
+                },
+                {
+                    folio: bom.folioPigmento,
+                    descripcion: bom.pigmento,
+                    um: requerimiento.um,
+                    cantidad: datosRequisicion.cantidadPedirMB,
+                    proveedor: requerimiento.nombreProveedor,
+                    precioUnitario: bom.precioPigmento,
+                    subtotal: parseFloat(bom.precioPigmento) * parseFloat(datosRequisicion.cantidadPedirPigmento),
+                    referencia: referencia
+                }
+            ]
+
             // setFechaCreacion(fechaElaboracion)
             setListProductosCargados(dataTemp)
         }).catch(e => {
@@ -447,7 +470,7 @@ function RegistraRequisiciones(props) {
                     {/* Cantidad, um, descripción */}
                     <Row className="mb-3">
 
-                    <Form.Group as={Col}>
+                        <Form.Group as={Col}>
                             <Form.Label>
                                 ITEM
                             </Form.Label>

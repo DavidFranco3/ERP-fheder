@@ -72,6 +72,16 @@ function BuscarMateriales(props) {
 
                 nombreProducto: valoresCliente.nombreProducto,
                 folioProdcuto: valoresCliente.folioProdcuto,
+
+                idPigmento: valoresCliente.idPigmento,
+                folioPigmento: valoresCliente.folioPigmento,
+                descripcionPigmento: valoresCliente.descripcionPigmento,
+                precioPigmento: valoresCliente.precioPigmento,
+
+                idEmpaque: valoresCliente.idEmpaque,
+                folioEmpaque: valoresCliente.folioEmpaque,
+                descripcionEmpaque: valoresCliente.descripcionEmpaque,
+                precioEmpaque: valoresCliente.precioEmpaque
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -337,6 +347,11 @@ function initialValues() {
         precio: "",
         nombreProducto: "",
         folioProdcuto: "",
+
+        idPigmento: "",
+        folioPigmento: "",
+        descripcionPigmento: "",
+        precioPigmento: ""
     }
 }
 
@@ -350,6 +365,16 @@ function valoresAlmacenados(data) {
         precio: data.precio,
         nombreProducto: data.descripcion,
         folioProdcuto: data.folio,
+
+        idPigmento: data._id,
+        folioPigmento: data.folio,
+        descripcionPigmento: data.descripcion,
+        precioPigmento: data.precio,
+
+        idEmpaque: data._id,
+        folioEmpaque: data.folio,
+        descripcionEmpaque: data.descripcion,
+        precioEmpaque: data.precio
     }
 }
 

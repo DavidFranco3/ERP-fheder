@@ -249,8 +249,10 @@ function ModificaMatrizProductos(props) {
             //console.log(formData)
             setLoading(true)
 
-            const temp = formData.proveedor.split("/")
-            const temp2 = formData.descripcionMP.split("/")
+            const temp = formData.proveedor.split("/");
+            const temp2 = formData.descripcionMP.split("/");
+            const temp3 = formData.descripcionPigmento.split("/");
+            const temp4 = formData.descripcionBolsa.split("/");
 
             const dataTemp = {
                 noInterno: formData.noInterno,
@@ -278,7 +280,10 @@ function ModificaMatrizProductos(props) {
                     precioMaterial: dataMaterial.descripcion == "" ? temp2[3] : dataMaterial.precioUnitario,
                 },
                 pigmentoMasterBach: {
-                    descripcion: dataPigmento.descripcionPigmento == "" ? formData.descripcionPigmento : dataPigmento.descripcionPigmento,
+                    idPigmento: dataPigmento.descripcionPigmento == "" ? temp3[0] : dataPigmento.idPigmento,
+                    folioPigmento: dataPigmento.descripcionPigmento == "" ? temp3[1] : dataPigmento.folioPigmento,
+                    descripcion: dataPigmento.descripcionPigmento == "" ? temp3[2] : dataPigmento.descripcionPigmento,
+                    precioPigmento: dataPigmento.descripcionPigmento == "" ? temp3[3] : dataPigmento.precioPigmento,
                     aplicacionGxKG: formData.aplicacionGxKG,
                     proveedor: dataProveedor.nombreProveedor == "" ? temp[0] : dataProveedor.proveedor,
                     nombreProveedor: dataProveedor.nombreProveedor == "" ? temp[1] : dataProveedor.nombreProveedor,
@@ -288,7 +293,10 @@ function ModificaMatrizProductos(props) {
                 piezasxHora: formData.piezasxHora,
                 piezasxTurno: formData.piezasxTurno,
                 materialEmpaque: {
-                    descripcionBolsa: dataEmpaque.descripcionEmpaque == "" ? formData.descripcionBolsa : dataEmpaque.descripcionEmpaque,
+                    idEmpaque: dataEmpaque.descripcionEmpaque == "" ? temp4[0] : dataEmpaque.idEmpaque,
+                    folioEmpaque: dataEmpaque.descripcionEmpaque == "" ? temp4[1] : dataEmpaque.folioEmpaque,
+                    descripcionBolsa: dataEmpaque.descripcionEmpaque == "" ? temp4[2] : dataEmpaque.descripcionEmpaque,
+                    precioEmpaque: dataEmpaque.descripcionEmpaque == "" ? temp4[3] : dataEmpaque.precioEmpaque,
                     noPiezasxEmpaque: formData.noPiezasxEmpaque
                 },
                 opcionMaquinaria: {
@@ -749,7 +757,7 @@ function ModificaMatrizProductos(props) {
                                                                     icon={faSearch}
                                                                     onClick={() => {
                                                                         buscarPigmento(
-                                                                            <BuscarPigmento
+                                                                            <BuscarMaterial
                                                                                 formData={dataPigmento}
                                                                                 setFormData={setDataPigmento}
                                                                                 setShowModal={setShowModal}
@@ -922,7 +930,7 @@ function ModificaMatrizProductos(props) {
                                                                     icon={faSearch}
                                                                     onClick={() => {
                                                                         buscarEmpaque(
-                                                                            <BuscarEmpaque
+                                                                            <BuscarMaterial
                                                                                 formData={dataEmpaque}
                                                                                 setFormData={setDataEmpaque}
                                                                                 setShowModal={setShowModal}
@@ -1322,14 +1330,14 @@ function valoresAlmacenados(data) {
         porcentajeScrap: data.datosPieza.porcentajeScrap,
         porcentajeMolido: data.datosPieza.porcentajeMolido,
         descripcionMP: data.materiaPrima.idMaterial + "/" + data.materiaPrima.descripcion + "/" + data.materiaPrima.folioMaterial + "/" + data.materiaPrima.precioMaterial,
-        descripcionPigmento: data.pigmentoMasterBach.descripcion,
+        descripcionPigmento: data.pigmentoMasterBach.idPigmento + "/" + data.pigmentoMasterBach.folioPigmento + "/" + data.pigmentoMasterBach.descripcion + "/" + data.pigmentoMasterBach.precioPigmento,
         aplicacionGxKG: data.pigmentoMasterBach.aplicacionGxKG,
         proveedor: data.pigmentoMasterBach.proveedor + "/" + data.pigmentoMasterBach.nombreProveedor,
         tiempoCiclo: data.tiempoCiclo,
         noOperadores: data.noOperadores,
         piezasxHora: data.piezasxHora,
         piezasxTurno: data.piezasxTurno,
-        descripcionBolsa: data.materialEmpaque.descripcionBolsa,
+        descripcionBolsa: data.materialEmpaque.idEmpaque + "/" + data.materialEmpaque.folioEmpaque + "/" + data.materialEmpaque.descripcionBolsa + "/" + data.materialEmpaque.precioEmpaque,
         noPiezasxEmpaque: data.materialEmpaque.noPiezasxEmpaque,
         opcionMaquinaria: data.opcionMaquinaria,
         opcion1: data.opcionMaquinaria[0][1].opcion1,

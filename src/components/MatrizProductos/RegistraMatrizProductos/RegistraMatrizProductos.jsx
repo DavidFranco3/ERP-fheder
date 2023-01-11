@@ -243,7 +243,10 @@ function RegistraMatrizProductos(props) {
                     precioMaterial: dataMaterial.precioUnitario
                 },
                 pigmentoMasterBach: {
+                    idPigmento: dataPigmento.idPigmento,
+                    folioPigmento: dataPigmento.folioPigmento,
                     descripcion: dataPigmento.descripcionPigmento,
+                    precioPigmento: dataPigmento.precioPigmento,
                     aplicacionGxKG: formData.aplicacionGxKG,
                     proveedor: dataProveedor.proveedor,
                     nombreProveedor: dataProveedor.nombreProveedor
@@ -253,7 +256,10 @@ function RegistraMatrizProductos(props) {
                 piezasxHora: piezasHora,
                 piezasxTurno: piezasTurno,
                 materialEmpaque: {
+                    idEmpaque: dataEmpaque.idEmpaque,
+                    folioEmpaque: dataEmpaque.folioEmpaque,
                     descripcionBolsa: dataEmpaque.descripcionEmpaque,
+                    precioEmpaque: dataEmpaque.precioEmpaque,
                     noPiezasxEmpaque: formData.noPiezasxEmpaque
                 },
                 opcionMaquinaria: {
@@ -520,8 +526,6 @@ function RegistraMatrizProductos(props) {
                                                 </Form.Control>
                                             </Col>
                                         </Form.Group>
-
-
                                     </Row>
                                 </Container>
                             </div>
@@ -706,7 +710,7 @@ function RegistraMatrizProductos(props) {
                                                         icon={faSearch}
                                                         onClick={() => {
                                                             buscarPigmento(
-                                                                <BuscarPigmento
+                                                                <BuscarMaterial
                                                                     formData={dataPigmento}
                                                                     setFormData={setDataPigmento}
                                                                     setShowModal={setShowModal}
@@ -877,7 +881,7 @@ function RegistraMatrizProductos(props) {
                                                         icon={faSearch}
                                                         onClick={() => {
                                                             buscarEmpaque(
-                                                                <BuscarEmpaque
+                                                                <BuscarMaterial
                                                                     formData={dataEmpaque}
                                                                     setFormData={setDataEmpaque}
                                                                     setShowModal={setShowModal}
@@ -1237,13 +1241,19 @@ function initialMaterial() {
 
 function initialPigmento() {
     return {
-        descripcionPigmento: ""
+        idPigmento: "",
+        folioPigmento: "",
+        descripcionPigmento: "",
+        precioPigmento: ""
     }
 }
 
 function initialEmpaque() {
     return {
-        descripcionEmpaque: ""
+        idEmpaque: "",
+        folioEmpaque: "",
+        descripcionEmpaque: "",
+        precioEmpaque: ""
     }
 }
 
