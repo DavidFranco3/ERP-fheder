@@ -19,6 +19,7 @@ import BuscarProducto from '../../../page/BuscarProducto';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import BasicModal from "../../Modal/BasicModal";
+import { listarUM } from "../../../api/unidadesMedida";
 
 function ModificarAlmacenes(props) {
     const { datos, setShowModal, location, history } = props;
@@ -69,6 +70,29 @@ function ModificarAlmacenes(props) {
         setContentModal(content);
         setShowModal2(true);
     }
+
+    // Para almacenar el listado de proveedores
+    const [listUM, setListUM] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarUM(getSucursal()).then(response => {
+                const { data } = response;
+                // console.log(data)
+                if (!listarUM() && data) {
+                    setListUM(formatModelUM(data));
+                } else {
+                    const datosUM = formatModelUM(data);
+                    setListUM(datosUM);
+                }
+
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
 
     // Para almacenar el listado de productos activos
     const [listProduccion, setListProduccion] = useState(null);
@@ -218,14 +242,13 @@ function ModificarAlmacenes(props) {
                                 defaultValue={formData.tipo}
                             >
                                 <option >Elige....</option>
-                                <option value="Materias primas" selected={formData.tipo==="Materias primas"}>Materias primas</option>
-                                <option value="Insumos" selected={formData.tipo==="Insumos"}>Insumos</option>
+                                <option value="Materiales" selected={formData.tipo==="Materiales"}>Materiales</option>
                                 <option value="Productos" selected={formData.tipo==="Productos"}>Productos</option>
                             </Form.Control>
                         </Form.Group>
 
                         {
-                            formData.tipo === "Materias primas" &&
+                            formData.tipo === "Materiales" &&
                             (
                                 <>
                                     <Form.Group as={Col} controlId="formGridPorcentaje scrap">
@@ -246,41 +269,6 @@ function ModificarAlmacenes(props) {
                                                     onClick={() => {
                                                         buscarMaterial(
                                                             <BuscarMaterial
-                                                                formData={formDataBusqueda}
-                                                                setFormData={setFormDataBusqueda}
-                                                                setShowModal={setShowModal2}
-                                                            />)
-                                                    }}
-                                                />
-                                            </div>
-                                        </Col>
-                                    </Form.Group>
-                                </>
-                            )
-                        }
-
-                        {
-                            formData.tipo === "Insumos" &&
-                            (
-                                <>
-                                    <Form.Group as={Col} controlId="formGridPorcentaje scrap">
-                                        <Form.Label>
-                                            Busqueda
-                                        </Form.Label>
-                                        <Col>
-                                            <div className="flex items-center mb-1">
-                                                <Form.Control
-                                                    type="text"
-                                                    defaultValue={formDataBusqueda.nombreArticulo}
-                                                    placeholder="Buscar insumo"
-                                                    name="nombreArticulo"
-                                                />
-                                                <FontAwesomeIcon
-                                                    className="cursor-pointer py-2 -ml-6"
-                                                    icon={faSearch}
-                                                    onClick={() => {
-                                                        buscarInsumo(
-                                                            <BuscarInsumos
                                                                 formData={formDataBusqueda}
                                                                 setFormData={setFormDataBusqueda}
                                                                 setShowModal={setShowModal2}
@@ -336,11 +324,15 @@ function ModificarAlmacenes(props) {
                                 U.M
                             </Form.Label>
                             <Form.Control
-                                type="text"
-                                placeholder="Escribe la unidad de medida"
+                                as="select"
                                 name="um"
                                 defaultValue={formDataBusqueda.um}
-                            />
+                            >
+                                <option>Elige una opción</option>
+                                {map(listUM, (um, index) => (
+                                    <option key={index} value={um?.nombre} selected={formDataBusqueda.um == um?.nombre}>{um?.nombre}</option>
+                                ))}
+                            </Form.Control>
                         </Form.Group>
 
                         <Form.Group as={Col} className="mb-3 motivoSalida">
@@ -508,6 +500,21 @@ function formatModelProduccion(data) {
             materiaPrima: data.materiaPrima,
             observaciones: data.observaciones,
             fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelUM(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            nombre: data.nombre,
+            sucursal: data.sucursal,
+            estadoUM: data.estadoUM,
             fechaActualizacion: data.updatedAt
         });
     });

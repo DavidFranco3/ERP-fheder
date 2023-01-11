@@ -14,16 +14,18 @@ import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
 import { LogRegistroPlaneacion } from "../../Planeacion/Gestion/GestionPlaneacion";
+import { LogRegistroAlmacenes } from '../../Almacenes/Gestion/GestionAlmacenes';
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOC from '../../../page/BuscarOC';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { listarAlmacenes } from '../../../api/gestionAlmacen';
 
 function RegistroRecepcion(props) {
     const { setRefreshCheckLogin } = props;
 
-     // Cerrado de sesión automatico
-     useEffect(() => {
+    // Cerrado de sesión automatico
+    useEffect(() => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
                 toast.warning("Sesión expirada");
@@ -81,6 +83,23 @@ function RegistroRecepcion(props) {
     const regresaListadoVentas = () => {
         enrutamiento.push("/RecepcionMaterialInsumos");
     }
+
+    // Para almacenar las sucursales registradas
+    const [almacenesRegistrados, setAlmacenesRegistrados] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarAlmacenes(getSucursal()).then(response => {
+                const { data } = response;
+                //console.log(data)
+                const dataTemp = formatModelGestionAlmacen(data);
+                //console.log(data)
+                setAlmacenesRegistrados(dataTemp);
+            })
+        } catch (e) {
+
+        }
+    }, []);
 
     // Para almacenar el folio actual
     const [folioActual, setFolioActual] = useState("");
@@ -324,9 +343,13 @@ function RegistroRecepcion(props) {
             }
             // console.log(dataTemp)
 
+            LogRegistroAlmacenes(folio, temp[2], tipoMercancia, um, cantidad);
+
             setListProductosCargados(
                 [...listProductosCargados, dataTemp]
             );
+
+
 
             setCargaProductos(initialFormDataProductos)
             document.getElementById("producto").value = "Elige una opción"
@@ -598,7 +621,7 @@ function RegistroRecepcion(props) {
 
                             <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                 <Form.Label>
-                                    Tipo de mercancia
+                                    Almacen
                                 </Form.Label>
                                 <Form.Control
                                     id="tipoMercancia"
@@ -607,8 +630,9 @@ function RegistroRecepcion(props) {
                                     defaultValue={cargaProductos.tipoMercancia}
                                 >
                                     <option >Elige....</option>
-                                    <option value="Material" selected={temp[0] == "MP"}>Material</option>
-                                    <option value="Insumo" selected={temp[0] == "INS"}>Insumo</option>
+                                    {map(almacenesRegistrados, (almacen, index) => (
+                                        <option key={index} value={almacen?.nombre}>{almacen?.nombre}</option>
+                                    ))}
                                 </Form.Control>
                             </Form.Group>
 
@@ -880,6 +904,23 @@ function formatModelMatrizProductos(data) {
             opcionMaquinaria: data.opcionMaquinaria,
             estado: data.estado,
             fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelGestionAlmacen(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            nombre: data.nombre,
+            descripcion: data.descripcion,
+            sucursal: data.sucursal,
+            status: data.status,
+            fechaCreacion: data.createdAt,
             fechaActualizacion: data.updatedAt
         });
     });

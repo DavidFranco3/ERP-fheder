@@ -20,6 +20,7 @@ import BuscarPigmento from '../../../page/BuscarPigmento';
 import BuscarProveedor from "../../../page/BuscarProveedor";
 import BuscarEmpaque from '../../../page/BuscarEmpaque';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { listarUM } from "../../../api/unidadesMedida";
 
 function ModificaMatrizProductos(props) {
     const { setRefreshCheckLogin } = props;
@@ -36,6 +37,29 @@ function ModificaMatrizProductos(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
+
+    // Para almacenar el listado de proveedores
+    const [listUM, setListUM] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarUM(getSucursal()).then(response => {
+                const { data } = response;
+                // console.log(data)
+                if (!listarUM() && data) {
+                    setListUM(formatModelUM(data));
+                } else {
+                    const datosUM = formatModelUM(data);
+                    setListUM(datosUM);
+                }
+
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory();
@@ -532,11 +556,10 @@ function ModificaMatrizProductos(props) {
                                                                 name="um"
                                                                 defaultValue={formData.um}
                                                             >
-                                                                <option >Elige....</option>
-                                                                <option value="KG" selected={formData.um == "KG"}>KG</option>
-                                                                <option value="Litros" selected={formData.um == "Litros"}>Litros</option>
-                                                                <option value="Piezas" selected={formData.um == "Piezas"}>Pieza</option>
-                                                                <option value="Otros" selected={formData.um == "Otros"}>Otros</option>
+                                                                <option>Elige una opción</option>
+                                                                {map(listUM, (um, index) => (
+                                                                    <option key={index} value={um?.nombre} selected={formData.um == um?.nombre}>{um?.nombre}</option>
+                                                                ))}
                                                             </Form.Control>
                                                         </Col>
                                                     </Form.Group>
@@ -1404,6 +1427,21 @@ function formatModelMaquinas(data) {
             lugar: data.lugar,
             status: data.status,
             fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelUM(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            nombre: data.nombre,
+            sucursal: data.sucursal,
+            estadoUM: data.estadoUM,
             fechaActualizacion: data.updatedAt
         });
     });
