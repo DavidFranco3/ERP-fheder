@@ -1,4 +1,4 @@
-import { obtenerFolioActualAlmacenes, registroGestionAlmacenes, obtenerItemAlmacen } from "../../../api/almacenes";
+import { obtenerFolioActualAlmacenes, registroInicialAlmacenes, obtenerItemAlmacen } from "../../../api/almacenes";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { getSucursal } from "../../../api/auth";
 
@@ -33,7 +33,7 @@ export function LogRegistroAlmacenes(folio, nombre, almacen, um, cantidadExisten
                 }
                 // console.log(dataTemp)
 
-                registroGestionAlmacenes(dataTemp).then(response => {
+                registroInicialAlmacenes(dataTemp).then(response => {
                     const { data } = response;
                     const { mensaje, datos } = data;
                     const { folioAlmacen, _id } = datos

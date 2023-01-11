@@ -19,6 +19,8 @@ import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOC from '../../../page/BuscarOC';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { listarAlmacenes } from '../../../api/gestionAlmacen';
+import { LogRegistroAlmacenes } from '../../Almacenes/Gestion/GestionAlmacenes';
 
 function ModificaRecepcion(props) {
     const { setRefreshCheckLogin } = props;
@@ -86,6 +88,23 @@ function ModificaRecepcion(props) {
     const regresaListadoVentas = () => {
         enrutamiento.push("/RecepcionMaterialInsumos");
     }
+
+    // Para almacenar las sucursales registradas
+    const [almacenesRegistrados, setAlmacenesRegistrados] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarAlmacenes(getSucursal()).then(response => {
+                const { data } = response;
+                //console.log(data)
+                const dataTemp = formatModelGestionAlmacen(data);
+                //console.log(data)
+                setAlmacenesRegistrados(dataTemp);
+            })
+        } catch (e) {
+
+        }
+    }, []);
 
     useEffect(() => {
         //
@@ -350,6 +369,8 @@ function ModificaRecepcion(props) {
             setListProductosCargados(
                 [...listProductosCargados, dataTemp]
             );
+
+            LogRegistroAlmacenes(folio, temp[2], tipoMercancia, um, cantidad);
 
             setCargaProductos(initialFormDataProductos)
             document.getElementById("producto").value = "Elige una opción"
@@ -630,8 +651,9 @@ function ModificaRecepcion(props) {
                                     defaultValue={cargaProductos.tipoMercancia}
                                 >
                                     <option >Elige....</option>
-                                    <option value="Material" selected={temp[0] == "MP"}>Material</option>
-                                    <option value="Insumo" selected={temp[0] == "INS"}>Insumo</option>
+                                    {map(almacenesRegistrados, (almacen, index) => (
+                                        <option key={index} value={almacen?.nombre}>{almacen?.nombre}</option>
+                                    ))}
                                 </Form.Control>
                             </Form.Group>
 
@@ -919,6 +941,23 @@ function formatModelMatrizProductos(data) {
             opcionMaquinaria: data.opcionMaquinaria,
             estado: data.estado,
             fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelGestionAlmacen(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            nombre: data.nombre,
+            descripcion: data.descripcion,
+            sucursal: data.sucursal,
+            status: data.status,
+            fechaCreacion: data.createdAt,
             fechaActualizacion: data.updatedAt
         });
     });
