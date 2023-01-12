@@ -16,6 +16,7 @@ import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking
 import { obtenerMaquina } from "../../../api/maquinas";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { obtenerDatosArticulo } from '../../../api/almacenes';
 
 function RegistraRequerimientosPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
@@ -187,13 +188,148 @@ function RegistraRequerimientosPlaneacion(props) {
             console.log(e)
         }
     }, [formDataPlaneacion.opcion3]);
+    
+    let cantidadTotalEntrada = 0;
+
+    let cantidadTotalSalida = 0;
+
+    const [almacenProducto, setAlmacenProducto] = useState(0);
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        console.log(formDataPlaneacion.id)
+        try {
+            obtenerDatosArticulo(formDataPlaneacion.id).then(response => {
+                const { data } = response;
+               
+                map(data, (articulos, index) => {
+                    
+                    const {estado, cantidadExistencia, tipo} = articulos
+                    
+                    if (estado == "true") {
+                        console.log("entro al primer if")
+                        if (tipo == "Entrada") {
+                        console.log("entro al segundo if")
+                            cantidadTotalEntrada += parseFloat(cantidadExistencia);
+                            console.log(cantidadTotalEntrada)
+                        } else if (tipo == "Salida") {
+                            console.log("el estado del producto es false")
+                            cantidadTotalSalida += parseFloat(cantidadExistencia);
+                            }
+                    }
+                    setAlmacenProducto(cantidadTotalEntrada - cantidadTotalSalida)
+                })
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.id]);
+
+    let cantidadTotalEntradaMaterial = 0;
+
+    let cantidadTotalSalidaMaterial = 0;
+
+    useEffect(() => {
+        try {
+            obtenerDatosArticulo(formDataPlaneacion.idMaterial).then(response => {
+                const { data } = response;
+               
+                map(data, (articulos, index) => {
+                    
+                    const {estado, cantidadExistencia, tipo} = articulos
+                    
+                    if (estado == "true") {
+                        console.log("entro al primer if")
+                        if (tipo == "Entrada") {
+                        console.log("entro al segundo if")
+                            cantidadTotalEntradaMaterial += parseFloat(cantidadExistencia);
+                        } else if (tipo == "Salida") {
+                            console.log("el estado del producto es false")
+                            cantidadTotalSalidaMaterial += parseFloat(cantidadExistencia);
+                            }
+                    }
+                    setCantidadProductoAlmacen(cantidadTotalEntradaMaterial - cantidadTotalSalidaMaterial)
+                })
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.idMaterial]);
+
+    let cantidadTotalEntradaPigmento = 0;
+
+    let cantidadTotalSalidaPigmento = 0;
+
+    useEffect(() => {
+        try {
+            obtenerDatosArticulo(formDataPlaneacion.idPigmento).then(response => {
+                const { data } = response;
+               
+                map(data, (articulos, index) => {
+                    
+                    const {estado, cantidadExistencia, tipo} = articulos
+                    
+                    if (estado == "true") {
+                        console.log("entro al primer if")
+                        if (tipo == "Entrada") {
+                        console.log("entro al segundo if")
+                            cantidadTotalEntradaPigmento += parseFloat(cantidadExistencia);
+                        } else if (tipo == "Salida") {
+                            console.log("el estado del producto es false")
+                            cantidadTotalSalidaPigmento += parseFloat(cantidadExistencia);
+                            }
+                    }
+                    setCantidadMBAlmacen(cantidadTotalEntradaPigmento - cantidadTotalSalidaPigmento)
+                })
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.idPigmento]);
+
+    let cantidadTotalEntradaEmpaque = 0;
+
+    let cantidadTotalSalidaEmpaque = 0;
+
+    useEffect(() => {
+        try {
+            obtenerDatosArticulo(formDataPlaneacion.idEmpaque).then(response => {
+                const { data } = response;
+               
+                map(data, (articulos, index) => {
+                    
+                    const {estado, cantidadExistencia, tipo} = articulos
+                    
+                    if (estado == "true") {
+                        console.log("entro al primer if")
+                        if (tipo == "Entrada") {
+                        console.log("entro al segundo if")
+                            cantidadTotalEntradaEmpaque += parseFloat(cantidadExistencia);
+                        } else if (tipo == "Salida") {
+                            console.log("el estado del producto es false")
+                            cantidadTotalSalidaEmpaque += parseFloat(cantidadExistencia);
+                            }
+                    }
+                    setCantidadEmpaquesAlmacen(cantidadTotalEntradaEmpaque - cantidadTotalSalidaEmpaque)
+                })
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.idEmpaque]);
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
     const [contentModal, setContentModal] = useState(null);
     const [titulosModal, setTitulosModal] = useState(null);
-
-    console.log(producto)
 
     // Para la eliminacion fisica de usuarios
     const buscarOV = (content) => {
@@ -320,9 +456,9 @@ function RegistraRequerimientosPlaneacion(props) {
                         semana: formData.semana,
                         producto: formDataPlaneacion.id,
                         nombreProducto: formDataPlaneacion.descripcion,
-                        um: unidadMedida,
+                        um: formDataPlaneacion.um,
                         ov: ordenVentaPrincipal,
-                        almacenProductoTerminado: cantidad,
+                        almacenProductoTerminado: almacenProducto,
                         ordenVenta: listOVCargadas,
                         nombreProveedor: formDataPlaneacion.nombreProveedor,
                         totalProducir: totalProducir,
@@ -359,6 +495,7 @@ function RegistraRequerimientosPlaneacion(props) {
                         idMaterial: formDataPlaneacion.idMaterial,
                         folioMaterial: formDataPlaneacion.folioMaterial,
                         precioMaterial: formDataPlaneacion.precioMaterial,
+                        umMaterial: formDataPlaneacion.umMaterial,
                         molido: formDataPlaneacion.porcentajeMolido,
                         pesoPieza: formDataPlaneacion.pesoPiezas,
                         pesoColada: formDataPlaneacion.pesoColada,
@@ -366,6 +503,7 @@ function RegistraRequerimientosPlaneacion(props) {
                         idPigmento: formDataPlaneacion.idPigmento,
                         folioPigmento: formDataPlaneacion.folioPigmento,
                         precioPigmento: formDataPlaneacion.precioPigmento,
+                        umPigmento: formDataPlaneacion.umPigmento,
                         pigmento: formDataPlaneacion.descripcionPigmento,
                         aplicacion: formDataPlaneacion.aplicacionGxKG,
                         pigMb: pigMB,
@@ -374,6 +512,7 @@ function RegistraRequerimientosPlaneacion(props) {
                         idEmpaque: formDataPlaneacion.idEmpaque,
                         folioEmpaque: formDataPlaneacion.folioEmpaque,
                         precioEmpaque: formDataPlaneacion.precioEmpaque,
+                        umEmpaque: formDataPlaneacion.umEmpaque,
                         empaque: formDataPlaneacion.descripcionBolsa,
                         bolsasCajasUtilizar: bolsasCajasUtilizar
                     },
@@ -709,7 +848,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            defaultValue={unidadMedida}
+                                            defaultValue={formDataPlaneacion.um}
                                             placeholder="UM"
                                             name="um"
                                         />
@@ -721,7 +860,8 @@ function RegistraRequerimientosPlaneacion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            defaultValue={cantidad}
+                                            value={almacenProducto}
+                                            onChange={e => setAlmacenProducto(e.target.value)}
                                             placeholder="Almacen producto terminado"
                                             name="almacenPT"
                                         />
@@ -1362,7 +1502,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                             step="0.01"
                                             placeholder="cantidad a pedir"
                                             name="cantidadEmpaques"
-                                            value={Number(bolsasCajasUtilizar) - Number(cantidadEmpaquesAlmacen)}
+                                            value={Number(Math.ceil(bolsasCajasUtilizar)) - Number(cantidadEmpaquesAlmacen)}
                                             disabled
                                         />
                                     </Form.Group>
@@ -1377,7 +1517,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                             placeholder="cantidad a pedir"
                                             name="cantidadPedirEmpaques"
                                             onChange={e => setCantidadPedirEmpaques(e.target.value)}
-                                            value={cantidadPedirEmpaques}
+                                            value={Math.ceil(cantidadPedirEmpaques)}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1429,6 +1569,7 @@ function initialFormDataPlaneacion(data) {
     return {
         id: data._id,
         noInterno: data.noInterno,
+        um: data.um,
         cliente: data.cliente,
         noMolde: data.datosMolde.noMolde,
         cavMolde: data.datosMolde.cavMolde,
@@ -1443,6 +1584,7 @@ function initialFormDataPlaneacion(data) {
         idMaterial: data.materiaPrima.idMaterial,
         folioMaterial: data.materiaPrima.folioMaterial,
         precioMaterial: data.materiaPrima.precioMaterial,
+        umMaterial: data.materiaPrima.umMaterial,
         idPigmento: data.pigmentoMasterBach.idPigmento,
         folioPigmento: data.pigmentoMasterBach.folioPigmento,
         descripcionPigmento: data.pigmentoMasterBach.descripcion,
@@ -1450,6 +1592,7 @@ function initialFormDataPlaneacion(data) {
         aplicacionGxKG: data.pigmentoMasterBach.aplicacionGxKG,
         proveedor: data.pigmentoMasterBach.proveedor,
         nombreProveedor: data.pigmentoMasterBach.nombreProveedor,
+        umPigmento: data.pigmentoMasterBach.umPigmento,
         tiempoCiclo: data.tiempoCiclo,
         noOperadores: data.noOperadores,
         piezasxHora: data.piezasxHora,
@@ -1458,6 +1601,7 @@ function initialFormDataPlaneacion(data) {
         folioEmpaque: data.materialEmpaque.folioEmpaque,
         descripcionBolsa: data.materialEmpaque.descripcionBolsa,
         precioEmpaque: data.materialEmpaque.precioEmpaque,
+        umEmpaque: data.materialEmpaque.umEmpaque,
         noPiezasxEmpaque: data.materialEmpaque.noPiezasxEmpaque,
         opcionMaquinaria: data.opcionMaquinaria,
         opcion1: data.opcionMaquinaria[0][1].opcion1,
@@ -1478,6 +1622,7 @@ function initialFormDataPlaneacion(data) {
 function initialFormDataPlaneacionInitial() {
     return {
         noInterno: "",
+        um: "",
         cliente: "",
         noMolde: "",
         cavMolde: "",
@@ -1491,6 +1636,15 @@ function initialFormDataPlaneacionInitial() {
         descripcionMP: "",
         idMaterial: "",
         folioMaterial: "",
+        umMaterial: "",
+        umPigmento: "",
+        umEmpaque: "",
+        idPigmento: "",
+        idEmpaque: "",
+        folioPigmento: "",
+        folioEmpaque: "",
+        precioPigmento: "",
+        precioEmpaque: "",
         precioMaterial: "",
         descripcionPigmento: "",
         aplicacionGxKG: "",

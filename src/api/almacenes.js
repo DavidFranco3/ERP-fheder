@@ -156,7 +156,7 @@ export async function obtenerDatosAlmacenesFolio(folio) {
 }
 
 // Obtener los datos de una materia prima segun el folio de la MP
-export async function obtenerDatosArticulo(folioArticulo) {
+export async function obtenerDatosArticulo(idArticulo) {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -164,7 +164,7 @@ export async function obtenerDatosArticulo(folioArticulo) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTObtenerDatosArticulo + `/${folioArticulo}`, config);
+    return await axios.get(API_HOST + ENDPOINTObtenerDatosArticulo + `/${idArticulo}`, config);
 }
 
 // Listar todos los movimientos de una materia prima segun el folio de la mp

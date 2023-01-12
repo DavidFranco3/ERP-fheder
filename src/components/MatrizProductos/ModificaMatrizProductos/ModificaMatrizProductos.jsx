@@ -278,12 +278,14 @@ function ModificaMatrizProductos(props) {
                     idMaterial: dataMaterial.descripcion == "" ? temp2[0] : dataMaterial.idMaterial,
                     descripcion: dataMaterial.descripcion == "" ? temp2[1] : dataMaterial.descripcion,
                     precioMaterial: dataMaterial.descripcion == "" ? temp2[3] : dataMaterial.precioUnitario,
+                    umMaterial: dataMaterial.descripcion == "" ? temp2[4] : dataMaterial.umMaterial,
                 },
                 pigmentoMasterBach: {
                     idPigmento: dataPigmento.descripcionPigmento == "" ? temp3[0] : dataPigmento.idPigmento,
                     folioPigmento: dataPigmento.descripcionPigmento == "" ? temp3[1] : dataPigmento.folioPigmento,
                     descripcion: dataPigmento.descripcionPigmento == "" ? temp3[2] : dataPigmento.descripcionPigmento,
                     precioPigmento: dataPigmento.descripcionPigmento == "" ? temp3[3] : dataPigmento.precioPigmento,
+                    umPigmento: dataPigmento.descripcionPigmento == "" ? temp2[4] : dataPigmento.umPigmento,
                     aplicacionGxKG: formData.aplicacionGxKG,
                     proveedor: dataProveedor.nombreProveedor == "" ? temp[0] : dataProveedor.proveedor,
                     nombreProveedor: dataProveedor.nombreProveedor == "" ? temp[1] : dataProveedor.nombreProveedor,
@@ -297,6 +299,7 @@ function ModificaMatrizProductos(props) {
                     folioEmpaque: dataEmpaque.descripcionEmpaque == "" ? temp4[1] : dataEmpaque.folioEmpaque,
                     descripcionBolsa: dataEmpaque.descripcionEmpaque == "" ? temp4[2] : dataEmpaque.descripcionEmpaque,
                     precioEmpaque: dataEmpaque.descripcionEmpaque == "" ? temp4[3] : dataEmpaque.precioEmpaque,
+                    umEmpaque: dataEmpaque.descripcionEmpaque == "" ? temp2[4] : dataEmpaque.umEmpaque,
                     noPiezasxEmpaque: formData.noPiezasxEmpaque
                 },
                 opcionMaquinaria: {
@@ -385,6 +388,10 @@ function ModificaMatrizProductos(props) {
     const temp = formData.proveedor.split("/");
 
     const temp2 = formData.descripcionMP.split("/");
+
+    const temp3 = formData.descripcionPigmento.split("/");
+
+    const temp4 = formData.descripcionBolsa.split("/");
 
     return (
         <>
@@ -747,7 +754,7 @@ function ModificaMatrizProductos(props) {
                                                             <div className="flex items-center mb-1">
                                                                 <Form.Control
                                                                     type="text"
-                                                                    defaultValue={dataPigmento.descripcionPigmento == "" ? formData.descripcionPigmento : dataPigmento.descripcionPigmento}
+                                                                    defaultValue={dataPigmento.descripcionPigmento == "" ? temp3[2] : dataPigmento.descripcionPigmento}
                                                                     placeholder="Buscar pigmento"
                                                                     name="descripcionPigmento"
                                                                 />
@@ -795,7 +802,7 @@ function ModificaMatrizProductos(props) {
                                                             <div className="flex items-center mb-1">
                                                                 <Form.Control
                                                                     type="text"
-                                                                    defaultValue={dataProveedor.nombreProveedor == "" ? temp[1] : dataProveedor.nombreProveedor}
+                                                                    defaultValue={dataProveedor.nombreProveedor == "" ? temp[2] : dataProveedor.nombreProveedor}
                                                                     placeholder="Buscar proveedor"
                                                                     name="proveedor"
                                                                 />
@@ -920,7 +927,7 @@ function ModificaMatrizProductos(props) {
                                                             <div className="flex items-center mb-1">
                                                                 <Form.Control
                                                                     type="text"
-                                                                    defaultValue={dataEmpaque.descripcionEmpaque == "" ? formData.descripcionBolsa : dataEmpaque.descripcionEmpaque}
+                                                                    defaultValue={dataEmpaque.descripcionEmpaque == "" ? temp4[2] : dataEmpaque.descripcionEmpaque}
                                                                     placeholder="Buscar empaque"
                                                                     name="descripcionBolsa"
                                                                 />
@@ -1290,22 +1297,30 @@ function initialMaterial() {
         idMaterial: "",
         folio: "",
         descripcion: "",
-        precioUnitario: ""
+        precioUnitario: "",
+        umMaterial: ""
     }
 }
 
 function initialPigmento() {
     return {
-        descripcionPigmento: ""
+        idPigmento: "",
+        folioPigmento: "",
+        descripcionPigmento: "",
+        precioPigmento: "",
+        umPigmento: ""
     }
 }
 
 function initialEmpaque() {
     return {
-        descripcionEmpaque: ""
+        idEmpaque: "",
+        folioEmpaque: "",
+        descripcionEmpaque: "",
+        precioEmpaque: "",
+        umEmpaque: ""
     }
 }
-
 function initialProveedor() {
     return {
         proveedor: "",
@@ -1329,15 +1344,15 @@ function valoresAlmacenados(data) {
         pesoTotalInyeccion: data.datosPieza.pesoTotalInyeccion,
         porcentajeScrap: data.datosPieza.porcentajeScrap,
         porcentajeMolido: data.datosPieza.porcentajeMolido,
-        descripcionMP: data.materiaPrima.idMaterial + "/" + data.materiaPrima.descripcion + "/" + data.materiaPrima.folioMaterial + "/" + data.materiaPrima.precioMaterial,
-        descripcionPigmento: data.pigmentoMasterBach.idPigmento + "/" + data.pigmentoMasterBach.folioPigmento + "/" + data.pigmentoMasterBach.descripcion + "/" + data.pigmentoMasterBach.precioPigmento,
+        descripcionMP: data.materiaPrima.idMaterial + "/" + data.materiaPrima.descripcion + "/" + data.materiaPrima.folioMaterial + "/" + data.materiaPrima.precioMaterial + "/" + data.materiaPrima.umMaterial,
+        descripcionPigmento: data.pigmentoMasterBach.idPigmento + "/" + data.pigmentoMasterBach.folioPigmento + "/" + data.pigmentoMasterBach.descripcion + "/" + data.pigmentoMasterBach.precioPigmento + "/" + data.pigmentoMasterBach.umPigmento,
         aplicacionGxKG: data.pigmentoMasterBach.aplicacionGxKG,
         proveedor: data.pigmentoMasterBach.proveedor + "/" + data.pigmentoMasterBach.nombreProveedor,
         tiempoCiclo: data.tiempoCiclo,
         noOperadores: data.noOperadores,
         piezasxHora: data.piezasxHora,
         piezasxTurno: data.piezasxTurno,
-        descripcionBolsa: data.materialEmpaque.idEmpaque + "/" + data.materialEmpaque.folioEmpaque + "/" + data.materialEmpaque.descripcionBolsa + "/" + data.materialEmpaque.precioEmpaque,
+        descripcionBolsa: data.materialEmpaque.idEmpaque + "/" + data.materialEmpaque.folioEmpaque + "/" + data.materialEmpaque.descripcionBolsa + "/" + data.materialEmpaque.precioEmpaque + "/" + data.materialEmpaque.umEmpaque,
         noPiezasxEmpaque: data.materialEmpaque.noPiezasxEmpaque,
         opcionMaquinaria: data.opcionMaquinaria,
         opcion1: data.opcionMaquinaria[0][1].opcion1,

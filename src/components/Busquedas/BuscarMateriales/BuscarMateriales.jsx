@@ -69,6 +69,7 @@ function BuscarMateriales(props) {
                 idArticulo: valoresCliente.idMaterial,
                 folioArticulo: valoresCliente.folio,
                 nombreArticulo: valoresCliente.descripcion,
+                umMaterial: valoresCliente.umMaterial,
 
                 nombreProducto: valoresCliente.nombreProducto,
                 folioProdcuto: valoresCliente.folioProdcuto,
@@ -77,11 +78,13 @@ function BuscarMateriales(props) {
                 folioPigmento: valoresCliente.folioPigmento,
                 descripcionPigmento: valoresCliente.descripcionPigmento,
                 precioPigmento: valoresCliente.precioPigmento,
+                umPigmento: valoresCliente.umPigmento,
 
                 idEmpaque: valoresCliente.idEmpaque,
                 folioEmpaque: valoresCliente.folioEmpaque,
                 descripcionEmpaque: valoresCliente.descripcionEmpaque,
-                precioEmpaque: valoresCliente.precioEmpaque
+                precioEmpaque: valoresCliente.precioEmpaque,
+                umEmpaque: valoresCliente.umEmpaque
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -347,11 +350,19 @@ function initialValues() {
         precio: "",
         nombreProducto: "",
         folioProdcuto: "",
+        umMaterial: "",
 
         idPigmento: "",
         folioPigmento: "",
         descripcionPigmento: "",
-        precioPigmento: ""
+        precioPigmento: "",
+        umPigmento: "",
+
+        idEmpaque: "",
+        folioEmpaque: "",
+        descripcionEmpaque: "",
+        precioEmpaque: "",
+        umEmpaque: ""
     }
 }
 
@@ -365,16 +376,19 @@ function valoresAlmacenados(data) {
         precio: data.precio,
         nombreProducto: data.descripcion,
         folioProdcuto: data.folio,
+        umMaterial: data.um,
 
         idPigmento: data._id,
         folioPigmento: data.folio,
         descripcionPigmento: data.descripcion,
         precioPigmento: data.precio,
+        umPigmento: data.um,
 
         idEmpaque: data._id,
         folioEmpaque: data.folio,
         descripcionEmpaque: data.descripcion,
-        precioEmpaque: data.precio
+        precioEmpaque: data.precio,
+        umEmpaque: data.um,
     }
 }
 

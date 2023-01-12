@@ -16,6 +16,7 @@ import { obtenerDatosMP } from "../../../api/almacenMP";
 import {obtenerDatosPedidoVenta} from "../../../api/pedidoVenta"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
+import { obtenerDatosArticulo } from '../../../api/almacenes';
 
 function ModificacionProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -34,6 +35,12 @@ function ModificacionProduccion(props) {
     // Termina cerrado de sesión automatico
 
     const [listOVCargadas, setListOVCargadas] = useState([]);
+
+    const [cantidadPedir, setCantidadPedir] = useState(0);
+
+    const [cantidadPedirMB, setCantidadPedirMB] = useState(0);
+
+    const [cantidadPedirEmpaques, setCantidadPedirEmpaques] = useState(0);
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -59,6 +66,13 @@ function ModificacionProduccion(props) {
             setCantidadPedirEmpaques(data.datosRequisicion.cantidadPedirEmpaques);
             setCantidadPedirMB(data.datosRequisicion.cantidadPedirMB);
             setOrdenVentaPrincipal(data.requerimiento.ov);
+
+            setAlmacenProducto(data.requerimiento.almacenProductoTerminado);
+            setCantidadPedir(data.datosRequisicion.cantidadPedir);
+            setCantidadPedirMB(data.datosRequisicion.cantidadPedirMB);
+            setCantidadPedirEmpaques(data.datosRequisicion.cantidadPedirEmpaques);
+
+            console.log(data.datosRequisicion.cantidadPedir, data.datosRequisicion.cantidadPedirMB, data.datosRequisicion.cantidadPedirEmpaques)
 
             // setFechaCreacion(fechaElaboracion)
         }).catch(e => {
@@ -111,7 +125,7 @@ function ModificacionProduccion(props) {
         } catch (e) {
             console.log(e)
         }
-    }, []);
+    }, [ordenVentaPrincipal]);
 
     // Para la eliminacion fisica de usuarios
     const buscarOV = (content) => {
@@ -245,6 +259,143 @@ function ModificacionProduccion(props) {
         }
     }, [formDataPlaneacion.opcion3]);
 
+    let cantidadTotalEntrada = 0;
+
+    let cantidadTotalSalida = 0;
+
+    const [almacenProducto, setAlmacenProducto] = useState(0);
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        console.log(formDataPlaneacion.id)
+        try {
+            obtenerDatosArticulo(formDataPlaneacion.id).then(response => {
+                const { data } = response;
+               
+                map(data, (articulos, index) => {
+                    
+                    const {estado, cantidadExistencia, tipo} = articulos
+                    
+                    if (estado == "true") {
+                        console.log("entro al primer if")
+                        if (tipo == "Entrada") {
+                        console.log("entro al segundo if")
+                            cantidadTotalEntrada += parseFloat(cantidadExistencia);
+                            console.log(cantidadTotalEntrada)
+                        } else if (tipo == "Salida") {
+                            console.log("el estado del producto es false")
+                            cantidadTotalSalida += parseFloat(cantidadExistencia);
+                            }
+                    }
+                    setAlmacenProducto(cantidadTotalEntrada - cantidadTotalSalida)
+                })
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.id]);
+
+    let cantidadTotalEntradaMaterial = 0;
+
+    let cantidadTotalSalidaMaterial = 0;
+
+    useEffect(() => {
+        try {
+            obtenerDatosArticulo(formDataPlaneacion.idMaterial).then(response => {
+                const { data } = response;
+               
+                map(data, (articulos, index) => {
+                    
+                    const {estado, cantidadExistencia, tipo} = articulos
+                    
+                    if (estado == "true") {
+                        console.log("entro al primer if")
+                        if (tipo == "Entrada") {
+                        console.log("entro al segundo if")
+                            cantidadTotalEntradaMaterial += parseFloat(cantidadExistencia);
+                        } else if (tipo == "Salida") {
+                            console.log("el estado del producto es false")
+                            cantidadTotalSalidaMaterial += parseFloat(cantidadExistencia);
+                            }
+                    }
+                    setCantidadProductoAlmacen(cantidadTotalEntradaMaterial - cantidadTotalSalidaMaterial)
+                })
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.idMaterial]);
+
+    let cantidadTotalEntradaPigmento = 0;
+
+    let cantidadTotalSalidaPigmento = 0;
+
+    useEffect(() => {
+        try {
+            obtenerDatosArticulo(formDataPlaneacion.idPigmento).then(response => {
+                const { data } = response;
+               
+                map(data, (articulos, index) => {
+                    
+                    const {estado, cantidadExistencia, tipo} = articulos
+                    
+                    if (estado == "true") {
+                        console.log("entro al primer if")
+                        if (tipo == "Entrada") {
+                        console.log("entro al segundo if")
+                            cantidadTotalEntradaPigmento += parseFloat(cantidadExistencia);
+                        } else if (tipo == "Salida") {
+                            console.log("el estado del producto es false")
+                            cantidadTotalSalidaPigmento += parseFloat(cantidadExistencia);
+                            }
+                    }
+                    setCantidadMBAlmacen(cantidadTotalEntradaPigmento - cantidadTotalSalidaPigmento)
+                })
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.idPigmento]);
+
+    let cantidadTotalEntradaEmpaque = 0;
+
+    let cantidadTotalSalidaEmpaque = 0;
+
+    useEffect(() => {
+        try {
+            obtenerDatosArticulo(formDataPlaneacion.idEmpaque).then(response => {
+                const { data } = response;
+               
+                map(data, (articulos, index) => {
+                    
+                    const {estado, cantidadExistencia, tipo} = articulos
+                    
+                    if (estado == "true") {
+                        console.log("entro al primer if")
+                        if (tipo == "Entrada") {
+                        console.log("entro al segundo if")
+                            cantidadTotalEntradaEmpaque += parseFloat(cantidadExistencia);
+                        } else if (tipo == "Salida") {
+                            console.log("el estado del producto es false")
+                            cantidadTotalSalidaEmpaque += parseFloat(cantidadExistencia);
+                            }
+                    }
+                    setCantidadEmpaquesAlmacen(cantidadTotalEntradaEmpaque - cantidadTotalSalidaEmpaque)
+                })
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataPlaneacion.idEmpaque]);
+
     // Para almacenar el listado de materias primas
     const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
 
@@ -307,9 +458,9 @@ function ModificacionProduccion(props) {
                     semana: informacionRequerimiento.semana,
                     producto: temp[0],
                     nombreProducto: temp[1],
-                    um: unidadMedida,
+                    um: formDataPlaneacion.um,
                     ov: ordenVentaPrincipal,
-                    almacenProductoTerminado: cantidad,
+                    almacenProductoTerminado: almacenProducto,
                     ordenVenta: listOVCargadas,
                     nombreProveedor: temp[2],
                     totalProducir: totalProducir,
@@ -346,6 +497,7 @@ function ModificacionProduccion(props) {
                     idMaterial: formDataPlaneacion.idMaterial,
                     folioMaterial: formDataPlaneacion.folioMaterial,
                     precioMaterial: formDataPlaneacion.precioMaterial,
+                    umMaterial: formDataPlaneacion.umMaterial,
                     molido: formDataPlaneacion.porcentajeMolido,
                     pesoPieza: formDataPlaneacion.pesoPiezas,
                     pesoColada: formDataPlaneacion.pesoColada,
@@ -353,6 +505,7 @@ function ModificacionProduccion(props) {
                     idPigmento: formDataPlaneacion.idPigmento,
                     folioPigmento: formDataPlaneacion.folioPigmento,
                     precioPigmento: formDataPlaneacion.precioPigmento,
+                    umPigmento: formDataPlaneacion.umPigmento,
                     pigmento: formDataPlaneacion.descripcionPigmento,
                     aplicacion: formDataPlaneacion.aplicacionGxKG,
                     pigMb: pigMB,
@@ -361,6 +514,7 @@ function ModificacionProduccion(props) {
                     idEmpaque: formDataPlaneacion.idEmpaque,
                     folioEmpaque: formDataPlaneacion.folioEmpaque,
                     precioEmpaque: formDataPlaneacion.precioEmpaque,
+                    umEmpaque: formDataPlaneacion.umEmpaque,
                     empaque: formDataPlaneacion.descripcionBolsa,
                     bolsasCajasUtilizar: bolsasCajasUtilizar
                 },
@@ -469,19 +623,16 @@ function ModificacionProduccion(props) {
 
     let piezasTurno3 = (((3600 / Number(formDataPlaneacion.tiempoCiclo3)) * Number(formDataPlaneacion.cavMolde)) * 12);
 
-    const [cantidadPedir, setCantidadPedir] = useState(0);
+
+    console.log(kgMaterial, cantidadProductoAlmacen)
 
     useEffect(() => {
         setCantidadPedir(Number(kgMaterial) - Number(cantidadProductoAlmacen))
     }, [formData.materiaPrima, formDataPlaneacion.idMaterial, totalProducir]);
 
-    const [cantidadPedirMB, setCantidadPedirMB] = useState(0);
-
     useEffect(() => {
         setCantidadPedirMB(Number(pigMB) - Number(cantidadMBAlmacen))
     }, [formData.materiaPrima, formDataPlaneacion.idMaterial, totalProducir]);
-
-    const [cantidadPedirEmpaques, setCantidadPedirEmpaques] = useState(0);
 
     useEffect(() => {
         setCantidadPedirEmpaques(Number(bolsasCajasUtilizar) - Number(cantidadEmpaquesAlmacen))
@@ -717,7 +868,7 @@ function ModificacionProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            defaultValue={unidadMedida}
+                                            defaultValue={formDataPlaneacion.um}
                                             placeholder="UM"
                                             name="um"
                                         />
@@ -729,7 +880,8 @@ function ModificacionProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            defaultValue={cantidad}
+                                            value={almacenProducto}
+                                            onChange={e => setAlmacenProducto(e.target.value)}
                                             placeholder="Almacen producto terminado"
                                             name="almacenPT"
                                         />
@@ -1370,7 +1522,7 @@ function ModificacionProduccion(props) {
                                             step="0.01"
                                             placeholder="cantidad a pedir"
                                             name="cantidadEmpaques"
-                                            value={Number(bolsasCajasUtilizar) - Number(cantidadEmpaquesAlmacen)}
+                                            value={Number(Math.ceil(bolsasCajasUtilizar)) - Number(cantidadEmpaquesAlmacen)}
                                             disabled
                                         />
                                     </Form.Group>
@@ -1385,7 +1537,7 @@ function ModificacionProduccion(props) {
                                             placeholder="cantidad a pedir"
                                             name="cantidadPedirEmpaques"
                                             onChange={e => setCantidadPedirEmpaques(e.target.value)}
-                                            value={cantidadPedirEmpaques}
+                                            value={Math.ceil(cantidadPedirEmpaques)}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1435,8 +1587,10 @@ function ModificacionProduccion(props) {
 
 function initialFormDataPlaneacion(data) {
     return {
+        id: data._id,
         noInterno: data.noInterno,
         cliente: data.cliente,
+        um: data.um,
         noMolde: data.datosMolde.noMolde,
         cavMolde: data.datosMolde.cavMolde,
         noParte: data.noParte,
@@ -1451,6 +1605,9 @@ function initialFormDataPlaneacion(data) {
         folioMaterial: data.materiaPrima.folioMaterial,
         precioMaterial: data.materiaPrima.precioMaterial,
         idPigmento: data.pigmentoMasterBach.idPigmento,
+        umMaterial: data.materiaPrima.umMaterial,
+        umPigmento: data.pigmentoMasterBach.umPigmento,
+        umEmpaque: data.materialEmpaque.umEmpaque,
         folioPigmento: data.pigmentoMasterBach.folioPigmento,
         descripcionPigmento: data.pigmentoMasterBach.descripcion,
         precioPigmento: data.pigmentoMasterBach.precioPigmento,
@@ -1497,6 +1654,15 @@ function initialFormDataPlaneacionInitial() {
         descripcionMP: "",
         idMaterial: "",
         folioMaterial: "",
+        umMaterial: "",
+        umPigmento: "",
+        umEmpaque: "",
+        idPigmento: "",
+        idEmpaque: "",
+        folioPigmento: "",
+        folioEmpaque: "",
+        precioPigmento: "",
+        precioEmpaque: "",
         precioMaterial: "",
         descripcionPigmento: "",
         aplicacionGxKG: "",

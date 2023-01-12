@@ -200,9 +200,6 @@ function RegistroVentas(props) {
         }
     }, [pdfCotizacion]);
 
-    console.log("cotizacion: " + pdfCotizacion)
-    console.log("ordenCompra: " + linkOrdenCompra)
-
     const onSubmit = e => {
         e.preventDefault();
 
@@ -212,9 +209,6 @@ function RegistroVentas(props) {
             //console.log("Continuar")
             setLoading(true);
 
-            // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            subeArchivosCloudinary(pdfCotizacion, "ventas").then(response => {
-                const { data } = response;
                 const dataTemp = {
                     folio: folioActual,
                     fechaElaboracion: formData.fechaPedido,
@@ -227,7 +221,7 @@ function RegistroVentas(props) {
                     moneda: "M.N.",
                     numeroPedido: formData.numeroPedido,
                     lugarEntrega: formData.lugarEntrega,
-                    cotizacion: data.secure_url,
+                    cotizacion: linkCotizacion,
                     total: totalSinIVA,
                     especificaciones: formData.especificaciones,
                     productos: listProductosCargados,
@@ -249,9 +243,6 @@ function RegistroVentas(props) {
                 }).catch(e => {
                     console.log(e)
                 })
-            }).catch(e => {
-                console.log(e)
-            })
         }
     }
 

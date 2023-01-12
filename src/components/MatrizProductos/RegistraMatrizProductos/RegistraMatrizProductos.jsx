@@ -240,13 +240,15 @@ function RegistraMatrizProductos(props) {
                     folioMaterial: dataMaterial.folio,
                     idMaterial: dataMaterial.idMaterial,
                     descripcion: dataMaterial.descripcion,
-                    precioMaterial: dataMaterial.precioUnitario
+                    precioMaterial: dataMaterial.precioUnitario,
+                    umMaterial: dataMaterial.umMaterial,
                 },
                 pigmentoMasterBach: {
                     idPigmento: dataPigmento.idPigmento,
                     folioPigmento: dataPigmento.folioPigmento,
                     descripcion: dataPigmento.descripcionPigmento,
                     precioPigmento: dataPigmento.precioPigmento,
+                    umPigmento: dataPigmento.umPigmento,
                     aplicacionGxKG: formData.aplicacionGxKG,
                     proveedor: dataProveedor.proveedor,
                     nombreProveedor: dataProveedor.nombreProveedor
@@ -260,6 +262,7 @@ function RegistraMatrizProductos(props) {
                     folioEmpaque: dataEmpaque.folioEmpaque,
                     descripcionBolsa: dataEmpaque.descripcionEmpaque,
                     precioEmpaque: dataEmpaque.precioEmpaque,
+                    umEmpaque: dataEmpaque.umEmpaque,
                     noPiezasxEmpaque: formData.noPiezasxEmpaque
                 },
                 opcionMaquinaria: {
@@ -1235,7 +1238,8 @@ function initialMaterial() {
         idMaterial: "",
         folio: "",
         descripcion: "",
-        precioUnitario: ""
+        precioUnitario: "",
+        umMaterial: ""
     }
 }
 
@@ -1244,7 +1248,8 @@ function initialPigmento() {
         idPigmento: "",
         folioPigmento: "",
         descripcionPigmento: "",
-        precioPigmento: ""
+        precioPigmento: "",
+        umPigmento: ""
     }
 }
 
@@ -1253,7 +1258,8 @@ function initialEmpaque() {
         idEmpaque: "",
         folioEmpaque: "",
         descripcionEmpaque: "",
-        precioEmpaque: ""
+        precioEmpaque: "",
+        umEmpaque: ""
     }
 }
 

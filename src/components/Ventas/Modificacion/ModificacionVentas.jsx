@@ -208,8 +208,8 @@ function ModificacionVentas(props) {
 
     useEffect(() => {
         try {
-            if (informacionPedido.cotizacion) {
-                subeArchivosCloudinary(informacionPedido.cotizacion, "ventas").then(response => {
+            if (pdfCotizacion) {
+                subeArchivosCloudinary(pdfCotizacion, "ventas").then(response => {
                     const { data } = response;
                     // console.log(data)
                     const { secure_url } = data;
@@ -222,70 +222,57 @@ function ModificacionVentas(props) {
             console.log(e)
 
         }
-    }, [informacionPedido.cotizacion]);
+    }, [pdfCotizacion]);
 
     const onSubmit = e => {
         e.preventDefault();
 
         if (!informacionPedido.cliente || !informacionPedido.numeroPedido || !informacionPedido.fechaPedido || !informacionPedido.fechaEntrega || !informacionPedido.condicionesPago || !informacionPedido.especificaciones) {
-            // console.log("Valores del form ", size(informacionPedido) )
-            // console.log("Valores de validacion ", validCount )
             toast.warning("Completa el formulario");
         } else {
-            setLoading(true)
+            setLoading(true);
 
-            // Obtener los datos de la planeacion segun el pedido de venta
-            //
+            const dataTempPrincipalOV = {
+                fechaElaboracion: informacionPedido.fechaPedido,
+                fechaEntrega: informacionPedido.fechaEntrega,
+                cliente: formData.cliente == "" ? informacionPedido.cliente : formData.cliente,
+                nombreCliente: formData.nombreCliente == "" ? informacionPedido.nombreCliente : formData.nombreCliente,
+                condicionesPago: informacionPedido.condicionesPago,
+                incoterms: informacionPedido.incoterms,
+                moneda: "M.N.",
+                numeroPedido: informacionPedido.numeroPedido,
+                lugarEntrega: formData.lugarEntrega == "" ? informacionPedido.lugarEntrega : formData.lugarEntrega,
+                cotizacion: linkCotizacion,
+                ordenCompra: linkOrdenCompra,
+                total: totalSinIVA,
+                especificaciones: informacionPedido.especificaciones,
+                productos: listProductosCargados,
+                status: "true"
+            }
+            //console.log(dataTemp)
 
-            // Inicia proceso de modificacion de pedido de venta
-            subeArchivosCloudinary(pdfCotizacion, "ventas").then(response => {
-                const { data } = response;
-                const dataTempPrincipalOV = {
-                    fechaElaboracion: informacionPedido.fechaPedido,
-                    fechaEntrega: informacionPedido.fechaEntrega,
-                    cliente: formData.cliente == "" ? informacionPedido.cliente : formData.cliente,
-                    nombreCliente: formData.nombreCliente == "" ? informacionPedido.nombreCliente : formData.nombreCliente,
-                    condicionesPago: informacionPedido.condicionesPago,
-                    incoterms: informacionPedido.incoterms,
-                    moneda: "M.N.",
-                    numeroPedido: informacionPedido.numeroPedido,
-                    lugarEntrega: formData.lugarEntrega == "" ? informacionPedido.lugarEntrega : formData.lugarEntrega,
-                    cotizacion: data.secure_url,
-                    ordenCompra: linkOrdenCompra,
-                    total: totalSinIVA,
-                    especificaciones: informacionPedido.especificaciones,
-                    productos: listProductosCargados,
-                    status: "true"
-                }
-                //console.log(dataTemp)
-
-                // Inicia el proceso de modificacion de orden de venta
-                // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-                obtenerDatosPedidoVenta(folio).then(response => {
-                    const { data: { _id, folio } } = response;
-                    // console.log(response.data)
-                    // Modificar el pedido creado recientemente
-                    actualizaPedidoVenta(_id, dataTempPrincipalOV).then(response => {
-                        const { data: { mensaje, datos } } = response;
-                        // console.log(response)
-                        toast.success(mensaje)
-                        // Registro de log para la actualizacion de orden de venta
-                        LogsInformativos("Se han actualizado los datos de la orden de venta con folio " + folio, datos)
-                        // Registro del tracking para orden de venta
-                        // LogTrackingRegistro(_id, folio, formData.cliente, formData.fechaElaboracion)
-                        setLoading(false)
-                        regresaListadoVentas()
-                    }).catch(e => {
-                        console.log(e)
-                    })
+            // Inicia el proceso de modificacion de orden de venta
+            // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
+            obtenerDatosPedidoVenta(folio).then(response => {
+                const { data: { _id, folio } } = response;
+                // console.log(response.data)
+                // Modificar el pedido creado recientemente
+                actualizaPedidoVenta(_id, dataTempPrincipalOV).then(response => {
+                    const { data: { mensaje, datos } } = response;
+                    // console.log(response)
+                    toast.success(mensaje)
+                    // Registro de log para la actualizacion de orden de venta
+                    LogsInformativos("Se han actualizado los datos de la orden de venta con folio " + folio, datos)
+                    // Registro del tracking para orden de venta
+                    // LogTrackingRegistro(_id, folio, formData.cliente, formData.fechaElaboracion)
+                    setLoading(false)
+                    regresaListadoVentas()
                 }).catch(e => {
                     console.log(e)
                 })
             }).catch(e => {
                 console.log(e)
             })
-            // Termina la modificación del pedido de venta
-
         }
 
     }

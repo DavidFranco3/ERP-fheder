@@ -16,6 +16,7 @@ import BuscarInsumos from '../../../page/BuscarInsumos';
 import BuscarOV from '../../../page/BuscarOV';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
+import { obtenerDatosArticulo } from '../../../api/almacenes';
 
 function RegistraRequisiciones(props) {
     const { setRefreshCheckLogin } = props;
@@ -118,7 +119,7 @@ function RegistraRequisiciones(props) {
                 {
                     folio: bom.folioMaterial,
                     descripcion: bom.material,
-                    um: requerimiento.um,
+                    um: bom.umMaterial,
                     cantidad: datosRequisicion.cantidadPedir,
                     proveedor: requerimiento.nombreProveedor,
                     precioUnitario: bom.precioMaterial,
@@ -128,7 +129,7 @@ function RegistraRequisiciones(props) {
                 {
                     folio: bom.folioEmpaque,
                     descripcion: bom.empaque,
-                    um: requerimiento.um,
+                    um: bom.umEmpaque,
                     cantidad: datosRequisicion.cantidadPedirEmpaques,
                     proveedor: requerimiento.nombreProveedor,
                     precioUnitario: bom.precioEmpaque,
@@ -138,7 +139,7 @@ function RegistraRequisiciones(props) {
                 {
                     folio: bom.folioPigmento,
                     descripcion: bom.pigmento,
-                    um: requerimiento.um,
+                    um: bom.umPigmento,
                     cantidad: datosRequisicion.cantidadPedirMB,
                     proveedor: requerimiento.nombreProveedor,
                     precioUnitario: bom.precioPigmento,
