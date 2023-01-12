@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
 import BuscarOV from "../../../page/BuscarOV";
 import BasicModal from "../../Modal/BasicModal";
@@ -9,7 +9,11 @@ import { obtenerNumeroInspeccion, registraInspeccion, obtenerItemInspeccion } fr
 import { toast } from "react-toastify";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import BuscarRecepcion from "../../../page/BuscarRecepcion";
+import { map } from "lodash";
+import { listarUM } from "../../../api/unidadesMedida";
+import { obtenerMateriaPrimaPorFolio } from "../../../api/materiaPrima";
 
 function RegistraReporte(props) {
     const { setRefreshCheckLogin } = props;
@@ -26,9 +30,14 @@ function RegistraReporte(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
-    
+
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+    // Para guardar los datos del formulario
+    const [formDataRecepcion, setFormDataRecepcion] = useState(initialFormDataRecepcion());
+
+    const [productosRecepcion, setProductosRecepcion] = useState();
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -68,8 +77,8 @@ function RegistraReporte(props) {
 
     const [ordenVenta, setOrdenVenta] = useState("");
 
-    const buscarOV = (content) => {
-        setTitulosModal("Buscar orden de venta");
+    const buscarRecepcion = (content) => {
+        setTitulosModal("Buscar recepcion de material/insumo");
         setContentModal(content);
         setShowModal(true);
     }
@@ -82,29 +91,29 @@ function RegistraReporte(props) {
         } else {
             //console.log("Continuar")
             setLoading(true)
-
+            const temp = formData.nombreDescripcion.split("/")
             // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
             obtenerItemInspeccion().then(response => {
                 const { data } = response;
                 const dataTemp = {
                     item: data.item,
                     folio: folioActual,
-                    ordenVenta: ordenVenta,
+                    ordenVenta: formDataRecepcion.folioRecepcion,
                     fecha: formData.fecha,
                     lote: formData.lote,
                     sucursal: getSucursal(),
                     propiedad: formData.propiedad,
-                    tipoMaterial: formData.tipoMaterial,
-                    nombre: formData.nombreDescripcion,
-                    cantidad: formData.cantidad,
-                    unidadMedida: formData.unidadMedida,
+                    tipoMaterial: tipoMaterial,
+                    nombre: temp[1],
+                    cantidad: cantidad,
+                    unidadMedida: unidadMedida,
                     nombreRecibio: formData.nombreRecibio,
                     estadoMateriaPrima: formData.estadoMateriaPrima,
                     contaminacion: formData.contaminacion,
                     presentaHumedad: formData.presentaHumedad,
                     certificadoCalidad: formData.certificadoCalidad,
                     empaqueDañado: formData.empaqueDañado,
-                    resultadoFinalInspeccion: formData.resultadoInspeccion,
+                    resultadoFinalInspeccion: formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si" ? "ok" : "no Ok",
                     observaciones: formData.observaciones
                 }
                 // console.log(dataTemp)
@@ -114,7 +123,7 @@ function RegistraReporte(props) {
                 registraInspeccion(dataTemp).then(response => {
                     const { data: { mensaje, datos } } = response;
 
-                    LogsInformativos("Se ha registrado el reporte de calidad " +  folioActual, dataTemp);
+                    LogsInformativos("Se ha registrado el reporte de calidad " + folioActual, dataTemp);
 
                     // Actualizacion del tracking
                     LogTrackingActualizacion(ordenVenta, "En inspeccion de calidad", "4")
@@ -136,6 +145,58 @@ function RegistraReporte(props) {
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
+
+    const [folioMaterial, setFolioMaterial] = useState("");
+    const [cantidad, setCantidad] = useState("");
+    const [nombreProducto, setNombreProducto] = useState("");
+    const [unidadMedida, setUnidadMedida] = useState("");
+    const [tipoMaterial, setTipoMaterial] = useState("");
+
+    useEffect(() => {
+        const temp = formData.nombreDescripcion.split("/");
+        setFolioMaterial(temp[0]);
+        setNombreProducto(temp[1]);
+        setCantidad(temp[2]);
+        setUnidadMedida(temp[3]);
+
+        try {
+            obtenerMateriaPrimaPorFolio(temp[0]).then(response => {
+                const { data } = response;
+                // console.log(data)
+                const { tipoMaterial } = data;
+                console.log(data);
+                setTipoMaterial(tipoMaterial);
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+
+    }, [formData.nombreDescripcion]);
+
+    // Para almacenar el listado de proveedores
+    const [listUM, setListUM] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarUM(getSucursal()).then(response => {
+                const { data } = response;
+                // console.log(data)
+                if (!listarUM() && data) {
+                    setListUM(formatModelUM(data));
+                } else {
+                    const datosUM = formatModelUM(data);
+                    setListUM(datosUM);
+                }
+
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
 
     return (
         <>
@@ -163,6 +224,7 @@ function RegistraReporte(props) {
             <br />
 
             <Container fluid>
+                <br />
                 <div className="formularioDatos">
                     <Form onChange={onChange} onSubmit={onSubmit}>
                         <div className="encabezado">
@@ -172,34 +234,33 @@ function RegistraReporte(props) {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
-                                            Orden Venta
+                                            Recepcion
                                         </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Orden de venta"
-                                            name="ordenVenta"
-                                            value={ordenVenta}
-                                            disabled
-                                        />
+                                        <div className="flex items-center mb-1">
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Recepcion"
+                                                name="recpecion"
+                                                value={formDataRecepcion.folioRecepcion}
+                                                disabled
+                                            />
+                                            <FontAwesomeIcon
+                                                className="cursor-pointer py-2 -ml-6"
+                                                title="Buscar entre los productos"
+                                                icon={faSearch}
+                                                onClick={() => {
+                                                    buscarRecepcion(
+                                                        <BuscarRecepcion
+                                                            formData={formDataRecepcion}
+                                                            setFormData={setFormDataRecepcion}
+                                                            productosRecepcion={productosRecepcion}
+                                                            setProductosRecepcion={setProductosRecepcion}
+                                                            setShowModal={setShowModal}
+                                                        />)
+                                                }}
+                                            />
+                                        </div>
                                     </Form.Group>
-
-                                    <Col sm="5">
-                                        <Button
-                                            variant="success"
-                                            title="Buscar entre las ordenes de venta"
-                                            className="agregar"
-                                            onClick={() => {
-                                                buscarOV(
-                                                    <BuscarOV
-                                                        setOrdenVenta={setOrdenVenta}
-                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
-                                                        setShowModal={setShowModal}
-                                                    />)
-                                            }}
-                                        >
-                                            Orden venta
-                                        </Button>
-                                    </Col>
 
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
@@ -233,11 +294,21 @@ function RegistraReporte(props) {
                                             Nombre/Descripcion
                                         </Form.Label>
                                         <Form.Control
-                                            type="text"
+                                            as="select"
                                             placeholder="Nombre/Descripcion"
                                             name="nombreDescripcion"
                                             defaultValue={formData.nombreDescripcion}
-                                        />
+                                        >
+                                            <option>Elige una opción</option>
+                                            {map(productosRecepcion, (productos, index) => (
+                                                <option
+                                                    key={index}
+                                                    value={productos?.folio + "/" + productos?.producto + "/" + productos?.cantidad + "/" + productos?.um}
+                                                >
+                                                    {productos?.producto}
+                                                </option>
+                                            ))}
+                                        </Form.Control>
                                     </Form.Group>
                                 </Row>
 
@@ -262,7 +333,8 @@ function RegistraReporte(props) {
                                             type="number"
                                             placeholder="Cantidad"
                                             name="cantidad"
-                                            defaultValue={formData.cantidad}
+                                            onChange={e => setCantidad(e.target.value)}
+                                            value={cantidad}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -292,11 +364,10 @@ function RegistraReporte(props) {
                                             name="unidadMedida"
                                             defaultValue={formData.unidadMedida}
                                         >
-                                            <option >Elige</option>
-                                            <option value="KG">KG</option>
-                                            <option value="Litros">Litros</option>
-                                            <option value="Piezas">Pieza</option>
-                                            <option value="Otros">Otros</option>
+                                            <option>Elige una opción</option>
+                                            {map(listUM, (um, index) => (
+                                                <option key={index} value={um?.nombre} selected={unidadMedida == um?.nombre}>{um?.nombre}</option>
+                                            ))}
                                         </Form.Control>
                                     </Form.Group>
                                 </Row>
@@ -310,7 +381,8 @@ function RegistraReporte(props) {
                                             type="text"
                                             placeholder="Tipo de material"
                                             name="tipoMaterial"
-                                            defaultValue={formData.tipoMaterial}
+                                            value={tipoMaterial}
+                                            onChange={e => setTipoMaterial(e.target.value)}
                                         />
                                     </Form.Group>
 
@@ -520,6 +592,8 @@ function RegistraReporte(props) {
                                                 name="resultadoInspeccion"
                                                 id="si"
                                                 defaultValue={formData.resultadoInspeccion}
+                                                checked={formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si"}
+                                            disabled
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -532,6 +606,8 @@ function RegistraReporte(props) {
                                                 name="resultadoInspeccion"
                                                 id="no"
                                                 defaultValue={formData.resultadoInspeccion}
+                                                checked={formData.contaminacion == "no" || formData.presentaHumedad == "no" || formData.certificadoCalidad == "no" || formData.empaqueDañado == "no"}
+                                            disabled
                                             />
                                         </Col>
                                     </Form.Group>
@@ -586,6 +662,27 @@ function RegistraReporte(props) {
             </BasicModal>
         </>
     );
+}
+
+function initialFormDataRecepcion() {
+    return {
+        folioRecepcion: "",
+    }
+}
+
+function formatModelUM(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            nombre: data.nombre,
+            sucursal: data.sucursal,
+            estadoUM: data.estadoUM,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
 }
 
 function initialFormData() {

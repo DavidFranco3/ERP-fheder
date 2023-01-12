@@ -1,18 +1,23 @@
 import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, useParams } from "react-router-dom";
 import BuscarOV from "../../../page/BuscarOV";
 import BasicModal from "../../Modal/BasicModal";
 import { obtenerInspeccion, actualizaInspeccion } from "../../../api/inspeccionMaterial";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { obtenerDatosRecepcion } from "../../../api/recepcionMaterialInsumos";
+import BuscarRecepcion from "../../../page/BuscarRecepcion";
+import { map } from "lodash";
+import { listarUM } from "../../../api/unidadesMedida";
+import { obtenerMateriaPrimaPorFolio } from "../../../api/materiaPrima";
 
 function ModificaReporte(props) {
     const { setRefreshCheckLogin } = props;
-    
+
     // Cerrado de sesión automatico
     useEffect(() => {
         if (getTokenApi()) {
@@ -29,13 +34,23 @@ function ModificaReporte(props) {
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
 
+    // Para guardar los datos del formulario
+    const [formDataRecepcion, setFormDataRecepcion] = useState(initialFormDataRecepcionInicial());
+
+    const [productosRecepcion, setProductosRecepcion] = useState();
+
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
     const [contentModal, setContentModal] = useState(null);
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useHistory();
+
+    const [folioMaterial, setFolioMaterial] = useState("");
+    const [cantidad, setCantidad] = useState("");
+    const [unidadMedida, setUnidadMedida] = useState("");
+    const [tipoMaterial, setTipoMaterial] = useState("");
 
     // Define el uso de los parametros
     const parametros = useParams()
@@ -47,11 +62,25 @@ function ModificaReporte(props) {
             const { data } = response;
             //console.log(data)
             setFormData(valoresAlmacenados(data))
+
+            setFormDataRecepcion(initialFormDataRecepcion(data))
+            console.log(formDataRecepcion)
+            setCantidad(data.cantidad);
+            setUnidadMedida(data.unidadMedida);
+            setTipoMaterial(data.tipoMaterial);
+            obtenerDatosRecepcion(data.ordenVenta).then(response => {
+                const { data } = response;
+                setProductosRecepcion(data.productos);
+            }).catch(e => {
+                console.log(e)
+            })
             // setFechaCreacion(fechaElaboracion)
         }).catch(e => {
             console.log(e)
         })
     }, []);
+
+    console.log(productosRecepcion);
 
     // Define la ruta de registro
     const rutaRegreso = () => {
@@ -65,8 +94,8 @@ function ModificaReporte(props) {
 
     const [ordenVenta, setOrdenVenta] = useState("");
 
-    const buscarOV = (content) => {
-        setTitulosModal("Buscar orden de venta");
+    const buscarRecepcion = (content) => {
+        setTitulosModal("Buscar recepcion de material/insumo");
         setContentModal(content);
         setShowModal(true);
     }
@@ -79,27 +108,28 @@ function ModificaReporte(props) {
         } else {
             //console.log("Continuar")
             setLoading(true)
-
+            const temp = formData.nombreDescripcion.split("/");
             const dataTemp = {
-                ordenVenta: ordenVenta == "" ? formData.ordenVenta : ordenVenta,
+                ordenVenta: formDataRecepcion.folioRecepcion,
                 fecha: formData.fecha,
                 lote: formData.lote,
+                sucursal: getSucursal(),
                 propiedad: formData.propiedad,
-                tipoMaterial: formData.tipoMaterial,
-                nombre: formData.nombre,
-                cantidad: formData.cantidad,
-                unidadMedida: formData.unidadMedida,
+                tipoMaterial: tipoMaterial,
+                nombre: temp == "" ? formData.nombreDescripcion : temp[1],
+                cantidad: cantidad,
+                unidadMedida: unidadMedida,
                 nombreRecibio: formData.nombreRecibio,
                 estadoMateriaPrima: formData.estadoMateriaPrima,
                 contaminacion: formData.contaminacion,
                 presentaHumedad: formData.presentaHumedad,
                 certificadoCalidad: formData.certificadoCalidad,
                 empaqueDañado: formData.empaqueDañado,
-                resultadoFinalInspeccion: formData.resultadoFinalInspeccion,
+                resultadoFinalInspeccion: formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si" ? "ok" : "no Ok",
                 observaciones: formData.observaciones
             }
             // console.log(dataTemp)
-            LogsInformativos("Se ha modificado el reporte de calidad " +  formData.folio, dataTemp);
+            LogsInformativos("Se ha modificado el reporte de calidad " + formData.folio, dataTemp);
 
             // Modificar el pedido creado recientemente
             actualizaInspeccion(id, dataTemp).then(response => {
@@ -122,7 +152,53 @@ function ModificaReporte(props) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    console.log(formData);
+    console.log(formData.nombreDescripcion);
+
+    useEffect(() => {
+
+        const temp = formData.nombreDescripcion.split("/");
+        setFolioMaterial(temp[0]);
+        setCantidad(temp[2]);
+        setUnidadMedida(temp[3]);
+
+        try {
+            obtenerMateriaPrimaPorFolio(temp[0]).then(response => {
+                const { data } = response;
+                // console.log(data)
+                const { tipoMaterial } = data;
+                console.log(data);
+                setTipoMaterial(tipoMaterial);
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+
+    }, [formData.nombreDescripcion]);
+
+    // Para almacenar el listado de proveedores
+    const [listUM, setListUM] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarUM(getSucursal()).then(response => {
+                const { data } = response;
+                // console.log(data)
+                if (!listarUM() && data) {
+                    setListUM(formatModelUM(data));
+                } else {
+                    const datosUM = formatModelUM(data);
+                    setListUM(datosUM);
+                }
+
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
 
     return (
         <>
@@ -152,6 +228,7 @@ function ModificaReporte(props) {
             <Container fluid>
                 <div className="formularioDatos">
                     <Form onChange={onChange} onSubmit={onSubmit}>
+                        <br />
                         <div className="encabezado">
                             <Container fluid>
                                 <br />
@@ -159,34 +236,33 @@ function ModificaReporte(props) {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
-                                            Orden Venta
+                                            Recepcion
                                         </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Orden de venta"
-                                            name="ordenVenta"
-                                            value={ordenVenta == "" ? formData.ordenVenta : ordenVenta}
-                                            disabled
-                                        />
+                                        <div className="flex items-center mb-1">
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Recepcion"
+                                                name="recpecion"
+                                                value={formDataRecepcion.folioRecepcion}
+                                                disabled
+                                            />
+                                            <FontAwesomeIcon
+                                                className="cursor-pointer py-2 -ml-6"
+                                                title="Buscar entre los productos"
+                                                icon={faSearch}
+                                                onClick={() => {
+                                                    buscarRecepcion(
+                                                        <BuscarRecepcion
+                                                            formData={formDataRecepcion}
+                                                            setFormData={setFormDataRecepcion}
+                                                            productosRecepcion={productosRecepcion}
+                                                            setProductosRecepcion={setProductosRecepcion}
+                                                            setShowModal={setShowModal}
+                                                        />)
+                                                }}
+                                            />
+                                        </div>
                                     </Form.Group>
-
-                                    <Col sm="5">
-                                        <Button
-                                            variant="success"
-                                            title="Buscar entre las ordenes de venta"
-                                            className="agregar"
-                                            onClick={() => {
-                                                buscarOV(
-                                                    <BuscarOV
-                                                        setOrdenVenta={setOrdenVenta}
-                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
-                                                        setShowModal={setShowModal}
-                                                    />)
-                                            }}
-                                        >
-                                            Orden venta
-                                        </Button>
-                                    </Col>
 
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
@@ -220,11 +296,21 @@ function ModificaReporte(props) {
                                             Nombre/Descripcion
                                         </Form.Label>
                                         <Form.Control
-                                            type="text"
+                                            as="select"
                                             placeholder="Nombre/Descripcion"
-                                            name="nombre"
-                                            defaultValue={formData.nombre}
-                                        />
+                                            name="nombreDescripcion"
+                                            defaultValue={formData.nombreDescripcion}
+                                        >
+                                            <option>Elige una opción</option>
+                                            {map(productosRecepcion, (productos, index) => (
+                                                <option
+                                                    key={index}
+                                                    value={productos?.folio + "/" + productos?.producto + "/" + productos?.cantidad + "/" + productos?.um} selected={formData.nombreDescripcion == productos?.producto}
+                                                >
+                                                    {productos?.producto}
+                                                </option>
+                                            ))}
+                                        </Form.Control>
                                     </Form.Group>
                                 </Row>
 
@@ -249,7 +335,8 @@ function ModificaReporte(props) {
                                             type="number"
                                             placeholder="Cantidad"
                                             name="cantidad"
-                                            defaultValue={formData.cantidad}
+                                            onChange={e => setCantidad(e.target.value)}
+                                            value={cantidad}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -279,11 +366,10 @@ function ModificaReporte(props) {
                                             name="unidadMedida"
                                             defaultValue={formData.unidadMedida}
                                         >
-                                            <option >Elige</option>
-                                            <option value="KG" selected={formData.unidadMedida == "KG"}>KG</option>
-                                            <option value="Litros" selected={formData.unidadMedida == "Litros"}>Litros</option>
-                                            <option value="Piezas" selected={formData.unidadMedida == "Piezas"}>Pieza</option>
-                                            <option value="Otros" selected={formData.unidadMedida == "Otros"}>Otros</option>
+                                            <option>Elige una opción</option>
+                                            {map(listUM, (um, index) => (
+                                                <option key={index} value={um?.nombre} selected={unidadMedida == um?.nombre}>{um?.nombre}</option>
+                                            ))}
                                         </Form.Control>
                                     </Form.Group>
                                 </Row>
@@ -297,7 +383,8 @@ function ModificaReporte(props) {
                                             type="text"
                                             placeholder="Tipo de material"
                                             name="tipoMaterial"
-                                            defaultValue={formData.tipoMaterial}
+                                            value={tipoMaterial}
+                                            onChange={e => setTipoMaterial(e.target.value)}
                                         />
                                     </Form.Group>
 
@@ -518,7 +605,8 @@ function ModificaReporte(props) {
                                                 name="resultadoFinalInspeccion"
                                                 id="si"
                                                 defaultValue={formData.resultadoFinalInspeccion}
-                                                checked={formData.resultadoFinalInspeccion == "ok"}
+                                                checked={formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si"}
+                                                disabled
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -531,7 +619,8 @@ function ModificaReporte(props) {
                                                 name="resultadoFinalInspeccion"
                                                 id="no"
                                                 defaultValue={formData.resultadoFinalInspeccion}
-                                                checked={formData.resultadoFinalInspeccion == "no Ok"}
+                                                checked={formData.contaminacion == "no" || formData.presentaHumedad == "no" || formData.certificadoCalidad == "no" || formData.empaqueDañado == "no"}
+                                                disabled
                                             />
                                         </Col>
                                     </Form.Group>
@@ -599,6 +688,7 @@ function initialFormData() {
         propiedad: "",
         unidadMedida: "",
         tipoMaterial: "",
+        nombreDescripcion: "",
         nombreRecibio: "",
         estadoMateriaPrima: "",
         contaminacion: "",
@@ -610,13 +700,25 @@ function initialFormData() {
     }
 }
 
+function initialFormDataRecepcionInicial() {
+    return {
+        folioRecepcion: "",
+    }
+}
+
+function initialFormDataRecepcion(data) {
+    return {
+        folioRecepcion: data.ordenVenta,
+    }
+}
+
 function valoresAlmacenados(data) {
     const { folio, ordenVenta, fecha, nombre, lote, cantidad, propiedad, unidadMedida, tipoMaterial, nombreRecibio, estadoMateriaPrima, contaminacion, presentaHumedad, certificadoCalidad, empaqueDañado, resultadoFinalInspeccion, observaciones } = data;
     return {
         folio: folio,
         ordenVenta: ordenVenta,
         fecha: fecha,
-        nombre: nombre,
+        nombreDescripcion: nombre,
         lote: lote,
         cantidad: cantidad,
         propiedad: propiedad,
@@ -631,6 +733,21 @@ function valoresAlmacenados(data) {
         resultadoFinalInspeccion: resultadoFinalInspeccion,
         observaciones: observaciones,
     }
+}
+
+function formatModelUM(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            nombre: data.nombre,
+            sucursal: data.sucursal,
+            estadoUM: data.estadoUM,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
 }
 
 export default ModificaReporte;

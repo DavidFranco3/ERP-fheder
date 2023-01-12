@@ -189,7 +189,7 @@ function RegistroCompras(props) {
 
     // Para guardar los datos de los articulos
     const [formDataArticulos, setFormDataArticulos] = useState(initialFormDataArticulos());
-    
+
     const [listProductosCargados, setListProductosCargados] = useState([]);
 
     // Para almacenar la OV
@@ -222,7 +222,7 @@ function RegistroCompras(props) {
             toast.warning("Completa la informacion del producto");
         } else {
             const temp = descripcion.split("/");
-            
+
             const dataTemp = {
                 folio: folio,
                 cantidad: cantidad,
