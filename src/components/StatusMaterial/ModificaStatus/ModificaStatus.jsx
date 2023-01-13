@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, useParams } from "react-router-dom";
 import BuscarInspeccionCalidad from "../BuscarInspeccionCalidad";
 import BasicModal from "../../Modal/BasicModal";
@@ -9,6 +9,7 @@ import { obtenerStatusMaterial, actualizaStatusMaterial } from "../../../api/sta
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
+import BuscarCalidad from '../../../page/BuscarCalidad/BuscarCalidad';
 
 function ModificaStatus(props) {
     const { setRefreshCheckLogin } = props;
@@ -34,6 +35,9 @@ function ModificaStatus(props) {
         enrutamiento.push("/StatusMaterial")
     }
 
+    // Para guardar los datos del formulario
+    const [formDataCalidad, setFormDataCalidad] = useState(initialFormDataCalidadInicial());
+
     const params = useParams();
     const { id } = params
 
@@ -42,7 +46,8 @@ function ModificaStatus(props) {
         obtenerStatusMaterial(id).then(response => {
             const { data } = response;
             //console.log(data)
-            setFormData(valoresAlmacenados(data))
+            setFormData(valoresAlmacenados(data));
+            setFormDataCalidad(initialFormDataCalidad(data));
             // setFechaCreacion(fechaElaboracion)
         }).catch(e => {
             console.log(e)
@@ -97,26 +102,26 @@ function ModificaStatus(props) {
         e.preventDefault();
 
 
-        if (formData.etiqueta === "Aceptado") {
+        if (formDataCalidad.etiqueta === "Aceptado") {
 
 
-            if (!formData.etiqueta || !formData.fecha || !formData.clienteProveedor || !formData.lote || !formData.recibio || !formData.turno || !formData.propiedad || !formData.liberacion || !formData.descripcion || !formData.comentarios) {
+            if (!formData.fecha || !formData.clienteProveedor || !formData.lote || !formData.recibio || !formData.turno || !formData.propiedad || !formData.liberacion || !formData.descripcion || !formData.comentarios) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
                 setLoading(true)
 
                 const dataTemp = {
-                    folioInspeccion: folio == "" ? formData.folioInspeccion : folio,
-                    propiedadInspeccion: propiedad == "" ? formData.propiedadInspeccion : propiedad,
-                    cantidadInspeccion: cantidad == "" ? formData.cantidadInspeccion : cantidad,
-                    fechaInspeccion: fecha == "" ? formData.fechaInspeccion : fecha,
-                    tipoMaterialInspeccion: tipoMaterial == "" ? formData.tipoMaterialInspeccion : tipoMaterial,
-                    recibioInspeccion: recibio == "" ? formData.recibioInspeccion : recibio,
-                    loteInspeccion: lote == "" ? formData.loteInspeccion : lote,
-                    nombreInspeccion: nombre == "" ? formData.nombreInspeccion : nombre,
-                    resultadoInspeccion: resultadoFinal == "" ? formData.resultadoInspeccion : resultadoFinal,
-                    etiqueta: formData.etiqueta,
+                    folioInspeccion: formDataCalidad.folio,
+                    propiedadInspeccion: formDataCalidad.propiedad,
+                    cantidadInspeccion: formDataCalidad.cantidad,
+                    fechaInspeccion: formDataCalidad.fecha,
+                    tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
+                    recibioInspeccion: formDataCalidad.recibio,
+                    loteInspeccion: formDataCalidad.lote,
+                    nombreInspeccion: formDataCalidad.nombre,
+                    resultadoInspeccion: formDataCalidad.resultadoFinal,
+                    etiqueta: formDataCalidad.etiqueta,
                     fecha: formData.fecha,
                     clienteProveedor: formData.clienteProveedor,
                     lote: formData.lote,
@@ -144,8 +149,8 @@ function ModificaStatus(props) {
                     console.log(e)
                 })
             }
-        } else if (formData.etiqueta === "No Conforme") {
-            if (!formData.etiqueta || !formData.fecha || !formData.descripcionMaterial || !formData.rechazo || !formData.nombre || !formData.clienteProveedor || !formData.turno || !formData.auditor || !formData.supervisor || !formData.descripcionDefecto || !formData.cantidad || !formData.tipoRechazo || !formData.correccion || !formData.comentarios) {
+        } else if (formDataCalidad.etiqueta === "No Conforme") {
+            if (!formDataCalidad.etiqueta || !formData.fecha || !formData.descripcionMaterial || !formData.rechazo || !formData.nombre || !formData.clienteProveedor || !formData.turno || !formData.auditor || !formData.supervisor || !formData.descripcionDefecto || !formData.cantidad || !formData.tipoRechazo || !formData.correccion || !formData.comentarios) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
@@ -154,16 +159,16 @@ function ModificaStatus(props) {
                 // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
 
                 const dataTemp = {
-                    folioInspeccion: folio == "" ? formData.folioInspeccion : folio,
-                    propiedadInspeccion: propiedad == "" ? formData.propiedadInspeccion : propiedad,
-                    cantidadInspeccion: cantidad == "" ? formData.cantidadInspeccion : cantidad,
-                    fechaInspeccion: fecha == "" ? formData.fechaInspeccion : fecha,
-                    tipoMaterialInspeccion: tipoMaterial == "" ? formData.tipoMaterialInspeccion : tipoMaterial,
-                    recibioInspeccion: recibio == "" ? formData.recibioInspeccion : recibio,
-                    loteInspeccion: lote == "" ? formData.loteInspeccion : lote,
-                    nombreInspeccion: nombre == "" ? formData.nombreInspeccion : nombre,
-                    resultadoInspeccion: resultadoFinal == "" ? formData.resultadoInspeccion : resultadoFinal,
-                    etiqueta: formData.etiqueta,
+                    folioInspeccion: formDataCalidad.folio,
+                    propiedadInspeccion: formDataCalidad.propiedad,
+                    cantidadInspeccion: formDataCalidad.cantidad,
+                    fechaInspeccion: formDataCalidad.fecha,
+                    tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
+                    recibioInspeccion: formDataCalidad.recibio,
+                    loteInspeccion: formDataCalidad.lote,
+                    nombreInspeccion: formDataCalidad.nombre,
+                    resultadoInspeccion: formDataCalidad.resultadoFinal,
+                    etiqueta: formDataCalidad.etiqueta,
                     fecha: formData.fecha,
                     descripcionMaterial: formData.descripcionMaterial,
                     rechazo: formData.rechazo,
@@ -195,8 +200,8 @@ function ModificaStatus(props) {
                 })
             }
 
-        } else if (formData.etiqueta === "Material Sospechoso") {
-            if (!formData.etiqueta || !formData.fecha || !formData.turno || !formData.descripcionMaterial || !formData.auditor || !formData.condicion || !formData.observaciones) {
+        } else if (formDataCalidad.etiqueta === "Material Sospechoso") {
+            if (!formData.fecha || !formData.turno || !formData.descripcionMaterial || !formData.auditor || !formData.condicion || !formData.observaciones) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
@@ -204,16 +209,16 @@ function ModificaStatus(props) {
                 // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
 
                 const dataTemp = {
-                    folioInspeccion: folio == "" ? formData.folioInspeccion : folio,
-                    propiedadInspeccion: propiedad == "" ? formData.propiedadInspeccion : propiedad,
-                    cantidadInspeccion: cantidad == "" ? formData.cantidadInspeccion : cantidad,
-                    fechaInspeccion: fecha == "" ? formData.fechaInspeccion : fecha,
-                    tipoMaterialInspeccion: tipoMaterial == "" ? formData.tipoMaterialInspeccion : tipoMaterial,
-                    recibioInspeccion: recibio == "" ? formData.recibioInspeccion : recibio,
-                    loteInspeccion: lote == "" ? formData.loteInspeccion : lote,
-                    nombreInspeccion: nombre == "" ? formData.nombreInspeccion : nombre,
-                    resultadoInspeccion: resultadoFinal == "" ? formData.resultadoInspeccion : resultadoFinal,
-                    etiqueta: formData.etiqueta,
+                    folioInspeccion: formDataCalidad.folio,
+                    propiedadInspeccion: formDataCalidad.propiedad,
+                    cantidadInspeccion: formDataCalidad.cantidad,
+                    fechaInspeccion: formDataCalidad.fecha,
+                    tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
+                    recibioInspeccion: formDataCalidad.recibio,
+                    loteInspeccion: formDataCalidad.lote,
+                    nombreInspeccion: formDataCalidad.nombre,
+                    resultadoInspeccion: formDataCalidad.resultadoFinal,
+                    etiqueta: formDataCalidad.etiqueta,
                     fecha: formData.fecha,
                     turno: formData.turno,
                     descripcionMaterial: formData.descripcionMaterial,
@@ -245,8 +250,6 @@ function ModificaStatus(props) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    console.log(formData)
-
     return (
         <>
             <Alert>
@@ -271,38 +274,11 @@ function ModificaStatus(props) {
                 </Row>
             </Alert>
 
-            <br />
-            <br />
-
             <Container fluid>
                 <div className="formularioDatos">
                     <Form onChange={onChange} onSubmit={onSubmit}>
-                        <Row className="mb-3">
-                            <Col align="right">
-                                <Button
-                                    variant="success"
-                                    title="Buscar entre las inspecciones de calidad"
-                                    className="agregar"
-                                    onClick={() => {
-                                        buscarInspeccionCalidad(
-                                            <BuscarInspeccionCalidad
-                                                setFolio={setFolio}
-                                                setFecha={setFecha}
-                                                setLote={setLote}
-                                                setPropiedad={setPropiedad}
-                                                setTipoMaterial={setTipoMaterial}
-                                                setNombre={setNombre}
-                                                setCantidad={setCantidad}
-                                                setRecibio={setRecibio}
-                                                setResultadoFinal={setResultadoFinal}
-                                                setShowModal={setShowModal}
-                                            />)
-                                    }}
-                                >
-                                    Buscar inspeccion de calidad
-                                </Button>
-                            </Col>
-                        </Row>
+                        <br />
+                        <br />
                         <Row className="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="1">
@@ -311,13 +287,28 @@ function ModificaStatus(props) {
                                     </Form.Label>
                                 </Col>
                                 <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Folio"
-                                        name="folio"
-                                        value={folio == "" ? formData.folioInspeccion : folio}
-                                        disabled
-                                    />
+                                    <div className="flex items-center mb-1">
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Folio"
+                                            name="folio"
+                                            value={formDataCalidad.folio}
+                                            disabled
+                                        />
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre los productos"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarInspeccionCalidad(
+                                                    <BuscarCalidad
+                                                        formData={formDataCalidad}
+                                                        setFormData={setFormDataCalidad}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        />
+                                    </div>
                                 </Col>
 
                                 <Col>
@@ -330,7 +321,7 @@ function ModificaStatus(props) {
                                         type="text"
                                         placeholder="Propiedad"
                                         name="propiedadEncontrada"
-                                        value={propiedad == "" ? formData.propiedadInspeccion : propiedad}
+                                        value={formDataCalidad.propiedad}
                                         disabled
                                     />
                                 </Col>
@@ -345,7 +336,7 @@ function ModificaStatus(props) {
                                         type="text"
                                         placeholder="Cantidad"
                                         name="cantidad"
-                                        value={cantidad == "" ? formData.cantidadInspeccion : cantidad}
+                                        value={formDataCalidad.cantidad}
                                         disabled
                                     />
                                 </Col>
@@ -369,7 +360,7 @@ function ModificaStatus(props) {
                                         type="date"
                                         placeholder="Fecha"
                                         name="fechaEncontrada"
-                                        value={fecha == "" ? formData.fechaInspeccion : fecha}
+                                        value={formDataCalidad.fecha}
                                         disabled
                                     />
                                 </Col>
@@ -384,7 +375,7 @@ function ModificaStatus(props) {
                                         type="text"
                                         placeholder="Tipo de material"
                                         name="tipoMaterial"
-                                        value={tipoMaterial == "" ? formData.tipoMaterialInspeccion : tipoMaterial}
+                                        value={formDataCalidad.tipoMaterial}
                                         disabled
                                     />
                                 </Col>
@@ -399,7 +390,7 @@ function ModificaStatus(props) {
                                         type="text"
                                         placeholder="Recibio"
                                         name="recibio"
-                                        value={recibio == "" ? formData.recibioInspeccion : recibio}
+                                        value={formDataCalidad.recibio}
                                         disabled
                                     />
                                 </Col>
@@ -420,7 +411,7 @@ function ModificaStatus(props) {
                                         type="Text"
                                         placeholder="Lote"
                                         name="loteEncontrado"
-                                        value={lote == "" ? formData.loteInspeccion : lote}
+                                        value={formDataCalidad.lote}
                                         disabled
                                     />
                                 </Col>
@@ -435,7 +426,7 @@ function ModificaStatus(props) {
                                         type="text"
                                         placeholder="Nombre/Descripción"
                                         name="nombreDescripcion"
-                                        value={nombre == "" ? formData.nombreInspeccion : nombre}
+                                        value={formDataCalidad.nombre}
                                         disabled
                                     />
                                 </Col>
@@ -450,7 +441,7 @@ function ModificaStatus(props) {
                                         type="text"
                                         placeholder="Resultado de inspección final"
                                         name="resultado"
-                                        value={resultadoFinal == "" ? formData.resultadoInspeccion : resultadoFinal}
+                                        value={formDataCalidad.resultadoFinal}
                                         disabled
                                     />
                                 </Col>
@@ -472,20 +463,20 @@ function ModificaStatus(props) {
                                     <Form.Control as="select"
                                         name="etiqueta"
                                         id="etiqueta"
-                                        defaultValue={formData.etiqueta}
-                                        required
+                                        defaultValue={formDataCalidad.etiqueta}
+                                        disabled
                                     >
                                         <option>Elige una opción</option>
-                                        <option value="Aceptado" selected={formData.etiqueta == "Aceptado"}>Aceptado</option>
-                                        <option value="No Conforme" selected={formData.etiqueta == "No Conforme"}>No conforme</option>
-                                        <option value="Material Sospechoso" selected={formData.etiqueta == "Material Sospechoso"}>Material sospechoso</option>
+                                        <option value="Aceptado" selected={formDataCalidad.etiqueta == "Aceptado"}>Aceptado</option>
+                                        <option value="No Conforme" selected={formDataCalidad.etiqueta == "No Conforme"}>No conforme</option>
+                                        <option value="Material Sospechoso" selected={formDataCalidad.etiqueta == "Material Sospechoso"}>Material sospechoso</option>
                                     </Form.Control>
                                 </Col>
                             </Form.Group>
                         </Row>
 
                         {
-                            formData.etiqueta === "Aceptado" &&
+                            formDataCalidad.etiqueta === "Aceptado" &&
                             (
                                 <>
                                     <Row className="mb-3">
@@ -652,7 +643,7 @@ function ModificaStatus(props) {
                         }
 
                         {
-                            formData.etiqueta === "No Conforme" &&
+                            formDataCalidad.etiqueta === "No Conforme" &&
                             (
                                 <>
                                     <Row className="mb-3">
@@ -970,7 +961,7 @@ function ModificaStatus(props) {
                         }
 
                         {
-                            formData.etiqueta === "Material Sospechoso" &&
+                            formDataCalidad.etiqueta === "Material Sospechoso" &&
                             (
                                 <>
                                     <Row className="mb-3">
@@ -1177,6 +1168,36 @@ function valoresAlmacenados(data) {
         comentarios: data.comentarios,
         condicion: data.condicion,
         observaciones: data.observaciones
+    }
+}
+
+function initialFormDataCalidadInicial() {
+    return {
+        folio: "",
+        propiedad: "",
+        cantidad: "",
+        fecha: "",
+        tipoMaterial: "",
+        recibio: "",
+        lote: "",
+        nombre: "",
+        resultadoFinal: "",
+        etiqueta: ""
+    }
+}
+
+function initialFormDataCalidad(data) {
+    return {
+        folio: data.folioInspeccion,
+        propiedad: data.propiedadInspeccion,
+        cantidad: data.cantidadInspeccion,
+        fecha: data.fechaInspeccion,
+        tipoMaterial: data.tipoMaterialInspeccion,
+        recibio: data.recibioInspeccion,
+        lote: data.loteInspeccion,
+        nombre: data.nombreInspeccion,
+        resultadoFinal: data.resultadoInspeccion,
+        etiqueta: data.etiqueta
     }
 }
 

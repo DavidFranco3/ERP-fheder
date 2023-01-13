@@ -113,6 +113,7 @@ function RegistraReporte(props) {
                     presentaHumedad: formData.presentaHumedad,
                     certificadoCalidad: formData.certificadoCalidad,
                     empaqueDañado: formData.empaqueDañado,
+                    etiqueta: formData.etiqueta,
                     resultadoFinalInspeccion: formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si" ? "ok" : "no Ok",
                     observaciones: formData.observaciones
                 }
@@ -398,8 +399,31 @@ function RegistraReporte(props) {
                                         />
                                     </Form.Group>
                                 </Row>
+
+                                <br />
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label>
+                                            Selección de etiqueta
+                                        </Form.Label>
+                                        <Form.Control
+                                            as="select"
+                                            name="etiqueta"
+                                            id="etiqueta"
+                                            defaultValue={formData.etiqueta}
+                                        >
+                                            <option>Elige una opción</option>
+                                            <option value="Aceptado">Aceptado</option>
+                                            <option value="No Conforme">No conforme</option>
+                                            <option value="Material Sospechoso">Material sospechoso</option>
+                                        </Form.Control>
+                                    </Form.Group>
+                                </Row>
                             </Container>
+
                         </div>
+
                         <br />
 
                         <div className="datosHerramientas">
@@ -593,7 +617,7 @@ function RegistraReporte(props) {
                                                 id="si"
                                                 defaultValue={formData.resultadoInspeccion}
                                                 checked={formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si"}
-                                            disabled
+                                                disabled
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -607,7 +631,7 @@ function RegistraReporte(props) {
                                                 id="no"
                                                 defaultValue={formData.resultadoInspeccion}
                                                 checked={formData.contaminacion == "no" || formData.presentaHumedad == "no" || formData.certificadoCalidad == "no" || formData.empaqueDañado == "no"}
-                                            disabled
+                                                disabled
                                             />
                                         </Col>
                                     </Form.Group>
@@ -700,6 +724,7 @@ function initialFormData() {
         presentaHumedad: "",
         certificadoCalidad: "",
         empaqueDañado: "",
+        etiqueta: "",
         resultadoInspeccion: "",
         observaciones: "",
     }

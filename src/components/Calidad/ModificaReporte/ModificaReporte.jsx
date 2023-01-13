@@ -125,6 +125,7 @@ function ModificaReporte(props) {
                 presentaHumedad: formData.presentaHumedad,
                 certificadoCalidad: formData.certificadoCalidad,
                 empaqueDañado: formData.empaqueDañado,
+                etiqueta: formData.etiqueta,
                 resultadoFinalInspeccion: formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si" ? "ok" : "no Ok",
                 observaciones: formData.observaciones
             }
@@ -398,6 +399,28 @@ function ModificaReporte(props) {
                                             name="nombreRecibio"
                                             defaultValue={formData.nombreRecibio}
                                         />
+                                    </Form.Group>
+                                </Row>
+
+                                <br />
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label>
+                                            Selección de etiqueta
+                                        </Form.Label>
+                                        <Form.Control
+                                            as="select"
+                                            name="etiqueta"
+                                            id="etiqueta"
+                                            defaultValue={formData.etiqueta}
+                                            required
+                                        >
+                                            <option>Elige una opción</option>
+                                            <option value="Aceptado" selected={formData.etiqueta=="Aceptado"}>Aceptado</option>
+                                            <option value="No Conforme" selected={formData.etiqueta=="No Conforme"}>No conforme</option>
+                                            <option value="Material Sospechoso" selected={formData.etiqueta=="Material Sospechoso"}>Material sospechoso</option>
+                                        </Form.Control>
                                     </Form.Group>
                                 </Row>
                             </Container>
@@ -696,6 +719,7 @@ function initialFormData() {
         certificadoCalidad: "",
         empaqueDañado: "",
         resultadoFinalInspeccion: "",
+        etiqueta: "",
         observaciones: "",
     }
 }
@@ -713,7 +737,7 @@ function initialFormDataRecepcion(data) {
 }
 
 function valoresAlmacenados(data) {
-    const { folio, ordenVenta, fecha, nombre, lote, cantidad, propiedad, unidadMedida, tipoMaterial, nombreRecibio, estadoMateriaPrima, contaminacion, presentaHumedad, certificadoCalidad, empaqueDañado, resultadoFinalInspeccion, observaciones } = data;
+    const { folio, ordenVenta, fecha, nombre, lote, cantidad, propiedad, unidadMedida, etiqueta, tipoMaterial, nombreRecibio, estadoMateriaPrima, contaminacion, presentaHumedad, certificadoCalidad, empaqueDañado, resultadoFinalInspeccion, observaciones } = data;
     return {
         folio: folio,
         ordenVenta: ordenVenta,
@@ -730,6 +754,7 @@ function valoresAlmacenados(data) {
         presentaHumedad: presentaHumedad,
         certificadoCalidad: certificadoCalidad,
         empaqueDañado: empaqueDañado,
+        etiqueta: etiqueta,
         resultadoFinalInspeccion: resultadoFinalInspeccion,
         observaciones: observaciones,
     }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
 import BuscarInspeccionCalidad from "../BuscarInspeccionCalidad";
 import BasicModal from "../../Modal/BasicModal";
@@ -9,6 +9,7 @@ import { registraStatusMaterial, obtenerNumeroStatusMaterial, obtenerItemStatusM
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
+import BuscarCalidad from '../../../page/BuscarCalidad/BuscarCalidad';
 
 function RegistraStatus(props) {
     const { setRefreshCheckLogin } = props;
@@ -81,6 +82,9 @@ function RegistraStatus(props) {
     // Para almacenar el folio actual
     const [itemActual, setItemActual] = useState("");
 
+    // Para guardar los datos del formulario
+    const [formDataCalidad, setFormDataCalidad] = useState(initialFormDataCalidad());
+
     useEffect(() => {
         try {
             obtenerItemStatusMaterial().then(response => {
@@ -100,10 +104,10 @@ function RegistraStatus(props) {
         e.preventDefault();
 
 
-        if (formData.etiqueta === "Aceptado") {
+        if (formDataCalidad.etiqueta === "Aceptado") {
 
 
-            if (!folio || !formData.etiqueta || !formData.fecha || !formData.clienteProveedor || !formData.lote || !formData.recibio || !formData.turno || !formData.propiedad || !formData.liberacion || !formData.descripcion || !formData.comentarios) {
+            if (!formDataCalidad.folio || !formData.fecha || !formData.clienteProveedor || !formData.lote || !formData.recibio || !formData.turno || !formData.propiedad || !formData.liberacion || !formData.descripcion || !formData.comentarios) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
@@ -116,16 +120,16 @@ function RegistraStatus(props) {
                     const dataTemp = {
                         item: itemActual,
                         folio: data.noStatus,
-                        folioInspeccion: folio,
-                        propiedadInspeccion: propiedad,
-                        cantidadInspeccion: cantidad,
-                        fechaInspeccion: fecha,
-                        tipoMaterialInspeccion: tipoMaterial,
-                        recibioInspeccion: recibio,
-                        loteInspeccion: lote,
-                        nombreInspeccion: nombre,
-                        resultadoInspeccion: resultadoFinal,
-                        etiqueta: formData.etiqueta,
+                        folioInspeccion: formDataCalidad.folio,
+                        propiedadInspeccion: formDataCalidad.propiedad,
+                        cantidadInspeccion: formDataCalidad.cantidad,
+                        fechaInspeccion: formDataCalidad.fecha,
+                        tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
+                        recibioInspeccion: formDataCalidad.recibio,
+                        loteInspeccion: formDataCalidad.lote,
+                        nombreInspeccion: formDataCalidad.nombre,
+                        resultadoInspeccion: formDataCalidad.resultadoFinal,
+                        etiqueta: formDataCalidad.etiqueta,
                         sucursal: getSucursal(),
                         fecha: formData.fecha,
                         clienteProveedor: formData.clienteProveedor,
@@ -157,8 +161,8 @@ function RegistraStatus(props) {
                     console.log(e)
                 })
             }
-        } else if (formData.etiqueta === "No Conforme") {
-            if (!folio || !formData.etiqueta || !formData.fecha || !formData.descripcionMaterial || !formData.rechazo || !formData.nombre || !formData.clienteProveedor || !formData.turno || !formData.auditor || !formData.supervisor || !formData.descripcionDefecto || !formData.cantidad || !formData.tipoRechazo || !formData.correccion || !formData.comentarios) {
+        } else if (formDataCalidad.etiqueta === "No Conforme") {
+            if (!formDataCalidad.folio || !formData.fecha || !formData.descripcionMaterial || !formData.rechazo || !formData.nombre || !formData.clienteProveedor || !formData.turno || !formData.auditor || !formData.supervisor || !formData.descripcionDefecto || !formData.cantidad || !formData.tipoRechazo || !formData.correccion || !formData.comentarios) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
@@ -171,16 +175,16 @@ function RegistraStatus(props) {
                     const dataTemp = {
                         item: itemActual,
                         folio: data.noStatus,
-                        folioInspeccion: folio,
-                        propiedadInspeccion: propiedad,
-                        cantidadInspeccion: cantidad,
-                        fechaInspeccion: fecha,
-                        tipoMaterialInspeccion: tipoMaterial,
-                        recibioInspeccion: recibio,
-                        loteInspeccion: lote,
-                        nombreInspeccion: nombre,
-                        resultadoInspeccion: resultadoFinal,
-                        etiqueta: formData.etiqueta,
+                        folioInspeccion: formDataCalidad.folio,
+                        propiedadInspeccion: formDataCalidad.propiedad,
+                        cantidadInspeccion: formDataCalidad.cantidad,
+                        fechaInspeccion: formDataCalidad.fecha,
+                        tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
+                        recibioInspeccion: formDataCalidad.recibio,
+                        loteInspeccion: formDataCalidad.lote,
+                        nombreInspeccion: formDataCalidad.nombre,
+                        resultadoInspeccion: formDataCalidad.resultadoFinal,
+                        etiqueta: formDataCalidad.etiqueta,
                         fecha: formData.fecha,
                         descripcionMaterial: formData.descripcionMaterial,
                         rechazo: formData.rechazo,
@@ -215,8 +219,8 @@ function RegistraStatus(props) {
                 })
             }
 
-        } else if (formData.etiqueta === "Material Sospechoso") {
-            if (!folio || !formData.etiqueta || !formData.fecha || !formData.turno || !formData.descripcionMaterial || !formData.auditor || !formData.condicion || !formData.observaciones) {
+        } else if (formDataCalidad.etiqueta === "Material Sospechoso") {
+            if (!formDataCalidad.folio || !formData.fecha || !formData.turno || !formData.descripcionMaterial || !formData.auditor || !formData.condicion || !formData.observaciones) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
@@ -228,16 +232,16 @@ function RegistraStatus(props) {
                     const dataTemp = {
                         item: itemActual,
                         folio: data.noStatus,
-                        folioInspeccion: folio,
-                        propiedadInspeccion: propiedad,
-                        cantidadInspeccion: cantidad,
-                        fechaInspeccion: fecha,
-                        tipoMaterialInspeccion: tipoMaterial,
-                        recibioInspeccion: recibio,
-                        loteInspeccion: lote,
-                        nombreInspeccion: nombre,
-                        resultadoInspeccion: resultadoFinal,
-                        etiqueta: formData.etiqueta,
+                        folioInspeccion: formDataCalidad.folio,
+                        propiedadInspeccion: formDataCalidad.propiedad,
+                        cantidadInspeccion: formDataCalidad.cantidad,
+                        fechaInspeccion: formDataCalidad.fecha,
+                        tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
+                        recibioInspeccion: formDataCalidad.recibio,
+                        loteInspeccion: formDataCalidad.lote,
+                        nombreInspeccion: formDataCalidad.nombre,
+                        resultadoInspeccion: formDataCalidad.resultadoFinal,
+                        etiqueta: formDataCalidad.etiqueta,
                         fecha: formData.fecha,
                         turno: formData.turno,
                         descripcionMaterial: formData.descripcionMaterial,
@@ -296,38 +300,13 @@ function RegistraStatus(props) {
                 </Row>
             </Alert>
 
-            <br />
-            <br />
+           
 
             <Container fluid>
                 <div className="formularioDatos">
                     <Form onChange={onChange} onSubmit={onSubmit}>
-                        <Row className="mb-3">
-                            <Col align="right">
-                                <Button
-                                    variant="success"
-                                    title="Buscar entre las inspecciones de calidad"
-                                    className="agregar"
-                                    onClick={() => {
-                                        buscarInspeccionCalidad(
-                                            <BuscarInspeccionCalidad
-                                                setFolio={setFolio}
-                                                setFecha={setFecha}
-                                                setLote={setLote}
-                                                setPropiedad={setPropiedad}
-                                                setTipoMaterial={setTipoMaterial}
-                                                setNombre={setNombre}
-                                                setCantidad={setCantidad}
-                                                setRecibio={setRecibio}
-                                                setResultadoFinal={setResultadoFinal}
-                                                setShowModal={setShowModal}
-                                            />)
-                                    }}
-                                >
-                                    Buscar inspeccion de calidad
-                                </Button>
-                            </Col>
-                        </Row>
+                        <br />
+                        <br />
                         <Row className="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="1">
@@ -336,13 +315,28 @@ function RegistraStatus(props) {
                                     </Form.Label>
                                 </Col>
                                 <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Folio"
-                                        name="folio"
-                                        value={folio}
-                                        disabled
-                                    />
+                                    <div className="flex items-center mb-1">
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Folio"
+                                            name="folio"
+                                            value={formDataCalidad.folio}
+                                            disabled
+                                        />
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre los productos"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarInspeccionCalidad(
+                                                    <BuscarCalidad
+                                                        formData={formDataCalidad}
+                                                        setFormData={setFormDataCalidad}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        />
+                                    </div>
                                 </Col>
 
                                 <Col>
@@ -355,7 +349,7 @@ function RegistraStatus(props) {
                                         type="text"
                                         placeholder="Propiedad"
                                         name="propiedadEncontrada"
-                                        value={propiedad}
+                                        value={formDataCalidad.propiedad}
                                         disabled
                                     />
                                 </Col>
@@ -370,7 +364,7 @@ function RegistraStatus(props) {
                                         type="text"
                                         placeholder="Cantidad"
                                         name="cantidad"
-                                        value={cantidad}
+                                        value={formDataCalidad.cantidad}
                                         disabled
                                     />
                                 </Col>
@@ -394,7 +388,7 @@ function RegistraStatus(props) {
                                         type="date"
                                         placeholder="Fecha"
                                         name="fechaEncontrada"
-                                        value={fecha}
+                                        value={formDataCalidad.fecha}
                                         disabled
                                     />
                                 </Col>
@@ -409,7 +403,7 @@ function RegistraStatus(props) {
                                         type="text"
                                         placeholder="Tipo de material"
                                         name="tipoMaterial"
-                                        value={tipoMaterial}
+                                        value={formDataCalidad.tipoMaterial}
                                         disabled
                                     />
                                 </Col>
@@ -424,7 +418,7 @@ function RegistraStatus(props) {
                                         type="text"
                                         placeholder="Recibio"
                                         name="recibio"
-                                        value={recibio}
+                                        value={formDataCalidad.recibio}
                                         disabled
                                     />
                                 </Col>
@@ -445,7 +439,7 @@ function RegistraStatus(props) {
                                         type="Text"
                                         placeholder="Lote"
                                         name="loteEncontrado"
-                                        value={lote}
+                                        value={formDataCalidad.lote}
                                         disabled
                                     />
                                 </Col>
@@ -460,7 +454,7 @@ function RegistraStatus(props) {
                                         type="text"
                                         placeholder="Nombre/Descripción"
                                         name="nombreDescripcion"
-                                        value={nombre}
+                                        value={formDataCalidad.nombre}
                                         disabled
                                     />
                                 </Col>
@@ -475,7 +469,7 @@ function RegistraStatus(props) {
                                         type="text"
                                         placeholder="Resultado de inspección final"
                                         name="resultado"
-                                        value={resultadoFinal}
+                                        value={formDataCalidad.resultadoFinal}
                                         disabled
                                     />
                                 </Col>
@@ -497,20 +491,20 @@ function RegistraStatus(props) {
                                     <Form.Control as="select"
                                         name="etiqueta"
                                         id="etiqueta"
-                                        defaultValue={formData.etiqueta}
-                                        required
+                                        defaultValue={formDataCalidad.etiqueta}
+                                        disabled
                                     >
                                         <option>Elige una opción</option>
-                                        <option value="Aceptado">Aceptado</option>
-                                        <option value="No Conforme">No conforme</option>
-                                        <option value="Material Sospechoso">Material sospechoso</option>
+                                        <option value="Aceptado" selected={formDataCalidad.etiqueta == "Aceptado"}>Aceptado</option>
+                                        <option value="No Conforme" selected={formDataCalidad.etiqueta == "No Conforme"}>No conforme</option>
+                                        <option value="Material Sospechoso" selected={formDataCalidad.etiqueta == "Material Sospechoso"}>Material sospechoso</option>
                                     </Form.Control>
                                 </Col>
                             </Form.Group>
                         </Row>
 
                         {
-                            formData.etiqueta === "Aceptado" &&
+                            formDataCalidad.etiqueta === "Aceptado" &&
                             (
                                 <>
                                     <Row className="mb-3">
@@ -677,7 +671,7 @@ function RegistraStatus(props) {
                         }
 
                         {
-                            formData.etiqueta === "No Conforme" &&
+                            formDataCalidad.etiqueta === "No Conforme" &&
                             (
                                 <>
                                     <Row className="mb-3">
@@ -986,7 +980,7 @@ function RegistraStatus(props) {
                         }
 
                         {
-                            formData.etiqueta === "Material Sospechoso" &&
+                            formDataCalidad.etiqueta === "Material Sospechoso" &&
                             (
                                 <>
                                     <Row className="mb-3">
@@ -1158,6 +1152,21 @@ function initialFormData() {
         tipoRechazo: "",
         correccion: "",
         condicion: ""
+    }
+}
+
+function initialFormDataCalidad() {
+    return {
+        folio: "",
+        propiedad: "",
+        cantidad: "",
+        fecha: "",
+        tipoMaterial: "",
+        recibio: "",
+        lote: "",
+        nombre: "",
+        resultadoFinal: "",
+        etiqueta: "",
     }
 }
 
