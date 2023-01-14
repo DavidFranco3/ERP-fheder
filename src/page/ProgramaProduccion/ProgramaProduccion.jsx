@@ -19,7 +19,7 @@ function ProgramaProduccion(props) {
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("RegistraRequerimientosPlaneacion")
+        enrutamiento.push("/RegistroProgramaProduccion");
     }
 
     // Para almacenar la lista de pedidos de venta
@@ -70,7 +70,7 @@ function ProgramaProduccion(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Programa produccion
+                            Programa producción
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

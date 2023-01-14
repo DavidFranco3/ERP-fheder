@@ -2,6 +2,7 @@
 import Dashboard from "../page/Dashboard";
 import Tiquets from "../page/Tiquets";
 import RecepcionMaterialInsumos from "../page/RecepcionMaterialInsumos";
+import ProgramaProduccion from "../page/ProgramaProduccion";
 import Compras from "../page/Compras";
 import Embarque from "../page/Embarque";
 import Facturacion from "../page/Facturacion";
@@ -77,6 +78,9 @@ import DashboardConfiguracion from "../components/Dashboards/DashboardConfigurac
 
 // Importacion de componentes de vista previa de vista PDF
 import VistaPrevia from "../components/Ventas/VistaPrevia";
+
+// Rutas para el programa de producción
+import RegistraProgramaProduccion from "../components/ProgramaProduccion/Registro";
 
 // Rutas para la matriz de productos
 import ModificaMatrizProductos from "../components/MatrizProductos/ModificaMatrizProductos";
@@ -411,6 +415,11 @@ export default [
         path: "/RegistroTiquets",
         exact: true,
         page: RegistroTiquets
+    },
+    {
+        path: "/RegistroProgramaProduccion",
+        exact: true,
+        page: RegistraProgramaProduccion
     },
     {
         path: "/ModificacionTiquets",
@@ -766,6 +775,11 @@ export default [
         path: "/Logistica",
         exact: true,
         page: Logistica
+    },
+    {
+        path: "/ProgramaProduccion",
+        exact: true,
+        page: ProgramaProduccion
     },
     {
         path: "/CertificadosCalidad",

@@ -3,17 +3,17 @@ import { Row, Col, Container, Form, Button, Spinner } from "react-bootstrap"
 import moment from "moment";
 //import NombreCliente from "../../ListTracking/NombreCliente";
 import { map } from "lodash";
-import "./BuscarPlaneaciones.scss"
+import "./BuscarProducciones.scss"
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { estilos } from "../../../utils/tableStyled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
-import { obtenerRequerimiento } from "../../../api/requerimientosPlaneacion";
+import { obtenerProduccion } from "../../../api/produccion";
 import { toast } from "react-toastify";
 
-function BuscarPlaneaciones(props) {
-    const { setFormData, formData, setShowModal, listRequerimientos } = props;
+function BuscarProducciones(props) {
+    const { setFormData, formData, setShowModal, listProduccion } = props;
     // console.log(ordenVenta)
 
     // Para almacenar la informacion del formulario
@@ -28,7 +28,7 @@ function BuscarPlaneaciones(props) {
     useEffect(() => {
         try {
 
-            obtenerRequerimiento(clienteSeleccionado.seleccion).then(response => {
+            obtenerProduccion(clienteSeleccionado.seleccion).then(response => {
                 const { data } = response;
                 setValoresCliente(valoresAlmacenados(data))
             }).catch(e => {
@@ -61,17 +61,7 @@ function BuscarPlaneaciones(props) {
                 ordenVenta: valoresCliente.ordenVenta,
                 producto: valoresCliente.producto,
                 nombreProducto: valoresCliente.nombreProducto,
-                cantidadProducir: valoresCliente.cantidadProducir,
-
-                semana: valoresCliente.semana,
-                ordenProduccion: valoresCliente.ordenProduccion,
-                idProducto: valoresCliente.idProducto,
-                producto: valoresCliente.producto,
-                cantidadFabricar: valoresCliente.cantidadFabricar,
-                acumulado: valoresCliente.acumulado,
-                cavidades: valoresCliente.cavidades,
-                pendienteFabricar: valoresCliente.pendienteFabricar,
-                noInterno: valoresCliente.noInterno,
+                cantidadProducir: valoresCliente.cantidadProducir
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -107,14 +97,14 @@ function BuscarPlaneaciones(props) {
         },
         {
             name: 'Producto',
-            selector: row => row.requerimiento.nombreProducto,
+            selector: row => row.generalidades.producto,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Cantidad a producir',
-            selector: row => row.requerimiento.totalProducir,
+            name: 'Cliente',
+            selector: row => row.generalidades.nombreCliente,
             sortable: false,
             center: true,
             reorder: false
@@ -128,7 +118,7 @@ function BuscarPlaneaciones(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listRequerimientos);
+            setRows(listProduccion);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -211,8 +201,8 @@ function BuscarPlaneaciones(props) {
     `;
 
 
-    const filteredItems = listRequerimientos.filter(
-        item => item.requerimiento.nombreProducto && item.requerimiento.nombreProducto.toLowerCase().includes(filterText.toLowerCase())
+    const filteredItems = listProduccion.filter(
+        item => item.generalidades.producto && item.generalidades.producto.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const subHeaderComponentMemo = useMemo(() => {
@@ -309,17 +299,6 @@ function initialValues() {
         producto: "",
         nombreProducto: "",
         cantidadProducir: "",
-
-        semana: "",
-        ordenProduccion: "",
-        idProducto: "",
-        producto: "",
-        cantidadFabricar: "",
-        acumulado: "",
-        cavidades: "",
-        standarTurno: "",
-        pendienteFabricar: "",
-        noInterno: "",
     }
 }
 
@@ -328,18 +307,8 @@ function valoresAlmacenados(data) {
         ordenVenta: data.requerimiento.ov,
         producto: data.requerimiento.producto,
         nombreProducto: data.requerimiento.nombreProducto,
-        cantidadProducir: data.requerimiento.totalProducir,
-
-        semana: data.requerimiento.semana,
-        ordenProduccion: data.folio,
-        idProducto: data.requerimiento.producto,
-        producto: data.requerimiento.nombreProducto,
-        cantidadFabricar: data.requerimiento.totalProducir,
-        acumulado: data.requerimiento.almacenProductoTerminado,
-        cavidades: data.planeacion.numeroCavidades,
-        pendienteFabricar: parseInt(data.requerimiento.totalProducir) - parseInt(data.requerimiento.almacenProductoTerminado),
-        noInterno: data.requerimiento.noInterno,
+        cantidadProducir: data.requerimiento.totalProducir
     }
 }
 
-export default BuscarPlaneaciones;
+export default BuscarProducciones;

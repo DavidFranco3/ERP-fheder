@@ -6,7 +6,7 @@ import "./ListProgramaProduccion.scss"
 import { Badge, Button, Container, Navbar, Table, Form, Col } from "react-bootstrap";
 //import EliminacionLogicaUsuarios from "../EliminacionLogica";
 import BasicModal from '../../Modal/BasicModal';
-import EliminacionFisicaRecepcion from '../EliminacionFisica';
+//import EliminacionFisicaRecepcion from '../EliminacionFisica';
 import DataTable from 'react-data-table-component';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -13,7 +13,8 @@ import LogoMateriales from "../../../assets/png/menus/materiales.png";
 import LogoProduccion from "../../../assets/png/menus/produccion.png";
 import LogoMes from "../../../assets/png/menus/mes.png";
 import LogoMaquina from "../../../assets/png/menus/maquinaria.png";
-import LogoRequerimientos from "../../../assets/png/menus/requerimiento.png"
+import LogoRequerimientos from "../../../assets/png/menus/requerimiento.png";
+import LogoProgramaProduccion from "../../../assets/png/menus/programaProduccion.png";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
 import { toast } from "react-toastify";
 import { obtenerUsuario } from "../../../api/usuarios";
@@ -78,7 +79,7 @@ function DashboardPlaneacion(props) {
                     </Col>
                 </Row>
             </Alert>
-            <div className="grid grid-cols-5 gap-3">
+            <div className="grid grid-cols-3 gap-3">
                 <ItemCard
                     path={'/RequerimientosPlaneacion'}
                     logo={LogoRequerimientos}
@@ -103,6 +104,11 @@ function DashboardPlaneacion(props) {
                     path={'/AsignacionPedido'}
                     logo={LogoPedido}
                     title={'Asignaciones de pedido'}
+                />
+                <ItemCard
+                    path={'/ProgramaProduccion'}
+                    logo={LogoProgramaProduccion}
+                    title={'Programa de producción'}
                 />
             </div>
         </>
