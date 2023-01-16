@@ -73,7 +73,7 @@ function BuscarPlaneaciones(props) {
                 pendienteFabricar: valoresCliente.pendienteFabricar,
                 noInterno: valoresCliente.noInterno,
             }
-            setFormData(dataTemp)
+            setFormData(dataTemp);
             setShowModal(false);
         }
     }
@@ -320,6 +320,8 @@ function initialValues() {
         standarTurno: "",
         pendienteFabricar: "",
         noInterno: "",
+
+        opcionesMaquinaria: ""
     }
 }
 
@@ -339,6 +341,8 @@ function valoresAlmacenados(data) {
         cavidades: data.planeacion.numeroCavidades,
         pendienteFabricar: parseInt(data.requerimiento.totalProducir) - parseInt(data.requerimiento.almacenProductoTerminado),
         noInterno: data.requerimiento.noInterno,
+
+        opcionesMaquinaria: data.planeacion.opcionesMaquinaria,
     }
 }
 

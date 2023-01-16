@@ -106,8 +106,7 @@ function RegistraStatus(props) {
 
         if (formDataCalidad.etiqueta === "Aceptado") {
 
-
-            if (!formDataCalidad.folio || !formData.fecha || !formData.clienteProveedor || !formData.lote || !formData.recibio || !formData.turno || !formData.propiedad || !formData.liberacion || !formData.descripcion || !formData.comentarios) {
+            if (!formDataCalidad.folio || !formData.clienteProveedor || !formData.turno || !formData.comentarios) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
@@ -131,14 +130,14 @@ function RegistraStatus(props) {
                         resultadoInspeccion: formDataCalidad.resultadoFinal,
                         etiqueta: formDataCalidad.etiqueta,
                         sucursal: getSucursal(),
-                        fecha: formData.fecha,
+                        fecha: formDataCalidad.fecha,
                         clienteProveedor: formData.clienteProveedor,
-                        lote: formData.lote,
-                        recibio: formData.recibio,
+                        lote: formDataCalidad.lote,
+                        recibio: formDataCalidad.recibio,
                         turno: formData.turno,
-                        propiedad: formData.propiedad,
-                        liberacion: formData.liberacion,
-                        descripcion: formData.descripcion,
+                        propiedad: formDataCalidad.propiedad,
+                        liberacion: formDataCalidad.tipoMaterial,
+                        descripcion: formDataCalidad.nombre,
                         comentarios: formData.comentarios
                     }
 
@@ -162,7 +161,7 @@ function RegistraStatus(props) {
                 })
             }
         } else if (formDataCalidad.etiqueta === "No Conforme") {
-            if (!formDataCalidad.folio || !formData.fecha || !formData.descripcionMaterial || !formData.rechazo || !formData.nombre || !formData.clienteProveedor || !formData.turno || !formData.auditor || !formData.supervisor || !formData.descripcionDefecto || !formData.cantidad || !formData.tipoRechazo || !formData.correccion || !formData.comentarios) {
+            if (!formDataCalidad.folio || !formData.rechazo || !formData.clienteProveedor || !formData.turno || !formData.auditor || !formData.supervisor || !formData.descripcionDefecto || !formData.tipoRechazo || !formData.correccion || !formData.comentarios) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
@@ -185,17 +184,17 @@ function RegistraStatus(props) {
                         nombreInspeccion: formDataCalidad.nombre,
                         resultadoInspeccion: formDataCalidad.resultadoFinal,
                         etiqueta: formDataCalidad.etiqueta,
-                        fecha: formData.fecha,
+                        fecha: formDataCalidad.fecha,
                         sucursal: getSucursal(),
-                        descripcionMaterial: formData.descripcionMaterial,
+                        descripcionMaterial: formDataCalidad.nombre,
                         rechazo: formData.rechazo,
-                        nombre: formData.nombre,
+                        nombre: formDataCalidad.propiedad,
                         clienteProveedor: formData.clienteProveedor,
                         turno: formData.turno,
                         auditor: formData.auditor,
                         supervisor: formData.supervisor,
                         descripcionDefecto: formData.descripcionDefecto,
-                        cantidad: formData.cantidad,
+                        cantidad: formDataCalidad.cantidad,
                         tipoRechazo: formData.tipoRechazo,
                         correccion: formData.correccion,
                         comentarios: formData.comentarios
@@ -221,7 +220,7 @@ function RegistraStatus(props) {
             }
 
         } else if (formDataCalidad.etiqueta === "Material Sospechoso") {
-            if (!formDataCalidad.folio || !formData.fecha || !formData.turno || !formData.descripcionMaterial || !formData.auditor || !formData.condicion || !formData.observaciones) {
+            if (!formDataCalidad.folio || !formData.turno || !formData.auditor || !formData.condicion || !formData.observaciones) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
@@ -244,9 +243,9 @@ function RegistraStatus(props) {
                         nombreInspeccion: formDataCalidad.nombre,
                         resultadoInspeccion: formDataCalidad.resultadoFinal,
                         etiqueta: formDataCalidad.etiqueta,
-                        fecha: formData.fecha,
+                        fecha: formDataCalidad.fecha,
                         turno: formData.turno,
-                        descripcionMaterial: formData.descripcionMaterial,
+                        descripcionMaterial: formDataCalidad.nombre,
                         auditor: formData.auditor,
                         condicion: formData.condicion,
                         observaciones: formData.observaciones
@@ -276,6 +275,7 @@ function RegistraStatus(props) {
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataCalidad({ ...formDataCalidad, [e.target.name]: e.target.value })
     }
 
     return (
@@ -302,7 +302,7 @@ function RegistraStatus(props) {
                 </Row>
             </Alert>
 
-           
+
 
             <Container fluid>
                 <div className="formularioDatos">
@@ -521,7 +521,7 @@ function RegistraStatus(props) {
                                                     type="date"
                                                     placeholder="Escribe la fecha"
                                                     name="fecha"
-                                                    defaultValue={formData.fecha}
+                                                    defaultValue={formDataCalidad.fecha}
                                                 />
                                             </Col>
 
@@ -553,7 +553,7 @@ function RegistraStatus(props) {
                                                     type="text"
                                                     placeholder="Escribe el lote"
                                                     name="lote"
-                                                    defaultValue={formData.lote}
+                                                    defaultValue={formDataCalidad.lote}
                                                 />
                                             </Col>
 
@@ -567,7 +567,7 @@ function RegistraStatus(props) {
                                                     type="text"
                                                     placeholder="Escribe del que recibio"
                                                     name="recibio"
-                                                    defaultValue={formData.recibio}
+                                                    defaultValue={formDataCalidad.recibio}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -582,11 +582,15 @@ function RegistraStatus(props) {
                                             </Col>
                                             <Col sm="5">
                                                 <Form.Control
-                                                    type="number"
+                                                    as="select"
                                                     placeholder="Escribe el turno"
                                                     name="turno"
                                                     defaultValue={formData.turno}
-                                                />
+                                                >
+                                                    <option>Elige una opción</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                </Form.Control>
                                             </Col>
 
                                             <Col sm="1">
@@ -598,12 +602,11 @@ function RegistraStatus(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="propiedad"
-                                                    defaultValue={formData.propiedad}
+                                                    defaultValue={formDataCalidad.propiedad}
                                                 >
                                                     <option>Elige una opción</option>
-                                                    <option value="Cliente">Cliente</option>
-                                                    <option value="Proveedor">Proveedor</option>
-                                                    <option value="Fredher">Fredher</option>
+                                                    <option value="Cliente" selected={formDataCalidad.propiedad = "Cliente"}>Cliente</option>
+                                                    <option value="Proveedor" selected={formDataCalidad.propiedad = "Proveedor"}>Proveedor</option>
                                                 </Form.Control>
                                             </Col>
                                         </Form.Group>
@@ -618,16 +621,11 @@ function RegistraStatus(props) {
                                             </Col>
                                             <Col sm="3">
                                                 <Form.Control
-                                                    as="select"
-                                                    name="liberacion"
-                                                    defaultValue={formData.liberacion}
-                                                >
-                                                    <option>Elige una opción</option>
-                                                    <option value="Miscelaneos">Miscelaneos</option>
-                                                    <option value="Materia prima">Materia prima</option>
-                                                    <option value="Pigmento">Pigmento</option>
-                                                    <option value="Master Batch">Master Batch</option>
-                                                </Form.Control>
+                                                    type="text"
+                                                    placeholder='Liberacion'
+                                                    name="tipoMaterial"
+                                                    defaultValue={formDataCalidad.tipoMaterial}
+                                                />
                                             </Col>
                                         </Form.Group>
                                     </Row>
@@ -643,8 +641,8 @@ function RegistraStatus(props) {
                                                 <Form.Control
                                                     type="text"
                                                     placeholder="Escribe la descripción"
-                                                    name="descripcion"
-                                                    defaultValue={formData.descripcion}
+                                                    name="nombre"
+                                                    defaultValue={formDataCalidad.nombre}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -667,7 +665,6 @@ function RegistraStatus(props) {
                                             </Col>
                                         </Form.Group>
                                     </Row>
-
                                 </>
                             )
                         }
@@ -687,7 +684,7 @@ function RegistraStatus(props) {
                                                 <Form.Control
                                                     type="date"
                                                     placeholder="Escribe la fecha"
-                                                    defaultValue={formData.fecha}
+                                                    defaultValue={formDataCalidad.fecha}
                                                     name="fecha"
                                                 />
                                             </Col>
@@ -705,7 +702,7 @@ function RegistraStatus(props) {
                                                 <Form.Control
                                                     type="text"
                                                     placeholder="Escribe la descripción del material"
-                                                    defaultValue={formData.descripcionMaterial}
+                                                    defaultValue={formDataCalidad.nombre}
                                                     name="descripcionMaterial"
                                                 />
                                             </Col>
@@ -756,8 +753,9 @@ function RegistraStatus(props) {
                                                     value="proveedor"
                                                     type="radio"
                                                     label="Proveedor"
-                                                    name="nombre"
-                                                    defaultValue={formData.nombre}
+                                                    name="propiedad"
+                                                    defaultValue={formDataCalidad.propiedad}
+                                                    checked={formDataCalidad.propiedad == "Proveedor"}
                                                     id="Proveedor"
                                                 />
                                             </Col>
@@ -768,8 +766,9 @@ function RegistraStatus(props) {
                                                     value="cliente"
                                                     type="radio"
                                                     label="Cliente"
-                                                    name="nombre"
-                                                    defaultValue={formData.nombre}
+                                                    name="propiedad"
+                                                    defaultValue={formDataCalidad.propiedad}
+                                                    checked={formDataCalidad.propiedad == "Cliente"}
                                                     id="Cliente"
                                                 />
                                             </Col>
@@ -793,11 +792,15 @@ function RegistraStatus(props) {
                                             </Col>
                                             <Col sm="4">
                                                 <Form.Control
-                                                    type="number"
+                                                    as="select"
                                                     placeholder="Escribe el turno"
                                                     name="turno"
                                                     defaultValue={formData.turno}
-                                                />
+                                                >
+                                                    <option>Elige una opción</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                </Form.Control>
                                             </Col>
                                         </Form.Group>
                                     </Row>
@@ -868,115 +871,129 @@ function RegistraStatus(props) {
                                                     type="text"
                                                     placeholder="Escribe la cantidad"
                                                     name="cantidad"
-                                                    defaultValue={formData.cantidad}
+                                                    defaultValue={formDataCalidad.cantidad}
                                                 />
                                             </Col>
                                         </Form.Group>
                                     </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col sm={2}>
-                                                <Form.Label>
-                                                    Rechazo
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="moler"
-                                                    type="radio"
-                                                    label="Moler"
-                                                    name="tipoRechazo"
-                                                    id="moler"
-                                                    defaultValue={formData.tipoRechazo}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="retrabajar"
-                                                    type="radio"
-                                                    label="Retrabajar"
-                                                    name="tipoRechazo"
-                                                    id="retrabajar"
-                                                    defaultValue={formData.tipoRechazo}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="consecion"
-                                                    type="radio"
-                                                    label="Conseción"
-                                                    name="tipoRechazo"
-                                                    id="consecion"
-                                                    defaultValue={formData.tipoRechazo}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="otro"
-                                                    type="radio"
-                                                    label="Otro"
-                                                    name="tipoRechazo"
-                                                    id="otro"
-                                                    defaultValue={formData.tipoRechazo}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="re-inspeccion"
-                                                    type="radio"
-                                                    label="Reinspección"
-                                                    name="tipoRechazo"
-                                                    id="reinspeccion"
-                                                    defaultValue={formData.tipoRechazo}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                    <div className="datosGenerales">
+                                        <Container fluid>
+                                        <br />
+                                            <div className="tituloSeccion">
+                                                <h4>
+                                                    Disposicion del material
+                                                </h4>
+                                            </div>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridCantidad" className="cantidad">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Corrección
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm="9">
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe la correccion"
-                                                    name="correccion"
-                                                    defaultValue={formData.correccion}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                            <br />
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridCantidad" className="cantidad">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Comentarios
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm="9">
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe los comentarios"
-                                                    name="comentarios"
-                                                    defaultValue={formData.comentarios}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                            <Row className="mb-3">
+                                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                                    <Col sm={2}>
+                                                        <Form.Label>
+                                                            Rechazo
+                                                        </Form.Label>
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                        <Form.Check
+                                                            value="moler"
+                                                            type="radio"
+                                                            label="Moler"
+                                                            name="tipoRechazo"
+                                                            id="moler"
+                                                            defaultValue={formData.tipoRechazo}
+                                                        />
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                        <Form.Check
+                                                            value="retrabajar"
+                                                            type="radio"
+                                                            label="Retrabajar"
+                                                            name="tipoRechazo"
+                                                            id="retrabajar"
+                                                            defaultValue={formData.tipoRechazo}
+                                                        />
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                        <Form.Check
+                                                            value="consecion"
+                                                            type="radio"
+                                                            label="Conseción"
+                                                            name="tipoRechazo"
+                                                            id="consecion"
+                                                            defaultValue={formData.tipoRechazo}
+                                                        />
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                        <Form.Check
+                                                            value="otro"
+                                                            type="radio"
+                                                            label="Otro"
+                                                            name="tipoRechazo"
+                                                            id="otro"
+                                                            defaultValue={formData.tipoRechazo}
+                                                        />
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                        <Form.Check
+                                                            value="re-inspeccion"
+                                                            type="radio"
+                                                            label="Reinspección"
+                                                            name="tipoRechazo"
+                                                            id="reinspeccion"
+                                                            defaultValue={formData.tipoRechazo}
+                                                        />
+                                                    </Col>
+                                                </Form.Group>
+                                            </Row>
+
+                                            <Row className="mb-3">
+                                                <Form.Group as={Row} controlId="formGridCantidad" className="cantidad">
+                                                    <Col sm="2">
+                                                        <Form.Label>
+                                                            Corrección
+                                                        </Form.Label>
+                                                    </Col>
+                                                    <Col sm="9">
+                                                        <Form.Control
+                                                            type="text"
+                                                            placeholder="Escribe la correccion"
+                                                            name="correccion"
+                                                            defaultValue={formData.correccion}
+                                                        />
+                                                    </Col>
+                                                </Form.Group>
+                                            </Row>
+
+                                            <Row className="mb-3">
+                                                <Form.Group as={Row} controlId="formGridCantidad" className="cantidad">
+                                                    <Col sm="2">
+                                                        <Form.Label>
+                                                            Comentarios
+                                                        </Form.Label>
+                                                    </Col>
+                                                    <Col sm="9">
+                                                        <Form.Control
+                                                            type="text"
+                                                            placeholder="Escribe los comentarios"
+                                                            name="comentarios"
+                                                            defaultValue={formData.comentarios}
+                                                        />
+                                                    </Col>
+                                                </Form.Group>
+                                            </Row>
+
+                                        </Container>
+                                    </div>
                                 </>
                             )
                         }
@@ -997,7 +1014,7 @@ function RegistraStatus(props) {
                                                     type="date"
                                                     placeholder="Escribe la fecha"
                                                     name="fecha"
-                                                    defaultValue={formData.fecha}
+                                                    defaultValue={formDataCalidad.fecha}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -1012,11 +1029,15 @@ function RegistraStatus(props) {
                                             </Col>
                                             <Col sm="5">
                                                 <Form.Control
-                                                    type="number"
+                                                    as="select"
                                                     placeholder="Escribe el turno"
                                                     name="turno"
                                                     defaultValue={formData.turno}
-                                                />
+                                                >
+                                                    <option>Elige una opción</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                </Form.Control>
                                             </Col>
                                         </Form.Group>
                                     </Row>
@@ -1033,7 +1054,7 @@ function RegistraStatus(props) {
                                                     type="text"
                                                     placeholder="Descripción del material"
                                                     name="descripcionMaterial"
-                                                    defaultValue={formData.descripcionMaterial}
+                                                    defaultValue={formDataCalidad.nombre}
                                                 />
                                             </Col>
                                         </Form.Group>

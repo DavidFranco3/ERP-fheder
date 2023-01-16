@@ -105,7 +105,7 @@ function ModificaStatus(props) {
         if (formDataCalidad.etiqueta === "Aceptado") {
 
 
-            if (!formData.fecha || !formData.clienteProveedor || !formData.lote || !formData.recibio || !formData.turno || !formData.propiedad || !formData.liberacion || !formData.descripcion || !formData.comentarios) {
+            if (!formData.clienteProveedor || !formData.turno || !formData.comentarios) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
@@ -113,24 +113,24 @@ function ModificaStatus(props) {
 
                 const dataTemp = {
                     folioInspeccion: formDataCalidad.folio,
-                    propiedadInspeccion: formDataCalidad.propiedad,
-                    cantidadInspeccion: formDataCalidad.cantidad,
-                    fechaInspeccion: formDataCalidad.fecha,
-                    tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
-                    recibioInspeccion: formDataCalidad.recibio,
-                    loteInspeccion: formDataCalidad.lote,
-                    nombreInspeccion: formDataCalidad.nombre,
-                    resultadoInspeccion: formDataCalidad.resultadoFinal,
-                    etiqueta: formDataCalidad.etiqueta,
-                    fecha: formData.fecha,
-                    clienteProveedor: formData.clienteProveedor,
-                    lote: formData.lote,
-                    recibio: formData.recibio,
-                    turno: formData.turno,
-                    propiedad: formData.propiedad,
-                    liberacion: formData.liberacion,
-                    descripcion: formData.descripcion,
-                    comentarios: formData.comentarios
+                        propiedadInspeccion: formDataCalidad.propiedad,
+                        cantidadInspeccion: formDataCalidad.cantidad,
+                        fechaInspeccion: formDataCalidad.fecha,
+                        tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
+                        recibioInspeccion: formDataCalidad.recibio,
+                        loteInspeccion: formDataCalidad.lote,
+                        nombreInspeccion: formDataCalidad.nombre,
+                        resultadoInspeccion: formDataCalidad.resultadoFinal,
+                        etiqueta: formDataCalidad.etiqueta,
+                        fecha: formDataCalidad.fecha,
+                        clienteProveedor: formData.clienteProveedor,
+                        lote: formDataCalidad.lote,
+                        recibio: formDataCalidad.recibio,
+                        turno: formData.turno,
+                        propiedad: formDataCalidad.propiedad,
+                        liberacion: formDataCalidad.tipoMaterial,
+                        descripcion: formDataCalidad.nombre,
+                        comentarios: formData.comentarios
                 }
 
                 // Modificar el pedido creado recientemente
@@ -150,7 +150,7 @@ function ModificaStatus(props) {
                 })
             }
         } else if (formDataCalidad.etiqueta === "No Conforme") {
-            if (!formDataCalidad.etiqueta || !formData.fecha || !formData.descripcionMaterial || !formData.rechazo || !formData.nombre || !formData.clienteProveedor || !formData.turno || !formData.auditor || !formData.supervisor || !formData.descripcionDefecto || !formData.cantidad || !formData.tipoRechazo || !formData.correccion || !formData.comentarios) {
+            if (!formData.rechazo || !formData.nombre || !formData.clienteProveedor || !formData.turno || !formData.auditor || !formData.supervisor || !formData.descripcionDefecto || !formData.cantidad || !formData.tipoRechazo || !formData.correccion || !formData.comentarios) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
@@ -160,28 +160,28 @@ function ModificaStatus(props) {
 
                 const dataTemp = {
                     folioInspeccion: formDataCalidad.folio,
-                    propiedadInspeccion: formDataCalidad.propiedad,
-                    cantidadInspeccion: formDataCalidad.cantidad,
-                    fechaInspeccion: formDataCalidad.fecha,
-                    tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
-                    recibioInspeccion: formDataCalidad.recibio,
-                    loteInspeccion: formDataCalidad.lote,
-                    nombreInspeccion: formDataCalidad.nombre,
-                    resultadoInspeccion: formDataCalidad.resultadoFinal,
-                    etiqueta: formDataCalidad.etiqueta,
-                    fecha: formData.fecha,
-                    descripcionMaterial: formData.descripcionMaterial,
-                    rechazo: formData.rechazo,
-                    nombre: formData.nombre,
-                    clienteProveedor: formData.clienteProveedor,
-                    turno: formData.turno,
-                    auditor: formData.auditor,
-                    supervisor: formData.supervisor,
-                    descripcionDefecto: formData.descripcionDefecto,
-                    cantidad: formData.cantidad,
-                    tipoRechazo: formData.tipoRechazo,
-                    correccion: formData.correccion,
-                    comentarios: formData.comentarios
+                        propiedadInspeccion: formDataCalidad.propiedad,
+                        cantidadInspeccion: formDataCalidad.cantidad,
+                        fechaInspeccion: formDataCalidad.fecha,
+                        tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
+                        recibioInspeccion: formDataCalidad.recibio,
+                        loteInspeccion: formDataCalidad.lote,
+                        nombreInspeccion: formDataCalidad.nombre,
+                        resultadoInspeccion: formDataCalidad.resultadoFinal,
+                        etiqueta: formDataCalidad.etiqueta,
+                        fecha: formDataCalidad.fecha,
+                        descripcionMaterial: formDataCalidad.nombre,
+                        rechazo: formData.rechazo,
+                        nombre: formDataCalidad.propiedad,
+                        clienteProveedor: formData.clienteProveedor,
+                        turno: formData.turno,
+                        auditor: formData.auditor,
+                        supervisor: formData.supervisor,
+                        descripcionDefecto: formData.descripcionDefecto,
+                        cantidad: formDataCalidad.cantidad,
+                        tipoRechazo: formData.tipoRechazo,
+                        correccion: formData.correccion,
+                        comentarios: formData.comentarios
                 }
 
                 // Modificar el pedido creado recientemente
@@ -201,7 +201,7 @@ function ModificaStatus(props) {
             }
 
         } else if (formDataCalidad.etiqueta === "Material Sospechoso") {
-            if (!formData.fecha || !formData.turno || !formData.descripcionMaterial || !formData.auditor || !formData.condicion || !formData.observaciones) {
+            if (!formData.turno || !formData.auditor || !formData.condicion || !formData.observaciones) {
                 toast.warning("Completa el formulario");
             } else {
                 //console.log("Continuar")
@@ -210,21 +210,21 @@ function ModificaStatus(props) {
 
                 const dataTemp = {
                     folioInspeccion: formDataCalidad.folio,
-                    propiedadInspeccion: formDataCalidad.propiedad,
-                    cantidadInspeccion: formDataCalidad.cantidad,
-                    fechaInspeccion: formDataCalidad.fecha,
-                    tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
-                    recibioInspeccion: formDataCalidad.recibio,
-                    loteInspeccion: formDataCalidad.lote,
-                    nombreInspeccion: formDataCalidad.nombre,
-                    resultadoInspeccion: formDataCalidad.resultadoFinal,
-                    etiqueta: formDataCalidad.etiqueta,
-                    fecha: formData.fecha,
-                    turno: formData.turno,
-                    descripcionMaterial: formData.descripcionMaterial,
-                    auditor: formData.auditor,
-                    condicion: formData.condicion,
-                    observaciones: formData.observaciones
+                        propiedadInspeccion: formDataCalidad.propiedad,
+                        cantidadInspeccion: formDataCalidad.cantidad,
+                        fechaInspeccion: formDataCalidad.fecha,
+                        tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
+                        recibioInspeccion: formDataCalidad.recibio,
+                        loteInspeccion: formDataCalidad.lote,
+                        nombreInspeccion: formDataCalidad.nombre,
+                        resultadoInspeccion: formDataCalidad.resultadoFinal,
+                        etiqueta: formDataCalidad.etiqueta,
+                        fecha: formDataCalidad.fecha,
+                        turno: formData.turno,
+                        descripcionMaterial: formDataCalidad.nombre,
+                        auditor: formData.auditor,
+                        condicion: formData.condicion,
+                        observaciones: formData.observaciones
                 }
 
                 // Modificar el pedido creado recientemente
@@ -491,7 +491,7 @@ function ModificaStatus(props) {
                                                     type="date"
                                                     placeholder="Escribe la fecha"
                                                     name="fecha"
-                                                    defaultValue={formData.fecha}
+                                                    defaultValue={formDataCalidad.fecha}
                                                 />
                                             </Col>
 
@@ -523,7 +523,7 @@ function ModificaStatus(props) {
                                                     type="text"
                                                     placeholder="Escribe el lote"
                                                     name="lote"
-                                                    defaultValue={formData.lote}
+                                                    defaultValue={formDataCalidad.lote}
                                                 />
                                             </Col>
 
@@ -537,7 +537,7 @@ function ModificaStatus(props) {
                                                     type="text"
                                                     placeholder="Escribe del que recibio"
                                                     name="recibio"
-                                                    defaultValue={formData.recibio}
+                                                    defaultValue={formDataCalidad.recibio}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -552,11 +552,15 @@ function ModificaStatus(props) {
                                             </Col>
                                             <Col sm="5">
                                                 <Form.Control
-                                                    type="number"
+                                                    as="select"
                                                     placeholder="Escribe el turno"
                                                     name="turno"
                                                     defaultValue={formData.turno}
-                                                />
+                                                >
+                                                    <option>Elige una opción</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                </Form.Control>
                                             </Col>
 
                                             <Col sm="1">
@@ -568,12 +572,11 @@ function ModificaStatus(props) {
                                                 <Form.Control
                                                     as="select"
                                                     name="propiedad"
-                                                    defaultValue={formData.propiedad}
+                                                    defaultValue={formDataCalidad.propiedad}
                                                 >
                                                     <option>Elige una opción</option>
-                                                    <option value="Cliente" selected={formData.propiedad == "Cliente"}>Cliente</option>
-                                                    <option value="Proveedor" selected={formData.propiedad == "Proveedor"}>Proveedor</option>
-                                                    <option value="Fredher" selected={formData.propiedad == "Fredher"}>Fredher</option>
+                                                    <option value="Cliente" selected={formDataCalidad.propiedad = "Cliente"}>Cliente</option>
+                                                    <option value="Proveedor" selected={formDataCalidad.propiedad = "Proveedor"}>Proveedor</option>
                                                 </Form.Control>
                                             </Col>
                                         </Form.Group>
@@ -588,16 +591,11 @@ function ModificaStatus(props) {
                                             </Col>
                                             <Col sm="3">
                                                 <Form.Control
-                                                    as="select"
-                                                    name="liberacion"
-                                                    defaultValue={formData.liberacion}
-                                                >
-                                                    <option>Elige una opción</option>
-                                                    <option value="Miscelaneos" selected={formData.liberacion == "Miscelaneos"}>Miscelaneos</option>
-                                                    <option value="Materia prima" selected={formData.liberacion == "Materia prima"}>Materia prima</option>
-                                                    <option value="Pigmento" selected={formData.liberacion == "Pigmento"}>Pigmento</option>
-                                                    <option value="Master Batch" selected={formData.liberacion == "Master Batch"}>Master Batch</option>
-                                                </Form.Control>
+                                                    type="text"
+                                                    placeholder='Liberacion'
+                                                    name="tipoMaterial"
+                                                    defaultValue={formDataCalidad.tipoMaterial}
+                                                />
                                             </Col>
                                         </Form.Group>
                                     </Row>
@@ -613,8 +611,8 @@ function ModificaStatus(props) {
                                                 <Form.Control
                                                     type="text"
                                                     placeholder="Escribe la descripción"
-                                                    name="descripcion"
-                                                    defaultValue={formData.descripcion}
+                                                    name="nombre"
+                                                    defaultValue={formDataCalidad.nombre}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -637,7 +635,6 @@ function ModificaStatus(props) {
                                             </Col>
                                         </Form.Group>
                                     </Row>
-
                                 </>
                             )
                         }
@@ -657,7 +654,7 @@ function ModificaStatus(props) {
                                                 <Form.Control
                                                     type="date"
                                                     placeholder="Escribe la fecha"
-                                                    defaultValue={formData.fecha}
+                                                    defaultValue={formDataCalidad.fecha}
                                                     name="fecha"
                                                 />
                                             </Col>
@@ -675,7 +672,7 @@ function ModificaStatus(props) {
                                                 <Form.Control
                                                     type="text"
                                                     placeholder="Escribe la descripción del material"
-                                                    defaultValue={formData.descripcionMaterial}
+                                                    defaultValue={formDataCalidad.nombre}
                                                     name="descripcionMaterial"
                                                 />
                                             </Col>
@@ -728,10 +725,10 @@ function ModificaStatus(props) {
                                                     value="proveedor"
                                                     type="radio"
                                                     label="Proveedor"
-                                                    name="nombre"
-                                                    defaultValue={formData.nombre}
+                                                    name="propiedad"
+                                                    defaultValue={formDataCalidad.propiedad}
+                                                    checked={formDataCalidad.propiedad == "Proveedor"}
                                                     id="Proveedor"
-                                                    checked={formData.nombre == "proveedor"}
                                                 />
                                             </Col>
                                             <Col sm={1}>
@@ -741,10 +738,10 @@ function ModificaStatus(props) {
                                                     value="cliente"
                                                     type="radio"
                                                     label="Cliente"
-                                                    name="nombre"
-                                                    defaultValue={formData.nombre}
+                                                    name="propiedad"
+                                                    defaultValue={formDataCalidad.propiedad}
+                                                    checked={formDataCalidad.propiedad == "Cliente"}
                                                     id="Cliente"
-                                                    checked={formData.nombre == "cliente"}
                                                 />
                                             </Col>
                                             <Col sm="2">
@@ -767,11 +764,15 @@ function ModificaStatus(props) {
                                             </Col>
                                             <Col sm="4">
                                                 <Form.Control
-                                                    type="number"
+                                                    as="select"
                                                     placeholder="Escribe el turno"
                                                     name="turno"
                                                     defaultValue={formData.turno}
-                                                />
+                                                >
+                                                    <option>Elige una opción</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                </Form.Control>
                                             </Col>
                                         </Form.Group>
                                     </Row>
@@ -842,7 +843,7 @@ function ModificaStatus(props) {
                                                     type="text"
                                                     placeholder="Escribe la cantidad"
                                                     name="cantidad"
-                                                    defaultValue={formData.cantidad}
+                                                    defaultValue={formDataCalidad.cantidad}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -976,7 +977,7 @@ function ModificaStatus(props) {
                                                     type="date"
                                                     placeholder="Escribe la fecha"
                                                     name="fecha"
-                                                    defaultValue={formData.fecha}
+                                                    defaultValue={formDataCalidad.fecha}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -991,11 +992,15 @@ function ModificaStatus(props) {
                                             </Col>
                                             <Col sm="5">
                                                 <Form.Control
-                                                    type="number"
+                                                    as="select"
                                                     placeholder="Escribe el turno"
                                                     name="turno"
                                                     defaultValue={formData.turno}
-                                                />
+                                                >
+                                                    <option>Elige una opción</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                </Form.Control>
                                             </Col>
                                         </Form.Group>
                                     </Row>
@@ -1012,7 +1017,7 @@ function ModificaStatus(props) {
                                                     type="text"
                                                     placeholder="Descripción del material"
                                                     name="descripcionMaterial"
-                                                    defaultValue={formData.descripcionMaterial}
+                                                    defaultValue={formDataCalidad.nombre}
                                                 />
                                             </Col>
                                         </Form.Group>

@@ -18,6 +18,7 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../ap
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { obtenerDatosArticulo } from '../../../api/almacenes';
 import BuscarPlaneaccion from '../../../page/BuscarPlaneacion';
+import { listarMaquina } from "../../../api/maquinas";
 
 function RegistraProgramaProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -44,6 +45,9 @@ function RegistraProgramaProduccion(props) {
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+    // Para almacenar la informacion del formulario
+    const [maquinas, setMaquinas] = useState();
 
     // Para almacenar la informacion del formulario
     const [formDataProduccion, setFormDataProduccion] = useState(initialFormDataProduccion());
@@ -75,6 +79,33 @@ function RegistraProgramaProduccion(props) {
     const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
 
     const [producto, setProducto] = useState([]);
+
+    // Para almacenar el listado de maquinas
+    const [listMaquinas, setListMaquinas] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarMaquina(getSucursal()).then(response => {
+                const { data } = response;
+                // console.log(data)
+
+                if (!listMaquinas && data) {
+                    setListMaquinas(formatModelMaquinas(data));
+                } else {
+                    const datosMaquinas = formatModelMaquinas(data);
+                    setListMaquinas(datosMaquinas);
+                }
+            }).catch(e => {
+                //console.log(e)
+                if (e.message === 'Network Error') {
+                    //console.log("No hay internet")
+                    toast.error("Conexión al servidor no disponible");
+                }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
 
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
@@ -653,6 +684,8 @@ function RegistraProgramaProduccion(props) {
 
     let piezasTurno3 = (((3600 / Number(formDataPlaneacion.tiempoCiclo3)) * Number(formDataPlaneacion.cavMolde)) * 12);
 
+    let turnosReq = Number(formDataProduccion.pendienteFabricar) / Number(formDataPrograma.stdTurno);
+
     const [cantidadPedir, setCantidadPedir] = useState(0);
 
     useEffect(() => {
@@ -677,6 +710,14 @@ function RegistraProgramaProduccion(props) {
         setFormDataProduccion({ ...formDataProduccion, [e.target.name]: e.target.value });
         setFormDataPrograma({ ...formDataPrograma, [e.target.name]: e.target.value });
     }
+
+    const temp = formData.noMaquina.split("/");
+
+    console.log(formData.fechaInicio);
+
+    const numeroDia = new Date(formData.fechaInicio).getDay()
+
+    console.log("Número de día de la semana: ", numeroDia);
 
     return (
         <>
@@ -763,9 +804,9 @@ function RegistraProgramaProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="date"
-                                            defaultValue={formDataPlaneacion.cavMolde}
-                                            placeholder="Numero de cavidades"
-                                            name="numeroCavidades"
+                                            defaultValue={formData.fechaInicio}
+                                            placeholder="Fecha de inicio"
+                                            name="fechaInicio"
                                         />
                                     </Form.Group>
                                 </Row>
@@ -776,11 +817,16 @@ function RegistraProgramaProduccion(props) {
                                             No. Maquina
                                         </Form.Label>
                                         <Form.Control
-                                            type="text"
-                                            defaultValue={formDataPlaneacion.descripcionMP}
-                                            placeholder="Material"
-                                            name="Material"
-                                        />
+                                            as="select"
+                                            defaultValue={formData.noMaquina}
+                                            placeholder="Numero de maquina"
+                                            name="noMaquina"
+                                        >
+                                            <option>Elige una opción</option>
+                                            {map(listMaquinas, (maquina, index) => (
+                                                <option value={maquina?.numeroMaquina + "/" + maquina?.marca + "/" + maquina?.lugar}>{maquina?.numeroMaquina + "-" + maquina?.marca + " " + maquina?.lugar}</option>
+                                            ))}
+                                        </Form.Control>
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalNoParte">
@@ -789,9 +835,10 @@ function RegistraProgramaProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            placeholder="Molido"
-                                            defaultValue={formDataPlaneacion.porcentajeMolido}
-                                            name="Molido"
+                                            placeholder="Maquina"
+                                            value={temp == "" ? "" : temp[1] + " " + temp[2]}
+                                            name="maquina"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -813,9 +860,9 @@ function RegistraProgramaProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="date"
-                                            defaultValue={formDataPlaneacion.pesoColada}
-                                            placeholder="Peso colada"
-                                            name="pesoColada"
+                                            defaultValue={formData.fechaInicio}
+                                            placeholder="Fecha de inicio"
+                                            name="fechaInicio"
                                         />
                                     </Form.Group>
                                 </Row>
@@ -828,8 +875,8 @@ function RegistraProgramaProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             defaultValue={formDataPrograma.cliente}
-                                            placeholder="Material"
-                                            name="Material"
+                                            placeholder="Cliente"
+                                            name="cliente"
                                         />
                                     </Form.Group>
 
@@ -839,7 +886,7 @@ function RegistraProgramaProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            placeholder="Molido"
+                                            placeholder="Producto"
                                             defaultValue={formDataProduccion.producto}
                                             name="producto"
                                         />
@@ -878,8 +925,8 @@ function RegistraProgramaProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             defaultValue={formDataPrograma.ciclo}
-                                            placeholder="Material"
-                                            name="Material"
+                                            placeholder="Ciclo"
+                                            name="ciclo"
                                         />
                                     </Form.Group>
 
@@ -900,10 +947,10 @@ function RegistraProgramaProduccion(props) {
                                             Std x turno
                                         </Form.Label>
                                         <Form.Control
-                                            type="number"
-                                            defaultValue={formDataPlaneacion.pesoPiezas}
-                                            placeholder="Peso de la pieza"
-                                            name="pesoPieza"
+                                            type="text"
+                                            defaultValue={formDataPrograma.stdTurno}
+                                            placeholder="Standard por turno"
+                                            name="stdTurno"
                                         />
                                     </Form.Group>
 
@@ -928,8 +975,8 @@ function RegistraProgramaProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             defaultValue={formDataPrograma.operadores}
-                                            placeholder="Material"
-                                            name="Material"
+                                            placeholder="Operadores"
+                                            name="operadores"
                                         />
                                     </Form.Group>
 
@@ -939,7 +986,7 @@ function RegistraProgramaProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            placeholder="No Interno"
+                                            placeholder="Numero interno"
                                             defaultValue={formDataPrograma.noInterno}
                                             name="noInterno"
                                         />
@@ -951,9 +998,10 @@ function RegistraProgramaProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="number"
-                                            defaultValue={formDataPlaneacion.pesoPiezas}
-                                            placeholder="Peso de la pieza"
-                                            name="pesoPieza"
+                                            value={Math.ceil(turnosReq)}
+                                            placeholder="Turnos requeridos"
+                                            name="turnosReq"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -1193,7 +1241,7 @@ function initialFormDataPrograma(data) {
         idCliente: data.cliente,
         cliente: data.nombreCliente,
         ciclo: data.tiempoCiclo,
-        stdTurno: data.stdTurno,
+        stdTurno: data.piezasxTurno,
         operadores: data.noOperadores,
         noInterno: data.noInterno,
         turnosRequeridos: "",
@@ -1329,7 +1377,10 @@ function initialFormData() {
         materialTurno: "",
         merma: "",
         kgMaterial: "",
-        kgPIGMB: ""
+        kgPIGMB: "",
+        fechaInicio: "",
+        noMaquina: "",
+        maquina: ""
     }
 }
 
@@ -1378,6 +1429,24 @@ function formatModelMatrizProductos(data) {
             materialEmpaque: data.materialEmpaque,
             opcionMaquinaria: data.opcionMaquinaria,
             estado: data.estado,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelMaquinas(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            numeroMaquina: data.numeroMaquina,
+            marca: data.marca,
+            tonelaje: data.tonelaje,
+            lugar: data.lugar,
+            status: data.status,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });
