@@ -113,24 +113,24 @@ function ModificaStatus(props) {
 
                 const dataTemp = {
                     folioInspeccion: formDataCalidad.folio,
-                        propiedadInspeccion: formDataCalidad.propiedad,
-                        cantidadInspeccion: formDataCalidad.cantidad,
-                        fechaInspeccion: formDataCalidad.fecha,
-                        tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
-                        recibioInspeccion: formDataCalidad.recibio,
-                        loteInspeccion: formDataCalidad.lote,
-                        nombreInspeccion: formDataCalidad.nombre,
-                        resultadoInspeccion: formDataCalidad.resultadoFinal,
-                        etiqueta: formDataCalidad.etiqueta,
-                        fecha: formDataCalidad.fecha,
-                        clienteProveedor: formData.clienteProveedor,
-                        lote: formDataCalidad.lote,
-                        recibio: formDataCalidad.recibio,
-                        turno: formData.turno,
-                        propiedad: formDataCalidad.propiedad,
-                        liberacion: formDataCalidad.tipoMaterial,
-                        descripcion: formDataCalidad.nombre,
-                        comentarios: formData.comentarios
+                    propiedadInspeccion: formDataCalidad.propiedad,
+                    cantidadInspeccion: formDataCalidad.cantidad,
+                    fechaInspeccion: formDataCalidad.fecha,
+                    tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
+                    recibioInspeccion: formDataCalidad.recibio,
+                    loteInspeccion: formDataCalidad.lote,
+                    nombreInspeccion: formDataCalidad.nombre,
+                    resultadoInspeccion: formDataCalidad.resultadoFinal,
+                    etiqueta: formDataCalidad.etiqueta,
+                    fecha: formDataCalidad.fecha,
+                    clienteProveedor: formData.clienteProveedor,
+                    lote: formDataCalidad.lote,
+                    recibio: formDataCalidad.recibio,
+                    turno: formData.turno,
+                    propiedad: formDataCalidad.propiedad,
+                    liberacion: formDataCalidad.tipoMaterial,
+                    descripcion: formDataCalidad.nombre,
+                    comentarios: formData.comentarios
                 }
 
                 // Modificar el pedido creado recientemente
@@ -160,28 +160,28 @@ function ModificaStatus(props) {
 
                 const dataTemp = {
                     folioInspeccion: formDataCalidad.folio,
-                        propiedadInspeccion: formDataCalidad.propiedad,
-                        cantidadInspeccion: formDataCalidad.cantidad,
-                        fechaInspeccion: formDataCalidad.fecha,
-                        tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
-                        recibioInspeccion: formDataCalidad.recibio,
-                        loteInspeccion: formDataCalidad.lote,
-                        nombreInspeccion: formDataCalidad.nombre,
-                        resultadoInspeccion: formDataCalidad.resultadoFinal,
-                        etiqueta: formDataCalidad.etiqueta,
-                        fecha: formDataCalidad.fecha,
-                        descripcionMaterial: formDataCalidad.nombre,
-                        rechazo: formData.rechazo,
-                        nombre: formDataCalidad.propiedad,
-                        clienteProveedor: formData.clienteProveedor,
-                        turno: formData.turno,
-                        auditor: formData.auditor,
-                        supervisor: formData.supervisor,
-                        descripcionDefecto: formData.descripcionDefecto,
-                        cantidad: formDataCalidad.cantidad,
-                        tipoRechazo: formData.tipoRechazo,
-                        correccion: formData.correccion,
-                        comentarios: formData.comentarios
+                    propiedadInspeccion: formDataCalidad.propiedad,
+                    cantidadInspeccion: formDataCalidad.cantidad,
+                    fechaInspeccion: formDataCalidad.fecha,
+                    tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
+                    recibioInspeccion: formDataCalidad.recibio,
+                    loteInspeccion: formDataCalidad.lote,
+                    nombreInspeccion: formDataCalidad.nombre,
+                    resultadoInspeccion: formDataCalidad.resultadoFinal,
+                    etiqueta: formDataCalidad.etiqueta,
+                    fecha: formDataCalidad.fecha,
+                    descripcionMaterial: formDataCalidad.nombre,
+                    rechazo: formData.rechazo,
+                    nombre: formDataCalidad.propiedad,
+                    clienteProveedor: formData.clienteProveedor,
+                    turno: formData.turno,
+                    auditor: formData.auditor,
+                    supervisor: formData.supervisor,
+                    descripcionDefecto: formData.descripcionDefecto,
+                    cantidad: formDataCalidad.cantidad,
+                    tipoRechazo: formData.tipoRechazo,
+                    correccion: formData.correccion,
+                    comentarios: formData.comentarios
                 }
 
                 // Modificar el pedido creado recientemente
@@ -210,21 +210,21 @@ function ModificaStatus(props) {
 
                 const dataTemp = {
                     folioInspeccion: formDataCalidad.folio,
-                        propiedadInspeccion: formDataCalidad.propiedad,
-                        cantidadInspeccion: formDataCalidad.cantidad,
-                        fechaInspeccion: formDataCalidad.fecha,
-                        tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
-                        recibioInspeccion: formDataCalidad.recibio,
-                        loteInspeccion: formDataCalidad.lote,
-                        nombreInspeccion: formDataCalidad.nombre,
-                        resultadoInspeccion: formDataCalidad.resultadoFinal,
-                        etiqueta: formDataCalidad.etiqueta,
-                        fecha: formDataCalidad.fecha,
-                        turno: formData.turno,
-                        descripcionMaterial: formDataCalidad.nombre,
-                        auditor: formData.auditor,
-                        condicion: formData.condicion,
-                        observaciones: formData.observaciones
+                    propiedadInspeccion: formDataCalidad.propiedad,
+                    cantidadInspeccion: formDataCalidad.cantidad,
+                    fechaInspeccion: formDataCalidad.fecha,
+                    tipoMaterialInspeccion: formDataCalidad.tipoMaterial,
+                    recibioInspeccion: formDataCalidad.recibio,
+                    loteInspeccion: formDataCalidad.lote,
+                    nombreInspeccion: formDataCalidad.nombre,
+                    resultadoInspeccion: formDataCalidad.resultadoFinal,
+                    etiqueta: formDataCalidad.etiqueta,
+                    fecha: formDataCalidad.fecha,
+                    turno: formData.turno,
+                    descripcionMaterial: formDataCalidad.nombre,
+                    auditor: formData.auditor,
+                    condicion: formData.condicion,
+                    observaciones: formData.observaciones
                 }
 
                 // Modificar el pedido creado recientemente
@@ -849,114 +849,127 @@ function ModificaStatus(props) {
                                         </Form.Group>
                                     </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                            <Col sm={2}>
-                                                <Form.Label>
-                                                    Rechazo
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="moler"
-                                                    type="radio"
-                                                    label="Moler"
-                                                    name="tipoRechazo"
-                                                    id="moler"
-                                                    defaultValue={formData.tipoRechazo}
-                                                    checked={formData.tipoRechazo == "moler"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="retrabajar"
-                                                    type="radio"
-                                                    label="Retrabajar"
-                                                    name="tipoRechazo"
-                                                    id="retrabajar"
-                                                    defaultValue={formData.tipoRechazo}
-                                                    checked={formData.tipoRechazo == "retrabajar"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="consecion"
-                                                    type="radio"
-                                                    label="Conseción"
-                                                    name="tipoRechazo"
-                                                    id="consecion"
-                                                    defaultValue={formData.tipoRechazo}
-                                                    checked={formData.tipoRechazo == "consecion"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="otro"
-                                                    type="radio"
-                                                    label="Otro"
-                                                    name="tipoRechazo"
-                                                    id="otro"
-                                                    defaultValue={formData.tipoRechazo}
-                                                    checked={formData.tipoRechazo == "otro"}
-                                                />
-                                            </Col>
-                                            <Col sm={1}>
-                                            </Col>
-                                            <Col sm={1}>
-                                                <Form.Check
-                                                    value="re-inspeccion"
-                                                    type="radio"
-                                                    label="Reinspección"
-                                                    name="tipoRechazo"
-                                                    id="reinspeccion"
-                                                    defaultValue={formData.tipoRechazo}
-                                                    checked={formData.tipoRechazo == "re-inspeccion"}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                    <div className="datosGenerales">
+                                        <Container fluid>
+                                            <br />
+                                            <div className="tituloSeccion">
+                                                <h4>
+                                                    Disposicion del material
+                                                </h4>
+                                            </div>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridCantidad" className="cantidad">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Corrección
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm="9">
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe la correccion"
-                                                    name="correccion"
-                                                    defaultValue={formData.correccion}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                            <br />
+                                            <Row className="mb-3">
+                                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                                    <Col sm={2}>
+                                                        <Form.Label>
+                                                            Rechazo
+                                                        </Form.Label>
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                        <Form.Check
+                                                            value="moler"
+                                                            type="radio"
+                                                            label="Moler"
+                                                            name="tipoRechazo"
+                                                            id="moler"
+                                                            defaultValue={formData.tipoRechazo}
+                                                            checked={formData.tipoRechazo == "moler"}
+                                                        />
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                        <Form.Check
+                                                            value="retrabajar"
+                                                            type="radio"
+                                                            label="Retrabajar"
+                                                            name="tipoRechazo"
+                                                            id="retrabajar"
+                                                            defaultValue={formData.tipoRechazo}
+                                                            checked={formData.tipoRechazo == "retrabajar"}
+                                                        />
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                        <Form.Check
+                                                            value="consecion"
+                                                            type="radio"
+                                                            label="Conseción"
+                                                            name="tipoRechazo"
+                                                            id="consecion"
+                                                            defaultValue={formData.tipoRechazo}
+                                                            checked={formData.tipoRechazo == "consecion"}
+                                                        />
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                        <Form.Check
+                                                            value="otro"
+                                                            type="radio"
+                                                            label="Otro"
+                                                            name="tipoRechazo"
+                                                            id="otro"
+                                                            defaultValue={formData.tipoRechazo}
+                                                            checked={formData.tipoRechazo == "otro"}
+                                                        />
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                        <Form.Check
+                                                            value="re-inspeccion"
+                                                            type="radio"
+                                                            label="Reinspección"
+                                                            name="tipoRechazo"
+                                                            id="reinspeccion"
+                                                            defaultValue={formData.tipoRechazo}
+                                                            checked={formData.tipoRechazo == "re-inspeccion"}
+                                                        />
+                                                    </Col>
+                                                </Form.Group>
+                                            </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Group as={Row} controlId="formGridCantidad" className="cantidad">
-                                            <Col sm="2">
-                                                <Form.Label>
-                                                    Comentarios
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm="9">
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder="Escribe los comentarios"
-                                                    name="comentarios"
-                                                    defaultValue={formData.comentarios}
-                                                />
-                                            </Col>
-                                        </Form.Group>
-                                    </Row>
+                                            <Row className="mb-3">
+                                                <Form.Group as={Row} controlId="formGridCantidad" className="cantidad">
+                                                    <Col sm="2">
+                                                        <Form.Label>
+                                                            Corrección
+                                                        </Form.Label>
+                                                    </Col>
+                                                    <Col sm="9">
+                                                        <Form.Control
+                                                            type="text"
+                                                            placeholder="Escribe la correccion"
+                                                            name="correccion"
+                                                            defaultValue={formData.correccion}
+                                                        />
+                                                    </Col>
+                                                </Form.Group>
+                                            </Row>
+
+                                            <Row className="mb-3">
+                                                <Form.Group as={Row} controlId="formGridCantidad" className="cantidad">
+                                                    <Col sm="2">
+                                                        <Form.Label>
+                                                            Comentarios
+                                                        </Form.Label>
+                                                    </Col>
+                                                    <Col sm="9">
+                                                        <Form.Control
+                                                            type="text"
+                                                            placeholder="Escribe los comentarios"
+                                                            name="comentarios"
+                                                            defaultValue={formData.comentarios}
+                                                        />
+                                                    </Col>
+                                                </Form.Group>
+                                            </Row>
+
+                                        </Container>
+                                    </div>
                                 </>
                             )
                         }
