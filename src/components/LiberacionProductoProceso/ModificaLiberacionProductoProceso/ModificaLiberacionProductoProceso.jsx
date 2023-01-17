@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, useParams } from "react-router-dom";
 import { obtenerLiberacionProducto, actualizaLiberacionProducto } from "../../../api/liberacionProductoProceso";
 import { toast } from "react-toastify";
@@ -10,8 +10,12 @@ import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { map } from "lodash";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import BuscarCliente from "../../../page/BuscarCliente";
+import BuscarProducto from "../../../page/BuscarProducto";
+import BasicModal from "../../Modal/BasicModal";
+import { listarMaquina } from "../../../api/maquinas";
 
-function RegistraLiberacionProductoProceso(props) {
+function ModificaLiberacionProductoProceso(props) {
     const { setRefreshCheckLogin } = props;
 
     // Cerrado de sesión automatico
@@ -36,6 +40,12 @@ function RegistraLiberacionProductoProceso(props) {
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
 
+    // Para almacenar la informacion del formulario
+    const [formDataClientes, setFormDataClientes] = useState(initialFormDataClientesInitial());
+
+    // Para almacenar la informacion del formulario
+    const [formDataProductos, setFormDataProductos] = useState(initialFormDataProductosInitial());
+
     // Para determinar si hay conexion con el servidor o a internet
     const [conexionInternet, setConexionInternet] = useState(true);
 
@@ -46,6 +56,52 @@ function RegistraLiberacionProductoProceso(props) {
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
+
+    // Para hacer uso del modal
+    const [showModal, setShowModal] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    // Para la eliminacion fisica de usuarios
+    const buscarCliente = (content) => {
+        setTitulosModal("Buscar cliente");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarProducto = (content) => {
+        setTitulosModal("Buscar producto");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para almacenar el listado de maquinas
+    const [listMaquinas, setListMaquinas] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarMaquina(getSucursal()).then(response => {
+                const { data } = response;
+                // console.log(data)
+
+                if (!listMaquinas && data) {
+                    setListMaquinas(formatModelMaquinas(data));
+                } else {
+                    const datosMaquinas = formatModelMaquinas(data);
+                    setListMaquinas(datosMaquinas);
+                }
+            }).catch(e => {
+                //console.log(e)
+                if (e.message === 'Network Error') {
+                    //console.log("No hay internet")
+                    toast.error("Conexión al servidor no disponible");
+                }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
 
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
@@ -123,6 +179,8 @@ function RegistraLiberacionProductoProceso(props) {
 
                 if (!formData && data) {
                     setFormData(valoresAlmacenados(data));
+                    setFormDataClientes(initialFormDataClientes(data));
+                    setFormDataProductos(initialFormDataProductos(data));
                     setProductoSeleccionado({
                         noParte: data.noParteMolde,
                         descripcion: data.descripcionPieza
@@ -130,6 +188,8 @@ function RegistraLiberacionProductoProceso(props) {
                 } else {
                     const datosLiberacion = valoresAlmacenados(data);
                     setFormData(datosLiberacion);
+                    setFormDataClientes(initialFormDataClientes(data));
+                    setFormDataProductos(initialFormDataProductos(data));
                     setProductoSeleccionado({
                         noParte: data.noParteMolde,
                         descripcion: data.descripcionPieza
@@ -150,7 +210,7 @@ function RegistraLiberacionProductoProceso(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        if (!formData.fechaArranque || !formData.fechaElaboracion || !formData.cliente || !formData.descripcion || !formData.proceso || !formData.noMaquina || !formData.hojaLiberacion || !formData.elaboro || !formData.turno || !formData.observaciones) {
+        if (!formData.fechaArranque || !formData.fechaElaboracion || !formData.proceso || !formData.noMaquina || !formData.hojaLiberacion || !formData.elaboro || !formData.turno || !formData.observaciones) {
             toast.warning("Completa el formulario");
         } else {
             //console.log("Continuar")
@@ -158,9 +218,9 @@ function RegistraLiberacionProductoProceso(props) {
 
             // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
             const dataTemp = {
-                cliente: formData.cliente,
-                descripcionPieza: productoSeleccionado.descripcion,
-                noParteMolde: productoSeleccionado.noParte,
+                cliente: formDataClientes.nombreCliente,
+                descripcionPieza: formDataProductos.nombreProducto,
+                noParteMolde: formDataProductos.noParte,
                 procesoRealizado: formData.proceso,
                 fechaElaboracion: formData.fechaElaboracion,
                 fechaArranqueMolde: formData.fechaArranque,
@@ -253,7 +313,9 @@ function RegistraLiberacionProductoProceso(props) {
     }
 
     const onChange = e => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormDataClientes({ ...formDataClientes, [e.target.name]: e.target.value });
+        setFormDataProductos({ ...formDataProductos, [e.target.name]: e.target.value });
     }
 
     return (
@@ -295,15 +357,27 @@ function RegistraLiberacionProductoProceso(props) {
                                             </Form.Label>
                                         </Col>
                                         <Col>
-                                            <Form.Control as="select"
-                                                defaultValue={formData.cliente}
-                                                name="cliente"
-                                            >
-                                                <option>Elige una opción</option>
-                                                {map(listClientes, (cliente, index) => (
-                                                    <option key={index} value={cliente?.nombre + " " + cliente.apellidos} selected={formData.cliente == cliente?.nombre + " " + cliente.apellidos}>{cliente?.nombre + " " + cliente.apellidos}</option>
-                                                ))}
-                                            </Form.Control>
+                                            <div className="flex items-center mb-1">
+                                                <Form.Control
+                                                    type="text"
+                                                    defaultValue={formDataClientes.nombreCliente}
+                                                    placeholder="Nombre del cliente"
+                                                    name="nombreCliente"
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="cursor-pointer py-2 -ml-6"
+                                                    title="Buscar entre las ordenes de venta"
+                                                    icon={faSearch}
+                                                    onClick={() => {
+                                                        buscarCliente(
+                                                            <BuscarCliente
+                                                                formData={formDataClientes}
+                                                                setFormData={setFormDataClientes}
+                                                                setShowModal={setShowModal}
+                                                            />)
+                                                    }}
+                                                />
+                                            </div>
                                         </Col>
 
                                         <Col sm="2">
@@ -330,24 +404,27 @@ function RegistraLiberacionProductoProceso(props) {
                                             </Form.Label>
                                         </Col>
                                         <Col>
-                                            <Form.Control
-                                                as="select"
-                                                onChange={(e) => {
-                                                    handleProducto(e.target.value)
-                                                }}
-                                                defaultValue={formData.descripcion}
-                                                name="descripcion"
-                                            >
-                                                <option>Elige una opcion</option>
-                                                {map(listProductosActivos, (producto, index) => (
-                                                    <option
-                                                        key={index}
-                                                        value={producto.noParte + "/" + producto.descripcion} selected={productoSeleccionado.descripcion == producto?.descripcion}
-                                                    >
-                                                        {producto.descripcion}
-                                                    </option>
-                                                ))}
-                                            </Form.Control>
+                                            <div className="flex items-center mb-1">
+                                                <Form.Control
+                                                    type="text"
+                                                    defaultValue={formDataProductos.nombreProducto}
+                                                    placeholder="Nombre del producto"
+                                                    name="nombreProducto"
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="cursor-pointer py-2 -ml-6"
+                                                    title="Buscar entre las ordenes de venta"
+                                                    icon={faSearch}
+                                                    onClick={() => {
+                                                        buscarProducto(
+                                                            <BuscarProducto
+                                                                formData={formDataProductos}
+                                                                setFormData={setFormDataProductos}
+                                                                setShowModal={setShowModal}
+                                                            />)
+                                                    }}
+                                                />
+                                            </div>
                                         </Col>
 
                                         <Col sm="2">
@@ -357,11 +434,16 @@ function RegistraLiberacionProductoProceso(props) {
                                         </Col>
                                         <Col>
                                             <Form.Control
-                                                type="number"
+                                                as="select"
                                                 placeholder="No. Maquina"
                                                 name="noMaquina"
                                                 defaultValue={formData.noMaquina}
-                                            />
+                                            >
+                                                <option>Elige una opción</option>
+                                            {map(listMaquinas, (maquina, index) => (
+                                                <option value={maquina?.numeroMaquina} selected={formData.noMaquina == maquina?.numeroMaquina}>{maquina?.numeroMaquina + "-" + maquina?.marca + " " + maquina?.lugar}</option>
+                                            ))}
+                                        </Form.Control>
                                         </Col>
                                     </Form.Group>
                                 </Row>
@@ -378,7 +460,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                 type="number"
                                                 placeholder="No. Parte/Molde"
                                                 name="noParte"
-                                                value={productoSeleccionado.noParte}
+                                                value={formDataProductos.noParte}
                                                 disabled
                                             />
                                         </Col>
@@ -1237,6 +1319,32 @@ function RegistraLiberacionProductoProceso(props) {
     );
 }
 
+function initialFormDataClientesInitial() {
+    return {
+        nombreCliente: ""
+    }
+}
+
+function initialFormDataProductosInitial() {
+    return {
+        nombreProducto: "",
+        noParte: ""
+    }
+}
+
+function initialFormDataClientes(data) {
+    return {
+        nombreCliente: data.cliente,
+    }
+}
+
+function initialFormDataProductos(data) {
+    return {
+        nombreProducto: data.descripcionPieza,
+        noParte: data.noParteMolde
+    }
+}
+
 function initialFormData() {
     return {
         cliente: "",
@@ -1384,4 +1492,22 @@ function formatModelMatrizProductos(data) {
     return dataTemp;
 }
 
-export default RegistraLiberacionProductoProceso;
+function formatModelMaquinas(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            numeroMaquina: data.numeroMaquina,
+            marca: data.marca,
+            tonelaje: data.tonelaje,
+            lugar: data.lugar,
+            status: data.status,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+export default ModificaLiberacionProductoProceso;

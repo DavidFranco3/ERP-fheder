@@ -70,6 +70,7 @@ function BuscarProductos(props) {
                 nombreProducto: valoresProducto.nombreProducto,
                 folioProdcuto: valoresProducto.folioProdcuto,
                 um: valoresProducto.um,
+                noParte: valoresProducto.noParte
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -317,6 +318,7 @@ function initialValues() {
         um: "",
         nombreProducto: "",
         folioProdcuto: "",
+        noParte: "",
     }
 }
 
@@ -329,6 +331,7 @@ function valoresAlmacenados(data) {
         um: data.um,
         nombreProducto: data.descripcion,
         folioProdcuto: data.noInterno,
+        noParte: data.noParte,
     }
 }
 
