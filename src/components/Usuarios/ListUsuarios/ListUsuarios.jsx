@@ -2,14 +2,12 @@ import { useState, useEffect, useMemo } from 'react';
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 import 'moment/locale/es';
-
 import "./ListUsuarios.scss"
 import { Badge, Button, Container, Navbar, Table, Form, Col } from "react-bootstrap";
 import { map } from "lodash";
 import EliminacionLogicaUsuarios from "../EliminacionLogica";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaUsuarios from "../EliminacionFisica";
-
 import DataTable, { ExpanderComponentProps } from 'react-data-table-component';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

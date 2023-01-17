@@ -2,15 +2,15 @@ import { useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOV from "../../../page/BuscarOV";
-import { useHistory } from "react-router-dom";
-import "./RegistraProgramaProduccion.scss";
+import { useHistory, useParams  } from "react-router-dom";
+import "./ModificaProgramaProduccion.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { listarMatrizProductosActivos, obtenerMatrizProducto, obtenerPorNoInternoMatrizProducto } from "../../../api/matrizProductos";
 import { map } from "lodash";
 import { listarAlmacenPT, obtenerDatosAlmacenPT } from "../../../api/almacenPT";
 import { obtenerDatosMP } from "../../../api/almacenMP";
-import { registraPrograma, obtenerNumeroPrograma } from "../../../api/programaProduccion";
+import { actualizaPrograma, obtenerNumeroPrograma, obtenerPrograma } from "../../../api/programaProduccion";
 import { toast } from "react-toastify";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { obtenerMaquina } from "../../../api/maquinas";
@@ -20,7 +20,7 @@ import { obtenerDatosArticulo } from '../../../api/almacenes';
 import BuscarPlaneaccion from '../../../page/BuscarPlaneacion';
 import { listarMaquina } from "../../../api/maquinas";
 
-function RegistraProgramaProduccion(props) {
+function ModificaProgramaProduccion(props) {
     const { setRefreshCheckLogin } = props;
 
     // Cerrado de sesión automatico
@@ -44,13 +44,13 @@ function RegistraProgramaProduccion(props) {
     }
 
     // Para almacenar la informacion del formulario
-    const [formData, setFormData] = useState(initialFormData());
+    const [formData, setFormData] = useState(initialFormDataInitial());
 
     // Para almacenar la informacion del formulario
     const [maquinas, setMaquinas] = useState();
 
     // Para almacenar la informacion del formulario
-    const [formDataProduccion, setFormDataProduccion] = useState(initialFormDataProduccion());
+    const [formDataProduccion, setFormDataProduccion] = useState(initialFormDataProduccionInitial());
 
     // Para almacenar la informacion del formulario
     const [formDataPrograma, setFormDataPrograma] = useState(initialFormDataProgramaInitial());
@@ -82,6 +82,29 @@ function RegistraProgramaProduccion(props) {
 
     // Para almacenar el listado de maquinas
     const [listMaquinas, setListMaquinas] = useState(null);
+
+    // Define el uso de los parametros
+    const parametros = useParams()
+    const { id } = parametros
+
+    // Recupera la información de la compra
+    useEffect(() => {
+        try {
+            obtenerPrograma(id).then(response => {
+                const { data } = response;
+                // console.log(data)
+                const { fechaSolicitud, proveedor, nombreProveedor, tipoCompra, fechaEntrega, autoriza, productos } = data;
+                setFormDataProduccion(initialFormDataProduccion(data));
+                setFormData(initialFormData(data));
+                //setFormDataOC(cargaFormDataOC(data))
+                //setFormData(dataCompras(fechaSolicitud, proveedor, nombreProveedor, tipoCompra, fechaEntrega, autoriza, productos))
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
 
     useEffect(() => {
         try {
@@ -512,12 +535,10 @@ function RegistraProgramaProduccion(props) {
             const temp = formData.noMaquina.split("/");
 
             const dataTemp = {
-                folio: folioActual,
                 folioOP: formDataProduccion.ordenProduccion,
-                sucursal: getSucursal(),
                 ordenProduccion: {
                     noMaquina: temp[0],
-                    maquina: temp[1] + " " + temp[2],
+                    maquina: temp.length == 1 ? formData.maquina : temp[1] + " " + temp[2],
                     semana: formDataProduccion.semana,
                     fechaInicio: formData.fechaInicio,
                     cliente: formDataPrograma.cliente,
@@ -548,13 +569,12 @@ function RegistraProgramaProduccion(props) {
                     viernesT2: formData.viernesT2,
                     sabadoT1: formData.sabadoT1,
                 },
-                estado: "true",
             }
             // console.log(dataTemp)
             // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
-            LogsInformativos("Se ha registrado un nuevo programa de produccion con folio " + dataTemp.folio, dataTemp)
+            LogsInformativos("Se ha actualizado el programa de produccion con folio " + dataTemp.folio, dataTemp)
             // Modificar el pedido creado recientemente
-            registraPrograma(dataTemp).then(response => {
+            actualizaPrograma(id, dataTemp).then(response => {
                 const { data: { mensaje, datos } } = response;
                 // console.log(response)
                 toast.success(mensaje)
@@ -803,7 +823,7 @@ function RegistraProgramaProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="Folio"
-                                            value={folioActual}
+                                            value={formData.folio}
                                             name="folio"
                                             disabled
                                         />
@@ -862,7 +882,7 @@ function RegistraProgramaProduccion(props) {
                                         >
                                             <option>Elige una opción</option>
                                             {map(listMaquinas, (maquina, index) => (
-                                                <option value={maquina?.numeroMaquina + "/" + maquina?.marca + "/" + maquina?.lugar}>{maquina?.numeroMaquina + "-" + maquina?.marca + " " + maquina?.lugar}</option>
+                                                <option value={maquina?.numeroMaquina + "/" + maquina?.marca + "/" + maquina?.lugar} selected={maquina?.numeroMaquina == formData.noMaquina}>{maquina?.numeroMaquina + "-" + maquina?.marca + " " + maquina?.lugar}</option>
                                             ))}
                                         </Form.Control>
                                     </Form.Group>
@@ -874,7 +894,7 @@ function RegistraProgramaProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="Maquina"
-                                            value={temp == "" ? formData.maquina : temp[1] + " " + temp[2]}
+                                            value={temp.length == 1 ? formData.maquina : temp[1] + " " + temp[2]}
                                             name="maquina"
                                             disabled
                                         />
@@ -1067,6 +1087,7 @@ function RegistraProgramaProduccion(props) {
                                                 name="lunesT1"
                                                 id={lunesT1}
                                                 defaultValue={formData.lunesT1}
+                                                checked={formData.lunesT1 == lunesT1}
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -1079,6 +1100,7 @@ function RegistraProgramaProduccion(props) {
                                                 name="miercolesT1"
                                                 id={miercolesT1}
                                                 defaultValue={formData.miercolesT1}
+                                                checked={formData.miercolesT1 == miercolesT1}
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -1091,6 +1113,7 @@ function RegistraProgramaProduccion(props) {
                                                 name="viernesT1"
                                                 id={viernesT1}
                                                 defaultValue={formData.viernesT1}
+                                                checked={formData.viernesT1 == viernesT1}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -1106,6 +1129,7 @@ function RegistraProgramaProduccion(props) {
                                                 name="lunesT2"
                                                 id={lunesT2}
                                                 defaultValue={formData.lunesT2}
+                                                checked={formData.lunesT2 == lunesT2}
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -1118,6 +1142,7 @@ function RegistraProgramaProduccion(props) {
                                                 name="miercolesT2"
                                                 id={miercolesT2}
                                                 defaultValue={formData.miercolesT2}
+                                                checked={formData.miercolesT2 == miercolesT2}
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -1130,6 +1155,7 @@ function RegistraProgramaProduccion(props) {
                                                 name="viernesT2"
                                                 id={viernesT2}
                                                 defaultValue={formData.viernesT2}
+                                                checked={formData.viernesT2 == viernesT2}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -1145,6 +1171,7 @@ function RegistraProgramaProduccion(props) {
                                                 name="martesT1"
                                                 id={martesT1}
                                                 defaultValue={formData.martesT1}
+                                                checked={formData.martesT1 == martesT1}
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -1157,6 +1184,7 @@ function RegistraProgramaProduccion(props) {
                                                 name="juevesT1"
                                                 id={juevesT1}
                                                 defaultValue={formData.juevesT1}
+                                                checked={formData.juevesT1 == juevesT1}
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -1169,6 +1197,7 @@ function RegistraProgramaProduccion(props) {
                                                 name="sabadoT1"
                                                 id={sabadoT1}
                                                 defaultValue={formData.sabadoT1}
+                                                checked={formData.sabadoT1 == sabadoT1}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -1184,6 +1213,7 @@ function RegistraProgramaProduccion(props) {
                                                 name="martesT2"
                                                 id={martesT2}
                                                 defaultValue={formData.martesT2}
+                                                checked={formData.martesT2 == martesT2}
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -1196,6 +1226,7 @@ function RegistraProgramaProduccion(props) {
                                                 name="juevesT2"
                                                 id={juevesT2}
                                                 defaultValue={formData.juevesT2}
+                                                checked={formData.juevesT2 == juevesT2}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -1214,7 +1245,7 @@ function RegistraProgramaProduccion(props) {
                                     variant="success"
                                     className="registrar"
                                 >
-                                    {!loading ? "Registrar" : <Spinner animation="border" />}
+                                    {!loading ? "Modificar" : <Spinner animation="border" />}
                                 </Button>
                             </Col>
                             <Col>
@@ -1245,7 +1276,22 @@ function RegistraProgramaProduccion(props) {
     );
 }
 
-function initialFormDataProduccion() {
+function initialFormDataProduccion(data) {
+    return {
+        semana: data.ordenProduccion.semana,
+        ordenProduccion: data.folioOP,
+        idProducto: data.ordenProduccion.producto,
+        producto: data.ordenProduccion.nombreProducto,
+        cantidadFabricar: data.ordenProduccion.cantidadFabricar,
+        acumulado: data.ordenProduccion.acumulado,
+        cavidades: data.ordenProduccion.cavidades,
+        standarTurno: data.ordenProduccion.stdTurno,
+        pendienteFabricar: data.ordenProduccion.pendienteFabricar,
+        noInterno: data.ordenProduccion.noInterno,
+    }
+}
+
+function initialFormDataProduccionInitial() {
     return {
         semana: "",
         ordenProduccion: "",
@@ -1390,7 +1436,51 @@ function initialFormDataPlaneacionInitial() {
     }
 }
 
-function initialFormData() {
+function initialFormData(data) {
+    return {
+        cantidadMP: 0,
+        materiaPrima: "",
+        semana: "",
+        numeroMaquina1: "",
+        maquina1: "",
+        ciclo1: "",
+        pieza1: "",
+        bolsa1: "",
+        numeroMaquina2: "",
+        maquina2: "",
+        ciclo2: "",
+        pieza2: "",
+        bolsa2: "",
+        numeroMaquina3: "",
+        maquina3: "",
+        ciclo3: "",
+        pieza3: "",
+        bolsa3: "",
+        materialTurno: "",
+        merma: "",
+        kgMaterial: "",
+        kgPIGMB: "",
+
+        folio: data.folio,
+        fechaInicio: data.ordenProduccion.fechaInicio,
+        noMaquina: data.ordenProduccion.noMaquina,
+        maquina: data.ordenProduccion.maquina,
+
+        lunesT1: data.programa.lunesT1,
+        lunesT2: data.programa.lunesT2,
+        martesT1: data.programa.martesT1,
+        martesT2: data.programa.martesT2,
+        miercolesT1: data.programa.miercolesT1,
+        miercolesT2: data.programa.miercolesT2,
+        juevesT1: data.programa.juevesT1,
+        juevesT2: data.programa.juevesT2,
+        viernesT1: data.programa.viernesT1,
+        viernesT2: data.programa.viernesT2,
+        sabadoT1: data.programa.sabadoT1
+    }
+}
+
+function initialFormDataInitial() {
     return {
         cantidadMP: 0,
         materiaPrima: "",
@@ -1502,4 +1592,4 @@ function formatModelMaquinas(data) {
     return dataTemp;
 }
 
-export default RegistraProgramaProduccion;
+export default ModificaProgramaProduccion;

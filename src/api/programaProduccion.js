@@ -16,7 +16,7 @@ import axios from 'axios';
 import { getTokenApi } from "./auth";
 
 // Registra orden de compra
-export async function registrPrograma(data) {
+export async function registraPrograma(data) {
     const config = {
         headers: {
             'Accept': 'application/json',

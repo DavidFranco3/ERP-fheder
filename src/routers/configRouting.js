@@ -81,6 +81,7 @@ import VistaPrevia from "../components/Ventas/VistaPrevia";
 
 // Rutas para el programa de producción
 import RegistraProgramaProduccion from "../components/ProgramaProduccion/Registro";
+import ModificaProgramaProduccion from "../components/ProgramaProduccion/Modificacion";
 
 // Rutas para la matriz de productos
 import ModificaMatrizProductos from "../components/MatrizProductos/ModificaMatrizProductos";
@@ -420,6 +421,11 @@ export default [
         path: "/RegistroProgramaProduccion",
         exact: true,
         page: RegistraProgramaProduccion
+    },
+    {
+        path: "/ModificaProgramaProduccion/:id",
+        exact: true,
+        page: ModificaProgramaProduccion
     },
     {
         path: "/ModificacionTiquets",

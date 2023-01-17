@@ -13,6 +13,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
 import { exportCSVFile } from "../../../utils/exportCSV";
+import EliminacionFisicaPrograma from '../EliminacionFisica';
+import EstadoPrograma from '../EstadoPrograma';
 //import ListProductosRecepcion from '../ListProductosRecepcion';
 
 function ListProgramaProduccion(props) {
@@ -28,29 +30,29 @@ function ListProgramaProduccion(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     //Para la eliminacion fisica de usuarios
-    const eliminaUsuarios = (content) => {
-        setTitulosModal("Eliminando la recepcion");
+    const eliminaPrograma = (content) => {
+        setTitulosModal("Eliminando el programa de produccion");
         setContentModal(content);
         setShowModal(true);
     }
 
     //Para la eliminacion logica de usuarios
-    const eliminaLogicaUsuarios = (content) => {
-        setTitulosModal("Deshabilitando usuario");
+    const eliminaLogicaPrograma = (content) => {
+        setTitulosModal("Deshabilitando el programa de produccion");
         setContentModal(content);
         setShowModal(true);
     }
 
     //Para la eliminacion logica de usuarios
-    const habilitaUsuarios = (content) => {
-        setTitulosModal("Habilitando usuario");
+    const habilitaPrograma = (content) => {
+        setTitulosModal("Habilitando el programa de produccion");
         setContentModal(content);
         setShowModal(true);
     }
 
     //Para la modificacion de datos
     const modificaRecepcion = (id) => {
-        enrutamiento.push(`/ModificaRecepcion/${id}`);
+        enrutamiento.push(`/ModificaProgramaProduccion/${id}`);
     }
 
     const columns = [
@@ -111,7 +113,7 @@ function ListProgramaProduccion(props) {
             reorder: false
         },
         {
-            name: 'cav',
+            name: 'Cav',
             selector: row => row.ordenProduccion.cavidades,
             sortable: false,
             center: true,
@@ -137,6 +139,53 @@ function ListProgramaProduccion(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaPrograma(
+                                        <EstadoPrograma
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activo
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaPrograma(
+                                        <EstadoPrograma
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactivo
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: 'Lunes T1',
@@ -215,7 +264,7 @@ function ListProgramaProduccion(props) {
             center: true,
             reorder: false
         },
-        /*{
+        {
             name: 'Acciones',
             center: true,
             reorder: false,
@@ -245,8 +294,8 @@ function ListProgramaProduccion(props) {
                         title="Eliminar"
                         className="eliminar"
                         onClick={() => {
-                            eliminaUsuarios(
-                                <EliminacionFisicaRecepcion
+                            eliminaPrograma(
+                                <EliminacionFisicaPrograma
                                     datos={row}
                                     setShowModal={setShowModal}
                                     history={history}
@@ -257,7 +306,7 @@ function ListProgramaProduccion(props) {
                     </Badge>
                 </>
             )
-        }*/
+        }
     ];
 
     // Configurando animacion de carga

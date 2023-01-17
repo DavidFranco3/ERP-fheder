@@ -132,6 +132,7 @@ function formatModelProgramaProduccion(data) {
             folioOP: data.folioOP,
             ordenProduccion: data.ordenProduccion,
             programa: data.programa,
+            estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });
