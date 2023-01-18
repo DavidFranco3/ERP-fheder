@@ -269,7 +269,7 @@ function RegistroCompras(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!formData.fechaSolicitud || !formData.fechaEntrega || !formData.autorizo) {
+        if (!formData.autorizo) {
             toast.warning("Completa el formulario");
         } else {
 
@@ -286,8 +286,8 @@ function RegistroCompras(props) {
                         proveedor: proveedorSeleccionado.proveedor,
                         requisicion: formDataOC.requisicion,
                         nombreProveedor: proveedorSeleccionado.nombreProveedor,
-                        fechaSolicitud: formData.fechaSolicitud,
-                        fechaEntrega: formData.fechaEntrega,
+                        fechaSolicitud: fechaSolicitud,
+                        fechaEntrega: fechaEntrega,
                         autoriza: formData.autorizo,
                         tipoCompra: formData.tipoCompra,
                         departamento: "Compras",
@@ -347,6 +347,17 @@ function RegistroCompras(props) {
     const total = subTotal + (subTotal * 0.16)
 
     const renglon = listProductosCargados.length + 1;
+
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaSolicitud, setFechaSolicitud] = useState(fecha);
+
+    const [fechaEntrega, setFechaEntrega] = useState(fecha);
 
     return (
         <>
@@ -425,8 +436,9 @@ function RegistroCompras(props) {
                             <Form.Control
                                 className="mb-3"
                                 type="date"
-                                defaultValue={formData.fechaSolicitud}
+                                value={fechaSolicitud}
                                 placeholder="Fecha de solicitud"
+                                onChange={e => setFechaSolicitud(e.target.value)}
                                 name="fechaSolicitud"
                             />
                         </Form.Group>
@@ -463,7 +475,8 @@ function RegistroCompras(props) {
                             <Form.Control
                                 className="mb-3"
                                 type="date"
-                                defaultValue={formData.fechaEntrega}
+                                value={fechaEntrega}
+                                onChange={e => setFechaEntrega(e.target.value)}
                                 placeholder="Fecha de entrega"
                                 name="fechaEntrega"
                             />

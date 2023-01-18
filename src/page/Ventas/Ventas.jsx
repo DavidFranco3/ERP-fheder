@@ -144,6 +144,7 @@ function formatModelPedidosventa(data) {
             ordenCompra: data.ordenCompra,
             total: data.total,
             productos: data.productos,
+            estado: data.estado,
             totalProductos: data.productos.length,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt

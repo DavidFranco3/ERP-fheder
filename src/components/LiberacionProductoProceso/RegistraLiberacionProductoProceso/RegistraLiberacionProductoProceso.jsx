@@ -312,7 +312,7 @@ function RegistraLiberacionProductoProceso(props) {
         : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
             : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
                 : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
-    console.log(fecha)
+    
     const [fechaElaboracion, setFechaElaboracion] = useState(fecha);
 
     const [fechaArranque, setFechaArranque] = useState(fecha);

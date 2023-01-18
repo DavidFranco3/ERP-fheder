@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faArrowPointer } from "@fortawesome/free-solid-svg-icons";
 import "./ListIntegracionVentasGastos.scss";
 import ClienteAsignado from "./ClienteAsignado";
+import EliminacionLogicaIntegracion from "../EliminacionLogica";
 import { estilos } from "../../../utils/tableStyled";
 
 function ListIntegracionVentasGastos(props) {
@@ -35,6 +36,20 @@ function ListIntegracionVentasGastos(props) {
     // Para la eliminacion fisica de usuarios
     const modificacionIntegracion = (content) => {
         setTitulosModal("Modificar");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+     //Para la eliminacion logica de usuarios
+     const eliminaLogicaVentas = (content) => {
+        setTitulosModal("Deshabilitando la integracion");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaVentas = (content) => {
+        setTitulosModal("Habilitando la integracion");
         setContentModal(content);
         setShowModal(true);
     }
@@ -123,6 +138,53 @@ function ListIntegracionVentasGastos(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaVentas(
+                                        <EliminacionLogicaIntegracion
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activa
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaVentas(
+                                        <EliminacionLogicaIntegracion
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactiva
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: "Acciones",

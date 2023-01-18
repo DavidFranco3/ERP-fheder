@@ -176,7 +176,7 @@ function ModificaProgramaProduccion(props) {
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
         try {
-            obtenerMatrizProducto(formDataProduccion.idProducto).then(response => {
+            obtenerMatrizProducto(formDataProduccion.producto).then(response => {
                 const { data } = response;
                 // console.log(data)
                 // initialData
@@ -193,7 +193,7 @@ function ModificaProgramaProduccion(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [formDataProduccion.idProducto]);
+    }, [formDataProduccion.producto]);
 
     const [unidadMedida, setUnidadMedida] = useState("Piezas");
 
@@ -543,8 +543,8 @@ function ModificaProgramaProduccion(props) {
                     fechaInicio: formData.fechaInicio,
                     cliente: formDataPrograma.cliente,
                     nombreCliente: formDataPrograma.nombreCliente,
-                    producto: formDataProduccion.idProducto,
-                    nombreProducto: formDataProduccion.producto,
+                    producto: formDataProduccion.producto,
+                    nombreProducto: formDataProduccion.nombreProducto,
                     cantidadFabricar: formDataProduccion.cantidadFabricar,
                     acumulado: formDataProduccion.acumulado,
                     ciclo: formDataPrograma.ciclo,
@@ -1280,8 +1280,8 @@ function initialFormDataProduccion(data) {
     return {
         semana: data.ordenProduccion.semana,
         ordenProduccion: data.folioOP,
-        idProducto: data.ordenProduccion.producto,
-        producto: data.ordenProduccion.nombreProducto,
+        idProducto: data.ordenProduccion.nombreProducto,
+        producto: data.ordenProduccion.producto,
         cantidadFabricar: data.ordenProduccion.cantidadFabricar,
         acumulado: data.ordenProduccion.acumulado,
         cavidades: data.ordenProduccion.cavidades,

@@ -163,6 +163,7 @@ function formatModelIntegracionesVentasGastos(data) {
             importe: data.importe,
             iva: data.iva,
             total: data.total,
+            estado: data.estado,
             observaciones: data.observaciones,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt

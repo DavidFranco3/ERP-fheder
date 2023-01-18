@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import queryString from "query-string";
-import "./EliminacionLogicaVentas.scss";
+import "./EliminacionLogicaIntegracion.scss";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { eliminaDepartamento } from "../../../api/departamentos";
 import { toast } from "react-toastify";
-import { actualizaEstadoPedidoVenta } from "../../../api/pedidoVenta";
+import { actualizaEstadoIntegraciones } from "../../../api/integracionVentasGastos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
-function EliminacionLogicaVentas(props) {
-    const { datos, setShowModal, history } = props;
-    const { id, folio, condicionesPago, numeroPedido, fechaElaboracion, estado } = datos;
+function EliminacionLogicaIntegracion(props) {
+    const { data, setShowModal, history } = props;
+    const { id, folio, importe, iva, total, estado } = data;
 
     // Para determinar el uso de la animacion
     const [loading, setLoading] = useState(false);
@@ -30,16 +30,16 @@ function EliminacionLogicaVentas(props) {
         //console.log(dataTemp)
 
         try {
-            actualizaEstadoPedidoVenta(id, dataTemp).then(response => {
+            actualizaEstadoIntegraciones(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
                 if (dataTemp.estado === "true") {
-                    toast.success("Venta habilitada");
-                    LogsInformativos("Se ha habilitado la venta " + folio, datos);
+                    toast.success("Integracion habilitada");
+                    LogsInformativos("Se ha habilitado la integracion de ventas y gastos " + folio, dataTemp);
                 }
                 if (dataTemp.estado === "false") {
                     toast.success("Venta deshabilitada");
-                    LogsInformativos("Se ha deshabilitado la venta " + folio, datos);
+                    LogsInformativos("Se ha deshabilitado la integracion de ventas y gastos " + folio, dataTemp);
                 }
                 setShowModal(false);
                 setLoading(false);
@@ -63,7 +63,7 @@ function EliminacionLogicaVentas(props) {
                             <Alert variant="danger">
                                 <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
                                 <p className="mensaje">
-                                    Esta acción deshabilitara en el sistema la venta.
+                                    Esta acción deshabilitara en el sistema la integracion de ventas y gastos.
                                 </p>
                             </Alert>
                         </>
@@ -72,7 +72,7 @@ function EliminacionLogicaVentas(props) {
                             <Alert variant="success">
                                 <Alert.Heading>Atención! Acción contructiva!</Alert.Heading>
                                 <p className="mensaje">
-                                    Esta acción habilitara en el sistema la venta.
+                                    Esta acción habilitara en el sistema la integracion de ventas y gastos.
                                 </p>
                             </Alert>
                         </>
@@ -92,11 +92,11 @@ function EliminacionLogicaVentas(props) {
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            condiciones de pago
+                            Importe
                         </Form.Label>
                         <Form.Control
                             type="text"
-                            value={condicionesPago}
+                            value={importe}
                             disabled
                         />
                     </Form.Group>
@@ -111,7 +111,7 @@ function EliminacionLogicaVentas(props) {
                         </Form.Label>
                         <Form.Control
                             type="text"
-                            value={numeroPedido}
+                            value={iva}
                             disabled
                         />
                     </Form.Group>
@@ -121,12 +121,11 @@ function EliminacionLogicaVentas(props) {
                         </Form.Label>
                         <Form.Control
                             type="text"
-                            value={fechaElaboracion}
+                            value={total}
                             disabled
                         />
                     </Form.Group>
                 </Row>
-
 
                 <Form.Group as={Row} className="botones">
                     <Col>
@@ -156,4 +155,4 @@ function EliminacionLogicaVentas(props) {
     );
 }
 
-export default EliminacionLogicaVentas;
+export default EliminacionLogicaIntegracion;

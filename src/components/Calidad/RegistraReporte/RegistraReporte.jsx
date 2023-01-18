@@ -86,9 +86,6 @@ function RegistraReporte(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        if (!formData.fecha) {
-            toast.warning("Completa el formulario");
-        } else {
             //console.log("Continuar")
             setLoading(true)
             const temp = formData.nombreDescripcion.split("/")
@@ -99,7 +96,7 @@ function RegistraReporte(props) {
                     item: data.item,
                     folio: folioActual,
                     ordenVenta: formDataRecepcion.folioRecepcion,
-                    fecha: formData.fecha,
+                    fecha: fechaActual,
                     lote: formData.lote,
                     sucursal: getSucursal(),
                     propiedad: formData.propiedad,
@@ -138,9 +135,6 @@ function RegistraReporte(props) {
             }).catch(e => {
                 console.log(e)
             })
-
-        }
-
     }
 
     const onChange = e => {
@@ -199,6 +193,15 @@ function RegistraReporte(props) {
         }
     }, []);
 
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaActual, setFechaActual] = useState(fecha);
+
     return (
         <>
             <Alert>
@@ -220,9 +223,6 @@ function RegistraReporte(props) {
                     </Col>
                 </Row>
             </Alert>
-
-            <br />
-            <br />
 
             <Container fluid>
                 <br />
@@ -286,7 +286,8 @@ function RegistraReporte(props) {
                                             type="date"
                                             placeholder="Fecha"
                                             name="fecha"
-                                            defaultValue={formData.fecha}
+                                            value={fechaActual}
+                                            onChange={e => setFechaActual(e.target.value)}
                                         />
                                     </Form.Group>
 

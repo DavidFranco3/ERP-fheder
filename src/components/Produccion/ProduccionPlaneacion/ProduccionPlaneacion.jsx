@@ -206,12 +206,6 @@ function ProduccionPlaneacion(props) {
     // Para almacenar el listado de productos activos
     const [listProductosActivos, setListProductosActivos] = useState(null);
 
-    const hoy = new Date();
-    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
-    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate() : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
-
-    const [fechaActual, setFechaActual] = useState(fecha);
-
     // Para traer el listado de productos activos
     useEffect(() => {
         try {
@@ -301,7 +295,7 @@ function ProduccionPlaneacion(props) {
                 },
                 planeacion: {
                     ordenProduccion: folioActual,
-                    fecha: formData.fecha == "" ? fechaActual : formData.fecha,
+                    fecha: fechaActual,
                     noParte: formDataProduccion.noParte,
                     noCavidades: formDataProduccion.cavMolde,
                     cantidadProducir: formDataPlaneacion.cantidadProducir,
@@ -414,6 +408,15 @@ function ProduccionPlaneacion(props) {
     let piezasTurno2 = (((3600 / Number(formDataProduccion.tiempoCiclo2)) * Number(formDataProduccion.cavMolde)) * 12);
 
     let piezasTurno3 = (((3600 / Number(formDataProduccion.tiempoCiclo3)) * Number(formDataProduccion.cavMolde)) * 12);
+
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaActual, setFechaActual] = useState(fecha);
 
     return (
         <>
@@ -567,7 +570,8 @@ function ProduccionPlaneacion(props) {
                                             type="date"
                                             placeholder="fecha"
                                             name="fecha"
-                                            defaultValue={formData.fecha == "" ? fechaActual : formData.fecha}
+                                            value={fechaActual}
+                                            onChange={e => setFechaActual(e.target.value)}
                                         />
                                     </Form.Group>
 

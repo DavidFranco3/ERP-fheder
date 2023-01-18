@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta";
 import { obtenerCliente } from "../../../api/clientes";
-import { listarAlmacenPT } from "../../../api/almacenPT";
+import { listarRegistrosAlmacen } from "../../../api/almacenes";
 import { map } from "lodash";
 import { registraAsignacionPedido, obtenerItem } from "../../../api/asignacionPedido";
 import { toast } from "react-toastify";
@@ -81,7 +81,7 @@ function RegistraAsignacionPedido(props) {
 
     useEffect(() => {
         try {
-            listarAlmacenPT(getSucursal()).then(response => {
+            listarRegistrosAlmacen(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
                 if (!listMateriasPrimas && data) {

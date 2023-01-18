@@ -81,7 +81,7 @@ function RegistroReporteProduccion(props) {
                 const { data } = response;
                 const dataTemp = {
                     folio: data.folio,
-                    fecha: formData.fecha,
+                    fecha: fechaActual,
                     asistencias: formData.asistencias,
                     faltas: formData.faltas,
                     supervisor: formData.supervisor,
@@ -107,6 +107,15 @@ function RegistroReporteProduccion(props) {
             })
         }
     }
+
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaActual, setFechaActual] = useState(fecha);
 
     return (
         <>
@@ -150,7 +159,8 @@ function RegistroReporteProduccion(props) {
                                         type="date"
                                         placeholder="Fecha"
                                         name="fecha"
-                                        defaultValue={formData.fecha}
+                                        value={fechaActual}
+                                        onChange={e => setFechaActual(e.target.value)}
                                     />
                                 </Col>
 

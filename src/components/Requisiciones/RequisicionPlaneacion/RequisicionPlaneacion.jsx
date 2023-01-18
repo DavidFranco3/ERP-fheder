@@ -249,14 +249,6 @@ function RegistraRequisiciones(props) {
         }
     }, []);
 
-    const hoy = new Date();
-    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
-    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate() : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
-
-    console.log(fecha, formData.fecha)
-
-    const [fechaActual, setFechaActual] = useState(fecha);
-
     const onSubmit = (e) => {
         e.preventDefault()
 
@@ -274,8 +266,8 @@ function RegistraRequisiciones(props) {
                         item: data.item,
                         folio: folioActual,
                         sucursal: getSucursal(),
-                        fechaElaboracion: formData.fechaElaboracion == "" ? fechaActual : formData.fechaElaboracion,
-                        fechaRequisicion: formData.fechaRequisicion,
+                        fechaElaboracion: fechaElaboracion,
+                        fechaRequisicion: fechaRequisicion,
                         solicitante: formData.solicitante,
                         aprobo: formData.aprobo,
                         comentarios: formData.comentarios,
@@ -312,6 +304,17 @@ function RegistraRequisiciones(props) {
     }
 
     const renglon = listProductosCargados.length + 1;
+
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaElaboracion, setFechaElaboracion] = useState(fecha);
+
+    const [fechaRequisicion, setFechaRequisicion] = useState(fecha);
 
     return (
         <>
@@ -361,7 +364,8 @@ function RegistraRequisiciones(props) {
                                 type="date"
                                 placeholder="Escribe la fecha"
                                 name="fechaElaboracion"
-                                defaultValue={formData.fechaElaboracion == "" ? fechaActual : formData.fechaElaboracion}
+                                value={fechaElaboracion}
+                                onChange={e => setFechaElaboracion(e.target.value)}
                             >
                             </Form.Control>
                         </Form.Group>
@@ -456,7 +460,8 @@ function RegistraRequisiciones(props) {
                                 type="date"
                                 placeholder="Escribe la fecha"
                                 name="fechaRequisicion"
-                                defaultValue={formData.fechaRequisicion}
+                                value={fechaRequisicion}
+                                onChange={e => setFechaRequisicion(e.target.value)}
                             >
                             </Form.Control>
                         </Form.Group>

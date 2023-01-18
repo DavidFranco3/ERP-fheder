@@ -136,9 +136,6 @@ function RegistroEntradaSalida(props) {
         setShowModal(false)
     }
 
-    // Para almacenar la fecha actual
-    const [fechaActual, setFechaActual] = useState(new Date);
-
     // Para almacenar el folio actual
     const [itemActual, setItemActual] = useState("");
 
@@ -183,7 +180,7 @@ function RegistroEntradaSalida(props) {
                         tipoArticulo: formData.tipo,
                         sucursal: getSucursal(),
                         almacen: getAlmacen(),
-                        fecha: formData.fecha,
+                        fecha: fechaActual,
                         descripcion: formData.descripcion,
                         um: formDataBusqueda.um,
                         cantidadExistencia: formData.cantidad,
@@ -254,7 +251,16 @@ function RegistroEntradaSalida(props) {
         }
     }, [formData.referencia, formData.tipoOperacion]);
 
-    const temp = formData.articulo.split("/")
+    const temp = formData.articulo.split("/");
+
+    const hoy = new Date();
+    
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaActual, setFechaActual] = useState(fecha);
 
     return (
         <>
@@ -269,7 +275,8 @@ function RegistroEntradaSalida(props) {
                                 type="date"
                                 placeholder="Escribe la fecha"
                                 name="fecha"
-                                defaultValue={formData.fecha}
+                                value={fechaActual}
+                                onChange={e => setFechaActual(e.target.value)}
                             />
                         </Form.Group>
 

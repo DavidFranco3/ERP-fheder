@@ -87,9 +87,6 @@ function RegistroIdentificacionPT(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        if (!formData.fecha) {
-            toast.warning("Completa el formulario");
-        } else {
             //console.log("Continuar")
             setLoading(true)
 
@@ -99,7 +96,7 @@ function RegistroIdentificacionPT(props) {
                 const dataTemp = {
                     item: data.item,
                     folio: folioActual,
-                    fecha: formData.fecha,
+                    fecha: fechaActual,
                     descripcion: producto.descripcionProducto,
                     noParte: producto.numeroParte,
                     noOrden: producto.ordenProduccion,
@@ -129,12 +126,20 @@ function RegistroIdentificacionPT(props) {
             }).catch(e => {
                 console.log(e)
             })
-        }
     }
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
+
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaActual, setFechaActual] = useState(fecha);
 
     return (
         <>
@@ -153,7 +158,8 @@ function RegistroIdentificacionPT(props) {
                                         type="date"
                                         placeholder="Fecha"
                                         name="fecha"
-                                        defaultValue={formData.fecha}
+                                        value={fecha}
+                                        onChange={e => setFechaActual(e.target.value)}
                                     />
                                 </Col>
                             </Form.Group>

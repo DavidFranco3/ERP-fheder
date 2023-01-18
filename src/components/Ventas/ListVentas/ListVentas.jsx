@@ -12,6 +12,7 @@ import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from 
 import "./ListVentas.scss";
 import ClientesPedido from "./ClientesPedido";
 import { estilos } from "../../../utils/tableStyled";
+import EliminacionLogicaVentas from '../EliminacionLogica';
 import ListProductosVentas from '../ListProductosVentas';
 
 function ListVentas(props) {
@@ -29,6 +30,20 @@ function ListVentas(props) {
     // Para la eliminacion fisica de usuarios
     const eliminaPedidoVenta = (content) => {
         setTitulosModal("Eliminando el pedido");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const eliminaLogicaVentas = (content) => {
+        setTitulosModal("Deshabilitando la venta");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaVentas = (content) => {
+        setTitulosModal("Habilitando la venta");
         setContentModal(content);
         setShowModal(true);
     }
@@ -90,6 +105,53 @@ function ListVentas(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaVentas(
+                                        <EliminacionLogicaVentas
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activa
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaVentas(
+                                        <EliminacionLogicaVentas
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactiva
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: "Total",

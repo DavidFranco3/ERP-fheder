@@ -6,11 +6,11 @@ import { useHistory } from "react-router-dom";
 import { registraCertificado, obtenerNumeroCertificado, obtenerItemCertificado } from "../../../api/certificadosCalidad";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistraReporte(props) {
     const { setRefreshCheckLogin } = props;
-    
+
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
 
@@ -57,164 +57,168 @@ function RegistraReporte(props) {
 
     const onSubmit = e => {
         e.preventDefault();
+        //console.log("Continuar")
+        setLoading(true)
 
-        if (!formData.fecha) {
-            toast.warning("Completa el formulario");
-        } else {
-            //console.log("Continuar")
-            setLoading(true)
-
-            // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            obtenerNumeroCertificado().then(response => {
-                const { data } = response;
-                const dataTemp = {
-                    item: item,
-                    folio: data.noCertificado,
-                    fecha: formData.fecha,
-                    noOrdenInterna: formData.ordenInterna,
-                    tamañoLote: formData.tamañoLote,
-                    cliente: formData.cliente,
-                    descripcion: formData.descripcion,
-                    numeroParte: formData.numeroParte,
-                    sucursal: getSucursal(),
-                    especificacionInforme: formData.especificacion,
-                    revisionAtributos: {
-                        1: {
-                            condicion: formData.completas,
-                            observacion: formData.observacion1
-                        },
-                        2: {
-                            condicion: formData.arillo,
-                            observacion: formData.observacion2
-                        },
-                        3: {
-                            condicion: formData.rechupe,
-                            observacion: formData.observacion3
-                        },
-                        4: {
-                            condicion: formData.rebaba,
-                            observacion: formData.observacion4
-                        },
-                        5: {
-                            condicion: formData.tono,
-                            observacion: formData.observacion5
-                        },
-                        6: {
-                            condicion: formData.rafaga,
-                            observacion: formData.observacion6
-                        },
-                        7: {
-                            condicion: formData.contaminacion,
-                            observacion: formData.observacion7
-                        },
-                        8: {
-                            condicion: formData.ensamble,
-                            observacion: formData.observacion1
-                        },
-                        9: {
-                            condicion: formData.ensamblar,
-                            observacion: formData.observacion9
-                        },
-                        10: {
-                            condicion: formData.etiqueta,
-                            observacion: formData.observacion10
-                        },
+        // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
+        obtenerNumeroCertificado().then(response => {
+            const { data } = response;
+            const dataTemp = {
+                item: item,
+                folio: data.noCertificado,
+                fecha: fechaActual,
+                noOrdenInterna: formData.ordenInterna,
+                tamañoLote: formData.tamañoLote,
+                cliente: formData.cliente,
+                descripcion: formData.descripcion,
+                numeroParte: formData.numeroParte,
+                sucursal: getSucursal(),
+                especificacionInforme: formData.especificacion,
+                revisionAtributos: {
+                    1: {
+                        condicion: formData.completas,
+                        observacion: formData.observacion1
                     },
-                    resultadoDimensional: {
-                        1: {
-                            especificacion: formData.hilos1,
-                            tolerancia: formData.hilos2,
-                            max: formData.hilos3,
-                            min: formData.hilos4,
-                            resultado: formData.hilos5,
-                            cota: formData.renglon1,
-                        },
-                        2: {
-                            especificacion: formData.sobre1,
-                            tolerancia: formData.sobre2,
-                            max: formData.sobre3,
-                            min: formData.sobre4,
-                            resultado: formData.sobre5,
-                            cota: formData.renglon2,
-                        },
-                        3: {
-                            especificacion: formData.interior1,
-                            tolerancia: formData.interior2,
-                            max: formData.interior3,
-                            min: formData.interior4,
-                            resultado: formData.interior5,
-                            cota: formData.renglon3,
-                        },
-                        4: {
-                            especificacion: formData.arillo1,
-                            tolerancia: formData.arillo2,
-                            max: formData.arillo3,
-                            min: formData.arillo4,
-                            resultado: formData.arillo5,
-                            cota: formData.renglon4,
-                        },
-                        5: {
-                            especificacion: formData.sello1,
-                            tolerancia: formData.sello2,
-                            max: formData.sello3,
-                            min: formData.sello4,
-                            resultado: formData.sello5,
-                            cota: formData.renglon5,
-                        },
-                        6: {
-                            especificacion: formData.diametro1,
-                            tolerancia: formData.diametro2,
-                            max: formData.diametro3,
-                            min: formData.diametro4,
-                            resultado: formData.diametro5,
-                            cota: formData.renglon6,
-                        },
-                        7: {
-                            especificacion: formData.boquilla1,
-                            tolerancia: formData.boquilla2,
-                            max: formData.boquilla3,
-                            min: formData.boquilla4,
-                            resultado: formData.boquilla5,
-                            cota: formData.renglon7,
-                        },
-                        8: {
-                            especificacion: formData.altura1,
-                            tolerancia: formData.altura2,
-                            max: formData.altura3,
-                            min: formData.altura4,
-                            resultado: formData.altura5,
-                            cota: formData.renglon8,
-                        }
+                    2: {
+                        condicion: formData.arillo,
+                        observacion: formData.observacion2
                     },
-                    observacionesResultados: formData.observaciones,
-                    equipoMedicion: formData.medicion,
-                    referencia: formData.referencia,
-                    realizo: formData.realizo,
-                    correo: formData.correo,
-                }
-                // console.log(dataTemp)
-                // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
-                // 
-                // Modificar el pedido creado recientemente
-                registraCertificado(dataTemp).then(response => {
-                    const { data: { mensaje, datos } } = response;
-                    LogsInformativos("Se ha registrado el certificado de calidad " + dataTemp.folio, dataTemp);
-                    // console.log(response)
-                    toast.success(mensaje)
-                    setLoading(false)
-                    rutaRegreso()
-                }).catch(e => {
-                    console.log(e)
-                })
+                    3: {
+                        condicion: formData.rechupe,
+                        observacion: formData.observacion3
+                    },
+                    4: {
+                        condicion: formData.rebaba,
+                        observacion: formData.observacion4
+                    },
+                    5: {
+                        condicion: formData.tono,
+                        observacion: formData.observacion5
+                    },
+                    6: {
+                        condicion: formData.rafaga,
+                        observacion: formData.observacion6
+                    },
+                    7: {
+                        condicion: formData.contaminacion,
+                        observacion: formData.observacion7
+                    },
+                    8: {
+                        condicion: formData.ensamble,
+                        observacion: formData.observacion1
+                    },
+                    9: {
+                        condicion: formData.ensamblar,
+                        observacion: formData.observacion9
+                    },
+                    10: {
+                        condicion: formData.etiqueta,
+                        observacion: formData.observacion10
+                    },
+                },
+                resultadoDimensional: {
+                    1: {
+                        especificacion: formData.hilos1,
+                        tolerancia: formData.hilos2,
+                        max: formData.hilos3,
+                        min: formData.hilos4,
+                        resultado: formData.hilos5,
+                        cota: formData.renglon1,
+                    },
+                    2: {
+                        especificacion: formData.sobre1,
+                        tolerancia: formData.sobre2,
+                        max: formData.sobre3,
+                        min: formData.sobre4,
+                        resultado: formData.sobre5,
+                        cota: formData.renglon2,
+                    },
+                    3: {
+                        especificacion: formData.interior1,
+                        tolerancia: formData.interior2,
+                        max: formData.interior3,
+                        min: formData.interior4,
+                        resultado: formData.interior5,
+                        cota: formData.renglon3,
+                    },
+                    4: {
+                        especificacion: formData.arillo1,
+                        tolerancia: formData.arillo2,
+                        max: formData.arillo3,
+                        min: formData.arillo4,
+                        resultado: formData.arillo5,
+                        cota: formData.renglon4,
+                    },
+                    5: {
+                        especificacion: formData.sello1,
+                        tolerancia: formData.sello2,
+                        max: formData.sello3,
+                        min: formData.sello4,
+                        resultado: formData.sello5,
+                        cota: formData.renglon5,
+                    },
+                    6: {
+                        especificacion: formData.diametro1,
+                        tolerancia: formData.diametro2,
+                        max: formData.diametro3,
+                        min: formData.diametro4,
+                        resultado: formData.diametro5,
+                        cota: formData.renglon6,
+                    },
+                    7: {
+                        especificacion: formData.boquilla1,
+                        tolerancia: formData.boquilla2,
+                        max: formData.boquilla3,
+                        min: formData.boquilla4,
+                        resultado: formData.boquilla5,
+                        cota: formData.renglon7,
+                    },
+                    8: {
+                        especificacion: formData.altura1,
+                        tolerancia: formData.altura2,
+                        max: formData.altura3,
+                        min: formData.altura4,
+                        resultado: formData.altura5,
+                        cota: formData.renglon8,
+                    }
+                },
+                observacionesResultados: formData.observaciones,
+                equipoMedicion: formData.medicion,
+                referencia: formData.referencia,
+                realizo: formData.realizo,
+                correo: formData.correo,
+            }
+            // console.log(dataTemp)
+            // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
+            // 
+            // Modificar el pedido creado recientemente
+            registraCertificado(dataTemp).then(response => {
+                const { data: { mensaje, datos } } = response;
+                LogsInformativos("Se ha registrado el certificado de calidad " + dataTemp.folio, dataTemp);
+                // console.log(response)
+                toast.success(mensaje)
+                setLoading(false)
+                rutaRegreso()
             }).catch(e => {
                 console.log(e)
             })
-        }
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
+
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaActual, setFechaActual] = useState(fecha);
 
     return (
         <>
@@ -259,7 +263,8 @@ function RegistraReporte(props) {
                                                 type="date"
                                                 placeholder="Fecha"
                                                 name="fecha"
-                                                defaultValue={formData.fecha}
+                                                value={fechaActual}
+                                                onChange={e => setFechaActual(e.target.value)}
                                             />
                                         </Col>
                                         <Col sm="2">

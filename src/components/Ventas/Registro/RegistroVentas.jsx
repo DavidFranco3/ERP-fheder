@@ -203,46 +203,46 @@ function RegistroVentas(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        if (!formData.cliente || !formData.numeroPedido || !formData.fechaPedido || !formData.fechaEntrega || !formData.condicionesPago || !formData.especificaciones) {
+        if (!formData.cliente || !formData.numeroPedido || !formData.condicionesPago || !formData.especificaciones) {
             toast.warning("Completa el formulario");
         } else {
             //console.log("Continuar")
             setLoading(true);
 
-                const dataTemp = {
-                    folio: folioActual,
-                    fechaElaboracion: formData.fechaPedido,
-                    fechaEntrega: formData.fechaEntrega,
-                    cliente: formData.cliente,
-                    nombreCliente: formData.nombreCliente,
-                    condicionesPago: formData.condicionesPago,
-                    incoterms: formData.incoterms,
-                    sucursal: getSucursal(),
-                    moneda: "M.N.",
-                    numeroPedido: formData.numeroPedido,
-                    lugarEntrega: formData.lugarEntrega,
-                    cotizacion: linkCotizacion,
-                    total: totalSinIVA,
-                    especificaciones: formData.especificaciones,
-                    productos: listProductosCargados,
-                    status: "true"
-                }
-                // console.log(dataTemp)
+            const dataTemp = {
+                folio: folioActual,
+                fechaElaboracion: fechaPedido,
+                fechaEntrega: fechaEntrega,
+                cliente: formData.cliente,
+                nombreCliente: formData.nombreCliente,
+                condicionesPago: formData.condicionesPago,
+                incoterms: formData.incoterms,
+                sucursal: getSucursal(),
+                moneda: "M.N.",
+                numeroPedido: formData.numeroPedido,
+                lugarEntrega: formData.lugarEntrega,
+                cotizacion: linkCotizacion,
+                total: totalSinIVA,
+                especificaciones: formData.especificaciones,
+                productos: listProductosCargados,
+                estado: "true"
+            }
+            // console.log(dataTemp)
 
-                // Modificar el pedido creado recientemente
-                registraPedidoVenta(dataTemp).then(response => {
-                    const { data: { mensaje, datos } } = response;
-                    // console.log(response)
-                    toast.success(mensaje)
-                    // Log acerca del registro inicial del tracking
-                    LogsInformativos("Se han registrado la orden de venta con folio " + dataTemp.noVenta, dataTemp)
-                    // Registro inicial del tracking
-                    LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
-                    setLoading(false)
-                    regresaListadoVentas()
-                }).catch(e => {
-                    console.log(e)
-                })
+            // Modificar el pedido creado recientemente
+            registraPedidoVenta(dataTemp).then(response => {
+                const { data: { mensaje, datos } } = response;
+                // console.log(response)
+                toast.success(mensaje)
+                // Log acerca del registro inicial del tracking
+                LogsInformativos("Se han registrado la orden de venta con folio " + dataTemp.noVenta, dataTemp)
+                // Registro inicial del tracking
+                LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
+                setLoading(false)
+                regresaListadoVentas()
+            }).catch(e => {
+                console.log(e)
+            })
         }
     }
 
@@ -353,7 +353,16 @@ function RegistroVentas(props) {
 
     const renglon = listProductosCargados.length + 1;
 
-    console.log(cargaProductos)
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaPedido, setFechaPedido] = useState(fecha);
+
+    const [fechaEntrega, setFechaEntrega] = useState(fecha);
 
     return (
         <>
@@ -453,7 +462,8 @@ function RegistroVentas(props) {
                                             type="date"
                                             placeholder="Fecha de pedido"
                                             name="fechaPedido"
-                                            defaultValue={formData.fechaPedido}
+                                            value={fechaPedido}
+                                            onChange={e => setFechaPedido(e.target.value)}
                                         />
                                     </Col>
                                 </Form.Group>
@@ -473,7 +483,8 @@ function RegistroVentas(props) {
                                             type="date"
                                             placeholder="Fecha de entrega"
                                             name="fechaEntrega"
-                                            defaultValue={formData.fechaEntrega}
+                                            value={fechaEntrega}
+                                            onChange={e => setFechaEntrega(e.target.value)}
                                         />
                                     </Col>
                                 </Form.Group>

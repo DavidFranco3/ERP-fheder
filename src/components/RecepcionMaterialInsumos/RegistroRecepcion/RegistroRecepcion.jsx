@@ -252,7 +252,7 @@ function RegistroRecepcion(props) {
                     ordenCompra: formDataOC.ordenCompra,
                     proveedor: formDataOC.proveedor,
                     nombreProveedor: formDataOC.nombreProveedor,
-                    fechaRecepcion: formData.fecha,
+                    fechaRecepcion: fechaElaboracion,
                     precio: precioTotal,
                     sucursal: getSucursal(),
                     cantidad: cantidadTotal,
@@ -406,7 +406,16 @@ function RegistroRecepcion(props) {
 
     const renglon = listProductosCargados.length + 1;
 
-    const temp = cargaProductos.folio.split("-")
+    const temp = cargaProductos.folio.split("-");
+
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaElaboracion, setFechaElaboracion] = useState(fecha);
 
     return (
         <>
@@ -460,7 +469,8 @@ function RegistroRecepcion(props) {
                                         type="date"
                                         placeholder="Fecha"
                                         name="fecha"
-                                        defaultValue={formData.fecha}
+                                        value={fechaElaboracion}
+                                        onChange={e => setFechaElaboracion(e.target.value)}
                                     />
                                 </Form.Group>
 

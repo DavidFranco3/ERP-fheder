@@ -153,7 +153,7 @@ function RegistraProgramaProduccion(props) {
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
         try {
-            obtenerMatrizProducto(formDataProduccion.idProducto).then(response => {
+            obtenerMatrizProducto(formDataProduccion.producto).then(response => {
                 const { data } = response;
                 // console.log(data)
                 // initialData
@@ -170,7 +170,7 @@ function RegistraProgramaProduccion(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [formDataProduccion.idProducto]);
+    }, [formDataProduccion.producto]);
 
     const [unidadMedida, setUnidadMedida] = useState("Piezas");
 
@@ -522,8 +522,8 @@ function RegistraProgramaProduccion(props) {
                     fechaInicio: formData.fechaInicio,
                     cliente: formDataPrograma.cliente,
                     nombreCliente: formDataPrograma.nombreCliente,
-                    producto: formDataProduccion.idProducto,
-                    nombreProducto: formDataProduccion.producto,
+                    producto: formDataProduccion.producto,
+                    nombreProducto: formDataProduccion.idProducto,
                     cantidadFabricar: formDataProduccion.cantidadFabricar,
                     acumulado: formDataProduccion.acumulado,
                     ciclo: formDataPrograma.ciclo,
@@ -925,14 +925,14 @@ function RegistraProgramaProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="Producto"
-                                            defaultValue={formDataProduccion.producto}
+                                            defaultValue={formDataProduccion.idProducto}
                                             name="producto"
                                         />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
                                         <Form.Label align="center">
-                                            Cantida a fabricar
+                                            Cantidad a fabricar
                                         </Form.Label>
                                         <Form.Control
                                             type="text"

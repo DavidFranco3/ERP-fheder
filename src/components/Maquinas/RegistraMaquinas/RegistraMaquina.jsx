@@ -86,7 +86,7 @@ function RegistraMaquinas(props) {
                 noSerie: formData.noSerie,
                 lugar: formData.lugar,
                 sucursal: getSucursal(),
-                fechaAdquisicion: formData.fechaAdquisicion,
+                fechaAdquisicion: fechaAdquisicion,
                 status: "true"
             }
             // console.log(dataTemp)
@@ -123,6 +123,15 @@ function RegistraMaquinas(props) {
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
+
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaAdquisicion, setFechaAdquisicion] = useState(fecha);
 
     return (
         <>
@@ -221,7 +230,8 @@ function RegistraMaquinas(props) {
                                     type="date"
                                     placeholder="Fecha de adquisicion"
                                     name="fechaAdquisicion"
-                                    defaultValue={formData.fechaAdquisicion}
+                                    value={fechaAdquisicion}
+                                    onChange={e => setFechaAdquisicion(e.target.value)}
                                 />
                             </Form.Group>
                         </Row>

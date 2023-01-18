@@ -66,7 +66,6 @@ function BuscarPlaneaciones(props) {
                 semana: valoresCliente.semana,
                 ordenProduccion: valoresCliente.ordenProduccion,
                 idProducto: valoresCliente.idProducto,
-                producto: valoresCliente.producto,
                 cantidadFabricar: valoresCliente.cantidadFabricar,
                 acumulado: valoresCliente.acumulado,
                 cavidades: valoresCliente.cavidades,
@@ -334,8 +333,7 @@ function valoresAlmacenados(data) {
 
         semana: data.requerimiento.semana,
         ordenProduccion: data.folio,
-        idProducto: data.requerimiento.producto,
-        producto: data.requerimiento.nombreProducto,
+        idProducto: data.requerimiento.nombreProducto,
         cantidadFabricar: data.requerimiento.totalProducir,
         acumulado: data.requerimiento.almacenProductoTerminado,
         cavidades: data.planeacion.numeroCavidades,

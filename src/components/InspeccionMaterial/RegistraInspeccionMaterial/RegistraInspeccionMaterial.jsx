@@ -159,7 +159,7 @@ function RegistraInspeccionMaterial(props) {
         e.preventDefault()
 
 
-        if (!formData.fechaElaboracion || !formData.ordenProduccion || !formData.fechaArranque || !formData.numeroMaquina || !formData.cantidadLote) {
+        if (!formData.ordenProduccion || !formData.numeroMaquina || !formData.cantidadLote) {
             toast.warning("Completa el formulario");
         } else {
             //console.log(formData)
@@ -168,9 +168,9 @@ function RegistraInspeccionMaterial(props) {
                 const { data } = response;
                 const dataTemp = {
                     folio: data.noInspeccion,
-                    fechaElaboracion: formData.fechaElaboracion,
+                    fechaElaboracion: fechaElaboracion,
                     noOP: formData.ordenProduccion,
-                    fechaArranqueMaquina: formData.fechaArranque,
+                    fechaArranqueMaquina: fechaArranque,
                     noMaquina: formData.numeroMaquina,
                     cliente: nombreCliente,
                     descripcionPieza: producto,
@@ -848,6 +848,16 @@ function RegistraInspeccionMaterial(props) {
         }
     }, [revision101]);
 
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaElaboracion, setFechaElaboracion] = useState(fecha);
+
+    const [fechaArranque, setFechaArranque] = useState(fecha);
+
     return (
         <>
             <Alert>
@@ -893,7 +903,8 @@ function RegistraInspeccionMaterial(props) {
                                                 type="date"
                                                 placeholder="Fecha de elaboración"
                                                 name="fechaElaboracion"
-                                                defaultValue={formData.fechaElaboracion}
+                                                value={fechaElaboracion}
+                                                onChange={e => setFechaElaboracion(e.target.value)}
                                             />
                                         </Col>
 
@@ -959,7 +970,8 @@ function RegistraInspeccionMaterial(props) {
                                                 type="date"
                                                 placeholder="Fecha de arranque de maquina"
                                                 name="fechaArranque"
-                                                defaultValue={formData.fechaArranque}
+                                                value={fechaArranque}
+                                                onChange={e => setFechaArranque(e.target.value)}
                                             />
                                         </Col>
 
