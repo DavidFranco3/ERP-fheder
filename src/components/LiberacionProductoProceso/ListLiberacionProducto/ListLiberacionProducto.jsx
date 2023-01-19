@@ -1,17 +1,18 @@
-import {useEffect, useMemo, useState} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import moment from "moment";
-import {Badge, Button, Container, Table} from "react-bootstrap";
-import {map} from "lodash";
+import { Badge, Button, Container, Table } from "react-bootstrap";
+import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
 import EliminaLiberacionProducto from '../EliminaLiberacionProducto';
 import styled from 'styled-components';
-import DataTable  from 'react-data-table-component';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@fortawesome/free-solid-svg-icons";
+import DataTable from 'react-data-table-component';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./ListLiberacionProducto.scss";
 //import ClientesPedido from "./ClientesPedido";
-import {estilos} from "../../../utils/tableStyled";
+import { estilos } from "../../../utils/tableStyled";
+import EliminacionLogicaLiberacion from '../EliminacionLogica';
 
 function ListLiberacionProducto(props) {
     const { setRefreshCheckLogin, listLiberacion, history, location } = props;
@@ -32,6 +33,20 @@ function ListLiberacionProducto(props) {
         setShowModal(true);
     }
 
+    //Para la eliminacion logica de usuarios
+    const eliminaLogicaLiberacion = (content) => {
+        setTitulosModal("Deshabilitando la hoja de liberacion de producto y proceso");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaLiberacion = (content) => {
+        setTitulosModal("Habilitando la hoja de liberacion de producto y proceso");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
     // Para la modificacion de datos del pedido
     const modificaLiberacion = (id) => {
         enrutamiento.push(`/ModificaLiberacionProductoProceso/${id}`);
@@ -41,7 +56,7 @@ function ListLiberacionProducto(props) {
     const vistaPrevia = () => {
         // enrutamiento.push("")
     }
-    
+
     const columns = [
         {
             name: "ITEM",
@@ -128,6 +143,53 @@ function ListLiberacionProducto(props) {
             reorder: false
         },
         {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaLiberacion(
+                                        <EliminacionLogicaLiberacion
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activa
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaLiberacion(
+                                        <EliminacionLogicaLiberacion
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactiva
+                            </Badge>
+                        </>
+                    )
+        },
+        {
             name: "Acciones",
             center: true,
             reorder: true,
@@ -194,8 +256,8 @@ function ListLiberacionProducto(props) {
 
     return (
         <>
-        <Container fluid>
-            <DataTable
+            <Container fluid>
+                <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
                     // actions={descargaCSV}
@@ -208,8 +270,8 @@ function ListLiberacionProducto(props) {
                     paginationResetDefaultPage={resetPaginationToogle}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
-            />
-        </Container>
+                />
+            </Container>
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}

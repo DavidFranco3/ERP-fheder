@@ -7,6 +7,7 @@ import {
     ENDPOINTObtenerNoReportesProduccion,
     ENDPOINTEliminarReportesProduccion,
     ENDPOINTActualizarReportesProduccion,
+    ENDPOINTActualizarEstadoReportesProduccion,
     ENDPOINTTotalReportesProduccion
 } from "./endpoints";
 import axios from 'axios';
@@ -97,6 +98,19 @@ export async function eliminaReportesProduccion(id) {
     };
 
     return await axios.delete(API_HOST + ENDPOINTEliminarReportesProduccion + `/${id}`, config);
+}
+
+// Para actualizar el estado del pedido de venta -- ENDPOINTActualizarEstadoPedidoVenta
+export async function actualizaEstadoReporteProduccion(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTActualizarEstadoReportesProduccion + `/${id}`, data, config);
 }
 
 // Modifica datos de un Reporte de Produción

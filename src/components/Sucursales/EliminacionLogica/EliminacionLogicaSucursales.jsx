@@ -37,14 +37,8 @@ function EliminacionLogicaSucursales(props) {
             deshabilitaSucursal(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.estadoSucursal === "true") {
-                    toast.success("Sucursal habilitada");
-                    LogsInformativos("Se ha habilitado la sucursal " + formData.nombre, data)
-                }
-                if (dataTemp.estadoSucursal === "false") {
-                    toast.success("Sucursal deshabilitada");
-                    LogsInformativos("Se ha habilitado la sucursal " + formData.nombre, data)
-                }
+                toast.success(data.mensaje);
+                LogsInformativos("Se ha actualizado el estado de la sucursal " + formData.nombre, data)
                 setShowModal(false);
                 setLoading(false);
                 history.push({

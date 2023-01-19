@@ -33,14 +33,8 @@ function EliminacionLogicaVentas(props) {
             actualizaEstadoPedidoVenta(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.estado === "true") {
-                    toast.success("Venta habilitada");
-                    LogsInformativos("Se ha habilitado la venta " + folio, datos);
-                }
-                if (dataTemp.estado === "false") {
-                    toast.success("Venta deshabilitada");
-                    LogsInformativos("Se ha deshabilitado la venta " + folio, datos);
-                }
+                    toast.success(data.mensaje);
+                    LogsInformativos("Se ha actualiza el estado de la orden de venta " + folio, datos);
                 setShowModal(false);
                 setLoading(false);
                 history.push({

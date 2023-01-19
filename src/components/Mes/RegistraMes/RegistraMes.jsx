@@ -60,6 +60,7 @@ function RegistraMes(props) {
                     sucursal: getSucursal(),
                     dias: formData.diasMes,
                     noMaquinas: "0",
+                    estado: "true"
                 }
 
                 registraMes(dataTemp).then(response => {

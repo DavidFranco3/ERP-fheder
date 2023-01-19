@@ -143,6 +143,7 @@ function formatModelCertificadosCalidad(data) {
             referencia: data.referencia,
             realizo: data.realizo,
             correo: data.correo,
+            estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

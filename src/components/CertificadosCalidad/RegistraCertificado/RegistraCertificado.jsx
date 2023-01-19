@@ -187,6 +187,7 @@ function RegistraReporte(props) {
                 referencia: formData.referencia,
                 realizo: formData.realizo,
                 correo: formData.correo,
+                estado: "true"
             }
             // console.log(dataTemp)
             // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos

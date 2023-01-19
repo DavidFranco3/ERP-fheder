@@ -139,6 +139,7 @@ function formatModelRecepciones(data) {
             cantidad: data.cantidad,
             productos: data.productos,
             valorTotal: data.valorTotal,
+            estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

@@ -150,6 +150,7 @@ function formatModelMateriales(data) {
             precio: data.precio,
             um: data.um,
             proveedor: data.proveedor,
+            estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

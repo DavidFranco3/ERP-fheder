@@ -14,6 +14,7 @@ import moment from "moment";
 import ModificaRequisiciones from '../ModificaRequisiciones';
 import { useHistory } from "react-router-dom";
 import ListProductosRequisicion from '../ListProductosRequisicion';
+import EliminacionLogicaRequisiciones from '../EliminacionLogica';
 
 function ListRequisiciones(props) {
     const { listRequisiciones, setRefreshCheckLogin, history, location } = props;
@@ -34,9 +35,16 @@ function ListRequisiciones(props) {
         setShowModal(true);
     }
 
-    //Para cambiar el status del proveedor
-    const cambiarStatusProveedor = (content) => {
-        setTitulosModal("Cambiando status del vendedor");
+    //Para la eliminacion logica de usuarios
+    const eliminaLogicaRequisicion = (content) => {
+        setTitulosModal("Deshabilitando la requisicion");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaRequisicion = (content) => {
+        setTitulosModal("Habilitando la requisicion");
         setContentModal(content);
         setShowModal(true);
     }
@@ -108,10 +116,50 @@ function ListRequisiciones(props) {
         },
         {
             name: 'Estado',
-            selector: row => row.status == "" ? "No definido" : row.status,
-            sortable: false,
             center: true,
-            reorder: false
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaRequisicion(
+                                        <EliminacionLogicaRequisiciones
+                                            datosRequisicion={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activa
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaRequisicion(
+                                        <EliminacionLogicaRequisiciones
+                                            datosRequisicion={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactiva
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: 'Acciones',

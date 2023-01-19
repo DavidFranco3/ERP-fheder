@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import {Button, Col, Form, Row, Spinner, Alert} from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import "./EliminacionFisicaDepartamentos.scss";
-import {actualizaDepartamento, eliminaDepartamento} from "../../../api/departamentos";
-import {toast} from "react-toastify";
+import { actualizaDepartamento, eliminaDepartamento } from "../../../api/departamentos";
+import { toast } from "react-toastify";
 import queryString from "query-string";
 
 function EliminacionFisicaDepartamentos(props) {
@@ -11,7 +11,7 @@ function EliminacionFisicaDepartamentos(props) {
     const { id, nombre } = dataDepto;
 
     //console.log(dataDepto)
-    
+
     // Para cancelar la actualizacion
     const cancelarEliminacion = () => {
         setShowModal(false)
@@ -52,48 +52,49 @@ function EliminacionFisicaDepartamentos(props) {
     return (
         <>
             <Form onSubmit={onSubmit} onChange={onChange}>
-            
-            <Alert variant="danger">
-                <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
-                <p className="mensaje">
-                    Esta acción eliminara del sistema al departamento.
-                </p>
-            </Alert>
-            
+
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción eliminara del sistema al departamento.
+                    </p>
+                </Alert>
+
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridNombre">
                         <Form.Label>Nombre</Form.Label>
-                        <Form.Control type="text"
-                                      name="nombre"
-                                      disabled={true}
-                                      defaultValue={formData.nombre}
+                        <Form.Control
+                            type="text"
+                            name="nombre"
+                            disabled={true}
+                            defaultValue={formData.nombre}
                         />
                     </Form.Group>
                 </Row>
 
                 <Form.Group as={Row} className="botones">
-                        <Col>
-                            <Button
-                                type="submit"
-                                title="Eliminar"
-                                variant="success"
-                                className="registrar"
-                            >
-                                {!loading ? "Eliminar" : <Spinner animation="border" />}
-                            </Button>
-                        </Col>
-                        <Col>
-                            <Button
-                                variant="danger"
-                                className="cancelar"
-                                onClick={() => {
-                                    cancelarEliminacion()
-                                }}
-                            >
-                                Cancelar
-                            </Button>
-                        </Col>
-                    </Form.Group>
+                    <Col>
+                        <Button
+                            type="submit"
+                            title="Eliminar"
+                            variant="success"
+                            className="registrar"
+                        >
+                            {!loading ? "Eliminar" : <Spinner animation="border" />}
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button
+                            variant="danger"
+                            className="cancelar"
+                            onClick={() => {
+                                cancelarEliminacion()
+                            }}
+                        >
+                            Cancelar
+                        </Button>
+                    </Col>
+                </Form.Group>
             </Form>
         </>
     );

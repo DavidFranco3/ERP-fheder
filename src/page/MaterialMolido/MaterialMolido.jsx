@@ -156,6 +156,7 @@ function formatModelEtiquetaMolido(data) {
             color: data.color,
             peso: data.peso,
             nombreMolinero: data.nombreMolinero,
+            estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

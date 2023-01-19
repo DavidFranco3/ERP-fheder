@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta";
 import { obtenerCliente } from "../../../api/clientes";
-import { listarRegistrosAlmacen } from "../../../api/almacenes";
+import { listarRegistrosGeneralesAlmacen } from "../../../api/almacenes";
 import { map } from "lodash";
 import { registraAsignacionPedido, obtenerItem } from "../../../api/asignacionPedido";
 import { toast } from "react-toastify";
@@ -12,7 +12,7 @@ import BasicModal from "../../Modal/BasicModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { getSucursal } from "../../../api/auth";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistraAsignacionPedido(props) {
     const { setShowModal, location, history } = props;
@@ -81,7 +81,7 @@ function RegistraAsignacionPedido(props) {
 
     useEffect(() => {
         try {
-            listarRegistrosAlmacen(getSucursal()).then(response => {
+            listarRegistrosGeneralesAlmacen(getSucursal()).then(response => {
                 const { data } = response;
                 // console.log(data)
                 if (!listMateriasPrimas && data) {
@@ -112,6 +112,7 @@ function RegistraAsignacionPedido(props) {
             idProducto: temp[0],
             um: temp[1],
             cantidadPedida: temp[2],
+            producto: temp[3]
         })
     }
 
@@ -140,7 +141,8 @@ function RegistraAsignacionPedido(props) {
                     cantidadPedida: almacenPT.cantidadPedida,
                     cantidadAsignada: "N/A",
                     plantaAsignada: "N/A",
-                    producto: almacenPT.idProducto
+                    producto: almacenPT.producto,
+                    estado: "true"
                 }
 
                 registraAsignacionPedido(dataTemp).then(response => {
@@ -294,9 +296,9 @@ function RegistraAsignacionPedido(props) {
                                         {map(listMateriasPrimas, (producto, index) => (
                                             <option
                                                 key={index}
-                                                value={producto.idProducto + "/" + producto.um + "/" + producto.existenciasTotales}
+                                                value={producto.idArticulo + "/" + producto.um + "/" + producto.cantidadExistencia + "/" + producto.nombreArticulo}
                                             >
-                                                {producto.nombre}
+                                                {producto.nombreArticulo}
                                             </option>
                                         ))}
                                     </Form.Control>
@@ -351,16 +353,20 @@ function formatModelAlmacenPT(data) {
     data.forEach(data => {
         dataTemp.push({
             id: data._id,
-            idProducto: data.idProducto,
-            folioAlmacen: data.folioAlmacen,
-            folioMP: data.folioMP,
-            nombre: data.nombre,
-            descripcion: data.descripcion,
+            item: data.item,
+            folio: data.folio,
+            idArticulo: data.idArticulo,
+            folioArticulo: data.folioArticulo,
+            nombreArticulo: data.nombreArticulo,
+            sucursal: data.sucursal,
+            almacen: data.almacen,
             um: data.um,
+            tipo: data.tipo,
+            fecha: data.fecha,
+            tipoArticulo: data.tipoArticulo,
+            descripcion: data.descripcion,
             movimientos: data.movimientos,
-            existenciasOV: data.existenciasOV,
-            existenciasStock: data.existenciasStock,
-            existenciasTotales: data.existenciasTotales,
+            cantidadExistencia: data.cantidadExistencia,
             estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt

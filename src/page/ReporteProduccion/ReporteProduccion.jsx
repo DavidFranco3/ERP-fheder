@@ -137,6 +137,7 @@ function formatModelProduccion(data) {
             registros: data.registros,
             eficienciaGeneralMaquinas: data.eficienciaGeneralMaquinas,
             observacionesTurno: data.observacionesTurno,
+            estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

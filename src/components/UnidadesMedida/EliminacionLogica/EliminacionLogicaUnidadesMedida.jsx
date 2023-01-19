@@ -37,14 +37,8 @@ function EliminacionLogicaUnidadesMedida(props) {
             deshabilitaUM(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.estadoUM === "true") {
-                    LogsInformativos("La unidad de medida " + formData.nombre + " se habilito", dataUM)
-                    toast.success("Unidad de medida habilitada");
-                }
-                if (dataTemp.estadoUM === "false") {
-                    LogsInformativos("La unidad de medida " + formData.nombre + " se inhabilito", dataUM)
-                    toast.success("Unidad de medida deshabilitada");
-                }
+                    LogsInformativos("El estado de la unidad de medida " + formData.nombre + " se actualizo", dataUM)
+                    toast.success(data.mensaje);
                 setShowModal(false);
                 setLoading(false);
                 history.push({

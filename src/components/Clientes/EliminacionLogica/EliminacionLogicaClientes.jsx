@@ -37,14 +37,8 @@ function EliminacionLogicaClientes(props) {
             deshabilitaCliente(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.estadoCliente === "true") {
-                    LogsInformativos("El cliente " + formData.nombre + " se habilito", dataCliente)
-                    toast.success("Cliente habilitado");
-                }
-                if (dataTemp.estadoCliente === "false") {
-                    LogsInformativos("El cliente " + formData.nombre + " se inhabilito", dataCliente)
-                    toast.success("Cliente deshabilitado");
-                }
+                LogsInformativos("El cliente " + formData.nombre + " se actualizo", dataCliente)
+                toast.success(data.mensaje);
                 setShowModal(false);
                 setLoading(false);
                 history.push({

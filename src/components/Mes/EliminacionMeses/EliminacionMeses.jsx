@@ -7,7 +7,7 @@ import { Button, Form, Spinner, Alert, Row, Col } from "react-bootstrap";
 
 function EliminacionMeses(props) {
     const { data, setShowModal, history } = props;
-    const { id, folio, mes, dias, noMaquinas} = data;
+    const { id, folio, mes, dias, noMaquinas } = data;
 
     //console.log(data)
 
@@ -79,7 +79,7 @@ function EliminacionMeses(props) {
                 <br />
 
                 <Row>
-                <Form.Group as={Col} controlId="formGridCliente">
+                    <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
                             Dias del mes
                         </Form.Label>

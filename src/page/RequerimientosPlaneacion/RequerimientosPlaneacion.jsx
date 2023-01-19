@@ -133,6 +133,7 @@ function formatModelRequerimientosPlaneacion(data) {
             requerimiento: data.requerimiento,
             planeacion: data.planeacion,
             bom: data.bom,
+            estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

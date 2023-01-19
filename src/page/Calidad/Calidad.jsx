@@ -143,6 +143,7 @@ function formatModelInspeccion(data) {
             empaqueDañado: data.empaqueDañado,
             resultadoFinalInspeccion: data.resultadoFinalInspeccion,
             observaciones: data.observaciones,
+            estado: data.estado,
             fechaCreacion: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

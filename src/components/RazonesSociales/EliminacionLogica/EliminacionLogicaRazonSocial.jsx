@@ -37,14 +37,8 @@ function EliminacionLogicaRazonSocial(props) {
             deshabilitaRazonSocial(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.estadoRazonSocial === "true") {
-                    LogsInformativos("La razón social " + formData.nombre + " se habilito", dataRazonSocial)
+                    LogsInformativos("El estado de la razon sociol " + formData.nombre + " se actualizo", dataRazonSocial)
                     toast.success(data.mensaje);
-                }
-                if (dataTemp.estadoRazonSocial === "false") {
-                    LogsInformativos("La razón social " + formData.nombre + " se inhabilito", dataRazonSocial)
-                    toast.success(data.mensaje);
-                }
                 setShowModal(false);
                 setLoading(false);
                 history.push({

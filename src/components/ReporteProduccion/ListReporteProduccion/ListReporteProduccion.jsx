@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./ListReporteProduccion.scss";
 import { estilos } from "../../../utils/tableStyled";
+import EliminacionLogicaProduccion from '../EliminacionLogica';
 
 function ListReporteProduccion(props) {
     const { setRefreshCheckLogin, listProduccion, history, location } = props;
@@ -26,6 +27,20 @@ function ListReporteProduccion(props) {
     // Para la eliminacion fisica de usuarios
     const eliminaProduccion = (content) => {
         setTitulosModal("Eliminando el reporte de produccion");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const eliminaLogicaProduccion = (content) => {
+        setTitulosModal("Deshabilitando el reporte de produccion");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaProduccion = (content) => {
+        setTitulosModal("Habilitando el reporte de produccion");
         setContentModal(content);
         setShowModal(true);
     }
@@ -96,6 +111,53 @@ function ListReporteProduccion(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaProduccion(
+                                        <EliminacionLogicaProduccion
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activa
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaProduccion(
+                                        <EliminacionLogicaProduccion
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactiva
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: "Acciones",

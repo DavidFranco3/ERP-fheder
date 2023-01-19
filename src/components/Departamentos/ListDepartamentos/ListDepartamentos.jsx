@@ -14,6 +14,7 @@ import ModificacionDepartamentos from "../Modificacion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
+import EliminacionLogicaDepartamentos from '../EliminacionLogica';
 
 function ListDepartamentos(props) {
     const { listDepartamentos, setRefreshCheckLogin, history, location } = props;
@@ -22,11 +23,6 @@ function ListDepartamentos(props) {
     moment.locale("es");
 
     const enrutamiento = useHistory();
-
-    // Para ir hacia la ruta de los departamentos
-    const regresarRuta = () => {
-        enrutamiento.push("/Departamentos");
-    }
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -47,6 +43,20 @@ function ListDepartamentos(props) {
         setShowModal(true);
     }
 
+    //Para la eliminacion logica de usuarios
+    const eliminaLogicaDepartamento = (content) => {
+        setTitulosModal("Deshabilitando el departamento");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaDepartamento = (content) => {
+        setTitulosModal("Habilitando el departamento");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
     const columns = [
         {
             name: 'Nombre',
@@ -61,6 +71,53 @@ function ListDepartamentos(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaDepartamento(
+                                        <EliminacionLogicaDepartamentos
+                                            dataDepto={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activo
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaDepartamento(
+                                        <EliminacionLogicaDepartamentos
+                                            dataDepto={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactivo
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: 'Acciones',

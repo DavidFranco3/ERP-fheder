@@ -133,6 +133,7 @@ function formatModelProduccion(data) {
             resultados: data.resultados,
             materiaPrima: data.materiaPrima,
             observaciones: data.observaciones,
+            estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

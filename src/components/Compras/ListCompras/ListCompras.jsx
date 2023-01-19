@@ -10,9 +10,8 @@ import EliminacionFisicaCompras from "../EliminacionFisica";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
-import styled from 'styled-components';
+import EliminacionLogicaCompras from '../EliminacionLogica';
 import DataTable from 'react-data-table-component';
-import { map } from "lodash";
 import ListProductosCompras from '../ListProductosCompras';
 
 function ListCompras(props) {
@@ -35,9 +34,18 @@ function ListCompras(props) {
         setShowModal(true);
     }
 
-    //Para la modificacion de compras
-    const modificacionCompraAlmacen = (folio) => {
-        enrutamiento.push(`/Compras/AlmacenMP/Modificacion/${folio}`)
+    //Para la eliminacion logica de usuarios
+    const eliminaLogicaCompras = (content) => {
+        setTitulosModal("Deshabilitando la compra");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaCompras = (content) => {
+        setTitulosModal("Habilitando la compra");
+        setContentModal(content);
+        setShowModal(true);
     }
 
     const modificacionCompra = (folio) => {
@@ -129,6 +137,53 @@ function ListCompras(props) {
             reorder: false
         },
         {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaCompras(
+                                        <EliminacionLogicaCompras
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activa
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaCompras(
+                                        <EliminacionLogicaCompras
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactiva
+                            </Badge>
+                        </>
+                    )
+        },
+        {
             name: "Total",
             selector: row => (
                 <>
@@ -163,36 +218,17 @@ function ListCompras(props) {
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />
                     </Badge>
-                    {
-                        row.departamento === "Compras" ?
-                            (
-                                <>
-                                    <Badge
-                                        bg="success"
-                                        title="Modificar"
-                                        className="editarProveedor"
-                                        onClick={() => {
-                                            modificacionCompra(row.folio)
-                                        }}
-                                    >
-                                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                                    </Badge>
-                                </>
-                            ) : (
-                                <>
-                                    <Badge
-                                        bg="success"
-                                        title="Modificar"
-                                        className="editarProveedor"
-                                        onClick={() => {
-                                            modificacionCompraAlmacen(row.folio)
-                                        }}
-                                    >
-                                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                                    </Badge>
-                                </>
-                            )
-                    }
+                    <Badge
+                        bg="success"
+                        title="Modificar"
+                        className="editarProveedor"
+                        onClick={() => {
+                            modificacionCompra(row.folio)
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                    </Badge>
+
                     <Badge
                         bg="danger"
                         className="eliminarProveedor"

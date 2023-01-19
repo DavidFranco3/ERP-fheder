@@ -19,11 +19,6 @@ function ListProveedores(props) {
 
     const enrutamiento = useHistory();
 
-    // Ruta para enlazar a pagina de usuarios
-    const irHaciaModificacion = (id) => {
-        enrutamiento.push(`/ModificacionEvaluacionProveedores/${id}`);
-    }
-
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
     const [contentModal, setContentModal] = useState(null);
@@ -37,17 +32,22 @@ function ListProveedores(props) {
     }
 
     //Para cambiar el status del proveedor
-    const cambiarStatusProveedor = (content) => {
-        setTitulosModal("Cambiando status del vendedor");
+    const habilitandoProveedor = (content) => {
+        setTitulosModal("Habilitando proveedor");
         setContentModal(content);
         setShowModal(true);
     }
 
-    //Para la eliminacion de proveedores
-    const modificacionProveedor = (content) => {
-        setTitulosModal("Modificando datos proveedor");
+    //Para cambiar el status del proveedor
+    const deshabilitandoProveedor = (content) => {
+        setTitulosModal("Deshabilitando proveedor");
         setContentModal(content);
         setShowModal(true);
+    }
+
+     // Ruta para enlazar a pagina de usuarios
+     const irHaciaModificacion = (id) => {
+        enrutamiento.push(`/ModificacionEvaluacionProveedores/${id}`);
     }
 
     // Para llenar la evaluación del proveedor
@@ -149,7 +149,7 @@ function ListProveedores(props) {
                             title="Deshabilitar"
                             className="editarProveedor"
                             onClick={() => {
-                                cambiarStatusProveedor(
+                                deshabilitandoProveedor(
                                     <EstadoProveedor
                                         dataProveedor={row}
                                         setShowModal={setShowModal}
@@ -166,11 +166,11 @@ function ListProveedores(props) {
                 (
                     <>
                         <Badge
-                            bg="warning"
+                            bg="danger"
                             title="Habilitar"
                             className="editarProveedor"
                             onClick={() => {
-                                cambiarStatusProveedor(
+                                habilitandoProveedor(
                                     <EstadoProveedor
                                         dataProveedor={row}
                                         setShowModal={setShowModal}

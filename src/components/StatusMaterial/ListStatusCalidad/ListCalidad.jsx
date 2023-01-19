@@ -11,6 +11,7 @@ import {faArrowDownLong, faPenToSquare, faTrashCan, faEye} from "@fortawesome/fr
 import "./ListCalidad.scss";
 //import ClientesPedido from "./ClientesPedido";
 import {estilos} from "../../../utils/tableStyled";
+import EliminacionLogicaStatusMaterial from '../EliminacionLogica';
 
 function ListCalidad(props) {
     const { setRefreshCheckLogin, listStatus, history, location } = props;
@@ -27,6 +28,20 @@ function ListCalidad(props) {
     // Para la eliminacion fisica de usuarios
     const eliminaStatusMaterial = (content) => {
         setTitulosModal("Eliminando el status de material");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+     //Para la eliminacion logica de usuarios
+     const eliminaLogicaStatusMaterial = (content) => {
+        setTitulosModal("Deshabilitando el status de material");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaStatusMaterial = (content) => {
+        setTitulosModal("Habilitando el status de material");
         setContentModal(content);
         setShowModal(true);
     }
@@ -76,6 +91,53 @@ function ListCalidad(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaStatusMaterial(
+                                        <EliminacionLogicaStatusMaterial
+                                            datosStatus={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activa
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaStatusMaterial(
+                                        <EliminacionLogicaStatusMaterial
+                                            datosStatus={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactiva
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: "Acciones",

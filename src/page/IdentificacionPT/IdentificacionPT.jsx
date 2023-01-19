@@ -161,6 +161,7 @@ function formatModelEtiquetas(data) {
             operador: data.operador,
             supervisor: data.supervisor,
             inspector: data.inspector,
+            estado: data.estado,
             fechaCreacion: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

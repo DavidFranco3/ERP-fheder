@@ -42,7 +42,7 @@ function RegistraMaterialMolido(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!formData.fecha || !formData.turno || !formData.descripcion || !formData.color || !formData.peso || !formData.molinero) {
+        if (!formData.turno || !formData.descripcion || !formData.color || !formData.peso || !formData.molinero) {
             toast.warning("Completa el formulario")
         } else {
 
@@ -55,13 +55,14 @@ function RegistraMaterialMolido(props) {
                 const dataTemp = {
                     item: item,
                     folio: folioActual,
-                    fecha: formData.fecha,
+                    fecha: fechaActual,
                     turno: formData.turno,
                     sucursal: getSucursal(),
                     descripcion: formData.descripcion,
                     color: formData.color,
                     peso: formData.peso,
-                    nombreMolinero: formData.molinero
+                    nombreMolinero: formData.molinero,
+                    estado: "true"
                 }
 
                 registraEtiquetaMolido(dataTemp).then(response => {
@@ -90,6 +91,15 @@ function RegistraMaterialMolido(props) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaActual, setFechaActual] = useState(fecha);
+
     return (
         <>
             <Container fluid>
@@ -107,7 +117,8 @@ function RegistraMaterialMolido(props) {
                                         type="date"
                                         placeholder="Fecha"
                                         name="fecha"
-                                        defaultValue={formData.fecha}
+                                        value={fechaActual}
+                                        onChange={e => setFechaActual(e.target.value)}
                                     />
                                 </Col>
                             </Form.Group>

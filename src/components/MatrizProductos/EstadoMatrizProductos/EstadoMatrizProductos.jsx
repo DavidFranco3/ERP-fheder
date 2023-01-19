@@ -28,14 +28,8 @@ function EstadoMatrizProductos(props) {
             cambiaEstadoProductosMatriz(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.estado === "true") {
-                    LogsInformativos("El producto de la matriz con no. interno " + noInterno + " cambio su estado a activo", dataTemp)
-                    toast.success("Producto cambio a estado activo");
-                }
-                if (dataTemp.estado === "false") {
-                    LogsInformativos("El producto de la matriz con no. interno " + noInterno + " cambio su estado a obsoleto", dataTemp)
-                    toast.success("Producto cambio a estado obsoleto");
-                }
+                LogsInformativos("El producto de la matriz con no. interno " + noInterno + " cambio su estado a " + dataTemp.estado, dataTemp)
+                toast.success(data.mensaje);
                 setLoading(false);
                 setShowModal(false);
                 history.push({

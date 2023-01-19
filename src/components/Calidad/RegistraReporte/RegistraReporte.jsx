@@ -112,7 +112,8 @@ function RegistraReporte(props) {
                     empaqueDañado: formData.empaqueDañado,
                     etiqueta: formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si" ? "Aceptado" : formData.etiqueta,
                     resultadoFinalInspeccion: formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si" ? "ok" : "no Ok",
-                    observaciones: formData.observaciones
+                    observaciones: formData.observaciones,
+                    estado: "true"
                 }
                 // console.log(dataTemp)
                 // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos

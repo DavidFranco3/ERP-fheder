@@ -138,7 +138,8 @@ function RegistraStatus(props) {
                         propiedad: formDataCalidad.propiedad,
                         liberacion: formDataCalidad.tipoMaterial,
                         descripcion: formDataCalidad.nombre,
-                        comentarios: formData.comentarios
+                        comentarios: formData.comentarios,
+                        estado: "true"
                     }
 
                     // Modificar el pedido creado recientemente

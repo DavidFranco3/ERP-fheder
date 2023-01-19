@@ -7,6 +7,7 @@ import { Badge, Container } from "react-bootstrap";
 import EliminaMateriasPrimas from "../EliminaMateriasPrimas";
 import ModificaMateriasPrimas from "../ModificaMateriasPrimas";
 import { estilos } from "../../../utils/tableStyled";
+import EliminacionLogicaMateriales from '../EliminacionLogica';
 
 function ListMateriasPrimas(props) {
     const { setRefreshCheckLogin, listMateriales, history, location } = props;
@@ -19,6 +20,20 @@ function ListMateriasPrimas(props) {
     //Para la eliminacion de materiales
     const eliminaMaterial = (content) => {
         setTitulosModal("Eliminando el material");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const eliminaLogicaMaterial = (content) => {
+        setTitulosModal("Deshabilitando el material");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaMaterial = (content) => {
+        setTitulosModal("Habilitando el material");
         setContentModal(content);
         setShowModal(true);
     }
@@ -80,6 +95,53 @@ function ListMateriasPrimas(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaMaterial(
+                                        <EliminacionLogicaMateriales
+                                            dataMaterial={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activo
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaMaterial(
+                                        <EliminacionLogicaMateriales
+                                            dataMaterial={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactivo
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: 'Acciones',

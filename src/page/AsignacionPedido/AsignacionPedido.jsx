@@ -155,6 +155,7 @@ function formatModelAsignacionPedido(data) {
             cantidadPedida: data.cantidadPedida,
             plantaAsignada: data.plantaAsignada,
             cantidadAsignada: data.cantidadAsignada,
+            estado: data.estado,
         });
     });
     return dataTemp;

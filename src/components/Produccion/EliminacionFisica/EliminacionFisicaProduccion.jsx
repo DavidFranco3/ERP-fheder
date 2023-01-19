@@ -88,7 +88,7 @@ function EliminacionFisicaProduccion(props) {
                 <br />
 
                 <Row>
-                <Form.Group as={Col} controlId="formGridCliente">
+                    <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
                             Producto
                         </Form.Label>

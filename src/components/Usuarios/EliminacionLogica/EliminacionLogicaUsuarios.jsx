@@ -38,14 +38,8 @@ function EliminacionLogicaUsuarios(props) {
             deshabilitaUsuario(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.estadoUsuario === "true") {
-                    toast.success("Usuario habilitado");
-                    LogsInformativos("Se ha habilitado el usuario " + formData.nombre, dataTemp);
-                }
-                if (dataTemp.estadoUsuario === "false") {
-                    toast.success("Usuario deshabilitado");
-                    LogsInformativos("Se ha deshabilitado el usuario " + formData.nombre, dataTemp);
-                }
+                toast.success(data.mensaje);
+                LogsInformativos("Se ha actualizado el estado del usuario " + formData.nombre, dataUsuario);
                 setShowModal(false);
                 setLoading(false);
                 history.push({

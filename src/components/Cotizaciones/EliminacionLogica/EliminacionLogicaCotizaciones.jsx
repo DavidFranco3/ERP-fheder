@@ -37,14 +37,8 @@ function EliminacionLogicaCotizaciones(props) {
             cambiaStatusCotizacion(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.status === "true") {
-                    toast.success("Cotización habilitada");
-                    LogsInformativos("Se ha habilitado la cotización " + formData.cliente + " " + formData.vendedor, dataTemp)
-                }
-                if (dataTemp.status === "false") {
-                    toast.success("Cotización deshabilitada");
-                    LogsInformativos("Se ha deshabilitado el cotización " + formData.cliente + " " + formData.vendedor, dataTemp)
-                }
+                    toast.success(data.mensaje);
+                    LogsInformativos("Se ha actualizado el estado de la cotizacion " + formData.cliente + " " + formData.vendedor, dataTemp)
                 setShowModal(false);
                 setLoading(false);
                 history.push({

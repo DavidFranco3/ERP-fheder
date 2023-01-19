@@ -14,6 +14,7 @@ import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from 
 import { estilos } from "../../../utils/tableStyled";
 import { exportCSVFile } from "../../../utils/exportCSV";
 import ListProductosRecepcion from '../ListProductosRecepcion';
+import EliminacionLogicaRecepcion from '../EliminacionLogica';
 
 function ListRecepciones(props) {
     const { listRecepciones, history, location, setRefreshCheckLogin } = props;
@@ -35,15 +36,15 @@ function ListRecepciones(props) {
     }
 
     //Para la eliminacion logica de usuarios
-    const eliminaLogicaUsuarios = (content) => {
-        setTitulosModal("Deshabilitando usuario");
+    const eliminaLogicaRecepcion = (content) => {
+        setTitulosModal("Deshabilitando la recepcion");
         setContentModal(content);
         setShowModal(true);
     }
 
     //Para la eliminacion logica de usuarios
-    const habilitaUsuarios = (content) => {
-        setTitulosModal("Habilitando usuario");
+    const habilitaRecepcion = (content) => {
+        setTitulosModal("Habilitando la recepcion");
         setContentModal(content);
         setShowModal(true);
     }
@@ -124,6 +125,53 @@ function ListRecepciones(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaRecepcion(
+                                        <EliminacionLogicaRecepcion
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activa
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaRecepcion(
+                                        <EliminacionLogicaRecepcion
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactiva
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: 'Acciones',

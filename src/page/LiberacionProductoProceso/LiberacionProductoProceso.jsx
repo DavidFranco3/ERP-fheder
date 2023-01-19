@@ -141,6 +141,7 @@ function formatModelLiberacionProducto(data) {
             proceso: data.proceso,
             producto: data.producto,
             observaciones: data.observaciones,
+            estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

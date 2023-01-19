@@ -6,6 +6,7 @@ import {
     ENDPOINTEliminarDepartamentos,
     ENDPOINTActualizarDepartamentos,
     ENDPOINTListarDepartamentosPaginacion,
+    ENDPOINTActualizarEstadoDepartamentos,
     ENDPOINTTotalDepartamentos
 } from "./endpoints";
 import axios from 'axios';
@@ -83,6 +84,19 @@ export async function eliminaDepartamento(id) {
     };
 
     return await axios.delete(API_HOST + ENDPOINTEliminarDepartamentos + `/${id}`, config);
+}
+
+// Para actualizar el estado del pedido de venta -- ENDPOINTActualizarEstadoPedidoVenta
+export async function actualizaEstadoDepartamento(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTActualizarEstadoDepartamentos + `/${id}`, data, config);
 }
 
 // Modifica datos del departamentos

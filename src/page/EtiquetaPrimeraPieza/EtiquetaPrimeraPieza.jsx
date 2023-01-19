@@ -155,6 +155,7 @@ function formatModelEtiquetaPrimeraPieza(data) {
             turno: data.turno,
             inspector: data.inspector,
             supervisor: data.supervisor,
+            estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

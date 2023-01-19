@@ -295,7 +295,7 @@ function RegistroCompras(props) {
                         subtotal: subTotal,
                         iva: IVA,
                         total: total,
-                        status: "true"
+                        estado: "true"
                     }
                     // console.log(data)
                     registraOrdenCompra(dataTemp).then(response => {

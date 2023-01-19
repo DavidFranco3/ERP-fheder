@@ -13,6 +13,7 @@ import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faArro
 import "./ListMeses.scss";
 //import ClienteAsignado from "./ClienteAsignado";
 import { estilos } from "../../../utils/tableStyled";
+import EliminacionLogicaMeses from '../EliminacionLogica';
 
 function ListIntegracionVentasGastos(props) {
     const { setRefreshCheckLogin, listMeses, history, location } = props;
@@ -29,6 +30,20 @@ function ListIntegracionVentasGastos(props) {
     // Para la eliminacion fisica de usuarios
     const eliminacionMes = (content) => {
         setTitulosModal("Eliminar");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+     //Para la eliminacion logica de usuarios
+     const eliminaLogicaMes = (content) => {
+        setTitulosModal("Deshabilitando el mes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaMes = (content) => {
+        setTitulosModal("Habilitando el mes");
         setContentModal(content);
         setShowModal(true);
     }
@@ -73,6 +88,53 @@ function ListIntegracionVentasGastos(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaMes(
+                                        <EliminacionLogicaMeses
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activo
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaMes(
+                                        <EliminacionLogicaMeses
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactivo
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: "Acciones",

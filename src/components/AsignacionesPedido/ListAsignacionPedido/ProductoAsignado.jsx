@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import {obtenerMatrizProducto} from "../../../api/matrizProductos";
-import {toast} from "react-toastify";
+import { obtenerAlmacenesID } from "../../../api/almacenes";
+import { toast } from "react-toastify";
 
 function ProductoAsignado(props) {
     const { id } = props;
@@ -11,14 +11,14 @@ function ProductoAsignado(props) {
     useEffect(() => {
         //
         try {
-            obtenerMatrizProducto(id).then(response => {
+            obtenerAlmacenesID(id).then(response => {
                 const { data } = response;
                 // console.log(data)
-                const { descripcion } = data;
-                setNombreProducto(descripcion)
+                const { nombreProducto } = data;
+                setNombreProducto(nombreProducto)
             }).catch(e => {
                 //console.log(e)
-                if(e.message === 'Network Error') {
+                if (e.message === 'Network Error') {
                     //console.log("No hay internet")
                     toast.error("Conexión al servidor no disponible");
                 }

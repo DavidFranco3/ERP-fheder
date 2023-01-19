@@ -8,6 +8,7 @@ import {
     ENDPOINTObtenerFolioActualMateriaPrima,
     ENDPOINTEliminarMateriaPrima,
     ENDPOINTActualizarMateriaPrima,
+    ENDPOINTActualizarEstadoMateriaPrima,
     ENDPOINTTotalMateriaPrima
 } from "./endpoints";
 import axios from 'axios';
@@ -85,7 +86,7 @@ export async function listarMateriaPrima(sucursal) {
             Authorization: `Bearer ${getTokenApi()}`
         }
     };
-    return await axios.get(API_HOST + ENDPOINTListarMateriaPrima +`/?sucursal=${sucursal}`, config);
+    return await axios.get(API_HOST + ENDPOINTListarMateriaPrima + `/?sucursal=${sucursal}`, config);
 }
 
 // Lista la materia prima paginando
@@ -111,6 +112,19 @@ export async function eliminaMateriaPrima(id) {
     };
 
     return await axios.delete(API_HOST + ENDPOINTEliminarMateriaPrima + `/${id}`, config);
+}
+
+// Para actualizar el estado del pedido de venta -- ENDPOINTActualizarEstadoPedidoVenta
+export async function actualizaEstadoMateriaPrima(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTActualizarEstadoMateriaPrima + `/${id}`, data, config);
 }
 
 // Modifica datos de la materia prima

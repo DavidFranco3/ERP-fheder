@@ -77,10 +77,10 @@ function EliminacionFisicaCertificados(props) {
                     </Form.Group>
                 </Row>
 
-                <br/>
+                <br />
 
                 <Row>
-                <Form.Group as={Col} controlId="formGridCliente">
+                    <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
                             Cliente
                         </Form.Label>

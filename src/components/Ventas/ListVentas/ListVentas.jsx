@@ -172,13 +172,23 @@ function ListVentas(props) {
             name: "Orden venta",
             selector: row => (
                 <>
-                    <a
-                        className="text-emerald-700 no-underline"
-                        title="Ir al sitio web de la empresa"
-                        href={row.cotizacion}
-                        target="_blank"
-                        rel="noreferrer"
-                    >Descargar</a>
+                    {row.cotizacion !== "" ?
+                        (
+                            <>
+                                <a
+                                    className="text-emerald-700 no-underline"
+                                    title="Ir al sitio web de la empresa"
+                                    href={row.cotizacion}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >Descargar</a>
+                            </>
+                        )
+                        :
+                        (
+                            "No disponible"
+                        )
+                    }
                 </>
             ),
             sortable: false,

@@ -15,6 +15,7 @@ import {
     ENDPOINTRegistraMovimientosAlmacenes,
     ENDPOINTTotalMovimientosAlmacenes,
     ENDPOINTObtenerItemAlmacenes,
+    ENDPOINTListarRegistrosGeneralesAlmacenes,
     ENDPOINTListarMovimientosGeneral
 } from "./endpoints";
 import axios from 'axios';
@@ -93,6 +94,18 @@ export async function listarRegistrosAlmacen(sucursal, almacen) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarRegistrosAlmacenes + `/?sucursal=${sucursal}&&almacen=${almacen}`, config);
+}
+
+// Listar todas las materias primas
+export async function listarRegistrosGeneralesAlmacen(sucursal) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarRegistrosGeneralesAlmacenes + `/?sucursal=${sucursal}`, config);
 }
 
 // Obtener el folio actual del almacen

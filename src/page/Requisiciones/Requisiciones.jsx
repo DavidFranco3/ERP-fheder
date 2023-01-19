@@ -133,7 +133,7 @@ function formatModelRequisiciones(data) {
             tipoAplicacion: data.tipoAplicacion,
             departamento: data.departamento,
             productosSolicitados: data.productosSolicitados,
-            status: data.status,
+            estado: data.estado,
             fechaCreacion: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

@@ -148,6 +148,7 @@ function formatModelMeses(data) {
             mes: data.mes,
             dias: data.dias,
             noMaquinas: data.noMaquinas,
+            estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

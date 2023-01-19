@@ -12,6 +12,7 @@ import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@
 import "./ListProduccion.scss";
 import ProductosPedido from "./ProductosPedido";
 import {estilos} from "../../../utils/tableStyled";
+import EliminacionLogicaPlaneacion from '../EliminacionLogica';
 
 function ListProduccion(props) {
     const { setRefreshCheckLogin, listRequerimientosPlaneacion, history, location } = props;
@@ -28,6 +29,20 @@ function ListProduccion(props) {
     // Para la eliminacion fisica de usuarios
     const eliminaPlaneacion = (content) => {
         setTitulosModal("Eliminando de la planeacion");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+     //Para la eliminacion logica de usuarios
+     const eliminaLogicaPlaneacion = (content) => {
+        setTitulosModal("Deshabilitando la planeacion");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaPlaneacion = (content) => {
+        setTitulosModal("Habilitando la planeacion");
         setContentModal(content);
         setShowModal(true);
     }
@@ -133,6 +148,54 @@ function ListProduccion(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaPlaneacion(
+                                        <EliminacionLogicaPlaneacion
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activa
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaPlaneacion(
+                                        <EliminacionLogicaPlaneacion
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactiva
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: "Acciones",

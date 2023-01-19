@@ -13,6 +13,7 @@ import { estilos } from "../../../utils/tableStyled";
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { map } from "lodash";
+import EliminacionLogicaEtiquetaPT from '../EliminacionLogica';
 
 function ListEtiquetasPT(props) {
     const { setRefreshCheckLogin, listEtiquetas, history, location } = props;
@@ -29,6 +30,20 @@ function ListEtiquetasPT(props) {
     //Para la eliminacion de compras
     const eliminacionEtiqueta = (content) => {
         setTitulosModal("Eliminando Etiqueta PT");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const eliminaLogicaEtiqueta = (content) => {
+        setTitulosModal("Deshabilitando la etiqueta de PT");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaEtiqueta = (content) => {
+        setTitulosModal("Habilitando la etiqueta de PT");
         setContentModal(content);
         setShowModal(true);
     }
@@ -112,6 +127,53 @@ function ListEtiquetasPT(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaEtiqueta(
+                                        <EliminacionLogicaEtiquetaPT
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activa
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaEtiqueta(
+                                        <EliminacionLogicaEtiquetaPT
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactiva
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: "Acciones",

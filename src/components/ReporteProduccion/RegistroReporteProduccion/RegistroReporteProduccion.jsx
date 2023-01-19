@@ -70,7 +70,7 @@ function RegistroReporteProduccion(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        if (!formData.fecha || !formData.asistencias || !formData.faltas || !formData.supervisor || !formData.turno || !formData.eficiencia || !formData.observaciones) {
+        if (!formData.asistencias || !formData.faltas || !formData.supervisor || !formData.turno || !formData.eficiencia || !formData.observaciones) {
             toast.warning("Completa el formulario");
         } else {
             //console.log("Continuar")
@@ -89,7 +89,8 @@ function RegistroReporteProduccion(props) {
                     sucursal: getSucursal(),
                     registros: listRegistros,
                     eficienciaGeneralMaquinas: formData.eficiencia,
-                    observacionesTurno: formData.observaciones
+                    observacionesTurno: formData.observaciones,
+                    estado: "true"
                 }
                 LogsInformativos("Se a registrado un nuevo reporte de producción " + dataTemp.folio, dataTemp)
                 // Modificar el pedido creado recientemente

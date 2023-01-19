@@ -102,7 +102,8 @@ function RegistroMateriasPrimas(props) {
                 sucursal: getSucursal(),
                 tipoMaterial: formData.tipoMaterial,
                 um: formData.um,
-                proveedor: formData.proveedor
+                proveedor: formData.proveedor,
+                estado: "true"
             }
             try {
                 registraMateriaPrima(dataTemp).then(response => {

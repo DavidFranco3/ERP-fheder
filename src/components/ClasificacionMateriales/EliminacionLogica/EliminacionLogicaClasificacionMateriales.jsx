@@ -37,14 +37,8 @@ function EliminacionLogicaClasificacionMateriales(props) {
             deshabilitaClasificacionMaterial(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.estado === "true") {
-                    toast.success("Material habilitado");
-                    LogsInformativos("Se ha habilitado el material " + formData.nombre, dataTemp)
-                }
-                if (dataTemp.estado === "false") {
-                    toast.success("Material deshabilitado");
-                    LogsInformativos("Se ha habilitado el material " + formData.nombre, dataTemp)
-                }
+                    toast.success(data.mensaje);
+                    LogsInformativos("Se actualizo el estado del material " + formData.nombre, dataTemp)
                 setShowModal(false);
                 setLoading(false);
                 history.push({

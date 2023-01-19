@@ -237,10 +237,7 @@ function RegistroRecepcion(props) {
 
     const onSubmit = e => {
         e.preventDefault();
-
-        if (!formData.fecha) {
-            toast.warning("Completa el formulario");
-        } else {
+        
             //console.log("Continuar")
             setLoading(true)
 
@@ -257,7 +254,8 @@ function RegistroRecepcion(props) {
                     sucursal: getSucursal(),
                     cantidad: cantidadTotal,
                     valorTotal: totalSinIVA,
-                    productos: listProductosCargados
+                    productos: listProductosCargados,
+                    estado: "true"
                 }
                 // console.log(dataTemp)
                 // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos)
@@ -280,7 +278,6 @@ function RegistroRecepcion(props) {
             }).catch(e => {
                 console.log(e)
             })
-        }
     }
 
     const [cargaProductos, setCargaProductos] = useState(initialFormDataProductos());

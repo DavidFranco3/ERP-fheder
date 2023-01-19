@@ -37,14 +37,8 @@ function EliminacionLogicaGestionAlmacen(props) {
             deshabilitaAlmacen(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.status === "true") {
-                    toast.success("Almacen habilitado");
-                    LogsInformativos("Se ha habilitado el almacen " + formData.nombre, data)
-                }
-                if (dataTemp.status === "false") {
-                    toast.success("Almacen deshabilitado");
-                    LogsInformativos("Se ha habilitado la almacen " + formData.nombre, data)
-                }
+                toast.success(data.mensaje);
+                LogsInformativos("Se ha actualizado el estado del almacen " + formData.nombre, data);
                 setShowModal(false);
                 setLoading(false);
                 history.push({
@@ -65,7 +59,7 @@ function EliminacionLogicaGestionAlmacen(props) {
             <Container>
                 <div className="formularioDatos">
                     <Form onChange={onChange} onSubmit={onSubmit}>
-                    <Row className="mb-3">
+                        <Row className="mb-3">
                             <Form.Group as={Col} controlId="formHorizontalNombre">
                                 <Form.Label>
                                     Nombre

@@ -7,7 +7,7 @@ import queryString from "query-string";
 
 function EliminaProveedores(props) {
     const { dataProveedor, history, setShowModal } = props;
-    const { id, folio, nombre } = dataProveedor;
+    const { id, folio, nombre, telefono, correo } = dataProveedor;
 
     const [loading, setLoading] = useState(false);
 
@@ -70,6 +70,34 @@ function EliminaProveedores(props) {
                             type="text"
                             name="nombre"
                             defaultValue={nombre}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <br />
+
+                <Row>
+                    <Form.Group as={Col} controlId="formGridFolio">
+                        <Form.Label>
+                            Telefono
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="telefono"
+                            defaultValue={telefono}
+                            disabled
+                        />
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formGridNombre">
+                        <Form.Label>
+                            Correo
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="correo"
+                            defaultValue={correo}
                             disabled
                         />
                     </Form.Group>

@@ -12,6 +12,7 @@ import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@
 import "./ListCertificadosCalidad.scss";
 //import ProductosPedido from "./ProductosPedido";
 import {estilos} from "../../../utils/tableStyled";
+import EliminacionLogicaCertificado from '../EliminacionLogica';
 
 function ListCertificadosCalidad(props) {
     const { setRefreshCheckLogin, listCertificados, history, location } = props;
@@ -28,6 +29,20 @@ function ListCertificadosCalidad(props) {
     // Para la eliminacion fisica de usuarios
     const eliminaCertificado = (content) => {
         setTitulosModal("Eliminando el certificado");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const eliminaLogicaCertificado = (content) => {
+        setTitulosModal("Deshabilitando el certificado de calidad");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaCertificado = (content) => {
+        setTitulosModal("Habilitando el certificado de calidad");
         setContentModal(content);
         setShowModal(true);
     }
@@ -98,6 +113,53 @@ function ListCertificadosCalidad(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaCertificado(
+                                        <EliminacionLogicaCertificado
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activa
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaCertificado(
+                                        <EliminacionLogicaCertificado
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactiva
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: "Acciones",

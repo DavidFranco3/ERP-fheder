@@ -276,7 +276,8 @@ function RegistraLiberacionProductoProceso(props) {
                             observaciones: formData.observacionesProducto8
                         },
                     },
-                    observaciones: formData.observaciones
+                    observaciones: formData.observaciones,
+                    estado: "true"
                 }
                 // console.log(dataTemp)
 

@@ -12,7 +12,7 @@ import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from 
 import { estilos } from "../../../utils/tableStyled";
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
-import { map } from "lodash";
+import EliminacionLogicaCalidad from '../EliminacionLogica';
 
 function ListCalidad(props) {
     const { setRefreshCheckLogin, listInspeccion, history, location } = props;
@@ -30,6 +30,20 @@ function ListCalidad(props) {
     //Para la eliminacion de compras
     const eliminacionInspeccion = (content) => {
         setTitulosModal("Eliminando inspeccion de calidad");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+     //Para la eliminacion logica de usuarios
+     const eliminaLogicaCalidad = (content) => {
+        setTitulosModal("Deshabilitando la inspeccion de material");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaCalidad = (content) => {
+        setTitulosModal("Habilitando la inspeccion de material");
         setContentModal(content);
         setShowModal(true);
     }
@@ -115,6 +129,53 @@ function ListCalidad(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaCalidad(
+                                        <EliminacionLogicaCalidad
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activa
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaCalidad(
+                                        <EliminacionLogicaCalidad
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactiva
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: "Acciones",

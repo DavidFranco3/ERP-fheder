@@ -105,7 +105,8 @@ function RegistroIdentificacionPT(props) {
                     turno: formData.turno,
                     operador: formData.operador,
                     supervisor: formData.supervisor,
-                    inspector: formData.inspector
+                    inspector: formData.inspector,
+                    estado: "true"
                 }
                 // console.log(dataTemp)
                 // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos

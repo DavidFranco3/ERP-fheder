@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
-import {eliminaUsuario} from "../../../api/usuarios";
-import {toast} from "react-toastify";
+import { eliminaUsuario } from "../../../api/usuarios";
+import { toast } from "react-toastify";
 import queryString from "query-string";
-import {Button, Col, Form, Row, Spinner, Alert} from "react-bootstrap";
-import {eliminaStatusMaterial} from "../../../api/statusMaterial";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
+import { eliminaStatusMaterial } from "../../../api/statusMaterial";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function EliminaReporte(props) {
     const { datosStatus, datos, setShowModal, history } = props;
     const { id, folio, fecha, loteInspeccion, etiqueta } = datosStatus;
 
     //console.log(datosPedido)
-    
+
     // Para cancelar la actualizacion
     const cancelarEliminacion = () => {
         setShowModal(false)
@@ -53,15 +53,15 @@ function EliminaReporte(props) {
     return (
         <>
             <Form onSubmit={onSubmit} onChange={onChange}>
-            
-            <Alert variant="danger">
-                <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
-                <p className="mensaje">
-                    Esta acción eliminara del sistema el status del material.
-                </p>
-            </Alert>
 
-            <Row>
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción eliminara del sistema el status del material.
+                    </p>
+                </Alert>
+
+                <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
                             Folio
@@ -87,7 +87,7 @@ function EliminaReporte(props) {
                 <br />
 
                 <Row>
-                <Form.Group as={Col} controlId="formGridCliente">
+                    <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
                             Lote
                         </Form.Label>
@@ -108,38 +108,38 @@ function EliminaReporte(props) {
                         />
                     </Form.Group>
                 </Row>
-            
+
                 <Form.Group as={Row} className="botones">
-                        <Col>
-                            <Button
-                                type="submit"
-                                title="Eliminar el registro"
-                                variant="success"
-                                className="registrar"
-                            >
-                                {!loading ? "Eliminar" : <Spinner animation="border" />}
-                            </Button>
-                        </Col>
-                        <Col>
-                            <Button
-                                variant="danger"
-                                title="Cerrar el formulario"
-                                className="cancelar"
-                                onClick={() => {
-                                    cancelarEliminacion()
-                                }}
-                            >
-                                Cancelar
-                            </Button>
-                        </Col>
-                    </Form.Group>
+                    <Col>
+                        <Button
+                            type="submit"
+                            title="Eliminar el registro"
+                            variant="success"
+                            className="registrar"
+                        >
+                            {!loading ? "Eliminar" : <Spinner animation="border" />}
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button
+                            variant="danger"
+                            title="Cerrar el formulario"
+                            className="cancelar"
+                            onClick={() => {
+                                cancelarEliminacion()
+                            }}
+                        >
+                            Cancelar
+                        </Button>
+                    </Col>
+                </Form.Group>
             </Form>
         </>
     );
 }
 
 function initialFormData(data) {
-    const { nombre, apellidos  } = data;
+    const { nombre, apellidos } = data;
 
     return {
         nombre: nombre,

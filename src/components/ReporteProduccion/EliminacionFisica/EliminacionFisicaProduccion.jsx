@@ -87,7 +87,7 @@ function EliminacionFisicaProduccion(props) {
                 <br />
 
                 <Row>
-                <Form.Group as={Col} controlId="formGridCliente">
+                    <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
                             Supervisor
                         </Form.Label>

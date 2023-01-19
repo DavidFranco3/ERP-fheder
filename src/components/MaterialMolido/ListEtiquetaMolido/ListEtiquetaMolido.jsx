@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faArrowPointer } from "@fortawesome/free-solid-svg-icons";
 import "./ListEtiquetaMolido.scss";
 import { estilos } from "../../../utils/tableStyled";
+import EliminacionLogicaMaterialMolido from '../EliminacionLogica';
 
 function ListEtiquetaMolido(props) {
     const { setRefreshCheckLogin, listEtiquetas, history, location } = props;
@@ -32,6 +33,19 @@ function ListEtiquetaMolido(props) {
         setShowModal(true);
     }
 
+    //Para la eliminacion logica de usuarios
+    const eliminaLogicaMolido = (content) => {
+        setTitulosModal("Deshabilitando la etiqueta de material molido");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaMolido = (content) => {
+        setTitulosModal("Habilitando la etiqueta de material molido");
+        setContentModal(content);
+        setShowModal(true);
+    }
     // Para la eliminacion fisica de usuarios
     const modificacionEtiqueta = (content) => {
         setTitulosModal("Modificar");
@@ -100,6 +114,53 @@ function ListEtiquetaMolido(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaMolido(
+                                        <EliminacionLogicaMaterialMolido
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activa
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaMolido(
+                                        <EliminacionLogicaMaterialMolido
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactiva
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: "Acciones",

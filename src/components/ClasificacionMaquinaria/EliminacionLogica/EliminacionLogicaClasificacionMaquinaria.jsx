@@ -37,14 +37,8 @@ function EliminacionLogicaClasificacionMaquinaria(props) {
             deshabilitaClasificacionMaquinaria(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.estado === "true") {
-                    toast.success("Maquinaria habilitada");
-                    LogsInformativos("Se ha habilitado la maquinaria " + formData.nombre, dataTemp)
-                }
-                if (dataTemp.estado === "false") {
-                    toast.success("Maquinaria deshabilitado");
-                    LogsInformativos("Se ha deshabilitado la maquinaria " + formData.nombre, dataTemp)
-                }
+                    toast.success(data.mensaje);
+                    LogsInformativos("Se actualizo el estado de la maquinaria " + formData.nombre, dataTemp)
                 setShowModal(false);
                 setLoading(false);
                 history.push({

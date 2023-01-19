@@ -14,6 +14,7 @@ import "./ListAsignacionPedido.scss";
 import ProductoAsignado from "./ProductoAsignado";
 import ClienteAsignado from "./ClienteAsignado";
 import { estilos } from "../../../utils/tableStyled";
+import EliminacionLogicaAsignacion from '../EliminacionLogica';
 
 function ListAsignacionPedido(props) {
     const { setRefreshCheckLogin, listAsignacionPedido, history, location } = props;
@@ -30,6 +31,20 @@ function ListAsignacionPedido(props) {
     // Para la eliminacion fisica de usuarios
     const eliminacionAsignacion = (content) => {
         setTitulosModal("Eliminando la asignacion del pedido");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const eliminaLogicaAsignacion = (content) => {
+        setTitulosModal("Deshabilitando la asignacion");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion logica de usuarios
+    const habilitaAsignacion = (content) => {
+        setTitulosModal("Habilitando la asignacion");
         setContentModal(content);
         setShowModal(true);
     }
@@ -90,13 +105,7 @@ function ListAsignacionPedido(props) {
         },
         {
             name: "Producto",
-            selector: row => (
-                <>
-                    <ProductoAsignado
-                        id={row.producto}
-                    />
-                </>
-            ),
+            selector: row => row.producto,
             sortable: false,
             center: true,
             reorder: false
@@ -128,6 +137,53 @@ function ListAsignacionPedido(props) {
             sortable: false,
             center: true,
             reorder: false
+        },
+        {
+            name: 'Estado',
+            center: true,
+            reorder: false,
+            selector: row =>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Deshabilitar"
+                                className="editar"
+                                onClick={() => {
+                                    eliminaLogicaAsignacion(
+                                        <EliminacionLogicaAsignacion
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                Activa
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="danger"
+                                title="Habilitar"
+                                className="eliminar"
+                                onClick={() => {
+                                    habilitaAsignacion(
+                                        <EliminacionLogicaAsignacion
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                Inactiva
+                            </Badge>
+                        </>
+                    )
         },
         {
             name: "Acciones",

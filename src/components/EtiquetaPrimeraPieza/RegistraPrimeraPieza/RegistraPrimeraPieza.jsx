@@ -104,7 +104,8 @@ function RegistraReporte(props) {
                     sucursal: getSucursal(),
                     turno: formData.turno,
                     inspector: formData.inspector,
-                    supervisor: formData.supervisor
+                    supervisor: formData.supervisor,
+                    estado: "true"
                 }
 
                 registraEtiquetaPieza(dataTemp).then(response => {

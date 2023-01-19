@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
-import { listarAlmacenPT } from "../../../api/almacenPT";
+import { listarRegistrosGeneralesAlmacen} from "../../../api/almacenes";
 import { map } from "lodash";
 import { actualizaPedidoVenta } from "../../../api/asignacionPedido";
 import { toast } from "react-toastify";
@@ -22,7 +22,7 @@ function AsignarPedido(props) {
 
     useEffect(() => {
         try {
-            listarAlmacenPT().then(response => {
+            listarRegistrosGeneralesAlmacen().then(response => {
                 const { data } = response;
                 // console.log(data)
                 if (!listMateriasPrimas && data) {
@@ -99,12 +99,12 @@ function AsignarPedido(props) {
                                         disabled
                                     >
                                         <option>Elige</option>
-                                        {map(listMateriasPrimas, (producto, index) => (
+                                        {map(listMateriasPrimas, (productos, index) => (
                                             <option
                                                 key={index}
-                                                value={producto.idProducto} selected={producto?.producto === producto}
+                                                value={productos.idArticulo} selected={productos?.nombreArticulo === producto}
                                             >
-                                                {producto.nombre}
+                                                {producto.nombreArticulo}
                                             </option>
                                         ))}
                                     </Form.Control>
@@ -211,16 +211,20 @@ function formatModelAlmacenPT(data) {
     data.forEach(data => {
         dataTemp.push({
             id: data._id,
-            idProducto: data.idProducto,
-            folioAlmacen: data.folioAlmacen,
-            folioMP: data.folioMP,
-            nombre: data.nombre,
-            descripcion: data.descripcion,
+            item: data.item,
+            folio: data.folio,
+            idArticulo: data.idArticulo,
+            folioArticulo: data.folioArticulo,
+            nombreArticulo: data.nombreArticulo,
+            sucursal: data.sucursal,
+            almacen: data.almacen,
             um: data.um,
+            tipo: data.tipo,
+            fecha: data.fecha,
+            tipoArticulo: data.tipoArticulo,
+            descripcion: data.descripcion,
             movimientos: data.movimientos,
-            existenciasOV: data.existenciasOV,
-            existenciasStock: data.existenciasStock,
-            existenciasTotales: data.existenciasTotales,
+            cantidadExistencia: data.cantidadExistencia,
             estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt

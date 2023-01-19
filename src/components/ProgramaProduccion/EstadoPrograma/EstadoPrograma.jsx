@@ -37,14 +37,8 @@ function EstadoPrograma(props) {
             cambiaStatusPrograma(id, dataTemp).then(response => {
                 const { data } = response;
                 // console.log(data)
-                if (dataTemp.estado === "true") {
-                    toast.success("Programa habilitado");
-                    LogsInformativos("Se ha habilitado el programa de produccion " + folio, dataTemp);
-                }
-                if (dataTemp.estado === "false") {
-                    toast.success("Programa deshabilitado");
-                    LogsInformativos("Se ha deshabilitado el programa de produccion " + folio, dataTemp);
-                }
+                    toast.success(data.mensaje);
+                    LogsInformativos("Se actualizo el estado del programa de producciion " + folio, dataTemp);
                 setShowModal(false);
                 setLoading(false);
                 history.push({

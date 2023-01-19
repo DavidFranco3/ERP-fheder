@@ -157,6 +157,7 @@ function formatModelStatusMaterial(data) {
             comentarios: data.comentarios,
             condicion: data.condicion,
             observaciones: data.observaciones,
+            estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

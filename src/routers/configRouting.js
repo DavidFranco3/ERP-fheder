@@ -17,7 +17,6 @@ import RazonesSociales from "../page/RazonesSociales";
 import UnidadesMedida from "../page/UnidadesMedida";
 import Departamentos from "../page/Departamentos";
 import MateriasPrimas from "../page/MateriasPrimas";
-import Insumos from "../page/Insumos";
 import ClasificacionMateriales from "../page/ClasificacionMateriales";
 import ClasificacionMaquinaria from "../page/ClasificacionMaquinaria";
 import Cotizaciones from "../page/Cotizaciones";
@@ -58,8 +57,6 @@ import VerificacionMantenimientos from "../page/VerificacionMantenimientos";
 import SolicitudMaterialInsumo from "../page/SolicitudMaterialInsumo";
 import RequerimientosPlaneacion from "../page/RequerimientosPlaneacion";
 import VentasGastos from "../page/VentasGastos";
-import Pigmento from "../page/Pigmento";
-import Empaques from "../page/Empaques";
 import Sucursales from "../page/Sucursales";
 import GestionAlmacen from "../page/GestionAlmacen";
 import Almacenes from "../page/Almacenes";
@@ -68,7 +65,6 @@ import Error404 from "../page/Error404";
 // importacion de dashboards
 import DashboardVentas from "../components/Dashboards/DashboardVentas";
 import DashboardCompras from "../components/Dashboards/DashboardCompras";
-import DashboardAlmacenes from "../components/Dashboards/DashboardAlmacenes";
 import DashboardPlaneacion from "../components/Dashboards/DashboardPlaneacion";
 import DashboardProduccion from "../components/Dashboards/DashboardProduccion";
 import DashboardCalidad from "../components/Dashboards/DashboardCalidad";
@@ -713,11 +709,6 @@ export default [
         page: MateriasPrimas
     },
     {
-        path: "/Insumos",
-        exact: true,
-        page: Insumos
-    },
-    {
         path: "/Departamentos",
         exact: true,
         page: Departamentos
@@ -726,16 +717,6 @@ export default [
         path: "/VentasGastos",
         exact: true,
         page: VentasGastos
-    },
-    {
-        path: "/Pigmento",
-        exact: true,
-        page: Pigmento
-    },
-    {
-        path: "/Empaques",
-        exact: true,
-        page: Empaques
     },
     {
         path: "/Clientes",
@@ -911,11 +892,6 @@ export default [
         path: "/DashboardCompras",
         exact: true,
         page: DashboardCompras
-    },
-    {
-        path: "/DashboardAlmacenes",
-        exact: true,
-        page: DashboardAlmacenes
     },
     {
         path: "/DashboardPlaneacion",

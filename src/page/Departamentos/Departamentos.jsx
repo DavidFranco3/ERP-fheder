@@ -142,6 +142,7 @@ function formatModelDepartamento(data) {
             id: data._id,
             nombre: data.nombre,
             sucursal: data.sucursal,
+            estado: data.estado,
             fechaActualizacion: data.updatedAt
         });
     });

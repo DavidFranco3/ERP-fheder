@@ -120,7 +120,7 @@ function ListMatrizProductos(props) {
                 (
                     <>
                         <Badge
-                            bg="warning" 
+                            bg="danger" 
                             className="obsoleto"
                             title="Habilitar"
                             onClick={() => {

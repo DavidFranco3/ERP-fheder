@@ -37,7 +37,8 @@ function RegistroDepartamentos(props) {
 
             const dataTemp = {
                 ...formData,
-                sucursal: getSucursal()
+                sucursal: getSucursal(),
+                estado: "true"
             }
 
             try {

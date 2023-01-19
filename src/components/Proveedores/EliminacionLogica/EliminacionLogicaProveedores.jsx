@@ -37,14 +37,8 @@ function EliminacionLogicaProveedores(props) {
             deshabilitaProveedores(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.estadoProveedor === "true") {
-                    LogsInformativos("El proveedor " + formData.nombre + " se habilito", dataProveedor)
-                    toast.success("Proveedor habilitado");
-                }
-                if (dataTemp.estadoProveedor === "false") {
-                    LogsInformativos("El proveedor " + formData.nombre + " se inhabilito", dataProveedor)
-                    toast.success("Proveedor deshabilitado");
-                }
+                LogsInformativos("Se actualizo el estado del proveedor " + formData.nombre, dataProveedor)
+                toast.success(data.mensaje);
                 setShowModal(false);
                 setLoading(false);
                 history.push({

@@ -35,14 +35,8 @@ function EliminacionLogicaMaquinas(props) {
             actualizaEstadoMaquina(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.status === "true") {
-                    toast.success("Maquina habilitada");
-                    LogsInformativos("Se ha habilitado la maquina " + numeroMaquina, data)
-                }
-                if (dataTemp.status === "false") {
-                    toast.success("Maquina deshabilitada");
-                    LogsInformativos("Se ha deshabilitado la maquina " + numeroMaquina, data)
-                }
+                toast.success(data.mensaje);
+                LogsInformativos("Se ha actualizado el estado de la maquina " + numeroMaquina, dataTemp);
                 setShowModal(false);
                 setLoading(false);
                 history.push({
@@ -62,7 +56,7 @@ function EliminacionLogicaMaquinas(props) {
         <>
             <Form onSubmit={onSubmit} onChange={onChange}>
 
-            {status == "true" ?
+                {status == "true" ?
                     (
                         <>
                             <Alert variant="danger">
@@ -106,7 +100,7 @@ function EliminacionLogicaMaquinas(props) {
                     </Form.Group>
                 </Row>
 
-                <br/>
+                <br />
 
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
@@ -131,7 +125,7 @@ function EliminacionLogicaMaquinas(props) {
                     </Form.Group>
                 </Row>
 
-                <br/>
+                <br />
 
                 <Form.Group as={Row} className="botones">
                     <Col>

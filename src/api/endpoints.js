@@ -68,7 +68,8 @@ export const ENDPOINTRegistraDepartamentos = "/departamentos/registro";
 export const ENDPOINTListarDepartamentos = "/departamentos/listar";
 export const ENDPOINTObtenerDepartamentos = "/departamentos/obtener";
 export const ENDPOINTEliminarDepartamentos = "/departamentos/eliminar";
-export const ENDPOINTActualizarDepartamentos = "/departamentos/actualizar"
+export const ENDPOINTActualizarDepartamentos = "/departamentos/actualizar";
+export const ENDPOINTActualizarEstadoDepartamentos = "/departamentos/actualizarEstado";
 export const ENDPOINTListarDepartamentosPaginacion = "/departamentos/listarPaginando";
 export const ENDPOINTTotalDepartamentos = "/departamentos/total";
 
@@ -223,6 +224,7 @@ export const ENDPOINTObtenerMateriaPrima = "/materiasPrimas/obtener";
 export const ENDPOINTObtenerPorFolioMateriaPrima = "/materiasPrimas/obtenerPorFolio"
 export const ENDPOINTEliminarMateriaPrima = "/materiasPrimas/eliminar";
 export const ENDPOINTActualizarMateriaPrima = "/materiasPrimas/actualizar";
+export const ENDPOINTActualizarEstadoMateriaPrima= "/materiasPrimas/actualizarEstado";
 export const ENDPOINTObtenerFolioActualMateriaPrima = "/materiasPrimas/obtenerFolio"
 export const ENDPOINTTotalMateriaPrima = "/materiasPrimas/total";
 
@@ -536,6 +538,7 @@ export const ENDPOINTObtenerNoReportesProduccion = "/reportesproduccion/obtenerN
 export const ENDPOINTEliminarReportesProduccion = "/reportesproduccion/eliminar";
 export const ENDPOINTActualizarReportesProduccion = "/reportesproduccion/actualizar";
 export const ENDPOINTTotalReportesProduccion = "/reportesProduccion/total";
+export const ENDPOINTActualizarEstadoReportesProduccion = "/reportesProduccion/actualizarEstado";
 
 // Tracking
 export const ENDPOINTRegistroTracking = "/tracking/Registro";
@@ -651,6 +654,7 @@ export const ENDPOINTTotalPlaneacion = "/planeacion/total"
 export const ENDPOINTRegistroInicialAlmacenes = "/almacenes/registroInicial"
 export const ENDPOINTRegistroGestionAlmacenes = "/almacenes/registroGestion"
 export const ENDPOINTListarRegistrosAlmacenes = "/almacenes/listar"
+export const ENDPOINTListarRegistrosGeneralesAlmacenes = "/almacenes/listarGeneral"
 export const ENDPOINTObtenerFolioAlmacenes = "/almacenes/obtenerFolio"
 export const ENDPOINTObtenerItemAlmacenes = "/almacenes/obtenerItem";
 export const ENDPOINTListarPaginandoAlmacenes = "/almacenes/listarPaginando"
