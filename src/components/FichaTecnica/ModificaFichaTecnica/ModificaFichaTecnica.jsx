@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner, Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft, faX } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom";
-import "./RegistraFichaTecnica.scss";
+import { useHistory, useParams } from "react-router-dom";
+import "./ModificaFichaTecnica.scss";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { toast } from "react-toastify";
-import { registraFichaTecnica, obtenerNoFicha, obtenerItemFichasTecnicas } from "../../../api/fichasTecnicas";
+import { actualizaEstadoFichasTecnicas, actualizaFichasTecnicas, obtenerFichasTecnicas } from "../../../api/fichasTecnicas";
 import { map } from "lodash";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
-function RegistraFichaTecnica(props) {
+function ModificaFichaTecnica(props) {
     const { setRefreshCheckLogin } = props;
     // Para definir el enrutamiento
     const enrutamiento = useHistory();
@@ -28,8 +28,25 @@ function RegistraFichaTecnica(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
+    const params = useParams();
+    const { id } = params
+
     // Para guardar los datos del formulario
-    const [formData, setFormData] = useState(initialFormData());
+    const [formData, setFormData] = useState(initialFormDataInitial());
+    const [listFichasCargadas, setListFichasCargadas] = useState([]);
+
+    useEffect(() => {
+        //
+        obtenerFichasTecnicas(id).then(response => {
+            const { data } = response;
+            //console.log(data)
+            setFormData(initialFormData(data))
+            // setFechaCreacion(fechaElaboracion)
+            setListFichasCargadas(data.fichas)
+        }).catch(e => {
+            console.log(e)
+        })
+    }, []);
 
     // Define la ruta de registro
     const rutaRegreso = () => {
@@ -39,44 +56,7 @@ function RegistraFichaTecnica(props) {
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
-    // Para almacenar el folio actual
-    const [folioActual, setFolioActual] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerNoFicha().then(response => {
-                const { data } = response;
-                // console.log(data)
-                const { noFicha } = data;
-                setFolioActual(noFicha)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
-    // Para almacenar el folio actual
-    const [itemActual, setItemActual] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerItemFichasTecnicas().then(response => {
-                const { data } = response;
-                // console.log(data)
-                const { item } = data;
-                setItemActual(item)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
     const [cargaFichas, setCargaFichas] = useState(initialFormDataFichas());
-    const [listFichasCargadas, setListFichasCargadas] = useState([]);
 
     const addItems = () => {
         const propiedades = document.getElementById("propiedades").value
@@ -138,25 +118,21 @@ function RegistraFichaTecnica(props) {
             setLoading(true);
 
             const dataTemp = {
-                item: itemActual,
-                folio: folioActual,
                 descripcion: formData.descripcionMaterial,
                 fechaElaboracion: formData.fecha,
                 realizo: formData.realizo,
-                sucursal: getSucursal(),
                 autorizo: formData.autorizo,
                 fichas: listFichasCargadas,
-                estado: "true"
             }
             // console.log(dataTemp)
 
             // Modificar el pedido creado recientemente
-            registraFichaTecnica(dataTemp).then(response => {
+            actualizaFichasTecnicas(id, dataTemp).then(response => {
                 const { data: { mensaje, datos } } = response;
                 // console.log(response)
                 toast.success(mensaje)
                 // Log acerca del registro inicial del tracking
-                LogsInformativos("Se han registrado la ficha tecnica con folio " + folioActual, dataTemp)
+                LogsInformativos("Se han actualizado la ficha tecnica con folio " + formData.folio, dataTemp)
                 // Registro inicial del tracking
                 rutaRegreso();
             }).catch(e => {
@@ -483,12 +459,23 @@ function RegistraFichaTecnica(props) {
     );
 }
 
-function initialFormData() {
+function initialFormDataInitial() {
     return {
+        folio: "",
         descripcionMaterial: "",
         realizo: "",
         fecha: "",
         autorizo: ""
+    }
+}
+
+function initialFormData(data) {
+    return {
+        folio: data.folio,
+        descripcionMaterial: data.descripcion,
+        realizo: data.realizo,
+        fecha: data.fechaElaboracion,
+        autorizo: data.autorizo
     }
 }
 
@@ -502,4 +489,4 @@ function initialFormDataFichas() {
     }
 }
 
-export default RegistraFichaTecnica;
+export default ModificaFichaTecnica;

@@ -177,6 +177,19 @@ export const ENDPOINTListarEtiquetasPiezasPaginacion = "/etiquetaPrimeraPieza/li
 export const ENDPOINTObtenerNoEtiquetaPieza = "/etiquetaPrimeraPieza/obtenerNoEtiqueta";
 export const ENDPOINTTotalEtiquetasPiezas = "/etiquetaPrimeraPieza/total";
 
+// fichas tecnicas
+export const ENDPOINTRegistraFichasTecnicas = "/fichasTecnicas/registro";
+export const ENDPOINTListarFichasTecnicas = "/fichasTecnicas/listar";
+export const ENDPOINTObtenerFichasTecnicas = "/fichasTecnicas/obtener";
+export const ENDPOINTObtenerItemFichasTecnicas = "/fichasTecnicas/obtenerItem";
+export const ENDPOINTObtenerDatosFichasTecnicas = "/fichasTecnicas/obtenerDatosPedido";
+export const ENDPOINTEliminarFichasTecnicas = "/fichasTecnicas/eliminar";
+export const ENDPOINTActualizarFichasTecnicas = "/fichasTecnicas/actualizar";
+export const ENDPOINTActualizarEstadoFichasTecnicas = "/fichasTecnicas/actualizarEstado";
+export const ENDPOINTListarFichasTecnicasPaginacion = "/fichasTecnicas/listarPaginando";
+export const ENDPOINTObtenerNoFichaTecnica = "/fichasTecnicas/obtenerNoEtiqueta";
+export const ENDPOINTTotalFichasTecnicas = "/fichasTecnicas/total";
+
 // etiqueta de molido
 export const ENDPOINTRegistraEtiquetaMolido = "/etiquetaMolido/registro";
 export const ENDPOINTListarEtiquetaMolido = "/etiquetaMolido/listar";

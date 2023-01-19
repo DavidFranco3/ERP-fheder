@@ -189,6 +189,7 @@ import ModificaLiberacionProductoProceso from "../components/LiberacionProductoP
 
 // Rutas para la ficha tecnica
 import RegistroFichaTecnica from "../components/FichaTecnica/RegistraFichaTecnica";
+import ModificaFichaTecnica from "../components/FichaTecnica/ModificaFichaTecnica";
 
 // Rutas para el certificado de calidad
 import RegistroCertificadoCalidad from "../components/CertificadosCalidad/RegistraCertificado";
@@ -637,6 +638,11 @@ export default [
         path: "/RegistroFichaTecnica",
         exact: true,
         page: RegistroFichaTecnica
+    },
+    {
+        path: "/ModificaFichaTecnica/:id",
+        exact: true,
+        page: ModificaFichaTecnica
     },
     {
         path: "/RegistroControlParametrosMaquina",
