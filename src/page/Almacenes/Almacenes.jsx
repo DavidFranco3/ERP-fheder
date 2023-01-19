@@ -237,6 +237,7 @@ function formatModelAlmacenes(data) {
             folio: data.folio,
             idArticulo: data.idArticulo,
             folioArticulo: data.folioArticulo,
+            lote: data.lote,
             nombreArticulo: data.nombreArticulo,
             sucursal: data.sucursal,
             almacen: data.almacen,

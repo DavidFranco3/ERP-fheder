@@ -77,6 +77,13 @@ function ListAlmacenMp(props) {
             reorder: false
         },
         {
+            name: "Lote",
+            selector: row => row.lote,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
             name: "UM",
             selector: row => row.um,
             sortable: false,
