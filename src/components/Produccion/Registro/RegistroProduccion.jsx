@@ -522,6 +522,7 @@ function RegistroProduccion(props) {
                                             placeholder="Orden de producción"
                                             name="ordenProducción"
                                             defaultValue={folioActual}
+                                            disabled
                                         />
                                     </Form.Group>
 

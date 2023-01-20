@@ -204,17 +204,17 @@ export const ENDPOINTObtenerNoAlertaCalidad = "/alertasCalidad/obtenerNoEtiqueta
 export const ENDPOINTTotalAlertasCalidad = "/alertasCalidad/total";
 
 // control de no conformidad
-export const ENDPOINTRegistraNoConformidad = "/alertasCalidad/registro";
-export const ENDPOINTListarNoConformidad = "/alertasCalidad/listar";
-export const ENDPOINTObtenerNoConformidad = "/alertasCalidad/obtener";
-export const ENDPOINTObtenerItemNoConformidad = "/alertasCalidad/obtenerItem";
-export const ENDPOINTObtenerDatosNoConformidad = "/alertasCalidad/obtenerDatosPedido";
-export const ENDPOINTEliminarNoConformidad = "/alertasCalidad/eliminar";
-export const ENDPOINTActualizarNoConformidad = "/alertasCalidad/actualizar";
-export const ENDPOINTActualizarEstadoNoConformidad = "/alertasCalidads/actualizarEstado";
-export const ENDPOINTListarNoConformidadPaginacion = "/alertasCalidad/listarPaginando";
-export const ENDPOINTObtenerNumeroNoConformidad= "/alertasCalidad/obtenerNoEtiqueta";
-export const ENDPOINTTotalNoConformidad = "/alertasCalidad/total";
+export const ENDPOINTRegistraNoConformidad = "/noConformidad/registro";
+export const ENDPOINTListarNoConformidad = "/noConformidad/listar";
+export const ENDPOINTObtenerNoConformidad = "/noConformidad/obtener";
+export const ENDPOINTObtenerItemNoConformidad = "/noConformidad/obtenerItem";
+export const ENDPOINTObtenerDatosNoConformidad = "/noConformidad/obtenerDatosPedido";
+export const ENDPOINTEliminarNoConformidad = "/noConformidad/eliminar";
+export const ENDPOINTActualizarNoConformidad = "/noConformidad/actualizar";
+export const ENDPOINTActualizarEstadoNoConformidad = "/noConformidad/actualizarEstado";
+export const ENDPOINTListarNoConformidadPaginacion = "/noConformidad/listarPaginando";
+export const ENDPOINTObtenerNumeroNoConformidad= "/noConformidad/obtenerNoEtiqueta";
+export const ENDPOINTTotalNoConformidad = "/noConformidad/total";
 
 // etiqueta de molido
 export const ENDPOINTRegistraEtiquetaMolido = "/etiquetaMolido/registro";

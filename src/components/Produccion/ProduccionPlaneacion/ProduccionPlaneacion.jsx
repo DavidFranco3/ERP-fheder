@@ -584,6 +584,7 @@ function ProduccionPlaneacion(props) {
                                             placeholder="Numero de parte"
                                             name="NúmeroParte"
                                             defaultValue={formDataProduccion.noParte}
+                                            disabled
                                         />
                                     </Form.Group>
 

@@ -120,7 +120,7 @@ function DashboardCatalogos(props) {
                 <ItemCard
                     path={'/EtiquetasMoldes'}
                     logo={LogoEtiqueta}
-                    title={'Etiquetas de moldes'}
+                    title={'Moldes'}
                 />
             </div>
         </>

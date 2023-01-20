@@ -534,6 +534,7 @@ function ModificacionProduccion(props) {
                                             placeholder="Orden de producción"
                                             name="ordenProducción"
                                             defaultValue={formData.folio}
+                                            disabled
                                         />
                                     </Form.Group>
 
