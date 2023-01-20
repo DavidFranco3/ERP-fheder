@@ -47,8 +47,8 @@ function ListNoConformidad(props) {
     }
 
     // Para la modificacion de datos del pedido
-    const modificaFichaTecnica = (folio) => {
-        enrutamiento.push(`/ModificaFichaTecnica/${folio}`);
+    const ModificaNoConformidad = (folio) => {
+        enrutamiento.push(`/ModificaNoConformidad/${folio}`);
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
@@ -189,16 +189,16 @@ function ListNoConformidad(props) {
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />
                     </Badge>
-                    {/*<Badge
+                    <Badge
                         bg="success"
                         title="Modificar"
                         className="editar"
                         onClick={() => {
-                            modificaFichaTecnica(row.id)
+                            ModificaNoConformidad(row.id)
                         }}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>*/}
+                    </Badge>
                     <Badge
                         bg="danger"
                         title="Eliminar"

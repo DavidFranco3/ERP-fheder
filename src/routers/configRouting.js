@@ -183,6 +183,7 @@ import ModificaAlertasCalidad from "../components/AlertasCalidad/ModificaAlertas
 
 // Rutas para la No Conformidad
 import RegistroNoConformidad from "../components/NoConformidad/RegistraNoConformidad";
+import ModificaNoConformidad from "../components/NoConformidad/ModificaNoConformidad";
 
 // Rutas para la Liberación de productos y procesos
 import RegistroLiberacionProductoProceso from "../components/LiberacionProductoProceso/RegistraLiberacionProductoProceso";
@@ -384,6 +385,11 @@ export default [
         path: "/RegistroNoConformidad",
         exact: true,
         page: RegistroNoConformidad
+    },
+    {
+        path: "/ModificaNoConformidad/:id",
+        exact: true,
+        page: ModificaNoConformidad
     },
     {
         path: "/ModificacionClientes/:id",
