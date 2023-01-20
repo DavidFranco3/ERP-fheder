@@ -131,7 +131,7 @@ function RegistraFichaTecnica(props) {
         e.preventDefault();
         console.log(e)
 
-        if (!formData.descripcionMaterial || !formData.realizo || !formData.fecha || !formData.autorizo) {
+        if (!formData.descripcionMaterial || !formData.realizo || !formData.autorizo) {
             toast.warning("Completa el formulario");
         } else {
             //console.log("Continuar")
@@ -141,7 +141,7 @@ function RegistraFichaTecnica(props) {
                 item: itemActual,
                 folio: folioActual,
                 descripcion: formData.descripcionMaterial,
-                fechaElaboracion: formData.fecha,
+                fechaElaboracion: fechaActual,
                 realizo: formData.realizo,
                 sucursal: getSucursal(),
                 autorizo: formData.autorizo,
@@ -172,6 +172,15 @@ function RegistraFichaTecnica(props) {
     console.log(formData)
 
     const renglon = listFichasCargadas.length + 1;
+
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDay() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaActual, setFechaActual] = useState(fecha);
 
     return (
         <>
@@ -246,7 +255,8 @@ function RegistraFichaTecnica(props) {
                                         type="date"
                                         placeholder="Fecha"
                                         name="fecha"
-                                        defaultValue={formData.fecha}
+                                        value={fechaActual}
+                                        onChange={e => setFechaActual(e.target.value)}
                                     />
                                 </Col>
 

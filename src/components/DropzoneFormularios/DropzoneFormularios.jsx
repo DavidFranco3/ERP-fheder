@@ -27,7 +27,7 @@ function DropzoneFormularios(props) {
     });
 
     const {getRootProps, getInputProps} = useDropzone({
-        accept: "image/*",
+        accept: ".pdf, image/*",
         onDrop: onDropImagen,
     });
 
@@ -39,11 +39,6 @@ function DropzoneFormularios(props) {
             const Ext = temp[1];
             //console.log(Ext);
             //console.log(type);
-            if(type !== "image") {
-                //const tempP = file.preview;
-                //slider1(tempP);
-                toast.error("Archivo no permitido");
-            }
         });
     }, [slide]);
 

@@ -179,6 +179,7 @@ import ModificaInspeccionPieza from "../components/InspeccionMaterial/ModificaIn
 
 // Rutas para la alerta de calidad
 import RegistroAlertasCalidad from "../components/AlertasCalidad/RegistraAlertasCalidad";
+import ModificaAlertasCalidad from "../components/AlertasCalidad/ModificaAlertasCalidad";
 
 // Rutas para la No Conformidad
 import RegistroNoConformidad from "../components/NoConformidad/RegistraNoConformidad";
@@ -633,6 +634,11 @@ export default [
         path: "/RegistroAlertasCalidad",
         exact: true,
         page: RegistroAlertasCalidad
+    },
+    {
+        path: "/ModificaAlertasCalidad/:id",
+        exact: true,
+        page: ModificaAlertasCalidad
     },
     {
         path: "/RegistroFichaTecnica",
