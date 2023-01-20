@@ -190,6 +190,32 @@ export const ENDPOINTListarFichasTecnicasPaginacion = "/fichasTecnicas/listarPag
 export const ENDPOINTObtenerNoFichaTecnica = "/fichasTecnicas/obtenerNoEtiqueta";
 export const ENDPOINTTotalFichasTecnicas = "/fichasTecnicas/total";
 
+// alertas de calidad
+export const ENDPOINTRegistraAlertasCalidad = "/alertasCalidad/registro";
+export const ENDPOINTListarAlertasCalidad = "/alertasCalidad/listar";
+export const ENDPOINTObtenerAlertasCalidad = "/alertasCalidad/obtener";
+export const ENDPOINTObtenerItemAlertasCalidad = "/alertasCalidad/obtenerItem";
+export const ENDPOINTObtenerDatosAlertasCalidad = "/alertasCalidad/obtenerDatosPedido";
+export const ENDPOINTEliminarAlertasCalidad = "/alertasCalidad/eliminar";
+export const ENDPOINTActualizarAlertasCalidad = "/alertasCalidad/actualizar";
+export const ENDPOINTActualizarEstadoAlertasCalidad = "/alertasCalidads/actualizarEstado";
+export const ENDPOINTListarAlertasCalidadPaginacion = "/alertasCalidad/listarPaginando";
+export const ENDPOINTObtenerNoAlertaCalidad = "/alertasCalidad/obtenerNoEtiqueta";
+export const ENDPOINTTotalAlertasCalidad = "/alertasCalidad/total";
+
+// control de no conformidad
+export const ENDPOINTRegistraNoConformidad = "/alertasCalidad/registro";
+export const ENDPOINTListarNoConformidad = "/alertasCalidad/listar";
+export const ENDPOINTObtenerNoConformidad = "/alertasCalidad/obtener";
+export const ENDPOINTObtenerItemNoConformidad = "/alertasCalidad/obtenerItem";
+export const ENDPOINTObtenerDatosNoConformidad = "/alertasCalidad/obtenerDatosPedido";
+export const ENDPOINTEliminarNoConformidad = "/alertasCalidad/eliminar";
+export const ENDPOINTActualizarNoConformidad = "/alertasCalidad/actualizar";
+export const ENDPOINTActualizarEstadoNoConformidad = "/alertasCalidads/actualizarEstado";
+export const ENDPOINTListarNoConformidadPaginacion = "/alertasCalidad/listarPaginando";
+export const ENDPOINTObtenerNumeroNoConformidad= "/alertasCalidad/obtenerNoEtiqueta";
+export const ENDPOINTTotalNoConformidad = "/alertasCalidad/total";
+
 // etiqueta de molido
 export const ENDPOINTRegistraEtiquetaMolido = "/etiquetaMolido/registro";
 export const ENDPOINTListarEtiquetaMolido = "/etiquetaMolido/listar";
