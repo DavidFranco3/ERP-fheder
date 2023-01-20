@@ -71,6 +71,8 @@ function BuscarPlaneaciones(props) {
                 cavidades: valoresCliente.cavidades,
                 pendienteFabricar: valoresCliente.pendienteFabricar,
                 noInterno: valoresCliente.noInterno,
+
+                folioPlaneacion: valoresCliente.folioPlaneacion
             }
             setFormData(dataTemp);
             setShowModal(false);
@@ -308,6 +310,7 @@ function initialValues() {
         producto: "",
         nombreProducto: "",
         cantidadProducir: "",
+        folioPlaneacion: "",
 
         semana: "",
         ordenProduccion: "",
@@ -341,6 +344,7 @@ function valoresAlmacenados(data) {
         noInterno: data.requerimiento.noInterno,
 
         opcionesMaquinaria: data.planeacion.opcionesMaquinaria,
+        folioPlaneacion: data.folio,
     }
 }
 

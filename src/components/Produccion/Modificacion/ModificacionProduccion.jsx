@@ -275,6 +275,7 @@ function ModificacionProduccion(props) {
         const dataTemp = {
             generalidades: {
                 ordenVenta: formDataPlaneacion.ordenVenta == "" ? formData.ordenVenta : formDataPlaneacion.ordenVenta,
+                folioPlaneacion: formDataPlaneacion.folioPlaneacion == "" ? formData.folioPlaneacion : formDataPlaneacion.folioPlaneacion,
                 noInterno: formDataProduccion.noInterno,
                 noParte: formDataProduccion.noParte,
                 idProducto: formDataPlaneacion.producto == "" ? formData.idProducto : formDataPlaneacion.producto,
@@ -441,7 +442,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 placeholder="Orden de venta"
                                                 name="ordenVenta"
-                                                value={formDataPlaneacion.ordenVenta == "" ? formData.ordenVenta : formDataPlaneacion.ordenVenta}
+                                                value={formDataPlaneacion.folioPlaneacion == "" ? formData.folioPlaneacion : formDataPlaneacion.folioPlaneacion}
                                                 disabled
                                             />
                                             <FontAwesomeIcon
@@ -1230,6 +1231,7 @@ function valoresAlmacenados(data) {
         folio: folio,
         generalidades: generalidades,
         ordenVenta: generalidades.ordenVenta,
+        folioPlaneacion: generalidades.folioPlaneacion,
         noInterno: generalidades.noInterno,
         noParte: generalidades.noParte,
         idProducto: generalidades.idProducto,
@@ -1280,6 +1282,7 @@ function valoresAlmacenados(data) {
 function initialPlaneacion() {
     return {
         ordenVenta: "",
+        folioPlaneacion: "",
         producto: "",
         nombreProducto: "",
         cantidadProducir: "",

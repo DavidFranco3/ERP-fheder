@@ -248,6 +248,7 @@ function RegistroProduccion(props) {
                 sucursal: getSucursal(),
                 generalidades: {
                     ordenVenta: formDataPlaneacion.ordenVenta,
+                    folioPlaneacion: formDataPlaneacion.folioPlaneacion,
                     noInterno: formDataProduccion.noInterno,
                     noParte: formDataProduccion.noParte,
                     idProducto: formDataPlaneacion.producto,
@@ -429,7 +430,7 @@ function RegistroProduccion(props) {
                                                 type="text"
                                                 placeholder="Orden de venta"
                                                 name="ordenVenta"
-                                                value={formDataPlaneacion.ordenVenta}
+                                                value={formDataPlaneacion.folioPlaneacion}
                                                 disabled
                                             />
                                             <FontAwesomeIcon
@@ -1212,6 +1213,7 @@ function RegistroProduccion(props) {
 function initialPlaneacion() {
     return {
         ordenVenta: "",
+        folioPlaneacion: "",
         producto: "",
         nombreProducto: "",
         cantidadProducir: "",
