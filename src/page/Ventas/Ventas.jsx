@@ -15,6 +15,8 @@ import AnimacionLoading from '../../assets/json/loading.json';
 function Ventas(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
+console.log(history);
+
     const enrutamiento = useHistory();
 
     // Para almacenar la lista de pedidos de venta

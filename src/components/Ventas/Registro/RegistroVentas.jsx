@@ -8,7 +8,7 @@ import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import { listarClientes } from "../../../api/clientes";
 import { registraPedidoVenta, obtenerNumeroPedidoVenta } from "../../../api/pedidoVenta";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import "./RegistroVentas.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -17,9 +17,15 @@ import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { LogRegistroProductosOV } from '../../ProductosOV/Gestion/GestionProductosOV';
+import { listarProductosOV } from "../../../api/productosOV";
+import EliminacionProductosOV from '../../ProductosOV/EliminacionProductosOV';
+import ModificacionProductos from '../../ProductosOV/ModificacionProductos';
 
 function RegistroVentas(props) {
-    const { setRefreshCheckLogin } = props;
+    const { history, setRefreshCheckLogin, location } = props;
+
+    console.log(history);
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -33,6 +39,22 @@ function RegistroVentas(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
+
+    // Para la eliminacion fisica de usuarios
+    const eliminaProducto = (content) => {
+        setTitulosModal("Eliminando el producto");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const modificaProducto = (content) => {
+        setTitulosModal("Eliminando el producto");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    const [listProductosCargados, setListProductosCargados] = useState([]);
 
     const enrutamiento = useHistory();
 
@@ -116,6 +138,34 @@ function RegistroVentas(props) {
             console.log(e)
         }
     }, []);
+
+    // Para almacenar la lista completa de clientes
+    const [listProductosOV, setListProductosOV] = useState([]);
+
+    const renglon = listProductosOV.length + 1;
+
+    useEffect(() => {
+        try {
+            listarProductosOV(folioActual).then(response => {
+                const { data } = response;
+
+                //console.log(data);
+
+                if (!listProductosOV && data) {
+                    setListProductosOV(formatModelProductosOV(data.reverse()));
+                } else {
+                    const datosProductos = formatModelProductosOV(data.reverse());
+                    setListProductosOV(datosProductos);
+                }
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [location, folioActual, listProductosCargados]);
+
+    console.log(listProductosOV);
 
     // Obten el listado de productos
     // Para almacenar el listado de productos activos
@@ -224,7 +274,7 @@ function RegistroVentas(props) {
                 cotizacion: linkCotizacion,
                 total: totalSinIVA,
                 especificaciones: formData.especificaciones,
-                productos: listProductosCargados,
+                productos: listProductosOV,
                 estado: "true"
             }
             // console.log(dataTemp)
@@ -252,7 +302,6 @@ function RegistroVentas(props) {
 
     // Para la carga y el listado de productos
     const [cargaProductos, setCargaProductos] = useState(initialFormDataProductos());
-    const [listProductosCargados, setListProductosCargados] = useState([]);
 
     // Gestion del producto seleccionado
     const handleProducto = (producto) => {
@@ -304,6 +353,8 @@ function RegistroVentas(props) {
                 [...listProductosCargados, dataTemp]
             );
 
+            LogRegistroProductosOV(folioActual, cargaProductos.ID, cargaProductos.item, cantidad, um, precioUnitario, total);
+
             setCargaProductos(initialFormDataProductos)
             //document.getElementById("descripcion").value = ""
             document.getElementById("cantidad").value = ""
@@ -349,9 +400,7 @@ function RegistroVentas(props) {
         })
     }
 
-    const totalSinIVA = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.total)), 0);
-
-    const renglon = listProductosCargados.length + 1;
+    const totalSinIVA = listProductosOV.reduce((amount, item) => (amount + parseInt(item.total)), 0);
 
     const hoy = new Date();
     // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
@@ -767,22 +816,22 @@ function RegistroVentas(props) {
                                         <th scope="col">UM</th>
                                         <th scope="col">Precio unitario</th>
                                         <th scope="col">Total</th>
-                                        <th scope="col">Eliminar</th>
+                                        <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                 </tfoot>
                                 <tbody>
-                                    {map(listProductosCargados, (producto, index) => (
+                                    {map(listProductosOV, (producto, index) => (
                                         <tr key={index}>
                                             <th scope="row">
                                                 {index + 1}
                                             </th>
                                             <td data-title="Descripcion">
-                                                {producto.item}
+                                                {producto.descripcion}
                                             </td>
                                             <td data-title="Material">
-                                                {producto.ID}
+                                                {producto.numeroParte}
                                             </td>
                                             <td data-title="UM">
                                                 {producto.cantidad}
@@ -803,15 +852,38 @@ function RegistroVentas(props) {
                                                 }).format(producto.total)} MXN
                                             </td>
                                             <td data-title="Eliminar">
-                                                <div
-                                                    className="eliminarProductoListado"
-                                                    title="Eliminar producto"
+                                                <Badge
+                                                    bg="success"
+                                                    title="Modificar"
+                                                    className="eliminar"
                                                     onClick={() => {
-                                                        removeItem(producto)
+                                                        modificaProducto(
+                                                            <ModificacionProductos
+                                                                datos={producto}
+                                                                setShowModal={setShowModal}
+                                                                history={history}
+                                                                setListProductosCargados={setListProductosCargados}
+                                                            />)
                                                     }}
                                                 >
-                                                    ❌
-                                                </div>
+                                                    <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                                                </Badge>
+                                                <Badge
+                                                    bg="danger"
+                                                    title="Eliminar"
+                                                    className="eliminar"
+                                                    onClick={() => {
+                                                        eliminaProducto(
+                                                            <EliminacionProductosOV
+                                                                datos={producto}
+                                                                setShowModal={setShowModal}
+                                                                history={history}
+                                                                setListProductosCargados={setListProductosCargados}
+                                                            />)
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                                                </Badge>
                                             </td>
                                         </tr>
                                     ))}
@@ -973,6 +1045,26 @@ function formatModelMatrizProductos(data) {
             materialEmpaque: data.materialEmpaque,
             opcionMaquinaria: data.opcionMaquinaria,
             estado: data.estado,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelProductosOV(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            ordenVenta: data.ordenVenta,
+            numeroParte: data.numeroParte,
+            descripcion: data.descripcion,
+            cantidad: data.cantidad,
+            um: data.um,
+            precioUnitario: data.precioUnitario,
+            total: data.total,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

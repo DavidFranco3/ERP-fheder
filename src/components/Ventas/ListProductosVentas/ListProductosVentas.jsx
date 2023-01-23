@@ -59,7 +59,7 @@ function ListProductosVentas(props) {
                                                                 {index + 1}
                                                             </td>
                                                             <td>
-                                                                {datos.item}
+                                                                {datos.descripcion}
                                                             </td>
                                                             <td>
                                                                 {datos.cantidad}
