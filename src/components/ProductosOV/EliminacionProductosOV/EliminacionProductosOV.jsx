@@ -7,7 +7,7 @@ import { Button, Form, Spinner, Alert, Row, Col } from "react-bootstrap";
 
 function EliminacionProductosOV(props) {
     const { datos, setShowModal, history, setListProductosCargados } = props;
-    const { id, descripcion, numeroParte, cantidad, um, precioUnitario, total } = datos;
+    const { _id, descripcion, numeroParte, cantidad, um, precioUnitario, total } = datos;
 
     //console.log(data)
 
@@ -22,14 +22,15 @@ function EliminacionProductosOV(props) {
     const onSubmit = (e) => {
         e.preventDefault()
         setLoading(true)
+        setListProductosCargados("");
 
         try {
-            eliminaProductosOV(id).then(response => {
+            eliminaProductosOV(_id).then(response => {
                 const { data } = response;
                 // console.log(data)
                 //toast.success(data.mensaje)
                 //LogsInformativos("Se ha eliminado el mes " + folio, data)
-                setListProductosCargados(id)
+                setListProductosCargados(_id)
                 setShowModal(false);
                 //setLoading(false);
             }).catch(e => {

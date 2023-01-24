@@ -18,7 +18,7 @@ import BasicModal from "../../Modal/BasicModal";
 import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogRegistroProductosOV } from '../../ProductosOV/Gestion/GestionProductosOV';
-import { listarProductosOV } from "../../../api/productosOV";
+import { obtenerDatosProductosOV } from "../../../api/productosOV";
 import EliminacionProductosOV from '../../ProductosOV/EliminacionProductosOV';
 import ModificacionProductos from '../../ProductosOV/ModificacionProductos';
 
@@ -49,7 +49,7 @@ function RegistroVentas(props) {
 
     // Para la eliminacion fisica de usuarios
     const modificaProducto = (content) => {
-        setTitulosModal("Eliminando el producto");
+        setTitulosModal("Modificando el producto");
         setContentModal(content);
         setShowModal(true);
     }
@@ -146,26 +146,17 @@ function RegistroVentas(props) {
 
     useEffect(() => {
         try {
-            listarProductosOV(folioActual).then(response => {
+            obtenerDatosProductosOV(folioActual).then(response => {
                 const { data } = response;
-
-                //console.log(data);
-
-                if (!listProductosOV && data) {
-                    setListProductosOV(formatModelProductosOV(data.reverse()));
-                } else {
-                    const datosProductos = formatModelProductosOV(data.reverse());
-                    setListProductosOV(datosProductos);
-                }
+                console.log(data)
+                setListProductosOV(data)
             }).catch(e => {
                 console.log(e)
             })
         } catch (e) {
             console.log(e)
         }
-    }, [location, folioActual, listProductosCargados]);
-
-    console.log(listProductosOV);
+    }, [listProductosCargados]);
 
     // Obten el listado de productos
     // Para almacenar el listado de productos activos
@@ -789,8 +780,6 @@ function RegistroVentas(props) {
 
                                 </Form.Group>
                             </Col>
-
-
                         </Row>
 
                         <hr />
@@ -1045,26 +1034,6 @@ function formatModelMatrizProductos(data) {
             materialEmpaque: data.materialEmpaque,
             opcionMaquinaria: data.opcionMaquinaria,
             estado: data.estado,
-            fechaRegistro: data.createdAt,
-            fechaActualizacion: data.updatedAt
-        });
-    });
-    return dataTemp;
-}
-
-function formatModelProductosOV(data) {
-    //console.log(data)
-    const dataTemp = []
-    data.forEach(data => {
-        dataTemp.push({
-            id: data._id,
-            ordenVenta: data.ordenVenta,
-            numeroParte: data.numeroParte,
-            descripcion: data.descripcion,
-            cantidad: data.cantidad,
-            um: data.um,
-            precioUnitario: data.precioUnitario,
-            total: data.total,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

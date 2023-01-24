@@ -14,15 +14,19 @@ import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
 import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { LogRegistroProductosOV } from '../../ProductosOV/Gestion/GestionProductosOV';
+import { obtenerDatosProductosOV } from "../../../api/productosOV";
+import EliminacionProductosOV from '../../ProductosOV/EliminacionProductosOV';
+import ModificacionProductos from '../../ProductosOV/ModificacionProductos';
 
 function ModificacionVentas(props) {
-    const { setRefreshCheckLogin } = props;
+    const { history, setRefreshCheckLogin } = props;
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -41,6 +45,20 @@ function ModificacionVentas(props) {
 
     const params = useParams();
     const { folio } = params
+
+    // Para la eliminacion fisica de usuarios
+    const eliminaProducto = (content) => {
+        setTitulosModal("Eliminando el producto");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const modificaProducto = (content) => {
+        setTitulosModal("Modificando el producto");
+        setContentModal(content);
+        setShowModal(true);
+    }
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -368,7 +386,24 @@ function ModificacionVentas(props) {
 
     const totalSinIVA = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.total)), 0);
 
-    const renglon = listProductosCargados.length + 1;
+    // Para almacenar la lista completa de clientes
+    const [listProductosOV, setListProductosOV] = useState([]);
+
+    const renglon = listProductosOV.length + 1;
+
+    useEffect(() => {
+        try {
+            obtenerDatosProductosOV(informacionPedido.folio).then(response => {
+                const { data } = response;
+                console.log(data)
+                setListProductosOV(data)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [listProductosCargados]);
 
     return (
         <>
@@ -748,10 +783,11 @@ function ModificacionVentas(props) {
 
                         </Row>
 
+                        <hr />
+
                         {/* Listado de productos  */}
                         <div className="tablaProductos">
 
-                            <hr />
                             {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
                             {/* Inicia tabla informativa  */}
                             <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
@@ -770,22 +806,22 @@ function ModificacionVentas(props) {
                                         <th scope="col">UM</th>
                                         <th scope="col">Precio unitario</th>
                                         <th scope="col">Total</th>
-                                        <th scope="col">Eliminar</th>
+                                        <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                 </tfoot>
                                 <tbody>
-                                    {map(listProductosCargados, (producto, index) => (
+                                    {map(listProductosOV, (producto, index) => (
                                         <tr key={index}>
                                             <th scope="row">
                                                 {index + 1}
                                             </th>
                                             <td data-title="Descripcion">
-                                                {producto.item}
+                                                {producto.descripcion}
                                             </td>
                                             <td data-title="Material">
-                                                {producto.ID}
+                                                {producto.numeroParte}
                                             </td>
                                             <td data-title="UM">
                                                 {producto.cantidad}
@@ -806,21 +842,43 @@ function ModificacionVentas(props) {
                                                 }).format(producto.total)} MXN
                                             </td>
                                             <td data-title="Eliminar">
-                                                <div
-                                                    className="eliminarProductoListado"
-                                                    title="Eliminar el producto"
+                                                <Badge
+                                                    bg="success"
+                                                    title="Modificar"
+                                                    className="eliminar"
                                                     onClick={() => {
-                                                        removeItem(producto)
+                                                        modificaProducto(
+                                                            <ModificacionProductos
+                                                                datos={producto}
+                                                                setShowModal={setShowModal}
+                                                                history={history}
+                                                                setListProductosCargados={setListProductosCargados}
+                                                            />)
                                                     }}
                                                 >
-                                                    ❌
-                                                </div>
+                                                    <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                                                </Badge>
+                                                <Badge
+                                                    bg="danger"
+                                                    title="Eliminar"
+                                                    className="eliminar"
+                                                    onClick={() => {
+                                                        eliminaProducto(
+                                                            <EliminacionProductosOV
+                                                                datos={producto}
+                                                                setShowModal={setShowModal}
+                                                                history={history}
+                                                                setListProductosCargados={setListProductosCargados}
+                                                            />)
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                                                </Badge>
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
-                            {/* Termina tabla informativa */}
 
                             {/* Inicia tabla definida con totales */}
                             <Row>

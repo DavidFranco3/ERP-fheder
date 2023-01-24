@@ -11,7 +11,7 @@ function ModificacionProductos(props) {
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData(datos));
 
-    const { id, numeroParte, descripcion } = datos;
+    const { _id, numeroParte, descripcion } = datos;
     // Para determinar si hay conexion con el servidor o a internet
     const [conexionInternet, setConexionInternet] = useState(true);
 
@@ -27,6 +27,7 @@ function ModificacionProductos(props) {
         e.preventDefault()
 
         setLoading(true)
+        setListProductosCargados("");
         // Realiza registro de la aportación
         const dataTemp = {
             numeroParte: numeroParte,
@@ -37,9 +38,9 @@ function ModificacionProductos(props) {
             total: parseFloat(formData.precioUnitario) * parseInt(formData.cantidad)
         }
 
-        actualizaProductosOV(id, dataTemp).then(response => {
+        actualizaProductosOV(_id, dataTemp).then(response => {
             const { data } = response;
-            setListProductosCargados(dataTemp);
+            setListProductosCargados(_id);
             setShowModal(false);
 
         }).catch(e => {
