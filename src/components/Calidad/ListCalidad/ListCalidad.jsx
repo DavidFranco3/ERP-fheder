@@ -1,23 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
-// Inician importaciones para la tabla
 import BasicModal from "../../Modal/BasicModal";
 import { Badge, Button, Container, } from "react-bootstrap";
-//import ProveedoresenCompras from "./ProveedoresenCompras";
 import EliminaReporte from "../EliminaReporte";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
-import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import EliminacionLogicaCalidad from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListCalidad(props) {
     const { setRefreshCheckLogin, listInspeccion, history, location } = props;
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -34,8 +33,8 @@ function ListCalidad(props) {
         setShowModal(true);
     }
 
-     //Para la eliminacion logica de usuarios
-     const eliminaLogicaCalidad = (content) => {
+    //Para la eliminacion logica de usuarios
+    const eliminaLogicaCalidad = (content) => {
         setTitulosModal("Deshabilitando la inspeccion de material");
         setContentModal(content);
         setShowModal(true);
@@ -69,7 +68,7 @@ function ListCalidad(props) {
         },
         {
             name: "Fecha de solicitud",
-            selector: row => moment(row.fecha).format('LL'),
+            selector: row => dayjs(row.fecha).format('LL'),
             sortable: false,
             center: true,
             reorder: false

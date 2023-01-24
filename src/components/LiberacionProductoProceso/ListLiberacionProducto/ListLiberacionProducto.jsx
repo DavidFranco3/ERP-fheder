@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
 import { Badge, Button, Container, Table } from "react-bootstrap";
-import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
 import EliminaLiberacionProducto from '../EliminaLiberacionProducto';
 import styled from 'styled-components';
@@ -10,16 +8,20 @@ import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./ListLiberacionProducto.scss";
-//import ClientesPedido from "./ClientesPedido";
 import { estilos } from "../../../utils/tableStyled";
 import EliminacionLogicaLiberacion from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListLiberacionProducto(props) {
     const { setRefreshCheckLogin, listLiberacion, history, location } = props;
 
     const enrutamiento = useHistory();
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
+
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -102,14 +104,14 @@ function ListLiberacionProducto(props) {
         },
         {
             name: "Fecha elaboracion",
-            selector: row => moment(row.fechaElaboracion).format('LL'),
+            selector: row => dayjs(row.fechaElaboracion).format('LL'),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: "Fecha arranque molde",
-            selector: row => moment(row.fechaArranqueMolde).format('LL'),
+            selector: row => dayjs(row.fechaArranqueMolde).format('LL'),
             sortable: false,
             center: true,
             reorder: false

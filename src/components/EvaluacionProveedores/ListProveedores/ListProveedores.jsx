@@ -3,19 +3,21 @@ import { Badge, Container } from "react-bootstrap";
 import "./ListProveedores.scss"
 import BasicModal from "../../Modal/BasicModal";
 import EstadoProveedor from "../EstadoProveedor";
-import ModificaProveedores from "../ModificaProveedores";
 import EliminaProveedores from "../EliminaProveedores";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
-import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { useHistory } from "react-router-dom";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListProveedores(props) {
     const { listProveedores, setRefreshCheckLogin, history, location } = props;
 
-    // console.log(listProveedores)
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     const enrutamiento = useHistory();
 
@@ -183,6 +185,13 @@ function ListProveedores(props) {
                         </Badge>
                     </>
                 ),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Ultima modificacion",
+            selector: row => dayjs(row.fechaActualizacion).format('LL'),
             sortable: false,
             center: true,
             reorder: false

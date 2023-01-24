@@ -1,27 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
 import { Badge, Button, Container } from "react-bootstrap";
-import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaInspeccion from '../EliminacionFisica';
 import EliminacionLogicaInspecciones from '../EliminacionLogica';
-//import ModificacionEtiquetaPrimeraPieza from "../ModificacionEtiquetaPrimeraPieza";
-import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faArrowPointer } from "@fortawesome/free-solid-svg-icons";
 import "./ListInspeccionPieza.scss";
-//import ClienteAsignado from "./ClienteAsignado";
-//import ProductoAsignado from "./ProductoAsignado"
 import { estilos } from "../../../utils/tableStyled";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListInspeccionPieza(props) {
     const { setRefreshCheckLogin, listInspeccion, history, location } = props;
 
     const enrutamiento = useHistory();
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -62,7 +60,7 @@ function ListInspeccionPieza(props) {
         },
         {
             name: "Fecha de elaboración",
-            selector: row => moment(row.fechaElaboracion).format('LL'),
+            selector: row => dayjs(row.fechaElaboracion).format('LL'),
             sortable: false,
             center: true,
             reorder: false
@@ -76,7 +74,7 @@ function ListInspeccionPieza(props) {
         },
         {
             name: "Fecha de. arranque",
-            selector: row => moment(row.fechaArranqueMaquina).format('LL'),
+            selector: row => dayjs(row.fechaArranqueMaquina).format('LL'),
             sortable: false,
             center: true,
             reorder: false
@@ -122,7 +120,7 @@ function ListInspeccionPieza(props) {
                 (
                     <>
                         <Badge
-                            bg="success" 
+                            bg="success"
                             className="activo"
                             title="Deshabilitar"
                             onClick={() => {

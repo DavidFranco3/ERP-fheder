@@ -1,29 +1,27 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import 'moment/locale/es';
 import "./ListUsuarios.scss"
-import { Badge, Button, Container, Navbar, Table, Form, Col } from "react-bootstrap";
-import { map } from "lodash";
+import { Badge, Button, Container, Col, Form } from "react-bootstrap";
 import EliminacionLogicaUsuarios from "../EliminacionLogica";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaUsuarios from "../EliminacionFisica";
-import DataTable, { ExpanderComponentProps } from 'react-data-table-component';
+import DataTable from 'react-data-table-component';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
-import TableRow from "@mui/material/TableRow";
 import { estilos } from "../../../utils/tableStyled";
 import { exportCSVFile } from "../../../utils/exportCSV";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListUsuarios(props) {
     const { listUsuarios, history, location, setRefreshCheckLogin } = props;
 
     const enrutamiento = useHistory();
 
-    //console.log(listUsuarios)
-
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -62,7 +60,7 @@ function ListUsuarios(props) {
     const columns = [
         {
             name: 'Nombre',
-            selector: row => row.nombre + " " + row.apellidos,
+            selector: row => row.nombre,
             sortable: false,
             center: true,
             reorder: false
@@ -105,13 +103,6 @@ function ListUsuarios(props) {
         {
             name: 'Correo',
             selector: row => row.correo,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Modificación',
-            selector: row => moment(row.fechaActualizacion).format("LL"),
             sortable: false,
             center: true,
             reorder: false
@@ -162,6 +153,13 @@ function ListUsuarios(props) {
                             </Badge>
                         </>
                     )
+        },
+        {
+            name: 'Ultima modificación',
+            selector: row => dayjs(row.fechaActualizacion).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
         },
         {
             name: 'Acciones',

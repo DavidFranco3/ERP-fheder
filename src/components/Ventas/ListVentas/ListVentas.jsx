@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
 import { Badge, Button, Container, Table } from "react-bootstrap";
 import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
@@ -14,13 +13,17 @@ import ClientesPedido from "./ClientesPedido";
 import { estilos } from "../../../utils/tableStyled";
 import EliminacionLogicaVentas from '../EliminacionLogica';
 import ListProductosVentas from '../ListProductosVentas';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListVentas(props) {
     const { setRefreshCheckLogin, listPedidosVenta, history, location } = props;
 
     const enrutamiento = useHistory();
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -87,14 +90,14 @@ function ListVentas(props) {
         },
         {
             name: "Fecha pedido",
-            selector: row => moment(row.fechaElaboracion).format('LL'),
+            selector: row => dayjs(row.fechaElaboracion).format('LL'),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: "Fecha entrega",
-            selector: row => moment(row.fechaEntrega).format('LL'),
+            selector: row => dayjs(row.fechaEntrega).format('LL'),
             sortable: false,
             center: true,
             reorder: false

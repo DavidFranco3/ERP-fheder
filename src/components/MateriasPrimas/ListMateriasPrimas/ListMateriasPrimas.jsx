@@ -8,9 +8,15 @@ import EliminaMateriasPrimas from "../EliminaMateriasPrimas";
 import ModificaMateriasPrimas from "../ModificaMateriasPrimas";
 import { estilos } from "../../../utils/tableStyled";
 import EliminacionLogicaMateriales from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListMateriasPrimas(props) {
     const { setRefreshCheckLogin, listMateriales, history, location } = props;
+
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -142,6 +148,13 @@ function ListMateriasPrimas(props) {
                             </Badge>
                         </>
                     )
+        },
+        {
+            name: "Ultima modificacion",
+            selector: row => dayjs(row.fechaAdquisicion).format('LL'),
+            sortable: false,
+            center: true,
+            reorder: false
         },
         {
             name: 'Acciones',

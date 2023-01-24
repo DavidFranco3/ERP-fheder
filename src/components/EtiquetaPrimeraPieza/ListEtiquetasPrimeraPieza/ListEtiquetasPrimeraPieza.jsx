@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
 import { Badge, Button, Container } from "react-bootstrap";
-import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionEtiquetasPrimeraPieza from "../EliminacionEtiquetasPrimeraPieza";
 import ModificacionEtiquetaPrimeraPieza from "../ModificacionEtiquetaPrimeraPieza";
-import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faArrowPointer } from "@fortawesome/free-solid-svg-icons";
@@ -15,13 +12,17 @@ import ClienteAsignado from "./ClienteAsignado";
 import ProductoAsignado from "./ProductoAsignado"
 import { estilos } from "../../../utils/tableStyled";
 import EliminacionLogicaPrimeraPieza from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListEtiquetasPrimeraPieza(props) {
     const { setRefreshCheckLogin, listEtiquetas, history, location } = props;
 
     const enrutamiento = useHistory();
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -71,7 +72,7 @@ function ListEtiquetasPrimeraPieza(props) {
         },
         {
             name: "Fecha",
-            selector: row => moment(row.fecha).format('LL'),
+            selector: row => dayjs(row.fecha).format('LL'),
             sortable: false,
             center: true,
             reorder: false
@@ -146,7 +147,7 @@ function ListEtiquetasPrimeraPieza(props) {
         },
         {
             name: "Ultima modificacion",
-            selector: row => moment(row.fechaActualizacion).format('LL'),
+            selector: row => dayjs(row.fechaActualizacion).format('LL'),
             sortable: false,
             center: true,
             reorder: false

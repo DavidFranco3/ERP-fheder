@@ -14,6 +14,9 @@ import { estilos } from "../../../utils/tableStyled";
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { map } from "lodash";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListAlmacenMp(props) {
     const { listAlmacenes, location, history, setRefreshCheckLogin } = props;
@@ -22,6 +25,9 @@ function ListAlmacenMp(props) {
     const [showModal, setShowModal] = useState(false);
     const [contentModal, setContentModal] = useState(null);
     const [titulosModal, setTitulosModal] = useState(null);
+
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // define el uso del enrutamiento
     const enrutamiento = useHistory()
@@ -112,14 +118,6 @@ function ListAlmacenMp(props) {
             reorder: false
         },
         {
-            name: "Fecha",
-            selector: row => (moment(row.fecha).format('LL')
-            ),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
             name: 'Estado',
             sortable: false,
             center: true,
@@ -166,6 +164,13 @@ function ListAlmacenMp(props) {
                         </Badge>
                     </>
                 )
+        },
+        {
+            name: "Fecha del movimiento",
+            selector: row => dayjs(row.fecha).format('LL'),
+            sortable: false,
+            center: true,
+            reorder: false
         },
         {
             name: 'Acciones',

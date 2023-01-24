@@ -1,12 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import 'moment/locale/es';
 import "./ListProgramaProduccion.scss"
 import { Badge, Button, Container, Navbar, Table, Form, Col } from "react-bootstrap";
-//import EliminacionLogicaUsuarios from "../EliminacionLogica";
 import BasicModal from '../../Modal/BasicModal';
-//import EliminacionFisicaRecepcion from '../EliminacionFisica';
 import DataTable from 'react-data-table-component';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,14 +11,17 @@ import { estilos } from "../../../utils/tableStyled";
 import { exportCSVFile } from "../../../utils/exportCSV";
 import EliminacionFisicaPrograma from '../EliminacionFisica';
 import EstadoPrograma from '../EstadoPrograma';
-//import ListProductosRecepcion from '../ListProductosRecepcion';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListProgramaProduccion(props) {
     const { listProgramaProduccion, history, location, setRefreshCheckLogin } = props;
 
     const enrutamiento = useHistory();
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -65,7 +64,7 @@ function ListProgramaProduccion(props) {
         },
         {
             name: 'Fecha de inicio',
-            selector: row => moment(row.ordenProduccion.fechaInicio).format("LL"),
+            selector: row => dayjs(row.ordenProduccion.fechaInicio).format("LL"),
             sortable: false,
             center: true,
             reorder: false
@@ -189,77 +188,77 @@ function ListProgramaProduccion(props) {
         },
         {
             name: 'Lunes T1',
-            selector: row => moment(row.programa.lunesT1).format("LL"),
+            selector: row => dayjs(row.programa.lunesT1).format("LL"),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Lunes T2',
-            selector: row => moment(row.programa.lunesT2).format("LL"),
+            selector: row => dayjs(row.programa.lunesT2).format("LL"),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Martes T1',
-            selector: row => moment(row.programa.martesT1).format("LL"),
+            selector: row => dayjs(row.programa.martesT1).format("LL"),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Martes T2',
-            selector: row => moment(row.programa.martesT2).format("LL"),
+            selector: row => dayjs(row.programa.martesT2).format("LL"),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Miercoles T1',
-            selector: row => moment(row.programa.miercolesT1).format("LL"),
+            selector: row => dayjs(row.programa.miercolesT1).format("LL"),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Miercoles T2',
-            selector: row => moment(row.programa.miercolesT2).format("LL"),
+            selector: row => dayjs(row.programa.miercolesT2).format("LL"),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Jueves T1',
-            selector: row => moment(row.programa.juevesT1).format("LL"),
+            selector: row => dayjs(row.programa.juevesT1).format("LL"),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Jueves T2',
-            selector: row => moment(row.programa.juevesT2).format("LL"),
+            selector: row => dayjs(row.programa.juevesT2).format("LL"),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Viernes T1',
-            selector: row => moment(row.programa.viernesT1).format("LL"),
+            selector: row => dayjs(row.programa.viernesT1).format("LL"),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Viernes T2',
-            selector: row => moment(row.programa.viernesT2).format("LL"),
+            selector: row => dayjs(row.programa.viernesT2).format("LL"),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Sabado T1',
-            selector: row => moment(row.programa.sabadoT1).format("LL"),
+            selector: row => dayjs(row.programa.sabadoT1).format("LL"),
             sortable: false,
             center: true,
             reorder: false

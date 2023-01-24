@@ -2,24 +2,23 @@ import { useState, useEffect } from 'react';
 import { Badge, Container } from "react-bootstrap";
 import "./ListRequisiciones.scss"
 import BasicModal from "../../Modal/BasicModal";
-//import EstadoProveedor from "../EstadoProveedor";
-//import ModificaProveedores from "../ModificaProveedores";
 import EliminaRequisiciones from "../EliminaRequisiciones";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
-import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
-import moment from "moment";
-import ModificaRequisiciones from '../ModificaRequisiciones';
 import { useHistory } from "react-router-dom";
 import ListProductosRequisicion from '../ListProductosRequisicion';
 import EliminacionLogicaRequisiciones from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListRequisiciones(props) {
     const { listRequisiciones, setRefreshCheckLogin, history, location } = props;
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     const enrutamiento = useHistory();
 
@@ -81,7 +80,7 @@ function ListRequisiciones(props) {
         },
         {
             name: 'Fecha elaboracion',
-            selector: row => moment(row.fechaElaboracion).format('LL'),
+            selector: row => dayjs(row.fechaElaboracion).format('LL'),
             sortable: false,
             center: true,
             reorder: false

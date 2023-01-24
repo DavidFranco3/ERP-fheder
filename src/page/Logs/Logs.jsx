@@ -5,7 +5,6 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { listarLogs } from "../../api/logsGenerales";
 import ListLogs from "../../components/Logs/ListLogs";
-import moment from "moment";
 import "./Logs.scss";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
@@ -36,9 +35,7 @@ function Logs(props) {
 
     // Para almacenar todos los log del sistema
     const [listLog, setListLog] = useState(null);
-
-    moment.locale("es");
-
+    
     useEffect(() => {
         try {
             listarLogs(getSucursal()).then(response => {
@@ -122,7 +119,7 @@ function formatModelLogs(data) {
             descripcion: data.descripcion,
             detalles: data.detalles,
             mensaje: data.detalles.mensaje,
-            fechaCreacion: moment(data.createdAt).format('LL'),
+            fechaCreacion: data.createdAt,
             fechaActualizacion: data.updatedAt
         });
     });

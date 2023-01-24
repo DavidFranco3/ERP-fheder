@@ -1,25 +1,25 @@
 import {useEffect, useMemo, useState} from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
 import {Badge, Button, Container, Table} from "react-bootstrap";
-import {map} from "lodash";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaCertificados from '../EliminacionFisica/EliminacionFisicaCertificados';
-import styled from 'styled-components';
 import DataTable  from 'react-data-table-component';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@fortawesome/free-solid-svg-icons";
 import "./ListCertificadosCalidad.scss";
-//import ProductosPedido from "./ProductosPedido";
 import {estilos} from "../../../utils/tableStyled";
 import EliminacionLogicaCertificado from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListCertificadosCalidad(props) {
     const { setRefreshCheckLogin, listCertificados, history, location } = props;
 
     const enrutamiento = useHistory();
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -74,7 +74,7 @@ function ListCertificadosCalidad(props) {
         },
         {
             name: "Fecha (Lote)",
-            selector: row => moment(row.fecha).format('LL'),
+            selector: row => dayjs(row.fecha).format('LL'),
             sortable: false,
             center: true,
             reorder: false

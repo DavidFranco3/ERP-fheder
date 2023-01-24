@@ -1,23 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
 import { Badge, Button, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaProduccion from "../EliminacionFisica";
-import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./ListReporteProduccion.scss";
 import { estilos } from "../../../utils/tableStyled";
 import EliminacionLogicaProduccion from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListReporteProduccion(props) {
     const { setRefreshCheckLogin, listProduccion, history, location } = props;
 
     const enrutamiento = useHistory();
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -65,7 +67,7 @@ function ListReporteProduccion(props) {
         },
         {
             name: "Fecha",
-            selector: row => moment(row.fecha).format('LL'),
+            selector: row => dayjs(row.fecha).format('LL'),
             sortable: false,
             center: true,
             reorder: false

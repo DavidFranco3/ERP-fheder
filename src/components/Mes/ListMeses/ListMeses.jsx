@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import { Badge, Button, Container, Table } from "react-bootstrap";
-import { map } from "lodash";
+import { Badge, Button, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionMeses from '../EliminacionMeses';
 import ModificacionMes from '../ModificacionMes/ModificacionMes';
@@ -11,16 +9,19 @@ import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faArrowPointer } from "@fortawesome/free-solid-svg-icons";
 import "./ListMeses.scss";
-//import ClienteAsignado from "./ClienteAsignado";
 import { estilos } from "../../../utils/tableStyled";
 import EliminacionLogicaMeses from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListIntegracionVentasGastos(props) {
     const { setRefreshCheckLogin, listMeses, history, location } = props;
 
     const enrutamiento = useHistory();
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -135,6 +136,13 @@ function ListIntegracionVentasGastos(props) {
                             </Badge>
                         </>
                     )
+        },
+        {
+            name: "Ultima modificacion",
+            selector: row => dayjs(row.fechaActualizacion).format('LL'),
+            sortable: false,
+            center: true,
+            reorder: false
         },
         {
             name: "Acciones",

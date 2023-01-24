@@ -1,7 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import 'moment/locale/es';
 import "./ListClasificacionMaquinaria.scss"
 import { Badge, Button, Container, Form, Col } from "react-bootstrap";
 import { map } from "lodash";
@@ -15,15 +13,18 @@ import { exportCSVFile } from "../../../utils/exportCSV";
 import ModificacionClasificacionMaquinaria from '../Modificacion';
 import EliminacionFisicaClasificacionMaquinaria from '../EliminacionFisica';
 import EliminacionLogicaClasificacionMaquinaria from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListClasificacionMaquinaria(props) {
     const { listClasificacionMaquinaria, history, location, setRefreshCheckLogin } = props;
 
     const enrutamiento = useHistory();
 
-    //console.log(listUsuarios)
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
-    moment.locale("es");
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -74,20 +75,6 @@ function ListClasificacionMaquinaria(props) {
             reorder: false
         },
         {
-            name: 'Fecha de registro',
-            selector: row => moment(row.fechaCreacion).format("LL"),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Modificación',
-            selector: row => moment(row.fechaActualizacion).format("LL"),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
             name: 'Estado',
             center: true,
             reorder: false,
@@ -133,6 +120,20 @@ function ListClasificacionMaquinaria(props) {
                             </Badge>
                         </>
                     )
+        },
+        {
+            name: 'Fecha de registro',
+            selector: row => dayjs(row.fechaCreacion).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Modificación',
+            selector: row => dayjs(row.fechaActualizacion).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
         },
         {
             name: 'Acciones',

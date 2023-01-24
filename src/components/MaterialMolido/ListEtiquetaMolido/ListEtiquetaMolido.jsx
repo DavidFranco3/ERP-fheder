@@ -1,25 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
 import { Badge, Button, Container } from "react-bootstrap";
-import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionEtiquetaMolido from '../EliminacionEtiquetaMolido';
 import ModificaMaterialMolido from '../ModificaMaterialMolido';
-import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faArrowPointer } from "@fortawesome/free-solid-svg-icons";
 import "./ListEtiquetaMolido.scss";
 import { estilos } from "../../../utils/tableStyled";
 import EliminacionLogicaMaterialMolido from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListEtiquetaMolido(props) {
     const { setRefreshCheckLogin, listEtiquetas, history, location } = props;
 
     const enrutamiento = useHistory();
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -75,7 +76,7 @@ function ListEtiquetaMolido(props) {
         },
         {
             name: "Fecha",
-            selector: row => moment(row.fecha).format('LL'),
+            selector: row => dayjs(row.fecha).format('LL'),
             sortable: false,
             center: true,
             reorder: false

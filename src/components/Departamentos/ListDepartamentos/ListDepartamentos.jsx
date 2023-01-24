@@ -1,13 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
-import moment from "moment";
-import 'moment/locale/es';
 import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 import { Button, Container } from "react-bootstrap";
-import DataTable, { ExpanderComponentProps, createTheme } from 'react-data-table-component';
+import DataTable from 'react-data-table-component';
 import "./ListDepartamentos.scss";
-import { map } from "lodash";
-import { Badge, Table } from "react-bootstrap";
+import { Badge } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaDepartamentos from "../EliminacionFisica";
 import ModificacionDepartamentos from "../Modificacion";
@@ -15,12 +12,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
 import EliminacionLogicaDepartamentos from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListDepartamentos(props) {
     const { listDepartamentos, setRefreshCheckLogin, history, location } = props;
 
-    //console.log(listDepartamentos)
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     const enrutamiento = useHistory();
 
@@ -61,13 +61,6 @@ function ListDepartamentos(props) {
         {
             name: 'Nombre',
             selector: row => row.nombre,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Última modificación',
-            selector: row => moment(row.fechaActualizacion).format("LL"),
             sortable: false,
             center: true,
             reorder: false
@@ -118,6 +111,13 @@ function ListDepartamentos(props) {
                             </Badge>
                         </>
                     )
+        },
+        {
+            name: 'Última modificación',
+            selector: row => dayjs(row.fechaActualizacion).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
         },
         {
             name: 'Acciones',

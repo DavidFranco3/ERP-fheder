@@ -1,8 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import moment from "moment";
-import 'moment/locale/es';
 import { useHistory } from "react-router-dom";
-import { map } from "lodash";
 import { Badge, Button, Container } from "react-bootstrap";
 import EliminacionLogicaClientes from "../EliminacionLogica";
 import BasicModal from "../../Modal/BasicModal";
@@ -13,12 +10,15 @@ import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from 
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { estilos } from "../../../utils/tableStyled";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListClientes(props) {
     const { listClientes, history, location, setRefreshCheckLogin } = props;
 
-    moment.locale("es");
-    //console.log(listClientes);
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     const enrutamiento = useHistory();
 
@@ -138,7 +138,7 @@ function ListClientes(props) {
         },
         {
             name: 'Última modificación',
-            selector: row => moment(row.fechaActualizacion).format("LL"),
+            selector: row => dayjs(row.fechaActualizacion).format("LL"),
             sortable: false,
             center: true,
             reorder: false

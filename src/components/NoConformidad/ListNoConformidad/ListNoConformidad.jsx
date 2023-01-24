@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import { Badge, Button, Container, Table } from "react-bootstrap";
-import { map } from "lodash";
+import { Badge, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
-import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
@@ -12,13 +9,17 @@ import "./ListNoConformidad.scss";
 import { estilos } from "../../../utils/tableStyled";
 import EliminacionLogicaNoConformidad from '../EliminacionLogica';
 import EliminacionFisicaNoConformidad from '../EliminacionFisica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListNoConformidad(props) {
     const { setRefreshCheckLogin, listNoConformidad, history, location } = props;
 
     const enrutamiento = useHistory();
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -101,7 +102,7 @@ function ListNoConformidad(props) {
         },
         {
             name: "Fecha",
-            selector: row => moment(row.fecha).format('LL'),
+            selector: row => dayjs(row.fecha).format('LL'),
             sortable: false,
             center: true,
             reorder: false
@@ -169,7 +170,7 @@ function ListNoConformidad(props) {
         },
         {
             name: "Fecha de cierre",
-            selector: row => moment(row.fechaCierre).format('LL'),
+            selector: row => dayjs(row.fechaCierre).format('LL'),
             sortable: false,
             center: true,
             reorder: false

@@ -10,15 +10,18 @@ import EliminaMatrizProductos from "../EliminaMatrizProductos";
 import BusquedaCliente from "./BusquedaCliente";
 import "./ListMatrizProductos.scss";
 import { estilos } from "../../../utils/tableStyled";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListMatrizProductos(props) {
     const { listProductos, history, location, setRefreshCheckLogin } = props;
     //console.log(listProductos)
 
-    const [columnas, setColumnas] = useState([]);
-    const [pendiente, setPendiente] = useState(true);
-
     const enrutamiento = useHistory();
+
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para ir hacia la ruta de modificacion
     const rutaModificaProductos = (id) => {
@@ -138,6 +141,13 @@ function ListMatrizProductos(props) {
                         </Badge>
                     </>
                 ),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Ultima modificacion",
+            selector: row => dayjs(row.fechaAdquisicion).format('LL'),
             sortable: false,
             center: true,
             reorder: false

@@ -1,13 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
-import moment from "moment";
-import 'moment/locale/es';
 import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 import { Button, Container } from "react-bootstrap";
 import DataTable from 'react-data-table-component';
 import "./ListUnidadesMedida.scss";
-import { map } from "lodash";
-import { Badge, Table } from "react-bootstrap";
+import { Badge } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaUnidadesMedida from "../EliminacionFisica";
 import ModificacionUnidadesMedida from "../Modificacion";
@@ -15,19 +12,17 @@ import EliminacionLogicaUnidadesMedida from '../EliminacionLogica';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListUnidadesMedida(props) {
     const { listUM, setRefreshCheckLogin, history, location } = props;
 
-    //console.log(listDepartamentos)
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     const enrutamiento = useHistory();
-
-    // Para ir hacia la ruta de los departamentos
-    const regresarRuta = () => {
-        enrutamiento.push("/Departamentos");
-    }
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -120,7 +115,7 @@ function ListUnidadesMedida(props) {
         },
         {
             name: 'Última modificación',
-            selector: row => moment(row.fechaActualizacion).format("LL"),
+            selector: row => dayjs(row.fechaActualizacion).format("LL"),
             sortable: false,
             center: true,
             reorder: false

@@ -1,9 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Badge, Button, Container, Row, Col, Nav } from "react-bootstrap";
-import moment from "moment";
-import styled from "styled-components";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowDownLong} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDownLong } from "@fortawesome/free-solid-svg-icons";
 import DataTable from "react-data-table-component";
 import Graficador from "../Graficador";
 import { Tab } from '@headlessui/react'
@@ -19,7 +17,10 @@ import AlmacenMP from "../Procesos/AlmacenMP";
 import Embarques from "../Procesos/Embarques";
 import Facturacion from "../Procesos/Facturacion";
 import CuentasxCobrar from "../Procesos/CuentasxCobrar";
-import {estilos} from "../../../utils/tableStyled";
+import { estilos } from "../../../utils/tableStyled";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -28,6 +29,9 @@ function classNames(...classes) {
 function ListTracking(props) {
     const { listTracking, setRefreshCheckLogin, history, location } = props;
     //console.log(listTracking)
+
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Definicion de tabla
     const ExpandedComponent = ({ data }) => (
@@ -303,7 +307,7 @@ function ListTracking(props) {
         },
         {
             name: "Fecha de elaboración",
-            selector: row => moment(row.fechaElaboracion).format('LL'),
+            selector: row => dayjs(row.fechaElaboracion).format('LL'),
             sortable: false,
             center: true,
             reorder: false
@@ -313,11 +317,11 @@ function ListTracking(props) {
             sortable: false,
             center: true,
             reorder: false,
-            selector: row => moment(row.fechaEntrega).format('LL')
+            selector: row => dayjs(row.fechaEntrega).format('LL')
         },
         {
             name: "Última modificación",
-            selector: row => moment(row.fechaActualizacion).format('LL'),
+            selector: row => dayjs(row.fechaActualizacion).format('LL'),
             sortable: false,
             center: true,
             reorder: false

@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 // Inician importaciones para la tabla
 import BasicModal from "../../Modal/BasicModal";
 import { Badge, Button, Container, } from "react-bootstrap";
@@ -13,11 +11,15 @@ import { estilos } from "../../../utils/tableStyled";
 import EliminacionLogicaCompras from '../EliminacionLogica';
 import DataTable from 'react-data-table-component';
 import ListProductosCompras from '../ListProductosCompras';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListCompras(props) {
     const { setRefreshCheckLogin, listCompras, history, location } = props;
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -80,7 +82,7 @@ function ListCompras(props) {
                     {
                         row.fechaSolicitud ?
                             (
-                                moment(row.fechaSolicitud).format('LL')
+                                dayjs(row.fechaSolicitud).format('LL')
                             )
                             :
                             (
@@ -123,7 +125,7 @@ function ListCompras(props) {
                     {
                         row.fechaEntrega ?
                             (
-                                moment(row.fechaEntrega).format('LL')
+                                dayjs(row.fechaEntrega).format('LL')
                             )
                             :
                             (

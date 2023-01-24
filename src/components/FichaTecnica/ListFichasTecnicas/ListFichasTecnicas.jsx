@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import { Badge, Button, Container, Table } from "react-bootstrap";
-import { map } from "lodash";
+import { Badge, Container} from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
-import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
@@ -12,13 +9,17 @@ import "./ListFichasTecnicas.scss";
 import { estilos } from "../../../utils/tableStyled";
 import EliminacionLogicaFichasTecnicas from '../EliminacionLogica';
 import EliminacionFisicaFichasTecnicas from '../EliminacionFisica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListFichasTecnicas(props) {
     const { setRefreshCheckLogin, listFichasTecnicas, history, location } = props;
 
     const enrutamiento = useHistory();
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -80,7 +81,7 @@ function ListFichasTecnicas(props) {
         },
         {
             name: "Fecha",
-            selector: row => moment(row.fechaElaboracion).format('LL'),
+            selector: row => dayjs(row.fechaElaboracion).format('LL'),
             sortable: false,
             center: true,
             reorder: false

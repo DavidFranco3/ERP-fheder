@@ -1,25 +1,24 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
-// Inician importaciones para la tabla
 import BasicModal from "../../Modal/BasicModal";
 import { Badge, Button, Container, } from "react-bootstrap";
-//import EliminacionFisicaEtiquetasPT from "../EliminacionFisica";
-//import ModificaIdentificacionPT from '../ModificaIdentificacionPT';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
-import { map } from "lodash";
 import EliminacionFisicaMaquinas from '../EliminacionFisica';
 import ModificaMaquinas from '../ModificaMaquinas';
 import EliminacionLogicaMaquinas from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListMaquinas(props) {
     const { setRefreshCheckLogin, listMaquinas, history, location } = props;
-    moment.locale("es");
+    
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -38,7 +37,7 @@ function ListMaquinas(props) {
 
     //Para la eliminacion de compras
     const modifcaMaquina = (content) => {
-        setTitulosModal("Modificando etiqueta PT");
+        setTitulosModal("Modificando la maquina");
         setContentModal(content);
         setShowModal(true);
     }
@@ -161,7 +160,7 @@ function ListMaquinas(props) {
         },
         {
             name: "Fecha de adquisición",
-            selector: row => moment(row.fechaAdquisicion).format('LL'),
+            selector: row => dayjs(row.fechaAdquisicion).format('LL'),
             sortable: false,
             center: true,
             reorder: false

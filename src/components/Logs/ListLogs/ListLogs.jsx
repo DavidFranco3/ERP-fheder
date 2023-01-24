@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
 import moment from "moment";
-import { Badge, Button, Container } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
-// Inician importaciones para la tabla
-import TableRow from '@mui/material/TableRow';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
 import DataTable from 'react-data-table-component';
 import "./ListLogs.scss";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
 
 function ListLogs(props) {
     const { listLogs, history, location, setRefreshCheckLogin } = props;
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     const columns = [
         {
@@ -56,7 +56,7 @@ function ListLogs(props) {
         },
         {
             name: "Fecha",
-            selector: row => row.fechaCreacion,
+            selector: row => dayjs(row.fechaCreacion).format("LL"),
             sortable: false,
             center: true,
             reorder: false

@@ -1,25 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import { Badge, Button, Container } from "react-bootstrap";
+import { Badge, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaProduccion from "../EliminacionFisica";
-import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./ListProduccion.scss";
 import EliminacionLogicaProduccion from '../EliminacionLogica';
-//import ProductosPedido from "./ProductosPedido";
 import { estilos } from "../../../utils/tableStyled";
 import Cliente from "./Cliente";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListProduccion(props) {
     const { setRefreshCheckLogin, listProduccion, history, location } = props;
 
     const enrutamiento = useHistory();
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -74,7 +75,7 @@ function ListProduccion(props) {
         },
         {
             name: "Fecha",
-            selector: row => moment(row.planeacion.fecha).format('LL'),
+            selector: row => dayjs(row.planeacion.fecha).format('LL'),
             sortable: false,
             center: true,
             reorder: false
@@ -152,6 +153,13 @@ function ListProduccion(props) {
                             </Badge>
                         </>
                     )
+        },
+        {
+            name: "Ultima modificacion",
+            selector: row => dayjs(row.fechaActualizacion).format('LL'),
+            sortable: false,
+            center: true,
+            reorder: false
         },
         {
             name: "Acciones",

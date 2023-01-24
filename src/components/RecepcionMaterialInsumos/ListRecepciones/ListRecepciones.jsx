@@ -1,10 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import 'moment/locale/es';
 import "./ListRecepciones.scss"
 import { Badge, Button, Container, Navbar, Table, Form, Col } from "react-bootstrap";
-//import EliminacionLogicaUsuarios from "../EliminacionLogica";
 import BasicModal from '../../Modal/BasicModal';
 import EliminacionFisicaRecepcion from '../EliminacionFisica';
 import DataTable from 'react-data-table-component';
@@ -15,13 +12,17 @@ import { estilos } from "../../../utils/tableStyled";
 import { exportCSVFile } from "../../../utils/exportCSV";
 import ListProductosRecepcion from '../ListProductosRecepcion';
 import EliminacionLogicaRecepcion from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListRecepciones(props) {
     const { listRecepciones, history, location, setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
-    moment.locale("es");
+    const enrutamiento = useHistory();
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -84,7 +85,7 @@ function ListRecepciones(props) {
         },
         {
             name: 'Fecha de recepción',
-            selector: row => moment(row.fechaRecepcion).format("LL"),
+            selector: row => dayjs(row.fechaRecepcion).format("LL"),
             sortable: false,
             center: true,
             reorder: false

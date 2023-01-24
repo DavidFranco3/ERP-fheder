@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
-// Inician importaciones para la tabla
 import BasicModal from "../../Modal/BasicModal";
 import { Badge, Button, Container, } from "react-bootstrap";
 import EliminacionFisicaEtiquetasPT from "../EliminacionFisica";
@@ -12,12 +9,16 @@ import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from 
 import { estilos } from "../../../utils/tableStyled";
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
-import { map } from "lodash";
 import EliminacionLogicaEtiquetaPT from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListEtiquetasPT(props) {
     const { setRefreshCheckLogin, listEtiquetas, history, location } = props;
-    moment.locale("es");
+
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -81,7 +82,7 @@ function ListEtiquetasPT(props) {
         },
         {
             name: "Fecha",
-            selector: row => moment(row.fecha).format('LL'),
+            selector: row => dayjs(row.fecha).format('LL'),
             sortable: false,
             center: true,
             reorder: false

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import moment from "moment";
 import { useHistory } from "react-router-dom";
 import { Badge, Container } from "react-bootstrap";
 import DataTable, { createTheme } from "react-data-table-component";
@@ -11,6 +10,9 @@ import { estilos } from "../../../utils/tableStyled";
 import Clientes from "./Clientes";
 import Proveedor from "./Proveedor";
 import EliminacionLogicaCotizaciones from "../EliminacionLogica";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListCotizaciones(props) {
     const { setRefreshCheckLogin, location, history, listCotizaciones } = props;
@@ -20,7 +22,8 @@ function ListCotizaciones(props) {
     // Para definir el uso del enrutamiento
     const enrutamiento = useHistory()
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -154,14 +157,14 @@ function ListCotizaciones(props) {
         },
         {
             name: 'Fecha de creación',
-            selector: row => moment(row.fechaRegistro).format("LL"),
+            selector: row => dayjs(row.fechaRegistro).format("LL"),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Fecha de modificación',
-            selector: row => moment(row.fechaActualizacion).format("LL"),
+            selector: row => dayjs(row.fechaActualizacion).format("LL"),
             sortable: false,
             center: true,
             reorder: false

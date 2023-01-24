@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
 import { Badge, Button, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionIntegracionVentasGastos from '../EliminacionIntegracionVentasGastos/EliminacionIntegracionVentasGastos';
@@ -13,13 +12,17 @@ import "./ListIntegracionVentasGastos.scss";
 import ClienteAsignado from "./ClienteAsignado";
 import EliminacionLogicaIntegracion from "../EliminacionLogica";
 import { estilos } from "../../../utils/tableStyled";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListIntegracionVentasGastos(props) {
     const { setRefreshCheckLogin, listIntegraciones, history, location } = props;
 
     const enrutamiento = useHistory();
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -76,7 +79,7 @@ function ListIntegracionVentasGastos(props) {
         },
         {
             name: "Fecha factura",
-            selector: row => moment(row.fechaFactura).format('LL'),
+            selector: row => dayjs(row.fechaFactura).format('LL'),
             sortable: false,
             center: true,
             reorder: false

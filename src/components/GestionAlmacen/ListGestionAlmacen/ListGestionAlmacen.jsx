@@ -1,16 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import 'moment/locale/es';
-
 import "./ListGestionAlmacen.scss"
 import { Badge, Button, Container, Form, Col } from "react-bootstrap";
-import { map } from "lodash";
-//import EliminacionLogicaUsuarios from "../EliminacionLogica";
 import BasicModal from "../../Modal/BasicModal";
-//import EliminacionFisicaUsuarios from "../EliminacionFisica";
-
-import DataTable, { ExpanderComponentProps } from 'react-data-table-component';
+import DataTable from 'react-data-table-component';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
@@ -19,15 +12,17 @@ import { exportCSVFile } from "../../../utils/exportCSV";
 import ModificacionGestionAlmacen from '../Modificacion';
 import EliminacionFisicaGestionAlmacen from '../EliminacionFisica';
 import EliminacionLogicaGestionAlmacen from '../EliminacionLogica';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListGestionAlmacen(props) {
     const { listGestionAlmacen, history, location, setRefreshCheckLogin } = props;
 
     const enrutamiento = useHistory();
 
-    //console.log(listUsuarios)
-
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -86,20 +81,6 @@ function ListGestionAlmacen(props) {
             reorder: false
         },
         {
-            name: 'Fecha de registro',
-            selector: row => moment(row.fechaCreacion).format("LL"),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Modificación',
-            selector: row => moment(row.fechaActualizacion).format("LL"),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
             name: 'Estado',
             center: true,
             reorder: false,
@@ -145,6 +126,20 @@ function ListGestionAlmacen(props) {
                             </Badge>
                         </>
                     )
+        },
+        {
+            name: 'Fecha de registro',
+            selector: row => dayjs(row.fechaCreacion).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Modificación',
+            selector: row => dayjs(row.fechaActualizacion).format("LL"),
+            sortable: false,
+            center: true,
+            reorder: false
         },
         {
             name: 'Acciones',
