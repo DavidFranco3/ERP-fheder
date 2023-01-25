@@ -77,6 +77,7 @@ export const ENDPOINTTotalAlmacenes = "/gestionAlmacen/total";
 // Departamentos
 export const ENDPOINTRegistraDepartamentos = "/departamentos/registro";
 export const ENDPOINTListarDepartamentos = "/departamentos/listar";
+export const ENDPOINTListarDepartamentosActivos = "/departamentos/listarActivos";
 export const ENDPOINTObtenerDepartamentos = "/departamentos/obtener";
 export const ENDPOINTEliminarDepartamentos = "/departamentos/eliminar";
 export const ENDPOINTActualizarDepartamentos = "/departamentos/actualizar";
@@ -87,6 +88,7 @@ export const ENDPOINTTotalDepartamentos = "/departamentos/total";
 // Clientes
 export const ENDPOINTRegistraClientes = "/clientes/registro";
 export const ENDPOINTListarClientes = "/clientes/listar";
+export const ENDPOINTListarClientesActivos = "/clientes/listarActivos";
 export const ENDPOINTObtenerClientes = "/clientes/obtener";
 export const ENDPOINTEliminarClientes = "/clientes/eliminar";
 export const ENDPOINTActualizarClientes = "/clientes/actualizar";
@@ -97,6 +99,7 @@ export const ENDPOINTTotalClientes = "/clientes/total";
 // Proveedores
 export const ENDPOINTRegistraProveedores = "/proveedores/registro";
 export const ENDPOINTListarProveedores = "/proveedores/listar";
+export const ENDPOINTListarProveedoresActivos = "/proveedores/listarActivos";
 export const ENDPOINTObtenerProveedores = "/proveedores/obtener";
 export const ENDPOINTEliminarProveedores = "/proveedores/eliminar";
 export const ENDPOINTActualizarProveedores = "/proveedores/actualizar";
@@ -117,6 +120,7 @@ export const ENDPOINTTotalRazonSocial = "/razonesSociales/total";
 // Pedidos de venta
 export const ENDPOINTRegistraPedidoVenta = "/ventas/registro";
 export const ENDPOINTListarPedidoVenta = "/ventas/listar";
+export const ENDPOINTListarPedidoVentaActivo = "/ventas/listarActivas";
 export const ENDPOINTObtenerPedidoVenta = "/ventas/obtener";
 export const ENDPOINTObtenerDatosPedidoVenta = "/ventas/obtenerDatosPedido";
 export const ENDPOINTEliminarPedidoVenta = "/ventas/eliminar";
@@ -129,6 +133,7 @@ export const ENDPOINTTotalPedidoVenta = "/ventas/total";
 // Recepcion de material e insumos
 export const ENDPOINTRegistraRecepcion = "/recepcionMaterialInsumos/registro";
 export const ENDPOINTListarRecepcion = "/recepcionMaterialInsumos/listar";
+export const ENDPOINTListarRecepcionActiva = "/recepcionMaterialInsumos/listarActivas";
 export const ENDPOINTObtenerRecepcion = "/recepcionMaterialInsumos/obtener";
 export const ENDPOINTObtenerDatosRecepcion = "/recepcionMaterialInsumos/obtenerDatosRecepcion";
 export const ENDPOINTEliminarRecepcion = "/recepcionMaterialInsumos/eliminar";
@@ -269,6 +274,7 @@ export const ENDPOINTTotalAsignacionPedido = "/asignacionPedido/total";
 // Materia prima
 export const ENDPOINTRegistraMateriaPrima = "/materiasPrimas/registro";
 export const ENDPOINTListarMateriaPrima = "/materiasPrimas/listar";
+export const ENDPOINTListarMateriaPrimaActiva = "/materiasPrimas/listarActivos";
 export const ENDPOINTListarPaginandoMateriaPrima = "/materiasPrimas/listarPaginando";
 export const ENDPOINTObtenerMateriaPrima = "/materiasPrimas/obtener";
 export const ENDPOINTObtenerPorFolioMateriaPrima = "/materiasPrimas/obtenerPorFolio"
@@ -378,6 +384,7 @@ export const ENDPOINTObtenerItemEvaluacionProveedor = "/evaluacionProveedores/ob
 // Requisicion
 export const ENDPOINTRegistroRequisicion = "/requisicion/registro";
 export const ENDPOINTListarRequisicion = "/requisicion/listar";
+export const ENDPOINTListarRequisicionActiva = "/requisicion/listarActivos";
 export const ENDPOINTListarPaginandoRequisicion = "/requisicion/listarPaginando";
 export const ENDPOINTListarPorDepartamento = "/requisicion/listarDepartamento";
 export const ENDPOINTObtenerRequisicion = "/requisicion/obtener";
@@ -472,6 +479,7 @@ export const ENDPOINTTotalReporteDevoluciones = "/reporteDevoluciones/total"
 // Compras
 export const ENDPOINTRegistroCompras = "/compras/registro";
 export const ENDPOINTListarCompras = "/compras/listar";
+export const ENDPOINTListarComprasActivas = "/compras/listarActivas";
 export const ENDPOINTListarPaginandoCompras = "/compras/listarPaginando";
 export const ENDPOINTObtenerCompras = "/compras/obtener";
 export const ENDPOINTObtenerNoCompra = "/compras/obtenerNoCompra";
@@ -491,6 +499,7 @@ export const ENDPOINTTotalOVCompras = "/compras/totalOV";
 //Requerimientos y planeacion
 export const ENDPOINTRegistroRequerimiento = "/requerimientosPlaneacion/registro";
 export const ENDPOINTListarRequerimiento = "/requerimientosPlaneacion/listar";
+export const ENDPOINTListarRequerimientoActivo = "/requerimientosPlaneacion/listarActivas";
 export const ENDPOINTListarPaginandoRequerimiento = "/requerimientosPlaneacion/listarPaginando";
 export const ENDPOINTObtenerRequerimiento = "/requerimientosPlaneacion/obtener";
 export const ENDPOINTObtenerNoRequerimiento = "/requerimientosPlaneacion/obtenerNoRequerimiento";
@@ -556,6 +565,7 @@ export const ENDPOINTTotalLiberacionProducto = "/liberacionProductoProceso/total
 //Produccion
 export const ENDPOINTRegistroProduccion = "/produccion/registro";
 export const ENDPOINTListarProduccion = "/produccion/listar";
+export const ENDPOINTListarProduccionActiva = "/produccion/listarActivas";
 export const ENDPOINTListarPaginandoProduccion = "/produccion/listarPaginando";
 export const ENDPOINTObtenerProduccion = "/produccion/obtener";
 export const ENDPOINTObtenerNoProduccion = "/produccion/obtenerNoProduccion";
@@ -566,9 +576,10 @@ export const ENDPOINTActualizarProduccion = "/produccion/actualizar";
 export const ENDPOINTObtenerDatosProduccion = "/produccion/obtenerDatosProduccion";
 export const ENDPOINTTotalProduccion = "/produccion/total";
 
-//Produccion
+//Inspeccion de material
 export const ENDPOINTRegistroInspeccion = "/inspeccionMaterial/registro";
 export const ENDPOINTListarInspeccion = "/inspeccionMaterial/listar";
+export const ENDPOINTListarInspeccionActivo = "/inspeccionMaterial/listarActivos";
 export const ENDPOINTListarPaginandoInspeccion = "/inspeccionMaterial/listarPaginando";
 export const ENDPOINTObtenerInspeccion = "/inspeccionMaterial/obtener";
 export const ENDPOINTObtenerNoInspeccion = "/inspeccionMaterial/obtenerNoInspeccion";

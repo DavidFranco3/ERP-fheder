@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 //import BuscarClientes from '../../components/Busquedas/BuscarClientes';
-import { listarRequisiciones } from "../../api/requisicion";
+import { listarRequisicionesActivas } from "../../api/requisicion";
 import "./BuscarRequisicion.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
@@ -36,7 +36,7 @@ function BuscarRequisicion(props) {
 
     useEffect(() => {
         try {
-            listarRequisiciones(getSucursal()).then(response => {
+            listarRequisicionesActivas(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

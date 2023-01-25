@@ -2,6 +2,7 @@ import { API_HOST } from "../utils/constants";
 import {
     ENDPOINTRegistroRequisicion,
     ENDPOINTListarRequisicion,
+    ENDPOINTListarRequisicionActiva,
     ENDPOINTListarPaginandoRequisicion,
     ENDPOINTListarPorDepartamento,
     ENDPOINTObtenerRequisicion,
@@ -102,6 +103,18 @@ export async function listarRequisiciones(sucursal) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarRequisicion +`/?sucursal=${sucursal}`, config);
+}
+
+// Para listar todas las requisiciones
+export async function listarRequisicionesActivas(sucursal) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarRequisicionActiva +`/?sucursal=${sucursal}`, config);
 }
 
 // Para listar las requisiciones por departamentos

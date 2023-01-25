@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 //import BuscarClientes from '../../components/Busquedas/BuscarClientes';
-import { listarMateriaPrima, totalPedidoVenta } from "../../api/materiaPrima";
+import { listarMateriaPrimaActiva } from "../../api/materiaPrima";
 import "./BuscarMaterial.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
@@ -36,7 +36,7 @@ function BuscarMaterial(props) {
 
     useEffect(() => {
         try {
-            listarMateriaPrima(getSucursal()).then(response => {
+            listarMateriaPrimaActiva(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

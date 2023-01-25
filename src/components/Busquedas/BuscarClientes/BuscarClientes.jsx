@@ -1,8 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Row, Col, Container, Form, Button, Spinner } from "react-bootstrap"
-import moment from "moment";
-//import NombreCliente from "../../ListTracking/NombreCliente";
-import { map } from "lodash";
 import "./BuscarClientes.scss"
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
@@ -14,7 +11,6 @@ import { toast } from "react-toastify";
 
 function BuscarClientes(props) {
     const { setFormData, formData, setShowModal, listClientes } = props;
-    // console.log(ordenVenta)
 
     // Para almacenar la informacion del formulario
     const [clienteSeleccionado, setClienteSeleccionado] = useState(initialFormData());

@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import BuscarClientes from '../../components/Busquedas/BuscarClientes';
-import { listarProveedores, totalPedidoVenta } from "../../api/proveedores";
+import { listarProveedoresActivos } from "../../api/proveedores";
 import "./BuscarProveedor.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
@@ -36,7 +36,7 @@ function BuscarProveedor(props) {
 
     useEffect(() => {
         try {
-            listarProveedores(getSucursal()).then(response => {
+            listarProveedoresActivos(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

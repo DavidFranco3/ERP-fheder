@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 //import BuscarClientes from '../../components/Busquedas/BuscarClientes';
-import { listarInspeccion } from "../../api/inspeccionMaterial";
+import { listarInspeccionActivo } from "../../api/inspeccionMaterial";
 import "./BuscarCalidad.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
@@ -36,7 +36,7 @@ function BuscarCalidad(props) {
 
     useEffect(() => {
         try {
-            listarInspeccion(getSucursal()).then(response => {
+            listarInspeccionActivo(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

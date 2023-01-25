@@ -2,6 +2,7 @@ import { API_HOST } from "../utils/constants";
 import {
     ENDPOINTRegistraRecepcion,
     ENDPOINTListarRecepcion,
+    ENDPOINTListarRecepcionActiva,
     ENDPOINTObtenerRecepcion,
     ENDPOINTEliminarRecepcion,
     ENDPOINTActualizarRecepcion,
@@ -84,6 +85,18 @@ export async function listarRecepcion(sucursal) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarRecepcion +`/?sucursal=${sucursal}`, config);
+}
+
+// Para listar todos los pedidos
+export async function listarRecepcionActiva(sucursal) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarRecepcionActiva +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los pedidos de venta paginandolos

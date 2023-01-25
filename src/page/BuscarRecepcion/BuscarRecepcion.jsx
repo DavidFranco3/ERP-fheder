@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 //import BuscarClientes from '../../components/Busquedas/BuscarClientes';
-import { listarRecepcion } from "../../api/recepcionMaterialInsumos";
+import { listarRecepcionActiva } from "../../api/recepcionMaterialInsumos";
 import "./BuscarRecepcion.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
@@ -35,7 +35,7 @@ function BuscarRecepcion(props) {
 
     useEffect(() => {
         try {
-            listarRecepcion(getSucursal()).then(response => {
+            listarRecepcionActiva(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

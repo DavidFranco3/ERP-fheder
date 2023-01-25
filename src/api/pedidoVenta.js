@@ -2,6 +2,7 @@ import { API_HOST } from "../utils/constants";
 import {
     ENDPOINTRegistraPedidoVenta,
     ENDPOINTListarPedidoVenta,
+    ENDPOINTListarPedidoVentaActivo,
     ENDPOINTObtenerPedidoVenta,
     ENDPOINTEliminarPedidoVenta,
     ENDPOINTActualizarPedidoVenta,
@@ -84,6 +85,18 @@ export async function listarPedidosVenta(sucursal) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarPedidoVenta +`/?sucursal=${sucursal}`, config);
+}
+
+// Para listar todos los pedidos
+export async function listarPedidosVentaActiva(sucursal) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarPedidoVentaActivo +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los pedidos de venta paginandolos

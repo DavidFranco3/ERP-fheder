@@ -1,8 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Row, Col, Container, Form, Button, Spinner } from "react-bootstrap"
-import moment from "moment";
-//import NombreCliente from "../../ListTracking/NombreCliente";
-import { map } from "lodash";
 import "./BuscarDepartamentos.scss"
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
@@ -11,10 +8,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { obtenerDepartamento } from "../../../api/departamentos";
 import { toast } from "react-toastify";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function BuscarDepartamentos(props) {
     const { setFormData, formData, setShowModal, listDepartamentos } = props;
-    // console.log(ordenVenta)
+    
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para almacenar la informacion del formulario
     const [departamentoSeleccionado, setDepartamentoSeleccionado] = useState(initialFormData());
@@ -94,7 +96,7 @@ function BuscarDepartamentos(props) {
         },
         {
             name: "Ultima modificacion",
-            selector: row => moment(row.fechaActualizacion).format('LL'),
+            selector: row => dayjs(row.fechaActualizacion).format('LL'),
             sortable: false,
             center: true,
             reorder: false

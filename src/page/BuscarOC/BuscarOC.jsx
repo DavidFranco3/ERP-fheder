@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import BuscarCompras from '../../components/Busquedas/BuscarCompras';
-import { listarOrdenesCompra, listarProductosCompras } from "../../api/compras";
+import { listarOrdenesCompraActivas } from "../../api/compras";
 import "./BuscarOC.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
@@ -35,7 +35,7 @@ function BuscarOC(props) {
 
     useEffect(() => {
         try {
-            listarOrdenesCompra(getSucursal()).then(response => {
+            listarOrdenesCompraActivas(getSucursal()).then(response => {
                 const { data } = response;
 
                 ///console.log(data);

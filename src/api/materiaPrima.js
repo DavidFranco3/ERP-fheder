@@ -2,6 +2,7 @@ import { API_HOST } from "../utils/constants";
 import {
     ENDPOINTRegistraMateriaPrima,
     ENDPOINTListarMateriaPrima,
+    ENDPOINTListarMateriaPrimaActiva,
     ENDPOINTListarPaginandoMateriaPrima,
     ENDPOINTObtenerMateriaPrima,
     ENDPOINTObtenerPorFolioMateriaPrima,
@@ -87,6 +88,18 @@ export async function listarMateriaPrima(sucursal) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarMateriaPrima + `/?sucursal=${sucursal}`, config);
+}
+
+// Para listar todos los productos
+export async function listarMateriaPrimaActiva(sucursal) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarMateriaPrimaActiva + `/?sucursal=${sucursal}`, config);
 }
 
 // Lista la materia prima paginando

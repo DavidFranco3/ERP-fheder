@@ -1,9 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import BasicModal from "../../Modal/BasicModal";
-// Terminan importaciones para la tabla
 import { useHistory } from "react-router-dom";
 import "./ListAlmacenes.scss"
-import moment from "moment";
 import { Badge, Container, Button, Col, Form } from "react-bootstrap";
 import EliminaAlmacenes from '../EliminaAlmacenes';
 import ModificarAlmacenes from '../ModificarAlmacenes';

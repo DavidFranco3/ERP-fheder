@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import BuscarDepartamentos from '../../components/Busquedas/BuscarDepartamentos';
-import { listarDepartamento, totalPedidoVenta } from "../../api/departamentos";
+import { listarDepartamentoActivo } from "../../api/departamentos";
 import "./BuscarDepartamento.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
@@ -35,7 +35,7 @@ function BuscarDepartamento(props) {
 
     useEffect(() => {
         try {
-            listarDepartamento(getSucursal()).then(response => {
+            listarDepartamentoActivo(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

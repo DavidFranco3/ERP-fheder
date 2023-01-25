@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import BuscarProducciones from '../../components/Busquedas/BuscarProducciones';
-import { listarProduccion } from "../../api/produccion";
+import { listarProduccionActiva } from "../../api/produccion";
 import "./BuscarProduccion.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
@@ -35,7 +35,7 @@ function BuscarProduccion(props) {
 
     useEffect(() => {
         try {
-            listarProduccion(getSucursal()).then(response => {
+            listarProduccionActiva(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

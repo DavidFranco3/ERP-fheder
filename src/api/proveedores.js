@@ -2,6 +2,7 @@ import { API_HOST } from "../utils/constants";
 import {
     ENDPOINTRegistraProveedores,
     ENDPOINTListarProveedores,
+    ENDPOINTListarProveedoresActivos,
     ENDPOINTObtenerProveedores,
     ENDPOINTEliminarProveedores,
     ENDPOINTActualizarProveedores,
@@ -62,6 +63,18 @@ export async function listarProveedores(sucursal) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarProveedores +`/?sucursal=${sucursal}`, config);
+}
+
+// Para listar todos los clientes
+export async function listarProveedoresActivos(sucursal) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarProveedoresActivos +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista los clientes paginandolos

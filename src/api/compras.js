@@ -2,6 +2,7 @@ import { API_HOST } from "../utils/constants";
 import {
     ENDPOINTRegistroCompras,
     ENDPOINTListarCompras,
+    ENDPOINTListarComprasActivas,
     ENDPOINTListarPaginandoCompras,
     ENDPOINTObtenerCompras,
     ENDPOINTObtenerDatosCompras,
@@ -105,6 +106,18 @@ export async function listarOrdenesCompra(sucursal) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarCompras +`/?sucursal=${sucursal}`, config);
+}
+
+// Para listar todas las órdenes de compra
+export async function listarOrdenesCompraActivas(sucursal) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarComprasActivas +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los productos de cada orden de compra con detalles

@@ -2,6 +2,7 @@ import { API_HOST } from "../utils/constants";
 import {
     ENDPOINTRegistraDepartamentos,
     ENDPOINTListarDepartamentos,
+    ENDPOINTListarDepartamentosActivos,
     ENDPOINTObtenerDepartamentos,
     ENDPOINTEliminarDepartamentos,
     ENDPOINTActualizarDepartamentos,
@@ -59,6 +60,18 @@ export async function listarDepartamento(sucursal) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarDepartamentos +`/?sucursal=${sucursal}`, config);
+}
+
+// Para listar todos los departamentos
+export async function listarDepartamentoActivo(sucursal) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarDepartamentosActivos +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los departamentos paginandolos

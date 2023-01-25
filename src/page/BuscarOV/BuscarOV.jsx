@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import BuscarOrdenVenta from "../../components/Busquedas/BuscarOrdenVenta"
-import { listarPedidosVenta, totalPedidoVenta } from "../../api/pedidoVenta";
+import { listarPedidosVentaActiva} from "../../api/pedidoVenta";
 import "./BuscarOV.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
@@ -35,7 +35,7 @@ function BuscarOV(props) {
 
     useEffect(() => {
         try {
-            listarPedidosVenta(getSucursal()).then(response => {
+            listarPedidosVentaActiva(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
