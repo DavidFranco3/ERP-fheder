@@ -1,18 +1,23 @@
 import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
+import BasicModal from "../../Modal/BasicModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
 import { registraCertificado, obtenerNumeroCertificado, obtenerItemCertificado } from "../../../api/certificadosCalidad";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import BuscarProduccion from "../../../page/BuscarProduccion";
 
 function RegistraReporte(props) {
     const { setRefreshCheckLogin } = props;
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+    // Para almacenar la informacion del formulario
+    const [formDataProduccion, setFormDataProduccion] = useState(initialFormDataProduccion());
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -26,6 +31,18 @@ function RegistraReporte(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
+
+    // Para hacer uso del modal
+    const [showModal, setShowModal] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+     // Para la eliminacion fisica de usuarios
+     const buscarProduccion = (content) => {
+        setTitulosModal("Buscar producción");
+        setContentModal(content);
+        setShowModal(true);
+    }
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory()
@@ -67,11 +84,11 @@ function RegistraReporte(props) {
                 item: item,
                 folio: data.noCertificado,
                 fecha: fechaActual,
-                noOrdenInterna: formData.ordenInterna,
+                noOrdenInterna: formDataProduccion.ordenInterna,
                 tamañoLote: formData.tamañoLote,
-                cliente: formData.cliente,
-                descripcion: formData.descripcion,
-                numeroParte: formData.numeroParte,
+                cliente: formDataProduccion.cliente,
+                descripcion: formDataProduccion.nombreProducto,
+                numeroParte: formDataProduccion.numeroParte,
                 sucursal: getSucursal(),
                 especificacionInforme: formData.especificacion,
                 revisionAtributos: {
@@ -209,7 +226,8 @@ function RegistraReporte(props) {
     }
 
     const onChange = e => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormDataProduccion({ ...formDataProduccion, [e.target.name]: e.target.value })
     }
 
     const hoy = new Date();
@@ -244,10 +262,9 @@ function RegistraReporte(props) {
                 </Row>
             </Alert>
 
-            <br />
-
             <Container fluid>
                 <div className="formularioDatos">
+                    <br />
                     <Form onChange={onChange} onSubmit={onSubmit}>
                         <div className="encabezado">
                             <Container fluid>
@@ -277,8 +294,8 @@ function RegistraReporte(props) {
                                             <Form.Control
                                                 type="text"
                                                 placeholder="Descripcion"
-                                                name="descripcion"
-                                                defaultValue={formData.descripcion}
+                                                name="nombreProducto"
+                                                defaultValue={formDataProduccion.nombreProducto}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -292,12 +309,27 @@ function RegistraReporte(props) {
                                             </Form.Label>
                                         </Col>
                                         <Col>
+                                        <div className="flex items-center mb-1">
                                             <Form.Control
-                                                type="number"
+                                                type="text"
                                                 placeholder="No. Orden interna"
                                                 name="ordenInterna"
-                                                defaultValue={formData.ordenInterna}
+                                                defaultValue={formDataProduccion.ordenInterna}
                                             />
+                                            <FontAwesomeIcon
+                                                className="cursor-pointer py-2 -ml-6"
+                                                title="Agregar un resultado"
+                                                icon={faSearch}
+                                                onClick={() => {
+                                                    buscarProduccion(
+                                                        <BuscarProduccion
+                                                            setFormData={setFormDataProduccion}
+                                                            formData={formDataProduccion}
+                                                            setShowModal={setShowModal}
+                                                        />)
+                                                }}
+                                            />
+                                        </div>
                                         </Col>
                                         <Col sm="2">
                                             <Form.Label>
@@ -306,10 +338,10 @@ function RegistraReporte(props) {
                                         </Col>
                                         <Col>
                                             <Form.Control
-                                                type="number"
+                                                type="text"
                                                 placeholder="Numero de parte"
                                                 name="numeroParte"
-                                                defaultValue={formData.numeroParte}
+                                                defaultValue={formDataProduccion.numeroParte}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -358,7 +390,7 @@ function RegistraReporte(props) {
                                                 type="text"
                                                 placeholder="Cliente"
                                                 name="cliente"
-                                                defaultValue={formData.cliente}
+                                                defaultValue={formDataProduccion.cliente}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -1508,8 +1540,21 @@ function RegistraReporte(props) {
                     </Form>
                 </div>
             </Container>
+
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
+}
+
+function initialFormDataProduccion() {
+    return {
+        ordenInterna: "",
+        cliente: "",
+        nombreProducto: "",
+        numeroParte: ""
+    }
 }
 
 function initialFormData() {

@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
+import BasicModal from "../../Modal/BasicModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, useParams } from "react-router-dom";
 import { obtenerCertificado, actualizaCertificado } from "../../../api/certificadosCalidad";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import BuscarProduccion from "../../../page/BuscarProduccion";
 
 function ModificaCertificado(props) {
     const { setRefreshCheckLogin } = props;
@@ -23,8 +25,23 @@ function ModificaCertificado(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
+    // Para hacer uso del modal
+    const [showModal, setShowModal] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    // Para la eliminacion fisica de usuarios
+    const buscarProduccion = (content) => {
+        setTitulosModal("Buscar producción");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+    // Para almacenar la informacion del formulario
+    const [formDataProduccion, setFormDataProduccion] = useState(initialFormDataProduccionInitial());
 
     const params = useParams();
     const { id } = params
@@ -46,9 +63,11 @@ function ModificaCertificado(props) {
 
                 if (!formData && data) {
                     setFormData(valoresAlmacenados(data));
+                    setFormDataProduccion(initialFormDataProduccion(data));
                 } else {
                     const datosInspeccion = valoresAlmacenados(data);
                     setFormData(datosInspeccion);
+                    setFormDataProduccion(initialFormDataProduccion(data));
                 }
             }).catch(e => {
                 console.log(e)
@@ -212,6 +231,7 @@ function ModificaCertificado(props) {
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataProduccion({ ...formDataProduccion, [e.target.name]: e.target.value })
     }
 
     return (
@@ -237,10 +257,9 @@ function ModificaCertificado(props) {
                 </Row>
             </Alert>
 
-            <br />
-
             <Container fluid>
                 <div className="formularioDatos">
+                    <br />
                     <Form onChange={onChange} onSubmit={onSubmit}>
                         <div className="encabezado">
                             <Container fluid>
@@ -269,8 +288,8 @@ function ModificaCertificado(props) {
                                             <Form.Control
                                                 type="text"
                                                 placeholder="Descripcion"
-                                                name="descripcion"
-                                                defaultValue={formData.descripcion}
+                                                name="nombreProducto"
+                                                defaultValue={formDataProduccion.nombreProducto}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -284,12 +303,27 @@ function ModificaCertificado(props) {
                                             </Form.Label>
                                         </Col>
                                         <Col>
-                                            <Form.Control
-                                                type="number"
-                                                placeholder="No. Orden interna"
-                                                name="ordenInterna"
-                                                defaultValue={formData.ordenInterna}
-                                            />
+                                            <div className="flex items-center mb-1">
+                                                <Form.Control
+                                                    type="text"
+                                                    placeholder="No. Orden interna"
+                                                    name="ordenInterna"
+                                                    defaultValue={formDataProduccion.ordenInterna}
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="cursor-pointer py-2 -ml-6"
+                                                    title="Agregar un resultado"
+                                                    icon={faSearch}
+                                                    onClick={() => {
+                                                        buscarProduccion(
+                                                            <BuscarProduccion
+                                                                setFormData={setFormDataProduccion}
+                                                                formData={formDataProduccion}
+                                                                setShowModal={setShowModal}
+                                                            />)
+                                                    }}
+                                                />
+                                            </div>
                                         </Col>
                                         <Col sm="2">
                                             <Form.Label>
@@ -301,7 +335,7 @@ function ModificaCertificado(props) {
                                                 type="number"
                                                 placeholder="Numero de parte"
                                                 name="numeroParte"
-                                                defaultValue={formData.numeroParte}
+                                                defaultValue={formDataProduccion.numeroParte}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -350,7 +384,7 @@ function ModificaCertificado(props) {
                                                 type="text"
                                                 placeholder="Cliente"
                                                 name="cliente"
-                                                defaultValue={formData.cliente}
+                                                defaultValue={formDataProduccion.cliente}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -1536,8 +1570,30 @@ function ModificaCertificado(props) {
                     </Form>
                 </div>
             </Container>
+
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
+}
+
+function initialFormDataProduccionInitial() {
+    return {
+        ordenInterna: "",
+        cliente: "",
+        nombreProducto: "",
+        numeroParte: ""
+    }
+}
+
+function initialFormDataProduccion(data) {
+    return {
+        ordenInterna: data.noOrdenInterna,
+        cliente: data.cliente,
+        nombreProducto: data.descripcion,
+        numeroParte: data.numeroParte
+    }
 }
 
 function initialFormData() {

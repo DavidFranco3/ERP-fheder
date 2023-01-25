@@ -30,6 +30,7 @@ function BuscarProducciones(props) {
 
             obtenerProduccion(clienteSeleccionado.seleccion).then(response => {
                 const { data } = response;
+                console.log(data)
                 setValoresCliente(valoresAlmacenados(data))
             }).catch(e => {
                 console.log(e)
@@ -58,10 +59,10 @@ function BuscarProducciones(props) {
             //console.log(formData)
             setLoading(true);
             const dataTemp = {
-                ordenVenta: valoresCliente.ordenVenta,
-                producto: valoresCliente.producto,
                 nombreProducto: valoresCliente.nombreProducto,
-                cantidadProducir: valoresCliente.cantidadProducir
+                ordenInterna: valoresCliente.ordenInterna,
+                cliente: valoresCliente.cliente,
+                numeroParte: valoresCliente.numeroParte
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -295,19 +296,19 @@ function initialFormData() {
 
 function initialValues() {
     return {
-        ordenVenta: "",
-        producto: "",
         nombreProducto: "",
-        cantidadProducir: "",
+        ordenInterna: "",
+        cliente: "",
+        numeroParte: ""
     }
 }
 
 function valoresAlmacenados(data) {
     return {
-        ordenVenta: data.requerimiento.ov,
-        producto: data.requerimiento.producto,
-        nombreProducto: data.requerimiento.nombreProducto,
-        cantidadProducir: data.requerimiento.totalProducir
+        nombreProducto: data.generalidades.producto,
+        ordenInterna: data.folio,
+        cliente: data.generalidades.nombreCliente,
+        numeroParte: data.planeacion.noParte
     }
 }
 
