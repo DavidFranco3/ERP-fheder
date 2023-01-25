@@ -6,8 +6,13 @@ import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { obtenerCliente } from '../../../api/clientes';
 import { actualizaEtiquetasPiezas } from '../../../api/etiquetaPrimeraPieza'
 import queryString from "query-string";
-import {getSucursal} from "../../../api/auth";
+import { getSucursal } from "../../../api/auth";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import BuscarMaquina from '../../../page/BuscarMaquina';
+import BuscarProducto from '../../../page/BuscarProducto';
+import BasicModal from "../../Modal/BasicModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 function RegistraReporte(props) {
     const { data, setShowModal, history } = props;
@@ -17,8 +22,33 @@ function RegistraReporte(props) {
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData(data));
 
+    // Para guardar los datos del formulario
+    const [formDataMaquina, setFormDataMaquina] = useState(initialFormDataMaquina(data));
+
+    // Para guardar los datos del formulario
+    const [formDataProducto, setFormDataProducto] = useState(initialFormDataProducto(data));
+
     const cancelarRegistro = () => {
         setShowModal(false)
+    }
+
+    // Para hacer uso del modal
+    const [showModal2, setShowModal2] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    // Para la eliminacion fisica de usuarios
+    const buscarMaquina = (content) => {
+        setTitulosModal("Buscar maquina");
+        setContentModal(content);
+        setShowModal2(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarProducto = (content) => {
+        setTitulosModal("Buscar producto");
+        setContentModal(content);
+        setShowModal2(true);
     }
 
     // Para almacenar el listado de productos activos
@@ -82,11 +112,11 @@ function RegistraReporte(props) {
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
-    
+
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!formData.fecha || !formData.noMaquina || !formData.inspector || !formData.supervisor || !formData.turno) {
+        if (!formData.fecha || !formDataMaquina.noMaquina || !formData.inspector || !formData.supervisor || !formData.turno) {
             toast.warning("Completa el formulario")
         } else {
 
@@ -95,11 +125,11 @@ function RegistraReporte(props) {
 
             const dataTemp = {
                 fecha: formData.fecha,
-                noMaquina: formData.noMaquina,
-                descripcionProducto: productoSeleccionado != "" ? productoSeleccionado.id : formData.producto,
-                cliente: productoSeleccionado != "" ? productoSeleccionado.cliente : formData.cliente,
-                peso: productoSeleccionado != "" ? productoSeleccionado.peso : formData.peso,
-                noCavidades: productoSeleccionado != "" ? productoSeleccionado.noCavidades : formData.noCavidades,
+                noMaquina: formDataMaquina.noMaquina,
+                descripcionProducto: formDataProducto.nombreProducto,
+                cliente: formDataProducto.nombreCliente,
+                peso: formDataProducto.peso,
+                noCavidades: formDataProducto.noCavidades,
                 turno: formData.turno,
                 inspector: formData.inspector,
                 supervisor: formData.supervisor
@@ -109,13 +139,10 @@ function RegistraReporte(props) {
                 const { data } = response;
                 LogsInformativos("Informacion de la primera pieza actualizada " + id, dataTemp)
                 toast.success(data.mensaje);
-                setTimeout(() => {
-                    setLoading(false)
-                    history.push({
-                        search: queryString.stringify(""),
-                    });
-                    setShowModal(false)
-                }, 2000)
+                history.push({
+                    search: queryString.stringify(""),
+                });
+                setShowModal(false)
 
             }).catch(e => {
                 console.log(e)
@@ -158,12 +185,27 @@ function RegistraReporte(props) {
                                     </Form.Label>
                                 </Col>
                                 <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Escribe el numero de la maquina"
-                                        name="noMaquina"
-                                        defaultValue={formData.noMaquina}
-                                    />
+                                    <div className="flex items-center mb-1">
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Escribe el numero de la maquina"
+                                            name="noMaquina"
+                                            defaultValue={formDataMaquina.noMaquina}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre las maquinas"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarMaquina(
+                                                    <BuscarMaquina
+                                                        formData={formDataMaquina}
+                                                        setFormData={setFormDataMaquina}
+                                                        setShowModal={setShowModal2}
+                                                    />)
+                                            }}
+                                        />
+                                    </div>
                                 </Col>
                             </Form.Group>
                         </Row>
@@ -172,22 +214,31 @@ function RegistraReporte(props) {
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
                                     <Form.Label>
-                                        Descripción producto
+                                        Descripcion producto
                                     </Form.Label>
                                 </Col>
                                 <Col>
-                                    <Form.Control as="select"
-                                        onChange={(e) => {
-                                            handleProducto(e.target.value)
-                                        }}
-                                        defaultValue={formData.producto}
-                                        name="producto"
-                                    >
-                                        <option>Elige una opción</option>
-                                        {map(listProductosActivos, (producto, index) => (
-                                            <option key={index} value={producto?.id + "/" + producto?.cliente + "/" + producto?.datosPieza.pesoPiezas + "/" + producto?.datosMolde.cavMolde} selected={descripcionProducto === producto?.id}>{producto?.descripcion}</option>
-                                        ))}
-                                    </Form.Control>
+                                    <div className="flex items-center mb-1">
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Escribe la descripcion del producto"
+                                            name="nombreProducto"
+                                            defaultValue={formDataProducto.nombreProducto}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre los productos"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarProducto(
+                                                    <BuscarProducto
+                                                        formData={formDataProducto}
+                                                        setFormData={setFormDataProducto}
+                                                        setShowModal={setShowModal2}
+                                                    />)
+                                            }}
+                                        />
+                                    </div>
                                 </Col>
                             </Form.Group>
                         </Row>
@@ -203,8 +254,8 @@ function RegistraReporte(props) {
                                     <Form.Control
                                         type="text"
                                         placeholder="Escribe el numero el nombre del cliente"
-                                        name="cliente"
-                                        value={nombreCliente}
+                                        name="nombreCliente"
+                                        value={formDataProducto.nombreCliente}
                                         disabled
                                     />
                                 </Col>
@@ -224,7 +275,7 @@ function RegistraReporte(props) {
                                         step="0.1"
                                         placeholder="Escribe el peso del producto"
                                         name="peso"
-                                        value={productoSeleccionado != "" ? productoSeleccionado.peso : formData.peso}
+                                        value={formDataProducto.peso}
                                         disabled
                                     />
                                 </Col>
@@ -243,7 +294,7 @@ function RegistraReporte(props) {
                                         type="number"
                                         placeholder="Escribe el numero de cavidades"
                                         name="numeroCavidades"
-                                        value={productoSeleccionado != "" ? productoSeleccionado.noCavidades : formData.noCavidades}
+                                        value={formDataProducto.noCavidades}
                                         disabled
                                     />
                                 </Col>
@@ -259,11 +310,15 @@ function RegistraReporte(props) {
                                 </Col>
                                 <Col>
                                     <Form.Control
-                                        type="text"
+                                        as="select"
                                         placeholder="Escribe el nombre del inspector"
                                         name="turno"
                                         defaultValue={formData.turno}
-                                    />
+                                    >
+                                        <option >Elige....</option>
+                                        <option value="1" selected={formData.turno == "1"}>1</option>
+                                        <option value="2" selected={formData.turno == "2"}>2</option>
+                                    </Form.Control>
                                 </Col>
                             </Form.Group>
                         </Row>
@@ -331,6 +386,10 @@ function RegistraReporte(props) {
                     </Form>
                 </div>
             </Container>
+
+            <BasicModal show={showModal2} setShow={setShowModal2} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }
@@ -349,6 +408,21 @@ function initialFormData(data) {
         turno: turno,
         inspector: inspector,
         supervisor: supervisor,
+    }
+}
+
+function initialFormDataMaquina(data) {
+    return {
+        noMaquina: data.noMaquina,
+    }
+}
+
+function initialFormDataProducto(data) {
+    return {
+        nombreProducto: data.descripcionProducto,
+        nombreCliente: data.cliente,
+        peso: data.peso,
+        noCavidades: data.noCavidades,
     }
 }
 

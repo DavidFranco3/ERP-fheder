@@ -2,6 +2,7 @@ import { API_HOST } from "../utils/constants";
 import {
     ENDPOINTRegistraRazonSocial,
     ENDPOINTListarRazonSocial,
+    ENDPOINTListarRazonSocialActiva,
     ENDPOINTObtenerRazonSocial,
     ENDPOINTEliminarRazonSocial,
     ENDPOINTActualizarRazonSocial,
@@ -62,6 +63,18 @@ export async function listarRazonSocial() {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarRazonSocial, config);
+}
+
+// Para listar todos los clientes
+export async function listarRazonSocialActiva() {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarRazonSocialActiva, config);
 }
 
 // Lista los clientes paginandolos

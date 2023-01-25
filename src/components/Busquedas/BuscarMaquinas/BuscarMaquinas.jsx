@@ -1,26 +1,22 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Row, Col, Container, Form, Button, Spinner } from "react-bootstrap"
-import moment from "moment";
-//import NombreCliente from "../../ListTracking/NombreCliente";
-import { map } from "lodash";
-import "./BuscarProductos.scss"
+import "./BuscarMaquinas.scss"
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { estilos } from "../../../utils/tableStyled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
-import { obtenerMatrizProducto } from "../../../api/matrizProductos";
+import { faArrowDownLong } from "@fortawesome/free-solid-svg-icons";
+import { obtenerMaquina } from "../../../api/maquinas";
 import { toast } from "react-toastify";
 
-function BuscarProductos(props) {
-    const { setFormData, formData, setShowModal, listProductos } = props;
-    // console.log(ordenVenta)
+function BuscarMaquinas(props) {
+    const { setFormData, formData, setShowModal, listMaquinas } = props;
 
     // Para almacenar la informacion del formulario
     const [clienteSeleccionado, setClienteSeleccionado] = useState(initialFormData());
 
     // Para almacenar la informacion del formulario
-    const [valoresProducto, setValoresProducto] = useState(initialValues());
+    const [valoresCliente, setValoresCliente] = useState(initialValues());
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
@@ -28,10 +24,9 @@ function BuscarProductos(props) {
     useEffect(() => {
         try {
 
-            obtenerMatrizProducto(clienteSeleccionado.seleccion).then(response => {
+            obtenerMaquina(clienteSeleccionado.seleccion).then(response => {
                 const { data } = response;
-                const { cliente, nombreCliente, fechaElaboracion, fechaEntrega, productos } = data;
-                setValoresProducto(valoresAlmacenados(data))
+                setValoresCliente(valoresAlmacenados(data))
             }).catch(e => {
                 console.log(e)
             })
@@ -59,22 +54,7 @@ function BuscarProductos(props) {
             //console.log(formData)
             setLoading(true);
             const dataTemp = {
-                item: valoresProducto.item,
-                ID: valoresProducto.ID,
-                precioUnitario: valoresProducto.precioUnitario,
-
-                idArticulo: valoresProducto.idProducto,
-                folioArticulo: valoresProducto.ID,
-                nombreArticulo: valoresProducto.item,
-
-                nombreProducto: valoresProducto.nombreProducto,
-                folioProdcuto: valoresProducto.folioProdcuto,
-                um: valoresProducto.um,
-                noParte: valoresProducto.noParte,
-
-                nombreCliente: valoresProducto.nombreCliente,
-                peso: valoresProducto.peso,
-                noCavidades: valoresProducto.noCavidades,
+                noMaquina: valoresCliente.noMaquina
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -83,7 +63,7 @@ function BuscarProductos(props) {
 
     const columns = [
         {
-            name: '# Interno',
+            name: '# Maquina',
             selector: row => (
                 <>
                     <Form.Group as={Row} controlId="formHorizontalNoInterno">
@@ -99,7 +79,7 @@ function BuscarProductos(props) {
                             />
                         </Col>
                         <Col>
-                            {row.noInterno}
+                            {row.numeroMaquina}
                         </Col>
                     </Form.Group>
                 </>
@@ -109,22 +89,22 @@ function BuscarProductos(props) {
             reorder: false
         },
         {
-            name: "Descripción",
-            selector: row => row.descripcion,
+            name: "Tipo",
+            selector: row => row.tipoMaquina,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "No. Molde",
-            selector: row => row.datosMolde.noMolde,
+            name: "Nombre",
+            selector: row => row.nombre,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Cav. Molde",
-            selector: row => row.datosMolde.cavMolde,
+            name: "Marca",
+            selector: row => row.marca,
             sortable: false,
             center: true,
             reorder: false
@@ -138,7 +118,7 @@ function BuscarProductos(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listProductos);
+            setRows(listMaquinas);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -221,8 +201,8 @@ function BuscarProductos(props) {
     `;
 
 
-    const filteredItems = listProductos.filter(
-        item => item.descripcion && item.descripcion.toLowerCase().includes(filterText.toLowerCase())
+    const filteredItems = listMaquinas.filter(
+        item => item.numeroMaquina && item.numeroMaquina.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const subHeaderComponentMemo = useMemo(() => {
@@ -239,17 +219,17 @@ function BuscarProductos(props) {
                     <Form.Control
                         id="search"
                         type="text"
-                        placeholder="Busqueda por nombre del producto"
+                        placeholder="Busqueda por numero de la maquina"
                         aria-label="Search Input"
                         value={filterText}
                         onChange={e => setFilterText(e.target.value)}
                     />
                 </Col>
                 <Col>
-                    <ClearButton
-                        title="Limpiar busqueda"
-                        type="button"
-                        onClick={handleClear}>
+                    <ClearButton 
+                    type="button" 
+                    title="Limpiar la busqueda"
+                    onClick={handleClear}>
                         X
                     </ClearButton>
                 </Col>
@@ -261,8 +241,8 @@ function BuscarProductos(props) {
         <>
             <Container fluid>
                 <DataTable
-                    columns={columns}
                     noDataComponent="No hay registros para mostrar"
+                    columns={columns}
                     data={filteredItems}
                     //actions={descargaCSV}
                     subHeader
@@ -301,7 +281,6 @@ function BuscarProductos(props) {
                         </Button>
                     </Col>
                 </Form.Group>
-
             </Container>
         </>
     );
@@ -315,36 +294,14 @@ function initialFormData() {
 
 function initialValues() {
     return {
-        idProducto: "",
-        item: "",
-        ID: "",
-        precioUnitario: "",
-        um: "",
-        nombreProducto: "",
-        folioProdcuto: "",
-        noParte: "",
-
-        cliente: "",
-        peso: "",
-        noCavidades: "",
+        noMaquina: ""
     }
 }
 
 function valoresAlmacenados(data) {
     return {
-        idProducto: data._id,
-        item: data.descripcion,
-        ID: data.noInterno,
-        precioUnitario: data.precioVenta,
-        um: data.um,
-        nombreProducto: data.descripcion,
-        folioProdcuto: data.noInterno,
-        noParte: data.noParte,
-
-        nombreCliente: data.nombreCliente,
-        peso: data.datosPieza.pesoPiezas,
-        noCavidades: data.datosMolde.cavMolde,
+        noMaquina: data.numeroMaquina
     }
 }
 
-export default BuscarProductos;
+export default BuscarMaquinas;

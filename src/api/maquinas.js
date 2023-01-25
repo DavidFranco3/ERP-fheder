@@ -2,6 +2,7 @@ import { API_HOST } from "../utils/constants";
 import {
     ENDPOINTRegistraMaquina,
     ENDPOINTListarMaquina,
+    ENDPOINTListarMaquinaActiva,
     ENDPOINTListarPaginandoMaquina,
     ENDPOINTObtenerMaquina,
     ENDPOINTObtenerDatosMaquina,
@@ -74,6 +75,18 @@ export async function listarMaquina(sucursal) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarMaquina +`/?sucursal=${sucursal}`, config);
+}
+
+// Para listar todos los productos
+export async function listarMaquinaActiva(sucursal) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarMaquinaActiva +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista la materia prima paginando

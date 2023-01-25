@@ -18,7 +18,7 @@ import LogoFredherBlanco from "../../assets/png/logo-fredher-blanco.png";
 import ImagenPerfil from "../../assets/png/user-avatar.png";
 import { Button, Row, Container, Form } from "react-bootstrap";
 import "./layoutPrincipal.scss";
-import { listarRazonSocial } from "../../api/razonesSociales";
+import { listarRazonSocialActiva } from "../../api/razonesSociales";
 import {LogsInformativos, LogsInformativosLogout} from "../../components/Logs/LogsSistema/LogsSistema";
 
 function LayoutPrincipal(props) {
@@ -40,7 +40,7 @@ function LayoutPrincipal(props) {
 
     useEffect(() => {
         try {
-            listarRazonSocial().then(response => {
+            listarRazonSocialActiva().then(response => {
                 const { data } = response;
                 //console.log(data)
                 const dataTemp = formatModelSucursales(data);

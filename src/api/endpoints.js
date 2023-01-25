@@ -109,7 +109,8 @@ export const ENDPOINTTotalProveedores = "/proveedores/total";
 
 // Razones sociales
 export const ENDPOINTRegistraRazonSocial = "/razonesSociales/registro";
-export const ENDPOINTListarRazonSocial= "/razonesSociales/listar";
+export const ENDPOINTListarRazonSocial = "/razonesSociales/listar";
+export const ENDPOINTListarRazonSocialActiva = "/razonesSociales/listarActivos";
 export const ENDPOINTObtenerRazonSocial = "/razonesSociales/obtener";
 export const ENDPOINTEliminarRazonSocial = "/razonesSociales/eliminar";
 export const ENDPOINTActualizarRazonSocial = "/razonesSociales/actualizar";
@@ -153,7 +154,7 @@ export const ENDPOINTActualizarInspeccionPieza = "/inspeccionPieza/actualizar";
 export const ENDPOINTActualizarEstadoInspeccionPieza = "/inspeccionPieza/actualizarEstado";
 export const ENDPOINTListarInspeccionPiezaPaginacion = "/inspeccionPieza/listarPaginando";
 export const ENDPOINTObtenerNoInspeccionPieza = "/inspeccionPieza/obtenerNoInspeccion";
-export const ENDPOINTTotalInspeccionPieza= "/inspeccionPieza/total";
+export const ENDPOINTTotalInspeccionPieza = "/inspeccionPieza/total";
 
 // Meses
 export const ENDPOINTRegistraMes = "/mes/registro";
@@ -229,7 +230,7 @@ export const ENDPOINTEliminarNoConformidad = "/noConformidad/eliminar";
 export const ENDPOINTActualizarNoConformidad = "/noConformidad/actualizar";
 export const ENDPOINTActualizarEstadoNoConformidad = "/noConformidad/actualizarEstado";
 export const ENDPOINTListarNoConformidadPaginacion = "/noConformidad/listarPaginando";
-export const ENDPOINTObtenerNumeroNoConformidad= "/noConformidad/obtenerNoEtiqueta";
+export const ENDPOINTObtenerNumeroNoConformidad = "/noConformidad/obtenerNoEtiqueta";
 export const ENDPOINTTotalNoConformidad = "/noConformidad/total";
 
 // etiqueta de molido
@@ -280,7 +281,7 @@ export const ENDPOINTObtenerMateriaPrima = "/materiasPrimas/obtener";
 export const ENDPOINTObtenerPorFolioMateriaPrima = "/materiasPrimas/obtenerPorFolio"
 export const ENDPOINTEliminarMateriaPrima = "/materiasPrimas/eliminar";
 export const ENDPOINTActualizarMateriaPrima = "/materiasPrimas/actualizar";
-export const ENDPOINTActualizarEstadoMateriaPrima= "/materiasPrimas/actualizarEstado";
+export const ENDPOINTActualizarEstadoMateriaPrima = "/materiasPrimas/actualizarEstado";
 export const ENDPOINTObtenerFolioActualMateriaPrima = "/materiasPrimas/obtenerFolio"
 export const ENDPOINTTotalMateriaPrima = "/materiasPrimas/total";
 
@@ -290,7 +291,7 @@ export const ENDPOINTListarPigmento = "/pigmento/listar";
 export const ENDPOINTListarPaginandoPigmento = "/pigmento/listarPaginando";
 export const ENDPOINTObtenerPigmento = "/pigmento/obtener";
 export const ENDPOINTObtenerPorFolioPigmento = "/pigmento/obtenerPorFolio"
-export const ENDPOINTEliminarPigmento= "/pigmento/eliminar";
+export const ENDPOINTEliminarPigmento = "/pigmento/eliminar";
 export const ENDPOINTActualizarPigmento = "/pigmento/actualizar";
 export const ENDPOINTObtenerFolioActualPigmento = "/pigmento/obtenerFolio"
 export const ENDPOINTTotalPigmento = "/pigmento/total";
@@ -320,6 +321,7 @@ export const ENDPOINTTotalInsumo = "/insumos/total";
 // Maquinas
 export const ENDPOINTRegistraMaquina = "/maquinas/registro";
 export const ENDPOINTListarMaquina = "/maquinas/listar";
+export const ENDPOINTListarMaquinaActiva = "/maquinas/listarActivas";
 export const ENDPOINTListarPaginandoMaquina = "/maquinas/listarPaginando";
 export const ENDPOINTObtenerMaquina = "/maquinas/obtener";
 export const ENDPOINTObtenerDatosMaquina = "/maquinas/obtenerPorNumero"

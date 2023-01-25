@@ -86,26 +86,14 @@ function ListEtiquetasPrimeraPieza(props) {
         },
         {
             name: "Producto",
-            selector: row => (
-                <>
-                    <ProductoAsignado
-                        id={row.descripcionProducto}
-                    />
-                </>
-            ),
+            selector: row => row.descripcionProducto,
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: "Cliente",
-            selector: row => (
-                <>
-                    <ClienteAsignado
-                        id={row.cliente}
-                    />
-                </>
-            ),
+            selector: row => row.cliente,
             sortable: false,
             center: true,
             reorder: false

@@ -162,5 +162,4 @@ function formatModelMaquinas(data) {
     return dataTemp;
 }
 
-
 export default withRouter(Maquinas);
