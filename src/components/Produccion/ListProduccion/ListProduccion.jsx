@@ -36,14 +36,7 @@ function ListProduccion(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaProduccion = (content) => {
-        setTitulosModal("Deshabilitando la produccion");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaProduccion = (content) => {
-        setTitulosModal("Habilitando la produccion");
+        setTitulosModal("Cancelando la orden de producción");
         setContentModal(content);
         setShowModal(true);
     }
@@ -139,17 +132,8 @@ function ListProduccion(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaProduccion(
-                                        <EliminacionLogicaProduccion
-                                            datos={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelada
                             </Badge>
                         </>
                     )

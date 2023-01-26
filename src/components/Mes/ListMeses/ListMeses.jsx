@@ -37,14 +37,7 @@ function ListIntegracionVentasGastos(props) {
 
      //Para la eliminacion logica de usuarios
      const eliminaLogicaMes = (content) => {
-        setTitulosModal("Deshabilitando el mes");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaMes = (content) => {
-        setTitulosModal("Habilitando el mes");
+        setTitulosModal("Cancelando el mes");
         setContentModal(content);
         setShowModal(true);
     }
@@ -122,17 +115,8 @@ function ListIntegracionVentasGastos(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaMes(
-                                        <EliminacionLogicaMeses
-                                            data={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactivo
+                                Cancelado
                             </Badge>
                         </>
                     )

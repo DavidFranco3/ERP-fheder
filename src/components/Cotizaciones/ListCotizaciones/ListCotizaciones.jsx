@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import { Badge, Container } from "react-bootstrap";
-import DataTable, { createTheme } from "react-data-table-component";
+import DataTable from "react-data-table-component";
 import BasicModal from "../../Modal/BasicModal";
 import EliminaCotizaciones from "../EliminaCotizaciones";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,8 +16,6 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListCotizaciones(props) {
     const { setRefreshCheckLogin, location, history, listCotizaciones } = props;
-
-    // console.log(listCotizaciones)
 
     // Para definir el uso del enrutamiento
     const enrutamiento = useHistory()
@@ -39,14 +37,7 @@ function ListCotizaciones(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaCotizaciones = (content) => {
-        setTitulosModal("Deshabilitando cotización");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaCotizaciones = (content) => {
-        setTitulosModal("Habilitando cotización");
+        setTitulosModal("Cancelando la cotización");
         setContentModal(content);
         setShowModal(true);
     }
@@ -60,18 +51,6 @@ function ListCotizaciones(props) {
     const modificaCotizacion = (id) => {
         enrutamiento.push(`/ModificaCotizacion/${id}`);
     }
-
-    // Define el uso de svg personalizado
-    createTheme(
-        "collapsedButton", {
-        expander: {
-            fontColor: 'rgba(0,0,0,.87)',
-            //backgroundColor: 'transparent',
-            collapsedButton: (<FontAwesomeIcon icon={faEye} />),
-            expandedButton: (<FontAwesomeIcon icon={faEye} />),
-        }
-    }
-    )
 
     const columns = [
         {
@@ -137,17 +116,8 @@ function ListCotizaciones(props) {
                             bg="danger"
                             title="Habilitar"
                             className="eliminar"
-                            onClick={() => {
-                                habilitaCotizaciones(
-                                    <EliminacionLogicaCotizaciones
-                                        dataCotizacion={row}
-                                        setShowModal={setShowModal}
-                                        history={history}
-                                    />
-                                )
-                            }}
                         >
-                            Inactivo
+                            Cancelada
                         </Badge>
                     </>
                 ),

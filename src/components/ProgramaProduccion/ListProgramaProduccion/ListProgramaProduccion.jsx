@@ -37,14 +37,7 @@ function ListProgramaProduccion(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaPrograma = (content) => {
-        setTitulosModal("Deshabilitando el programa de produccion");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaPrograma = (content) => {
-        setTitulosModal("Habilitando el programa de produccion");
+        setTitulosModal("Cancelando el programa de produccion");
         setContentModal(content);
         setShowModal(true);
     }
@@ -171,17 +164,8 @@ function ListProgramaProduccion(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaPrograma(
-                                        <EstadoPrograma
-                                            datos={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactivo
+                                cancelado
                             </Badge>
                         </>
                     )

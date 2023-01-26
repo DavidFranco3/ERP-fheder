@@ -38,14 +38,7 @@ function ListCompras(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaCompras = (content) => {
-        setTitulosModal("Deshabilitando la compra");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaCompras = (content) => {
-        setTitulosModal("Habilitando la compra");
+        setTitulosModal("Cancelando la orden de compra");
         setContentModal(content);
         setShowModal(true);
     }
@@ -170,17 +163,8 @@ function ListCompras(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaCompras(
-                                        <EliminacionLogicaCompras
-                                            data={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelada
                             </Badge>
                         </>
                     )

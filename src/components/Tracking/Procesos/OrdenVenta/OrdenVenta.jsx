@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Row, Col, Container } from "react-bootstrap"
-import {obtenerDatosPedidoVenta} from "../../../../api/pedidoVenta";
+import { obtenerDatosPedidoVenta } from "../../../../api/pedidoVenta";
 import moment from "moment";
 import NombreCliente from "../../ListTracking/NombreCliente";
-import {map} from "lodash";
+import { map } from "lodash";
 import "./OrdenVenta.scss"
 
 function OrdenVenta(props) {
@@ -14,22 +14,16 @@ function OrdenVenta(props) {
     const [datosOrdenVenta, setDatosOrdenVenta] = useState(null);
 
     useEffect(() => {
-        try{
+        try {
             obtenerDatosPedidoVenta(ordenVenta).then(response => {
                 const { data } = response;
                 // console.log(data)
-                setDatosOrdenVenta(data)
-                /*if(!datosOrdenVenta &&data) {
-                    setDatosOrdenVenta(formatModelPedidosventa(data));
-                } else {
-                    const datosUsuarios = formatModelPedidosventa(data);
-                    setDatosOrdenVenta(datosUsuarios);
-                }*/
+                setDatosOrdenVenta(data);
             }).catch(e => {
-                console.log(e)
+                console.log(e);
             })
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
     }, []);
 
@@ -58,14 +52,14 @@ function OrdenVenta(props) {
                                 </Col>
                                 <Col>
                                     Total: {(
-                    <>
-                ${''}
-                        {new Intl.NumberFormat('es-MX', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                        }).format(datosOrdenVenta.total)} MXN    
-                </>
-        )}
+                                        <>
+                                            ${''}
+                                            {new Intl.NumberFormat('es-MX', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2,
+                                            }).format(datosOrdenVenta.total)} MXN
+                                        </>
+                                    )}
                                 </Col>
                             </Row>
 
@@ -73,36 +67,36 @@ function OrdenVenta(props) {
                                 <table className="responsive-tableTrackingOV"
                                 >
                                     <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Productos</th>
-                                        <th scope="col">Cantidad</th>
-                                        <th scope="col">Unidad de medida</th>
-                                    </tr>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Productos</th>
+                                            <th scope="col">Cantidad</th>
+                                            <th scope="col">Unidad de medida</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    {map(datosOrdenVenta.productos, (datos, index) => (
-                                        <>
-                                        { datosOrdenVenta.folio == ordenVenta ? (
+                                        {map(datosOrdenVenta.productos, (datos, index) => (
                                             <>
-                                            <tr key={datos.item}>
-                                                <th>
-                                                    {index + 1}
-                                                </th>
-                                                <td>
-                                                    {datos.item}
-                                                </td>
-                                                <td>
-                                                    {datos.cantidad}
-                                                </td>
-                                                <td>
-                                                    {datos.um}
-                                                </td>
-                                            </tr>
+                                                {datosOrdenVenta.folio == ordenVenta ? (
+                                                    <>
+                                                        <tr key={datos.item}>
+                                                            <td>
+                                                                {index + 1}
+                                                            </td>
+                                                            <td>
+                                                                {datos.descripcion}
+                                                            </td>
+                                                            <td>
+                                                                {datos.cantidad}
+                                                            </td>
+                                                            <td>
+                                                                {datos.um}
+                                                            </td>
+                                                        </tr>
+                                                    </>
+                                                ) : (<></>)}
                                             </>
-                                        ):(<></>)}
-                                        </>
-                                    ))}
+                                        ))}
                                     </tbody>
                                 </table>
                             </Container>
@@ -134,7 +128,7 @@ function formatModelPedidosventa(data) {
             especificaciones: data.especificaciones,
             incoterms: data.incoterms,
             moneda: data.moneda,
-            numeroPedido: data.numeroPedido, 
+            numeroPedido: data.numeroPedido,
             lugarEntrega: data.lugarEntrega,
             cotizacion: data.cotizacion,
             ordenCompra: data.ordenCompra,

@@ -37,14 +37,7 @@ function ListLiberacionProducto(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaLiberacion = (content) => {
-        setTitulosModal("Deshabilitando la hoja de liberacion de producto y proceso");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaLiberacion = (content) => {
-        setTitulosModal("Habilitando la hoja de liberacion de producto y proceso");
+        setTitulosModal("Cancelando la hoja de liberacion de producto y proceso");
         setContentModal(content);
         setShowModal(true);
     }
@@ -176,17 +169,8 @@ function ListLiberacionProducto(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaLiberacion(
-                                        <EliminacionLogicaLiberacion
-                                            datos={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelada
                             </Badge>
                         </>
                     )

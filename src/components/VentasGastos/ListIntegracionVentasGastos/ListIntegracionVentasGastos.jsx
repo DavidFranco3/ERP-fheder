@@ -45,14 +45,7 @@ function ListIntegracionVentasGastos(props) {
 
      //Para la eliminacion logica de usuarios
      const eliminaLogicaVentas = (content) => {
-        setTitulosModal("Deshabilitando la integracion");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaVentas = (content) => {
-        setTitulosModal("Habilitando la integracion");
+        setTitulosModal("Cancelando la integración de ventas y gastos");
         setContentModal(content);
         setShowModal(true);
     }
@@ -174,17 +167,8 @@ function ListIntegracionVentasGastos(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaVentas(
-                                        <EliminacionLogicaIntegracion
-                                            data={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelada
                             </Badge>
                         </>
                     )

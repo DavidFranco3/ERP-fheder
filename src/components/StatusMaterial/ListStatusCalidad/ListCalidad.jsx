@@ -36,14 +36,7 @@ function ListCalidad(props) {
 
      //Para la eliminacion logica de usuarios
      const eliminaLogicaStatusMaterial = (content) => {
-        setTitulosModal("Deshabilitando el status de material");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaStatusMaterial = (content) => {
-        setTitulosModal("Habilitando el status de material");
+        setTitulosModal("Cancelando la identificación de status de material");
         setContentModal(content);
         setShowModal(true);
     }
@@ -126,17 +119,8 @@ function ListCalidad(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaStatusMaterial(
-                                        <EliminacionLogicaStatusMaterial
-                                            datosStatus={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelado
                             </Badge>
                         </>
                     )

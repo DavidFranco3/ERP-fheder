@@ -35,14 +35,7 @@ function ListCertificadosCalidad(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaCertificado = (content) => {
-        setTitulosModal("Deshabilitando el certificado de calidad");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaCertificado = (content) => {
-        setTitulosModal("Habilitando el certificado de calidad");
+        setTitulosModal("Cancelando el certificado de calidad");
         setContentModal(content);
         setShowModal(true);
     }
@@ -146,17 +139,8 @@ function ListCertificadosCalidad(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaCertificado(
-                                        <EliminacionLogicaCertificado
-                                            datos={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelado
                             </Badge>
                         </>
                     )

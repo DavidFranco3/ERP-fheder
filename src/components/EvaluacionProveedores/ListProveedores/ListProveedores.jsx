@@ -34,15 +34,8 @@ function ListProveedores(props) {
     }
 
     //Para cambiar el status del proveedor
-    const habilitandoProveedor = (content) => {
-        setTitulosModal("Habilitando proveedor");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para cambiar el status del proveedor
     const deshabilitandoProveedor = (content) => {
-        setTitulosModal("Deshabilitando proveedor");
+        setTitulosModal("Cancelando la evaluacion del proveedor");
         setContentModal(content);
         setShowModal(true);
     }
@@ -171,17 +164,8 @@ function ListProveedores(props) {
                             bg="danger"
                             title="Habilitar"
                             className="editarProveedor"
-                            onClick={() => {
-                                habilitandoProveedor(
-                                    <EstadoProveedor
-                                        dataProveedor={row}
-                                        setShowModal={setShowModal}
-                                        history={history}
-                                    />
-                                )
-                            }}
                         >
-                            Deshabilitado
+                            Cancelada
                         </Badge>
                     </>
                 ),

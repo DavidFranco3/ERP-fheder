@@ -38,14 +38,7 @@ function ListRecepciones(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaRecepcion = (content) => {
-        setTitulosModal("Deshabilitando la recepcion");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaRecepcion = (content) => {
-        setTitulosModal("Habilitando la recepcion");
+        setTitulosModal("Cancelando la recepción de materiales e insumos");
         setContentModal(content);
         setShowModal(true);
     }
@@ -159,17 +152,8 @@ function ListRecepciones(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaRecepcion(
-                                        <EliminacionLogicaRecepcion
-                                            datos={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelado
                             </Badge>
                         </>
                     )

@@ -35,14 +35,7 @@ function ListNoConformidad(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaNoConformidad = (content) => {
-        setTitulosModal("Deshabilitando la no conformidad");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaNoConformidad = (content) => {
-        setTitulosModal("Habilitando la no conformidad");
+        setTitulosModal("Cancelando el control de no conformidad");
         setContentModal(content);
         setShowModal(true);
     }
@@ -139,17 +132,8 @@ function ListNoConformidad(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaNoConformidad(
-                                        <EliminacionLogicaNoConformidad
-                                            datos={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelada
                             </Badge>
                         </>
                     )

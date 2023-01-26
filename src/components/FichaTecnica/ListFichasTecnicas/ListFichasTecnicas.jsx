@@ -35,14 +35,7 @@ function ListFichasTecnicas(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaFichasTecnicas = (content) => {
-        setTitulosModal("Deshabilitando la ficha tecnica");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaFichasTecnicas = (content) => {
-        setTitulosModal("Habilitando la ficha tecnica");
+        setTitulosModal("Cancelando la ficha tecnica");
         setContentModal(content);
         setShowModal(true);
     }
@@ -118,17 +111,8 @@ function ListFichasTecnicas(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaFichasTecnicas(
-                                        <EliminacionLogicaFichasTecnicas
-                                            datos={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelado
                             </Badge>
                         </>
                     )

@@ -34,9 +34,8 @@ function EliminacionLogicaPrimeraPieza(props) {
                 const { data } = response;
                 //console.log(data)
                 toast.success(data.mensaje);
-                LogsInformativos("Se ha actualizado el estado de la etiqueta de primera pieza " + folio, dataTemp);
+                LogsInformativos("Se ha cancelado la etiqueta de primera piieza " + folio, dataTemp);
                 setShowModal(false);
-                setLoading(false);
                 history.push({
                     search: queryString.stringify(""),
                 });
@@ -51,27 +50,12 @@ function EliminacionLogicaPrimeraPieza(props) {
         <>
             <Form onSubmit={onSubmit}>
 
-                {estado == "true" ?
-                    (
-                        <>
-                            <Alert variant="danger">
-                                <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
-                                <p className="mensaje">
-                                    Esta acción deshabilitara en el sistema la etiqueta de primera pieza.
-                                </p>
-                            </Alert>
-                        </>
-                    ) : (
-                        <>
-                            <Alert variant="success">
-                                <Alert.Heading>Atención! Acción contructiva!</Alert.Heading>
-                                <p className="mensaje">
-                                    Esta acción habilitara en el sistema la etiqueta de primera pieza.
-                                </p>
-                            </Alert>
-                        </>
-                    )
-                }
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción cancelara la etiqueta de primera pieza.
+                    </p>
+                </Alert>
 
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
@@ -128,7 +112,7 @@ function EliminacionLogicaPrimeraPieza(props) {
                             title={estado === "true" ? "Deshabilitar" : "Habilitar"}
                             type="submit"
                             className="registrar">
-                            {!loading ? (estado === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
+                            {!loading ? "Cancelar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -140,7 +124,7 @@ function EliminacionLogicaPrimeraPieza(props) {
                                 cancelar()
                             }}
                         >
-                            Cancelar
+                            Cerrar
                         </Button>
                     </Col>
                 </Form.Group>

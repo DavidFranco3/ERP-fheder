@@ -33,7 +33,7 @@ function EliminacionLogicaPlaneacion(props) {
                 const { data } = response;
                 //console.log(data)
                 toast.success(data.mensaje);
-                LogsInformativos("Se ha actualizado el estado del requerimiento " + folio, datos);
+                LogsInformativos("Se ha cancelado la planeación " + folio, datos);
                 setShowModal(false);
                 setLoading(false);
                 history.push({
@@ -50,27 +50,12 @@ function EliminacionLogicaPlaneacion(props) {
         <>
             <Form onSubmit={onSubmit}>
 
-                {estado == "true" ?
-                    (
-                        <>
-                            <Alert variant="danger">
-                                <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
-                                <p className="mensaje">
-                                    Esta acción deshabilitara en el sistema el requerimiento.
-                                </p>
-                            </Alert>
-                        </>
-                    ) : (
-                        <>
-                            <Alert variant="success">
-                                <Alert.Heading>Atención! Acción contructiva!</Alert.Heading>
-                                <p className="mensaje">
-                                    Esta acción habilitara en el sistema el requerimiento.
-                                </p>
-                            </Alert>
-                        </>
-                    )
-                }
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción cancelara la planeación.
+                    </p>
+                </Alert>
 
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
@@ -112,7 +97,7 @@ function EliminacionLogicaPlaneacion(props) {
                             title={estado === "true" ? "Deshabilitar" : "Habilitar"}
                             type="submit"
                             className="registrar">
-                            {!loading ? (estado === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
+                            {!loading ? "Cancelar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -124,7 +109,7 @@ function EliminacionLogicaPlaneacion(props) {
                                 cancelar()
                             }}
                         >
-                            Cancelar
+                            Cerrar
                         </Button>
                     </Col>
                 </Form.Group>

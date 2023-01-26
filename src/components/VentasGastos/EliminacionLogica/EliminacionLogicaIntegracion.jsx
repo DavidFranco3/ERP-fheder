@@ -33,14 +33,8 @@ function EliminacionLogicaIntegracion(props) {
             actualizaEstadoIntegraciones(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                if (dataTemp.estado === "true") {
-                    toast.success("Integracion habilitada");
-                    LogsInformativos("Se ha habilitado la integracion de ventas y gastos " + folio, dataTemp);
-                }
-                if (dataTemp.estado === "false") {
-                    toast.success("Venta deshabilitada");
-                    LogsInformativos("Se ha deshabilitado la integracion de ventas y gastos " + folio, dataTemp);
-                }
+                toast.success(data.mensaje);
+                LogsInformativos("Se ha cancelado la integracion de ventas y gastos " + folio, dataTemp);
                 setShowModal(false);
                 setLoading(false);
                 history.push({
@@ -57,27 +51,12 @@ function EliminacionLogicaIntegracion(props) {
         <>
             <Form onSubmit={onSubmit}>
 
-                {estado == "true" ?
-                    (
-                        <>
-                            <Alert variant="danger">
-                                <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
-                                <p className="mensaje">
-                                    Esta acción deshabilitara en el sistema la integracion de ventas y gastos.
-                                </p>
-                            </Alert>
-                        </>
-                    ) : (
-                        <>
-                            <Alert variant="success">
-                                <Alert.Heading>Atención! Acción contructiva!</Alert.Heading>
-                                <p className="mensaje">
-                                    Esta acción habilitara en el sistema la integracion de ventas y gastos.
-                                </p>
-                            </Alert>
-                        </>
-                    )
-                }
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción cancelara la integracion de ventas y gastos.
+                    </p>
+                </Alert>
 
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
@@ -134,7 +113,7 @@ function EliminacionLogicaIntegracion(props) {
                             title={estado === "true" ? "Deshabilitar" : "Habilitar"}
                             type="submit"
                             className="registrar">
-                            {!loading ? (estado === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
+                            {!loading ? "Aceptar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -146,7 +125,7 @@ function EliminacionLogicaIntegracion(props) {
                                 cancelar()
                             }}
                         >
-                            Cancelar
+                            Cerrar
                         </Button>
                     </Col>
                 </Form.Group>

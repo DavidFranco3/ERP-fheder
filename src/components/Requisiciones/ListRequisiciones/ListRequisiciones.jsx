@@ -36,17 +36,11 @@ function ListRequisiciones(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaRequisicion = (content) => {
-        setTitulosModal("Deshabilitando la requisicion");
+        setTitulosModal("Cancelando la requisicion");
         setContentModal(content);
         setShowModal(true);
     }
 
-    //Para la eliminacion logica de usuarios
-    const habilitaRequisicion = (content) => {
-        setTitulosModal("Habilitando la requisicion");
-        setContentModal(content);
-        setShowModal(true);
-    }
 
     //Para la eliminacion de proveedores
     const ModificacionRequisicion = (id) => {
@@ -145,17 +139,8 @@ function ListRequisiciones(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaRequisicion(
-                                        <EliminacionLogicaRequisiciones
-                                            datosRequisicion={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelada
                             </Badge>
                         </>
                     )

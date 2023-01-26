@@ -38,14 +38,7 @@ function ListEtiquetasPrimeraPieza(props) {
 
      //Para la eliminacion logica de usuarios
      const eliminaLogicaPrimeraPieza = (content) => {
-        setTitulosModal("Deshabilitando la etiqueta de primera pieza");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaPrimeraPieza = (content) => {
-        setTitulosModal("Habilitando la etiqueta de primera pieza");
+        setTitulosModal("Cancelando la etiqueta de primera pieza");
         setContentModal(content);
         setShowModal(true);
     }
@@ -172,17 +165,8 @@ function ListEtiquetasPrimeraPieza(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaPrimeraPieza(
-                                        <EliminacionLogicaPrimeraPieza
-                                            data={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelada
                             </Badge>
                         </>
                     )

@@ -34,7 +34,7 @@ function EliminacionLogicaMaterialMolido(props) {
                 const { data } = response;
                 //console.log(data)
                 toast.success(data.mensaje);
-                LogsInformativos("Se ha actualizado la etiqueta de molido " + folio, dataTemp);
+                LogsInformativos("Se ha cancelado la etiqueta de identificación de material molido " + folio, dataTemp);
                 setShowModal(false);
                 setLoading(false);
                 history.push({
@@ -51,27 +51,12 @@ function EliminacionLogicaMaterialMolido(props) {
         <>
             <Form onSubmit={onSubmit}>
 
-                {estado == "true" ?
-                    (
-                        <>
-                            <Alert variant="danger">
-                                <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
-                                <p className="mensaje">
-                                    Esta acción deshabilitara en el sistema la etiqueta de molido.
-                                </p>
-                            </Alert>
-                        </>
-                    ) : (
-                        <>
-                            <Alert variant="success">
-                                <Alert.Heading>Atención! Acción contructiva!</Alert.Heading>
-                                <p className="mensaje">
-                                    Esta acción habilitara en el sistema la etiqueta de molido.
-                                </p>
-                            </Alert>
-                        </>
-                    )
-                }
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción cancelara la etiqueta de identificación de materual molido.
+                    </p>
+                </Alert>
 
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
@@ -128,7 +113,7 @@ function EliminacionLogicaMaterialMolido(props) {
                             title={estado === "true" ? "Deshabilitar" : "Habilitar"}
                             type="submit"
                             className="registrar">
-                            {!loading ? (estado === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
+                            {!loading ? "Cancelar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -140,7 +125,7 @@ function EliminacionLogicaMaterialMolido(props) {
                                 cancelar()
                             }}
                         >
-                            Cancelar
+                            Cerrar
                         </Button>
                     </Col>
                 </Form.Group>

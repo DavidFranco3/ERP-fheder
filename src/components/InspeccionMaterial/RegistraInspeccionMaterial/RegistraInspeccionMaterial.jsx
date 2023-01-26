@@ -591,7 +591,7 @@ function RegistraInspeccionMaterial(props) {
                         }
                     },
                     observaciones: formData.observaciones,
-                    status: "Activo",
+                    status: "true",
                     motivoCancelacion: "",
                 }
 

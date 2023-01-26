@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import queryString from "query-string";
 import "./EliminacionLogicaCotizaciones.scss";
-import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { cambiaStatusCotizacion } from "../../../api/cotizaciones";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -37,8 +37,8 @@ function EliminacionLogicaCotizaciones(props) {
             cambiaStatusCotizacion(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                    toast.success(data.mensaje);
-                    LogsInformativos("Se ha actualizado el estado de la cotizacion " + formData.cliente + " " + formData.vendedor, dataTemp)
+                toast.success(data.mensaje);
+                LogsInformativos("Se ha cancelado la cotización " + formData.cliente + " " + formData.vendedor, dataTemp)
                 setShowModal(false);
                 setLoading(false);
                 history.push({
@@ -57,21 +57,31 @@ function EliminacionLogicaCotizaciones(props) {
     return (
         <>
             <Form onSubmit={onSubmit} onChange={onChange}>
+
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción cancelara la cotización.
+                    </p>
+                </Alert>
+
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridNombre">
                         <Form.Label>Cliente</Form.Label>
-                        <Form.Control type="text"
+                        <Form.Control
+                            type="text"
                             name="nombre"
-                            disabled={true}
+                            disabled
                             defaultValue={formData.cliente}
                         />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="formGridNombre">
                         <Form.Label>Vendededor</Form.Label>
-                        <Form.Control type="text"
+                        <Form.Control
+                            type="text"
                             name="nombre"
-                            disabled={true}
+                            disabled
                             defaultValue={formData.vendedor}
                         />
                     </Form.Group>
@@ -82,8 +92,10 @@ function EliminacionLogicaCotizaciones(props) {
                     title={status === "true" ? "Deshabilitar" : "Habilitar"}
                 >
                     <Col>
-                        <Button variant="success" type="submit">
-                            {!loading ? (status === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
+                        <Button
+                            variant="success"
+                            type="submit">
+                            {!loading ? "Cancelar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -95,7 +107,7 @@ function EliminacionLogicaCotizaciones(props) {
                                 cancelar()
                             }}
                         >
-                            Cancelar
+                            Cerrar
                         </Button>
                     </Col>
                 </Form.Group>

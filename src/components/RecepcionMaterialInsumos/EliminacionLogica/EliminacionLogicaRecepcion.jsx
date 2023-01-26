@@ -34,7 +34,7 @@ function EliminacionLogicaRecepcion(props) {
                 const { data } = response;
                 //console.log(data)
                 toast.success(data.mensaje);
-                LogsInformativos("Se ha actualizado el estado de la recepcion " + folio, datos);
+                LogsInformativos("Se ha cancelado la recepcion de materiales e insumos " + folio, datos);
                 setShowModal(false);
                 setLoading(false);
                 history.push({
@@ -51,27 +51,12 @@ function EliminacionLogicaRecepcion(props) {
         <>
             <Form onSubmit={onSubmit}>
 
-                {estado == "true" ?
-                    (
-                        <>
-                            <Alert variant="danger">
-                                <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
-                                <p className="mensaje">
-                                    Esta acción deshabilitara en el sistema la recepcion.
-                                </p>
-                            </Alert>
-                        </>
-                    ) : (
-                        <>
-                            <Alert variant="success">
-                                <Alert.Heading>Atención! Acción contructiva!</Alert.Heading>
-                                <p className="mensaje">
-                                    Esta acción habilitara en el sistema la recepcion.
-                                </p>
-                            </Alert>
-                        </>
-                    )
-                }
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción cancelara la recepción de materiales e insumos.
+                    </p>
+                </Alert>
 
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
@@ -129,7 +114,7 @@ function EliminacionLogicaRecepcion(props) {
                             title={estado === "true" ? "Deshabilitar" : "Habilitar"}
                             type="submit"
                             className="registrar">
-                            {!loading ? (estado === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
+                            {!loading ? "Aceptar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -141,7 +126,7 @@ function EliminacionLogicaRecepcion(props) {
                                 cancelar()
                             }}
                         >
-                            Cancelar
+                            Cerrar
                         </Button>
                     </Col>
                 </Form.Group>

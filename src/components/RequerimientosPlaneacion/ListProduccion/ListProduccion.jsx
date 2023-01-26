@@ -36,14 +36,7 @@ function ListProduccion(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaPlaneacion = (content) => {
-        setTitulosModal("Deshabilitando la planeacion");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaPlaneacion = (content) => {
-        setTitulosModal("Habilitando la planeacion");
+        setTitulosModal("Cancelando la planeación");
         setContentModal(content);
         setShowModal(true);
     }
@@ -183,17 +176,8 @@ function ListProduccion(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaPlaneacion(
-                                        <EliminacionLogicaPlaneacion
-                                            datos={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelada
                             </Badge>
                         </>
                     )

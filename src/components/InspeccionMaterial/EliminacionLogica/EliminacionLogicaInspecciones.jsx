@@ -28,36 +28,30 @@ function EliminacionLogicaInspecciones(props) {
         if (!formData.motivoCancelacion) {
             toast.warning("Especifica el motivo de la cancelacion");
         } else {
-        setLoading(true);
+            setLoading(true);
 
-        const dataTemp = {
-            motivoCancelacion: formData.motivoCancelacion,
-            status: "Cancelado"
-        }
-        //console.log(dataTemp)
+            const dataTemp = {
+                motivoCancelacion: formData.motivoCancelacion,
+                status: status === "false" ? "true" : "false"
+            }
+            //console.log(dataTemp)
 
-        try {
-            actualizaEstadoInspeccionPieza(id, dataTemp).then(response => {
-                const { data } = response;
-                //console.log(data)
-                if (status === "Activo") {
-                    toast.success("Inspeccion activada");
-                    LogsInformativos("Se ha activado la inspeccion " + folio, dataTemp)
-                }
-                if (dataTemp.estadoUsuario === "Cancelado") {
-                    toast.success("Inspeccion cancelada");
-                    LogsInformativos("Se ha cancelado la inspeccion " + folio, dataTemp)
-                }
-                setShowModal(false);
-                setLoading(false);
-                history.push({
-                    search: queryString.stringify(""),
-                });
-            })
-        } catch (e) {
-            console.log(e)
+            try {
+                actualizaEstadoInspeccionPieza(id, dataTemp).then(response => {
+                    const { data } = response;
+                    //console.log(data)
+                    toast.success(data.mensaje);
+                    LogsInformativos("Se ha cancelado la inspección de pieza " + folio, dataTemp)
+                    setShowModal(false);
+                    setLoading(false);
+                    history.push({
+                        search: queryString.stringify(""),
+                    });
+                })
+            } catch (e) {
+                console.log(e)
+            }
         }
-    }
     }
 
     const onChange = e => {
@@ -199,7 +193,7 @@ function EliminacionLogicaInspecciones(props) {
                     </Form.Group>
                 </Row>
 
-                <br/>
+                <br />
 
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
@@ -221,7 +215,7 @@ function EliminacionLogicaInspecciones(props) {
                             title={status === "Activo" ? "Cancelar inspeccion" : "Habilitar"}
                             type="submit"
                             className="registrar">
-                            {!loading ? (status === "Activo" ? "Cancelar inspeccion" : "Habilitar") : <Spinner animation="border" />}
+                            {!loading ? "Cancelar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -233,7 +227,7 @@ function EliminacionLogicaInspecciones(props) {
                                 cancelar()
                             }}
                         >
-                            Cancelar
+                            Cerrar
                         </Button>
                     </Col>
                 </Form.Group>

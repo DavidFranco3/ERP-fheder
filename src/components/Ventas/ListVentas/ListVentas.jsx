@@ -39,17 +39,11 @@ function ListVentas(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaVentas = (content) => {
-        setTitulosModal("Deshabilitando la venta");
+        setTitulosModal("Cancelando la orden de venta");
         setContentModal(content);
         setShowModal(true);
     }
 
-    //Para la eliminacion logica de usuarios
-    const habilitaVentas = (content) => {
-        setTitulosModal("Habilitando la venta");
-        setContentModal(content);
-        setShowModal(true);
-    }
 
     // Para la modificacion de datos del pedido
     const modificaPedidoVenta = (folio) => {
@@ -141,17 +135,8 @@ function ListVentas(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaVentas(
-                                        <EliminacionLogicaVentas
-                                            datos={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelada
                             </Badge>
                         </>
                     )

@@ -23,7 +23,7 @@ function EstadoProveedor(props) {
             deshabilitaEvaluacionProveedores(id, dataTemp).then(response => {
                 const { data } = response;
                 toast.success(data.mensaje)
-                LogsInformativos("Se ha cambiado el estado del proveedor con folio " + folio, dataTemp)
+                LogsInformativos("Se ha cancelado la evaluación del proveedor con folio " + folio, dataTemp)
                 history.push({
                     search: queryString.stringify(""),
                 });
@@ -49,7 +49,7 @@ function EstadoProveedor(props) {
                             <Alert variant="danger">
                                 <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
                                 <p className="mensaje">
-                                    Esta acción deshabilitara en el sistema al proveedor.
+                                    Esta acción cancelara la evaluación del proveedor.
                                 </p>
                             </Alert>
                         </>
@@ -128,7 +128,7 @@ function EstadoProveedor(props) {
                             variant="success"
                             className="registrar"
                         >
-                            {!loading ? (estado === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
+                            {!loading ? "Aceptar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -139,7 +139,7 @@ function EstadoProveedor(props) {
                                 cierraModal()
                             }}
                         >
-                            Cancelar
+                            Cerrar
                         </Button>
                     </Col>
                 </Form.Group>

@@ -37,14 +37,7 @@ function ListEtiquetasPT(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaEtiqueta = (content) => {
-        setTitulosModal("Deshabilitando la etiqueta de PT");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaEtiqueta = (content) => {
-        setTitulosModal("Habilitando la etiqueta de PT");
+        setTitulosModal("Cancelando la etiqueta de PT");
         setContentModal(content);
         setShowModal(true);
     }
@@ -54,15 +47,6 @@ function ListEtiquetasPT(props) {
         setTitulosModal("Modificando etiqueta PT");
         setContentModal(content);
         setShowModal(true);
-    }
-
-    //Para la modificacion de compras
-    const modificacionCompraAlmacen = (folio) => {
-        enrutamiento.push(`/Compras/AlmacenMP/Modificacion/${folio}`)
-    }
-
-    const modificacionCompra = (folio) => {
-        enrutamiento.push(`/ModificacionCompras/${folio}`)
     }
 
     const columns = [
@@ -161,17 +145,8 @@ function ListEtiquetasPT(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaEtiqueta(
-                                        <EliminacionLogicaEtiquetaPT
-                                            data={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelada
                             </Badge>
                         </>
                     )

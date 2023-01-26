@@ -35,14 +35,7 @@ function ListAlertasCalidad(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaAlertasCalidad = (content) => {
-        setTitulosModal("Deshabilitando la alerta de calidad");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaAlertasCalidad = (content) => {
-        setTitulosModal("Habilitando la alerta de calidad");
+        setTitulosModal("Cancelando la alerta de calidad");
         setContentModal(content);
         setShowModal(true);
     }
@@ -132,17 +125,8 @@ function ListAlertasCalidad(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaAlertasCalidad(
-                                        <EliminacionLogicaAlertasCalidad
-                                            datos={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelada
                             </Badge>
                         </>
                     )

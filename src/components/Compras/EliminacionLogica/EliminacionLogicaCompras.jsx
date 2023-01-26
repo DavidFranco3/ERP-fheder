@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import queryString from "query-string";
 import "./EliminacionLogicaCompras.scss";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
-import { eliminaDepartamento } from "../../../api/departamentos";
 import { toast } from "react-toastify";
 import { cambiaStatusOrdenCompra } from "../../../api/compras";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -35,7 +34,7 @@ function EliminacionLogicaCompras(props) {
                 //console.log(data)
 
                 toast.success(data.mensaje);
-                LogsInformativos("Se a actualizado el estado de la orden de compra " + folio, dataTemp);
+                LogsInformativos("Se ha cancelado la orden de compra " + folio, dataTemp);
 
                 setShowModal(false);
                 setLoading(false);
@@ -53,27 +52,12 @@ function EliminacionLogicaCompras(props) {
         <>
             <Form onSubmit={onSubmit}>
 
-                {estado == "true" ?
-                    (
-                        <>
-                            <Alert variant="danger">
-                                <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
-                                <p className="mensaje">
-                                    Esta acción deshabilitara en el sistema la compra.
-                                </p>
-                            </Alert>
-                        </>
-                    ) : (
-                        <>
-                            <Alert variant="success">
-                                <Alert.Heading>Atención! Acción contructiva!</Alert.Heading>
-                                <p className="mensaje">
-                                    Esta acción habilitara en el sistema la compra.
-                                </p>
-                            </Alert>
-                        </>
-                    )
-                }
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción cancelara la orden de compra.
+                    </p>
+                </Alert>
 
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
@@ -130,7 +114,7 @@ function EliminacionLogicaCompras(props) {
                             title={estado === "true" ? "Deshabilitar" : "Habilitar"}
                             type="submit"
                             className="registrar">
-                            {!loading ? (estado === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
+                            {!loading ? "Aceptar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -142,7 +126,7 @@ function EliminacionLogicaCompras(props) {
                                 cancelar()
                             }}
                         >
-                            Cancelar
+                            Cerrar
                         </Button>
                     </Col>
                 </Form.Group>

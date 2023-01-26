@@ -39,14 +39,7 @@ function ListAsignacionPedido(props) {
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaAsignacion = (content) => {
-        setTitulosModal("Deshabilitando la asignacion");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    //Para la eliminacion logica de usuarios
-    const habilitaAsignacion = (content) => {
-        setTitulosModal("Habilitando la asignacion");
+        setTitulosModal("Cancelando la asignacion de pedido");
         setContentModal(content);
         setShowModal(true);
     }
@@ -172,17 +165,8 @@ function ListAsignacionPedido(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaAsignacion(
-                                        <EliminacionLogicaAsignacion
-                                            data={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                                }}
                             >
-                                Inactiva
+                                Cancelada
                             </Badge>
                         </>
                     )

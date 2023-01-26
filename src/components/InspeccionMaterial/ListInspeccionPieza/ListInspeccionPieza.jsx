@@ -35,7 +35,7 @@ function ListInspeccionPieza(props) {
 
     // Para la eliminacion fisica de usuarios
     const cancelacionInspeccion = (content) => {
-        setTitulosModal("Cancelando");
+        setTitulosModal("Cancelando la inspección de pieza");
         setContentModal(content);
         setShowModal(true);
     }
@@ -116,7 +116,7 @@ function ListInspeccionPieza(props) {
         },
         {
             name: "Status",
-            selector: row => row.status === "Activo" ?
+            selector: row => row.status === "true" ?
                 (
                     <>
                         <Badge
@@ -134,7 +134,7 @@ function ListInspeccionPieza(props) {
                                 )
                             }}
                         >
-                            Activo
+                            Activa
                         </Badge>
                     </>
                 )
@@ -173,7 +173,7 @@ function ListInspeccionPieza(props) {
                         <FontAwesomeIcon icon={faEye} className="text-lg" />
                     </Badge>
 
-                    {row.status != "Cancelado" &&
+                    {row.status != "false" &&
                         (
                             <Badge
                                 bg="success"

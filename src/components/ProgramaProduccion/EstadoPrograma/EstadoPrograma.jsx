@@ -29,7 +29,7 @@ function EstadoPrograma(props) {
         setLoading(true);
 
         const dataTemp = {
-            estado: estado=== "false" ? "true" : "false"
+            estado: estado === "false" ? "true" : "false"
         }
         //console.log(dataTemp)
 
@@ -37,8 +37,8 @@ function EstadoPrograma(props) {
             cambiaStatusPrograma(id, dataTemp).then(response => {
                 const { data } = response;
                 // console.log(data)
-                    toast.success(data.mensaje);
-                    LogsInformativos("Se actualizo el estado del programa de producciion " + folio, dataTemp);
+                toast.success(data.mensaje);
+                LogsInformativos("Se cancelo el programa de producción " + folio, dataTemp);
                 setShowModal(false);
                 setLoading(false);
                 history.push({
@@ -55,27 +55,12 @@ function EstadoPrograma(props) {
         <>
             <Form onSubmit={onSubmit}>
 
-            {estado == "true" ?
-                    (
-                        <>
-                            <Alert variant="danger">
-                                <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
-                                <p className="mensaje">
-                                    Esta acción deshabilitara en el el programa de produccion.
-                                </p>
-                            </Alert>
-                        </>
-                    ) : (
-                        <>
-                            <Alert variant="success">
-                                <Alert.Heading>Atención! Acción contructiva!</Alert.Heading>
-                                <p className="mensaje">
-                                    Esta acción habilitara en el sistema el programa de produccion.
-                                </p>
-                            </Alert>
-                        </>
-                    )
-                }
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción cancelara el programa de produccion.
+                    </p>
+                </Alert>
 
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
@@ -100,7 +85,7 @@ function EstadoPrograma(props) {
                     </Form.Group>
                 </Row>
 
-                <br/>
+                <br />
 
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
@@ -133,7 +118,7 @@ function EstadoPrograma(props) {
                             variant="success"
                             className="registrar"
                         >
-                            {!loading ? (estado === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
+                            {!loading ? "Cancelar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -145,7 +130,7 @@ function EstadoPrograma(props) {
                                 cancelarEliminacion()
                             }}
                         >
-                            Cancelar
+                            Cerrar
                         </Button>
                     </Col>
                 </Form.Group>
