@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import queryString from "query-string";
-import "./EliminacionLogicaVentas.scss";
+import "./EliminacionLogicaSemana.scss";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { actualizaEstadoPedidoVenta } from "../../../api/pedidoVenta";
+import { actualizaEstadoSemana } from "../../../api/semana";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 
-function EliminacionLogicaVentas(props) {
-    const { datos, setShowModal, history } = props;
-    const { id, folio, condicionesPago, numeroPedido, fechaElaboracion, estado } = datos;
+function EliminacionLogicaSemana(props) {
+    const { data, setShowModal, history } = props;
+    const { id, folio, fechaInicial, fechaFinal, estado } = data;
 
     // Para determinar el uso de la animacion
     const [loading, setLoading] = useState(false);
@@ -30,13 +29,13 @@ function EliminacionLogicaVentas(props) {
         //console.log(dataTemp)
 
         try {
-            actualizaEstadoPedidoVenta(id, dataTemp).then(response => {
+            actualizaEstadoSemana(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
                 toast.success(data.mensaje);
-                LogsInformativos("Se ha cancelado la orden de venta " + folio, datos);
-                LogTrackingActualizacion(folio, "Cancelación", "0");
+                LogsInformativos("Se ha cancelado el mes " + folio, data);
                 setShowModal(false);
+                setLoading(false);
                 history.push({
                     search: queryString.stringify(""),
                 });
@@ -54,7 +53,7 @@ function EliminacionLogicaVentas(props) {
                 <Alert variant="danger">
                     <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
                     <p className="mensaje">
-                        Esta acción cancelara la orden de venta.
+                        Esta acción cancelara el mes.
                     </p>
                 </Alert>
 
@@ -71,41 +70,25 @@ function EliminacionLogicaVentas(props) {
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            condiciones de pago
+                            Fecha inicial
                         </Form.Label>
                         <Form.Control
-                            type="text"
-                            value={condicionesPago}
-                            disabled
-                        />
-                    </Form.Group>
-                </Row>
-
-                <br />
-
-                <Row>
-                    <Form.Group as={Col} controlId="formGridCliente">
-                        <Form.Label>
-                            Numero de pedido
-                        </Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={numeroPedido}
+                            type="date"
+                            value={fechaInicial}
                             disabled
                         />
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Fecha de elaboracion
+                            Fecha final
                         </Form.Label>
                         <Form.Control
-                            type="text"
-                            value={fechaElaboracion}
+                            type="date"
+                            value={fechaFinal}
                             disabled
                         />
                     </Form.Group>
                 </Row>
-
 
                 <Form.Group as={Row} className="botones">
                     <Col>
@@ -114,7 +97,7 @@ function EliminacionLogicaVentas(props) {
                             title={estado === "true" ? "Deshabilitar" : "Habilitar"}
                             type="submit"
                             className="registrar">
-                            {!loading ? "Aceptar" : <Spinner animation="border" />}
+                            {!loading ? "Cancelar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -135,4 +118,4 @@ function EliminacionLogicaVentas(props) {
     );
 }
 
-export default EliminacionLogicaVentas;
+export default EliminacionLogicaSemana;

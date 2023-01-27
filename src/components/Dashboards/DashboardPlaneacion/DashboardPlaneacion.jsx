@@ -91,9 +91,9 @@ function DashboardPlaneacion(props) {
                     title={'Ordenes de producción'}
                 />
                 <ItemCard
-                    path={'/Mes'}
+                    path={'/Semana'}
                     logo={LogoMes}
-                    title={'Programas de producción del mes'}
+                    title={'Programa de producción'}
                 />
                 <ItemCard
                     path={'/Maquinaria'}

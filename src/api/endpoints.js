@@ -168,6 +168,18 @@ export const ENDPOINTListarMesPaginacion = "/mes/listarPaginando";
 export const ENDPOINTObtenerNoMes = "/mes/obtenerNoMes";
 export const ENDPOINTTotalMes = "/mes/total";
 
+// Semana
+export const ENDPOINTRegistraSemana = "/semana/registro";
+export const ENDPOINTListarSemana = "/semana/listar";
+export const ENDPOINTObtenerSemana = "/semana/obtener";
+export const ENDPOINTObtenerDatosSemana = "/semana/obtenerDatosSemana";
+export const ENDPOINTEliminarSemana = "/semana/eliminar";
+export const ENDPOINTActualizarSemana = "/semana/actualizar";
+export const ENDPOINTActualizarEstadoSemana = "/semana/actualizarEstado";
+export const ENDPOINTListarSemanaPaginacion = "/semana/listarPaginando";
+export const ENDPOINTObtenerNoSemana = "/semana/obtenerNoSemana";
+export const ENDPOINTTotalSemana = "/semana/total";
+
 // integracion ventas y gastos
 export const ENDPOINTRegistraIntegracion = "/integracionVentasGastos/registro";
 export const ENDPOINTListarIntegraciones = "/integracionVentasGastos/listar";

@@ -1,51 +1,46 @@
 import { useState, useEffect } from 'react';
-import queryString from "query-string";
-import "./EliminacionLogicaVentas.scss";
-import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
+import { eliminaSemana } from "../../../api/semana";
 import { toast } from "react-toastify";
-import { actualizaEstadoPedidoVenta } from "../../../api/pedidoVenta";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
+import queryString from "query-string";
+import { Button, Form, Spinner, Alert, Row, Col } from "react-bootstrap";
 
-function EliminacionLogicaVentas(props) {
-    const { datos, setShowModal, history } = props;
-    const { id, folio, condicionesPago, numeroPedido, fechaElaboracion, estado } = datos;
+function EliminacionSemana(props) {
+    const { data, setShowModal, history } = props;
+    const { id, folio, fechaInicial, fechaFinal } = data;
 
-    // Para determinar el uso de la animacion
-    const [loading, setLoading] = useState(false);
+    //console.log(data)
 
-    // Para cancelar el registro
-    const cancelar = () => {
+    // Para cancelar la actualizacion
+    const cancelarEliminacion = () => {
         setShowModal(false)
     }
 
-    const onSubmit = e => {
-        e.preventDefault();
+    // Para controlar la animacion de carga
+    const [loading, setLoading] = useState(false);
 
-        setLoading(true);
-
-        const dataTemp = {
-            estado: estado === "false" ? "true" : "false"
-        }
-        //console.log(dataTemp)
+    const onSubmit = (e) => {
+        e.preventDefault()
+        setLoading(true)
 
         try {
-            actualizaEstadoPedidoVenta(id, dataTemp).then(response => {
+            eliminaSemana(id).then(response => {
                 const { data } = response;
-                //console.log(data)
-                toast.success(data.mensaje);
-                LogsInformativos("Se ha cancelado la orden de venta " + folio, datos);
-                LogTrackingActualizacion(folio, "Cancelación", "0");
+                // console.log(data)
+                toast.success(data.mensaje)
+                LogsInformativos("Se ha eliminado la semana " + folio, data)
                 setShowModal(false);
+                setLoading(false);
                 history.push({
                     search: queryString.stringify(""),
                 });
+            }).catch(e => {
+                console.log(e)
             })
         } catch (e) {
             console.log(e)
         }
     }
-
 
     return (
         <>
@@ -54,7 +49,7 @@ function EliminacionLogicaVentas(props) {
                 <Alert variant="danger">
                     <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
                     <p className="mensaje">
-                        Esta acción cancelara la orden de venta.
+                        Esta acción eliminara la semana.
                     </p>
                 </Alert>
 
@@ -71,50 +66,35 @@ function EliminacionLogicaVentas(props) {
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            condiciones de pago
+                            Fecha inicial
                         </Form.Label>
                         <Form.Control
-                            type="text"
-                            value={condicionesPago}
-                            disabled
-                        />
-                    </Form.Group>
-                </Row>
-
-                <br />
-
-                <Row>
-                    <Form.Group as={Col} controlId="formGridCliente">
-                        <Form.Label>
-                            Numero de pedido
-                        </Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={numeroPedido}
+                            type="date"
+                            value={fechaInicial}
                             disabled
                         />
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Fecha de elaboracion
+                            Fecha final
                         </Form.Label>
                         <Form.Control
-                            type="text"
-                            value={fechaElaboracion}
+                            type="date"
+                            value={fechaFinal}
                             disabled
                         />
                     </Form.Group>
                 </Row>
-
 
                 <Form.Group as={Row} className="botones">
                     <Col>
                         <Button
-                            variant="success"
-                            title={estado === "true" ? "Deshabilitar" : "Habilitar"}
                             type="submit"
-                            className="registrar">
-                            {!loading ? "Aceptar" : <Spinner animation="border" />}
+                            title="Eliminar el registro"
+                            variant="success"
+                            className="registrar"
+                        >
+                            {!loading ? "Eliminar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -123,10 +103,10 @@ function EliminacionLogicaVentas(props) {
                             title="Cerrar el formulario"
                             className="cancelar"
                             onClick={() => {
-                                cancelar()
+                                cancelarEliminacion()
                             }}
                         >
-                            Cerrar
+                            Cancelar
                         </Button>
                     </Col>
                 </Form.Group>
@@ -135,4 +115,4 @@ function EliminacionLogicaVentas(props) {
     );
 }
 
-export default EliminacionLogicaVentas;
+export default EliminacionSemana;

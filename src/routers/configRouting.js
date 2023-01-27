@@ -40,6 +40,7 @@ import FichaTecnica from "../page/FichaTecnica";
 import CertificadosCalidad from "../page/CertificadosCalidad";
 import AsignacionPedido from "../page/AsignacionPedido";
 import Mes from "../page/Mes";
+import Semana from "../page/Semana";
 import Maquinaria from "../page/Maquinaria";
 import Maquinas from "../page/Maquinas";
 import ReporteProduccion from "../page/ReporteProduccion";
@@ -825,6 +826,11 @@ export default [
         path: "/Mes",
         exact: true,
         page: Mes
+    },
+    {
+        path: "/Semana",
+        exact: true,
+        page: Semana
     },
     {
         path: "/Maquinaria",
