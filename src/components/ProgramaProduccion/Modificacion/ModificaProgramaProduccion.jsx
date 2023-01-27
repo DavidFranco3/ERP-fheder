@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOV from "../../../page/BuscarOV";
-import { useHistory, useParams  } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import "./ModificaProgramaProduccion.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -433,7 +433,7 @@ function ModificaProgramaProduccion(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/ProgramaProduccion")
+        enrutamiento.push(`/ProgramaProduccion/${formDataProduccion.semana}`)
     }
 
     // Para controlar la animacion
@@ -524,6 +524,8 @@ function ModificaProgramaProduccion(props) {
         }
     }, []);
 
+    console.log(formDataProduccion.nombreProducto);
+
     const onSubmit = e => {
         e.preventDefault();
 
@@ -544,7 +546,7 @@ function ModificaProgramaProduccion(props) {
                     cliente: formDataPrograma.cliente,
                     nombreCliente: formDataPrograma.nombreCliente,
                     producto: formDataProduccion.producto,
-                    nombreProducto: formDataProduccion.nombreProducto,
+                    nombreProducto: formDataProduccion.idProducto,
                     cantidadFabricar: formDataProduccion.cantidadFabricar,
                     acumulado: formDataProduccion.acumulado,
                     ciclo: formDataPrograma.ciclo,
@@ -857,14 +859,15 @@ function ModificaProgramaProduccion(props) {
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
-                                        <Form.Label>
-                                            Ingrese la fecha del dia lunes de la semana correspondiente
+                                        <Form.Label align="center">
+                                            Semana
                                         </Form.Label>
                                         <Form.Control
-                                            type="date"
-                                            defaultValue={formData.fechaInicio}
-                                            placeholder="Fecha de inicio"
-                                            name="fechaInicio"
+                                            type="text"
+                                            defaultValue={formDataProduccion.semana}
+                                            placeholder="Semana"
+                                            name="semana"
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
@@ -900,32 +903,6 @@ function ModificaProgramaProduccion(props) {
                                         />
                                     </Form.Group>
 
-                                    <Form.Group as={Col} controlId="formHorizontalProducto">
-                                        <Form.Label align="center">
-                                            Semana
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            defaultValue={formDataProduccion.semana}
-                                            placeholder="Semana"
-                                            name="semana"
-                                        />
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formHorizontalProducto">
-                                        <Form.Label align="center">
-                                            Fecha inicio
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="date"
-                                            defaultValue={formData.fechaInicio}
-                                            placeholder="Fecha de inicio"
-                                            name="fechaInicio"
-                                        />
-                                    </Form.Group>
-                                </Row>
-
-                                <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
                                             Cliente
@@ -937,7 +914,9 @@ function ModificaProgramaProduccion(props) {
                                             name="cliente"
                                         />
                                     </Form.Group>
+                                </Row>
 
+                                <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoParte">
                                         <Form.Label align="center">
                                             Producto a fabricar
@@ -945,14 +924,14 @@ function ModificaProgramaProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="Producto"
-                                            defaultValue={formDataProduccion.producto}
+                                            defaultValue={formDataProduccion.idProducto}
                                             name="producto"
                                         />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
                                         <Form.Label align="center">
-                                            Cantida a fabricar
+                                            Cantidad a fabricar
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
@@ -1011,8 +990,10 @@ function ModificaProgramaProduccion(props) {
                                             name="stdTurno"
                                         />
                                     </Form.Group>
+                                </Row>
 
-                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                <Row className="mb-3">
+                                <Form.Group as={Col} controlId="formHorizontalProducto">
                                         <Form.Label align="center">
                                             Pendiente de fabricar
                                         </Form.Label>
@@ -1023,9 +1004,7 @@ function ModificaProgramaProduccion(props) {
                                             name="pendienteFabricar"
                                         />
                                     </Form.Group>
-                                </Row>
 
-                                <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
                                             Operadores

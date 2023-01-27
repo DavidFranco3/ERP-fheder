@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOV from "../../../page/BuscarOV";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import "./RegistraProgramaProduccion.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -19,6 +19,7 @@ import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { obtenerDatosArticulo } from '../../../api/almacenes';
 import BuscarPlaneaccion from '../../../page/BuscarPlaneacion';
 import { listarMaquina } from "../../../api/maquinas";
+import { obtenerDatosSemana } from "../../../api/semana"
 
 function RegistraProgramaProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -35,6 +36,9 @@ function RegistraProgramaProduccion(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
+
+    const params = useParams();
+    const { semana } = params;
 
     // Para la eliminacion fisica de usuarios
     const buscarOP = (content) => {
@@ -120,6 +124,25 @@ function RegistraProgramaProduccion(props) {
             console.log(e)
         }
     }, [formDataPlaneacion.idMaterial]);
+
+    const [fechaInicial, setFechaInicial] = useState("");
+
+    useEffect(() => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerDatosSemana(semana).then(response => {
+                const { data } = response;
+                console.log(data)
+                setFechaInicial(data.fechaInicial)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
+    console.log(fechaInicial)
 
     useEffect(() => {
         const temp = formData.materiaPrima.split("/");
@@ -410,7 +433,7 @@ function RegistraProgramaProduccion(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/ProgramaProduccion")
+        enrutamiento.push(`/ProgramaProduccion/${semana}`)
     }
 
     // Para controlar la animacion
@@ -504,66 +527,63 @@ function RegistraProgramaProduccion(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        if (!formData.fechaInicio) {
-            toast.warning("Completa el formulario");
-        } else {
-            //console.log("Continuar")
-            setLoading(true);
-            const temp = formData.noMaquina.split("/");
+        //console.log("Continuar")
+        setLoading(true);
+        const temp = formData.noMaquina.split("/");
 
-            const dataTemp = {
-                folio: folioActual,
-                folioOP: formDataProduccion.ordenProduccion,
-                sucursal: getSucursal(),
-                ordenProduccion: {
-                    noMaquina: temp[0],
-                    maquina: temp[1] + " " + temp[2],
-                    semana: formDataProduccion.semana,
-                    fechaInicio: formData.fechaInicio,
-                    cliente: formDataPrograma.cliente,
-                    nombreCliente: formDataPrograma.nombreCliente,
-                    producto: formDataProduccion.producto,
-                    nombreProducto: formDataProduccion.idProducto,
-                    cantidadFabricar: formDataProduccion.cantidadFabricar,
-                    acumulado: formDataProduccion.acumulado,
-                    ciclo: formDataPrograma.ciclo,
-                    cavidades: formDataProduccion.cavidades,
-                    stdTurno: formDataPrograma.stdTurno,
-                    pendienteFabricar: formDataProduccion.pendienteFabricar,
-                    operadores: formDataPrograma.operadores,
-                    noInterno: formDataPrograma.noInterno,
-                    turnosRequeridos: turnosReq,
-                },
-                programa: {
-                    fechaInicio: formData.fechaInicio,
-                    lunesT1: formData.lunesT1,
-                    lunesT2: formData.lunesT2,
-                    martesT1: formData.martesT1,
-                    martesT2: formData.martesT2,
-                    miercolesT1: formData.miercolesT1,
-                    miercolesT2: formData.miercolesT2,
-                    juevesT1: formData.juevesT1,
-                    juevesT2: formData.juevesT2,
-                    viernesT1: formData.viernesT1,
-                    viernesT2: formData.viernesT2,
-                    sabadoT1: formData.sabadoT1,
-                },
-                estado: "true",
-            }
-            // console.log(dataTemp)
-            // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
-            LogsInformativos("Se ha registrado un nuevo programa de produccion con folio " + dataTemp.folio, dataTemp)
-            // Modificar el pedido creado recientemente
-            registraPrograma(dataTemp).then(response => {
-                const { data: { mensaje, datos } } = response;
-                // console.log(response)
-                toast.success(mensaje)
-                setLoading(false)
-                rutaRegreso()
-            }).catch(e => {
-                console.log(e)
-            })
+        const dataTemp = {
+            folio: folioActual,
+            folioOP: formDataProduccion.ordenProduccion,
+            sucursal: getSucursal(),
+            semana: semana,
+            ordenProduccion: {
+                noMaquina: temp[0],
+                maquina: temp[1] + " " + temp[2],
+                semana: semana,
+                fechaInicio: fechaInicial,
+                cliente: formDataPrograma.cliente,
+                nombreCliente: formDataPrograma.nombreCliente,
+                producto: formDataProduccion.producto,
+                nombreProducto: formDataProduccion.idProducto,
+                cantidadFabricar: formDataProduccion.cantidadFabricar,
+                acumulado: formDataProduccion.acumulado,
+                ciclo: formDataPrograma.ciclo,
+                cavidades: formDataProduccion.cavidades,
+                stdTurno: formDataPrograma.stdTurno,
+                pendienteFabricar: formDataProduccion.pendienteFabricar,
+                operadores: formDataPrograma.operadores,
+                noInterno: formDataPrograma.noInterno,
+                turnosRequeridos: turnosReq,
+            },
+            programa: {
+                fechaInicio: fechaInicial,
+                lunesT1: formData.lunesT1,
+                lunesT2: formData.lunesT2,
+                martesT1: formData.martesT1,
+                martesT2: formData.martesT2,
+                miercolesT1: formData.miercolesT1,
+                miercolesT2: formData.miercolesT2,
+                juevesT1: formData.juevesT1,
+                juevesT2: formData.juevesT2,
+                viernesT1: formData.viernesT1,
+                viernesT2: formData.viernesT2,
+                sabadoT1: formData.sabadoT1,
+            },
+            estado: "true",
         }
+        // console.log(dataTemp)
+        // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
+        LogsInformativos("Se ha registrado un nuevo programa de produccion con folio " + dataTemp.folio, dataTemp)
+        // Modificar el pedido creado recientemente
+        registraPrograma(dataTemp).then(response => {
+            const { data: { mensaje, datos } } = response;
+            // console.log(response)
+            toast.success(mensaje)
+            setLoading(false)
+            rutaRegreso()
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     const [listOVCargadas, setListOVCargadas] = useState([]);
@@ -671,7 +691,7 @@ function RegistraProgramaProduccion(props) {
 
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(formData.fechaInicio);
+        const TuFecha = new Date(fechaInicial);
 
         //nueva fecha sumada
         TuFecha.setDate(TuFecha.getDate() + 1);
@@ -679,7 +699,7 @@ function RegistraProgramaProduccion(props) {
         setLunesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
 
         setLunesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [formData.fechaInicio]);
+    }, [fechaInicial]);
 
     const [martesT1, setMartesT1] = useState();
 
@@ -687,7 +707,7 @@ function RegistraProgramaProduccion(props) {
 
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(formData.fechaInicio);
+        const TuFecha = new Date(fechaInicial);
 
         //nueva fecha sumada
         TuFecha.setDate(TuFecha.getDate() + 2);
@@ -695,7 +715,7 @@ function RegistraProgramaProduccion(props) {
         setMartesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
 
         setMartesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [formData.fechaInicio]);
+    }, [fechaInicial]);
 
     const [miercolesT1, setMiercolesT1] = useState();
 
@@ -703,7 +723,7 @@ function RegistraProgramaProduccion(props) {
 
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(formData.fechaInicio);
+        const TuFecha = new Date(fechaInicial);
 
         //nueva fecha sumada
         TuFecha.setDate(TuFecha.getDate() + 3);
@@ -711,7 +731,7 @@ function RegistraProgramaProduccion(props) {
         setMiercolesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
 
         setMiercolesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [formData.fechaInicio]);
+    }, [fechaInicial]);
 
     const [juevesT1, setJuevesT1] = useState();
 
@@ -719,7 +739,7 @@ function RegistraProgramaProduccion(props) {
 
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(formData.fechaInicio);
+        const TuFecha = new Date(fechaInicial);
 
         //nueva fecha sumada
         TuFecha.setDate(TuFecha.getDate() + 4);
@@ -727,7 +747,7 @@ function RegistraProgramaProduccion(props) {
         setJuevesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
 
         setJuevesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [formData.fechaInicio]);
+    }, [fechaInicial]);
 
     const [viernesT1, setViernesT1] = useState();
 
@@ -735,7 +755,7 @@ function RegistraProgramaProduccion(props) {
 
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(formData.fechaInicio);
+        const TuFecha = new Date(fechaInicial);
 
         //nueva fecha sumada
         TuFecha.setDate(TuFecha.getDate() + 5);
@@ -743,19 +763,19 @@ function RegistraProgramaProduccion(props) {
         setViernesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
 
         setViernesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [formData.fechaInicio]);
+    }, [fechaInicial]);
 
     const [sabadoT1, setSabadoT1] = useState();
 
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(formData.fechaInicio);
+        const TuFecha = new Date(fechaInicial);
 
         //nueva fecha sumada
         TuFecha.setDate(TuFecha.getDate() + 6);
         //formato de salida para la fecha
         setSabadoT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [formData.fechaInicio]);
+    }, [fechaInicial]);
 
     return (
         <>
@@ -837,14 +857,15 @@ function RegistraProgramaProduccion(props) {
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
-                                        <Form.Label>
-                                            Ingrese la fecha del dia lunes de la semana correspondiente
+                                        <Form.Label align="center">
+                                            Semana
                                         </Form.Label>
                                         <Form.Control
-                                            type="date"
-                                            defaultValue={formData.fechaInicio}
-                                            placeholder="Fecha de inicio"
-                                            name="fechaInicio"
+                                            type="text"
+                                            defaultValue={semana}
+                                            placeholder="Semana"
+                                            name="semana"
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
@@ -879,33 +900,6 @@ function RegistraProgramaProduccion(props) {
                                             disabled
                                         />
                                     </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formHorizontalProducto">
-                                        <Form.Label align="center">
-                                            Semana
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            defaultValue={formDataProduccion.semana}
-                                            placeholder="Semana"
-                                            name="semana"
-                                        />
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formHorizontalProducto">
-                                        <Form.Label align="center">
-                                            Fecha inicio
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="date"
-                                            defaultValue={formData.fechaInicio}
-                                            placeholder="Fecha de inicio"
-                                            name="fechaInicio"
-                                        />
-                                    </Form.Group>
-                                </Row>
-
-                                <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
                                             Cliente
@@ -917,6 +911,10 @@ function RegistraProgramaProduccion(props) {
                                             name="cliente"
                                         />
                                     </Form.Group>
+                                </Row>
+
+                                <Row className="mb-3">
+
 
                                     <Form.Group as={Col} controlId="formHorizontalNoParte">
                                         <Form.Label align="center">
@@ -991,7 +989,9 @@ function RegistraProgramaProduccion(props) {
                                             name="stdTurno"
                                         />
                                     </Form.Group>
+                                </Row>
 
+                                <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
                                         <Form.Label align="center">
                                             Pendiente de fabricar
@@ -1003,9 +1003,7 @@ function RegistraProgramaProduccion(props) {
                                             name="pendienteFabricar"
                                         />
                                     </Form.Group>
-                                </Row>
 
-                                <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
                                             Operadores
@@ -1063,7 +1061,7 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={lunesT1}
                                                 type="radio"
-                                                label={formData.fechaInicio == "" ? "Lunes T1" : "Lunes T1 " + lunesT1}
+                                                label={"Lunes T1 " + lunesT1}
                                                 name="lunesT1"
                                                 id={lunesT1}
                                                 defaultValue={formData.lunesT1}
@@ -1075,7 +1073,7 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={miercolesT1}
                                                 type="radio"
-                                                label={formData.fechaInicio == "" ? "Miercoles T1" : "Miercoles T1 " + miercolesT1}
+                                                label={"Miercoles T1 " + miercolesT1}
                                                 name="miercolesT1"
                                                 id={miercolesT1}
                                                 defaultValue={formData.miercolesT1}
@@ -1087,7 +1085,7 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={viernesT1}
                                                 type="radio"
-                                                label={formData.fechaInicio == "" ? "Viernes T1" : "Viernes T1 " + viernesT1}
+                                                label={"Viernes T1 " + viernesT1}
                                                 name="viernesT1"
                                                 id={viernesT1}
                                                 defaultValue={formData.viernesT1}
@@ -1102,7 +1100,7 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={lunesT2}
                                                 type="radio"
-                                                label={formData.fechaInicio == "" ? "Lunes T2" : "Lunes T2 " + lunesT2}
+                                                label={"Lunes T2 " + lunesT2}
                                                 name="lunesT2"
                                                 id={lunesT2}
                                                 defaultValue={formData.lunesT2}
@@ -1114,7 +1112,7 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={miercolesT2}
                                                 type="radio"
-                                                label={formData.fechaInicio == "" ? "Miercoles T2" : "Miercoles T2 " + miercolesT2}
+                                                label={"Miercoles T2 " + miercolesT2}
                                                 name="miercolesT2"
                                                 id={miercolesT2}
                                                 defaultValue={formData.miercolesT2}
@@ -1126,7 +1124,7 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={viernesT2}
                                                 type="radio"
-                                                label={formData.fechaInicio == "" ? "Viernes T2" : "Viernes T2 " + viernesT2}
+                                                label={"Viernes T2 " + viernesT2}
                                                 name="viernesT2"
                                                 id={viernesT2}
                                                 defaultValue={formData.viernesT2}
@@ -1141,7 +1139,7 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={martesT1}
                                                 type="radio"
-                                                label={formData.fechaInicio == "" ? "Martes T1" : "Martes T1 " + martesT1}
+                                                label={"Martes T1 " + martesT1}
                                                 name="martesT1"
                                                 id={martesT1}
                                                 defaultValue={formData.martesT1}
@@ -1153,7 +1151,7 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={juevesT1}
                                                 type="radio"
-                                                label={formData.fechaInicio == "" ? "Jueves T1" : "Jueves T1 " + juevesT1}
+                                                label={"Jueves T1 " + juevesT1}
                                                 name="juevesT1"
                                                 id={juevesT1}
                                                 defaultValue={formData.juevesT1}
@@ -1165,7 +1163,7 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={sabadoT1}
                                                 type="radio"
-                                                label={formData.fechaInicio == "" ? "Sabado T1" : "Sabado T1 " + sabadoT1}
+                                                label={"Sabado T1 " + sabadoT1}
                                                 name="sabadoT1"
                                                 id={sabadoT1}
                                                 defaultValue={formData.sabadoT1}
@@ -1180,7 +1178,7 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={martesT2}
                                                 type="radio"
-                                                label={formData.fechaInicio == "" ? "Martes T2" : "Martes T2 " + martesT2}
+                                                label={"Martes T2 " + martesT2}
                                                 name="martesT2"
                                                 id={martesT2}
                                                 defaultValue={formData.martesT2}
@@ -1192,7 +1190,7 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={juevesT2}
                                                 type="radio"
-                                                label={formData.fechaInicio == "" ? "Jueves T2" : "Jueves T2 " + juevesT2}
+                                                label={"Jueves T2 " + juevesT2}
                                                 name="juevesT2"
                                                 id={juevesT2}
                                                 defaultValue={formData.juevesT2}

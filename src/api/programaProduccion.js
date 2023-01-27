@@ -2,6 +2,7 @@ import { API_HOST } from "../utils/constants";
 import {
 ENDPOINTRegistroPrograma,
 ENDPOINTListarPrograma,
+ENDPOINTListarProgramaPorSemana,
 ENDPOINTListarPaginandoPrograma,
 ENDPOINTObtenerPrograma,
 ENDPOINTObtenerNoPrograma,
@@ -99,6 +100,18 @@ export async function listarPrograma(sucursal) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarPrograma +`/?sucursal=${sucursal}`, config);
+}
+
+// Para listar todas las órdenes de compra
+export async function listarProgramaPorSemana(sucursal, semana) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarProgramaPorSemana +`/?sucursal=${sucursal}&&semana=${semana}`, config);
 }
 
 // Lista las ordenes de compra paginándolas

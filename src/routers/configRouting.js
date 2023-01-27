@@ -423,7 +423,7 @@ export default [
         page: RegistroTiquets
     },
     {
-        path: "/RegistroProgramaProduccion",
+        path: "/RegistroProgramaProduccion/:semana",
         exact: true,
         page: RegistraProgramaProduccion
     },

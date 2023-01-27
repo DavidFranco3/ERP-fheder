@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import ListProgramaProduccion from "../../components/ProgramaProduccion/ListProgramaProduccion";
-import { listarPrograma } from "../../api/programaProduccion";
+import { listarProgramaPorSemana } from "../../api/programaProduccion";
 import { obtenerDatosSemana } from "../../api/semana";
 import "./ProgramaProduccion.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
@@ -49,7 +49,7 @@ function ProgramaProduccion(props) {
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroProgramaProduccion");
+        enrutamiento.push(`/RegistroProgramaProduccion/${semana}`);
     }
 
     // Para almacenar la lista de pedidos de venta
@@ -73,7 +73,7 @@ function ProgramaProduccion(props) {
 
     useEffect(() => {
         try {
-            listarPrograma(getSucursal()).then(response => {
+            listarProgramaPorSemana(getSucursal(), semana).then(response => {
                 const { data } = response;
 
                 if (!listProgramaProduccion && data) {

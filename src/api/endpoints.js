@@ -528,6 +528,7 @@ export const ENDPOINTTotalRequerimiento = "/requerimientosPlaneacion/total";
 //Programa de produccion
 export const ENDPOINTRegistroPrograma = "/programaProduccion/registro";
 export const ENDPOINTListarPrograma = "/programaProduccion/listar";
+export const ENDPOINTListarProgramaPorSemana = "/programaProduccion/listarPorSemana";
 export const ENDPOINTListarPaginandoPrograma = "/programaProduccion/listarPaginando";
 export const ENDPOINTObtenerPrograma = "/programaProduccion/obtener";
 export const ENDPOINTObtenerNoPrograma = "/programaProduccion/obtenerNoPrograma";
