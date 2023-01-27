@@ -1,21 +1,51 @@
 import { useState, useEffect, Suspense } from 'react';
-import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
+import { Alert, Button, Col, Row, Spinner, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useHistory, withRouter, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import ListProgramaProduccion from "../../components/ProgramaProduccion/ListProgramaProduccion";
-import { listarPrograma} from "../../api/programaProduccion";
+import { listarPrograma } from "../../api/programaProduccion";
+import { obtenerDatosSemana } from "../../api/semana";
 import "./ProgramaProduccion.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ProgramaProduccion(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useHistory();
+
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
+
+    const params = useParams();
+    const { semana } = params;
+
+    // Para almacenar la lista de las integraciones de ventas y gastos
+    const [folio, setFolio] = useState("");
+    const [fechaInicial, setFechaInicial] = useState("");
+    const [fechaFinal, setFechaFinal] = useState("");
+
+    useEffect(() => {
+        try {
+            obtenerDatosSemana(semana).then(response => {
+                const { data } = response;
+                setFolio(data.folio);
+                setFechaInicial(data.fechaInicial);
+                setFechaFinal(data.fechaFinal);
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [location]);
 
     // Define la ruta de registro
     const rutaRegistro = () => {
@@ -61,7 +91,7 @@ function ProgramaProduccion(props) {
     }, [location]);
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardPlaneacion")
+        enrutamiento.push("/Semana")
     }
 
     return (
@@ -95,6 +125,18 @@ function ProgramaProduccion(props) {
                     </Col>
                 </Row>
             </Alert>
+
+
+            <Row>
+                <Col xs={6} md={4}>
+
+                </Col>
+                <Col xs={8} md={6}>
+                    <Form.Label>
+                        {folio} [{dayjs(fechaInicial).format("LL")} al {dayjs(fechaFinal).format("LL")}]
+                        </Form.Label>
+                </Col>
+            </Row>
 
             {
                 listProgramaProduccion ?
@@ -132,6 +174,24 @@ function formatModelProgramaProduccion(data) {
             folioOP: data.folioOP,
             ordenProduccion: data.ordenProduccion,
             programa: data.programa,
+            estado: data.estado,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelSemana(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            folio: data.folio,
+            fechaInicial: data.fechaInicial,
+            fechaFinal: data.fechaFinal,
+            sucursal: data.sucursal,
             estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt

@@ -783,7 +783,7 @@ export default [
         page: Logistica
     },
     {
-        path: "/ProgramaProduccion",
+        path: "/ProgramaProduccion/:semana",
         exact: true,
         page: ProgramaProduccion
     },

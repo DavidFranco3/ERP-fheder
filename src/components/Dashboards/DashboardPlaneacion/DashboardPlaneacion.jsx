@@ -105,11 +105,6 @@ function DashboardPlaneacion(props) {
                     logo={LogoPedido}
                     title={'Asignaciones de pedido'}
                 />
-                <ItemCard
-                    path={'/ProgramaProduccion'}
-                    logo={LogoProgramaProduccion}
-                    title={'Programa de producción'}
-                />
             </div>
         </>
     );

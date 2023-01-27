@@ -50,8 +50,8 @@ function ListSemanas(props) {
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
-    const vistaPrevia = () => {
-        // enrutamiento.push("")
+    const irProgramaProduccion = (folio) => {
+        enrutamiento.push(`/ProgramaProduccion/${folio}`);
     }
 
     const columns = [
@@ -132,6 +132,7 @@ function ListSemanas(props) {
                         title="Ver programa de producción de la semana"
                         className="ver"
                         onClick={() => {
+                            irProgramaProduccion(row.folio)
                         }}
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />

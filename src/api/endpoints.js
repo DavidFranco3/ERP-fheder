@@ -171,6 +171,7 @@ export const ENDPOINTTotalMes = "/mes/total";
 // Semana
 export const ENDPOINTRegistraSemana = "/semana/registro";
 export const ENDPOINTListarSemana = "/semana/listar";
+export const ENDPOINTListarSemanaPorFolio = "/semana/listarPorSemana";
 export const ENDPOINTObtenerSemana = "/semana/obtener";
 export const ENDPOINTObtenerDatosSemana = "/semana/obtenerDatosSemana";
 export const ENDPOINTEliminarSemana = "/semana/eliminar";

@@ -10,6 +10,7 @@ import {
     ENDPOINTListarSemanaPaginacion,
     ENDPOINTObtenerNoSemana,
     ENDPOINTTotalSemana,
+    ENDPOINTListarSemanaPorFolio,
 } from "./endpoints";
 import axios from 'axios';
 import { getTokenApi } from "./auth";
@@ -84,6 +85,18 @@ export async function listarSemana(sucursal) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarSemana +`/?sucursal=${sucursal}`, config);
+}
+
+// Para listar todos los pedidos
+export async function listarSemanaPorFolio(sucursal, folio) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarSemanaPorFolio +`/?sucursal=${sucursal}&&folio=${folio}`, config);
 }
 
 // Listar los pedidos de venta paginandolos

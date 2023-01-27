@@ -417,7 +417,6 @@ function ListProgramaProduccion(props) {
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
                     data={listProgramaProduccion}
-                    //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}
                     progressPending={pending}
