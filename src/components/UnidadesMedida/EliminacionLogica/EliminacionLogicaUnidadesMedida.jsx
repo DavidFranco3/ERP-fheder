@@ -3,7 +3,7 @@ import { deshabilitaUsuario } from "../../../api/usuarios";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
-import { deshabilitaUM} from "../../../api/unidadesMedida";
+import { deshabilitaUM } from "../../../api/unidadesMedida";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function EliminacionLogicaUnidadesMedida(props) {
@@ -37,8 +37,8 @@ function EliminacionLogicaUnidadesMedida(props) {
             deshabilitaUM(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                    LogsInformativos("El estado de la unidad de medida " + formData.nombre + " se actualizo", dataUM)
-                    toast.success(data.mensaje);
+                LogsInformativos("El estado de la unidad de medida " + formData.nombre + " se actualizo", dataUM)
+                toast.success(data.mensaje);
                 setShowModal(false);
                 setLoading(false);
                 history.push({
@@ -90,29 +90,31 @@ function EliminacionLogicaUnidadesMedida(props) {
                     </Form.Group>
                 </Row>
 
-                <Form.Group as={Row} className="botones">
-                    <Col>
-                        <Button
-                            variant="success"
-                            title={estadoUM === "true" ? "Deshabilitar" : "Habilitar"}
-                            type="submit"
-                            className='registrar'
-                        >
-                            {!loading ? (estadoUM === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
-                        </Button>
-                    </Col>
-                    <Col>
-                        <Button
-                            variant="danger"
-                            className="cancelar"
-                            title="Cerrar el formulario"
-                            onClick={() => {
-                                cancelar()
-                            }}
-                        >
-                            Cancelar
-                        </Button>
-                    </Col>
+                <Form.Group as={Col} className="botones">
+                    <Row>
+                        <Col>
+                            <Button
+                                variant="success"
+                                title={estadoUM === "true" ? "Deshabilitar" : "Habilitar"}
+                                type="submit"
+                                className='registrar'
+                            >
+                                {!loading ? (estadoUM === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
+                            </Button>
+                        </Col>
+                        <Col>
+                            <Button
+                                variant="danger"
+                                className="cancelar"
+                                title="Cerrar el formulario"
+                                onClick={() => {
+                                    cancelar()
+                                }}
+                            >
+                                Cancelar
+                            </Button>
+                        </Col>
+                    </Row>
                 </Form.Group>
             </Form>
         </>

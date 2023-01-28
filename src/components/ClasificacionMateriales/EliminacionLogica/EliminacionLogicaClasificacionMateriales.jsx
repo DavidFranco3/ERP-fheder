@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import queryString from "query-string";
 import "./EliminacionLogicaClasificacionMateriales.scss";
-import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner, Container, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { deshabilitaClasificacionMaterial} from "../../../api/clasificacionMateriales";
+import { deshabilitaClasificacionMaterial } from "../../../api/clasificacionMateriales";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function EliminacionLogicaClasificacionMateriales(props) {
@@ -37,8 +37,8 @@ function EliminacionLogicaClasificacionMateriales(props) {
             deshabilitaClasificacionMaterial(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                    toast.success(data.mensaje);
-                    LogsInformativos("Se actualizo el estado del material " + formData.nombre, dataTemp)
+                toast.success(data.mensaje);
+                LogsInformativos("Se actualizo el estado del material " + formData.nombre, dataTemp)
                 setShowModal(false);
                 setLoading(false);
                 history.push({
@@ -58,8 +58,30 @@ function EliminacionLogicaClasificacionMateriales(props) {
         <>
             <Container>
                 <div className="formularioDatos">
+                    {estado == "true" ?
+                        (
+                            <>
+                                <Alert variant="danger">
+                                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                                    <p className="mensaje">
+                                        Esta acción deshabilitara en el sistema el material.
+                                    </p>
+                                </Alert>
+                            </>
+                        ) : (
+                            <>
+                                <Alert variant="success">
+                                    <Alert.Heading>Atención! Acción contructiva!</Alert.Heading>
+                                    <p className="mensaje">
+                                        Esta acción habilitara en el sistema el material.
+                                    </p>
+                                </Alert>
+                            </>
+                        )
+                    }
+
                     <Form onChange={onChange} onSubmit={onSubmit}>
-                    <Row className="mb-3">
+                        <Row className="mb-3">
                             <Form.Group as={Col} controlId="formHorizontalNombre">
                                 <Form.Label>
                                     Nombre
@@ -90,27 +112,27 @@ function EliminacionLogicaClasificacionMateriales(props) {
                         </Row>
 
                         <Form.Group as={Row} className="botones">
-                                <Col>
-                                    <Button
-                                        type="submit"
-                                        title={estado === "true" ? "Deshabilitar" : "Habilitar"}
-                                        variant="success"
-                                        className="registrar"
-                                    >
-                                        {!loading ? (estado === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
-                                    </Button>
-                                </Col>
-                                <Col>
-                                    <Button
-                                        variant="danger"
-                                        className="cancelar"
-                                        onClick={() => {
-                                            regresaPagina()
-                                        }}
-                                    >
-                                        Cancelar
-                                    </Button>
-                                </Col>
+                            <Col>
+                                <Button
+                                    type="submit"
+                                    title={estado === "true" ? "Deshabilitar" : "Habilitar"}
+                                    variant="success"
+                                    className="registrar"
+                                >
+                                    {!loading ? (estado === "true" ? "Deshabilitar" : "Habilitar") : <Spinner animation="border" />}
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Button
+                                    variant="danger"
+                                    className="cancelar"
+                                    onClick={() => {
+                                        regresaPagina()
+                                    }}
+                                >
+                                    Cancelar
+                                </Button>
+                            </Col>
                         </Form.Group>
                     </Form>
                 </div>

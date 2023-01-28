@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import "./EliminacionFisicaClasificacionMateriales.scss";
-import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner, Container, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { eliminaClasificacionMaterial } from "../../../api/clasificacionMateriales";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -73,6 +73,13 @@ function EliminacionFisicaClasificacionMateriales(props) {
         <>
             <Container>
                 <div className="formularioDatos">
+                    <Alert variant="danger">
+                        <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                        <p className="mensaje">
+                            Esta acción eliminara en el sistema el material.
+                        </p>
+                    </Alert>
+
                     <Form onChange={onChange} onSubmit={onSubmit}>
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formHorizontalNombre">
@@ -105,26 +112,26 @@ function EliminacionFisicaClasificacionMateriales(props) {
                         </Row>
 
                         <Form.Group as={Row} className="botones">
-                                <Col>
-                                    <Button
-                                        type="submit"
-                                        variant="success"
-                                        className="registrar"
-                                    >
-                                        {!loading ? "Eliminar" : <Spinner animation="border" />}
-                                    </Button>
-                                </Col>
-                                <Col>
-                                    <Button
-                                        variant="danger"
-                                        className="cancelar"
-                                        onClick={() => {
-                                            regresaPagina()
-                                        }}
-                                    >
-                                        Cancelar
-                                    </Button>
-                                </Col>
+                            <Col>
+                                <Button
+                                    type="submit"
+                                    variant="success"
+                                    className="registrar"
+                                >
+                                    {!loading ? "Eliminar" : <Spinner animation="border" />}
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Button
+                                    variant="danger"
+                                    className="cancelar"
+                                    onClick={() => {
+                                        regresaPagina()
+                                    }}
+                                >
+                                    Cancelar
+                                </Button>
+                            </Col>
                         </Form.Group>
                     </Form>
                 </div>

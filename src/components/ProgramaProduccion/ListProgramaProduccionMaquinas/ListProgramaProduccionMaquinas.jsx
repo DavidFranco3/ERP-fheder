@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useHistory } from "react-router-dom";
-import "./ListProgramaProduccion.scss"
+import "./ListProgramaProduccionMaquinas.scss"
 import { Badge, Button, Container, Navbar, Table, Form, Col } from "react-bootstrap";
 import BasicModal from '../../Modal/BasicModal';
 import DataTable from 'react-data-table-component';
@@ -15,7 +15,7 @@ import 'dayjs/locale/es'
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-function ListProgramaProduccion(props) {
+function ListProgramaProduccionMaquinas(props) {
     const { listProgramaProduccion, history, location, setRefreshCheckLogin } = props;
 
     const enrutamiento = useHistory();
@@ -49,15 +49,8 @@ function ListProgramaProduccion(props) {
 
     const columns = [
         {
-            name: 'Folio',
-            selector: row => row.folio,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: 'Fecha de inicio',
-            selector: row => dayjs(row.ordenProduccion.fechaInicio).format("LL"),
+            name: 'MAQ',
+            selector: row => row.ordenProduccion.noMaquina +"-"+ row.ordenProduccion.maquina,
             sortable: false,
             center: true,
             reorder: false
@@ -70,69 +63,281 @@ function ListProgramaProduccion(props) {
             reorder: false
         },
         {
-            name: 'Descripción',
-            selector: row => row.ordenProduccion.nombreProducto,
+            name: 'Lunes T1',
+            selector: row => (
+                <>
+                    {
+                        row.programa.lunesT1 ?
+                        (
+                            <Badge
+                            bg="success"
+                            className="editar"
+                        >
+                            {dayjs(row.programa.lunesT1).format("LL")}
+                        </Badge>
+                        )
+                        :
+                        (
+                            ""
+                        )
+                    }
+                </>
+            ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Cantidad a fabricar',
-            selector: row => row.ordenProduccion.cantidadFabricar,
+            name: 'Lunes T2',
+            selector: row => (
+                <>
+                    {
+                        row.programa.lunesT2 ?
+                            (
+                                <Badge
+                                bg="success"
+                                className="editar"
+                            >
+                                {dayjs(row.programa.lunesT2).format("LL")}
+                            </Badge>
+                            )
+                            :
+                            (
+                                ""
+                            )
+                    }
+                </>
+            ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Acumulado',
-            selector: row => row.ordenProduccion.acumulado,
+            name: 'Martes T1',
+            selector: row => (
+                <>
+                    {
+                        row.programa.martesT1 ?
+                        (
+                            <Badge
+                            bg="success"
+                            className="editar"
+                        >
+                            {dayjs(row.programa.martesT1).format("LL")}
+                        </Badge>
+                        )
+                        :
+                        (
+                            ""
+                        )
+                    }
+                </>
+            ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Pendiente de fabricar',
-            selector: row => row.ordenProduccion.pendienteFabricar,
+            name: 'Martes T2',
+            selector: row => (
+                <>
+                    {
+                        row.programa.martesT2 ?
+                        (
+                            <Badge
+                            bg="success"
+                            className="editar"
+                        >
+                            {dayjs(row.programa.martesT2).format("LL")}
+                        </Badge>
+                        )
+                        :
+                        (
+                            ""
+                        )
+                    }
+                </>
+            ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Ciclo',
-            selector: row => row.ordenProduccion.ciclo,
+            name: 'Miercoles T1',
+            selector: row => (
+                <>
+                    {
+                        row.programa.miercolesT1 ?
+                        (
+                            <Badge
+                            bg="success"
+                            className="editar"
+                        >
+                            {dayjs(row.programa.miercolesT1).format("LL")}
+                        </Badge>
+                        )
+                        :
+                        (
+                            ""
+                        )
+                    }
+                </>
+            ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Cav',
-            selector: row => row.ordenProduccion.cavidades,
+            name: 'Miercoles T2',
+            selector: row => (
+                <>
+                    {
+                        row.programa.miercolesT2 ?
+                        (
+                            <Badge
+                            bg="success"
+                            className="editar"
+                        >
+                            {dayjs(row.programa.miercolesT2).format("LL")}
+                        </Badge>
+                        )
+                        :
+                        (
+                            ""
+                        )
+                    }
+                </>
+            ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Turnos req',
-            selector: row => Math.ceil(row.ordenProduccion.turnosRequeridos),
+            name: 'Jueves T1',
+            selector: row => (
+                <>
+                    {
+                        row.programa.juevesT1 ?
+                        (
+                            <Badge
+                            bg="success"
+                            className="editar"
+                        >
+                            {dayjs(row.programa.juevesT1).format("LL")}
+                        </Badge>
+                        )
+                        :
+                        (
+                            ""
+                        )
+                    }
+                </>
+            ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Operadores',
-            selector: row => row.ordenProduccion.operadores,
+            name: 'Jueves T2',
+            selector: row => (
+                <>
+                    {
+                        row.programa.juevesT2 ?
+                        (
+                            <Badge
+                            bg="success"
+                            className="editar"
+                        >
+                            {dayjs(row.programa.juevesT2).format("LL")}
+                        </Badge>
+                        )
+                        :
+                        (
+                            ""
+                        )
+                    }
+                </>
+            ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'No. interno',
-            selector: row => row.ordenProduccion.noInterno,
+            name: 'Viernes T1',
+            selector: row => (
+                <>
+                    {
+                        row.programa.viernesT1 ?
+                        (
+                            <Badge
+                            bg="success"
+                            className="editar"
+                        >
+                            {dayjs(row.programa.viernesT1).format("LL")}
+                        </Badge>
+                        )
+                        :
+                        (
+                            ""
+                        )
+                    }
+                </>
+            ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
+            name: 'Viernes T2',
+            selector: row => (
+                <>
+                    {
+                        row.programa.viernesT2 ?
+                        (
+                            <Badge
+                            bg="success"
+                            className="editar"
+                        >
+                            {dayjs(row.programa.viernesT2).format("LL")}
+                        </Badge>
+                        )
+                        :
+                        (
+                            ""
+                        )
+                    }
+                </>
+            ),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Sabado T1',
+            selector: row => (
+                <>
+                    {
+                        row.programa.sabadoT1 ?
+                        (
+                            <Badge
+                            bg="success"
+                            className="editar"
+                        >
+                            {dayjs(row.programa.sabadoT1).format("LL")}
+                        </Badge>
+                        )
+                        :
+                        (
+                            ""
+                        )
+                    }
+                </>
+            ),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        /*{
             name: 'Estado',
             center: true,
             reorder: false,
@@ -212,7 +417,7 @@ function ListProgramaProduccion(props) {
                     </Badge>
                 </>
             )
-        }
+        }*/
     ];
 
     // Configurando animacion de carga
@@ -227,6 +432,8 @@ function ListProgramaProduccion(props) {
         }, 0);
         return () => clearTimeout(timeout);
     }, []);
+
+    listProgramaProduccion.sort((x, y) => parseInt(x.ordenProduccion.noMaquina) - parseInt(y.ordenProduccion.noMaquina));
 
     const paginationComponentOptions = {
         rowsPerPageText: 'Filas por página',
@@ -358,4 +565,4 @@ function ListProgramaProduccion(props) {
     );
 }
 
-export default ListProgramaProduccion;
+export default ListProgramaProduccionMaquinas;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import "./EliminacionFisicaClasificacionMaquinaria.scss";
-import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner, Container, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { eliminaClasificacionMaquinaria } from "../../../api/clasificacionMaquinaria";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -73,6 +73,13 @@ function EliminacionFisicaClasificacionMaquinaria(props) {
         <>
             <Container>
                 <div className="formularioDatos">
+                <Alert variant="danger">
+                        <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                        <p className="mensaje">
+                            Esta acción eliminara en el sistema la maquinaria.
+                        </p>
+                    </Alert>
+
                     <Form onChange={onChange} onSubmit={onSubmit}>
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formHorizontalNombre">

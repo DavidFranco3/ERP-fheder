@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
-
 import "./DashboardCatalogos.scss";
 import { Alert, Button, Col, Row, Card, Container, CardGroup, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,19 +7,14 @@ import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 // Importacion de imagenes para los iconos de los menus
 import LogoMaquinas from "../../../assets/png/menus/maquinas.png";
 import LogoProveedores from "../../../assets/png/menus/proveedor.png";
-import LogoInsumos from "../../../assets/png/menus/insumos.png";
 import LogoProductos from "../../../assets/png/menus/catalogoProductos.png";
 import LogoClientes from "../../../assets/png/menus/clientes.png";
 import LogoMateriales from "../../../assets/png/menus/materiales.png";
 import LogoDepartamentos from "../../../assets/png/menus/departamentos.png";
 import LogoUsuarios from "../../../assets/png/menus/usuarios.png";
-import LogoEtiqueta from "../../../assets/png/menus/etiquetaPT.png";
-import LogoPigmento from "../../../assets/png/menus/pigmento.png";
-import LogoEmpaques from "../../../assets/png/menus/empaques.png";
-import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
+import LogoMoldes from "../../../assets/png/menus/moldes.png";
+import { getTokenApi, isExpiredToken, logoutApi } from "../../../api/auth";
 import { toast } from "react-toastify";
-import { obtenerUsuario } from "../../../api/usuarios";
-import { LogGeneral } from "../../Logs/LogsSistema/LogsSistema";
 
 function DashboardCatalogos(props) {
     const { setRefreshCheckLogin } = props;
@@ -119,7 +113,7 @@ function DashboardCatalogos(props) {
                 />
                 <ItemCard
                     path={'/EtiquetasMoldes'}
-                    logo={LogoEtiqueta}
+                    logo={LogoMoldes}
                     title={'Moldes'}
                 />
             </div>

@@ -69,7 +69,7 @@ function Cotizaciones(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Mis cotizaciones
+                            Cotizaciones
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import queryString from "query-string";
 import "./EliminacionLogicaSucursales.scss";
-import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner, Container, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { deshabilitaSucursal } from "../../../api/sucursales";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -58,6 +58,28 @@ function EliminacionLogicaSucursales(props) {
         <>
             <Container>
                 <div className="formularioDatos">
+                    {estadoSucursal == "true" ?
+                        (
+                            <>
+                                <Alert variant="danger">
+                                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                                    <p className="mensaje">
+                                        Esta acción deshabilitara en el sistema la sucursal.
+                                    </p>
+                                </Alert>
+                            </>
+                        ) : (
+                            <>
+                                <Alert variant="success">
+                                    <Alert.Heading>Atención! Acción contructiva!</Alert.Heading>
+                                    <p className="mensaje">
+                                        Esta acción habilitara en el sistema la sucursal.
+                                    </p>
+                                </Alert>
+                            </>
+                        )
+                    }
+
                     <Form onChange={onChange} onSubmit={onSubmit}>
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formHorizontalNombre">

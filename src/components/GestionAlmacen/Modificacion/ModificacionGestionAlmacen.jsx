@@ -107,7 +107,7 @@ function ModificacionGestionAlmacen(props) {
                             </Form.Group>
                         </Row>
 
-                        <Form.Group as={Row} className="botones">
+                        <Form.Group as={Col} className="botones">
                             <Row>
                                 <Col>
                                     <Button

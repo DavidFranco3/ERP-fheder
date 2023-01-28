@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import queryString from "query-string";
 import "./EliminacionLogicaGestionAlmacen.scss";
-import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner, Container, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { deshabilitaAlmacen } from "../../../api/gestionAlmacen";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -58,6 +58,28 @@ function EliminacionLogicaGestionAlmacen(props) {
         <>
             <Container>
                 <div className="formularioDatos">
+
+                {status == "true" ?
+                        (
+                            <>
+                                <Alert variant="danger">
+                                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                                    <p className="mensaje">
+                                        Esta acción deshabilitara en el sistema el almacen.
+                                    </p>
+                                </Alert>
+                            </>
+                        ) : (
+                            <>
+                                <Alert variant="success">
+                                    <Alert.Heading>Atención! Acción contructiva!</Alert.Heading>
+                                    <p className="mensaje">
+                                        Esta acción habilitara en el sistema el almacen.
+                                    </p>
+                                </Alert>
+                            </>
+                        )
+                    }
                     <Form onChange={onChange} onSubmit={onSubmit}>
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formHorizontalNombre">
@@ -89,7 +111,7 @@ function EliminacionLogicaGestionAlmacen(props) {
                             </Form.Group>
                         </Row>
 
-                        <Form.Group as={Row} className="botones">
+                        <Form.Group as={Col} className="botones">
                             <Row>
                                 <Col>
                                     <Button

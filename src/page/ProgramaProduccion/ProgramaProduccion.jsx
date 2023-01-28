@@ -1,10 +1,11 @@
 import { useState, useEffect, Suspense } from 'react';
-import { Alert, Button, Col, Row, Spinner, Form } from "react-bootstrap";
+import { Alert, Button, Col, Row, Spinner, Form, Tabs, Tab, } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import ListProgramaProduccion from "../../components/ProgramaProduccion/ListProgramaProduccion";
+import ListProgramaProduccionMaquinas from '../../components/ProgramaProduccion/ListProgramaProduccionMaquinas';
 import { listarProgramaPorSemana } from "../../api/programaProduccion";
 import { obtenerDatosSemana } from "../../api/semana";
 import "./ProgramaProduccion.scss"
@@ -17,6 +18,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ProgramaProduccion(props) {
     const { setRefreshCheckLogin, location, history } = props;
+    const [tab, setTab] = useState('general')
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory();
@@ -134,7 +136,7 @@ function ProgramaProduccion(props) {
                 <Col xs={8} md={6}>
                     <Form.Label>
                         {folio} [{dayjs(fechaInicial).format("LL")} al {dayjs(fechaFinal).format("LL")}]
-                        </Form.Label>
+                    </Form.Label>
                 </Col>
             </Row>
 
@@ -142,14 +144,48 @@ function ProgramaProduccion(props) {
                 listProgramaProduccion ?
                     (
                         <>
-                            <Suspense fallback={<Spinner />}>
-                                <ListProgramaProduccion
-                                    listProgramaProduccion={listProgramaProduccion}
-                                    location={location}
-                                    history={history}
-                                    setRefreshCheckLogin={setRefreshCheckLogin}
-                                />
-                            </Suspense>
+                            <Tabs
+                                activeKey={tab}
+                                onSelect={(k) => setTab(k)}
+                                className="flex w-full"
+                                id="uncontrolled-tab-estados"
+                            >
+                                <Tab
+                                    key={0}
+                                    tabClassName="font-semibold text-lg"
+                                    eventKey="general"
+                                    title="Vista por programas"
+                                >
+                                    <br />
+
+                                    <Suspense fallback={<Spinner />}>
+                                        <ListProgramaProduccion
+                                            listProgramaProduccion={listProgramaProduccion}
+                                            location={location}
+                                            history={history}
+                                            setRefreshCheckLogin={setRefreshCheckLogin}
+                                        />
+                                    </Suspense>
+                                </Tab>
+
+                                <Tab
+                                    key={1}
+                                    tabClassName="font-semibold text-lg"
+                                    eventKey="maquina"
+                                    title="Vista por maquinas"
+                                >
+                                    <br />
+
+                                    <Suspense fallback={<Spinner />}>
+                                        <ListProgramaProduccionMaquinas
+                                            listProgramaProduccion={listProgramaProduccion}
+                                            location={location}
+                                            history={history}
+                                            setRefreshCheckLogin={setRefreshCheckLogin}
+                                        />
+                                    </Suspense>
+                                </Tab>
+                            </Tabs>
                         </>
                     )
                     :
@@ -174,24 +210,6 @@ function formatModelProgramaProduccion(data) {
             folioOP: data.folioOP,
             ordenProduccion: data.ordenProduccion,
             programa: data.programa,
-            estado: data.estado,
-            fechaRegistro: data.createdAt,
-            fechaActualizacion: data.updatedAt
-        });
-    });
-    return dataTemp;
-}
-
-function formatModelSemana(data) {
-    //console.log(data)
-    const dataTemp = []
-    data.forEach(data => {
-        dataTemp.push({
-            id: data._id,
-            folio: data.folio,
-            fechaInicial: data.fechaInicial,
-            fechaFinal: data.fechaFinal,
-            sucursal: data.sucursal,
             estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt

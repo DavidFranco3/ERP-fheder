@@ -63,7 +63,7 @@ function DashboardPlaneacion(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Planeacion
+                            Planeación
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
@@ -79,7 +79,7 @@ function DashboardPlaneacion(props) {
                     </Col>
                 </Row>
             </Alert>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-4 gap-4">
                 <ItemCard
                     path={'/RequerimientosPlaneacion'}
                     logo={LogoRequerimientos}
@@ -94,11 +94,6 @@ function DashboardPlaneacion(props) {
                     path={'/Semana'}
                     logo={LogoMes}
                     title={'Programa de producción'}
-                />
-                <ItemCard
-                    path={'/Maquinaria'}
-                    logo={LogoMaquina}
-                    title={'Programa de producción maquina'}
                 />
                 <ItemCard
                     path={'/AsignacionPedido'}

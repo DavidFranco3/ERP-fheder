@@ -68,7 +68,7 @@ function Compras(props) {
                 <Row>
                     <Col xs={12} md={8} className="tituloPrincipal">
                         <h1>
-                            Mis compras
+                            Compras
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

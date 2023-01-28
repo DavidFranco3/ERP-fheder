@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import queryString from "query-string";
 import "./EliminacionLogicaClasificacionMaquinaria.scss";
-import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner, Container, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { deshabilitaClasificacionMaquinaria } from "../../../api/clasificacionMaquinaria";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -58,6 +58,28 @@ function EliminacionLogicaClasificacionMaquinaria(props) {
         <>
             <Container>
                 <div className="formularioDatos">
+                {estado == "true" ?
+                        (
+                            <>
+                                <Alert variant="danger">
+                                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                                    <p className="mensaje">
+                                        Esta acción deshabilitara en el sistema la maquinaria.
+                                    </p>
+                                </Alert>
+                            </>
+                        ) : (
+                            <>
+                                <Alert variant="success">
+                                    <Alert.Heading>Atención! Acción contructiva!</Alert.Heading>
+                                    <p className="mensaje">
+                                        Esta acción habilitara en el sistema la maquinaria.
+                                    </p>
+                                </Alert>
+                            </>
+                        )
+                    }
+
                     <Form onChange={onChange} onSubmit={onSubmit}>
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formHorizontalNombre">
