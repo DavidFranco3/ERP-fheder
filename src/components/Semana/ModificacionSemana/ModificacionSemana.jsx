@@ -26,15 +26,11 @@ function ModificacionSemana(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!formData.fechaInicial || !formData.fechaInicial) {
-            toast.warning("Completa el formulario")
-        } else {
-
             setLoading(true)
             // Realiza registro de la aportación
             const dataTemp = {
-                fechaInicial: formData.fechaInicial,
-                fechaFinal: formData.fechaFinal
+                fechaInicial: fechaInicio,
+                fechaFinal: fechaFinal
             }
 
             actualizaSemana(id, dataTemp).then(response => {
@@ -49,12 +45,29 @@ function ModificacionSemana(props) {
             }).catch(e => {
                 console.log(e)
             })
-        }
     }
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
+
+    const [fechaInicio, setFechaInicio] = useState(data.fechaInicial);
+
+    const [fechaFinal, setFechaFinal] = useState();
+
+    useEffect(() => {
+        //la fecha
+        const TuFecha = new Date(fechaInicio);
+
+        //nueva fecha sumada
+        TuFecha.setDate(TuFecha.getDate() + 6);
+        //formato de salida para la fecha
+        setFechaFinal((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
+        : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
+            : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
+                : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+    }, [fechaInicio]);
+
 
     return (
         <>
@@ -92,9 +105,10 @@ function ModificacionSemana(props) {
                                 <Col>
                                     <Form.Control
                                         type="date"
-                                        placeholder="Fecha inicial"
+                                        placeholder="fechaInicial"
                                         name="fechaInicial"
-                                        defaultValue={formData.fechaInicial}
+                                        value={fechaInicio}
+                                        onChange={e => setFechaInicio(e.target.value)}
                                     />
                                 </Col>
                             </Form.Group>
@@ -114,7 +128,9 @@ function ModificacionSemana(props) {
                                         type="date"
                                         placeholder="Fecha final"
                                         name="fechaFinal"
-                                        defaultValue={formData.fechaFinal}
+                                        value={fechaFinal}
+                                        onChange={e => setFechaFinal(e.target.value)}
+                                        disabled
                                     />
                                 </Col>
                             </Form.Group>
