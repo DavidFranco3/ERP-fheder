@@ -1,19 +1,28 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useHistory } from "react-router-dom";
 import "./ListProgramaProduccionMaquinas.scss"
-import { Badge, Button, Container, Navbar, Table, Form, Col } from "react-bootstrap";
+import { Badge, Button, Container, Form, Col } from "react-bootstrap";
 import BasicModal from '../../Modal/BasicModal';
 import DataTable from 'react-data-table-component';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDownLong } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
 import { exportCSVFile } from "../../../utils/exportCSV";
-import EliminacionFisicaPrograma from '../EliminacionFisica';
-import EstadoPrograma from '../EstadoPrograma';
 import 'dayjs/locale/es'
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import HabilitarLunesT1 from '../HabilitarLunesT1';
+import HabilitarLunesT2 from '../HabilitarLunesT2';
+import HabilitarMartesT1 from '../HabilitarMartesT1';
+import HabilitarMartesT2 from '../HabilitarMartesT2';
+import HabilitarMiercolesT1 from '../HabilitarMiercolesT1';
+import HabilitarMiercolesT2 from '../HabilitarMiercolesT2';
+import HabilitarJuevesT1 from '../HabilitarJuevesT1';
+import HabilitarJuevesT2 from '../HabilitarJuevesT2';
+import HabilitarViernesT1 from '../HabilitarViernesT1';
+import HabilitarViernesT2 from '../HabilitarViernesT2';
+import HabilitarSabadoT1 from '../HabilitarSabadoT1';
 
 function ListProgramaProduccionMaquinas(props) {
     const { listProgramaProduccion, history, location, setRefreshCheckLogin } = props;
@@ -29,28 +38,163 @@ function ListProgramaProduccionMaquinas(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     //Para la eliminacion fisica de usuarios
-    const eliminaPrograma = (content) => {
-        setTitulosModal("Eliminando el programa de produccion");
+    const habilitaLT1 = (content) => {
+        setTitulosModal("Habilitando el primer turno del lunes");
         setContentModal(content);
         setShowModal(true);
     }
 
-    //Para la eliminacion logica de usuarios
-    const eliminaLogicaPrograma = (content) => {
-        setTitulosModal("Cancelando el programa de produccion");
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaLT1 = (content) => {
+        setTitulosModal("Deshabilitando el primer turno del lunes");
         setContentModal(content);
         setShowModal(true);
     }
 
-    //Para la modificacion de datos
-    const modificaRecepcion = (id) => {
-        enrutamiento.push(`/ModificaProgramaProduccion/${id}`);
+    //Para la eliminacion fisica de usuarios
+    const habilitaLT2 = (content) => {
+        setTitulosModal("Habilitando el segundo turno del lunes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaLT2 = (content) => {
+        setTitulosModal("Deshabilitando el segundo turno del lunes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaMT1 = (content) => {
+        setTitulosModal("Habilitando el primer turno del martes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaMT1 = (content) => {
+        setTitulosModal("Deshabilitando el primer turno del martes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaMT2 = (content) => {
+        setTitulosModal("Habilitando el segundo turno del martes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaMT2 = (content) => {
+        setTitulosModal("Deshabilitando el segundo turno del martes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaMIT1 = (content) => {
+        setTitulosModal("Habilitando el primer turno del miercoles");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaMIT1 = (content) => {
+        setTitulosModal("Deshabilitando el primer turno del miercoles");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaMIT2 = (content) => {
+        setTitulosModal("Habilitando el primer segundo del miercoles");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaMIT2 = (content) => {
+        setTitulosModal("Deshabilitando el segundo turno del miercoles");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaJT1 = (content) => {
+        setTitulosModal("Habilitando el primer turno del jueves");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaJT1 = (content) => {
+        setTitulosModal("Deshabilitando el primer turno del jueves");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaJT2 = (content) => {
+        setTitulosModal("Habilitando el segundo turno del jueves");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaJT2 = (content) => {
+        setTitulosModal("Deshabilitando el segundo turno del jueves");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+     //Para la eliminacion fisica de usuarios
+     const habilitaVT1 = (content) => {
+        setTitulosModal("Habilitando el primer turno del viernes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaVT1 = (content) => {
+        setTitulosModal("Deshabilitando el primer turno del viernes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+     //Para la eliminacion fisica de usuarios
+     const habilitaVT2 = (content) => {
+        setTitulosModal("Habilitando el segundo turno del viernes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaVT2 = (content) => {
+        setTitulosModal("Deshabilitando el segundo turno del viernes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+     //Para la eliminacion fisica de usuarios
+     const habilitaST1 = (content) => {
+        setTitulosModal("Habilitando el primer turno del sabado");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaST1 = (content) => {
+        setTitulosModal("Deshabilitando el primer turno del sabado");
+        setContentModal(content);
+        setShowModal(true);
     }
 
     const columns = [
         {
             name: 'MAQ',
-            selector: row => row.ordenProduccion.noMaquina +"-"+ row.ordenProduccion.maquina,
+            selector: row => row.ordenProduccion.noMaquina + "-" + row.ordenProduccion.maquina,
             sortable: false,
             center: true,
             reorder: false
@@ -64,275 +208,517 @@ function ListProgramaProduccionMaquinas(props) {
         },
         {
             name: 'Lunes T1',
-            selector: row => (
-                <>
-                    {
-                        row.programa.lunesT1 ?
-                        (
+            selector: row =>
+                row.programa.estadoLT1 === "true" ?
+                    (
+                        <>
                             <Badge
-                            bg="success"
-                            className="editar"
-                        >
-                            {dayjs(row.programa.lunesT1).format("LL")}
-                        </Badge>
-                        )
-                        :
-                        (
-                            ""
-                        )
-                    }
-                </>
-            ),
+                                bg="success"
+                                className="editar"
+                                title="Deshabilitar el primer turno del lunes"
+                                onClick={() => {
+                                    deshabilitaLT1(
+                                        <HabilitarLunesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#198754">{dayjs(row.programa.lunesT1).format("LL")}</font>
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="light"
+                                className="editar"
+                                title="Habilitar el primer turno del lunes"
+                                onClick={() => {
+                                    habilitaLT1(
+                                        <HabilitarLunesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#F8F9FA">No disponible </font>
+                            </Badge>
+                        </>
+                    ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Lunes T2',
-            selector: row => (
-                <>
-                    {
-                        row.programa.lunesT2 ?
-                            (
-                                <Badge
+            selector: row =>
+                row.programa.estadoLT2 === "true" ?
+                    (
+                        <>
+                            <Badge
                                 bg="success"
                                 className="editar"
+                                title="Deshabilitar el segundo turno del lunes"
+                                onClick={() => {
+                                    deshabilitaLT2(
+                                        <HabilitarLunesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
                             >
-                                {dayjs(row.programa.lunesT2).format("LL")}
+                                <font color="#198754">{dayjs(row.programa.lunesT2).format("LL")}</font>
                             </Badge>
-                            )
-                            :
-                            (
-                                ""
-                            )
-                    }
-                </>
-            ),
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="light"
+                                className="editar"
+                                title="Habilitar el segundo turno del lunes"
+                                onClick={() => {
+                                    habilitaLT2(
+                                        <HabilitarLunesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#F8F9FA">No disponible </font>
+                            </Badge>
+                        </>
+                    ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Martes T1',
-            selector: row => (
-                <>
-                    {
-                        row.programa.martesT1 ?
-                        (
+            selector: row =>
+                row.programa.estadoMT1 === "true" ?
+                    (
+                        <>
                             <Badge
-                            bg="success"
-                            className="editar"
-                        >
-                            {dayjs(row.programa.martesT1).format("LL")}
-                        </Badge>
-                        )
-                        :
-                        (
-                            ""
-                        )
-                    }
-                </>
-            ),
+                                bg="success"
+                                className="editar"
+                                title="Deshabilitar el segundo turno del lunes"
+                                onClick={() => {
+                                    deshabilitaMT1(
+                                        <HabilitarMartesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#198754">{dayjs(row.programa.martesT1).format("LL")}</font>
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="light"
+                                className="editar"
+                                title="Habilitar el segundo turno del lunes"
+                                onClick={() => {
+                                    habilitaMT1(
+                                        <HabilitarMartesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#F8F9FA">No disponible </font>
+                            </Badge>
+                        </>
+                    ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Martes T2',
-            selector: row => (
-                <>
-                    {
-                        row.programa.martesT2 ?
-                        (
+            selector: row =>
+                row.programa.estadoMT2 === "true" ?
+                    (
+                        <>
                             <Badge
-                            bg="success"
-                            className="editar"
-                        >
-                            {dayjs(row.programa.martesT2).format("LL")}
-                        </Badge>
-                        )
-                        :
-                        (
-                            ""
-                        )
-                    }
-                </>
-            ),
+                                bg="success"
+                                className="editar"
+                                title="Deshabilitar el segundo turno del martes"
+                                onClick={() => {
+                                    deshabilitaMT2(
+                                        <HabilitarMartesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#198754">{dayjs(row.programa.martesT2).format("LL")}</font>
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="light"
+                                className="editar"
+                                title="Habilitar el segundo turno del martes"
+                                onClick={() => {
+                                    habilitaMT2(
+                                        <HabilitarMartesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#F8F9FA">No disponible </font>
+                            </Badge>
+                        </>
+                    ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Miercoles T1',
-            selector: row => (
-                <>
-                    {
-                        row.programa.miercolesT1 ?
-                        (
+            selector: row =>
+                row.programa.estadoMIT1 === "true" ?
+                    (
+                        <>
                             <Badge
-                            bg="success"
-                            className="editar"
-                        >
-                            {dayjs(row.programa.miercolesT1).format("LL")}
-                        </Badge>
-                        )
-                        :
-                        (
-                            ""
-                        )
-                    }
-                </>
-            ),
+                                bg="success"
+                                className="editar"
+                                title="Deshabilitar el primer turno del miercoles"
+                                onClick={() => {
+                                    deshabilitaMIT1(
+                                        <HabilitarMiercolesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#198754">{dayjs(row.programa.miercolesT1).format("LL")}</font>
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="light"
+                                className="editar"
+                                title="Habilitar el primer turno del miercoles"
+                                onClick={() => {
+                                    habilitaMIT1(
+                                        <HabilitarMiercolesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#F8F9FA">No disponible </font>
+                            </Badge>
+                        </>
+                    ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Miercoles T2',
-            selector: row => (
-                <>
-                    {
-                        row.programa.miercolesT2 ?
-                        (
+            selector: row =>
+                row.programa.estadoMIT2 === "true" ?
+                    (
+                        <>
                             <Badge
-                            bg="success"
-                            className="editar"
-                        >
-                            {dayjs(row.programa.miercolesT2).format("LL")}
-                        </Badge>
-                        )
-                        :
-                        (
-                            ""
-                        )
-                    }
-                </>
-            ),
+                                bg="success"
+                                className="editar"
+                                title="Deshabilitar el segundo turno del miercoles"
+                                onClick={() => {
+                                    deshabilitaMIT2(
+                                        <HabilitarMiercolesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#198754">{dayjs(row.programa.miercolesT2).format("LL")}</font>
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="light"
+                                className="editar"
+                                title="Habilitar el segundo turno del miercoles"
+                                onClick={() => {
+                                    habilitaMIT2(
+                                        <HabilitarMiercolesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#F8F9FA">No disponible </font>
+                            </Badge>
+                        </>
+                    ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Jueves T1',
-            selector: row => (
-                <>
-                    {
-                        row.programa.juevesT1 ?
-                        (
+            selector: row =>
+                row.programa.estadoJT1 === "true" ?
+                    (
+                        <>
                             <Badge
-                            bg="success"
-                            className="editar"
-                        >
-                            {dayjs(row.programa.juevesT1).format("LL")}
-                        </Badge>
-                        )
-                        :
-                        (
-                            ""
-                        )
-                    }
-                </>
-            ),
+                                bg="success"
+                                className="editar"
+                                title="Deshabilitar el primer turno del jueves"
+                                onClick={() => {
+                                    deshabilitaJT1(
+                                        <HabilitarJuevesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#198754">{dayjs(row.programa.juevesT1).format("LL")}</font>
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="light"
+                                className="editar"
+                                title="Habilitar el segundo turno del miercoles"
+                                onClick={() => {
+                                    habilitaJT1(
+                                        <HabilitarJuevesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#F8F9FA">No disponible </font>
+                            </Badge>
+                        </>
+                    ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Jueves T2',
-            selector: row => (
-                <>
-                    {
-                        row.programa.juevesT2 ?
-                        (
+            selector: row =>
+                row.programa.estadoJT2 === "true" ?
+                    (
+                        <>
                             <Badge
-                            bg="success"
-                            className="editar"
-                        >
-                            {dayjs(row.programa.juevesT2).format("LL")}
-                        </Badge>
-                        )
-                        :
-                        (
-                            ""
-                        )
-                    }
-                </>
-            ),
+                                bg="success"
+                                className="editar"
+                                title="Deshabilitar el segundo turno del jueves"
+                                onClick={() => {
+                                    deshabilitaJT2(
+                                        <HabilitarJuevesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#198754">{dayjs(row.programa.juevesT2).format("LL")}</font>
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="light"
+                                className="editar"
+                                title="Habilitar el segundo turno del jueves"
+                                onClick={() => {
+                                    habilitaJT2(
+                                        <HabilitarJuevesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#F8F9FA">No disponible </font>
+                            </Badge>
+                        </>
+                    ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Viernes T1',
-            selector: row => (
-                <>
-                    {
-                        row.programa.viernesT1 ?
-                        (
+            selector: row =>
+                row.programa.estadoVT1 === "true" ?
+                    (
+                        <>
                             <Badge
-                            bg="success"
-                            className="editar"
-                        >
-                            {dayjs(row.programa.viernesT1).format("LL")}
-                        </Badge>
-                        )
-                        :
-                        (
-                            ""
-                        )
-                    }
-                </>
-            ),
+                                bg="success"
+                                className="editar"
+                                title="Deshabilitar el segundo turno del jueves"
+                                onClick={() => {
+                                    deshabilitaVT1(
+                                        <HabilitarViernesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#198754">{dayjs(row.programa.viernesT1).format("LL")}</font>
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="light"
+                                className="editar"
+                                title="Habilitar el segundo turno del jueves"
+                                onClick={() => {
+                                    habilitaVT1(
+                                        <HabilitarViernesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#F8F9FA">No disponible </font>
+                            </Badge>
+                        </>
+                    ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Viernes T2',
-            selector: row => (
-                <>
-                    {
-                        row.programa.viernesT2 ?
-                        (
+            selector: row =>
+                row.programa.estadoVT2 === "true" ?
+                    (
+                        <>
                             <Badge
-                            bg="success"
-                            className="editar"
-                        >
-                            {dayjs(row.programa.viernesT2).format("LL")}
-                        </Badge>
-                        )
-                        :
-                        (
-                            ""
-                        )
-                    }
-                </>
-            ),
+                                bg="success"
+                                className="editar"
+                                title="Deshabilitar el segundo turno del viernes"
+                                onClick={() => {
+                                    deshabilitaVT2(
+                                        <HabilitarViernesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#198754">{dayjs(row.programa.viernesT2).format("LL")}</font>
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="light"
+                                className="editar"
+                                title="Habilitar el segundo turno del viernes"
+                                onClick={() => {
+                                    habilitaVT2(
+                                        <HabilitarViernesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#F8F9FA">No disponible </font>
+                            </Badge>
+                        </>
+                    ),
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'Sabado T1',
-            selector: row => (
-                <>
-                    {
-                        row.programa.sabadoT1 ?
-                        (
+            selector: row =>
+                row.programa.estadoST1 === "true" ?
+                    (
+                        <>
                             <Badge
-                            bg="success"
-                            className="editar"
-                        >
-                            {dayjs(row.programa.sabadoT1).format("LL")}
-                        </Badge>
-                        )
-                        :
-                        (
-                            ""
-                        )
-                    }
-                </>
-            ),
+                                bg="success"
+                                className="editar"
+                                title="Deshabilitar el segundo turno del jueves"
+                                onClick={() => {
+                                    deshabilitaST1(
+                                        <HabilitarSabadoT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#198754">{dayjs(row.programa.sabadoT1).format("LL")}</font>
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Badge
+                                bg="light"
+                                className="editar"
+                                title="Habilitar el segundo turno del jueves"
+                                onClick={() => {
+                                    habilitaST1(
+                                        <HabilitarSabadoT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <font color="#F8F9FA">No disponible </font>
+                            </Badge>
+                        </>
+                    ),
             sortable: false,
             center: true,
             reorder: false

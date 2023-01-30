@@ -12,6 +12,17 @@ ENDPOINTActualizarEstadoPrograma,
 ENDPOINTActualizarPrograma,
 ENDPOINTObtenerDatosPrograma,
 ENDPOINTTotalPrograma,
+ENDPOINTHabilitarLunesT1,
+ENDPOINTHabilitarLunesT2,
+ENDPOINTHabilitarMartesT1,
+ENDPOINTHabilitarMartesT2,
+ENDPOINTHabilitarMiercolesT1,
+ENDPOINTHabilitarMiercolesT2,
+ENDPOINTHabilitarJuevesT1,
+ENDPOINTHabilitarJuevesT2,
+ENDPOINTHabilitarViernesT1,
+ENDPOINTHabilitarViernesT2,
+ENDPOINTHabilitarSabadoT1,
 } from "./endpoints";
 import axios from 'axios';
 import { getTokenApi } from "./auth";
@@ -150,6 +161,149 @@ export async function cambiaStatusPrograma(id, data) {
     };
 
     return await axios.put(API_HOST + ENDPOINTActualizarEstadoPrograma + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaLunesT1(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarLunesT1 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaLunesT2(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarLunesT2 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaMartesT1(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarMartesT1 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaMartesT2(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarMartesT2 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaMiercolesT1(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarMiercolesT1 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaMiercolesT2(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarMiercolesT2 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaJuevesT1(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarJuevesT1 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaJuevesT2(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarJuevesT2 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaViernesT1(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarViernesT1 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaViernesT2(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarViernesT2 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaSabadoT1(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarSabadoT1 + `/${id}`, data, config);
 }
 
 // Modifica datos de una orden de compra

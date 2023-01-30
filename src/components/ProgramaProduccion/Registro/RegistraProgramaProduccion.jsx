@@ -557,17 +557,28 @@ function RegistraProgramaProduccion(props) {
             },
             programa: {
                 fechaInicio: fechaInicial,
-                lunesT1: formData.lunesT1,
-                lunesT2: formData.lunesT2,
-                martesT1: formData.martesT1,
-                martesT2: formData.martesT2,
-                miercolesT1: formData.miercolesT1,
-                miercolesT2: formData.miercolesT2,
-                juevesT1: formData.juevesT1,
-                juevesT2: formData.juevesT2,
-                viernesT1: formData.viernesT1,
-                viernesT2: formData.viernesT2,
-                sabadoT1: formData.sabadoT1,
+                lunesT1: lunesT1,
+                estadoLT1: "false",
+                lunesT2: lunesT2,
+                estadoLT2: "false",
+                martesT1: martesT1,
+                estadoMT1: "false",
+                martesT2: martesT2,
+                estadoMT2: "false",
+                miercolesT1: miercolesT1,
+                estadoMIT1: "false",
+                miercolesT2: miercolesT2,
+                estadoMIT2: "false",
+                juevesT1: juevesT1,
+                estadoJT1: "false",
+                juevesT2: juevesT2,
+                estadoJT2: "false",
+                viernesT1: viernesT1,
+                estadoVT1: "false",
+                viernesT2: viernesT2,
+                estadoVT2: "false",
+                sabadoT1: sabadoT1,
+                estadoST1: "false",
             },
             estado: "true",
         }
@@ -1047,7 +1058,7 @@ function RegistraProgramaProduccion(props) {
                         </div>
                         <br />
 
-                        <div className="datosBOM">
+                        {/*<div className="datosBOM">
                             <Container fluid>
                                 <br />
                                 <div className="tituloSeccion">
@@ -1200,7 +1211,7 @@ function RegistraProgramaProduccion(props) {
                                 </Row>
 
                             </Container>
-                        </div>
+                                            </div>*/}
 
                         <br />
 

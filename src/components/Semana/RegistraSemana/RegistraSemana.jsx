@@ -44,10 +44,6 @@ function RegistraSemana(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!formData.fechaInicial || !formData.fechaFinal) {
-            toast.warning("Completa el formulario")
-        } else {
-
             setLoading(true)
             // Realiza registro de la aportación
             obtenerNumeroSemana().then(response => {
@@ -56,8 +52,8 @@ function RegistraSemana(props) {
 
                 const dataTemp = {
                     folio: noSemana,
-                    fechaInicial: formData.fechaInicial,
-                    fechaFinal: formData.fechaFinal,
+                    fechaInicial: fechaInicio,
+                    fechaFinal: fechaFinal,
                     sucursal: getSucursal(),
                     estado: "true"
                 }
@@ -78,12 +74,35 @@ function RegistraSemana(props) {
             }).catch(e => {
                 console.log(e)
             })
-        }
     }
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
+
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = (hoy.getMonth() + 1) > 10 && hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 && hoy.getDate() > 10? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDate() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaInicio, setFechaInicio] = useState(fecha);
+
+    const [fechaFinal, setFechaFinal] = useState();
+
+    useEffect(() => {
+        //la fecha
+        const TuFecha = new Date(fechaInicio);
+
+        //nueva fecha sumada
+        TuFecha.setDate(TuFecha.getDate() + 6);
+        //formato de salida para la fecha
+        setFechaFinal((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
+        : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
+            : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
+                : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+    }, [fechaInicio]);
 
     return (
         <>
@@ -123,7 +142,8 @@ function RegistraSemana(props) {
                                         type="date"
                                         placeholder="fechaInicial"
                                         name="fechaInicial"
-                                        defualtValue={formData.fechaInicial}
+                                        value={fechaInicio}
+                                        onChange={e => setFechaInicio(e.target.value)}
                                     />
                                 </Col>
                             </Form.Group>
@@ -143,7 +163,9 @@ function RegistraSemana(props) {
                                         type="date"
                                         placeholder="Fecha final"
                                         name="fechaFinal"
-                                        defaultVale={formData.fechaFinal}
+                                        value={fechaFinal}
+                                        onChange={e => setFechaFinal(e.target.value)}
+                                        disabled
                                     />
                                 </Col>
                             </Form.Group>

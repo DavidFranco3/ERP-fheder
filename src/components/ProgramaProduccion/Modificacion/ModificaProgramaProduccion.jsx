@@ -1048,7 +1048,7 @@ function ModificaProgramaProduccion(props) {
                         </div>
                         <br />
 
-                        <div className="datosBOM">
+                        {/*<div className="datosBOM">
                             <Container fluid>
                                 <br />
                                 <div className="tituloSeccion">
@@ -1212,7 +1212,7 @@ function ModificaProgramaProduccion(props) {
                                 </Row>
 
                             </Container>
-                        </div>
+                                            </div>*/}
 
                         <br />
 
