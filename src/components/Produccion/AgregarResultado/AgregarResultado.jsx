@@ -4,7 +4,7 @@ import { Alert, Button, Col, Row, Form, Container, Spinner } from "react-bootstr
 import { toast } from "react-toastify";
 
 function AgregarResultado(props) {
-    const { listResultados, setListResultados, setRefreshCheckLogin, setShowModal } = props;
+    const { listResultados, setListResultados, setRefreshCheckLogin, setShowModal, registroAnterior, setRegistroAnterior } = props;
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
@@ -45,8 +45,33 @@ function AgregarResultado(props) {
                 [...listResultados, dataTemp]
             );
 
+            setRegistroAnterior(acumulado)
+
             setShowModal(false)
         }
+    }
+
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = (hoy.getMonth() + 1) > 10 && hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 && hoy.getDate() > 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDate() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaRegistro, setFechaRegistro] = useState(fecha);
+
+    const [acumulado, setAcumulado] = useState(0);
+
+    const [eficiencia, setEficiencia] = useState(0);
+
+    const calculos = () => {
+        const cantidadFabricada = document.getElementById("cantidadFabricada").value
+        const totalAcumulado = parseInt(cantidadFabricada) + parseInt(registroAnterior);
+        setAcumulado(totalAcumulado);
+        const piezasDefectuosas = document.getElementById("piezasDefectuosas").value
+
+        const totalEficiencia = (parseInt(piezasDefectuosas) - ((parseInt(piezasDefectuosas * 100)) / parseInt(cantidadFabricada)));
+        setEficiencia(totalEficiencia);
     }
 
     return (
@@ -62,18 +87,21 @@ function AgregarResultado(props) {
                             type="date"
                             placeholder="Fecha"
                             name="fecha"
+                            value={fechaRegistro}
+                            onChange={e => setFechaRegistro(e.target.value)}
                         />
                     </Form.Group>
 
-                    <Form.Group as={Col} controlId="formHorizontalAcumulado">
-                        <Form.Label align="center">
-                            Acumulado
+                    <Form.Group as={Col} controlId="formHorizontalCantidadFabricada">
+                        <Form.Label align="Cantidad fabricada">
+                            Cantidad fabricada
                         </Form.Label>
                         <Form.Control
-                            id="acumulado"
+                            id="cantidadFabricada"
                             type="number"
-                            placeholder="acumulado"
-                            name="acumulado"
+                            placeholder="Cantidad fabricada"
+                            name="cantidadFabricada"
+                            onChange={(e) => { calculos(e.target.value) }}
                         />
                     </Form.Group>
                 </Row>
@@ -85,21 +113,29 @@ function AgregarResultado(props) {
                         </Form.Label>
                         <Form.Control
                             id="turno"
-                            type="number"
+                            as="select"
                             placeholder="Turno"
                             name="turno"
-                        />
+                        >
+                            <option>Elige una opción</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </Form.Control>
                     </Form.Group>
 
-                    <Form.Group as={Col} controlId="formHorizontalPiezasDefectuosas">
+                    <Form.Group as={Col} controlId="formHorizontalAcumulado">
                         <Form.Label align="center">
-                            Piezas defectuosas
+                            Acumulado
                         </Form.Label>
                         <Form.Control
-                            id="piezasDefectuosas"
+                            id="acumulado"
                             type="number"
-                            placeholder="Piezas defectuosas"
-                            name="piezasDefectuosas"
+                            placeholder="acumulado"
+                            name="acumulado"
+                            onChange={(e) => { calculos(e.target.value) }}
+                            value={acumulado == "0" ? registroAnterior : acumulado}
+                            disabled
                         />
                     </Form.Group>
                 </Row>
@@ -117,15 +153,16 @@ function AgregarResultado(props) {
                         />
                     </Form.Group>
 
-                    <Form.Group as={Col} controlId="formHorizontalEficiencia">
+                    <Form.Group as={Col} controlId="formHorizontalPiezasDefectuosas">
                         <Form.Label align="center">
-                            Eficiencia (%)
+                            Piezas defectuosas
                         </Form.Label>
                         <Form.Control
-                            id="eficiencia"
+                            id="piezasDefectuosas"
                             type="number"
-                            placeholder="Eficiencia (%)"
-                            name="eficiencia"
+                            placeholder="Piezas defectuosas"
+                            name="piezasDefectuosas"
+                            onChange={(e) => { calculos(e.target.value) }}
                         />
                     </Form.Group>
                 </Row>
@@ -143,15 +180,18 @@ function AgregarResultado(props) {
                         />
                     </Form.Group>
 
-                    <Form.Group as={Col} controlId="formHorizontalCantidadFabricada">
-                        <Form.Label align="Cantidad fabricada">
-                            Cantidad fabricada
+                    <Form.Group as={Col} controlId="formHorizontalEficiencia">
+                        <Form.Label align="center">
+                            Eficiencia (%)
                         </Form.Label>
                         <Form.Control
-                            id="cantidadFabricada"
+                            id="eficiencia"
                             type="number"
-                            placeholder="Cantidad fabricada"
-                            name="cantidadFabricada"
+                            placeholder="Eficiencia (%)"
+                            name="eficiencia"
+                            onChange={(e) => { calculos(e.target.value) }}
+                            value={eficiencia}
+                            disabled
                         />
                     </Form.Group>
                 </Row>

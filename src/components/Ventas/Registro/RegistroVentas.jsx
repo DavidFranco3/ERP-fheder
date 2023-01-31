@@ -25,8 +25,6 @@ import ModificacionProductos from '../../ProductosOV/ModificacionProductos';
 function RegistroVentas(props) {
     const { history, setRefreshCheckLogin, location } = props;
 
-    console.log(history);
-
     // Cerrado de sesión automatico
     useEffect(() => {
         if (getTokenApi()) {
@@ -143,6 +141,8 @@ function RegistroVentas(props) {
     const [listProductosOV, setListProductosOV] = useState([]);
 
     const renglon = listProductosOV.length + 1;
+
+    console.log(listProductosCargados)
 
     useEffect(() => {
         try {
@@ -338,13 +338,13 @@ function RegistroVentas(props) {
                 precioUnitario: cargaProductos.precioUnitario,
                 total: totalUnitario
             }
+
+            LogRegistroProductosOV(folioActual, cargaProductos.ID, cargaProductos.item, cantidad, um, precioUnitario, total, setListProductosCargados);
             // console.log(dataTemp)
 
             setListProductosCargados(
                 [...listProductosCargados, dataTemp]
             );
-
-            LogRegistroProductosOV(folioActual, cargaProductos.ID, cargaProductos.item, cantidad, um, precioUnitario, total);
 
             setCargaProductos(initialFormDataProductos)
             //document.getElementById("descripcion").value = ""

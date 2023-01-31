@@ -419,6 +419,8 @@ function ProduccionPlaneacion(props) {
 
     const [fechaActual, setFechaActual] = useState(fecha);
 
+    const [registroAnterior, setRegistroAnterior] = useState(0);
+
     return (
         <>
             <Alert>
@@ -987,6 +989,8 @@ function ProduccionPlaneacion(props) {
                                                     <AgregarResultado
                                                         setListResultados={setListResultados}
                                                         listResultados={listResultados}
+                                                        registroAnterior={registroAnterior}
+                                                        setRegistroAnterior={setRegistroAnterior}
                                                         setShowModal={setShowModal}
                                                     />)
                                             }}

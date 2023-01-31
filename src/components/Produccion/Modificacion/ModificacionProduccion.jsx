@@ -156,13 +156,16 @@ function ModificacionProduccion(props) {
         }
     }, [formDataProduccion.opcion3]);
 
+    const [registroAnterior, setRegistroAnterior] = useState(0);
+
     useEffect(() => {
         //
         obtenerProduccion(id).then(response => {
             const { data } = response;
             //console.log(data)
-            const { folio, generalidades, planeacion, bom, resultados, materiaPrima, observaciones } = data;
+            const { acumulado, folio, generalidades, planeacion, bom, resultados, materiaPrima, observaciones } = data;
             setFormData(valoresAlmacenados(data))
+            setRegistroAnterior(acumulado)
             setListResultados(resultados)
             setListRegistros(materiaPrima)
             // setFechaCreacion(fechaElaboracion)
@@ -284,7 +287,7 @@ function ModificacionProduccion(props) {
                 nombreCliente: formDataProduccion.nombreCliente
             },
             planeacion: {
-                ordenProduccion: folioActual,
+                ordenProduccion: formData.folio,
                 fecha: formData.fecha,
                 noParte: formDataProduccion.noParte,
                 noCavidades: formDataProduccion.cavMolde,
@@ -961,6 +964,8 @@ function ModificacionProduccion(props) {
                                                     <AgregarResultado
                                                         setListResultados={setListResultados}
                                                         listResultados={listResultados}
+                                                        registroAnterior={registroAnterior}
+                                                        setRegistroAnterior={setRegistroAnterior}
                                                         setShowModal={setShowModal}
                                                     />)
                                             }}

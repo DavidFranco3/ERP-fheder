@@ -13,6 +13,7 @@ function EliminacionProductosOV(props) {
 
     // Para cancelar la actualizacion
     const cancelarEliminacion = () => {
+        setListProductosCargados([]);
         setShowModal(false)
     }
 
@@ -22,7 +23,7 @@ function EliminacionProductosOV(props) {
     const onSubmit = (e) => {
         e.preventDefault()
         setLoading(true)
-        setListProductosCargados("");
+        setListProductosCargados(null);
 
         try {
             eliminaProductosOV(_id).then(response => {
@@ -30,7 +31,7 @@ function EliminacionProductosOV(props) {
                 // console.log(data)
                 //toast.success(data.mensaje)
                 //LogsInformativos("Se ha eliminado el mes " + folio, data)
-                setListProductosCargados(_id)
+                setListProductosCargados([]);
                 setShowModal(false);
                 //setLoading(false);
             }).catch(e => {

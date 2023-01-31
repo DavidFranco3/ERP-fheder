@@ -17,6 +17,7 @@ function ModificacionProductos(props) {
 
     // Cancelar y cerrar el formulario
     const cancelarRegistro = () => {
+        setListProductosCargados([]);
         setShowModal(false)
     }
 
@@ -27,7 +28,7 @@ function ModificacionProductos(props) {
         e.preventDefault()
 
         setLoading(true)
-        setListProductosCargados("");
+        setListProductosCargados(null);
         // Realiza registro de la aportación
         const dataTemp = {
             numeroParte: numeroParte,
@@ -40,7 +41,7 @@ function ModificacionProductos(props) {
 
         actualizaProductosOV(_id, dataTemp).then(response => {
             const { data } = response;
-            setListProductosCargados(_id);
+            setListProductosCargados([]);
             setShowModal(false);
 
         }).catch(e => {

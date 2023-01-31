@@ -246,6 +246,7 @@ function RegistroProduccion(props) {
                 item: data.item,
                 folio: folioActual,
                 sucursal: getSucursal(),
+                acumulado: registroAnterior,
                 generalidades: {
                     ordenVenta: formDataPlaneacion.ordenVenta,
                     folioPlaneacion: formDataPlaneacion.folioPlaneacion,
@@ -381,6 +382,8 @@ function RegistroProduccion(props) {
                 : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
 
     const [fechaActual, setFechaActual] = useState(fecha);
+
+    const [registroAnterior, setRegistroAnterior] = useState(0);
 
     return (
         <>
@@ -950,6 +953,8 @@ function RegistroProduccion(props) {
                                                     <AgregarResultado
                                                         setListResultados={setListResultados}
                                                         listResultados={listResultados}
+                                                        registroAnterior={registroAnterior}
+                                                        setRegistroAnterior={setRegistroAnterior}
                                                         setShowModal={setShowModal}
                                                     />)
                                             }}
