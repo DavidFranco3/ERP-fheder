@@ -18,6 +18,7 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../ap
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { obtenerDatosArticulo } from '../../../api/almacenes';
 import BuscarPlaneaccion from '../../../page/BuscarPlaneacion';
+import BuscarProduccion from '../../../page/BuscarProduccion';
 import { listarMaquina } from "../../../api/maquinas";
 import { obtenerDatosSemana } from "../../../api/semana"
 
@@ -857,7 +858,7 @@ function RegistraProgramaProduccion(props) {
                                                 icon={faSearch}
                                                 onClick={() => {
                                                     buscarOP(
-                                                        <BuscarPlaneaccion
+                                                        <BuscarProduccion
                                                             formData={formDataProduccion}
                                                             setFormData={setFormDataProduccion}
                                                             setShowModal={setShowModal}

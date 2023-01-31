@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { obtenerProduccion } from "../../../api/produccion";
 import { toast } from "react-toastify";
+import { obtenerDatosRequerimiento } from "../../../api/requerimientosPlaneacion";
 
 function BuscarProducciones(props) {
     const { setFormData, formData, setShowModal, listProduccion } = props;
@@ -22,6 +23,8 @@ function BuscarProducciones(props) {
     // Para almacenar la informacion del formulario
     const [valoresCliente, setValoresCliente] = useState(initialValues());
 
+    const [valoresPlaneacion, setValoresPlaneacion] = useState(initialValuesPlaneacion());
+
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
@@ -30,7 +33,13 @@ function BuscarProducciones(props) {
 
             obtenerProduccion(clienteSeleccionado.seleccion).then(response => {
                 const { data } = response;
-                console.log(data)
+
+                obtenerDatosRequerimiento(data.generalidades.folioPlaneacion).then(response => {
+                    const { data } = response;
+                    setValoresPlaneacion(valoresAlmacenadosPlaneacion(data))
+                }).catch(e => {
+                    console.log(e)
+                })
                 setValoresCliente(valoresAlmacenados(data))
             }).catch(e => {
                 console.log(e)
@@ -62,7 +71,23 @@ function BuscarProducciones(props) {
                 nombreProducto: valoresCliente.nombreProducto,
                 ordenInterna: valoresCliente.ordenInterna,
                 cliente: valoresCliente.cliente,
-                numeroParte: valoresCliente.numeroParte
+                numeroParte: valoresCliente.numeroParte,
+
+                ordenVenta: valoresPlaneacion.ordenVenta,
+                producto: valoresPlaneacion.producto,
+                nombreProducto: valoresPlaneacion.nombreProducto,
+                cantidadProducir: valoresPlaneacion.cantidadProducir,
+
+                semana: valoresPlaneacion.semana,
+                ordenProduccion: valoresCliente.ordenInterna,
+                idProducto: valoresPlaneacion.idProducto,
+                cantidadFabricar: valoresPlaneacion.cantidadFabricar,
+                acumulado: valoresPlaneacion.acumulado,
+                cavidades: valoresPlaneacion.cavidades,
+                pendienteFabricar: valoresPlaneacion.pendienteFabricar,
+                noInterno: valoresPlaneacion.noInterno,
+
+                folioPlaneacion: valoresPlaneacion.folioPlaneacion
             }
             setFormData(dataTemp)
             setShowModal(false);
@@ -299,7 +324,8 @@ function initialValues() {
         nombreProducto: "",
         ordenInterna: "",
         cliente: "",
-        numeroParte: ""
+        numeroParte: "",
+        folioPlaneacion: ""
     }
 }
 
@@ -308,7 +334,52 @@ function valoresAlmacenados(data) {
         nombreProducto: data.generalidades.producto,
         ordenInterna: data.folio,
         cliente: data.generalidades.nombreCliente,
-        numeroParte: data.planeacion.noParte
+        numeroParte: data.planeacion.noParte,
+        folioPlaneacion: data.generalidades.folioPlaneacion
+    }
+}
+
+function initialValuesPlaneacion() {
+    return {
+        ordenVenta: "",
+        producto: "",
+        nombreProducto: "",
+        cantidadProducir: "",
+        folioPlaneacion: "",
+
+        semana: "",
+        ordenProduccion: "",
+        idProducto: "",
+        producto: "",
+        cantidadFabricar: "",
+        acumulado: "",
+        cavidades: "",
+        standarTurno: "",
+        pendienteFabricar: "",
+        noInterno: "",
+
+        opcionesMaquinaria: ""
+    }
+}
+
+function valoresAlmacenadosPlaneacion(data) {
+    return {
+        ordenVenta: data.requerimiento.ov,
+        producto: data.requerimiento.producto,
+        nombreProducto: data.requerimiento.nombreProducto,
+        cantidadProducir: data.requerimiento.totalProducir,
+        
+        semana: data.requerimiento.semana,
+        ordenProduccion: data.folio,
+        idProducto: data.requerimiento.nombreProducto,
+        cantidadFabricar: data.requerimiento.totalProducir,
+        acumulado: data.requerimiento.almacenProductoTerminado,
+        cavidades: data.planeacion.numeroCavidades,
+        pendienteFabricar: parseInt(data.requerimiento.totalProducir) - parseInt(data.requerimiento.almacenProductoTerminado),
+        noInterno: data.requerimiento.noInterno,
+
+        opcionesMaquinaria: data.planeacion.opcionesMaquinaria,
+        folioPlaneacion: data.folio,
     }
 }
 

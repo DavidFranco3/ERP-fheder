@@ -19,6 +19,7 @@ import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { obtenerDatosArticulo } from '../../../api/almacenes';
 import BuscarPlaneaccion from '../../../page/BuscarPlaneacion';
 import { listarMaquina } from "../../../api/maquinas";
+import BuscarProduccion from '../../../page/BuscarProduccion';
 
 function ModificaProgramaProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -848,7 +849,7 @@ function ModificaProgramaProduccion(props) {
                                                 icon={faSearch}
                                                 onClick={() => {
                                                     buscarOP(
-                                                        <BuscarPlaneaccion
+                                                        <BuscarProduccion
                                                             formData={formDataProduccion}
                                                             setFormData={setFormDataProduccion}
                                                             setShowModal={setShowModal}
