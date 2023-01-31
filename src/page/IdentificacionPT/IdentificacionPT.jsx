@@ -100,7 +100,7 @@ function IdentificacionPT(props) {
                                 )
                             }}
                         >
-                            <FontAwesomeIcon icon={faCirclePlus} />Registrar
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
