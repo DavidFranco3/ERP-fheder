@@ -16,6 +16,17 @@ import queryString from "query-string";
 import { habilitaLunesT1, habilitaLunesT2, habilitaMartesT1, habilitaMartesT2, habilitaMiercolesT1, habilitaMiercolesT2, habilitaJuevesT1, habilitaJuevesT2, habilitaViernesT1, habilitaViernesT2, habilitaSabadoT1 } from "../../../api/programaProduccion";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { toast } from "react-toastify";
+import HabilitarLunesT1 from '../HabilitarLunesT1';
+import HabilitarLunesT2 from '../HabilitarLunesT2';
+import HabilitarMartesT1 from '../HabilitarMartesT1';
+import HabilitarMartesT2 from '../HabilitarMartesT2';
+import HabilitarMiercolesT1 from '../HabilitarMiercolesT1';
+import HabilitarMiercolesT2 from '../HabilitarMiercolesT2';
+import HabilitarJuevesT1 from '../HabilitarJuevesT1';
+import HabilitarJuevesT2 from '../HabilitarJuevesT2';
+import HabilitarViernesT1 from '../HabilitarViernesT1';
+import HabilitarViernesT2 from '../HabilitarViernesT2';
+import HabilitarSabadoT1 from '../HabilitarSabadoT1';
 
 function ListProgramaProduccionMaquinas(props) {
     const { listProgramaProduccion, history, location, setRefreshCheckLogin } = props;
@@ -25,10 +36,182 @@ function ListProgramaProduccionMaquinas(props) {
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
 
+    // Para hacer uso del modal
+    const [showModal, setShowModal] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaLT1 = (content) => {
+        setTitulosModal("Habilitando el primer turno del lunes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaLT1 = (content) => {
+        setTitulosModal("Deshabilitando el primer turno del lunes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaLT2 = (content) => {
+        setTitulosModal("Habilitando el segundo turno del lunes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaLT2 = (content) => {
+        setTitulosModal("Deshabilitando el segundo turno del lunes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaMT1 = (content) => {
+        setTitulosModal("Habilitando el primer turno del martes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaMT1 = (content) => {
+        setTitulosModal("Deshabilitando el primer turno del martes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaMT2 = (content) => {
+        setTitulosModal("Habilitando el segundo turno del martes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaMT2 = (content) => {
+        setTitulosModal("Deshabilitando el segundo turno del martes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaMIT1 = (content) => {
+        setTitulosModal("Habilitando el primer turno del miercoles");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaMIT1 = (content) => {
+        setTitulosModal("Deshabilitando el primer turno del miercoles");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaMIT2 = (content) => {
+        setTitulosModal("Habilitando el primer segundo del miercoles");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaMIT2 = (content) => {
+        setTitulosModal("Deshabilitando el segundo turno del miercoles");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaJT1 = (content) => {
+        setTitulosModal("Habilitando el primer turno del jueves");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaJT1 = (content) => {
+        setTitulosModal("Deshabilitando el primer turno del jueves");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaJT2 = (content) => {
+        setTitulosModal("Habilitando el segundo turno del jueves");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaJT2 = (content) => {
+        setTitulosModal("Deshabilitando el segundo turno del jueves");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaVT1 = (content) => {
+        setTitulosModal("Habilitando el primer turno del viernes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaVT1 = (content) => {
+        setTitulosModal("Deshabilitando el primer turno del viernes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaVT2 = (content) => {
+        setTitulosModal("Habilitando el segundo turno del viernes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaVT2 = (content) => {
+        setTitulosModal("Deshabilitando el segundo turno del viernes");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const habilitaST1 = (content) => {
+        setTitulosModal("Habilitando el primer turno del sabado");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para la eliminacion fisica de usuarios
+    const deshabilitaST1 = (content) => {
+        setTitulosModal("Deshabilitando el primer turno del sabado");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
     const columns = [
         {
+            name: '# MAQ',
+            selector: row => row.ordenProduccion.noMaquina,
+            maxWidth: 400,
+            minWidth: 140,
+            width: 200,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
             name: 'MAQ',
-            selector: row => row.ordenProduccion.noMaquina + "-" + row.ordenProduccion.maquina,
+            selector: row => row.ordenProduccion.maquina,
+            maxWidth: 400,
+            minWidth: 140,
+            width: 200,
             sortable: false,
             center: true,
             reorder: false
@@ -51,51 +234,15 @@ function ListProgramaProduccionMaquinas(props) {
                                 className="editar"
                                 title="Deshabilitar el primer turno del lunes"
                                 onClick={() => {
-                                    const dataTemp = {
-                                        programa: {
-                                            fechaInicio: row.programa.fechaInicio,
-                                            lunesT1: row.programa.lunesT1,
-                                            estadoLT1: row.programa.estadoLT1 === "false" ? "true" : "false",
-                                            lunesT2: row.programa.lunesT2,
-                                            estadoLT2: row.programa.estadoLT2,
-                                            martesT1: row.programa.martesT1,
-                                            estadoMT1: row.programa.estadoMT1,
-                                            martesT2: row.programa.martesT2,
-                                            estadoMT2: row.programa.estadoMT2,
-                                            miercolesT1: row.programa.miercolesT1,
-                                            estadoMIT1: row.programa.estadoMIT1,
-                                            miercolesT2: row.programa.miercolesT2,
-                                            estadoMIT2: row.programa.estadoMIT2,
-                                            juevesT1: row.programa.juevesT1,
-                                            estadoJT1: row.programa.estadoJT1,
-                                            juevesT2: row.programa.juevesT2,
-                                            estadoJT2: row.programa.estadoJT2,
-                                            viernesT1: row.programa.viernesT1,
-                                            estadoVT1: row.programa.estadoVT1,
-                                            viernesT2: row.programa.viernesT2,
-                                            estadoVT2: row.programa.estadoVT2,
-                                            sabadoT1: row.programa.sabadoT1,
-                                            estadoST1: row.programa.estadoST1,
-                                        }
-                                    }
-                                    //console.log(dataTemp)
-                            
-                                    try {
-                                        habilitaLunesT1(row.id, dataTemp).then(response => {
-                                            const { data } = response;
-                                            // console.log(data)
-                                            toast.success(data.mensaje);
-                                            LogsInformativos("Se actualizo el estado del primer turno del lunes " + row.folio, dataTemp);
-                                            history.push({
-                                                search: queryString.stringify(""),
-                                            });
-                                        })
-                                    } catch (e) {
-                                        console.log(e)
-                                    }
+                                    deshabilitaLT1(
+                                        <HabilitarLunesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
                                 }}
                             >
-                                <font color="#198754">{dayjs(row.programa.lunesT1).format("LL")}</font>
+                                {dayjs(row.programa.lunesT1).format("LL")}
                             </Badge>
                         </>
                     )
@@ -135,7 +282,7 @@ function ListProgramaProduccionMaquinas(props) {
                                         }
                                     }
                                     //console.log(dataTemp)
-                            
+
                                     try {
                                         habilitaLunesT1(row.id, dataTemp).then(response => {
                                             const { data } = response;
@@ -170,51 +317,15 @@ function ListProgramaProduccionMaquinas(props) {
                                 className="editar"
                                 title="Deshabilitar el segundo turno del lunes"
                                 onClick={() => {
-                                    const dataTemp = {
-                                        programa: {
-                                            fechaInicio: row.programa.fechaInicio,
-                                            lunesT1: row.programa.lunesT1,
-                                            estadoLT1: row.programa.estadoLT1,
-                                            lunesT2: row.programa.lunesT2,
-                                            estadoLT2: row.programa.estadoLT2 === "false" ? "true" : "false",
-                                            martesT1: row.programa.martesT1,
-                                            estadoMT1: row.programa.estadoMT1,
-                                            martesT2: row.programa.martesT2,
-                                            estadoMT2: row.programa.estadoMT2,
-                                            miercolesT1: row.programa.miercolesT1,
-                                            estadoMIT1: row.programa.estadoMIT1,
-                                            miercolesT2: row.programa.miercolesT2,
-                                            estadoMIT2: row.programa.estadoMIT2,
-                                            juevesT1: row.programa.juevesT1,
-                                            estadoJT1: row.programa.estadoJT1,
-                                            juevesT2: row.programa.juevesT2,
-                                            estadoJT2: row.programa.estadoJT2,
-                                            viernesT1: row.programa.viernesT1,
-                                            estadoVT1: row.programa.estadoVT1,
-                                            viernesT2: row.programa.viernesT2,
-                                            estadoVT2: row.programa.estadoVT2,
-                                            sabadoT1: row.programa.sabadoT1,
-                                            estadoST1: row.programa.estadoST1,
-                                        }
-                                    }
-                                    //console.log(dataTemp)
-                            
-                                    try {
-                                        habilitaLunesT2(row.id, dataTemp).then(response => {
-                                            const { data } = response;
-                                            // console.log(data)
-                                            toast.success(data.mensaje);
-                                            LogsInformativos("Se actualizo el estado del segundo turno del lunes " + row.folio, dataTemp);
-                                            history.push({
-                                                search: queryString.stringify(""),
-                                            });
-                                        })
-                                    } catch (e) {
-                                        console.log(e)
-                                    }
+                                    deshabilitaLT2(
+                                        <HabilitarLunesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
                                 }}
                             >
-                                <font color="#198754">{dayjs(row.programa.lunesT2).format("LL")}</font>
+                                {dayjs(row.programa.lunesT2).format("LL")}
                             </Badge>
                         </>
                     )
@@ -254,7 +365,7 @@ function ListProgramaProduccionMaquinas(props) {
                                         }
                                     }
                                     //console.log(dataTemp)
-                            
+
                                     try {
                                         habilitaLunesT2(row.id, dataTemp).then(response => {
                                             const { data } = response;
@@ -289,51 +400,15 @@ function ListProgramaProduccionMaquinas(props) {
                                 className="editar"
                                 title="Deshabilitar el segundo turno del lunes"
                                 onClick={() => {
-                                    const dataTemp = {
-                                        programa: {
-                                            fechaInicio: row.programa.fechaInicio,
-                                            lunesT1: row.programa.lunesT1,
-                                            estadoLT1: row.programa.estadoLT1,
-                                            lunesT2: row.programa.lunesT2,
-                                            estadoLT2: row.programa.estadoLT2,
-                                            martesT1: row.programa.martesT1,
-                                            estadoMT1: row.programa.estadoMT1 === "false" ? "true" : "false",
-                                            martesT2: row.programa.martesT2,
-                                            estadoMT2: row.programa.estadoMT2,
-                                            miercolesT1: row.programa.miercolesT1,
-                                            estadoMIT1: row.programa.estadoMIT1,
-                                            miercolesT2: row.programa.miercolesT2,
-                                            estadoMIT2: row.programa.estadoMIT2,
-                                            juevesT1: row.programa.juevesT1,
-                                            estadoJT1: row.programa.estadoJT1,
-                                            juevesT2: row.programa.juevesT2,
-                                            estadoJT2: row.programa.estadoJT2,
-                                            viernesT1: row.programa.viernesT1,
-                                            estadoVT1: row.programa.estadoVT1,
-                                            viernesT2: row.programa.viernesT2,
-                                            estadoVT2: row.programa.estadoVT2,
-                                            sabadoT1: row.programa.sabadoT1,
-                                            estadoST1: row.programa.estadoST1,
-                                        }
-                                    }
-                                    //console.log(dataTemp)
-                            
-                                    try {
-                                        habilitaMartesT1(row.id, dataTemp).then(response => {
-                                            const { data } = response;
-                                            // console.log(data)
-                                            toast.success(data.mensaje);
-                                            LogsInformativos("Se actualizo el estado del segundo turno del lunes " + row.folio, dataTemp);
-                                            history.push({
-                                                search: queryString.stringify(""),
-                                            });
-                                        })
-                                    } catch (e) {
-                                        console.log(e)
-                                    }
+                                    deshabilitaMT1(
+                                        <HabilitarMartesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
                                 }}
                             >
-                                <font color="#198754">{dayjs(row.programa.martesT1).format("LL")}</font>
+                                {dayjs(row.programa.martesT1).format("LL")}
                             </Badge>
                         </>
                     )
@@ -373,7 +448,7 @@ function ListProgramaProduccionMaquinas(props) {
                                         }
                                     }
                                     //console.log(dataTemp)
-                            
+
                                     try {
                                         habilitaMartesT1(row.id, dataTemp).then(response => {
                                             const { data } = response;
@@ -408,51 +483,15 @@ function ListProgramaProduccionMaquinas(props) {
                                 className="editar"
                                 title="Deshabilitar el segundo turno del martes"
                                 onClick={() => {
-                                    const dataTemp = {
-                                        programa: {
-                                            fechaInicio: row.programa.fechaInicio,
-                                            lunesT1: row.programa.lunesT1,
-                                            estadoLT1: row.programa.estadoLT1,
-                                            lunesT2: row.programa.lunesT2,
-                                            estadoLT2: row.programa.estadoLT2,
-                                            martesT1: row.programa.martesT1,
-                                            estadoMT1: row.programa.estadoMT1,
-                                            martesT2: row.programa.martesT2,
-                                            estadoMT2: row.programa.estadoMT2 === "false" ? "true" : "false",
-                                            miercolesT1: row.programa.miercolesT1,
-                                            estadoMIT1: row.programa.estadoMIT1,
-                                            miercolesT2: row.programa.miercolesT2,
-                                            estadoMIT2: row.programa.estadoMIT2,
-                                            juevesT1: row.programa.juevesT1,
-                                            estadoJT1: row.programa.estadoJT1,
-                                            juevesT2: row.programa.juevesT2,
-                                            estadoJT2: row.programa.estadoJT2,
-                                            viernesT1: row.programa.viernesT1,
-                                            estadoVT1: row.programa.estadoVT1,
-                                            viernesT2: row.programa.viernesT2,
-                                            estadoVT2: row.programa.estadoVT2,
-                                            sabadoT1: row.programa.sabadoT1,
-                                            estadoST1: row.programa.estadoST1,
-                                        }
-                                    }
-                                    //console.log(dataTemp)
-                            
-                                    try {
-                                        habilitaMartesT2(row.id, dataTemp).then(response => {
-                                            const { data } = response;
-                                            // console.log(data)
-                                            toast.success(data.mensaje);
-                                            LogsInformativos("Se actualizo el estado del segundo turno del martes " + row.folio, dataTemp);
-                                            history.push({
-                                                search: queryString.stringify(""),
-                                            });
-                                        })
-                                    } catch (e) {
-                                        console.log(e)
-                                    }
+                                    deshabilitaMT2(
+                                        <HabilitarMartesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
                                 }}
                             >
-                                <font color="#198754">{dayjs(row.programa.martesT2).format("LL")}</font>
+                                {dayjs(row.programa.martesT2).format("LL")}
                             </Badge>
                         </>
                     )
@@ -492,7 +531,7 @@ function ListProgramaProduccionMaquinas(props) {
                                         }
                                     }
                                     //console.log(dataTemp)
-                            
+
                                     try {
                                         habilitaMartesT2(row.id, dataTemp).then(response => {
                                             const { data } = response;
@@ -527,51 +566,15 @@ function ListProgramaProduccionMaquinas(props) {
                                 className="editar"
                                 title="Deshabilitar el primer turno del miercoles"
                                 onClick={() => {
-                                    const dataTemp = {
-                                        programa: {
-                                            fechaInicio: row.programa.fechaInicio,
-                                            lunesT1: row.programa.lunesT1,
-                                            estadoLT1: row.programa.estadoLT1,
-                                            lunesT2: row.programa.lunesT2,
-                                            estadoLT2: row.programa.estadoLT2,
-                                            martesT1: row.programa.martesT1,
-                                            estadoMT1: row.programa.estadoMT1,
-                                            martesT2: row.programa.martesT2,
-                                            estadoMT2: row.programa.estadoMT2,
-                                            miercolesT1: row.programa.miercolesT1,
-                                            estadoMIT1: row.programa.estadoMIT1  === "false" ? "true" : "false",
-                                            miercolesT2: row.programa.miercolesT2,
-                                            estadoMIT2: row.programa.estadoMIT2,
-                                            juevesT1: row.programa.juevesT1,
-                                            estadoJT1: row.programa.estadoJT1,
-                                            juevesT2: row.programa.juevesT2,
-                                            estadoJT2: row.programa.estadoJT2,
-                                            viernesT1: row.programa.viernesT1,
-                                            estadoVT1: row.programa.estadoVT1,
-                                            viernesT2: row.programa.viernesT2,
-                                            estadoVT2: row.programa.estadoVT2,
-                                            sabadoT1: row.programa.sabadoT1,
-                                            estadoST1: row.programa.estadoST1,
-                                        }
-                                    }
-                                    //console.log(dataTemp)
-                            
-                                    try {
-                                        habilitaMiercolesT1(row.id, dataTemp).then(response => {
-                                            const { data } = response;
-                                            // console.log(data)
-                                            toast.success(data.mensaje);
-                                            LogsInformativos("Se actualizo el estado del primer turno del miercoles " + row.folio, dataTemp);
-                                            history.push({
-                                                search: queryString.stringify(""),
-                                            });
-                                        })
-                                    } catch (e) {
-                                        console.log(e)
-                                    }
+                                    deshabilitaMIT1(
+                                        <HabilitarMiercolesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
                                 }}
                             >
-                                <font color="#198754">{dayjs(row.programa.miercolesT1).format("LL")}</font>
+                                {dayjs(row.programa.miercolesT1).format("LL")}
                             </Badge>
                         </>
                     )
@@ -595,7 +598,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             martesT2: row.programa.martesT2,
                                             estadoMT2: row.programa.estadoMT2,
                                             miercolesT1: row.programa.miercolesT1,
-                                            estadoMIT1: row.programa.estadoMIT1  === "false" ? "true" : "false",
+                                            estadoMIT1: row.programa.estadoMIT1 === "false" ? "true" : "false",
                                             miercolesT2: row.programa.miercolesT2,
                                             estadoMIT2: row.programa.estadoMIT2,
                                             juevesT1: row.programa.juevesT1,
@@ -611,7 +614,7 @@ function ListProgramaProduccionMaquinas(props) {
                                         }
                                     }
                                     //console.log(dataTemp)
-                            
+
                                     try {
                                         habilitaMiercolesT1(row.id, dataTemp).then(response => {
                                             const { data } = response;
@@ -646,51 +649,15 @@ function ListProgramaProduccionMaquinas(props) {
                                 className="editar"
                                 title="Deshabilitar el segundo turno del miercoles"
                                 onClick={() => {
-                                    const dataTemp = {
-                                        programa: {
-                                            fechaInicio: row.programa.fechaInicio,
-                                            lunesT1: row.programa.lunesT1,
-                                            estadoLT1: row.programa.estadoLT1,
-                                            lunesT2: row.programa.lunesT2,
-                                            estadoLT2: row.programa.estadoLT2,
-                                            martesT1: row.programa.martesT1,
-                                            estadoMT1: row.programa.estadoMT1,
-                                            martesT2: row.programa.martesT2,
-                                            estadoMT2: row.programa.estadoMT2,
-                                            miercolesT1: row.programa.miercolesT1,
-                                            estadoMIT1: row.programa.estadoMIT1,
-                                            miercolesT2: row.programa.miercolesT2,
-                                            estadoMIT2: row.programa.estadoMIT2 === "false" ? "true" : "false",
-                                            juevesT1: row.programa.juevesT1,
-                                            estadoJT1: row.programa.estadoJT1,
-                                            juevesT2: row.programa.juevesT2,
-                                            estadoJT2: row.programa.estadoJT2,
-                                            viernesT1: row.programa.viernesT1,
-                                            estadoVT1: row.programa.estadoVT1,
-                                            viernesT2: row.programa.viernesT2,
-                                            estadoVT2: row.programa.estadoVT2,
-                                            sabadoT1: row.programa.sabadoT1,
-                                            estadoST1: row.programa.estadoST1,
-                                        }
-                                    }
-                                    //console.log(dataTemp)
-                            
-                                    try {
-                                        habilitaMiercolesT2(row.id, dataTemp).then(response => {
-                                            const { data } = response;
-                                            // console.log(data)
-                                            toast.success(data.mensaje);
-                                            LogsInformativos("Se actualizo el estado del segundo turno del miercoles " + row.folio, dataTemp);
-                                            history.push({
-                                                search: queryString.stringify(""),
-                                            });
-                                        })
-                                    } catch (e) {
-                                        console.log(e)
-                                    }
+                                    deshabilitaMIT2(
+                                        <HabilitarMiercolesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
                                 }}
                             >
-                                <font color="#198754">{dayjs(row.programa.miercolesT2).format("LL")}</font>
+                                {dayjs(row.programa.miercolesT2).format("LL")}
                             </Badge>
                         </>
                     )
@@ -730,7 +697,7 @@ function ListProgramaProduccionMaquinas(props) {
                                         }
                                     }
                                     //console.log(dataTemp)
-                            
+
                                     try {
                                         habilitaMiercolesT2(row.id, dataTemp).then(response => {
                                             const { data } = response;
@@ -765,51 +732,15 @@ function ListProgramaProduccionMaquinas(props) {
                                 className="editar"
                                 title="Deshabilitar el primer turno del jueves"
                                 onClick={() => {
-                                    const dataTemp = {
-                                        programa: {
-                                            fechaInicio: row.programa.fechaInicio,
-                                            lunesT1: row.programa.lunesT1,
-                                            estadoLT1: row.programa.estadoLT1,
-                                            lunesT2: row.programa.lunesT2,
-                                            estadoLT2: row.programa.estadoLT2,
-                                            martesT1: row.programa.martesT1,
-                                            estadoMT1: row.programa.estadoMT1,
-                                            martesT2: row.programa.martesT2,
-                                            estadoMT2: row.programa.estadoMT2,
-                                            miercolesT1: row.programa.miercolesT1,
-                                            estadoMIT1: row.programa.estadoMIT1,
-                                            miercolesT2: row.programa.miercolesT2,
-                                            estadoMIT2: row.programa.estadoMIT2,
-                                            juevesT1: row.programa.juevesT1,
-                                            estadoJT1: row.programa.estadoJT1  === "false" ? "true" : "false",
-                                            juevesT2: row.programa.juevesT2,
-                                            estadoJT2: row.programa.estadoJT2,
-                                            viernesT1: row.programa.viernesT1,
-                                            estadoVT1: row.programa.estadoVT1,
-                                            viernesT2: row.programa.viernesT2,
-                                            estadoVT2: row.programa.estadoVT2,
-                                            sabadoT1: row.programa.sabadoT1,
-                                            estadoST1: row.programa.estadoST1,
-                                        }
-                                    }
-                                    //console.log(dataTemp)
-                            
-                                    try {
-                                        habilitaJuevesT1(row.id, dataTemp).then(response => {
-                                            const { data } = response;
-                                            // console.log(data)
-                                            toast.success(data.mensaje);
-                                            LogsInformativos("Se actualizo el estado del segundo turno del miercoles " + row.olio, dataTemp);
-                                            history.push({
-                                                search: queryString.stringify(""),
-                                            });
-                                        })
-                                    } catch (e) {
-                                        console.log(e)
-                                    }
+                                    deshabilitaJT1(
+                                        <HabilitarJuevesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
                                 }}
                             >
-                                <font color="#198754">{dayjs(row.programa.juevesT1).format("LL")}</font>
+                                {dayjs(row.programa.juevesT1).format("LL")}
                             </Badge>
                         </>
                     )
@@ -837,7 +768,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             miercolesT2: row.programa.miercolesT2,
                                             estadoMIT2: row.programa.estadoMIT2,
                                             juevesT1: row.programa.juevesT1,
-                                            estadoJT1: row.programa.estadoJT1  === "false" ? "true" : "false",
+                                            estadoJT1: row.programa.estadoJT1 === "false" ? "true" : "false",
                                             juevesT2: row.programa.juevesT2,
                                             estadoJT2: row.programa.estadoJT2,
                                             viernesT1: row.programa.viernesT1,
@@ -849,7 +780,7 @@ function ListProgramaProduccionMaquinas(props) {
                                         }
                                     }
                                     //console.log(dataTemp)
-                            
+
                                     try {
                                         habilitaJuevesT1(row.id, dataTemp).then(response => {
                                             const { data } = response;
@@ -884,51 +815,15 @@ function ListProgramaProduccionMaquinas(props) {
                                 className="editar"
                                 title="Deshabilitar el segundo turno del jueves"
                                 onClick={() => {
-                                    const dataTemp = {
-                                        programa: {
-                                            fechaInicio: row.programa.fechaInicio,
-                                            lunesT1: row.programa.lunesT1,
-                                            estadoLT1: row.programa.estadoLT1,
-                                            lunesT2: row.programa.lunesT2,
-                                            estadoLT2: row.programa.estadoLT2,
-                                            martesT1: row.programa.martesT1,
-                                            estadoMT1: row.programa.estadoMT1,
-                                            martesT2: row.programa.martesT2,
-                                            estadoMT2: row.programa.estadoMT2,
-                                            miercolesT1: row.programa.miercolesT1,
-                                            estadoMIT1: row.programa.estadoMIT1,
-                                            miercolesT2: row.programa.miercolesT2,
-                                            estadoMIT2: row.programa.estadoMIT2,
-                                            juevesT1: row.programa.juevesT1,
-                                            estadoJT1: row.programa.estadoJT1,
-                                            juevesT2: row.programa.juevesT2,
-                                            estadoJT2: row.programa.estadoJT2  === "false" ? "true" : "false",
-                                            viernesT1: row.programa.viernesT1,
-                                            estadoVT1: row.programa.estadoVT1,
-                                            viernesT2: row.programa.viernesT2,
-                                            estadoVT2: row.programa.estadoVT2,
-                                            sabadoT1: row.programa.sabadoT1,
-                                            estadoST1: row.programa.estadoST1,
-                                        }
-                                    }
-                                    //console.log(dataTemp)
-                            
-                                    try {
-                                        habilitaJuevesT2(row.id, dataTemp).then(response => {
-                                            const { data } = response;
-                                            // console.log(data)
-                                            toast.success(data.mensaje);
-                                            LogsInformativos("Se actualizo el estado del segundo turno del miercoles " + row.olio, dataTemp);
-                                            history.push({
-                                                search: queryString.stringify(""),
-                                            });
-                                        })
-                                    } catch (e) {
-                                        console.log(e)
-                                    }
+                                    deshabilitaJT2(
+                                        <HabilitarJuevesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
                                 }}
                             >
-                                <font color="#198754">{dayjs(row.programa.juevesT2).format("LL")}</font>
+                                {dayjs(row.programa.juevesT2).format("LL")}
                             </Badge>
                         </>
                     )
@@ -958,7 +853,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             juevesT1: row.programa.juevesT1,
                                             estadoJT1: row.programa.estadoJT1,
                                             juevesT2: row.programa.juevesT2,
-                                            estadoJT2: row.programa.estadoJT2  === "false" ? "true" : "false",
+                                            estadoJT2: row.programa.estadoJT2 === "false" ? "true" : "false",
                                             viernesT1: row.programa.viernesT1,
                                             estadoVT1: row.programa.estadoVT1,
                                             viernesT2: row.programa.viernesT2,
@@ -968,7 +863,7 @@ function ListProgramaProduccionMaquinas(props) {
                                         }
                                     }
                                     //console.log(dataTemp)
-                            
+
                                     try {
                                         habilitaJuevesT2(row.id, dataTemp).then(response => {
                                             const { data } = response;
@@ -1003,51 +898,15 @@ function ListProgramaProduccionMaquinas(props) {
                                 className="editar"
                                 title="Deshabilitar el segundo turno del jueves"
                                 onClick={() => {
-                                    const dataTemp = {
-                                        programa: {
-                                            fechaInicio: row.programa.fechaInicio,
-                                            lunesT1: row.programa.lunesT1,
-                                            estadoLT1: row.programa.estadoLT1,
-                                            lunesT2: row.programa.lunesT2,
-                                            estadoLT2: row.programa.estadoLT2,
-                                            martesT1: row.programa.martesT1,
-                                            estadoMT1: row.programa.estadoMT1,
-                                            martesT2: row.programa.martesT2,
-                                            estadoMT2: row.programa.estadoMT2,
-                                            miercolesT1: row.programa.miercolesT1,
-                                            estadoMIT1: row.programa.estadoMIT1,
-                                            miercolesT2: row.programa.miercolesT2,
-                                            estadoMIT2: row.programa.estadoMIT2,
-                                            juevesT1: row.programa.juevesT1,
-                                            estadoJT1: row.programa.estadoJT1,
-                                            juevesT2: row.programa.juevesT2,
-                                            estadoJT2: row.programa.estadoJT2,
-                                            viernesT1: row.programa.viernesT1,
-                                            estadoVT1: row.programa.estadoVT1  === "false" ? "true" : "false",
-                                            viernesT2: row.programa.viernesT2,
-                                            estadoVT2: row.programa.estadoVT2,
-                                            sabadoT1: row.programa.sabadoT1,
-                                            estadoST1: row.programa.estadoST1,
-                                        }
-                                    }
-                                    //console.log(dataTemp)
-                            
-                                    try {
-                                        habilitaViernesT1(row.id, dataTemp).then(response => {
-                                            const { data } = response;
-                                            // console.log(data)
-                                            toast.success(data.mensaje);
-                                            LogsInformativos("Se actualizo el estado del segundo turno del miercoles " + row.olio, dataTemp);
-                                            history.push({
-                                                search: queryString.stringify(""),
-                                            });
-                                        })
-                                    } catch (e) {
-                                        console.log(e)
-                                    }
+                                    deshabilitaVT1(
+                                        <HabilitarViernesT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
                                 }}
                             >
-                                <font color="#198754">{dayjs(row.programa.viernesT1).format("LL")}</font>
+                               {dayjs(row.programa.viernesT1).format("LL")}
                             </Badge>
                         </>
                     )
@@ -1079,7 +938,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             juevesT2: row.programa.juevesT2,
                                             estadoJT2: row.programa.estadoJT2,
                                             viernesT1: row.programa.viernesT1,
-                                            estadoVT1: row.programa.estadoVT1  === "false" ? "true" : "false",
+                                            estadoVT1: row.programa.estadoVT1 === "false" ? "true" : "false",
                                             viernesT2: row.programa.viernesT2,
                                             estadoVT2: row.programa.estadoVT2,
                                             sabadoT1: row.programa.sabadoT1,
@@ -1087,7 +946,7 @@ function ListProgramaProduccionMaquinas(props) {
                                         }
                                     }
                                     //console.log(dataTemp)
-                            
+
                                     try {
                                         habilitaViernesT1(row.id, dataTemp).then(response => {
                                             const { data } = response;
@@ -1122,51 +981,15 @@ function ListProgramaProduccionMaquinas(props) {
                                 className="editar"
                                 title="Deshabilitar el segundo turno del viernes"
                                 onClick={() => {
-                                    const dataTemp = {
-                                        programa: {
-                                            fechaInicio: row.programa.fechaInicio,
-                                            lunesT1: row.programa.lunesT1,
-                                            estadoLT1: row.programa.estadoLT1,
-                                            lunesT2: row.programa.lunesT2,
-                                            estadoLT2: row.programa.estadoLT2,
-                                            martesT1: row.programa.martesT1,
-                                            estadoMT1: row.programa.estadoMT1,
-                                            martesT2: row.programa.martesT2,
-                                            estadoMT2: row.programa.estadoMT2,
-                                            miercolesT1: row.programa.miercolesT1,
-                                            estadoMIT1: row.programa.estadoMIT1,
-                                            miercolesT2: row.programa.miercolesT2,
-                                            estadoMIT2: row.programa.estadoMIT2,
-                                            juevesT1: row.programa.juevesT1,
-                                            estadoJT1: row.programa.estadoJT1,
-                                            juevesT2: row.programa.juevesT2,
-                                            estadoJT2: row.programa.estadoJT2,
-                                            viernesT1: row.programa.viernesT1,
-                                            estadoVT1: row.programa.estadoVT1,
-                                            viernesT2: row.programa.viernesT2,
-                                            estadoVT2: row.programa.estadoVT2 === "false" ? "true" : "false",
-                                            sabadoT1: row.programa.sabadoT1,
-                                            estadoST1: row.programa.estadoST1,
-                                        }
-                                    }
-                                    //console.log(dataTemp)
-                            
-                                    try {
-                                        habilitaViernesT2(row.id, dataTemp).then(response => {
-                                            const { data } = response;
-                                            // console.log(data)
-                                            toast.success(data.mensaje);
-                                            LogsInformativos("Se actualizo el estado del segundo turno del miercoles " + row.olio, dataTemp);
-                                            history.push({
-                                                search: queryString.stringify(""),
-                                            });
-                                        })
-                                    } catch (e) {
-                                        console.log(e)
-                                    }
+                                    deshabilitaVT2(
+                                        <HabilitarViernesT2
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
                                 }}
                             >
-                                <font color="#198754">{dayjs(row.programa.viernesT2).format("LL")}</font>
+                                {dayjs(row.programa.viernesT2).format("LL")}
                             </Badge>
                         </>
                     )
@@ -1206,7 +1029,7 @@ function ListProgramaProduccionMaquinas(props) {
                                         }
                                     }
                                     //console.log(dataTemp)
-                            
+
                                     try {
                                         habilitaViernesT2(row.id, dataTemp).then(response => {
                                             const { data } = response;
@@ -1241,51 +1064,15 @@ function ListProgramaProduccionMaquinas(props) {
                                 className="editar"
                                 title="Deshabilitar el segundo turno del jueves"
                                 onClick={() => {
-                                    const dataTemp = {
-                                        programa: {
-                                            fechaInicio: row.programa.fechaInicio,
-                                            lunesT1: row.programa.lunesT1,
-                                            estadoLT1: row.programa.estadoLT1,
-                                            lunesT2: row.programa.lunesT2,
-                                            estadoLT2: row.programa.estadoLT2,
-                                            martesT1: row.programa.martesT1,
-                                            estadoMT1: row.programa.estadoMT1,
-                                            martesT2: row.programa.martesT2,
-                                            estadoMT2: row.programa.estadoMT2,
-                                            miercolesT1: row.programa.miercolesT1,
-                                            estadoMIT1: row.programa.estadoMIT1,
-                                            miercolesT2: row.programa.miercolesT2,
-                                            estadoMIT2: row.programa.estadoMIT2,
-                                            juevesT1: row.programa.juevesT1,
-                                            estadoJT1: row.programa.estadoJT1,
-                                            juevesT2: row.programa.juevesT2,
-                                            estadoJT2: row.programa.estadoJT2,
-                                            viernesT1: row.programa.viernesT1,
-                                            estadoVT1: row.programa.estadoVT1,
-                                            viernesT2: row.programa.viernesT2,
-                                            estadoVT2: row.programa.estadoVT2,
-                                            sabadoT1: row.programa.sabadoT1,
-                                            estadoST1: row.programa.estadoST1 === "false" ? "true" : "false",
-                                        }
-                                    }
-                                    //console.log(dataTemp)
-                            
-                                    try {
-                                        habilitaSabadoT1(row.id, dataTemp).then(response => {
-                                            const { data } = response;
-                                            // console.log(data)
-                                            toast.success(data.mensaje);
-                                            LogsInformativos("Se actualizo el estado del primer turno del sabado " + row.folio, dataTemp);
-                                            history.push({
-                                                search: queryString.stringify(""),
-                                            });
-                                        })
-                                    } catch (e) {
-                                        console.log(e)
-                                    }
+                                    deshabilitaST1(
+                                        <HabilitarSabadoT1
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
                                 }}
                             >
-                                <font color="#198754">{dayjs(row.programa.sabadoT1).format("LL")}</font>
+                                {dayjs(row.programa.sabadoT1).format("LL")}
                             </Badge>
                         </>
                     )
@@ -1325,7 +1112,7 @@ function ListProgramaProduccionMaquinas(props) {
                                         }
                                     }
                                     //console.log(dataTemp)
-                            
+
                                     try {
                                         habilitaSabadoT1(row.id, dataTemp).then(response => {
                                             const { data } = response;
@@ -1569,6 +1356,10 @@ function ListProgramaProduccionMaquinas(props) {
                     pagination
                 />
             </Container>
+
+            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }
