@@ -158,19 +158,22 @@ function ModificacionProduccion(props) {
 
     const [registroAnterior, setRegistroAnterior] = useState(0);
 
+    const [registroAnteriorMaterial, setRegistroAnteriorMaterial] = useState(0);
+
     useEffect(() => {
         //
         obtenerProduccion(id).then(response => {
             const { data } = response;
             //console.log(data)
-            const { acumulado, folio, generalidades, planeacion, bom, resultados, materiaPrima, observaciones } = data;
-            setFormData(valoresAlmacenados(data))
-            setRegistroAnterior(acumulado)
-            setListResultados(resultados)
-            setListRegistros(materiaPrima)
+            const { acumulado, acumuladoMaterial, folio, generalidades, planeacion, bom, resultados, materiaPrima, observaciones } = data;
+            setFormData(valoresAlmacenados(data));
+            setRegistroAnterior(acumulado);
+            setRegistroAnteriorMaterial(acumuladoMaterial);
+            setListResultados(resultados);
+            setListRegistros(materiaPrima);
             // setFechaCreacion(fechaElaboracion)
         }).catch(e => {
-            console.log(e)
+            console.log(e);
         })
     }, []);
 
@@ -276,6 +279,8 @@ function ModificacionProduccion(props) {
 
         // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
         const dataTemp = {
+            acumulado: registroAnterior,
+            acumuladoMaterial: registroAnteriorMaterial,
             generalidades: {
                 ordenVenta: formDataPlaneacion.ordenVenta == "" ? formData.ordenVenta : formDataPlaneacion.ordenVenta,
                 folioPlaneacion: formDataPlaneacion.folioPlaneacion == "" ? formData.folioPlaneacion : formDataPlaneacion.folioPlaneacion,
@@ -1079,6 +1084,9 @@ function ModificacionProduccion(props) {
                                                     <AgregarRegistro
                                                         listRegistros={listRegistros}
                                                         setListRegistros={setListRegistros}
+                                                        registroAnterior={registroAnteriorMaterial}
+                                                        setRegistroAnterior={setRegistroAnteriorMaterial}
+                                                        kgMaterial={kgMaterial}
                                                         setShowModal={setShowModal}
                                                     />)
                                             }}

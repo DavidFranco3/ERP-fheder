@@ -1,10 +1,28 @@
 import { useEffect, useMemo, useState } from 'react';
-import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { Alert, Button, Col, Row, Form, Container, Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
+import BasicModal from "../../Modal/BasicModal";
+import BuscarArticuloAlmacen from '../../../page/BuscarArticuloAlmacen';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 function AgregarRegistro(props) {
-    const { listRegistros, setListRegistros, setRefreshCheckLogin, setShowModal } = props;
+    const { listRegistros, setListRegistros, setRefreshCheckLogin, setShowModal, registroAnterior, setRegistroAnterior, kgMaterial } = props;
+
+    // Para hacer uso del modal
+    const [showModal2, setShowModal2] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+     // Para almacenar la informacion del formulario
+     const [formDataAlmacen, setFormDataAlmacen] = useState(initialAlmacen());
+
+    // Para la eliminacion fisica de usuarios
+    const buscarArticulo = (content) => {
+        setTitulosModal("Buscar articulo del almacen");
+        setContentModal(content);
+        setShowModal2(true);
+    }
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
@@ -23,12 +41,13 @@ function AgregarRegistro(props) {
         const surtio = document.getElementById("surtio").value
         const recibio = document.getElementById("recibio").value
         const observaciones = document.getElementById("observaciones").value
+        const cantidadSurtida = document.getElementById("cantidadSurtida").value
 
-        if (!fecha || !acumulado || !material || !pendienteSurtir || !virgenMolido || !surtio || !recibio || !observaciones) {
+        if (!fecha || !acumulado || !material || !pendienteSurtir || !virgenMolido || !surtio || !recibio || !observaciones || !cantidadSurtida) {
             toast.warning("Completa la información del resultado");
         } else {
             setLoading(true);
-            
+
             const dataTemp = {
                 fecha: fecha,
                 acumulado: acumulado,
@@ -37,7 +56,8 @@ function AgregarRegistro(props) {
                 virgenMolido: virgenMolido,
                 surtio: surtio,
                 recibio: recibio,
-                observaciones: observaciones
+                observaciones: observaciones,
+                cantidadSurtida: cantidadSurtida,
             }
             // console.log(dataTemp)
 
@@ -45,8 +65,36 @@ function AgregarRegistro(props) {
                 [...listRegistros, dataTemp]
             );
 
+            setRegistroAnterior(acumulado)
+
             setShowModal(false)
         }
+    }
+
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = (hoy.getMonth() + 1) > 10 && hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 && hoy.getDate() > 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDate() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [fechaRegistro, setFechaRegistro] = useState(fecha);
+
+    const onChange = e => {
+        setFormDataAlmacen({ ...formDataAlmacen, [e.target.name]: e.target.value })
+    }
+
+    const [acumulado, setAcumulado] = useState(0);
+
+    const [pendienteSurtir, setPendienteSurtir] = useState(0);
+
+    const calculos = () => {
+        const cantidadSurtida = document.getElementById("cantidadSurtida").value
+        const totalAcumulado = parseInt(cantidadSurtida) + parseInt(registroAnterior);
+        setAcumulado(totalAcumulado);
+
+        const totalPendiente = parseFloat(kgMaterial) - parseInt(acumulado);
+        setPendienteSurtir(totalPendiente);
     }
 
     return (
@@ -62,7 +110,52 @@ function AgregarRegistro(props) {
                             type="date"
                             placeholder="Fecha"
                             name="fecha"
+                            value={fechaRegistro}
+                            onChange={e => setFechaRegistro(e.target.value)}
                         />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formHorizontalPiezasDefectuosas">
+                        <Form.Label align="center">
+                            Cantidad surtida
+                        </Form.Label>
+                        <Form.Control
+                            id="cantidadSurtida"
+                            type="number"
+                            placeholder="Cantidad surtida"
+                            name="cantidadSurtida"
+                            onChange={(e) => { calculos(e.target.value) }}
+                        />
+                    </Form.Group>
+
+                </Row>
+
+                <Row className="mb-3">
+                    <Form.Group as={Col} controlId="formHorizontalTurno">
+                        <Form.Label align="center">
+                            Material
+                        </Form.Label>
+                        <div className="flex items-center mb-1">
+                            <Form.Control
+                                id="material"
+                                type="text"
+                                placeholder="Material"
+                                name="material"
+                                defaultValue={formDataAlmacen.nombreArticulo}
+                            />
+                            <FontAwesomeIcon
+                                className="cursor-pointer py-2 -ml-6"
+                                title="Buscar en el almacen"
+                                icon={faSearch}
+                                onClick={() => {
+                                    buscarArticulo(
+                                        <BuscarArticuloAlmacen
+                                            setFormData={setFormDataAlmacen}
+                                            formData={formDataAlmacen}
+                                            setShowModal={setShowModal2}
+                                        />)
+                                }}
+                            />
+                        </div>
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="formHorizontalAcumulado">
@@ -74,32 +167,9 @@ function AgregarRegistro(props) {
                             type="number"
                             placeholder="acumulado"
                             name="acumulado"
-                        />
-                    </Form.Group>
-                </Row>
-
-                <Row className="mb-3">
-                    <Form.Group as={Col} controlId="formHorizontalTurno">
-                        <Form.Label align="center">
-                            Material
-                        </Form.Label>
-                        <Form.Control
-                            id="material"
-                            type="text"
-                            placeholder="Material"
-                            name="material"
-                        />
-                    </Form.Group>
-
-                    <Form.Group as={Col} controlId="formHorizontalPiezasDefectuosas">
-                        <Form.Label align="center">
-                            Pendiente de surtir
-                        </Form.Label>
-                        <Form.Control
-                            id="pendienteSurtir"
-                            type="text"
-                            placeholder="Pendiente de surtir"
-                            name="pendienteSurtir"
+                            onChange={(e) => { calculos(e.target.value) }}
+                            value={acumulado == "0" ? registroAnterior : acumulado}
+                            disabled
                         />
                     </Form.Group>
                 </Row>
@@ -111,12 +181,34 @@ function AgregarRegistro(props) {
                         </Form.Label>
                         <Form.Control
                             id="virgenMolido"
-                            type="text"
+                            as="select"
                             placeholder="Virgen/Molido"
                             name="virgenMolido"
+                        >
+                            <option>Elige una opción</option>
+                            <option value="Virgen">Virgen</option>
+                            <option value="Molido">Molido</option>
+                        </Form.Control>
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formHorizontalPiezasDefectuosas">
+                        <Form.Label align="center">
+                            Pendiente de surtir
+                        </Form.Label>
+                        <Form.Control
+                            id="pendienteSurtir"
+                            type="text"
+                            placeholder="Pendiente de surtir"
+                            name="pendienteSurtir"
+                            onChange={(e) => { calculos(e.target.value) }}
+                            value={pendienteSurtir == "0" ? kgMaterial : pendienteSurtir}
+                            disabled
                         />
                     </Form.Group>
 
+                </Row>
+
+                <Row className="mb-3">
                     <Form.Group as={Col} controlId="formHorizontalEficiencia">
                         <Form.Label align="center">
                             Surtio
@@ -128,9 +220,7 @@ function AgregarRegistro(props) {
                             name="surtio"
                         />
                     </Form.Group>
-                </Row>
 
-                <Row className="mb-3">
                     <Form.Group as={Col} controlId="formHorizontalCiclo">
                         <Form.Label align="center">
                             Recibio
@@ -187,9 +277,17 @@ function AgregarRegistro(props) {
                     </Col>
                 </Form.Group>
             </Container>
-
+            <BasicModal show={showModal2} setShow={setShowModal2} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
+}
+
+function initialAlmacen() {
+    return {
+material: ""
+    }
 }
 
 export default AgregarRegistro;

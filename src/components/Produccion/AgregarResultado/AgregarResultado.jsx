@@ -70,7 +70,7 @@ function AgregarResultado(props) {
         setAcumulado(totalAcumulado);
         const piezasDefectuosas = document.getElementById("piezasDefectuosas").value
 
-        const totalEficiencia = (parseInt(piezasDefectuosas) - ((parseInt(piezasDefectuosas * 100)) / parseInt(cantidadFabricada)));
+        const totalEficiencia = 100 - (((parseInt(piezasDefectuosas * 100)) / parseInt(cantidadFabricada)));
         setEficiencia(totalEficiencia);
     }
 
@@ -190,7 +190,7 @@ function AgregarResultado(props) {
                             placeholder="Eficiencia (%)"
                             name="eficiencia"
                             onChange={(e) => { calculos(e.target.value) }}
-                            value={eficiencia}
+                            value={eficiencia.toFixed(2)}
                             disabled
                         />
                     </Form.Group>

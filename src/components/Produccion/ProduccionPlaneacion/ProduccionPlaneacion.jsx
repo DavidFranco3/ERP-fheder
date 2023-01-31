@@ -284,6 +284,8 @@ function ProduccionPlaneacion(props) {
                 item: data.item,
                 folio: folioActual,
                 sucursal: getSucursal(),
+                acumulado: registroAnterior,
+                acumuladoMaterial: registroAnteriorMaterial,
                 generalidades: {
                     ordenVenta: formDataPlaneacion.ordenVenta,
                     folioPlaneacion: formDataPlaneacion.folioPlaneacion,
@@ -420,6 +422,8 @@ function ProduccionPlaneacion(props) {
     const [fechaActual, setFechaActual] = useState(fecha);
 
     const [registroAnterior, setRegistroAnterior] = useState(0);
+
+    const [registroAnteriorMaterial, setRegistroAnteriorMaterial] = useState(0);
 
     return (
         <>
@@ -1104,6 +1108,9 @@ function ProduccionPlaneacion(props) {
                                                     <AgregarRegistro
                                                         listRegistros={listRegistros}
                                                         setListRegistros={setListRegistros}
+                                                        registroAnterior={registroAnteriorMaterial}
+                                                        setRegistroAnterior={setRegistroAnteriorMaterial}
+                                                        kgMaterial={kgMaterial}
                                                         setShowModal={setShowModal}
                                                     />)
                                             }}

@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import BuscarArticulosAlmacenes from '../../components/Busquedas/BuscarArticulosAlmacenes';
-import { listarRegistrosAlmacen, totalPedidoVenta } from "../../api/almacenes";
+import { listarRegistrosGeneralesAlmacen } from "../../api/almacenes";
 import "./BuscarArticuloAlmacen.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal, getAlmacen } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
@@ -35,7 +35,7 @@ function BuscarArticuloAlmacen(props) {
 
     useEffect(() => {
         try {
-            listarRegistrosAlmacen(getSucursal(), getAlmacen()).then(response => {
+            listarRegistrosGeneralesAlmacen(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);

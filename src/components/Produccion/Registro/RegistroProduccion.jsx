@@ -247,6 +247,7 @@ function RegistroProduccion(props) {
                 folio: folioActual,
                 sucursal: getSucursal(),
                 acumulado: registroAnterior,
+                acumuladoMaterial: registroAnteriorMaterial,
                 generalidades: {
                     ordenVenta: formDataPlaneacion.ordenVenta,
                     folioPlaneacion: formDataPlaneacion.folioPlaneacion,
@@ -384,6 +385,8 @@ function RegistroProduccion(props) {
     const [fechaActual, setFechaActual] = useState(fecha);
 
     const [registroAnterior, setRegistroAnterior] = useState(0);
+
+    const [registroAnteriorMaterial, setRegistroAnteriorMaterial] = useState(0);
 
     return (
         <>
@@ -1068,6 +1071,9 @@ function RegistroProduccion(props) {
                                                     <AgregarRegistro
                                                         listRegistros={listRegistros}
                                                         setListRegistros={setListRegistros}
+                                                        registroAnterior={registroAnteriorMaterial}
+                                                        setRegistroAnterior={setRegistroAnteriorMaterial}
+                                                        kgMaterial={kgMaterial}
                                                         setShowModal={setShowModal}
                                                     />)
                                             }}
@@ -1095,6 +1101,7 @@ function RegistroProduccion(props) {
                                             <tr>
                                                 <th scope="col">ITEM</th>
                                                 <th scope="col">Fecha</th>
+                                                <th scope="col">Cantidad surtida</th>
                                                 <th scope="col">Acumulado</th>
                                                 <th scope="col">Material</th>
                                                 <th scope="col">Pendiente de surtir</th>
@@ -1115,6 +1122,9 @@ function RegistroProduccion(props) {
                                                     </th>
                                                     <td data-title="Material">
                                                         {registro.fecha}
+                                                    </td>
+                                                    <td data-title="Descripcion">
+                                                        {registro.cantidadSurtida}
                                                     </td>
                                                     <td data-title="Descripcion">
                                                         {registro.acumulado}
