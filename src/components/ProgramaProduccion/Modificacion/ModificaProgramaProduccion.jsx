@@ -541,7 +541,7 @@ function ModificaProgramaProduccion(props) {
                 folioOP: formDataProduccion.ordenProduccion,
                 ordenProduccion: {
                     noMaquina: temp[0],
-                    maquina: temp.length == 1 ? formData.maquina : temp[1] + " " + temp[2],
+                    maquina: temp.length == 1 ? formData.maquina : temp[1],
                     semana: formDataProduccion.semana,
                     fechaInicio: formData.fechaInicio,
                     cliente: formDataPrograma.cliente,
@@ -886,7 +886,7 @@ function ModificaProgramaProduccion(props) {
                                         >
                                             <option>Elige una opción</option>
                                             {map(listMaquinas, (maquina, index) => (
-                                                <option value={maquina?.numeroMaquina + "/" + maquina?.marca + "/" + maquina?.lugar} selected={maquina?.numeroMaquina == formData.noMaquina}>{maquina?.numeroMaquina + "-" + maquina?.marca + " " + maquina?.lugar}</option>
+                                                <option value={maquina?.numeroMaquina + "/" + maquina?.marca} selected={maquina?.numeroMaquina == formData.noMaquina}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
                                             ))}
                                         </Form.Control>
                                     </Form.Group>
@@ -898,7 +898,7 @@ function ModificaProgramaProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="Maquina"
-                                            value={temp.length == 1 ? formData.maquina : temp[1] + " " + temp[2]}
+                                            value={temp.length == 1 ? formData.maquina : temp[1]}
                                             name="maquina"
                                             disabled
                                         />

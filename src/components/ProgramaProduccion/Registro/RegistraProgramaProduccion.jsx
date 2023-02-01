@@ -539,7 +539,7 @@ function RegistraProgramaProduccion(props) {
             semana: semana,
             ordenProduccion: {
                 noMaquina: temp[0],
-                maquina: temp[1] + " " + temp[2],
+                maquina: temp[1],
                 semana: semana,
                 fechaInicio: fechaInicial,
                 cliente: formDataPrograma.cliente,
@@ -895,7 +895,7 @@ function RegistraProgramaProduccion(props) {
                                         >
                                             <option>Elige una opción</option>
                                             {map(listMaquinas, (maquina, index) => (
-                                                <option value={maquina?.numeroMaquina + "/" + maquina?.marca + "/" + maquina?.lugar}>{maquina?.numeroMaquina + "-" + maquina?.marca + " " + maquina?.lugar}</option>
+                                                <option value={maquina?.numeroMaquina + "/" + maquina?.marca}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
                                             ))}
                                         </Form.Control>
                                     </Form.Group>
@@ -907,7 +907,7 @@ function RegistraProgramaProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="Maquina"
-                                            value={temp == "" ? formData.maquina : temp[1] + " " + temp[2]}
+                                            value={temp == "" ? formData.maquina : temp[1]}
                                             name="maquina"
                                             disabled
                                         />

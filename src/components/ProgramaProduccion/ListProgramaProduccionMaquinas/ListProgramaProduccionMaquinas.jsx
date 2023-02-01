@@ -199,9 +199,6 @@ function ListProgramaProduccionMaquinas(props) {
         {
             name: '# MAQ',
             selector: row => row.ordenProduccion.noMaquina,
-            maxWidth: 400,
-            minWidth: 140,
-            width: 200,
             sortable: false,
             center: true,
             reorder: false
@@ -209,9 +206,6 @@ function ListProgramaProduccionMaquinas(props) {
         {
             name: 'MAQ',
             selector: row => row.ordenProduccion.maquina,
-            maxWidth: 400,
-            minWidth: 140,
-            width: 200,
             sortable: false,
             center: true,
             reorder: false
