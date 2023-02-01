@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Button, Col, Row, Form, Container, Spinner } from "react-bootstrap";
+import { Button, Col, Row, Form, Container, Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarArticuloAlmacen from '../../../page/BuscarArticuloAlmacen';
@@ -8,7 +8,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { LogRegistroAlmacenes } from '../../Almacenes/Gestion/GestionAlmacenes';
 
 function AgregarRegistro(props) {
-    const { listRegistros, setListRegistros, setRefreshCheckLogin, setShowModal, registroAnterior, setRegistroAnterior, kgMaterial } = props;
+    const { listRegistros, setListRegistros, setShowModal, registroAnterior, setRegistroAnterior, kgMaterial } = props;
 
     // Para hacer uso del modal
     const [showModal2, setShowModal2] = useState(false);
@@ -18,8 +18,8 @@ function AgregarRegistro(props) {
     // Para almacenar la informacion del formulario
     const [formDataAlmacen, setFormDataAlmacen] = useState(initialAlmacen());
 
-     // Para almacenar la informacion del formulario
-     const [formData, setFormData] = useState(initialFormData());
+    // Para almacenar la informacion del formulario
+    const [formData, setFormData] = useState(initialFormData());
 
     // Para la eliminacion fisica de usuarios
     const buscarArticulo = (content) => {
@@ -54,7 +54,7 @@ function AgregarRegistro(props) {
                 toast.warning("La cantidad surtida no puede ser mayor a la que hay en almacen");
             } else {
                 setLoading(true);
-                
+
                 const dataTemp = {
                     fecha: fecha,
                     acumulado: acumulado,
@@ -73,7 +73,7 @@ function AgregarRegistro(props) {
                 setListRegistros(
                     [...listRegistros, dataTemp]
                 );
-console.log(formDataAlmacen)
+
                 LogRegistroAlmacenes(formDataAlmacen.folioArticulo, material, formDataAlmacen.almacen, formDataAlmacen.um, cantidadSurtida, "Salida");
 
                 setRegistroAnterior(acumulado)
@@ -96,13 +96,17 @@ console.log(formDataAlmacen)
 
     const [pendienteSurtir, setPendienteSurtir] = useState(0);
 
-    const calculos = () => {
-        const cantidadSurtida = document.getElementById("cantidadSurtida").value
-        const totalAcumulado = parseInt(cantidadSurtida) + parseInt(registroAnterior);
+    useEffect(() => {
+        const totalAcumulado = parseInt(formDataAlmacen.cantidadExistencia) + parseInt(registroAnterior);
         setAcumulado(totalAcumulado);
 
         const totalPendiente = parseFloat(kgMaterial) - parseInt(acumulado);
         setPendienteSurtir(totalPendiente);
+    }, [formDataAlmacen.cantidadExistencia, pendienteSurtir, acumulado]);
+
+    const onChange = e => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormDataAlmacen({ ...formDataAlmacen, [e.target.name]: e.target.value })
     }
 
     return (
@@ -133,7 +137,7 @@ console.log(formDataAlmacen)
                             name="cantidadExistencia"
                             max={parseInt(formDataAlmacen.cantidadExistencia)}
                             defaultValue={formDataAlmacen.cantidadExistencia}
-                            onChange={(e) => { calculos(e.target.value) }}
+                            onChange={onChange}
                         />
                     </Form.Group>
 
@@ -151,6 +155,7 @@ console.log(formDataAlmacen)
                                 placeholder="Material"
                                 name="material"
                                 defaultValue={formDataAlmacen.nombreArticulo}
+                                onChange={onChange}
                             />
                             <FontAwesomeIcon
                                 className="cursor-pointer py-2 -ml-6"
@@ -179,7 +184,7 @@ console.log(formDataAlmacen)
                             type="number"
                             placeholder="acumulado"
                             name="acumulado"
-                            onChange={(e) => { calculos(e.target.value) }}
+                            onChange={e => setAcumulado(e.target.value)}
                             value={acumulado == "0" ? registroAnterior : acumulado}
                             disabled
                         />
@@ -196,6 +201,7 @@ console.log(formDataAlmacen)
                             as="select"
                             placeholder="Virgen/Molido"
                             name="virgenMolido"
+                            onChange={onChange}
                         >
                             <option>Elige una opción</option>
                             <option value="Virgen">Virgen</option>
@@ -212,7 +218,7 @@ console.log(formDataAlmacen)
                             type="text"
                             placeholder="Pendiente de surtir"
                             name="pendienteSurtir"
-                            onChange={(e) => { calculos(e.target.value) }}
+                            onChange={e => setPendienteSurtir(e.target.value)}
                             value={pendienteSurtir == "0" ? kgMaterial : pendienteSurtir}
                             disabled
                         />
@@ -230,6 +236,7 @@ console.log(formDataAlmacen)
                             type="text"
                             placeholder="Surtio"
                             name="surtio"
+                            onChange={onChange}
                         />
                     </Form.Group>
 
@@ -242,6 +249,7 @@ console.log(formDataAlmacen)
                             type="text"
                             placeholder="Recibio"
                             name="recibio"
+                            onChange={onChange}
                         />
                     </Form.Group>
                 </Row>

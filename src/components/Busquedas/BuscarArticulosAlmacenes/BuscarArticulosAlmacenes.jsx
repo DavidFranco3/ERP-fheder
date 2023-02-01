@@ -73,7 +73,7 @@ function BuscarArticulosAlmacenes(props) {
 
     const columns = [
         {
-            name: 'ITEM',
+            name: 'Folio',
             selector: row => (
                 <>
                     <Form.Group as={Row} controlId="formHorizontalNoInterno">
@@ -89,18 +89,11 @@ function BuscarArticulosAlmacenes(props) {
                             />
                         </Col>
                         <Col>
-                            {row.item}
+                            {row.folio}
                         </Col>
                     </Form.Group>
                 </>
             ),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: "Folio",
-            selector: row => row.folio,
             sortable: false,
             center: true,
             reorder: false
