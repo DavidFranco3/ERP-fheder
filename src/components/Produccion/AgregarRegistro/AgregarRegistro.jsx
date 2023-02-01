@@ -50,7 +50,7 @@ function AgregarRegistro(props) {
         if (!fecha || !acumulado || !material || !pendienteSurtir || !virgenMolido || !surtio || !recibio || !observaciones || !cantidadSurtida) {
             toast.warning("Completa la información del resultado");
         } else {
-            if (parseInt(cantidadSurtida) > parseInt(formDataAlmacen.cantidadExistencia)) {
+            if (parseInt(cantidadSurtida) > parseInt(cantidadExistencia)) {
                 toast.warning("La cantidad surtida no puede ser mayor a la que hay en almacen");
             } else {
                 setLoading(true);
@@ -94,6 +94,8 @@ function AgregarRegistro(props) {
 
     const [acumulado, setAcumulado] = useState(0);
 
+    const [cantidadExistencia, setCantidadExistencia] = useState(0);
+
     const [pendienteSurtir, setPendienteSurtir] = useState(0);
 
     useEffect(() => {
@@ -135,7 +137,7 @@ function AgregarRegistro(props) {
                             type="number"
                             placeholder="Cantidad surtida"
                             name="cantidadExistencia"
-                            max={parseInt(formDataAlmacen.cantidadExistencia)}
+                            max={parseInt(cantidadExistencia)}
                             defaultValue={formDataAlmacen.cantidadExistencia}
                             onChange={onChange}
                         />
@@ -168,6 +170,7 @@ function AgregarRegistro(props) {
                                             formData={formDataAlmacen}
                                             setShowModal={setShowModal2}
                                             registroAnterior={registroAnterior}
+                                            setCantidadExistencia={setCantidadExistencia}
                                             setRegistroAnterior={setRegistroAnterior}
                                         />)
                                 }}

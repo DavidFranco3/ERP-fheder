@@ -13,7 +13,7 @@ import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
 function BuscarArticuloAlmacen(props) {
-    const { setFormData, formData, setShowModal, setRefreshCheckLogin, location, history, setRegistroAnterior, registroAnterior } = props;
+    const { setFormData, formData, setShowModal, setRefreshCheckLogin, location, history, setRegistroAnterior, registroAnterior, setCantidadExistencia } = props;
 
     const enrutamiento = useHistory();
 
@@ -72,6 +72,7 @@ function BuscarArticuloAlmacen(props) {
                                     setFormData={setFormData}
                                     setRegistroAnterior={setRegistroAnterior}
                                     registroAnterior={registroAnterior}
+                                    setCantidadExistencia={setCantidadExistencia}
                                 />
                             </Suspense>
                         </>

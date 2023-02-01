@@ -13,7 +13,7 @@ import { obtenerAlmacenesID } from "../../../api/almacenes";
 import { toast } from "react-toastify";
 
 function BuscarArticulosAlmacenes(props) {
-    const { setFormData, formData, setShowModal, listArticulos, setRegistroAnterior, registroAnterior } = props;
+    const { setFormData, formData, setShowModal, listArticulos, setRegistroAnterior, registroAnterior, setCantidadExistencia } = props;
     // console.log(ordenVenta)
 
     // Para almacenar la informacion del formulario
@@ -65,8 +65,8 @@ function BuscarArticulosAlmacenes(props) {
                 almacen: valoresCliente.almacen,
                 cantidadExistencia: valoresCliente.cantidadExistencia
             }
-            setRegistroAnterior(registroAnterior + dataTemp.cantidadExistencia )
-            setFormData(dataTemp)
+            setCantidadExistencia(valoresCliente.cantidadExistencia);
+            setFormData(dataTemp);
             setShowModal(false);
         }
     }
