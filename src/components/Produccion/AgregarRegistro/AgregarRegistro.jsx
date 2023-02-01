@@ -14,8 +14,8 @@ function AgregarRegistro(props) {
     const [contentModal, setContentModal] = useState(null);
     const [titulosModal, setTitulosModal] = useState(null);
 
-     // Para almacenar la informacion del formulario
-     const [formDataAlmacen, setFormDataAlmacen] = useState(initialAlmacen());
+    // Para almacenar la informacion del formulario
+    const [formDataAlmacen, setFormDataAlmacen] = useState(initialAlmacen());
 
     // Para la eliminacion fisica de usuarios
     const buscarArticulo = (content) => {
@@ -46,28 +46,34 @@ function AgregarRegistro(props) {
         if (!fecha || !acumulado || !material || !pendienteSurtir || !virgenMolido || !surtio || !recibio || !observaciones || !cantidadSurtida) {
             toast.warning("Completa la información del resultado");
         } else {
-            setLoading(true);
+            if (parseInt(cantidadSurtida) > parseInt(formDataAlmacen.cantidadExistencia)) {
+                toast.warning("La cantidad surtida no puede ser mayor a la que hay en almacen");
+            } else {
+                setLoading(true);
+                
+                const dataTemp = {
+                    fecha: fecha,
+                    acumulado: acumulado,
+                    material: material,
+                    pendienteSurtir: pendienteSurtir,
+                    virgenMolido: virgenMolido,
+                    surtio: surtio,
+                    recibio: recibio,
+                    observaciones: observaciones,
+                    cantidadSurtida: cantidadSurtida,
+                }
 
-            const dataTemp = {
-                fecha: fecha,
-                acumulado: acumulado,
-                material: material,
-                pendienteSurtir: pendienteSurtir,
-                virgenMolido: virgenMolido,
-                surtio: surtio,
-                recibio: recibio,
-                observaciones: observaciones,
-                cantidadSurtida: cantidadSurtida,
+
+                // console.log(dataTemp)
+
+                setListRegistros(
+                    [...listRegistros, dataTemp]
+                );
+
+                setRegistroAnterior(acumulado)
+
+                setShowModal(false)
             }
-            // console.log(dataTemp)
-
-            setListRegistros(
-                [...listRegistros, dataTemp]
-            );
-
-            setRegistroAnterior(acumulado)
-
-            setShowModal(false)
         }
     }
 
@@ -79,10 +85,6 @@ function AgregarRegistro(props) {
                 : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
 
     const [fechaRegistro, setFechaRegistro] = useState(fecha);
-
-    const onChange = e => {
-        setFormDataAlmacen({ ...formDataAlmacen, [e.target.name]: e.target.value })
-    }
 
     const [acumulado, setAcumulado] = useState(0);
 
@@ -123,6 +125,8 @@ function AgregarRegistro(props) {
                             type="number"
                             placeholder="Cantidad surtida"
                             name="cantidadSurtida"
+                            max={parseInt(formDataAlmacen.cantidadExistencia)}
+                            defaultValue={formDataAlmacen.cantidadExistencia}
                             onChange={(e) => { calculos(e.target.value) }}
                         />
                     </Form.Group>
@@ -286,7 +290,8 @@ function AgregarRegistro(props) {
 
 function initialAlmacen() {
     return {
-material: ""
+        material: "",
+        cantidadExistencia: "",
     }
 }
 
