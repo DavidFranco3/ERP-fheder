@@ -5,6 +5,7 @@ import BasicModal from "../../Modal/BasicModal";
 import BuscarArticuloAlmacen from '../../../page/BuscarArticuloAlmacen';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { LogRegistroAlmacenes } from '../../Almacenes/Gestion/GestionAlmacenes';
 
 function AgregarRegistro(props) {
     const { listRegistros, setListRegistros, setRefreshCheckLogin, setShowModal, registroAnterior, setRegistroAnterior, kgMaterial } = props;
@@ -16,6 +17,9 @@ function AgregarRegistro(props) {
 
     // Para almacenar la informacion del formulario
     const [formDataAlmacen, setFormDataAlmacen] = useState(initialAlmacen());
+
+     // Para almacenar la informacion del formulario
+     const [formData, setFormData] = useState(initialFormData());
 
     // Para la eliminacion fisica de usuarios
     const buscarArticulo = (content) => {
@@ -69,6 +73,8 @@ function AgregarRegistro(props) {
                 setListRegistros(
                     [...listRegistros, dataTemp]
                 );
+console.log(formDataAlmacen)
+                LogRegistroAlmacenes(formDataAlmacen.folioArticulo, material, formDataAlmacen.almacen, formDataAlmacen.um, cantidadSurtida, "Salida");
 
                 setRegistroAnterior(acumulado)
 
@@ -124,7 +130,7 @@ function AgregarRegistro(props) {
                             id="cantidadSurtida"
                             type="number"
                             placeholder="Cantidad surtida"
-                            name="cantidadSurtida"
+                            name="cantidadExistencia"
                             max={parseInt(formDataAlmacen.cantidadExistencia)}
                             defaultValue={formDataAlmacen.cantidadExistencia}
                             onChange={(e) => { calculos(e.target.value) }}
@@ -156,6 +162,8 @@ function AgregarRegistro(props) {
                                             setFormData={setFormDataAlmacen}
                                             formData={formDataAlmacen}
                                             setShowModal={setShowModal2}
+                                            registroAnterior={registroAnterior}
+                                            setRegistroAnterior={setRegistroAnterior}
                                         />)
                                 }}
                             />
@@ -288,10 +296,23 @@ function AgregarRegistro(props) {
     );
 }
 
+function initialFormData() {
+    return {
+        virgenMolido: "",
+        surtio: "",
+        recibio: "",
+        observaciones: "",
+    }
+}
+
 function initialAlmacen() {
     return {
-        material: "",
+        folioArticulo: "",
+        nombreArticulo: "",
+        almacen: "",
+        um: "",
         cantidadExistencia: "",
+
     }
 }
 

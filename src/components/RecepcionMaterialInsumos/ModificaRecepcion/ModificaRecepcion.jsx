@@ -370,7 +370,7 @@ function ModificaRecepcion(props) {
                 [...listProductosCargados, dataTemp]
             );
 
-            LogRegistroAlmacenes(folio, temp[2], tipoMercancia, um, cantidad);
+            LogRegistroAlmacenes(folio, temp[2], tipoMercancia, um, cantidad, "Entrada");
 
             setCargaProductos(initialFormDataProductos)
             document.getElementById("producto").value = "Elige una opción"

@@ -4,7 +4,7 @@ import { getSucursal } from "../../../api/auth";
 import { obtenerMateriaPrimaPorFolio } from "../../../api/materiaPrima";
 
 // Para definir el registro de la información inicial de la planeación -- Metodo desarrollado para funcionalidad interno en registro de ventas
-export function LogRegistroAlmacenes(folio, nombre, almacen, um, cantidadExistencia) {
+export function LogRegistroAlmacenes(folio, nombre, almacen, um, cantidadExistencia, movimiento) {
     try {
         obtenerFolioActualAlmacenes().then(response => {
             const { data } = response;
@@ -26,7 +26,7 @@ export function LogRegistroAlmacenes(folio, nombre, almacen, um, cantidadExisten
                         idArticulo: _id,
                         folioArticulo: folio,
                         nombreArticulo: nombre,
-                        tipo: "Entrada",
+                        tipo: movimiento,
                         tipoArticulo: "Materiales",
                         sucursal: getSucursal(),
                         almacen: almacen,

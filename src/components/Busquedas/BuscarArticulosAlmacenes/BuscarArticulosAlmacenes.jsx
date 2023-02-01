@@ -13,7 +13,7 @@ import { obtenerAlmacenesID } from "../../../api/almacenes";
 import { toast } from "react-toastify";
 
 function BuscarArticulosAlmacenes(props) {
-    const { setFormData, formData, setShowModal, listArticulos } = props;
+    const { setFormData, formData, setShowModal, listArticulos, setRegistroAnterior, registroAnterior } = props;
     // console.log(ordenVenta)
 
     // Para almacenar la informacion del formulario
@@ -62,8 +62,10 @@ function BuscarArticulosAlmacenes(props) {
                 folioArticulo: valoresCliente.folioArticulo,
                 nombreArticulo: valoresCliente.nombreArticulo,
                 um: valoresCliente.um,
+                almacen: valoresCliente.almacen,
                 cantidadExistencia: valoresCliente.cantidadExistencia
             }
+            setRegistroAnterior(registroAnterior + dataTemp.cantidadExistencia )
             setFormData(dataTemp)
             setShowModal(false);
         }
@@ -313,15 +315,17 @@ function initialValues() {
         folioArticulo: "",
         nombreArticulo: "",
         um: "",
+        almacen: "",
         cantidadExistencia: ""
     }
 }
 
 function valoresAlmacenados(data) {
     return {
-        folioArticulo: data.folio,
+        folioArticulo: data.folioArticulo,
         nombreArticulo: data.nombreArticulo,
         um: data.um,
+        almacen: data.almacen,
         cantidadExistencia: data.cantidadExistencia
     }
 }

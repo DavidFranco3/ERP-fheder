@@ -340,7 +340,7 @@ function RegistroRecepcion(props) {
             }
             // console.log(dataTemp)
 
-            LogRegistroAlmacenes(folio, temp[2], tipoMercancia, um, cantidad);
+            LogRegistroAlmacenes(folio, temp[2], tipoMercancia, um, cantidad, "Entrada");
 
             setListProductosCargados(
                 [...listProductosCargados, dataTemp]
