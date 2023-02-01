@@ -557,21 +557,7 @@ function ModificaProgramaProduccion(props) {
                     operadores: formDataPrograma.operadores,
                     noInterno: formDataPrograma.noInterno,
                     turnosRequeridos: turnosReq,
-                },
-                programa: {
-                    fechaInicio: formData.fechaInicio,
-                    lunesT1: formData.lunesT1,
-                    lunesT2: formData.lunesT2,
-                    martesT1: formData.martesT1,
-                    martesT2: formData.martesT2,
-                    miercolesT1: formData.miercolesT1,
-                    miercolesT2: formData.miercolesT2,
-                    juevesT1: formData.juevesT1,
-                    juevesT2: formData.juevesT2,
-                    viernesT1: formData.viernesT1,
-                    viernesT2: formData.viernesT2,
-                    sabadoT1: formData.sabadoT1,
-                },
+                }
             }
             // console.log(dataTemp)
             // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
