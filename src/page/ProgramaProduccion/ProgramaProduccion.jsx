@@ -6,6 +6,7 @@ import { useHistory, withRouter, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import ListProgramaProduccion from "../../components/ProgramaProduccion/ListProgramaProduccion";
 import ListProgramaProduccionMaquinas from '../../components/ProgramaProduccion/ListProgramaProduccionMaquinas';
+import Graficas from '../../components/ProgramaProduccion/Graficas';
 import { listarProgramaPorSemana } from "../../api/programaProduccion";
 import { obtenerDatosSemana } from "../../api/semana";
 import "./ProgramaProduccion.scss"
@@ -184,6 +185,23 @@ function ProgramaProduccion(props) {
                                             setRefreshCheckLogin={setRefreshCheckLogin}
                                         />
                                     </Suspense>
+                                </Tab>
+
+                                <Tab
+                                    key={2}
+                                    tabClassName="font-semibold text-lg"
+                                    eventKey="graficas"
+                                    title="Graficas"
+                                >
+                                    <br />
+
+                                    <Suspense fallback={<Spinner />}>
+                                        <Graficas
+                                            location={location}
+                                            history={history}
+                                            setRefreshCheckLogin={setRefreshCheckLogin}
+                                        />
+                    </Suspense>
                                 </Tab>
                             </Tabs>
                         </>
