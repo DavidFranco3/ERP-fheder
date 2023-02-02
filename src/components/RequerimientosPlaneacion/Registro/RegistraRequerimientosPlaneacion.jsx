@@ -81,7 +81,7 @@ function RegistraRequerimientosPlaneacion(props) {
         let idProducto = "";
         if (producto.length == 1) {
             map(producto, (datosProducto, index) => {
-                idProducto = datosProducto.ID
+                idProducto = datosProducto.numeroParte
             })
         }
         // Para buscar el producto en la matriz de productos

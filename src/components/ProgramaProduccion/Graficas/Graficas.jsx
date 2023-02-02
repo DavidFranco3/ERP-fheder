@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Chart, registerables } from 'chart.js';
-import { Line, Bar } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import { map } from "lodash";
 import { obtenerDatosProduccion } from "../../../api/produccion";
 import { obtenerDatosCertificadoPorOP } from "../../../api/certificadosCalidad";
@@ -22,14 +22,14 @@ function Graficas(props) {
             auxOP.push(ordenes.folioOP);
             auxProducir.push(ordenes.ordenProduccion.cantidadFabricar);
         })
-        setOrdenesProduccion(auxOP);
-        setCantidadProducir(auxProducir);
+        setOrdenesProduccion(auxOP.reverse());
+        setCantidadProducir(auxProducir.reverse());
     }, []);
 
     useEffect(() => {
         try {
-            let auxRes = [];
-            map(listProgramaProduccion, (ordenes, index) => {
+            let auxRes = [].reverse();
+            map(listProgramaProduccion.reverse(), (ordenes, index) => {
                 obtenerDatosProduccion(ordenes.folioOP).then(response => {
                     const { data } = response;
                     auxRes.push(data.acumulado);
@@ -67,30 +67,36 @@ function Graficas(props) {
         datasets: [{
             label: "Cantidad a producir",
             backgroundColor: "rgb(255, 128, 0)",
-            borderColor: "black",
+            borderColor: "rgb(255, 128, 0)",
             borderWidth: 1,
-            data: cantidadProducir
+            data: cantidadProducir,
+            tension: 0.1,
+            fill: false,
+            type: "line"
         },
         {
             label: "Cantidad producida",
             backgroundColor: "rgb(0, 0, 255)",
-            borderColor: "black",
+            borderColor: "rgb(0, 0, 255)",
             borderWidth: 1,
-            data: resultados
+            data: resultados,
+            stack: 1
         },
         {
             label: "Cantidad aprobada",
             backgroundColor: "rgb(0,255,0)",
-            borderColor: "black",
+            borderColor: "rgb(0,255,0)",
             borderWidth: 1,
-            data: lotes
+            data: lotes,
+            stack: 2
         },
         {
             label: "Cantidad rechazada",
             backgroundColor: "rgb(255,0,0)",
-            borderColor: "black",
+            borderColor: "rgb(255,0,0)",
             borderWidth: 1,
-            data: cantidadRechazada
+            data: cantidadRechazada,
+            stack: 2
         }]
     };
 
