@@ -325,7 +325,8 @@ function initialValues() {
         ordenInterna: "",
         cliente: "",
         numeroParte: "",
-        folioPlaneacion: ""
+        folioPlaneacion: "",
+        
     }
 }
 

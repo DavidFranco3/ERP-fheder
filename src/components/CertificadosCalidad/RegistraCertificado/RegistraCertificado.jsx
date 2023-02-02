@@ -86,6 +86,7 @@ function RegistraReporte(props) {
                 fecha: fechaActual,
                 noOrdenInterna: formDataProduccion.ordenInterna,
                 tamañoLote: formData.tamañoLote,
+                piezasRechazadas: parseInt(formDataProduccion.cantidadProducir) - parseInt(formData.tamañoLote),
                 cliente: formDataProduccion.cliente,
                 descripcion: formDataProduccion.nombreProducto,
                 numeroParte: formDataProduccion.numeroParte,
@@ -1553,7 +1554,8 @@ function initialFormDataProduccion() {
         ordenInterna: "",
         cliente: "",
         nombreProducto: "",
-        numeroParte: ""
+        numeroParte: "",
+        cantidadProducir: ""
     }
 }
 

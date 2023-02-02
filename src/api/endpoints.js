@@ -561,6 +561,7 @@ export const ENDPOINTEliminarCertificado = "/certificadosCalidad/eliminar";
 export const ENDPOINTActualizarEstadoCertificado = "/certificadosCalidad/actualizarEstado";
 export const ENDPOINTActualizarCertificado = "/certificadosCalidad/actualizar";
 export const ENDPOINTObtenerDatosCertificado = "/certificadosCalidad/obtenerDatosCertificado";
+export const ENDPOINTObtenerDatosCertificadoPorOP = "/certificadosCalidad/obtenerDatosCertificadoPorOP";
 export const ENDPOINTTotalCertificado = "/certificadosCalidad/total";
 
 //Status de material

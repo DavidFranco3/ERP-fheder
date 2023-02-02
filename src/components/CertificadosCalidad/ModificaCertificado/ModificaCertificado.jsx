@@ -94,6 +94,7 @@ function ModificaCertificado(props) {
                 fecha: formData.fecha,
                 noOrdenInterna: formData.ordenInterna,
                 tamañoLote: formData.tamañoLote,
+                piezasRechazadas: parseInt(formDataProduccion.cantidadProducir) - parseInt(formData.tamañoLote),
                 cliente: formData.cliente,
                 descripcion: formData.descripcion,
                 numeroParte: formData.numeroParte,
@@ -1583,7 +1584,8 @@ function initialFormDataProduccionInitial() {
         ordenInterna: "",
         cliente: "",
         nombreProducto: "",
-        numeroParte: ""
+        numeroParte: "",
+        cantidadProducir: ""
     }
 }
 
@@ -1592,7 +1594,8 @@ function initialFormDataProduccion(data) {
         ordenInterna: data.noOrdenInterna,
         cliente: data.cliente,
         nombreProducto: data.descripcion,
-        numeroParte: data.numeroParte
+        numeroParte: data.numeroParte,
+        cantidadProducir: data.planeacion.cantidadProducir
     }
 }
 

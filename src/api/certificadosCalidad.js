@@ -11,6 +11,7 @@ ENDPOINTActualizarEstadoCertificado,
 ENDPOINTActualizarCertificado,
 ENDPOINTObtenerDatosCertificado,
 ENDPOINTTotalCertificado,
+ENDPOINTObtenerDatosCertificadoPorOP
 } from "./endpoints";
 import axios from 'axios';
 import { getTokenApi } from "./auth";
@@ -63,6 +64,18 @@ export async function obtenerDatosCertificado(folio) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTObtenerDatosCertificado + `/${folio}`, config);
+}
+
+// Para obtener los datos de una compra segun el folio
+export async function obtenerDatosCertificadoPorOP(noOrdenInterna) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTObtenerDatosCertificadoPorOP + `/${noOrdenInterna}`, config);
 }
 
 // Para obtener el número de orden de compra actual
