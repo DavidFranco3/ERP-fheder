@@ -197,6 +197,7 @@ function ProgramaProduccion(props) {
 
                                     <Suspense fallback={<Spinner />}>
                                         <Graficas
+                                            listProgramaProduccion={listProgramaProduccion}
                                             location={location}
                                             history={history}
                                             setRefreshCheckLogin={setRefreshCheckLogin}

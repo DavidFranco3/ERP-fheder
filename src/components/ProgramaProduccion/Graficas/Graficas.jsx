@@ -1,22 +1,32 @@
 import { useState, useEffect } from 'react';
 import { Chart, registerables } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-
+import { map } from "lodash";
 Chart.register(...registerables);
 
 function Graficas(props) {
-    const { setRefreshCheckLogin, location, history } = props;
+    const { listProgramaProduccion } = props;
+    const [ordenesProduccion, setOrdenesProduccion] = useState([]);
+    const [cantidadProducir, setCantidadProducir] = useState([]);
+    useEffect(() => {
+        let auxOP = [], auxProducir = [];
+        map(listProgramaProduccion, (ordenes, index) => {
+            auxOP.push(ordenes.folioOP);
+            auxProducir.push(ordenes.ordenProduccion.cantidadFabricar);
+        })
+        setOrdenesProduccion(auxOP);
+        setCantidadProducir(auxProducir);
+    }, []);
     const data = {
-        labels: ["Estados Unidos", "México", "Italia", "Colombia", "España"],
+        labels: ordenesProduccion,
         datasets: [{
-            label: "Habitantes",
-            backgroundColor: "rgb(0, 255, 0, 1)",
+            label: "Cantidad a producir",
+            backgroundColor: "rgb(255, 128, 0)",
             borderColor: "black",
             borderWidth: 1,
-            data: [327.16, 126.19, 60.43, 49.64, 46.72]
-        }]
+            data: cantidadProducir
+        },]
     };
-
     const opciones = {
         maintainAspectRatio: false,
         responsive: true
@@ -25,12 +35,11 @@ function Graficas(props) {
     return (
         <>
             <div className='App' style={{ width: "100%", height: "500px" }}>
-                <h2>Población en millones de habitantes</h2>
-                <Bar data={data} />
+                <h2>Tabla de cumplimiento</h2>
+                <Bar data={data} options={opciones} />
             </div>
         </>
     );
-
 }
 
 export default Graficas;
