@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { estilos } from "../../../utils/tableStyled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDownLong, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { obtenerCliente } from "../../../api/clientes";
 import { toast } from "react-toastify";
 
@@ -13,7 +13,7 @@ function BuscarClientes(props) {
     const { setFormData, formData, setShowModal, listClientes } = props;
 
     // Para almacenar la informacion del formulario
-    const [clienteSeleccionado, setClienteSeleccionado] = useState(initialFormData());
+    const [clienteSeleccionado, setClienteSeleccionado] = useState("");
 
     // Para almacenar la informacion del formulario
     const [valoresCliente, setValoresCliente] = useState(initialValues());
@@ -24,7 +24,7 @@ function BuscarClientes(props) {
     useEffect(() => {
         try {
 
-            obtenerCliente(clienteSeleccionado.seleccion).then(response => {
+            obtenerCliente(clienteSeleccionado).then(response => {
                 const { data } = response;
                 const { cliente, nombreCliente, fechaElaboracion, fechaEntrega, productos } = data;
                 setValoresCliente(valoresAlmacenados(data))
@@ -35,58 +35,35 @@ function BuscarClientes(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [clienteSeleccionado.seleccion]);
+    }, [clienteSeleccionado]);
 
     // Cancelar y cerrar el formulario
     const cancelarBusqueda = () => {
         setShowModal(false)
     }
 
-    const onChange = e => {
+    /*const onChange = e => {
         setClienteSeleccionado({ ...clienteSeleccionado, [e.target.name]: e.target.value })
+    }*/
+
+    // Gestionar el socio seleccionado
+    const clienteElegido = ({ id, nombre, calle, numeroExterior, colonia, municipio, estado }) => {
+        // Almacena id, ficha y nombre del socio elegido
+        const dataTemp = {
+            cliente: id,
+            nombreCliente: nombre,
+            lugarEntrega: calle + ", " + numeroExterior + ", " + colonia + ", " + municipio + ", " + estado
+        }
+
+        setFormData(dataTemp);
+        cancelarBusqueda();
     }
 
-    const onSubmit = e => {
-        //e.preventDefault();
-        if (!clienteSeleccionado.seleccion) {
-            toast.warning("Selecciona un registro")
-        } else {
-            //setNombreCliente()
-            //console.log(formData)
-            setLoading(true);
-            const dataTemp = {
-                cliente: valoresCliente.cliente,
-                nombreCliente: valoresCliente.nombreCliente,
-                lugarEntrega: valoresCliente.lugarEntrega
-            }
-            setFormData(dataTemp)
-            setShowModal(false);
-        }
-    }
 
     const columns = [
         {
             name: 'Nombre',
-            selector: row => (
-                <>
-                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                        <Col>
-                            <Form.Check
-                                value={row.id}
-                                type="radio"
-                                //label="Paletizado"
-                                name="seleccion"
-                                onChange={onChange}
-                                id={row.id}
-                                defaultValue={clienteSeleccionado.seleccion}
-                            />
-                        </Col>
-                        <Col>
-                            {row.nombre}
-                        </Col>
-                    </Form.Group>
-                </>
-            ),
+            selector: row => row.nombre,
             sortable: false,
             center: true,
             reorder: false
@@ -112,6 +89,24 @@ function BuscarClientes(props) {
             center: true,
             reorder: false
         },
+        {
+            name: "Seleccionar",
+            selector: row => (
+                <>
+                    <FontAwesomeIcon
+                        className="eleccion"
+                        icon={faCircleCheck}
+                        onClick={() => {
+                            clienteElegido(row);
+                        }}
+                    />
+                </>
+            ),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+
     ];
 
     // Configurando animacion de carga
@@ -229,10 +224,10 @@ function BuscarClientes(props) {
                     />
                 </Col>
                 <Col>
-                    <ClearButton 
-                    type="button" 
-                    title="Limpiar la busqueda"
-                    onClick={handleClear}>
+                    <ClearButton
+                        type="button"
+                        title="Limpiar la busqueda"
+                        onClick={handleClear}>
                         X
                     </ClearButton>
                 </Col>
@@ -260,19 +255,6 @@ function BuscarClientes(props) {
                 <Form.Group as={Row} className="botones">
                     <Col>
                         <Button
-                            variant="success"
-                            title="Usar el registro seleccionado"
-                            className="registrar"
-                            onClick={() => {
-                                onSubmit()
-                            }}
-
-                        >
-                            {!loading ? "Seleccionar" : <Spinner animation="border" />}
-                        </Button>
-                    </Col>
-                    <Col>
-                        <Button
                             variant="danger"
                             title="Cerrar el formulario"
                             className="cancelar"
@@ -288,12 +270,6 @@ function BuscarClientes(props) {
             </Container>
         </>
     );
-}
-
-function initialFormData() {
-    return {
-        seleccion: ""
-    }
 }
 
 function initialValues() {
