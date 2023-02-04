@@ -259,6 +259,19 @@ export const ENDPOINTListarEtiquetaMolidoPaginacion = "/etiquetaMolido/listarPag
 export const ENDPOINTObtenerNoEtiquetaMolido = "/etiquetaMolido/obtenerNoEtiqueta";
 export const ENDPOINTTotalEtiquetaMolido = "/etiquetaMolido/total";
 
+// etiqueta de moldes
+export const ENDPOINTRegistraEtiquetaMolde = "/etiquetasMoldes/registro";
+export const ENDPOINTListarEtiquetaMolde = "/etiquetasMoldes/listar";
+export const ENDPOINTObtenerEtiquetaMolde = "/etiquetasMoldes/obtener";
+export const ENDPOINTObtenerItemEtiquetaMolde = "/etiquetasMoldes/obtenerItem";
+export const ENDPOINTObtenerDatosEtiquetaMolde = "/etiquetasMoldes/obtenerDatosEtiqueta";
+export const ENDPOINTEliminarEtiquetaMolde = "/etiquetasMoldes/eliminar";
+export const ENDPOINTActualizarEtiquetaMolde = "/etiquetasMoldes/actualizar";
+export const ENDPOINTActualizarEstadoEtiquetaMolde = "/etiquetasMoldes/actualizarEstado";
+export const ENDPOINTListarEtiquetaMoldePaginacion = "/etiquetasMoldes/listarPaginando";
+export const ENDPOINTObtenerNoEtiquetaMolde = "/etiquetasMoldes/obtenerNoEtiqueta";
+export const ENDPOINTTotalEtiquetaMolde = "/etiquetasMoldes/total";
+
 // etiqueta de identificacion PT
 export const ENDPOINTRegistraEtiquetaPT = "/etiquetaPT/registro";
 export const ENDPOINTListarEtiquetaPT = "/etiquetaPT/listar";

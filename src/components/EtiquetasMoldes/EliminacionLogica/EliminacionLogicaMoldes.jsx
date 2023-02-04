@@ -1,42 +1,44 @@
 import { useState, useEffect } from 'react';
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { toast } from "react-toastify";
 import queryString from "query-string";
+import "./EliminacionLogicaMoldes.scss";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
-import { cambiaEstadoProductosMatriz } from "../../../api/matrizProductos";
+import { toast } from "react-toastify";
+import { actualizaEstadoEtiquetaMolde } from "../../../api/etiquetasMoldes";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
-function EstadoMatrizProductos(props) {
-    const { dataProducto, location, history, setShowModal } = props;
-    const { id, descripcion, noInterno, estado } = dataProducto;
+function EliminacionLogicaMoldes(props) {
+    const { datos, setShowModal, history } = props;
+    const { id, folio, idInterno, noInterno, descripcion, estado } = datos;
 
     // Para determinar el uso de la animacion
     const [loading, setLoading] = useState(false);
 
-    // Para cancelar la actualizacion
-    const cancelarEliminacion = () => {
+    // Para cancelar el registro
+    const cancelar = () => {
         setShowModal(false)
     }
 
     const onSubmit = e => {
-        e.preventDefault()
-        setLoading(true)
+        e.preventDefault();
+
+        setLoading(true);
+
+        const dataTemp = {
+            estado: estado === "false" ? "true" : "false"
+        }
+        //console.log(dataTemp)
 
         try {
-            const dataTemp = {
-                estado: estado === "true" ? "false" : "true"
-            }
-            cambiaEstadoProductosMatriz(id, dataTemp).then(response => {
+            actualizaEstadoEtiquetaMolde(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
-                LogsInformativos("El producto de la matriz con no. interno " + noInterno + " cambio su estado a " + dataTemp.estado, dataTemp)
                 toast.success(data.mensaje);
-                setLoading(false);
+                LogsInformativos("Se ha cancelado la etiqueta de molde " + folio, datos);
                 setShowModal(false);
+                setLoading(false);
                 history.push({
                     search: queryString.stringify(""),
                 });
-            }).catch(e => {
-                console.log(e)
             })
         } catch (e) {
             console.log(e)
@@ -46,12 +48,13 @@ function EstadoMatrizProductos(props) {
     return (
         <>
             <Form onSubmit={onSubmit}>
+
                 {estado == "true" ? (
                     <>
                         <Alert variant="danger">
                             <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
                             <p className="mensaje">
-                                Esta acción deshabilitara del sistema el producto.
+                                Esta acción deshabilitara del sistema el molde.
                             </p>
                         </Alert>
                     </>
@@ -60,16 +63,41 @@ function EstadoMatrizProductos(props) {
                         <Alert variant="success">
                             <Alert.Heading>Atención! Acción constructiva!</Alert.Heading>
                             <p className="mensaje">
-                                Esta acción activara en el sistema el producto.
+                                Esta acción habilitara en el sistema el molde.
                             </p>
                         </Alert>
                     </>
                 )}
-                
+
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Numero interno
+                            Folio
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={folio}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Id Interno
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={idInterno}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
+                <br />
+
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            No. Interno
                         </Form.Label>
                         <Form.Control
                             type="text"
@@ -79,7 +107,7 @@ function EstadoMatrizProductos(props) {
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Descripcion
+                            Descripción
                         </Form.Label>
                         <Form.Control
                             type="text"
@@ -92,12 +120,11 @@ function EstadoMatrizProductos(props) {
                 <Form.Group as={Row} className="botones">
                     <Col>
                         <Button
-                            type="submit"
-                            title={estado == "true" ? "Desactivar" : "Activar"}
                             variant="success"
-                            className="registrar"
-                        >
-                            {!loading ? estado == "true" ? "Desactivar" : "Activar" : <Spinner animation="border" />}
+                            title={estado === "true" ? "Deshabilitar" : "Habilitar"}
+                            type="submit"
+                            className="registrar">
+                            {!loading ? estado == "true" ? "Habilitar" : "Deshabilitar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -106,10 +133,10 @@ function EstadoMatrizProductos(props) {
                             title="Cerrar el formulario"
                             className="cancelar"
                             onClick={() => {
-                                cancelarEliminacion()
+                                cancelar()
                             }}
                         >
-                            Cancelar
+                            Cerrar
                         </Button>
                     </Col>
                 </Form.Group>
@@ -118,4 +145,4 @@ function EstadoMatrizProductos(props) {
     );
 }
 
-export default EstadoMatrizProductos;
+export default EliminacionLogicaMoldes;

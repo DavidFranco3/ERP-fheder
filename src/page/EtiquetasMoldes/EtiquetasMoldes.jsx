@@ -1,15 +1,19 @@
-import { useState, useEffect } from 'react';
-import { Alert, Button, Col, Row } from "react-bootstrap";
+import { useState, useEffect, Suspense } from 'react';
+import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroEtiquetasMoldes from "../../components/EtiquetasMoldes/RegistraEtiquetasMoldes";
+import ListEtiquetasMoldes from '../../components/EtiquetasMoldes/ListEtiquetasMoldes';
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 import { toast } from "react-toastify";
+import { listarEtiquetaMolde } from "../../api/etiquetasMoldes";
+import Lottie from 'react-lottie-player';
+import AnimacionLoading from '../../assets/json/loading.json';
 
 function EtiquetasMoldes(props) {
-    const { setRefreshCheckLogin } = props;
+    const { setRefreshCheckLogin, location, history } = props;
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory()
@@ -39,15 +43,31 @@ function EtiquetasMoldes(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-
-    // Define la ruta de registro
-    const rutaRegistro = () => {
-        enrutamiento.push("/RegistroReporte")
-    }
-
     const rutaRegreso = () => {
         enrutamiento.push("/DashboardCatalogos")
     }
+
+    // Para almacenar la lista de las integraciones de ventas y gastos
+    const [listEtiquetas, setListEtiquetas] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarEtiquetaMolde(getSucursal()).then(response => {
+                const { data } = response;
+
+                if (!listEtiquetas && data) {
+                    setListEtiquetas(formatModelEtiquetaMolde(data));
+                } else {
+                    const datosEtiquetas = formatModelEtiquetaMolde(data);
+                    setListEtiquetas(datosEtiquetas);
+                }
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [location]);
 
     return (
         <>
@@ -66,6 +86,7 @@ function EtiquetasMoldes(props) {
                                 nuevoRegistro(
                                     <RegistroEtiquetasMoldes
                                         setShowModal={setShowModal}
+                                        history={history}
                                     />
                                 )
                             }}
@@ -84,11 +105,55 @@ function EtiquetasMoldes(props) {
                     </Col>
                 </Row>
             </Alert>
+
+            {
+                listEtiquetas ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListEtiquetasMoldes
+                                    listEtiquetas={listEtiquetas}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
+
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}
             </BasicModal>
         </>
     );
+}
+
+function formatModelEtiquetaMolde(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            folio: data.folio,
+            idInterno: data.idInterno,
+            noInterno: data.noInterno,
+            sucursal: data.sucursal,
+            cavidad: data.cavidad,
+            descripcion: data.descripcion,
+            cliente: data.cliente,
+            estado: data.estado,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
 }
 
 export default withRouter(EtiquetasMoldes);

@@ -30,11 +30,6 @@ function MaterialMolido(props) {
     // Para definir el enrutamiento
     const enrutamiento = useHistory()
 
-    // Define la ruta de registro
-    const rutaRegistro = () => {
-        enrutamiento.push("/RegistroReporte")
-    }
-
     const rutaRegreso = () => {
         enrutamiento.push("/DashboardProduccion")
     }

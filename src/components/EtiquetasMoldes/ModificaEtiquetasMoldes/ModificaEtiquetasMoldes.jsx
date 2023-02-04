@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Spinner } from "react-bootstrap";
-import "./RegistraEtiquetasMoldes.scss";
-import { registraEtiquetaMolde, obtenerNoEtiqueta } from '../../../api/etiquetasMoldes';
+import "./ModificaEtiquetasMoldes.scss";
+import { actualizaEtiquetaMolde } from '../../../api/etiquetasMoldes';
 import queryString from "query-string";
 import { toast } from "react-toastify";
 import { getSucursal } from "../../../api/auth";
@@ -9,28 +9,30 @@ import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-function RegistraEtiquetasMoldes(props) {
-    const { setShowModal, history } = props;
+function ModificaEtiquetasMoldes(props) {
+    const { datos, setShowModal, history } = props;
+
+    const { id } = datos;
 
     // Para hacer uso del modal
     const [showModal2, setShowModal2] = useState(false);
     const [contentModal, setContentModal] = useState(null);
     const [titulosModal, setTitulosModal] = useState(null);
 
-     // Para la eliminacion fisica de usuarios
-     const buscarCliente = (content) => {
+    // Para la eliminacion fisica de usuarios
+    const buscarCliente = (content) => {
         setTitulosModal("Buscar cliente");
         setContentModal(content);
         setShowModal2(true);
     }
 
     // Para guardar los datos del formulario
-    const [formData, setFormData] = useState(initialFormData());
+    const [formData, setFormData] = useState(initialFormData(datos));
 
     // Para guardar los datos del formulario
-    const [formDataCliente, setFormDataCliente] = useState(initialFormDataCliente());
+    const [formDataCliente, setFormDataCliente] = useState(initialFormDataCliente(datos));
 
     // Cancelar y cerrar el formulario
     const cancelarRegistro = () => {
@@ -39,24 +41,6 @@ function RegistraEtiquetasMoldes(props) {
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
-
-    // Para almacenar el folio actual
-    const [folioActual, setFolioActual] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerNoEtiqueta().then(response => {
-                const { data } = response;
-                // console.log(data)
-                const { noEtiqueta } = data;
-                setFolioActual(noEtiqueta)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -69,19 +53,16 @@ function RegistraEtiquetasMoldes(props) {
             // Realiza registro de la aportación
 
             const dataTemp = {
-                folio: folioActual,
                 idInterno: formData.idInterno,
                 noInterno: formData.noInterno,
-                sucursal: getSucursal(),
                 cavidad: formData.cavidad,
                 descripcion: formData.descripcion,
-                cliente: formDataCliente.nombreCliente,
-                estado: "true",
+                cliente: formDataCliente.nombreCliente
             }
 
-            registraEtiquetaMolde(dataTemp).then(response => {
+            actualizaEtiquetaMolde(id, dataTemp).then(response => {
                 const { data } = response;
-                LogsInformativos("Se a registrado el molde " + folioActual, dataTemp);
+                LogsInformativos("Se ha actualizado el molde " + formData.folio, dataTemp);
                 toast.success(data.mensaje)
                 setTimeout(() => {
                     history.push({
@@ -220,7 +201,7 @@ function RegistraEtiquetasMoldes(props) {
                                     title="Guardar la información del formulario"
                                     className="registrar"
                                 >
-                                    {!loading ? "Registrar" : <Spinner animation="border" />}
+                                    {!loading ? "Modificar" : <Spinner animation="border" />}
                                 </Button>
                             </Col>
                             <Col>
@@ -246,19 +227,20 @@ function RegistraEtiquetasMoldes(props) {
     );
 }
 
-function initialFormData() {
+function initialFormData(data) {
     return {
-        idInterno: "",
-        noInterno: "",
-        cavidad: "",
-        descripcion: "",
+        folio: data.folio,
+        idInterno: data.idInterno,
+        noInterno: data.noInterno,
+        cavidad: data.cavidad,
+        descripcion: data.descripcion,
     }
 }
 
-function initialFormDataCliente() {
+function initialFormDataCliente(data) {
     return {
-        nombreCliente: "",
+        nombreCliente: data.cliente,
     }
 }
 
-export default RegistraEtiquetasMoldes;
+export default ModificaEtiquetasMoldes;
