@@ -1,102 +1,43 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Row, Col, Container, Form, Button, Spinner } from "react-bootstrap"
-import moment from "moment";
-//import NombreCliente from "../../ListTracking/NombreCliente";
-import { map } from "lodash";
 import "./BuscarInspeccionCalidad.scss"
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { estilos } from "../../../utils/tableStyled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
-import { obtenerInspeccion } from "../../../api/inspeccionMaterial";
-import { toast } from "react-toastify";
+import { faArrowDownLong, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
 function BuscarInspeccionCalidad(props) {
     const { setFormData, formData, setShowModal, listCalidad } = props;
-    // console.log(ordenVenta)
-
-    // Para almacenar la informacion del formulario
-    const [clienteSeleccionado, setClienteSeleccionado] = useState(initialFormData());
-
-    // Para almacenar la informacion del formulario
-    const [valoresCliente, setValoresCliente] = useState(initialValues());
-
-    // Para controlar la animacion
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        try {
-
-            obtenerInspeccion(clienteSeleccionado.seleccion).then(response => {
-                const { data } = response;
-                setValoresCliente(valoresAlmacenados(data))
-            }).catch(e => {
-                console.log(e)
-            })
-
-        } catch (e) {
-            console.log(e)
-        }
-    }, [clienteSeleccionado.seleccion]);
 
     // Cancelar y cerrar el formulario
     const cancelarBusqueda = () => {
         setShowModal(false)
     }
 
-    const onChange = e => {
-        setClienteSeleccionado({ ...clienteSeleccionado, [e.target.name]: e.target.value })
-    }
-
-    const onSubmit = e => {
-        //e.preventDefault();
-        if (!clienteSeleccionado.seleccion) {
-            toast.warning("Selecciona un registro")
-        } else {
-            //setNombreCliente()
-            //console.log(formData)
-            setLoading(true);
-            const dataTemp = {
-                folio: valoresCliente.folio,
-                propiedad: valoresCliente.propiedad,
-                cantidad: valoresCliente.cantidad,
-                fecha: valoresCliente.fecha,
-                tipoMaterial: valoresCliente.tipoMaterial,
-                recibio: valoresCliente.recibio,
-                lote: valoresCliente.lote,
-                nombre: valoresCliente.nombre,
-                resultadoFinal: valoresCliente.resultadoFinal,
-                etiqueta: valoresCliente.etiqueta,
-            }
-            setFormData(dataTemp)
-            setShowModal(false);
+    // Gestionar el socio seleccionado
+    const inspeccionElegida = ({ folio, propiedad, cantidad, fecha, tipoMaterial, nombreRecibio, lote, nombre, etiqueta, resultadoFinalInspeccion }) => {
+        // Almacena id, ficha y nombre del socio elegido
+        const dataTemp = {
+            folio: folio,
+            propiedad: propiedad,
+            cantidad: cantidad,
+            fecha: fecha,
+            tipoMaterial: tipoMaterial,
+            recibio: nombreRecibio,
+            lote: lote,
+            nombre: nombre,
+            etiqueta: etiqueta,
+            resultadoFinal: resultadoFinalInspeccion
         }
+        setFormData(dataTemp);
+        cancelarBusqueda();
     }
 
     const columns = [
         {
             name: 'Folio',
-            selector: row => (
-                <>
-                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                        <Col>
-                            <Form.Check
-                                value={row.id}
-                                type="radio"
-                                //label="Paletizado"
-                                name="seleccion"
-                                onChange={onChange}
-                                id={row.id}
-                                defaultValue={clienteSeleccionado.seleccion}
-                            />
-                        </Col>
-                        <Col>
-                            {row.folio}
-                        </Col>
-                    </Form.Group>
-                </>
-            ),
+            selector: row => row.folio,
             sortable: false,
             center: true,
             reorder: false
@@ -122,6 +63,23 @@ function BuscarInspeccionCalidad(props) {
             center: true,
             reorder: false
         },
+        {
+            name: "Seleccionar",
+            selector: row => (
+                <>
+                    <FontAwesomeIcon
+                        className="eleccion"
+                        icon={faCircleCheck}
+                        onClick={() => {
+                            inspeccionElegida(row);
+                        }}
+                    />
+                </>
+            ),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
     ];
 
     // Configurando animacion de carga
@@ -142,48 +100,8 @@ function BuscarInspeccionCalidad(props) {
         rangeSeparatorText: 'de'
     };
 
-    // Procesa documento para descargar en csv
-    function convertArrayOfObjectsToCSV(array) {
-        let result;
-        const columnDelimiter = ',';
-        const lineDelimiter = '\n';
-        const keys = Object.keys(filteredItems[0]);
-        result = '';
-        result += keys.join(columnDelimiter);
-        result += lineDelimiter;
-        array.forEach(item => {
-            let ctr = 0;
-            keys.forEach(key => {
-                if (ctr > 0) result += columnDelimiter;
-                result += item[key];
-                ctr++;
-            });
-            result += lineDelimiter;
-        });
-        return result;
-    }
-
-    function downloadCSV(array) {
-        const link = document.createElement('a');
-        let csv = convertArrayOfObjectsToCSV(array);
-        if (csv == null) return;
-        const filename = 'Datos.csv';
-        if (!csv.match(/^data:text\/csv/i)) {
-            csv = `data:text/csv;charset=utf-8,${csv}`;
-        }
-        link.setAttribute('href', encodeURI(csv));
-        link.setAttribute('download', filename);
-        link.click();
-    }
-
-    const Export = ({ onExport }) => <Button onClick={e => onExport(e.target.value)}>Descargar CSV</Button>;
-
-    const descargaCSV = useMemo(() => <Export onExport={() => downloadCSV(filteredItems)} />, []);
-
     const [filterText, setFilterText] = useState("");
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
-
-
 
     // Defino barra de busqueda
     const ClearButton = styled(Button)` 
@@ -197,20 +115,6 @@ function BuscarInspeccionCalidad(props) {
         display: flex;
         align-items: center;
         justify-content: center;
-    `;
-
-    const TextField = styled.input` 
-        height: 32px;
-        border-radius: 3px;
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        border: 1px solid #e5e5e5;
-        padding: 0 32px 0 16px;
-      &:hover {
-        cursor: pointer;
-      }
     `;
 
 
@@ -270,19 +174,6 @@ function BuscarInspeccionCalidad(props) {
                 <Form.Group as={Row} className="botones">
                     <Col>
                         <Button
-                            variant="success"
-                            title="Usar el registro seleccionado"
-                            className="registrar"
-                            onClick={() => {
-                                onSubmit()
-                            }}
-
-                        >
-                            {!loading ? "Seleccionar" : <Spinner animation="border" />}
-                        </Button>
-                    </Col>
-                    <Col>
-                        <Button
                             variant="danger"
                             title="Cerrar el formulario"
                             className="cancelar"
@@ -298,42 +189,6 @@ function BuscarInspeccionCalidad(props) {
             </Container>
         </>
     );
-}
-
-function initialFormData() {
-    return {
-        seleccion: ""
-    }
-}
-
-function initialValues() {
-    return {
-        folio: "",
-        propiedad: "",
-        cantidad: "",
-        fecha: "",
-        tipoMaterial: "",
-        recibio: "",
-        lote: "",
-        nombre: "",
-        resultadoFinal: "",
-        etiqueta: ""
-    }
-}
-
-function valoresAlmacenados(data) {
-    return {
-        folio: data.folio,
-        propiedad: data.propiedad,
-        cantidad: data.cantidad,
-        fecha: data.fecha,
-        tipoMaterial: data.tipoMaterial,
-        recibio: data.nombreRecibio,
-        lote: data.lote,
-        nombre: data.nombre,
-        etiqueta: data.etiqueta,
-        resultadoFinal: data.resultadoFinalInspeccion
-    }
 }
 
 export default BuscarInspeccionCalidad;

@@ -34,8 +34,13 @@ function RegistraRequerimientosPlaneacion(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
+    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
+
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+     // Para almacenar la informacion del formulario
+     const [formDataVenta, setFormDataVenta] = useState(initialFormDataVenta());
 
     // Para almacenar la informacion del formulario
     const [formDataPlaneacion, setFormDataPlaneacion] = useState(initialFormDataPlaneacionInitial());
@@ -48,17 +53,6 @@ function RegistraRequerimientosPlaneacion(props) {
 
     // Para almacenar la cantidad en el almacen de materia prima
     const [cantidadEmpaquesAlmacen, setCantidadEmpaquesAlmacen] = useState(0);
-
-    // Para almacenar la OV
-    const [ordenVenta, setOrdenVenta] = useState("");
-
-    // Para almacenar la OV
-    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
-
-    // Para almacenar el cliente de la OV
-    const [clienteOV, setClienteOV] = useState("");
-
-    const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
 
     const [producto, setProducto] = useState([]);
 
@@ -584,8 +578,8 @@ function RegistraRequerimientosPlaneacion(props) {
             document.getElementById("ordenVenta").value = ""
             document.getElementById("cantidadPedidaOV").value = ""
             document.getElementById("cantidadProducirOV").value = ""
-            setOrdenVenta("")
-            setCantidadRequeridaOV("")
+
+            setFormDataVenta(initialFormDataVenta);
         }
     }
 
@@ -595,12 +589,14 @@ function RegistraRequerimientosPlaneacion(props) {
         document.getElementById("ordenVenta").value = ""
         document.getElementById("cantidadPedidaOV").value = ""
         document.getElementById("cantidadProducirOV").value = ""
+
+        setFormDataVenta(initialFormDataVenta);
     }
 
     // Para eliminar productos del listado
     const removeItemOV = (OV) => {
         let newArray = listOVCargadas;
-        newArray.splice(newArray.findIndex(a => a.ordenVenta === ordenVenta.ordenVenta), 1);
+        newArray.splice(newArray.findIndex(a => a.ordenVenta === OV.ordenVenta), 1);
         setListOVCargadas([...newArray]);
     }
 
@@ -709,7 +705,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 type="text"
                                                 placeholder="Orden de venta"
                                                 name="ordenVenta"
-                                                value={ordenVenta}
+                                                value={formDataVenta.ordenVenta}
                                                 disabled
                                             />
                                             <FontAwesomeIcon
@@ -719,11 +715,9 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 onClick={() => {
                                                     buscarOV(
                                                         <BuscarOV
-                                                            setOrdenVenta={setOrdenVenta}
-                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
-                                                            setClienteOV={setClienteOV}
-                                                            setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                            setFormData={setFormDataVenta}
                                                             setProducto={setProducto}
+                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
                                                             setShowModal={setShowModal}
                                                         />)
                                                 }}
@@ -741,7 +735,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                             min="0"
                                             placeholder="Cantidad pedida"
                                             name="cantidadPedidaVenta"
-                                            value={cantidadRequeridaOV}
+                                            value={formDataVenta.cantidadRequerida}
                                             disabled
                                         />
                                     </Form.Group>
@@ -1695,6 +1689,14 @@ function initialFormData() {
         merma: "",
         kgMaterial: "",
         kgPIGMB: ""
+    }
+}
+
+function initialFormDataVenta() {
+    return {
+       ordenVenta: "",
+       cantidadRequerida: "",
+       cliente: ""
     }
 }
 

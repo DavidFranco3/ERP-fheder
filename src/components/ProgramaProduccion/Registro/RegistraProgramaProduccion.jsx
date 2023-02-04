@@ -20,7 +20,8 @@ import { obtenerDatosArticulo } from '../../../api/almacenes';
 import BuscarPlaneaccion from '../../../page/BuscarPlaneacion';
 import BuscarProduccion from '../../../page/BuscarProduccion';
 import { listarMaquina } from "../../../api/maquinas";
-import { obtenerDatosSemana } from "../../../api/semana"
+import { obtenerDatosSemana } from "../../../api/semana";
+import { obtenerDatosRequerimiento } from "../../../api/requerimientosPlaneacion";
 
 function RegistraProgramaProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -50,6 +51,9 @@ function RegistraProgramaProduccion(props) {
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+    // Para almacenar la informacion del formulario
+    const [formDataReqPlan, setFormDataReqPlan] = useState(initialValuesReqPlan());
 
     // Para almacenar la informacion del formulario
     const [maquinas, setMaquinas] = useState();
@@ -111,6 +115,22 @@ function RegistraProgramaProduccion(props) {
             console.log(e)
         }
     }, []);
+
+    useEffect(() => {
+        try {
+
+            obtenerDatosRequerimiento(formDataProduccion.folioPlaneacion).then(response => {
+                const { data } = response;
+                console.log(data);
+                setFormDataReqPlan(valoresAlmacenadosReqPlan(data))
+            }).catch(e => {
+                console.log(e)
+            })
+
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formDataProduccion.folioPlaneacion]);
 
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
@@ -177,7 +197,7 @@ function RegistraProgramaProduccion(props) {
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
         try {
-            obtenerMatrizProducto(formDataProduccion.producto).then(response => {
+            obtenerMatrizProducto(formDataReqPlan.producto).then(response => {
                 const { data } = response;
                 // console.log(data)
                 // initialData
@@ -194,7 +214,7 @@ function RegistraProgramaProduccion(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [formDataProduccion.producto]);
+    }, [formDataReqPlan.producto]);
 
     const [unidadMedida, setUnidadMedida] = useState("Piezas");
 
@@ -535,6 +555,7 @@ function RegistraProgramaProduccion(props) {
         const dataTemp = {
             folio: folioActual,
             folioOP: formDataProduccion.ordenProduccion,
+            folioPlaneacion: formDataProduccion.folioPlaneacion,
             sucursal: getSucursal(),
             semana: semana,
             ordenProduccion: {
@@ -545,13 +566,13 @@ function RegistraProgramaProduccion(props) {
                 cliente: formDataPrograma.cliente,
                 nombreCliente: formDataPrograma.nombreCliente,
                 producto: formDataProduccion.producto,
-                nombreProducto: formDataProduccion.idProducto,
-                cantidadFabricar: formDataProduccion.cantidadFabricar,
-                acumulado: formDataProduccion.acumulado,
+                nombreProducto: formDataReqPlan.idProducto,
+                cantidadFabricar: formDataReqPlan.cantidadFabricar,
+                acumulado: formDataReqPlan.acumulado,
                 ciclo: formDataPrograma.ciclo,
-                cavidades: formDataProduccion.cavidades,
+                cavidades: formDataReqPlan.cavidades,
                 stdTurno: formDataPrograma.stdTurno,
-                pendienteFabricar: formDataProduccion.pendienteFabricar,
+                pendienteFabricar: formDataReqPlan.pendienteFabricar,
                 operadores: formDataPrograma.operadores,
                 noInterno: formDataPrograma.noInterno,
                 turnosRequeridos: turnosReq,
@@ -666,7 +687,7 @@ function RegistraProgramaProduccion(props) {
 
     let piezasTurno3 = (((3600 / Number(formDataPlaneacion.tiempoCiclo3)) * Number(formDataPlaneacion.cavMolde)) * 12);
 
-    let turnosReq = Number(formDataProduccion.pendienteFabricar) / Number(formDataPrograma.stdTurno);
+    let turnosReq = Number(formDataReqPlan.pendienteFabricar) / Number(formDataPrograma.stdTurno);
 
     const [cantidadPedir, setCantidadPedir] = useState(0);
 
@@ -935,7 +956,7 @@ function RegistraProgramaProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="Producto"
-                                            defaultValue={formDataProduccion.idProducto}
+                                            defaultValue={formDataReqPlan.idProducto}
                                             name="producto"
                                         />
                                     </Form.Group>
@@ -946,7 +967,7 @@ function RegistraProgramaProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataProduccion.cantidadFabricar}
+                                            defaultValue={formDataReqPlan.cantidadFabricar}
                                             placeholder="Cantidad a fabricar"
                                             name="cantidadFabricar"
                                         />
@@ -958,7 +979,7 @@ function RegistraProgramaProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataProduccion.acumulado}
+                                            defaultValue={formDataReqPlan.acumulado}
                                             placeholder="Acumulado"
                                             name="acumulado"
                                         />
@@ -985,7 +1006,7 @@ function RegistraProgramaProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="Cavidades"
-                                            defaultValue={formDataProduccion.cavidades}
+                                            defaultValue={formDataReqPlan.cavidades}
                                             name="cavidades"
                                         />
                                     </Form.Group>
@@ -1010,7 +1031,7 @@ function RegistraProgramaProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataProduccion.pendienteFabricar}
+                                            defaultValue={formDataReqPlan.pendienteFabricar}
                                             placeholder="Pendiente de fabricar"
                                             name="pendienteFabricar"
                                         />
@@ -1267,6 +1288,7 @@ function initialFormDataProduccion() {
         standarTurno: "",
         pendienteFabricar: "",
         noInterno: "",
+        folioPlaneacion: "",
     }
 }
 
@@ -1510,6 +1532,50 @@ function formatModelMaquinas(data) {
         });
     });
     return dataTemp;
+}
+
+function initialValuesReqPlan() {
+    return {
+        ordenVenta: "",
+        producto: "",
+        nombreProducto: "",
+        cantidadProducir: "",
+        folioPlaneacion: "",
+
+        semana: "",
+        ordenProduccion: "",
+        idProducto: "",
+        producto: "",
+        cantidadFabricar: "",
+        acumulado: "",
+        cavidades: "",
+        standarTurno: "",
+        pendienteFabricar: "",
+        noInterno: "",
+
+        opcionesMaquinaria: ""
+    }
+}
+
+function valoresAlmacenadosReqPlan(data) {
+    return {
+        ordenVenta: data.requerimiento.ov,
+        producto: data.requerimiento.producto,
+        nombreProducto: data.requerimiento.nombreProducto,
+        cantidadProducir: data.requerimiento.totalProducir,
+
+        semana: data.requerimiento.semana,
+        ordenProduccion: data.folio,
+        idProducto: data.requerimiento.nombreProducto,
+        cantidadFabricar: data.requerimiento.totalProducir,
+        acumulado: data.requerimiento.almacenProductoTerminado,
+        cavidades: data.planeacion.numeroCavidades,
+        pendienteFabricar: parseInt(data.requerimiento.totalProducir) - parseInt(data.requerimiento.almacenProductoTerminado),
+        noInterno: data.requerimiento.noInterno,
+
+        opcionesMaquinaria: data.planeacion.opcionesMaquinaria,
+        folioPlaneacion: data.folio,
+    }
 }
 
 export default RegistraProgramaProduccion;

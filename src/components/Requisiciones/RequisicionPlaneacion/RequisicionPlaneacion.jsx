@@ -41,6 +41,9 @@ function RegistraRequisiciones(props) {
     const [formData, setFormData] = useState(initialFormData());
 
     // Para guardar los datos del formulario
+    const [formDataVenta, setFormDataVenta] = useState(initialFormDataVenta());
+
+    // Para guardar los datos del formulario
     const [departamentoElegido, setDepartamentoElegido] = useState(initialDepartamento());
 
     // Para guardar los datos de los articulos
@@ -209,6 +212,7 @@ function RegistraRequisiciones(props) {
             );
 
             setFormDataArticulos(initialFormDataArticulos)
+            setFormDataVenta(initialFormDataVenta);
             //setCargaProductos(initialFormDataProductos)
             document.getElementById("cantidad").value = "0"
             setOrdenVenta("")
@@ -217,7 +221,8 @@ function RegistraRequisiciones(props) {
 
     // Para limpiar el formulario de detalles de producto
     const cancelarCargaProducto = () => {
-        setFormDataArticulos(initialFormDataArticulos)
+        setFormDataArticulos(initialFormDataArticulos);
+        setFormDataVenta(initialFormDataVenta);
         //setCargaProductos(initialFormDataProductos)
         document.getElementById("cantidad").value = "0"
         setOrdenVenta("")
@@ -308,7 +313,7 @@ function RegistraRequisiciones(props) {
     const hoy = new Date();
     // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
     const fecha = (hoy.getMonth() + 1) > 10 && hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
-        : (hoy.getMonth() + 1) < 10 && hoy.getDate() > 10? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 && hoy.getDate() > 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
             : (hoy.getMonth() + 1) < 10 && hoy.getDate() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
                 : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
 
@@ -616,7 +621,7 @@ function RegistraRequisiciones(props) {
                                         <Form.Control
                                             id="referencia"
                                             type="text"
-                                            defaultValue={ordenVenta}
+                                            defaultValue={formData.ordenVenta}
                                             name="referencia"
                                         />
                                         <FontAwesomeIcon
@@ -626,10 +631,8 @@ function RegistraRequisiciones(props) {
                                             onClick={() => {
                                                 buscarOV(
                                                     <BuscarOV
-                                                        setOrdenVenta={setOrdenVenta}
+                                                        setFormData={setFormDataVenta}
                                                         setOrdenVentaPrincipal={setOrdenVentaPrincipal}
-                                                        setClienteOV={setClienteOV}
-                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
                                                         setProducto={setProducto}
                                                         setShowModal={setShowModal}
                                                     />)
@@ -872,6 +875,12 @@ function RegistraRequisiciones(props) {
             </BasicModal>
         </>
     );
+}
+
+function initialFormDataVenta() {
+    return {
+        ordenVenta: "",
+    }
 }
 
 function initialFormData() {

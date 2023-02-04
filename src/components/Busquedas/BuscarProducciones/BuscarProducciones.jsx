@@ -8,115 +8,35 @@ import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { estilos } from "../../../utils/tableStyled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
-import { obtenerProduccion } from "../../../api/produccion";
-import { toast } from "react-toastify";
-import { obtenerDatosRequerimiento } from "../../../api/requerimientosPlaneacion";
+import { faArrowDownLong, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
 function BuscarProducciones(props) {
     const { setFormData, formData, setShowModal, listProduccion } = props;
-    // console.log(ordenVenta)
-
-    // Para almacenar la informacion del formulario
-    const [clienteSeleccionado, setClienteSeleccionado] = useState(initialFormData());
-
-    // Para almacenar la informacion del formulario
-    const [valoresCliente, setValoresCliente] = useState(initialValues());
-
-    const [valoresPlaneacion, setValoresPlaneacion] = useState(initialValuesPlaneacion());
-
-    // Para controlar la animacion
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        try {
-
-            obtenerProduccion(clienteSeleccionado.seleccion).then(response => {
-                const { data } = response;
-
-                obtenerDatosRequerimiento(data.generalidades.folioPlaneacion).then(response => {
-                    const { data } = response;
-                    setValoresPlaneacion(valoresAlmacenadosPlaneacion(data))
-                }).catch(e => {
-                    console.log(e)
-                })
-                setValoresCliente(valoresAlmacenados(data))
-            }).catch(e => {
-                console.log(e)
-            })
-
-        } catch (e) {
-            console.log(e)
-        }
-    }, [clienteSeleccionado.seleccion]);
 
     // Cancelar y cerrar el formulario
     const cancelarBusqueda = () => {
         setShowModal(false)
     }
 
-    const onChange = e => {
-        setClienteSeleccionado({ ...clienteSeleccionado, [e.target.name]: e.target.value })
-    }
-
-    const onSubmit = e => {
-        //e.preventDefault();
-        if (!clienteSeleccionado.seleccion) {
-            toast.warning("Selecciona un registro")
-        } else {
-            //setNombreCliente()
-            //console.log(formData)
-            setLoading(true);
-            const dataTemp = {
-                nombreProducto: valoresCliente.nombreProducto,
-                ordenInterna: valoresCliente.ordenInterna,
-                cliente: valoresCliente.cliente,
-                numeroParte: valoresCliente.numeroParte,
-
-                ordenVenta: valoresPlaneacion.ordenVenta,
-                producto: valoresPlaneacion.producto,
-                nombreProducto: valoresPlaneacion.nombreProducto,
-                cantidadProducir: valoresPlaneacion.cantidadProducir,
-
-                semana: valoresPlaneacion.semana,
-                ordenProduccion: valoresCliente.ordenInterna,
-                idProducto: valoresPlaneacion.idProducto,
-                cantidadFabricar: valoresPlaneacion.cantidadFabricar,
-                acumulado: valoresPlaneacion.acumulado,
-                cavidades: valoresPlaneacion.cavidades,
-                pendienteFabricar: valoresPlaneacion.pendienteFabricar,
-                noInterno: valoresPlaneacion.noInterno,
-
-                folioPlaneacion: valoresPlaneacion.folioPlaneacion
-            }
-            setFormData(dataTemp)
-            setShowModal(false);
+    // Gestionar el socio seleccionado
+    const produccionElegida = ({ folio, generalidades, planeacion }) => {
+        // Almacena id, ficha y nombre del socio elegido
+        const dataTemp = {
+            nombreProducto: generalidades.producto,
+            ordenInterna: folio,
+            ordenProduccion: folio,
+            cliente: generalidades.nombreCliente,
+            numeroParte: planeacion.noParte,
+            folioPlaneacion: generalidades.folioPlaneacion
         }
+        setFormData(dataTemp);
+        cancelarBusqueda();
     }
 
     const columns = [
         {
             name: 'Folio',
-            selector: row => (
-                <>
-                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                        <Col>
-                            <Form.Check
-                                value={row.id}
-                                type="radio"
-                                //label="Paletizado"
-                                name="seleccion"
-                                onChange={onChange}
-                                id={row.id}
-                                defaultValue={clienteSeleccionado.seleccion}
-                            />
-                        </Col>
-                        <Col>
-                            {row.folio}
-                        </Col>
-                    </Form.Group>
-                </>
-            ),
+            selector: row => row.folio,
             sortable: false,
             center: true,
             reorder: false
@@ -131,6 +51,23 @@ function BuscarProducciones(props) {
         {
             name: 'Cliente',
             selector: row => row.generalidades.nombreCliente,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Seleccionar",
+            selector: row => (
+                <>
+                    <FontAwesomeIcon
+                        className="eleccion"
+                        icon={faCircleCheck}
+                        onClick={() => {
+                            produccionElegida(row);
+                        }}
+                    />
+                </>
+            ),
             sortable: false,
             center: true,
             reorder: false
@@ -155,44 +92,6 @@ function BuscarProducciones(props) {
         rangeSeparatorText: 'de'
     };
 
-    // Procesa documento para descargar en csv
-    function convertArrayOfObjectsToCSV(array) {
-        let result;
-        const columnDelimiter = ',';
-        const lineDelimiter = '\n';
-        const keys = Object.keys(filteredItems[0]);
-        result = '';
-        result += keys.join(columnDelimiter);
-        result += lineDelimiter;
-        array.forEach(item => {
-            let ctr = 0;
-            keys.forEach(key => {
-                if (ctr > 0) result += columnDelimiter;
-                result += item[key];
-                ctr++;
-            });
-            result += lineDelimiter;
-        });
-        return result;
-    }
-
-    function downloadCSV(array) {
-        const link = document.createElement('a');
-        let csv = convertArrayOfObjectsToCSV(array);
-        if (csv == null) return;
-        const filename = 'Datos.csv';
-        if (!csv.match(/^data:text\/csv/i)) {
-            csv = `data:text/csv;charset=utf-8,${csv}`;
-        }
-        link.setAttribute('href', encodeURI(csv));
-        link.setAttribute('download', filename);
-        link.click();
-    }
-
-    const Export = ({ onExport }) => <Button onClick={e => onExport(e.target.value)}>Descargar CSV</Button>;
-
-    const descargaCSV = useMemo(() => <Export onExport={() => downloadCSV(filteredItems)} />, []);
-
     const [filterText, setFilterText] = useState("");
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
 
@@ -211,21 +110,6 @@ function BuscarProducciones(props) {
         align-items: center;
         justify-content: center;
     `;
-
-    const TextField = styled.input` 
-        height: 32px;
-        border-radius: 3px;
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        border: 1px solid #e5e5e5;
-        padding: 0 32px 0 16px;
-      &:hover {
-        cursor: pointer;
-      }
-    `;
-
 
     const filteredItems = listProduccion.filter(
         item => item.generalidades.producto && item.generalidades.producto.toLowerCase().includes(filterText.toLowerCase())
@@ -283,19 +167,6 @@ function BuscarProducciones(props) {
                 <Form.Group as={Row} className="botones">
                     <Col>
                         <Button
-                            variant="success"
-                            title="Usar el registro seleccionado"
-                            className="registrar"
-                            onClick={() => {
-                                onSubmit()
-                            }}
-
-                        >
-                            {!loading ? "Seleccionar" : <Spinner animation="border" />}
-                        </Button>
-                    </Col>
-                    <Col>
-                        <Button
                             variant="danger"
                             title="Cerrar el formulario"
                             className="cancelar"
@@ -311,77 +182,6 @@ function BuscarProducciones(props) {
             </Container>
         </>
     );
-}
-
-function initialFormData() {
-    return {
-        seleccion: ""
-    }
-}
-
-function initialValues() {
-    return {
-        nombreProducto: "",
-        ordenInterna: "",
-        cliente: "",
-        numeroParte: "",
-        folioPlaneacion: "",
-        
-    }
-}
-
-function valoresAlmacenados(data) {
-    return {
-        nombreProducto: data.generalidades.producto,
-        ordenInterna: data.folio,
-        cliente: data.generalidades.nombreCliente,
-        numeroParte: data.planeacion.noParte,
-        folioPlaneacion: data.generalidades.folioPlaneacion
-    }
-}
-
-function initialValuesPlaneacion() {
-    return {
-        ordenVenta: "",
-        producto: "",
-        nombreProducto: "",
-        cantidadProducir: "",
-        folioPlaneacion: "",
-
-        semana: "",
-        ordenProduccion: "",
-        idProducto: "",
-        producto: "",
-        cantidadFabricar: "",
-        acumulado: "",
-        cavidades: "",
-        standarTurno: "",
-        pendienteFabricar: "",
-        noInterno: "",
-
-        opcionesMaquinaria: ""
-    }
-}
-
-function valoresAlmacenadosPlaneacion(data) {
-    return {
-        ordenVenta: data.requerimiento.ov,
-        producto: data.requerimiento.producto,
-        nombreProducto: data.requerimiento.nombreProducto,
-        cantidadProducir: data.requerimiento.totalProducir,
-        
-        semana: data.requerimiento.semana,
-        ordenProduccion: data.folio,
-        idProducto: data.requerimiento.nombreProducto,
-        cantidadFabricar: data.requerimiento.totalProducir,
-        acumulado: data.requerimiento.almacenProductoTerminado,
-        cavidades: data.planeacion.numeroCavidades,
-        pendienteFabricar: parseInt(data.requerimiento.totalProducir) - parseInt(data.requerimiento.almacenProductoTerminado),
-        noInterno: data.requerimiento.noInterno,
-
-        opcionesMaquinaria: data.planeacion.opcionesMaquinaria,
-        folioPlaneacion: data.folio,
-    }
 }
 
 export default BuscarProducciones;

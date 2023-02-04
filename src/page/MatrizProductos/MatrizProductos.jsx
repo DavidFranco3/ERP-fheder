@@ -128,6 +128,7 @@ function formatModelMatrizProductos(data) {
             noInterno: data.noInterno,
             cliente: data.cliente,
             datosMolde: data.datosMolde,
+            nombreCliente: data.nombreCliente,
             sucursal: data.sucursal,
             noParte: data.noParte,
             descripcion: data.descripcion,

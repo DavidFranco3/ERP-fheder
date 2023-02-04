@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './App.scss';
 import Routing from "./routers/Routing";
 import Login from "./page/Login";

@@ -96,6 +96,7 @@ function formatModelInspeccion(data) {
             item: data.item,
             folio: data.folio,
             sucursal: data.sucursal,
+            etiqueta: data.etiqueta,
             ordenVenta: data.ordenVenta,
             fecha: data.fecha,
             lote: data.lote,

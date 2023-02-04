@@ -35,6 +35,9 @@ function RegistraRequisiciones(props) {
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
 
+     // Para guardar los datos del formulario
+     const [formDataVenta, setFormDataVenta] = useState(initialFormDataVenta());
+
     // Para guardar los datos del formulario
     const [departamentoElegido, setDepartamentoElegido] = useState(initialDepartamento());
 
@@ -153,6 +156,7 @@ function RegistraRequisiciones(props) {
             );
 
             setFormDataArticulos(initialFormDataArticulos)
+            setFormDataVenta(initialFormDataVenta);
             //setCargaProductos(initialFormDataProductos)
             document.getElementById("cantidad").value = "0"
             setOrdenVenta("")
@@ -162,6 +166,7 @@ function RegistraRequisiciones(props) {
     // Para limpiar el formulario de detalles de producto
     const cancelarCargaProducto = () => {
         setFormDataArticulos(initialFormDataArticulos)
+        setFormDataVenta(initialFormDataVenta);
         //setCargaProductos(initialFormDataProductos)
         document.getElementById("cantidad").value = "0"
         setOrdenVenta("")
@@ -560,7 +565,7 @@ function RegistraRequisiciones(props) {
                                         <Form.Control
                                             id="referencia"
                                             type="text"
-                                            defaultValue={ordenVenta}
+                                            defaultValue={formDataVenta.ordenVenta}
                                             name="referencia"
                                         />
                                         <FontAwesomeIcon
@@ -570,10 +575,8 @@ function RegistraRequisiciones(props) {
                                             onClick={() => {
                                                 buscarOV(
                                                     <BuscarOV
-                                                        setOrdenVenta={setOrdenVenta}
+                                                        setFormData={setFormDataVenta}
                                                         setOrdenVentaPrincipal={setOrdenVentaPrincipal}
-                                                        setClienteOV={setClienteOV}
-                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
                                                         setProducto={setProducto}
                                                         setShowModal={setShowModal}
                                                     />)
@@ -799,6 +802,12 @@ function RegistraRequisiciones(props) {
             </BasicModal>
         </>
     );
+}
+
+function initialFormDataVenta() {
+    return {
+       ordenVenta: "",
+    }
 }
 
 function initialFormData() {

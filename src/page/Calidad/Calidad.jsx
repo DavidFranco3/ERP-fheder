@@ -134,6 +134,7 @@ function formatModelInspeccion(data) {
             tipoMaterial: data.tipoMaterial,
             nombre: data.nombre,
             cantidad: data.cantidad,
+            etiqueta: data.etiqueta,
             unidadMedida: data.unidadMedida,
             nombreRecibio: data.nombreRecibio,
             estadoMateriaPrima: data.estadoMateriaPrima,

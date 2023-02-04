@@ -39,6 +39,9 @@ function ModificaRequisiciones(props) {
     const [formData, setFormData] = useState(initialFormData());
 
     // Para guardar los datos del formulario
+    const [formDataVenta, setFormDataVenta] = useState(initialFormDataVenta());
+
+    // Para guardar los datos del formulario
     const [departamentoElegido, setDepartamentoElegido] = useState(initialDepartamento());
 
     // Para guardar los datos de los articulos
@@ -169,6 +172,7 @@ function ModificaRequisiciones(props) {
             );
 
             setFormDataArticulos(initialFormDataArticulos)
+            setFormDataVenta(initialFormDataVenta);
             //setCargaProductos(initialFormDataProductos)
             document.getElementById("cantidad").value = "0"
             setOrdenVenta("")
@@ -179,6 +183,7 @@ function ModificaRequisiciones(props) {
     const cancelarCargaProducto = () => {
         //setCargaProductos(initialFormDataProductos)
         setFormDataArticulos(initialFormDataArticulos)
+        setFormDataVenta(initialFormDataVenta);
         //setCargaProductos(initialFormDataProductos)
         document.getElementById("cantidad").value = "0"
         setOrdenVenta("")
@@ -556,7 +561,7 @@ function ModificaRequisiciones(props) {
                                         <Form.Control
                                             id="referencia"
                                             type="text"
-                                            defaultValue={ordenVenta}
+                                            defaultValue={formDataVenta.ordenVenta}
                                             name="referencia"
                                         />
                                         <FontAwesomeIcon
@@ -566,10 +571,8 @@ function ModificaRequisiciones(props) {
                                             onClick={() => {
                                                 buscarOV(
                                                     <BuscarOV
-                                                        setOrdenVenta={setOrdenVenta}
+                                                        setFormData={setFormDataVenta}
                                                         setOrdenVentaPrincipal={setOrdenVentaPrincipal}
-                                                        setClienteOV={setClienteOV}
-                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
                                                         setProducto={setProducto}
                                                         setShowModal={setShowModal}
                                                     />)
@@ -795,6 +798,12 @@ function ModificaRequisiciones(props) {
             </BasicModal>
         </>
     );
+}
+
+function initialFormDataVenta() {
+    return {
+        ordenVenta: "",
+    }
 }
 
 function initialFormData() {

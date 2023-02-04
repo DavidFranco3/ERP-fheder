@@ -1,50 +1,19 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Row, Col, Container, Form, Button, Spinner } from "react-bootstrap"
+import { Row, Col, Container, Form, Button } from "react-bootstrap"
 import "./BuscarClientes.scss"
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { estilos } from "../../../utils/tableStyled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
-import { obtenerCliente } from "../../../api/clientes";
-import { toast } from "react-toastify";
 
 function BuscarClientes(props) {
     const { setFormData, formData, setShowModal, listClientes } = props;
-
-    // Para almacenar la informacion del formulario
-    const [clienteSeleccionado, setClienteSeleccionado] = useState("");
-
-    // Para almacenar la informacion del formulario
-    const [valoresCliente, setValoresCliente] = useState(initialValues());
-
-    // Para controlar la animacion
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        try {
-
-            obtenerCliente(clienteSeleccionado).then(response => {
-                const { data } = response;
-                const { cliente, nombreCliente, fechaElaboracion, fechaEntrega, productos } = data;
-                setValoresCliente(valoresAlmacenados(data))
-            }).catch(e => {
-                console.log(e)
-            })
-
-        } catch (e) {
-            console.log(e)
-        }
-    }, [clienteSeleccionado]);
 
     // Cancelar y cerrar el formulario
     const cancelarBusqueda = () => {
         setShowModal(false)
     }
-
-    /*const onChange = e => {
-        setClienteSeleccionado({ ...clienteSeleccionado, [e.target.name]: e.target.value })
-    }*/
 
     // Gestionar el socio seleccionado
     const clienteElegido = ({ id, nombre, calle, numeroExterior, colonia, municipio, estado }) => {
@@ -106,7 +75,6 @@ function BuscarClientes(props) {
             center: true,
             reorder: false
         },
-
     ];
 
     // Configurando animacion de carga
@@ -127,48 +95,9 @@ function BuscarClientes(props) {
         rangeSeparatorText: 'de'
     };
 
-    // Procesa documento para descargar en csv
-    function convertArrayOfObjectsToCSV(array) {
-        let result;
-        const columnDelimiter = ',';
-        const lineDelimiter = '\n';
-        const keys = Object.keys(filteredItems[0]);
-        result = '';
-        result += keys.join(columnDelimiter);
-        result += lineDelimiter;
-        array.forEach(item => {
-            let ctr = 0;
-            keys.forEach(key => {
-                if (ctr > 0) result += columnDelimiter;
-                result += item[key];
-                ctr++;
-            });
-            result += lineDelimiter;
-        });
-        return result;
-    }
-
-    function downloadCSV(array) {
-        const link = document.createElement('a');
-        let csv = convertArrayOfObjectsToCSV(array);
-        if (csv == null) return;
-        const filename = 'Datos.csv';
-        if (!csv.match(/^data:text\/csv/i)) {
-            csv = `data:text/csv;charset=utf-8,${csv}`;
-        }
-        link.setAttribute('href', encodeURI(csv));
-        link.setAttribute('download', filename);
-        link.click();
-    }
-
-    const Export = ({ onExport }) => <Button onClick={e => onExport(e.target.value)}>Descargar CSV</Button>;
-
-    const descargaCSV = useMemo(() => <Export onExport={() => downloadCSV(filteredItems)} />, []);
 
     const [filterText, setFilterText] = useState("");
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
-
-
 
     // Defino barra de busqueda
     const ClearButton = styled(Button)` 
@@ -182,20 +111,6 @@ function BuscarClientes(props) {
         display: flex;
         align-items: center;
         justify-content: center;
-    `;
-
-    const TextField = styled.input` 
-        height: 32px;
-        border-radius: 3px;
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        border: 1px solid #e5e5e5;
-        padding: 0 32px 0 16px;
-      &:hover {
-        cursor: pointer;
-      }
     `;
 
 
@@ -270,22 +185,6 @@ function BuscarClientes(props) {
             </Container>
         </>
     );
-}
-
-function initialValues() {
-    return {
-        cliente: "",
-        nombreCliente: "",
-        lugarEntrega: "",
-    }
-}
-
-function valoresAlmacenados(data) {
-    return {
-        cliente: data._id,
-        nombreCliente: data.nombre,
-        lugarEntrega: data.direccion.calle + ", " + data.direccion.numeroExterior + ", " + data.direccion.colonia + ", " + data.direccion.municipio + ", " + data.direccion.estado,
-    }
 }
 
 export default BuscarClientes;

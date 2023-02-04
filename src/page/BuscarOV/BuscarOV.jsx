@@ -13,7 +13,7 @@ import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
 function BuscarOV(props) {
-    const { setProducto, setOrdenVentaPrincipal, setOrdenVenta, setClienteOV, setCantidadRequeridaOV, setIdCliente, setNombreCliente, setFechaPedido, setFechaEntrega, setShowModal, setRefreshCheckLogin, location, history } = props;
+    const { setProducto, setFormData, setShowModal, setOrdenVentaPrincipal, setRefreshCheckLogin, location, history } = props;
 
     const enrutamiento = useHistory();
 
@@ -71,15 +71,9 @@ function BuscarOV(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    setOrdenVenta={setOrdenVenta}
-                                    setClienteOV={setClienteOV}
-                                    setCantidadRequeridaOV={setCantidadRequeridaOV}
-                                    setIdCliente={setIdCliente}
-                                    setNombreCliente={setNombreCliente}
-                                    setFechaPedido={setFechaPedido}
-                                    setFechaEntrega={setFechaEntrega}
-                                    setProducto={setProducto}
+                                    setFormData={setFormData}
                                     setOrdenVentaPrincipal={setOrdenVentaPrincipal}
+                                    setProducto={setProducto}
                                 />
                             </Suspense>
                         </>

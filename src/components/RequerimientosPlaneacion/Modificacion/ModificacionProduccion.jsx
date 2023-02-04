@@ -13,7 +13,7 @@ import { obtenerRequerimiento, actualizaRequerimiento } from "../../../api/reque
 import { toast } from "react-toastify";
 import { obtenerMaquina } from "../../../api/maquinas";
 import { obtenerDatosMP } from "../../../api/almacenMP";
-import {obtenerDatosPedidoVenta} from "../../../api/pedidoVenta"
+import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
 import { obtenerDatosArticulo } from '../../../api/almacenes';
@@ -34,6 +34,8 @@ function ModificacionProduccion(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
+    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
+
     const [listOVCargadas, setListOVCargadas] = useState([]);
 
     const [cantidadPedir, setCantidadPedir] = useState(0);
@@ -44,6 +46,9 @@ function ModificacionProduccion(props) {
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+    // Para almacenar la informacion del formulario
+    const [formDataVenta, setFormDataVenta] = useState(initialFormDataVenta());
 
     // Para almacenar la informacion del formulario
     const [formDataPlaneacion, setFormDataPlaneacion] = useState(initialFormDataPlaneacionInitial());
@@ -58,8 +63,7 @@ function ModificacionProduccion(props) {
         //
         obtenerRequerimiento(id).then(response => {
             const { data } = response;
-
-            setInformacionRequerimiento(valoresAlmacenados(data));
+            setFormDataVenta(initialFormDataVenta(data));
             setListOVCargadas(data.requerimiento.ordenVenta);
             setCantidadAlmacen(data.datosRequisicion.almacenMP);
             setCantidadPedir(data.datosRequisicion.cantidadPedir);
@@ -71,8 +75,6 @@ function ModificacionProduccion(props) {
             setCantidadPedir(data.datosRequisicion.cantidadPedir);
             setCantidadPedirMB(data.datosRequisicion.cantidadPedirMB);
             setCantidadPedirEmpaques(data.datosRequisicion.cantidadPedirEmpaques);
-
-            console.log(data.datosRequisicion.cantidadPedir, data.datosRequisicion.cantidadPedirMB, data.datosRequisicion.cantidadPedirEmpaques)
 
             // setFechaCreacion(fechaElaboracion)
         }).catch(e => {
@@ -99,18 +101,8 @@ function ModificacionProduccion(props) {
     const [contentModal, setContentModal] = useState(null);
     const [titulosModal, setTitulosModal] = useState(null);
 
-    // Para almacenar la OV
-    const [ordenVenta, setOrdenVenta] = useState("");
-
-    // Para almacenar la OV
-    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
-    // Para almacenar el cliente de la OV
-    const [clienteOV, setClienteOV] = useState("");
-
     // Para almacenar la cantidad en el almacen de materia prima
     const [cantidadAlmacen, setCantidadAlmacen] = useState("0");
-
-    const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
 
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
@@ -183,8 +175,6 @@ function ModificacionProduccion(props) {
 
     // Para almacenar la cantidad en el almacen de materia prima
     const [cantidadProductoAlmacen, setCantidadProductoAlmacen] = useState(0);
-
-    console.log(ordenVentaPrincipal)
 
     useEffect(() => {
         // Para buscar el producto en la matriz de productos
@@ -271,21 +261,21 @@ function ModificacionProduccion(props) {
         try {
             obtenerDatosArticulo(formDataPlaneacion.id).then(response => {
                 const { data } = response;
-               
+
                 map(data, (articulos, index) => {
-                    
-                    const {estado, cantidadExistencia, tipo} = articulos
-                    
+
+                    const { estado, cantidadExistencia, tipo } = articulos
+
                     if (estado == "true") {
                         console.log("entro al primer if")
                         if (tipo == "Entrada") {
-                        console.log("entro al segundo if")
+                            console.log("entro al segundo if")
                             cantidadTotalEntrada += parseFloat(cantidadExistencia);
                             console.log(cantidadTotalEntrada)
                         } else if (tipo == "Salida") {
                             console.log("el estado del producto es false")
                             cantidadTotalSalida += parseFloat(cantidadExistencia);
-                            }
+                        }
                     }
                     setAlmacenProducto(cantidadTotalEntrada - cantidadTotalSalida)
                 })
@@ -305,20 +295,20 @@ function ModificacionProduccion(props) {
         try {
             obtenerDatosArticulo(formDataPlaneacion.idMaterial).then(response => {
                 const { data } = response;
-               
+
                 map(data, (articulos, index) => {
-                    
-                    const {estado, cantidadExistencia, tipo} = articulos
-                    
+
+                    const { estado, cantidadExistencia, tipo } = articulos
+
                     if (estado == "true") {
                         console.log("entro al primer if")
                         if (tipo == "Entrada") {
-                        console.log("entro al segundo if")
+                            console.log("entro al segundo if")
                             cantidadTotalEntradaMaterial += parseFloat(cantidadExistencia);
                         } else if (tipo == "Salida") {
                             console.log("el estado del producto es false")
                             cantidadTotalSalidaMaterial += parseFloat(cantidadExistencia);
-                            }
+                        }
                     }
                     setCantidadProductoAlmacen(cantidadTotalEntradaMaterial - cantidadTotalSalidaMaterial)
                 })
@@ -338,20 +328,20 @@ function ModificacionProduccion(props) {
         try {
             obtenerDatosArticulo(formDataPlaneacion.idPigmento).then(response => {
                 const { data } = response;
-               
+
                 map(data, (articulos, index) => {
-                    
-                    const {estado, cantidadExistencia, tipo} = articulos
-                    
+
+                    const { estado, cantidadExistencia, tipo } = articulos
+
                     if (estado == "true") {
                         console.log("entro al primer if")
                         if (tipo == "Entrada") {
-                        console.log("entro al segundo if")
+                            console.log("entro al segundo if")
                             cantidadTotalEntradaPigmento += parseFloat(cantidadExistencia);
                         } else if (tipo == "Salida") {
                             console.log("el estado del producto es false")
                             cantidadTotalSalidaPigmento += parseFloat(cantidadExistencia);
-                            }
+                        }
                     }
                     setCantidadMBAlmacen(cantidadTotalEntradaPigmento - cantidadTotalSalidaPigmento)
                 })
@@ -371,20 +361,20 @@ function ModificacionProduccion(props) {
         try {
             obtenerDatosArticulo(formDataPlaneacion.idEmpaque).then(response => {
                 const { data } = response;
-               
+
                 map(data, (articulos, index) => {
-                    
-                    const {estado, cantidadExistencia, tipo} = articulos
-                    
+
+                    const { estado, cantidadExistencia, tipo } = articulos
+
                     if (estado == "true") {
                         console.log("entro al primer if")
                         if (tipo == "Entrada") {
-                        console.log("entro al segundo if")
+                            console.log("entro al segundo if")
                             cantidadTotalEntradaEmpaque += parseFloat(cantidadExistencia);
                         } else if (tipo == "Salida") {
                             console.log("el estado del producto es false")
                             cantidadTotalSalidaEmpaque += parseFloat(cantidadExistencia);
-                            }
+                        }
                     }
                     setCantidadEmpaquesAlmacen(cantidadTotalEntradaEmpaque - cantidadTotalSalidaEmpaque)
                 })
@@ -585,8 +575,7 @@ function ModificacionProduccion(props) {
             document.getElementById("ordenVenta").value = ""
             document.getElementById("cantidadPedidaOV").value = ""
             document.getElementById("cantidadProducirOV").value = ""
-            setOrdenVenta("")
-            setCantidadRequeridaOV("")
+            setFormDataVenta(initialFormDataVenta);
         }
     }
 
@@ -596,12 +585,13 @@ function ModificacionProduccion(props) {
         document.getElementById("ordenVenta").value = ""
         document.getElementById("cantidadPedidaOV").value = ""
         document.getElementById("cantidadProducirOV").value = ""
+        setFormDataVenta(initialFormDataVenta);
     }
 
     // Para eliminar productos del listado
     const removeItemOV = (OV) => {
         let newArray = listOVCargadas;
-        newArray.splice(newArray.findIndex(a => a.ordenVenta === ordenVenta.ordenVenta), 1);
+        newArray.splice(newArray.findIndex(a => a.ordenVenta === OV.ordenVenta), 1);
         setListOVCargadas([...newArray]);
     }
 
@@ -729,7 +719,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 placeholder="Orden de venta"
                                                 name="ordenVenta"
-                                                value={ordenVenta}
+                                                value={formDataVenta.ordenVenta}
                                                 disabled
                                             />
                                             <FontAwesomeIcon
@@ -739,11 +729,9 @@ function ModificacionProduccion(props) {
                                                 onClick={() => {
                                                     buscarOV(
                                                         <BuscarOV
-                                                            setOrdenVenta={setOrdenVenta}
-                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
-                                                            setClienteOV={setClienteOV}
-                                                            setCantidadRequeridaOV={setCantidadRequeridaOV}
+                                                            setFormData={setFormDataVenta}
                                                             setProducto={setProducto}
+                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
                                                             setShowModal={setShowModal}
                                                         />)
                                                 }}
@@ -761,7 +749,7 @@ function ModificacionProduccion(props) {
                                             min="0"
                                             placeholder="Cantidad pedida"
                                             name="cantidadPedidaVenta"
-                                            value={cantidadRequeridaOV}
+                                            value={formDataVenta.cantidadRequerida}
                                             disabled
                                         />
                                     </Form.Group>
@@ -1635,6 +1623,14 @@ function initialFormDataPlaneacion(data) {
         tiempoCiclo5: data.opcionMaquinaria[0][5].tiempoCiclo5,
         opcion6: data.opcionMaquinaria[0][6].opcion6,
         tiempoCiclo6: data.opcionMaquinaria[0][6].tiempoCiclo6
+    }
+}
+
+function initialFormDataVenta() {
+    return {
+       ordenVenta: "",
+       cantidadRequerida: "",
+       cliente: ""
     }
 }
 
