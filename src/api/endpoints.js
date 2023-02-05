@@ -194,6 +194,17 @@ export const ENDPOINTListarIntegracionesPaginacion = "/integracionVentasGastos/l
 export const ENDPOINTObtenerFacturaIntegracion = "/integracionVentasGastos/obtenerFactura";
 export const ENDPOINTTotalIntegraciones = "/integracionVentasGastos/total";
 
+// inventario de maquinas
+export const ENDPOINTRegistraInventarioMaquina = "/inventarioMaquinas/registro";
+export const ENDPOINTListarInventarioMaquina = "/inventarioMaquinas/listar";
+export const ENDPOINTObtenerInventarioMaquina = "/inventarioMaquinas/obtener";
+export const ENDPOINTObtenerItemInventarioMaquina = "/inventarioMaquinas/obtenerItem";
+export const ENDPOINTEliminarInventarioMaquina = "/inventarioMaquinas/eliminar";
+export const ENDPOINTActualizarInventarioMaquina = "/inventarioMaquinas/actualizar";
+export const ENDPOINTActualizarEstadoInventarioMaquina = "/inventarioMaquinas/actualizarEstado";
+export const ENDPOINTListarInventarioMaquinaPaginacion = "/inventarioMaquinas/listarPaginando";
+export const ENDPOINTTotalInventarioMaquina = "/inventarioMaquinas/total";
+
 // etiqueta primera pieza
 export const ENDPOINTRegistraEtiquetasPiezas = "/etiquetaPrimeraPieza/registro";
 export const ENDPOINTListarEtiquetasPiezas = "/etiquetaPrimeraPieza/listar";

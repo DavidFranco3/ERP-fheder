@@ -7,9 +7,9 @@ import { toast } from "react-toastify";
 import { getSucursal } from "../../../api/auth";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import BasicModal from "../../Modal/BasicModal";
-import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
+import BuscarCliente from '../../../page/BuscarCliente';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 function RegistraEtiquetasMoldes(props) {
     const { setShowModal, history } = props;
@@ -201,7 +201,7 @@ function RegistraEtiquetasMoldes(props) {
                                             onClick={() => {
                                                 buscarCliente(
                                                     <BuscarCliente
-                                                        formData={formData}
+                                                        formData={formDataCliente}
                                                         setFormData={setFormDataCliente}
                                                         setShowModal={setShowModal2}
                                                     />)

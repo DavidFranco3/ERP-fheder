@@ -16,10 +16,16 @@ function BuscarMaquinas(props) {
     }
 
     // Gestionar el socio seleccionado
-    const maquinaElegida = ({ numeroMaquina }) => {
+    const maquinaElegida = ({ numeroMaquina, tipoMaquina, nombre, marca, modelo, noSerie, fechaAdquisicion }) => {
         // Almacena id, ficha y nombre del socio elegido
         const dataTemp = {
             noMaquina: numeroMaquina,
+            tipo: tipoMaquina,
+            descripcion: nombre,
+            marca: marca,
+            modelo: modelo,
+            noSerie: noSerie,
+            fechaAdquisicion: fechaAdquisicion,
         }
         setFormData(dataTemp);
         cancelarBusqueda();

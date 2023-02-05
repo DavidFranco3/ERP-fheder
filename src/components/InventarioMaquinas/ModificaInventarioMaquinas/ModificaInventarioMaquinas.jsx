@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Spinner } from "react-bootstrap";
-import "./RegistraInventarioMaquinas.scss";
-import { registraInventarioMaquina, obtenerItemInventarioMaquina } from '../../../api/inventarioMaquinas';
+import "./ModificaInventarioMaquinas.scss";
+import { actualizaInventarioMaquina } from '../../../api/inventarioMaquinas';
 import queryString from "query-string";
 import { toast } from "react-toastify";
 import { getSucursal } from "../../../api/auth";
@@ -11,8 +11,10 @@ import BuscarMaquina from '../../../page/BuscarMaquina';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-function RegistraInventarioMaquinas(props) {
-    const { setShowModal, history } = props;
+function ModificaInventarioMaquinas(props) {
+    const { datos, setShowModal, history } = props;
+
+    const { id } = datos;
 
     // Cancelar y cerrar el formulario
     const cancelarRegistro = () => {
@@ -32,31 +34,13 @@ function RegistraInventarioMaquinas(props) {
     }
 
     // Para guardar los datos del formulario
-    const [formData, setFormData] = useState(initialFormData());
+    const [formData, setFormData] = useState(initialFormData(datos));
 
     // Para guardar los datos del formulario
-    const [formDataMaquina, setFormDataMaquina] = useState(initialFormDataMaquina());
+    const [formDataMaquina, setFormDataMaquina] = useState(initialFormDataMaquina(datos));
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
-
-    // Para almacenar el folio actual
-    const [itemActual, setItemActual] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerItemInventarioMaquina().then(response => {
-                const { data } = response;
-                // console.log(data)
-                const { item } = data;
-                setItemActual(item)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -69,7 +53,6 @@ function RegistraInventarioMaquinas(props) {
             // Realiza registro de la aportación
 
             const dataTemp = {
-                item: itemActual,
                 tipo: formDataMaquina.tipo,
                 codigo: formData.codigo,
                 noMaquina: formDataMaquina.noMaquina,
@@ -79,12 +62,10 @@ function RegistraInventarioMaquinas(props) {
                 marca: formDataMaquina.marca,
                 modelo: formDataMaquina.modelo,
                 noSerie: formDataMaquina.noSerie,
-                sucursal: getSucursal(),
                 fechaAdquisicion: formDataMaquina.fechaAdquisicion,
-                estado: "true"
             }
 
-            registraInventarioMaquina(dataTemp).then(response => {
+            actualizaInventarioMaquina(id, dataTemp).then(response => {
                 const { data } = response;
                 LogsInformativos("Se a registrado el inventario de la maquina " + formDataMaquina.noMaquina, dataTemp);
                 toast.success(data.mensaje)
@@ -279,7 +260,7 @@ function RegistraInventarioMaquinas(props) {
                                     <Form.Control
                                         type="date"
                                         placeholder="Fecha de adquision"
-                                        name="fechaAdquision"
+                                        name="FechaAdquision"
                                         defaultValue={formDataMaquina.fechaAdquisicion}
                                     />
                                 </Col>
@@ -294,7 +275,7 @@ function RegistraInventarioMaquinas(props) {
                                     title="Guardar información del formulario"
                                     className="registrar"
                                 >
-                                    {!loading ? "Modificar" : <Spinner animation="border" />}
+                                    {!loading ? "Registrar" : <Spinner animation="border" />}
                                 </Button>
                             </Col>
                             <Col>
@@ -320,25 +301,25 @@ function RegistraInventarioMaquinas(props) {
     );
 }
 
-function initialFormData() {
+function initialFormData(data) {
     return {
-        codigo: "",
-        capacidad: "",
-        unidades: "",
+        codigo: data.codigo,
+        capacidad: data.capacidad,
+        unidades: data.unidades,
     }
 }
 
-function initialFormDataMaquina() {
+function initialFormDataMaquina(data) {
     return {
-        tipo: "",
-        noMaquina: "",
-        descripcion: "",
-        marca: "",
-        modelo: "",
-        noSerie: "",
-        fechaAdquisicion: "",
+        tipo: data.tipo,
+        noMaquina: data.noMaquina,
+        descripcion: data.descripcion,
+        marca: data.marca,
+        modelo: data.modelo,
+        noSerie: data.noSerie,
+        fechaAdquisicion: data.fechaAdquisicion,
 
     }
 }
 
-export default RegistraInventarioMaquinas;
+export default ModificaInventarioMaquinas;

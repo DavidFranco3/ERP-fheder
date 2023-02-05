@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import queryString from "query-string";
-import "./EliminacionLogicaMoldes.scss";
+import "./EliminacionFisicaInventarioMaquinas.scss";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { actualizaEstadoEtiquetaMolde } from "../../../api/etiquetasMoldes";
+import { eliminaInventarioMaquina } from "../../../api/inventarioMaquinas";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
-function EliminacionLogicaMoldes(props) {
+function EliminacionFisicaInventarioMaquinas(props) {
     const { datos, setShowModal, history } = props;
-    const { id, folio, idInterno, noInterno, descripcion, estado } = datos;
+    const { id, noMaquina, descripcion, marca, modelo } = datos;
 
     // Para determinar el uso de la animacion
     const [loading, setLoading] = useState(false);
@@ -23,17 +23,12 @@ function EliminacionLogicaMoldes(props) {
 
         setLoading(true);
 
-        const dataTemp = {
-            estado: estado === "false" ? "true" : "false"
-        }
-        //console.log(dataTemp)
-
         try {
-            actualizaEstadoEtiquetaMolde(id, dataTemp).then(response => {
+            eliminaInventarioMaquina(id).then(response => {
                 const { data } = response;
                 //console.log(data)
                 toast.success(data.mensaje);
-                LogsInformativos("Se actualizo el estado del molde " + folio, datos);
+                LogsInformativos("Se ha eliminado el inventario de la maquina " + noMaquina, datos);
                 setShowModal(false);
                 setLoading(false);
                 history.push({
@@ -49,59 +44,21 @@ function EliminacionLogicaMoldes(props) {
         <>
             <Form onSubmit={onSubmit}>
 
-                {estado == "true" ? (
-                    <>
-                        <Alert variant="danger">
-                            <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
-                            <p className="mensaje">
-                                Esta acción deshabilitara del sistema el molde.
-                            </p>
-                        </Alert>
-                    </>
-                ) : (
-                    <>
-                        <Alert variant="success">
-                            <Alert.Heading>Atención! Acción constructiva!</Alert.Heading>
-                            <p className="mensaje">
-                                Esta acción habilitara en el sistema el molde.
-                            </p>
-                        </Alert>
-                    </>
-                )}
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción eliminara del sistema el inventario de la maquina.
+                    </p>
+                </Alert>
 
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Folio
+                            # de maquina
                         </Form.Label>
                         <Form.Control
                             type="text"
-                            value={folio}
-                            disabled
-                        />
-                    </Form.Group>
-                    <Form.Group as={Col} controlId="formGridCliente">
-                        <Form.Label>
-                            Id Interno
-                        </Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={idInterno}
-                            disabled
-                        />
-                    </Form.Group>
-                </Row>
-
-                <br />
-
-                <Row>
-                    <Form.Group as={Col} controlId="formGridCliente">
-                        <Form.Label>
-                            No. Interno
-                        </Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={noInterno}
+                            value={noMaquina}
                             disabled
                         />
                     </Form.Group>
@@ -117,14 +74,39 @@ function EliminacionLogicaMoldes(props) {
                     </Form.Group>
                 </Row>
 
+                <br />
+
+                <Row>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Marca
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={marca}
+                            disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridCliente">
+                        <Form.Label>
+                            Modelo
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={modelo}
+                            disabled
+                        />
+                    </Form.Group>
+                </Row>
+
                 <Form.Group as={Row} className="botones">
                     <Col>
                         <Button
                             variant="success"
-                            title={estado === "true" ? "Deshabilitar" : "Habilitar"}
+                            title={"Eliminar"}
                             type="submit"
                             className="registrar">
-                            {!loading ? estado == "true" ? "Deshabilitar" : "Habilitar" : <Spinner animation="border" />}
+                            {!loading ? "Eliminar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -136,7 +118,7 @@ function EliminacionLogicaMoldes(props) {
                                 cancelar()
                             }}
                         >
-                            Cancelar
+                            Cerrar
                         </Button>
                     </Col>
                 </Form.Group>
@@ -145,4 +127,4 @@ function EliminacionLogicaMoldes(props) {
     );
 }
 
-export default EliminacionLogicaMoldes;
+export default EliminacionFisicaInventarioMaquinas;
