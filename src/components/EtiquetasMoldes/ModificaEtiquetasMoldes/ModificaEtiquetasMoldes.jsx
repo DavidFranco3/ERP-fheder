@@ -45,7 +45,7 @@ function ModificaEtiquetasMoldes(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!formData.idInterno || !formData.noInterno || !formData.cavidad || !formData.descripcion || !formDataCliente.nombreCliente) {
+        if (!formData.idInterno || !formData.noInterno || !formData.noParte || !formData.cavidad || !formData.descripcion || !formDataCliente.nombreCliente) {
             toast.warning("Completa el formulario")
         } else {
 
@@ -55,6 +55,7 @@ function ModificaEtiquetasMoldes(props) {
             const dataTemp = {
                 idInterno: formData.idInterno,
                 noInterno: formData.noInterno,
+                noParte: formData.noParte,
                 cavidad: formData.cavidad,
                 descripcion: formData.descripcion,
                 cliente: formDataCliente.nombreCliente
@@ -119,6 +120,24 @@ function ModificaEtiquetasMoldes(props) {
                                         placeholder="Numero interno"
                                         name="noInterno"
                                         defaultValue={formData.noInterno}
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                <Col sm="3">
+                                    <Form.Label align="center">
+                                        No. Parte
+                                    </Form.Label>
+                                </Col>
+                                <Col>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Numero parte"
+                                        name="noParte"
+                                        defaultValue={formData.noParte}
                                     />
                                 </Col>
                             </Form.Group>
@@ -232,6 +251,7 @@ function initialFormData(data) {
         folio: data.folio,
         idInterno: data.idInterno,
         noInterno: data.noInterno,
+        noParte: data.noParte,
         cavidad: data.cavidad,
         descripcion: data.descripcion,
     }

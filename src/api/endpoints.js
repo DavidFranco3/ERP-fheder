@@ -205,6 +205,17 @@ export const ENDPOINTActualizarEstadoInventarioMaquina = "/inventarioMaquinas/ac
 export const ENDPOINTListarInventarioMaquinaPaginacion = "/inventarioMaquinas/listarPaginando";
 export const ENDPOINTTotalInventarioMaquina = "/inventarioMaquinas/total";
 
+// inventario de maquinas
+export const ENDPOINTRegistraInventarioMolde = "/inventarioMoldes/registro";
+export const ENDPOINTListarInventarioMolde = "/inventarioMoldes/listar";
+export const ENDPOINTObtenerInventarioMolde = "/inventarioMoldes/obtener";
+export const ENDPOINTObtenerItemInventarioMolde = "/inventarioMoldes/obtenerItem";
+export const ENDPOINTEliminarInventarioMolde = "/inventarioMoldes/eliminar";
+export const ENDPOINTActualizarInventarioMolde = "/inventarioMoldes/actualizar";
+export const ENDPOINTActualizarEstadoInventarioMolde = "/inventarioMoldes/actualizarEstado";
+export const ENDPOINTListarInventarioMoldePaginacion = "/inventarioMoldes/listarPaginando";
+export const ENDPOINTTotalInventarioMolde = "/inventarioMoldes/total";
+
 // etiqueta primera pieza
 export const ENDPOINTRegistraEtiquetasPiezas = "/etiquetaPrimeraPieza/registro";
 export const ENDPOINTListarEtiquetasPiezas = "/etiquetaPrimeraPieza/listar";
@@ -273,6 +284,7 @@ export const ENDPOINTTotalEtiquetaMolido = "/etiquetaMolido/total";
 // etiqueta de moldes
 export const ENDPOINTRegistraEtiquetaMolde = "/etiquetasMoldes/registro";
 export const ENDPOINTListarEtiquetaMolde = "/etiquetasMoldes/listar";
+export const ENDPOINTListarEtiquetaMoldeActiva = "/etiquetasMoldes/listarActivo";
 export const ENDPOINTObtenerEtiquetaMolde = "/etiquetasMoldes/obtener";
 export const ENDPOINTObtenerItemEtiquetaMolde = "/etiquetasMoldes/obtenerItem";
 export const ENDPOINTObtenerDatosEtiquetaMolde = "/etiquetasMoldes/obtenerDatosEtiqueta";

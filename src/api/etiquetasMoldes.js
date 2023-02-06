@@ -11,6 +11,7 @@ import {
     ENDPOINTListarEtiquetaMoldePaginacion,
     ENDPOINTObtenerNoEtiquetaMolde,
     ENDPOINTTotalEtiquetaMolde,
+    ENDPOINTListarEtiquetaMoldeActiva,
 } from "./endpoints";
 import axios from 'axios';
 import { getTokenApi } from "./auth";
@@ -96,6 +97,18 @@ export async function listarEtiquetaMolde(sucursal) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarEtiquetaMolde +`/?sucursal=${sucursal}`, config);
+}
+
+// Para listar todos los pedidos
+export async function listarEtiquetaMoldeActiva(sucursal) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarEtiquetaMoldeActiva +`/?sucursal=${sucursal}`, config);
 }
 
 // Listar los pedidos de venta paginandolos

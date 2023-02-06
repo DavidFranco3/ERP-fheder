@@ -144,6 +144,7 @@ function formatModelEtiquetaMolde(data) {
             folio: data.folio,
             idInterno: data.idInterno,
             noInterno: data.noInterno,
+            noParte: data.noParte,
             sucursal: data.sucursal,
             cavidad: data.cavidad,
             descripcion: data.descripcion,

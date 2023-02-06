@@ -4,18 +4,18 @@ import { Badge, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownLong, faTrashCan, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import "./ListEtiquetasMoldes.scss";
+import { faArrowDownLong, faTrashCan, faPenToSquare, faEye } from "@fortawesome/free-solid-svg-icons";
+import "./ListInventarioMolde.scss";
 import { estilos } from "../../../utils/tableStyled";
 import 'dayjs/locale/es'
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-import EliminacionLogicaMoldes from '../EliminacionLogica';
-import EliminacionFisicaMoldes from '../EliminacionFisica';
-import ModificaEtiquetasMoldes from '../ModificaEtiquetasMoldes';
+import EliminacionLogicaInventarioMoldes from '../EliminacionLogica';
+import EliminacionFisicaInventarioMoldes from '../EliminacionFisica';
+import ModificaInventarioMoldes from '../ModificaInventarioMoldes';
 
-function ListEtiquetasMoldes(props) {
-    const { setRefreshCheckLogin, listEtiquetas, history, location } = props;
+function ListInventarioMolde(props) {
+    const { setRefreshCheckLogin, listInventarios, history, location } = props;
 
     const enrutamiento = useHistory();
 
@@ -28,28 +28,20 @@ function ListEtiquetasMoldes(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Para la eliminacion fisica de usuarios
-    const eliminacionEtiqueta = (content) => {
+    const eliminacionInventario = (content) => {
         setTitulosModal("Eliminar");
         setContentModal(content);
         setShowModal(true);
     }
 
     //Para la eliminacion logica de usuarios
-    const eliminaLogicaMolde = (content) => {
-        setTitulosModal("Deshabilitando el molde");
+    const eliminaLogicaInventario = (content) => {
+        setTitulosModal("Cancelando el inventario del molde");
         setContentModal(content);
         setShowModal(true);
     }
-
-     //Para la eliminacion logica de usuarios
-     const habilitaMolde = (content) => {
-        setTitulosModal("Habilitando el molde");
-        setContentModal(content);
-        setShowModal(true);
-    }
-    
     // Para la eliminacion fisica de usuarios
-    const modificacionEtiqueta = (content) => {
+    const modificacionInventario = (content) => {
         setTitulosModal("Modificar");
         setContentModal(content);
         setShowModal(true);
@@ -62,36 +54,43 @@ function ListEtiquetasMoldes(props) {
 
     const columns = [
         {
-            name: "Folio",
-            selector: row => row.folio,
+            name: "Item",
+            selector: row => row.item,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Id Interno",
-            selector: row => row.idInterno,
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: "# de molde",
+            name: "# Interno",
             selector: row => row.noInterno,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "# de parte",
-            selector: row => row.noParte,
+            name: "Cliente",
+            selector: row => row.cliente,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Cavidad",
-            selector: row => row.cavidad,
+            name: "# de molde",
+            selector: row => row.noMolde,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Cav molde",
+            selector: row => row.cavMolde,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "# Parte",
+            selector: row => row.noParte,
             sortable: false,
             center: true,
             reorder: false
@@ -104,8 +103,8 @@ function ListEtiquetasMoldes(props) {
             reorder: false
         },
         {
-            name: "Cliente",
-            selector: row => row.cliente,
+            name: "Status molde",
+            selector: row => row.statusMolde,
             sortable: false,
             center: true,
             reorder: false
@@ -123,15 +122,15 @@ function ListEtiquetasMoldes(props) {
                                 title="Deshabilitar"
                                 className="editar"
                                 onClick={() => {
-                                    eliminaLogicaMolde(
-                                        <EliminacionLogicaMoldes
+                                    eliminaLogicaInventario(
+                                        <EliminacionLogicaInventarioMoldes
                                             datos={row}
                                             setShowModal={setShowModal}
                                             history={history}
                                         />)
                                 }}
                             >
-                                Activa
+                                Activo
                             </Badge>
                         </>
                     )
@@ -142,22 +141,14 @@ function ListEtiquetasMoldes(props) {
                                 bg="danger"
                                 title="Habilitar"
                                 className="eliminar"
-                                onClick={() => {
-                                    habilitaMolde(
-                                        <EliminacionLogicaMoldes
-                                            datos={row}
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />)
-                                }}
                             >
-                                Inactivo
+                                Cancelado
                             </Badge>
                         </>
                     )
         },
         {
-            name: "Modificación",
+            name: "Ultima modificación",
             selector: row => dayjs(row.fechaActualizacion).format('LL'),
             sortable: false,
             center: true,
@@ -169,13 +160,22 @@ function ListEtiquetasMoldes(props) {
             reorder: true,
             selector: row => (
                 <>
+                <Badge
+                        bg="primary"
+                        title="Generar PDF"
+                        className="ver"
+                        onClick={() => {
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faEye} className="text-lg" />
+                    </Badge>
                     <Badge
                         bg="success"
                         title="Modificar"
                         className="editar"
                         onClick={() => {
-                            modificacionEtiqueta(
-                                <ModificaEtiquetasMoldes
+                            modificacionInventario(
+                                <ModificaInventarioMoldes
                                     datos={row}
                                     setShowModal={setShowModal}
                                     history={history}
@@ -189,8 +189,8 @@ function ListEtiquetasMoldes(props) {
                         title="Eliminar"
                         className="eliminar"
                         onClick={() => {
-                            eliminacionEtiqueta(
-                                <EliminacionFisicaMoldes
+                            eliminacionInventario(
+                                <EliminacionFisicaInventarioMoldes
                                     datos={row}
                                     setShowModal={setShowModal}
                                     history={history}
@@ -211,7 +211,7 @@ function ListEtiquetasMoldes(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listEtiquetas);
+            setRows(listInventarios);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -231,7 +231,7 @@ function ListEtiquetasMoldes(props) {
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
                     // actions={descargaCSV}
-                    data={listEtiquetas}
+                    data={listInventarios}
                     // expandableRows
                     // expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}
@@ -250,4 +250,4 @@ function ListEtiquetasMoldes(props) {
     );
 }
 
-export default ListEtiquetasMoldes;
+export default ListInventarioMolde;

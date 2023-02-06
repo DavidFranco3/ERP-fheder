@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Spinner } from "react-bootstrap";
-import "./RegistraInventarioMaquinas.scss";
-import { registraInventarioMaquina, obtenerItemInventarioMaquina } from '../../../api/inventarioMaquinas';
+import "./ModificaInventarioMoldes.scss";
+import { actualizaInventarioMolde } from '../../../api/inventarioMoldes';
 import queryString from "query-string";
 import { toast } from "react-toastify";
 import { getSucursal } from "../../../api/auth";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import BasicModal from "../../Modal/BasicModal";
-import BuscarMaquina from '../../../page/BuscarMaquina';
+import BuscarMolde from '../../../page/BuscarMolde';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-function RegistraInventarioMaquinas(props) {
-    const { setShowModal, history } = props;
+function ModificaInventarioMoldes(props) {
+    const { datos, setShowModal, history } = props;
+
+    const {id} = datos;
 
     // Cancelar y cerrar el formulario
     const cancelarRegistro = () => {
@@ -25,43 +27,25 @@ function RegistraInventarioMaquinas(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Para la eliminacion fisica de usuarios
-    const buscarMaquina = (content) => {
-        setTitulosModal("Buscar maquina");
+    const buscarMolde = (content) => {
+        setTitulosModal("Buscar molde");
         setContentModal(content);
         setShowModal2(true);
     }
 
     // Para guardar los datos del formulario
-    const [formData, setFormData] = useState(initialFormData());
+    const [formData, setFormData] = useState(initialFormData(datos));
 
     // Para guardar los datos del formulario
-    const [formDataMaquina, setFormDataMaquina] = useState(initialFormDataMaquina());
+    const [formDataMolde, setFormDataMolde] = useState(initialFormDataMolde(datos));
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
-    // Para almacenar el folio actual
-    const [itemActual, setItemActual] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerItemInventarioMaquina().then(response => {
-                const { data } = response;
-                // console.log(data)
-                const { item } = data;
-                setItemActual(item)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!formDataMaquina.noMaquina || !formData.unidades || !formData.capacidad || !formData.codigo) {
+        if (!formDataMolde.noInterno || !formData.statusMolde) {
             toast.warning("Completa el formulario")
         } else {
 
@@ -69,24 +53,18 @@ function RegistraInventarioMaquinas(props) {
             // Realiza registro de la aportación
 
             const dataTemp = {
-                item: itemActual,
-                tipo: formDataMaquina.tipo,
-                codigo: formData.codigo,
-                noMaquina: formDataMaquina.noMaquina,
-                descripcion: formDataMaquina.descripcion,
-                capacidad: formData.capacidad,
-                unidades: formData.unidades,
-                marca: formDataMaquina.marca,
-                modelo: formDataMaquina.modelo,
-                noSerie: formDataMaquina.noSerie,
-                sucursal: getSucursal(),
-                fechaAdquisicion: formDataMaquina.fechaAdquisicion,
-                estado: "true"
+                noInterno: formDataMolde.noInterno,
+                cliente: formDataMolde.cliente,
+                noMolde: formDataMolde.noMolde,
+                cavMolde: formDataMolde.cavMolde,
+                noParte: formDataMolde.noParte,
+                descripcion: formDataMolde.descripcion,
+                statusMolde: formData.statusMolde,
             }
 
-            registraInventarioMaquina(dataTemp).then(response => {
+            actualizaInventarioMolde(id, dataTemp).then(response => {
                 const { data } = response;
-                LogsInformativos("Se a registrado el inventario de la maquina " + formDataMaquina.noMaquina, dataTemp);
+                LogsInformativos("Se a actualizado el inventario del molde " + formDataMolde.noInterno, dataTemp);
                 toast.success(data.mensaje)
                 setTimeout(() => {
                     history.push({
@@ -103,7 +81,7 @@ function RegistraInventarioMaquinas(props) {
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
-        setFormDataMaquina({ ...formDataMaquina, [e.target.name]: e.target.value })
+        setFormDataMolde({ ...formDataMolde, [e.target.name]: e.target.value })
     }
 
     return (
@@ -115,44 +93,48 @@ function RegistraInventarioMaquinas(props) {
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
                                     <Form.Label align="center">
-                                        No. Maquina
+                                        No. Interno
                                     </Form.Label>
                                 </Col>
                                 <Col>
-                                    <div className="flex items-center mb-1">
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Numero de maquina"
-                                            name="noMaquina"
-                                            defaultValue={formDataMaquina.noMaquina}
-                                        />
-                                        <FontAwesomeIcon
+                                <div className="flex items-center mb-1">
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Numero interno"
+                                        name="noInterno"
+                                        defaultValue={formDataMolde.noInterno}
+                                    />
+                                    <FontAwesomeIcon
                                             className="cursor-pointer py-2 -ml-6"
                                             title="Buscar entre los clientes"
                                             icon={faSearch}
                                             onClick={() => {
-                                                buscarMaquina(
-                                                    <BuscarMaquina
-                                                        formData={formDataMaquina}
-                                                        setFormData={setFormDataMaquina}
+                                                buscarMolde(
+                                                    <BuscarMolde
+                                                        formData={formDataMolde}
+                                                        setFormData={setFormDataMolde}
                                                         setShowModal={setShowModal2}
                                                     />)
                                             }}
                                         />
                                     </div>
                                 </Col>
+                            </Form.Group>
+                        </Row>
 
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
                                     <Form.Label align="center">
-                                        Unidades
+                                        Cliente
                                     </Form.Label>
                                 </Col>
                                 <Col>
                                     <Form.Control
                                         type="text"
-                                        placeholder="Unidades"
-                                        name="unidades"
-                                        defaultValue={formData.unidades}
+                                        placeholder="Cliente"
+                                        name="cliente"
+                                        defaultValue={formDataMolde.cliente}
                                     />
                                 </Col>
                             </Form.Group>
@@ -162,29 +144,15 @@ function RegistraInventarioMaquinas(props) {
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
                                     <Form.Label align="center">
-                                        Codigo
+                                        No. Molde
                                     </Form.Label>
                                 </Col>
                                 <Col>
                                     <Form.Control
                                         type="text"
-                                        placeholder="Codigo"
-                                        name="codigo"
-                                        defaultValue={formData.codigo}
-                                    />
-                                </Col>
-
-                                <Col sm="3">
-                                    <Form.Label align="center">
-                                        Marca
-                                    </Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Marca"
-                                        name="marca"
-                                        defaultValue={formDataMaquina.marca}
+                                        placeholder="Numero de Molde"
+                                        name="noMolde"
+                                        defaultValue={formDataMolde.noMolde}
                                     />
                                 </Col>
                             </Form.Group>
@@ -194,29 +162,15 @@ function RegistraInventarioMaquinas(props) {
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
                                     <Form.Label align="center">
-                                        Tipo
+                                        Cav. Molde
                                     </Form.Label>
                                 </Col>
                                 <Col>
                                     <Form.Control
                                         type="text"
-                                        placeholder="Tipo"
-                                        name="tipo"
-                                        defaultValue={formDataMaquina.tipo}
-                                    />
-                                </Col>
-
-                                <Col sm="3">
-                                    <Form.Label align="center">
-                                        Modelo
-                                    </Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Modelo"
-                                        name="modelo"
-                                        defaultValue={formDataMaquina.modelo}
+                                        placeholder="Cavidad de molde"
+                                        name="cavMolde"
+                                        defaultValue={formDataMolde.cavMolde}
                                     />
                                 </Col>
                             </Form.Group>
@@ -225,30 +179,34 @@ function RegistraInventarioMaquinas(props) {
                         <Row className="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                    <Form.Label>
-                                        Descripcion de maquina
+                                    <Form.Label align="center">
+                                        No. Parte
                                     </Form.Label>
                                 </Col>
                                 <Col>
                                     <Form.Control
                                         type="text"
-                                        placeholder="Descripcion de maquina"
+                                        placeholder="Numero de parte"
+                                        name="noParte"
+                                        defaultValue={formDataMolde.noParte}
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                <Col sm="3">
+                                    <Form.Label align="center">
+                                        Descripción
+                                    </Form.Label>
+                                </Col>
+                                <Col>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Descripción"
                                         name="descripcion"
-                                        defaultValue={formDataMaquina.descripcion}
-                                    />
-                                </Col>
-
-                                <Col sm="3">
-                                    <Form.Label>
-                                        No. serie
-                                    </Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Numero de serie"
-                                        name="noSerie"
-                                        defaultValue={formDataMaquina.noSerie}
+                                        defaultValue={formDataMolde.descripcion}
                                     />
                                 </Col>
                             </Form.Group>
@@ -257,31 +215,21 @@ function RegistraInventarioMaquinas(props) {
                         <Row className="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col sm="3">
-                                    <Form.Label>
-                                        Capacidad
-                                    </Form.Label>
-                                </Col>
-                                <Col>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Capacidad"
-                                        name="capacidad"
-                                        defaultValue={formData.capacidad}
-                                    />
-                                </Col>
-
-                                <Col sm="3">
                                     <Form.Label align="center">
-                                        Fecha de adquision
+                                        Status molde
                                     </Form.Label>
                                 </Col>
                                 <Col>
                                     <Form.Control
-                                        type="date"
-                                        placeholder="Fecha de adquision"
-                                        name="fechaAdquision"
-                                        defaultValue={formDataMaquina.fechaAdquisicion}
-                                    />
+                                        as="select"
+                                        placeholder="Status molde"
+                                        name="statusMolde"
+                                        defaultValue={formData.statusMolde}
+                                    >
+                                        <option>Elige una opción</option>
+                                        <option value="Molde en planta">Molde en planta</option>
+                                        <option value="Molde no existente">Molde no existente</option>
+                                    </Form.Control>
                                 </Col>
                             </Form.Group>
                         </Row>
@@ -320,25 +268,22 @@ function RegistraInventarioMaquinas(props) {
     );
 }
 
-function initialFormData() {
+function initialFormData(data) {
     return {
-        codigo: "",
-        capacidad: "",
-        unidades: "",
+        statusMolde: data.statusMolde,
     }
 }
 
-function initialFormDataMaquina() {
+function initialFormDataMolde(data) {
     return {
-        tipo: "",
-        noMaquina: "",
-        descripcion: "",
-        marca: "",
-        modelo: "",
-        noSerie: "",
-        fechaAdquisicion: "",
+        noInterno: data.noInterno,
+        cliente: data.cliente,
+        noMolde: data.noMolde,
+        cavMolde: data.cavMolde,
+        noParte: data.noParte,
+        descripcion: data.descripcion,
 
     }
 }
 
-export default RegistraInventarioMaquinas;
+export default ModificaInventarioMoldes;

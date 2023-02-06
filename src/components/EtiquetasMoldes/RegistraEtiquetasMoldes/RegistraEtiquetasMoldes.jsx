@@ -61,7 +61,7 @@ function RegistraEtiquetasMoldes(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        if (!formData.idInterno || !formData.noInterno || !formData.cavidad || !formData.descripcion || !formDataCliente.nombreCliente) {
+        if (!formData.idInterno || !formData.noInterno || !formData.noParte || !formData.cavidad || !formData.descripcion || !formDataCliente.nombreCliente) {
             toast.warning("Completa el formulario")
         } else {
 
@@ -72,6 +72,7 @@ function RegistraEtiquetasMoldes(props) {
                 folio: folioActual,
                 idInterno: formData.idInterno,
                 noInterno: formData.noInterno,
+                noParte: formData.noParte,
                 sucursal: getSucursal(),
                 cavidad: formData.cavidad,
                 descripcion: formData.descripcion,
@@ -138,6 +139,24 @@ function RegistraEtiquetasMoldes(props) {
                                         placeholder="Numero interno"
                                         name="noInterno"
                                         defaultValue={formData.noInterno}
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                <Col sm="3">
+                                    <Form.Label align="center">
+                                        No. Parte
+                                    </Form.Label>
+                                </Col>
+                                <Col>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Numero parte"
+                                        name="noParte"
+                                        defaultValue={formData.noParte}
                                     />
                                 </Col>
                             </Form.Group>
@@ -250,6 +269,7 @@ function initialFormData() {
     return {
         idInterno: "",
         noInterno: "",
+        noParte: "",
         cavidad: "",
         descripcion: "",
     }
