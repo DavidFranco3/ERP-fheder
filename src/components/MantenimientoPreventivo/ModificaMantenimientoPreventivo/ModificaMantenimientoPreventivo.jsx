@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Spinner } from "react-bootstrap";
-import "./RegistraMantenimientoPreventivo.scss";
-import { registraMantenimientoPreventivo, obtenerItemMantenimientoPreventivo } from '../../../api/programaMantenimientoPreventivo';
+import "./ModificaMantenimientoPreventivo.scss";
+import { actualizaMantenimientoPreventivo } from '../../../api/programaMantenimientoPreventivo';
 import queryString from "query-string";
 import { toast } from "react-toastify";
-import { getSucursal } from "../../../api/auth";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
-function RegistraMantenimientoPreventivo(props) {
-    const { setShowModal, history } = props;
+function ModificaMantenimientoPreventivo(props) {
+    const { datos, setShowModal, history } = props;
+
+    const { id } = datos;
 
     // Cancelar y cerrar el formulario
     const cancelarRegistro = () => {
@@ -16,28 +17,10 @@ function RegistraMantenimientoPreventivo(props) {
     }
 
     // Para guardar los datos del formulario
-    const [formData, setFormData] = useState(initialFormData());
+    const [formData, setFormData] = useState(initialFormData(datos));
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
-
-    // Para almacenar el folio actual
-    const [itemActual, setItemActual] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerItemMantenimientoPreventivo().then(response => {
-                const { data } = response;
-                // console.log(data)
-                const { item } = data;
-                setItemActual(item)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -50,10 +33,8 @@ function RegistraMantenimientoPreventivo(props) {
             // Realiza registro de la aportación
 
             const dataTemp = {
-                item: itemActual,
                 ident: formData.ident,
                 descripcion: formData.descripcion,
-                sucursal: getSucursal(),
                 fechasProgramadas: {
                     semana1: formData.semana1,
                     semana2: formData.semana2,
@@ -67,12 +48,11 @@ function RegistraMantenimientoPreventivo(props) {
                     semana4: formData.realSemana4,
                 },
                 comentarios: formData.comentarios,
-                estado: "true"
             }
 
-            registraMantenimientoPreventivo(dataTemp).then(response => {
+            actualizaMantenimientoPreventivo(id, dataTemp).then(response => {
                 const { data } = response;
-                LogsInformativos("Se a registrado el programa de mantenimiento preventivo " + formData.ident, dataTemp);
+                LogsInformativos("Se a actualizado el programa de mantenimiento preventivo " + formData.ident, dataTemp);
                 toast.success(data.mensaje)
                 setTimeout(() => {
                     history.push({
@@ -347,20 +327,20 @@ function RegistraMantenimientoPreventivo(props) {
     );
 }
 
-function initialFormData() {
+function initialFormData(data) {
     return {
-        ident: "",
-        descripcion: "",
-        semana1: "",
-        semana2: "",
-        semana3: "",
-        semana4: "",
-        realSemana1: "",
-        realSemana2: "",
-        realSemana3: "",
-        realSemana4: "",
-        comentarios: ""
+        ident: data.ident,
+        descripcion: data.descripcion,
+        semana1: data.fechasProgramadas.semana1,
+        semana2: data.fechasProgramadas.semana2,
+        semana3: data.fechasProgramadas.semana3,
+        semana4: data.fechasProgramadas.semana4,
+        realSemana1: data.fechasReales.semana1,
+        realSemana2: data.fechasReales.semana2,
+        realSemana3: data.fechasReales.semana3,
+        realSemana4: data.fechasReales.semana4,
+        comentarios: data.comentarios
     }
 }
 
-export default RegistraMantenimientoPreventivo;
+export default ModificaMantenimientoPreventivo;

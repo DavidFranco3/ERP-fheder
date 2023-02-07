@@ -194,6 +194,17 @@ export const ENDPOINTListarIntegracionesPaginacion = "/integracionVentasGastos/l
 export const ENDPOINTObtenerFacturaIntegracion = "/integracionVentasGastos/obtenerFactura";
 export const ENDPOINTTotalIntegraciones = "/integracionVentasGastos/total";
 
+// programa de mantenimiento preventivo
+export const ENDPOINTRegistraMantenimientoPreventivo = "/mantenimientoPreventivo/registro";
+export const ENDPOINTListarMantenimientoPreventivo = "/mantenimientoPreventivo/listar";
+export const ENDPOINTObtenerMantenimientoPreventivo = "/mantenimientoPreventivo/obtener";
+export const ENDPOINTObtenerItemMantenimientoPreventivo = "/mantenimientoPreventivo/obtenerItem";
+export const ENDPOINTEliminarMantenimientoPreventivo = "/mantenimientoPreventivo/eliminar";
+export const ENDPOINTActualizarMantenimientoPreventivo = "/mantenimientoPreventivo/actualizar";
+export const ENDPOINTActualizarEstadoMantenimientoPreventivo = "/mantenimientoPreventivo/actualizarEstado";
+export const ENDPOINTListarMantenimientoPreventivoPaginacion = "/mantenimientoPreventivo/listarPaginando";
+export const ENDPOINTTotalMantenimientoPreventivo = "/mantenimientoPreventivo/total";
+
 // inventario de maquinas
 export const ENDPOINTRegistraInventarioMaquina = "/inventarioMaquinas/registro";
 export const ENDPOINTListarInventarioMaquina = "/inventarioMaquinas/listar";

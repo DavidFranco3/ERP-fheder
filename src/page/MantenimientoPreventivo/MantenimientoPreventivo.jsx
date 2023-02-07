@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Alert, Button, Col, Row } from "react-bootstrap";
+import { useState, useEffect, Suspense } from 'react';
+import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
@@ -7,9 +7,13 @@ import BasicModal from "../../components/Modal/BasicModal";
 import RegistraMantenimientoPreventivo from "../../components/MantenimientoPreventivo/RegistraMantenimientoPreventivo";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 import { toast } from "react-toastify";
+import Lottie from 'react-lottie-player';
+import AnimacionLoading from '../../assets/json/loading.json';
+import { listarMantenimientoPreventivo } from "../../api/programaMantenimientoPreventivo";
+import ListMantenimientoPreventivo from '../../components/MantenimientoPreventivo/ListMantenimientoPreventivo';
 
 function MantenimientoPreventivo(props) {
-    const { setRefreshCheckLogin } = props;
+    const { setRefreshCheckLogin, history, location } = props;
 
     // Para definir el enrutamiento
     const enrutamiento = useHistory()
@@ -40,13 +44,32 @@ function MantenimientoPreventivo(props) {
     // Termina cerrado de sesión automatico
 
     // Define la ruta de registro
-    const rutaRegistro = () => {
-        enrutamiento.push("/RegistroReporte")
-    }
-
     const rutaRegreso = () => {
         enrutamiento.push("/DashboardMantenimiento")
     }
+
+    const [listMantenimientos, setListMantenimientos] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarMantenimientoPreventivo(getSucursal()).then(response => {
+                const { data } = response;
+
+                //console.log(data);
+
+                if (!listMantenimientos && data) {
+                    setListMantenimientos(formatModelMantenimientosPreventivos(data));
+                } else {
+                    const datosMantenimientos = formatModelMantenimientosPreventivos(data);
+                    setListMantenimientos(datosMantenimientos);
+                }
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [location]);
 
     return (
         <>
@@ -65,6 +88,7 @@ function MantenimientoPreventivo(props) {
                                 nuevoRegistro(
                                     <RegistraMantenimientoPreventivo
                                         setShowModal={setShowModal}
+                                        history={history}
                                     />
                                 )
                             }}
@@ -91,11 +115,55 @@ function MantenimientoPreventivo(props) {
                     </Col>
                 </Row>
             </Alert>
+
+            {
+                listMantenimientos ?
+                    (
+                        <>
+                            <Suspense fallback={<Spinner />}>
+                                <ListMantenimientoPreventivo
+                                    listMantenimientos={listMantenimientos}
+                                    location={location}
+                                    history={history}
+                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                />
+                            </Suspense>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                        </>
+                    )
+            }
+
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}
             </BasicModal>
         </>
     );
+}
+
+function formatModelMantenimientosPreventivos(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            item: data.item,
+            ident: data.ident,
+            descripcion: data.descripcion,
+            sucursal: data.sucursal,
+            fechasProgramadas: data.fechasProgramadas,
+            fechasReales: data.fechasReales,
+            comentarios: data.comentarios,
+            estado: data.estado,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
 }
 
 export default withRouter(MantenimientoPreventivo);
