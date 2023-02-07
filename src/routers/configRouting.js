@@ -62,6 +62,7 @@ import Sucursales from "../page/Sucursales";
 import GestionAlmacen from "../page/GestionAlmacen";
 import Almacenes from "../page/Almacenes";
 import Error404 from "../page/Error404";
+import CuentasPorCobrar from "../page/CuentasPorCobrar";
 
 // importacion de dashboards
 import DashboardVentas from "../components/Dashboards/DashboardVentas";
@@ -226,6 +227,9 @@ import RegistraRequerimientosPlaneacion from "../components/RequerimientosPlanea
 import ModificaRequerimientosPlaneacion from "../components/RequerimientosPlaneacion/Modificacion";
 import RequisicionPlaneacion from "../components/Requisiciones/RequisicionPlaneacion";
 
+// Rutas para cuentas por cobrar
+import RegistroCuentasCobrar from "../components/CuentasPorCobrar/RegistroCuentasCobrar";
+
 export default [
     {
         path: "/Almacenes",
@@ -241,6 +245,11 @@ export default [
         path: "/ModificaRequerimientosPlaneacion/:id",
         exact: true,
         page: ModificaRequerimientosPlaneacion
+    },
+    {
+        path: "/RegistroCuentasCobrar/:ordenVenta",
+        exact: true,
+        page: RegistroCuentasCobrar
     },
     {
         path: "/RegistraSolicitudMaterialInsumo",
@@ -906,6 +915,11 @@ export default [
         path: "/SolicitudMaterialInsumo",
         exact: true,
         page: SolicitudMaterialInsumo
+    },
+    {
+        path: "/CuentasPorCobrar/:cliente",
+        exact: true,
+        page: CuentasPorCobrar
     },
     {
         path: "/DashboardVentas",

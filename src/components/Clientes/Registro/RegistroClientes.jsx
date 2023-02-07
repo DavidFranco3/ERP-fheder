@@ -1,15 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import { listarDepartamento } from "../../../api/departamentos";
-import { isCurpValid, isEmailValid, isRFCValid } from "../../../utils/validations";
 import { toast } from "react-toastify";
-import { registraUsuarios } from "../../../api/usuarios";
-import Dropzone from "../../Dropzone";
 import { Button, Col, Form, Row, Spinner, Container, Alert, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { registraClientes } from "../../../api/clientes";
-import queryString from "query-string";
-import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers, faArrowCircleLeft, faCirclePlus, faX, } from "@fortawesome/free-solid-svg-icons";
@@ -37,9 +31,6 @@ function RegistroClientes(props) {
     const regresaPagina = () => {
         enrutamiento.push("/Clientes");
     }
-
-    // Para almacenar la foto de perfil del usuario
-    const [fotoUsuario, setFotoUsuario] = useState(null);
 
     // Para almacenar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -141,6 +132,8 @@ function RegistroClientes(props) {
                 rfc: formData.rfc,
                 tipoPersona: formData.tipoPersona,
                 regimenFiscal: formData.regimenFiscal,
+                diasCredito: formData.diasCredito,
+                comprador: formData.comprador,
                 sucursal: getSucursal(),
                 direccion: {
                     calle: formData.calle,
@@ -356,6 +349,30 @@ function RegistroClientes(props) {
                                     placeholder="Telefono fijo"
                                     name="telefonoFijo"
                                     defaultValue={formData.telefonoFijo}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridTelefonoFijo">
+                                <Form.Label>
+                                    Dias de credito
+                                </Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    placeholder="Dias de credito"
+                                    name="diasCredito"
+                                    defaultValue={formData.diasCredito}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridTelefonoFijo">
+                                <Form.Label>
+                                    Comprador
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Nombre del comprador"
+                                    name="comprador"
+                                    defaultValue={formData.comprador}
                                 />
                             </Form.Group>
                         </Row>
@@ -787,6 +804,8 @@ function initialFormData() {
         nombre: "",
         apellidos: "",
         rfc: "",
+        diasCredito: "",
+        comprador: "",
         regimenFiscal: "",
         telefonoCelular: "",
         telefonoFijo: "",

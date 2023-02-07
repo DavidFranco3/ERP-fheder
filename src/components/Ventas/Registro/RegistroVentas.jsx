@@ -140,7 +140,7 @@ function RegistroVentas(props) {
     // Para almacenar la lista completa de clientes
     const [listProductosOV, setListProductosOV] = useState([]);
 
-    const renglon = listProductosOV.length + 1;
+    const renglon = listProductosCargados.length + 1;
 
     console.log(listProductosCargados)
 
@@ -265,7 +265,7 @@ function RegistroVentas(props) {
                 cotizacion: linkCotizacion,
                 total: totalSinIVA,
                 especificaciones: formData.especificaciones,
-                productos: listProductosOV,
+                productos: listProductosCargados,
                 estado: "true"
             }
             // console.log(dataTemp)
@@ -339,7 +339,7 @@ function RegistroVentas(props) {
                 total: totalUnitario
             }
 
-            LogRegistroProductosOV(folioActual, cargaProductos.ID, cargaProductos.item, cantidad, um, precioUnitario, total, setListProductosCargados);
+            //LogRegistroProductosOV(folioActual, cargaProductos.ID, cargaProductos.item, cantidad, um, precioUnitario, total, setListProductosCargados);
             // console.log(dataTemp)
 
             setListProductosCargados(
@@ -391,7 +391,7 @@ function RegistroVentas(props) {
         })
     }
 
-    const totalSinIVA = listProductosOV.reduce((amount, item) => (amount + parseInt(item.total)), 0);
+    const totalSinIVA = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.total)), 0);
 
     const hoy = new Date();
     // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
@@ -805,22 +805,22 @@ function RegistroVentas(props) {
                                         <th scope="col">UM</th>
                                         <th scope="col">Precio unitario</th>
                                         <th scope="col">Total</th>
-                                        <th scope="col">Acciones</th>
+                                        <th scope="col">Eliminar</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                 </tfoot>
                                 <tbody>
-                                    {map(listProductosOV, (producto, index) => (
+                                    {map(listProductosCargados, (producto, index) => (
                                         <tr key={index}>
                                             <th scope="row">
                                                 {index + 1}
                                             </th>
                                             <td data-title="Descripcion">
-                                                {producto.descripcion}
+                                                {producto.item}
                                             </td>
                                             <td data-title="Material">
-                                                {producto.numeroParte}
+                                                {producto.ID}
                                             </td>
                                             <td data-title="UM">
                                                 {producto.cantidad}
@@ -841,38 +841,15 @@ function RegistroVentas(props) {
                                                 }).format(producto.total)} MXN
                                             </td>
                                             <td data-title="Eliminar">
-                                                <Badge
-                                                    bg="success"
-                                                    title="Modificar"
-                                                    className="eliminar"
+                                            <div
+                                                    className="eliminarProductoListado"
+                                                    title="Eliminar el producto agregado"
                                                     onClick={() => {
-                                                        modificaProducto(
-                                                            <ModificacionProductos
-                                                                datos={producto}
-                                                                setShowModal={setShowModal}
-                                                                history={history}
-                                                                setListProductosCargados={setListProductosCargados}
-                                                            />)
+                                                        removeItem(producto)
                                                     }}
                                                 >
-                                                    <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                                                </Badge>
-                                                <Badge
-                                                    bg="danger"
-                                                    title="Eliminar"
-                                                    className="eliminar"
-                                                    onClick={() => {
-                                                        eliminaProducto(
-                                                            <EliminacionProductosOV
-                                                                datos={producto}
-                                                                setShowModal={setShowModal}
-                                                                history={history}
-                                                                setListProductosCargados={setListProductosCargados}
-                                                            />)
-                                                    }}
-                                                >
-                                                    <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                                                </Badge>
+                                                    ❌
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}

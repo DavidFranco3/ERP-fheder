@@ -1,24 +1,20 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import { Badge, Button, Container, Table } from "react-bootstrap";
-import { map } from "lodash";
+import { Badge, Button, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
-import EliminacionFisicaVentas from "../EliminacionFisica";
-import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
-import "./ListVentas.scss";
-import ClientesPedido from "./ClientesPedido";
+import "./ListCuentasCobrar.scss";
 import { estilos } from "../../../utils/tableStyled";
-import EliminacionLogicaVentas from '../EliminacionLogica';
-import ListProductosVentas from '../ListProductosVentas';
 import 'dayjs/locale/es'
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import EliminacionLogicaCuentasCobrar from '../EliminacionLogica';
+import EliminacionFisicaCuentasCobrar from '../EliminacionFisica';
 
-function ListVentas(props) {
-    const { setRefreshCheckLogin, listPedidosVenta, history, location } = props;
+function ListCuentasCobrar(props) {
+    const { setRefreshCheckLogin, listCuentasCobrar, history, location } = props;
 
     const enrutamiento = useHistory();
 
@@ -31,15 +27,15 @@ function ListVentas(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Para la eliminacion fisica de usuarios
-    const eliminaPedidoVenta = (content) => {
-        setTitulosModal("Eliminando el pedido");
+    const eliminaCuentaPorCobrar = (content) => {
+        setTitulosModal("Eliminando cuenta por cobrar");
         setContentModal(content);
         setShowModal(true);
     }
 
     //Para la eliminacion logica de usuarios
-    const eliminaLogicaVentas = (content) => {
-        setTitulosModal("Cancelando la orden de venta");
+    const eliminaLogicaCuentaPorCobrar = (content) => {
+        setTitulosModal("Cancelando la cuenta por cobrar");
         setContentModal(content);
         setShowModal(true);
     }
@@ -50,21 +46,16 @@ function ListVentas(props) {
         enrutamiento.push(`/ModificacionPedido/${folio}`);
     }
 
-    // Para la modificacion de datos del pedido
-    const registroCuentasCobrar = (folio) => {
-        enrutamiento.push(`/RegistroCuentasCobrar/${folio}`);
-    }
-
     // Para abrir en una pestaña nueva el pdf de la vista
     const vistaPrevia = () => {
         // enrutamiento.push("")
     }
 
-    const ExpandedComponent = ({ data }) => (
+    /*const ExpandedComponent = ({ data }) => (
         <ListProductosVentas
             ordenVenta={data.folio}
         />
-    );
+    );*/
 
     const columns = [
         {
@@ -75,35 +66,36 @@ function ListVentas(props) {
             reorder: false
         },
         {
+            name: "Orden de venta",
+            selector: row => row.ordenVenta,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
             name: "Cliente",
-            selector: row => (
-                <>
-                    <ClientesPedido
-                        id={row.cliente}
-                    />
-                </>
-            ),
+            selector: row => row.nombreCliente,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Fecha pedido",
-            selector: row => dayjs(row.fechaElaboracion).format('LL'),
+            name: "Nombre de contacto",
+            selector: row => row.nombreContacto,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Fecha entrega",
-            selector: row => dayjs(row.fechaEntrega).format('LL'),
+            name: "Telefono",
+            selector: row => row.telefono,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Lugar entrega",
-            selector: row => row.lugarEntrega,
+            name: "Correo",
+            selector: row => row.correo,
             sortable: false,
             center: true,
             reorder: false
@@ -121,8 +113,8 @@ function ListVentas(props) {
                                 title="Deshabilitar"
                                 className="editar"
                                 onClick={() => {
-                                    eliminaLogicaVentas(
-                                        <EliminacionLogicaVentas
+                                    eliminaLogicaCuentaPorCobrar(
+                                        <EliminacionLogicaCuentasCobrar
                                             datos={row}
                                             setShowModal={setShowModal}
                                             history={history}
@@ -147,63 +139,15 @@ function ListVentas(props) {
                     )
         },
         {
-            name: "Total",
-            selector: row => (
-                <>
-                    ${''}
-                    {new Intl.NumberFormat('es-MX', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                    }).format(row.total)} MXN
-                </>
-            ),
+            name: "Fecha emisión",
+            selector: row => dayjs(row.fechaEmisión).format('LL'),
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Orden venta",
-            selector: row => (
-                <>
-                    {row.cotizacion !== "" ?
-                        (
-                            <>
-                                <a
-                                    className="text-emerald-700 no-underline"
-                                    title="Ir al sitio web de la empresa"
-                                    href={row.cotizacion}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >Descargar</a>
-                            </>
-                        )
-                        :
-                        (
-                            "No disponible"
-                        )
-                    }
-                </>
-            ),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: "Cuentas por cobrar",
-            selector: row => (
-                <>
-                    <Badge
-                        bg="primary"
-                        title="Generar una cuenta por cobrar"
-                        className="editar"
-                        onClick={() => {
-                            registroCuentasCobrar(row.folio)
-                        }}
-                    >
-                        Generar
-                    </Badge>
-                </>
-            ),
+            name: "Fecha vencimiento",
+            selector: row => dayjs(row.fechaVencimiento).format('LL'),
             sortable: false,
             center: true,
             reorder: false
@@ -223,7 +167,7 @@ function ListVentas(props) {
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />
                     </Badge>
-                    <Badge
+                    {/*<Badge
                         bg="success"
                         title="Modificar"
                         className="editar"
@@ -232,14 +176,14 @@ function ListVentas(props) {
                         }}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
+                    </Badge>*/}
                     <Badge
                         bg="danger"
                         title="Eliminar"
                         className="eliminar"
                         onClick={() => {
-                            eliminaPedidoVenta(
-                                <EliminacionFisicaVentas
+                            eliminaCuentaPorCobrar(
+                                <EliminacionFisicaCuentasCobrar
                                     datos={row}
                                     setShowModal={setShowModal}
                                     history={history}
@@ -259,7 +203,7 @@ function ListVentas(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listPedidosVenta);
+            setRows(listCuentasCobrar);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -278,9 +222,9 @@ function ListVentas(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={listPedidosVenta}
-                    expandableRows
-                    expandableRowsComponent={ExpandedComponent}
+                    data={listCuentasCobrar}
+                    //expandableRows
+                    //expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
@@ -297,4 +241,4 @@ function ListVentas(props) {
     );
 }
 
-export default ListVentas;
+export default ListCuentasCobrar;

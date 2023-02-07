@@ -131,6 +131,20 @@ export const ENDPOINTListarPedidoVentaPaginacion = "/ventas/listarPaginando";
 export const ENDPOINTObtenerNoPedidoVenta = "/ventas/obtenerNoVenta";
 export const ENDPOINTTotalPedidoVenta = "/ventas/total";
 
+// Cuentas por cobrar
+export const ENDPOINTRegistraCuentasCobrar = "/cuentasPorCobrar/registro";
+export const ENDPOINTListarCuentasCobrar = "/cuentasPorCobrar/listar";
+export const ENDPOINTListarCuentasCobrarPorCliente = "/cuentasPorCobrar/listarPorCliente";
+export const ENDPOINTListarCuentasCobrarActivo = "/cuentasPorCobrar/listarActivas";
+export const ENDPOINTObtenerCuentasCobrar = "/cuentasPorCobrar/obtener";
+export const ENDPOINTObtenerDatosCuentasCobrar = "/cuentasPorCobrar/obtenerDatosCuenta";
+export const ENDPOINTEliminarCuentasCobrar = "/cuentasPorCobrar/eliminar";
+export const ENDPOINTActualizarCuentasCobrar = "/cuentasPorCobrar/actualizar";
+export const ENDPOINTActualizarEstadoCuentasCobrar = "/cuentasPorCobrar/actualizarEstado";
+export const ENDPOINTListarCuentasCobrarPaginacion = "/cuentasPorCobrar/listarPaginando";
+export const ENDPOINTObtenerNoCuentasCobrar = "/cuentasPorCobrar/obtenerNoCuenta";
+export const ENDPOINTTotalCuentasCobrar = "/cuentasPorCobrar/total";
+
 // Recepcion de material e insumos
 export const ENDPOINTRegistraRecepcion = "/recepcionMaterialInsumos/registro";
 export const ENDPOINTListarRecepcion = "/recepcionMaterialInsumos/listar";

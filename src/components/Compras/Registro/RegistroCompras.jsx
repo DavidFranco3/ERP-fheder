@@ -344,7 +344,7 @@ function RegistroCompras(props) {
     const IVA = parseFloat(subTotal * 0.16);
 
     // Calcula el total con iva de la lista de productos seleccionados
-    const total = subTotal + (subTotal * 0.16)
+    const total = subTotal + (subTotal * 0.16);
 
     const renglon = listProductosCargados.length + 1;
 

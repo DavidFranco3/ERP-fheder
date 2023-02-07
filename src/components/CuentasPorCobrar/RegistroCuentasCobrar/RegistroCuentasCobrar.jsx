@@ -1,32 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory, useParams } from "react-router-dom";
-import {
-    actualizaPedidoVenta,
-    obtenerDatosPedidoVenta
-} from "../../../api/pedidoVenta";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
-import "./ModificacionVentas.scss";
 import { map } from "lodash";
-import { listarClientes } from "../../../api/clientes";
 import { toast } from "react-toastify";
+import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
+import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
+import { listarClientes } from "../../../api/clientes";
+import { registraCuentasCobrar, obtenerNumeroCuentasCobrar } from "../../../api/cuentasPorCobrar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import "./RegistroCuentasCobrar.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import BasicModal from "../../Modal/BasicModal";
-import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
-import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogRegistroProductosOV } from '../../ProductosOV/Gestion/GestionProductosOV';
-import { obtenerDatosProductosOV } from "../../../api/productosOV";
-import EliminacionProductosOV from '../../ProductosOV/EliminacionProductosOV';
-import ModificacionProductos from '../../ProductosOV/ModificacionProductos';
+import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta";
+import { obtenerCliente } from "../../../api/clientes";
 
-function ModificacionVentas(props) {
-    const { history, setRefreshCheckLogin } = props;
+function RegistroCuentasCobrar(props) {
+    const { history, setRefreshCheckLogin, location } = props;
+
+    const params = useParams();
+    const { ordenVenta } = params
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -40,11 +38,6 @@ function ModificacionVentas(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
-
-    const enrutamiento = useHistory();
-
-    const params = useParams();
-    const { folio } = params
 
     // Para la eliminacion fisica de usuarios
     const eliminaProducto = (content) => {
@@ -60,16 +53,48 @@ function ModificacionVentas(props) {
         setShowModal(true);
     }
 
+    const [listProductosCargados, setListProductosCargados] = useState([]);
+
+    const enrutamiento = useHistory();
+
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+    // Para guardar los datos del formulario
+    const [formDataVenta, setFormDataVenta] = useState(initialFormDataVentaInitial());
+
+    // Para guardar los datos del formulario
+    const [formDataCliente, setFormDataCliente] = useState(initialFormDataClienteInitial());
+
+    useEffect(() => {
+        //
+        obtenerDatosPedidoVenta(ordenVenta).then(response => {
+            const { data } = response;
+            //console.log(data)
+            setFormDataVenta(initialFormDataVenta(data));
+            setListProductosCargados(data.productos);
+        }).catch(e => {
+            console.log(e)
+        })
+    }, []);
+
+    useEffect(() => {
+        //
+        obtenerCliente(formDataVenta.cliente).then(response => {
+            const { data } = response;
+            //console.log(data)
+            setFormDataCliente(initialFormDataCliente(data));
+            //setListProductosCargados(data.productos);
+        }).catch(e => {
+            console.log(e)
+        })
+    }, [formDataVenta.cliente]);
 
     // Para determinar el uso de la animacion de carga mientras se guarda el pedido
     const [loading, setLoading] = useState(false);
 
-    // Para almacenar la lista completa de clientes
-    const [listClientes, setListClientes] = useState(null);
-
-    const [pdfCotizacion, setPdfCotizacion] = useState(null);
+    // Para determinar si hay conexion con el servidor o a internet
+    const [conexionInternet, setConexionInternet] = useState(true);
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -90,63 +115,31 @@ function ModificacionVentas(props) {
         setShowModal(true);
     }
 
-    // Para determinar si hay conexion con el servidor o a internet
-    const [conexionInternet, setConexionInternet] = useState(true);
-
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
         enrutamiento.push("/Ventas");
     }
 
-    // Inicia almacenaje de información registrada para su modificación
-
-    // Almacenar informacion
-    const [informacionPedido, setInformacionPedido] = useState(initialValues);
-
-    const [lugarEntregaInicial, setlugarEntregaInicial] = useState(initialValues);
+    // Para almacenar el folio actual
+    const [folioActual, setFolioActual] = useState("");
 
     useEffect(() => {
-        //
-        obtenerDatosPedidoVenta(folio).then(response => {
-            const { data } = response;
-            //console.log(data)
-            const { folio, fechaElaboracion, fechaEntrega, cliente, nombreCliente, incoterms, especificaciones, condicionesPago, ordenCompra, cotizacion, numeroPedido, lugarEntrega, productos } = data;
-            const dataTemp = {
-                folio: folio,
-                fechaPedido: fechaElaboracion,
-                fechaEntrega: fechaEntrega,
-                cliente: cliente,
-                nombreCliente: nombreCliente,
-                incoterms: incoterms,
-                especificaciones: especificaciones,
-                lugarEntrega: lugarEntrega,
-                condicionesPago: condicionesPago,
-                cotizacion: cotizacion,
-                numeroPedido: numeroPedido,
-                ordenCompra: ordenCompra,
-                lugarEntrega: lugarEntrega,
-            }
-            setInformacionPedido(valoresAlmacenados(dataTemp))
-            setlugarEntregaInicial(valoresAlmacenados(lugarEntrega))
-            // setFechaCreacion(fechaElaboracion)
-            setListProductosCargados(productos)
-            setPdfCotizacion(cotizacion)
-        }).catch(e => {
+        try {
+            obtenerNumeroCuentasCobrar().then(response => {
+                const { data } = response;
+                // console.log(data)
+                const { noCuenta } = data;
+                setFolioActual(noCuenta)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
             console.log(e)
-        })
+        }
     }, []);
 
-    const [totalUnitario, setTotalUnitario] = useState(0);
-
-    const calcularTotalUnitario = () => {
-        const cantidad = document.getElementById("cantidad").value;
-        const precioUnitario = document.getElementById("precioUnitario").value;
-        const total = parseFloat(cantidad) * parseFloat(precioUnitario);
-        setTotalUnitario(total);
-    }
-
-
-    // Termina almacenaje de información para su modificación
+    // Para almacenar la lista completa de clientes
+    const [listClientes, setListClientes] = useState(null);
 
     // Obtener los clientes registrados
     useEffect(() => {
@@ -175,13 +168,15 @@ function ModificacionVentas(props) {
         }
     }, []);
 
+    // Para almacenar la lista completa de clientes
+    const [listProductosOV, setListProductosOV] = useState([]);
+
+    const renglon = listProductosCargados.length + 1;
+
     // Obten el listado de productos
     // Para almacenar el listado de productos activos
     const [listProductosActivos, setListProductosActivos] = useState(null);
 
-
-    // Para almacenar el folio actual
-    const [linkOrdenCompra, setlinkOrdenCompra] = useState("");
     // Para traer el listado de productos activos
     useEffect(() => {
         try {
@@ -203,120 +198,101 @@ function ModificacionVentas(props) {
         }
     }, []);
 
+    const [iva, setIva] = useState(0);
+
+    console.log(iva);
+
+    // Para traer el listado de productos activos
     useEffect(() => {
-        try {
-            if (informacionPedido.ordenCompra) {
-                subeArchivosCloudinary(informacionPedido.ordenCompra, "ventas").then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { secure_url } = data;
-                    setlinkOrdenCompra(secure_url)
+        setIva(parseFloat(formData.iva))
+    }, [formData.iva]);
 
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-        } catch (e) {
-            console.log(e)
-        }
-    }, [informacionPedido.ordenCompra]);
+    // Calcula el subtotal de la lista de artículos cargados
+    const subTotal = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.total)), 0);
 
-    // Para almacenar el folio actual
-    const [linkCotizacion, setlinkCotizacion] = useState("");
+    //Calcula el IVA de la lista de productos agregados
+    const IVA = parseFloat(subTotal * iva);
 
-    useEffect(() => {
-        try {
-            if (pdfCotizacion) {
-                subeArchivosCloudinary(pdfCotizacion, "ventas").then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { secure_url } = data;
-                    setlinkCotizacion(secure_url)
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-        } catch (e) {
-            console.log(e)
+    // Calcula el total con iva de la lista de productos seleccionados
+    const total = subTotal + (subTotal * iva);
 
-        }
-    }, [pdfCotizacion]);
+    // Para traer el listado de productos activos
 
     const onSubmit = e => {
         e.preventDefault();
 
-        if (!informacionPedido.cliente || !informacionPedido.numeroPedido || !informacionPedido.fechaPedido || !informacionPedido.fechaEntrega || !informacionPedido.condicionesPago || !informacionPedido.especificaciones) {
-            toast.warning("Completa el formulario");
-        } else {
-            setLoading(true);
+        //console.log("Continuar")
+        setLoading(true);
 
-            const dataTempPrincipalOV = {
-                fechaElaboracion: informacionPedido.fechaPedido,
-                fechaEntrega: informacionPedido.fechaEntrega,
-                cliente: formData.cliente == "" ? informacionPedido.cliente : formData.cliente,
-                nombreCliente: formData.nombreCliente == "" ? informacionPedido.nombreCliente : formData.nombreCliente,
-                condicionesPago: informacionPedido.condicionesPago,
-                incoterms: informacionPedido.incoterms,
-                moneda: "M.N.",
-                numeroPedido: informacionPedido.numeroPedido,
-                lugarEntrega: formData.lugarEntrega == "" ? informacionPedido.lugarEntrega : formData.lugarEntrega,
-                cotizacion: linkCotizacion,
-                ordenCompra: linkOrdenCompra,
-                total: totalSinIVA,
-                especificaciones: informacionPedido.especificaciones,
-                productos: listProductosCargados,
-                status: "true"
-            }
-            //console.log(dataTemp)
-
-            // Inicia el proceso de modificacion de orden de venta
-            // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            obtenerDatosPedidoVenta(folio).then(response => {
-                const { data: { _id, folio } } = response;
-                // console.log(response.data)
-                // Modificar el pedido creado recientemente
-                actualizaPedidoVenta(_id, dataTempPrincipalOV).then(response => {
-                    const { data: { mensaje, datos } } = response;
-                    // console.log(response)
-                    toast.success(mensaje)
-                    // Registro de log para la actualizacion de orden de venta
-                    LogsInformativos("Se han actualizado los datos de la orden de venta con folio " + folio, datos)
-                    // Registro del tracking para orden de venta
-                    // LogTrackingRegistro(_id, folio, formData.cliente, formData.fechaElaboracion)
-                    setLoading(false)
-                    regresaListadoVentas()
-                }).catch(e => {
-                    console.log(e)
-                })
-            }).catch(e => {
-                console.log(e)
-            })
+        const dataTemp = {
+            folio: folioActual,
+            ordenVenta: ordenVenta,
+            cliente: formDataVenta.cliente,
+            nombreCliente: formDataVenta.nombreCliente,
+            sucursal: getSucursal(),
+            fechaEmision: formDataVenta.fechaPedido,
+            fechaVencimiento: fechaVencimiento,
+            nombreContacto: formDataCliente.nombreContacto,
+            telefono: formDataCliente.telefono,
+            correo: formDataCliente.correo,
+            productos: listProductosCargados,
+            iva: IVA,
+            subtotal: subTotal,
+            total: total,
+            estado: "true",
         }
+        // console.log(dataTemp)
 
+        // Modificar el pedido creado recientemente
+        registraCuentasCobrar(dataTemp).then(response => {
+            const { data: { mensaje, datos } } = response;
+            // console.log(response)
+            toast.success(mensaje)
+            // Log acerca del registro inicial del tracking
+            LogsInformativos("Se han registrado la orden de venta con folio " + dataTemp.noVenta, dataTemp)
+            // Registro inicial del tracking
+            LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
+            setLoading(false)
+            regresaListadoVentas()
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     const onChange = e => {
-        setInformacionPedido({ ...informacionPedido, [e.target.name]: e.target.value })
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataVenta({ ...formDataVenta, [e.target.name]: e.target.value })
+        setFormDataCliente({ ...formDataCliente, [e.target.name]: e.target.value })
     }
 
     // Para la carga y el listado de productos
     const [cargaProductos, setCargaProductos] = useState(initialFormDataProductos());
-    const [listProductosCargados, setListProductosCargados] = useState([]);
 
+    // Gestion del producto seleccionado
     const handleProducto = (producto) => {
         const dataTempProductos = producto.split("/")
-        // console.log(dataTempProductos)
         const dataTemp = {
             idProducto: dataTempProductos[0],
             ID: dataTempProductos[1],
             item: dataTempProductos[2],
-            precioUnitario: dataTempProductos[3]
+            precioUnitario: dataTempProductos[3],
         }
         setCargaProductos(cargaFormDataProductos(dataTemp))
     }
 
+    // Para agregar productos al listado
+
+    const [totalUnitario, setTotalUnitario] = useState(0);
+
+    const calcularTotalUnitario = () => {
+        const cantidad = document.getElementById("cantidad").value;
+        const precioUnitario = document.getElementById("precioUnitario").value;
+        const total = parseFloat(cantidad) * parseFloat(precioUnitario);
+        setTotalUnitario(total);
+    }
+
     const addItems = () => {
-        const material = document.getElementById("descripcion").value
+        const material = document.getElementById("material").value
         const cantidad = document.getElementById("cantidad").value
         const um = document.getElementById("um").value
         const precioUnitario = document.getElementById("precioUnitario").value
@@ -335,6 +311,8 @@ function ModificacionVentas(props) {
                 precioUnitario: cargaProductos.precioUnitario,
                 total: totalUnitario
             }
+
+            //LogRegistroProductosOV(folioActual, cargaProductos.ID, cargaProductos.item, cantidad, um, precioUnitario, total, setListProductosCargados);
             // console.log(dataTemp)
 
             setListProductosCargados(
@@ -342,8 +320,9 @@ function ModificacionVentas(props) {
             );
 
             setCargaProductos(initialFormDataProductos)
+            //document.getElementById("descripcion").value = ""
             document.getElementById("cantidad").value = ""
-            document.getElementById("um").value = "Elige"
+            document.getElementById("um").value = "Piezas"
             setTotalUnitario(0)
         }
     }
@@ -351,8 +330,9 @@ function ModificacionVentas(props) {
     // Para limpiar el formulario de detalles de producto
     const cancelarCargaProducto = () => {
         setCargaProductos(initialFormDataProductos)
+        //document.getElementById("descripcion").value = ""
         document.getElementById("cantidad").value = ""
-        document.getElementById("um").value = "Elige"
+        document.getElementById("um").value = "Piezas"
         setTotalUnitario(0)
     }
 
@@ -386,24 +366,33 @@ function ModificacionVentas(props) {
 
     const totalSinIVA = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.total)), 0);
 
-    // Para almacenar la lista completa de clientes
-    const [listProductosOV, setListProductosOV] = useState([]);
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = (hoy.getMonth() + 1) > 10 && hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 && hoy.getDate() > 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDate() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
 
-    const renglon = listProductosCargados.length + 1;
+    const [fechaPedido, setFechaPedido] = useState(fecha);
+
+    const [fechaEntrega, setFechaEntrega] = useState(fecha);
+
+    const [fechaVencimiento, setFechaVencimiento] = useState();
+
+    console.log(formDataVenta.fechaPedido);
 
     useEffect(() => {
-        try {
-            obtenerDatosProductosOV(informacionPedido.folio).then(response => {
-                const { data } = response;
-                console.log(data)
-                setListProductosOV(data)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, [listProductosCargados]);
+        //la fecha
+        const TuFecha = new Date(formDataVenta.fechaPedido);
+
+        //nueva fecha sumada
+        TuFecha.setDate(TuFecha.getDate() + parseInt(formDataCliente.diasCredito));
+        //formato de salida para la fecha
+        setFechaVencimiento((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
+            : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
+                : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
+                    : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+    }, [formDataVenta.fechaPedido, formDataCliente.diasCredito]);
 
     return (
         <>
@@ -411,7 +400,7 @@ function ModificacionVentas(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Modificación de orden de venta
+                            Registrar cuenta por cobrar
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
@@ -436,136 +425,21 @@ function ModificacionVentas(props) {
                         <div className="encabezadoOrdenVenta">
                             {/* Folio, fecha elaboracion */}
 
-                            <Row>
-                                <Form.Group as={Row} controlId="formGridCliente">
-                                    <Col sm="2">
-                                        <Form.Label>
-                                            Nombre del cliente
-                                        </Form.Label>
-                                    </Col>
-                                    <Col sm="4">
-                                        <div className="flex items-center mb-1">
-                                            <Form.Control
-                                                type="text"
-                                                defaultValue={formData.nombreCliente == "" ? informacionPedido.nombreCliente : formData.nombreCliente}
-                                                placeholder="Buscar cliente"
-                                                name="cliente"
-                                            />
-                                            <FontAwesomeIcon
-                                                className="cursor-pointer py-2 -ml-6"
-                                                title="Buscar entre los clientes"
-                                                icon={faSearch}
-                                                onClick={() => {
-                                                    buscarOV(
-                                                        <BuscarCliente
-                                                            formData={formData}
-                                                            setFormData={setFormData}
-                                                            setShowModal={setShowModal}
-                                                        />)
-                                                }}
-                                            />
-                                        </div>
-                                    </Col>
-                                </Form.Group>
-                            </Row>
-
                             <br />
 
                             <Row>
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Numero de pedido
+                                            Folio
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            placeholder="Numero de pedido"
-                                            name="numeroPedido"
-                                            defaultValue={informacionPedido.numeroPedido}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Row>
-
-                            <br />
-
-                            <Row>
-                                <Form.Group as={Row} controlId="formGridCliente">
-                                    <Col sm="2">
-                                        <Form.Label>
-                                            Fecha de pedido
-                                        </Form.Label>
-                                    </Col>
-                                    <Col sm="4">
-                                        <Form.Control
-                                            type="date"
-                                            placeholder="Fecha de pedido"
-                                            name="fechaPedido"
-                                            defaultValue={informacionPedido.fechaPedido}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Row>
-
-                            <br />
-
-                            <Row>
-                                <Form.Group as={Row} controlId="formGridCliente">
-                                    <Col sm="2">
-                                        <Form.Label>
-                                            Fecha de entrega
-                                        </Form.Label>
-                                    </Col>
-                                    <Col sm="4">
-                                        <Form.Control
-                                            type="date"
-                                            placeholder="Fecha de entrega"
-                                            name="fechaEntrega"
-                                            defaultValue={informacionPedido.fechaEntrega}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Row>
-
-                            <br />
-
-                            <Row>
-                                <Form.Group as={Row} controlId="formGridCliente">
-                                    <Col sm="2">
-                                        <Form.Label>
-                                            Condiciones de pago
-                                        </Form.Label>
-                                    </Col>
-                                    <Col sm="4">
-                                        <Form.Control
-                                            as="textarea" rows={3}
-                                            type="text"
-                                            style={{ height: '100px' }}
-                                            placeholder="Condiciones de pago"
-                                            name="condicionesPago"
-                                            defaultValue={informacionPedido.condicionesPago}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Row>
-
-                            <br />
-
-                            <Row>
-                                <Form.Group as={Row} controlId="formGridCliente">
-                                    <Col sm="2">
-                                        <Form.Label>
-                                            Moneda
-                                        </Form.Label>
-                                    </Col>
-                                    <Col sm="4">
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Numero de pedido"
-                                            name="moneda"
-                                            value="M.N."
+                                            placeholder="Folio"
+                                            name="folio"
+                                            value={folioActual}
                                             disabled
                                         />
                                     </Col>
@@ -578,17 +452,16 @@ function ModificacionVentas(props) {
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Lugar de entrega
+                                            Orden de venta
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
                                         <Form.Control
-                                            as="textarea" rows={3}
                                             type="text"
-                                            placeholder="Lugar de entrega"
-                                            style={{ height: '100px' }}
-                                            name="lugarEntrega"
-                                            defaultValue={formData.lugarEntrega == "" ? informacionPedido.lugarEntrega : formData.lugarEntrega}
+                                            value={ordenVenta}
+                                            placeholder="Orden de venta"
+                                            name="ordenVenta"
+                                            disabled
                                         />
                                     </Col>
                                 </Form.Group>
@@ -600,15 +473,15 @@ function ModificacionVentas(props) {
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Especificaciones del empaque
+                                            Cliente
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            placeholder="Especificaciones del empaque"
-                                            name="especificaciones"
-                                            defaultValue={informacionPedido.especificaciones}
+                                            defaultValue={formDataVenta.nombreCliente}
+                                            placeholder="Nombre del cliente"
+                                            name="nombreCliente"
                                         />
                                     </Col>
                                 </Form.Group>
@@ -616,14 +489,130 @@ function ModificacionVentas(props) {
 
                             <br />
 
-                            <div className="subeFotoPerfil">
-                                <h4>Adjuntar orden de venta</h4>
-                                <div className="fotoPerfil">
-                                    <Dropzone
-                                        setImagen={setPdfCotizacion} imagenBD={informacionPedido.cotizacion}
-                                    />
-                                </div>
-                            </div>
+                            <Row>
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
+                                        <Form.Label>
+                                            Fecha de emisión
+                                        </Form.Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Form.Control
+                                            type="date"
+                                            defaultValue={formDataVenta.fechaPedido}
+                                            placeholder="Fecha de pedido"
+                                            name="fechaPedido"
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Row>
+
+                            <br />
+
+                            <Row>
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
+                                        <Form.Label>
+                                            Fecha de vencimiento
+                                        </Form.Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Form.Control
+                                            type="date"
+                                            value={fechaVencimiento}
+                                            onChange={e => setFechaVencimiento(e.target.value)}
+                                            placeholder="Fecha de vencimiento"
+                                            name="fechaVencimiento"
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Row>
+
+                            <br />
+
+                            <Row>
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
+                                        <Form.Label>
+                                            Nombre del contacto
+                                        </Form.Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={formDataCliente.nombreContacto}
+                                            placeholder="Nombre del comprador"
+                                            name="nombreContacto"
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Row>
+
+                            <br />
+
+                            <Row>
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
+                                        <Form.Label>
+                                            Telefono
+                                        </Form.Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={formDataCliente.telefono}
+                                            placeholder="Telefono"
+                                            name="telefono"
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Row>
+
+                            <br />
+
+                            <Row>
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
+                                        <Form.Label>
+                                            Correo
+                                        </Form.Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={formDataCliente.correo}
+                                            placeholder="correo"
+                                            name="correo"
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Row>
+
+                            <br />
+
+                            <Row>
+                                <Form.Group as={Row} controlId="formGridCliente">
+                                    <Col sm="2">
+                                        <Form.Label>
+                                            IVA
+                                        </Form.Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Form.Control
+                                            as="select"
+                                            defaultValue={formData.iva}
+                                            placeholder="IVA"
+                                            name="iva"
+                                        >
+                                            <option>Elige una opción</option>
+                                            <option value="0.16">16%</option>
+                                            <option value="0">0%</option>
+                                            <option value="0">Expcento</option>
+                                        </Form.Control>
+                                    </Col>
+                                </Form.Group>
+                            </Row>
+
                         </div>
                         <br />
                         {/* Seleccion de productos */}
@@ -676,16 +665,17 @@ function ModificacionVentas(props) {
                                 </div>
                             </Form.Group>
 
+
                             <Form.Group as={Col} controlId="formGridCliente">
                                 <Form.Label>
                                     Numero de parte
                                 </Form.Label>
                                 <Form.Control
-                                    id="descripcion"
+                                    id="material"
                                     type="text"
                                     placeholder="Descripcion"
-                                    name="item"
-                                    value={cargaProductos.ID}
+                                    name="MateriaPrima"
+                                    defaultValue={cargaProductos.ID}
                                     disabled
                                 />
                             </Form.Group>
@@ -698,7 +688,7 @@ function ModificacionVentas(props) {
                                     id="cantidad"
                                     type="number"
                                     placeholder="Cantidad"
-                                    name="cantidad"
+                                    name="Cantidad"
                                     onChange={(e) => { calcularTotalUnitario(e.target.value) }}
                                     defaultValue={cargaProductos.cantidad}
                                 />
@@ -780,7 +770,6 @@ function ModificacionVentas(props) {
 
                                 </Form.Group>
                             </Col>
-
                         </Row>
 
                         <hr />
@@ -814,9 +803,9 @@ function ModificacionVentas(props) {
                                 <tbody>
                                     {map(listProductosCargados, (producto, index) => (
                                         <tr key={index}>
-                                            <td scope="row">
+                                            <th scope="row">
                                                 {index + 1}
-                                            </td>
+                                            </th>
                                             <td data-title="Descripcion">
                                                 {producto.item}
                                             </td>
@@ -856,20 +845,40 @@ function ModificacionVentas(props) {
                                     ))}
                                 </tbody>
                             </table>
+                            {/* Termina tabla informativa */}
 
-                            {/* Inicia tabla definida con totales */}
                             <Row>
                                 <Col xs={12} md={8}>
                                 </Col>
                                 <Col xs={6} md={4}>
                                     {/* Subtotal */}
                                     <Row>
-                                        <Col>Valor total sin IVA</Col>
+                                        <Col>Subtotal</Col>
                                         <Col>
                                             {new Intl.NumberFormat('es-MX', {
                                                 style: "currency",
                                                 currency: "MXN"
-                                            }).format(totalSinIVA)} MXN
+                                            }).format(subTotal)} MXN
+                                        </Col>
+                                    </Row>
+                                    {/* IVA */}
+                                    <Row>
+                                        <Col>IVA</Col>
+                                        <Col>
+                                            {new Intl.NumberFormat('es-MX', {
+                                                style: "currency",
+                                                currency: "MXN"
+                                            }).format(IVA)} MXN
+                                        </Col>
+                                    </Row>
+                                    {/* Total */}
+                                    <Row>
+                                        <Col>Total</Col>
+                                        <Col>
+                                            {new Intl.NumberFormat('es-MX', {
+                                                style: "currency",
+                                                currency: "MXN"
+                                            }).format(total)} MXN
                                         </Col>
                                     </Row>
                                 </Col>
@@ -882,11 +891,11 @@ function ModificacionVentas(props) {
                                 <Col>
                                     <Button
                                         type="submit"
-                                        title="Actualizar el registro"
+                                        title="Guardar la información del formulario"
                                         variant="success"
                                         className="registrar"
                                     >
-                                        {!loading ? "Modificar" : <Spinner animation="border" />}
+                                        {!loading ? "Registrar" : <Spinner animation="border" />}
                                     </Button>
                                 </Col>
                                 <Col>
@@ -914,46 +923,43 @@ function ModificacionVentas(props) {
     );
 }
 
-function initialFormData(folio, fecha) {
+function initialFormData() {
+    return {
+        iva: "0.0"
+    }
+}
+
+function initialFormDataVentaInitial() {
     return {
         cliente: "",
         nombreCliente: "",
-        lugarEntrega: ""
-    }
-}
-
-// Valores iniciales para pedido
-function initialValues() {
-    return {
         fechaPedido: "",
-        fechaEntrega: "",
-        incoterms: "",
-        especificaciones: "",
-        condicionesPago: "",
-        ordenCompra: "",
-        cotizacion: "",
-        numeroPedido: "",
-        lugarEntrega: ""
     }
 }
 
-// Valores almacenados
-function valoresAlmacenados(data) {
-    const { folio, fechaPedido, fechaEntrega, cliente, nombreCliente, incoterms, especificaciones, condicionesPago, ordenCompra, cotizacion, numeroPedido, lugarEntrega } = data;
-
+function initialFormDataVenta(data) {
     return {
-        folio: folio,
-        fechaPedido: fechaPedido,
-        fechaEntrega: fechaEntrega,
-        cliente: cliente,
-        nombreCliente: nombreCliente,
-        incoterms: incoterms,
-        especificaciones: especificaciones,
-        condicionesPago: condicionesPago,
-        ordenCompra: ordenCompra,
-        cotizacion: cotizacion,
-        numeroPedido: numeroPedido,
-        lugarEntrega: lugarEntrega
+        cliente: data.cliente,
+        nombreCliente: data.nombreCliente,
+        fechaPedido: data.fechaElaboracion,
+    }
+}
+
+function initialFormDataClienteInitial() {
+    return {
+        nombreContacto: "",
+        telefono: "",
+        correo: "",
+        diasCredito: ""
+    }
+}
+
+function initialFormDataCliente(data) {
+    return {
+        nombreContacto: data.comprador,
+        telefono: data.telefonoCelular,
+        correo: data.correo,
+        diasCredito: data.diasCredito
     }
 }
 
@@ -963,9 +969,11 @@ function initialFormDataProductos() {
         ID: "",
         item: "",
         cantidad: "",
-        um: "",
         precioUnitario: "",
-        total: ""
+        um: "",
+        descripcion: "",
+        ordenCompra: "",
+        observaciones: ""
     }
 }
 
@@ -978,8 +986,10 @@ function cargaFormDataProductos(data) {
         item: item,
         cantidad: "",
         um: "",
+        descripcion: "",
+        ordenCompra: "",
         precioUnitario: precioUnitario,
-        total: ""
+        observaciones: ""
     }
 }
 
@@ -1020,8 +1030,8 @@ function formatModelMatrizProductos(data) {
             cliente: data.cliente,
             datosMolde: data.datosMolde,
             noParte: data.noParte,
-            descripcion: data.descripcion,
             precioVenta: data.precioVenta,
+            descripcion: data.descripcion,
             datosPieza: data.datosPieza,
             materiaPrima: data.materiaPrima,
             pigmentoMasterBach: data.pigmentoMasterBach,
@@ -1039,4 +1049,4 @@ function formatModelMatrizProductos(data) {
     return dataTemp;
 }
 
-export default ModificacionVentas;
+export default RegistroCuentasCobrar;

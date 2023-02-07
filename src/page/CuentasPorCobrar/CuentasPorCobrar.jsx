@@ -1,24 +1,29 @@
 import { useState, useEffect, Suspense } from 'react';
-import "./Clientes.scss";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { listarClientes } from "../../api/clientes";
+import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { useHistory, withRouter, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import ListClientes from "../../components/Clientes/ListClientes";
-import { useHistory, withRouter } from "react-router-dom";
+import ListCuentasCobrar from "../../components/CuentasPorCobrar/ListCuentasCobrar";
+import { listarCuentasCobrarPorCliente } from "../../api/cuentasPorCobrar";
+import "./CuentasPorCobrar.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
-function Clientes(props) {
+function CuentasPorCobrar(props) {
     const { setRefreshCheckLogin, location, history } = props;
+
+    const params = useParams();
+    const { cliente } = params
 
     const enrutamiento = useHistory();
 
-    const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCatalogos")
-    }
+    // Para almacenar la lista de pedidos de venta
+    const [listCuentasCobrar, setListCuentasCobrar] = useState(null);
+
+    // Para determinar si hay conexion al servidor o a internet
+    const [conexionInternet, setConexionInternet] = useState(true);
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -33,29 +38,18 @@ function Clientes(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-    // Ir hacia ruta de registro
-    const rutaRegistro = () => {
-        enrutamiento.push("/RegistroClientes");
-    }
-
-    // Para almacenar los usuarios
-    const [listClientes, setListClientes] = useState(null);
-
-    // Para determinar el estado de la conexion
-    const [conexionInternet, setConexionInternet] = useState(true);
-
     useEffect(() => {
         try {
-            listarClientes(getSucursal()).then(response => {
+            listarCuentasCobrarPorCliente(getSucursal(), cliente).then(response => {
                 const { data } = response;
 
                 //console.log(data);
 
-                if (!listClientes && data) {
-                    setListClientes(formatModelClientes(data));
+                if (!listCuentasCobrar && data) {
+                    setListCuentasCobrar(formatModelCuentasCobrar(data));
                 } else {
-                    const datosClientes = formatModelClientes(data);
-                    setListClientes(datosClientes);
+                    const datosCuentas = formatModelCuentasCobrar(data);
+                    setListCuentasCobrar(datosCuentas);
                 }
             }).catch(e => {
                 console.log(e)
@@ -65,6 +59,14 @@ function Clientes(props) {
         }
     }, [location]);
 
+    // Para ir hacia la ruta de registro del pedido de venta
+    const rutaRegistroPedidoVenta = () => {
+        enrutamiento.push("/Pedido-de-Venta")
+    }
+
+    const rutaRegreso = () => {
+        enrutamiento.push("/Clientes")
+    }
 
     return (
         <>
@@ -72,22 +74,13 @@ function Clientes(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Clientes
+                            Cuentas por cobrar
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
-                            title="Registrar un nuevo cliente"
-                            onClick={() => {
-                                rutaRegistro()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                        </Button>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú catalogos"
+                            title="Regresar al menú ventas"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -99,12 +92,12 @@ function Clientes(props) {
             </Alert>
 
             {
-                listClientes ?
+                listCuentasCobrar ?
                     (
                         <>
                             <Suspense fallback={<Spinner />}>
-                                <ListClientes
-                                    listClientes={listClientes}
+                                <ListCuentasCobrar
+                                    listCuentasCobrar={listCuentasCobrar}
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
@@ -123,35 +116,29 @@ function Clientes(props) {
     );
 }
 
-function formatModelClientes(data) {
+function formatModelCuentasCobrar(data) {
     //console.log(data)
     const dataTemp = []
     data.forEach(data => {
-        const { direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais } } = data;
         dataTemp.push({
             id: data._id,
-            nombre: data.nombre,
-            apellidos: data.apellidos,
+            folio: data.folio,
+            ordenVenta: data.ordenVenta,
+            cliente: data.cliente,
+            nombreCliente: data.nombreCliente,
             sucursal: data.sucursal,
-            rfc: data.rfc,
-            telefonoCelular: data.telefonoCelular,
-            count: data.count,
-            diasCredito: data.diasCredito,
-            calle: calle,
-            numeroExterior: numeroExterior,
-            numeroInterior: numeroInterior,
-            colonia: colonia,
-            municipio: municipio,
-            estado: estado,
-            pais: pais,
+            fechaEmision: data.fechaEmision,
+            fechaVencimiento: data.fechaVencimiento,
+            nombreContacto: data.nombreContacto,
+            telefono: data.telefono,
             correo: data.correo,
-            foto: data.foto,
-            estadoCliente: data.estadoCliente,
-            domiciliosEntrega: data.domiciliosEntrega,
+            productos: data.productos,
+            estado: data.estado,
+            fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });
     });
     return dataTemp;
 }
 
-export default withRouter(Clientes);
+export default withRouter(CuentasPorCobrar);

@@ -143,7 +143,6 @@ function ListProduccion(props) {
             center: true,
             reorder: false
         },
-
         {
             name: 'Estado',
             center: true,

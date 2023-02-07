@@ -27,6 +27,11 @@ function ListClientes(props) {
         enrutamiento.push(`/ModificacionClientes/${id}`);
     }
 
+    // Para ir hacia la ruta de modificacion
+    const irHaciaCuentasCobrar = (id) => {
+        enrutamiento.push(`/CuentasPorCobrar/${id}`);
+    }
+
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
     const [contentModal, setContentModal] = useState(null);
@@ -84,6 +89,13 @@ function ListClientes(props) {
         {
             name: 'Telefono celular',
             selector: row => row.telefonoCelular,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: 'Dias de credito',
+            selector: row => row.diasCredito + " dias",
             sortable: false,
             center: true,
             reorder: false
@@ -150,7 +162,16 @@ function ListClientes(props) {
             reorder: false,
             selector: row => (
                 <>
-                <div className="flex justify-end items-center space-x-4">
+                <Badge
+                        bg="primary"
+                        title="Ver cuentas por cobrar"
+                        className="editar"
+                        onClick={() => {
+                            irHaciaCuentasCobrar(row.id)
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faEye} className="text-lg" />
+                    </Badge>
                     <Badge
                         bg="success"
                         title="Modificar"
@@ -176,7 +197,6 @@ function ListClientes(props) {
                     >
                         <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
                     </Badge>
-                    </div>
                 </>
             )
         }

@@ -168,6 +168,8 @@ function ModificacionClientes(props) {
                 nombre: formData.nombre,
                 tipoPersona: formData.tipoPersona,
                 regimenFiscal: formData.regimenFiscal,
+                diasCredito: formData.diasCredito,
+                comprador: formData.comprador,
                 direccion: {
                     calle: formData.calle,
                     numeroExterior: formData.numeroExterior,
@@ -190,7 +192,7 @@ function ModificacionClientes(props) {
             try {
                 actualizaCliente(params.id, dataTempFinal).then(response => {
                     const { data } = response;
-                    LogsInformativos("Los datos del cliente " + dataTempFinal.nombre  + " fueron modificados", dataTempFinal)
+                    LogsInformativos("Los datos del cliente " + dataTempFinal.nombre + " fueron modificados", dataTempFinal)
                     toast.success(data.mensaje)
                     setLoading(false);
                     enrutamiento.push("/Clientes");
@@ -292,33 +294,33 @@ function ModificacionClientes(props) {
                                 formData.tipoPersona === "Moral" &&
                                 (
                                     <>
-                            <Form.Group as={Col} controlId="formGridEstado">
-                                <Form.Label>
-                                    Regimen fiscal
-                                </Form.Label>
-                                <Form.Control
-                                    as="select"
-                                    defaultValue={formData.regimenFiscal}
-                                    name="regimenFiscal"
-                                >
-                                    <option>Elige una opción</option>
-                                    <option value="601-General de Ley Personas Morales" selected={formData.regimenFiscal === "601-General de Ley Personas Morales"}>601-General de Ley Personas Morales</option>
-                                    <option value="603-Personas Morales con Fines no Lucrativos" selected={formData.regimenFiscal === "603-Personas Morales con Fines no Lucrativos"}>603-Personas Morales con Fines no Lucrativos</option>
-                                    <option value="607-Régimen de Enajenación o Adquisición de Bienes" selected={formData.regimenFiscal === "607-Régimen de Enajenación o Adquisición de Bienes"}>607-Régimen de Enajenación o Adquisición de Bienes</option>
-                                    <option value="609-Consolidación" selected={formData.regimenFiscal === "609-Consolidación"}>609-Consolidación</option>
-                                    <option value="620-Sociedades Cooperativas de Producción que optan por Diferir sus Ingresos" selected={formData.regimenFiscal === "620-Sociedades Cooperativas de Producción que optan por Diferir sus Ingresos"}>620-Sociedades Cooperativas de Producción que optan por Diferir sus Ingresos</option>
-                                    <option value="622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras" selected={formData.regimenFiscal === "622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras"}>622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras</option>
-                                    <option value="623-Opcional para Grupos de Sociedades" selected={formData.regimenFiscal === "623-Opcional para Grupos de Sociedades"}>623-Opcional para Grupos de Sociedades</option>
-                                    <option value="624-Coordinados" selected={formData.regimenFiscal === "624-Coordinado"}>624-Coordinados</option>
-                                    <option value="628-Hidrocarburos" selected={formData.regimenFiscal === "628-Hidrocarburos"}>628-Hidrocarburos</option>
-                                    </Form.Control>
-                            </Form.Group>
-                            </>
+                                        <Form.Group as={Col} controlId="formGridEstado">
+                                            <Form.Label>
+                                                Regimen fiscal
+                                            </Form.Label>
+                                            <Form.Control
+                                                as="select"
+                                                defaultValue={formData.regimenFiscal}
+                                                name="regimenFiscal"
+                                            >
+                                                <option>Elige una opción</option>
+                                                <option value="601-General de Ley Personas Morales" selected={formData.regimenFiscal === "601-General de Ley Personas Morales"}>601-General de Ley Personas Morales</option>
+                                                <option value="603-Personas Morales con Fines no Lucrativos" selected={formData.regimenFiscal === "603-Personas Morales con Fines no Lucrativos"}>603-Personas Morales con Fines no Lucrativos</option>
+                                                <option value="607-Régimen de Enajenación o Adquisición de Bienes" selected={formData.regimenFiscal === "607-Régimen de Enajenación o Adquisición de Bienes"}>607-Régimen de Enajenación o Adquisición de Bienes</option>
+                                                <option value="609-Consolidación" selected={formData.regimenFiscal === "609-Consolidación"}>609-Consolidación</option>
+                                                <option value="620-Sociedades Cooperativas de Producción que optan por Diferir sus Ingresos" selected={formData.regimenFiscal === "620-Sociedades Cooperativas de Producción que optan por Diferir sus Ingresos"}>620-Sociedades Cooperativas de Producción que optan por Diferir sus Ingresos</option>
+                                                <option value="622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras" selected={formData.regimenFiscal === "622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras"}>622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras</option>
+                                                <option value="623-Opcional para Grupos de Sociedades" selected={formData.regimenFiscal === "623-Opcional para Grupos de Sociedades"}>623-Opcional para Grupos de Sociedades</option>
+                                                <option value="624-Coordinados" selected={formData.regimenFiscal === "624-Coordinado"}>624-Coordinados</option>
+                                                <option value="628-Hidrocarburos" selected={formData.regimenFiscal === "628-Hidrocarburos"}>628-Hidrocarburos</option>
+                                            </Form.Control>
+                                        </Form.Group>
+                                    </>
                                 )
                             }
 
 
-{
+                            {
                                 formData.tipoPersona === "Fisica" &&
                                 (
                                     <>
@@ -385,6 +387,30 @@ function ModificacionClientes(props) {
                                     placeholder="Numero interior"
                                     name="numeroInterior"
                                     defaultValue={formData.telefonoFijo}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridTelefonoFijo">
+                                <Form.Label>
+                                    Dias de credito
+                                </Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    placeholder="Dias de credito"
+                                    name="diasCredito"
+                                    defaultValue={formData.diasCredito}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridTelefonoFijo">
+                                <Form.Label>
+                                    Comprador
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Nombre del comprador"
+                                    name="comprador"
+                                    defaultValue={formData.comprador}
                                 />
                             </Form.Group>
                         </Row>
@@ -819,6 +845,8 @@ function initialFormData() {
         curp: "",
         nss: "",
         rfc: "",
+        diasCredito: "",
+        comprador: "",
         tipoPersona: "",
         regimenFiscal: "",
         telefonoCelular: "",
@@ -839,7 +867,7 @@ function initialFormData() {
 }
 
 function initialFormDataFinal(data) {
-    const { nombre, apellidos, curp, nss, rfc, regimenFiscal, tipoPersona, telefonoCelular, telefonoFijo, direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais, codigoPostal }, departamento, correo, password, tipo } = data;
+    const { nombre, apellidos, curp, diasCredito, comprador, nss, rfc, regimenFiscal, tipoPersona, telefonoCelular, telefonoFijo, direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais, codigoPostal }, departamento, correo, password, tipo } = data;
 
     return {
         nombre: nombre,
@@ -847,7 +875,9 @@ function initialFormDataFinal(data) {
         curp: curp,
         nss: nss,
         tipoPersona: tipoPersona,
+        comprador: comprador,
         rfc: rfc,
+        diasCredito: diasCredito,
         regimenFiscal: regimenFiscal,
         telefonoCelular: telefonoCelular,
         telefonoFijo: telefonoFijo,
