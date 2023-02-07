@@ -1,23 +1,23 @@
 import { useState, useEffect } from 'react';
 import { Row, Col, Container, Badge } from "react-bootstrap"
-import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta";
+import { obtenerDatosCuentasCobrar } from "../../../api/cuentasPorCobrar";
 import moment from "moment";
 import { map } from "lodash";
-import "./ListProductosVentas.scss"
+import "./ListProductosCuentasCobrar.scss"
 
-function ListProductosVentas(props) {
-    const { ordenVenta } = props;
+function ListProductosCuentasCobrar(props) {
+    const { folio } = props;
     // console.log(ordenVenta)
 
     // Almacena los datos de la orden de venta
-    const [datosOrdenVenta, setDatosOrdenVenta] = useState(null);
+    const [datosCuentaCobrar, setDatosCuentaCobrar] = useState(null);
 
     useEffect(() => {
         try {
-            obtenerDatosPedidoVenta(ordenVenta).then(response => {
+            obtenerDatosCuentasCobrar(folio).then(response => {
                 const { data } = response;
                 // console.log(data)
-                setDatosOrdenVenta(data)
+                setDatosCuentaCobrar(data)
             }).catch(e => {
                 console.log(e)
             })
@@ -30,12 +30,12 @@ function ListProductosVentas(props) {
     return (
         <>
             {
-                datosOrdenVenta ?
+                datosCuentaCobrar ?
                     (
                         <>
                             <Container fluid className="tablaProductos">
                                 <Badge bg="secondary" className="tituloFormularioDetalles">
-                                    <h4>Detalles de los productos de la venta</h4>
+                                    <h4>Detalles de los productos de la cuenta por cobrar</h4>
                                 </Badge>
                                 <table className="responsive-tableTrackingOV"
                                 >
@@ -50,9 +50,9 @@ function ListProductosVentas(props) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {map(datosOrdenVenta.productos, (datos, index) => (
+                                        {map(datosCuentaCobrar.productos, (datos, index) => (
                                             <>
-                                                {datosOrdenVenta.folio == ordenVenta ? (
+                                                {datosCuentaCobrar.folio == folio ? (
                                                     <>
                                                         <tr key={datos.item}>
                                                             <td>
@@ -131,4 +131,4 @@ function formatModelPedidosventa(data) {
     return dataTemp;
 }
 
-export default ListProductosVentas;
+export default ListProductosCuentasCobrar;

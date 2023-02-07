@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import EliminacionLogicaCuentasCobrar from '../EliminacionLogica';
 import EliminacionFisicaCuentasCobrar from '../EliminacionFisica';
+import ListProductosCuentasCobrar from '../ListProductosCuentasCobrar';
 
 function ListCuentasCobrar(props) {
     const { setRefreshCheckLogin, listCuentasCobrar, history, location } = props;
@@ -51,11 +52,11 @@ function ListCuentasCobrar(props) {
         // enrutamiento.push("")
     }
 
-    /*const ExpandedComponent = ({ data }) => (
-        <ListProductosVentas
-            ordenVenta={data.folio}
+    const ExpandedComponent = ({ data }) => (
+        <ListProductosCuentasCobrar
+            folio={data.folio}
         />
-    );*/
+    );
 
     const columns = [
         {
@@ -223,8 +224,8 @@ function ListCuentasCobrar(props) {
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
                     data={listCuentasCobrar}
-                    //expandableRows
-                    //expandableRowsComponent={ExpandedComponent}
+                    expandableRows
+                    expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
