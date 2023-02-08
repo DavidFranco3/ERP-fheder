@@ -5,7 +5,7 @@ import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaVentas from "../EliminacionFisica";
 import styled from 'styled-components';
-import DataTable from 'react-data-table-component';
+import DataTable, { createTheme } from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./ListVentas.scss";
@@ -191,18 +191,25 @@ function ListVentas(props) {
         {
             name: "Cuentas por cobrar",
             selector: row => (
-                <>
-                    <Badge
-                        bg="primary"
-                        title="Generar una cuenta por cobrar"
-                        className="editar"
-                        onClick={() => {
-                            registroCuentasCobrar(row.folio)
-                        }}
-                    >
-                        Generar
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="primary"
+                                title="Generar una cuenta por cobrar"
+                                className="editar"
+                                onClick={() => {
+                                    registroCuentasCobrar(row.folio)
+                                }}
+                            >
+                                Generar
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponible"
+                    )
             ),
             sortable: false,
             center: true,

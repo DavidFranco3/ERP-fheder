@@ -104,46 +104,6 @@ function ListProduccion(props) {
             reorder: false
         },
         {
-            name: "Requisicion",
-            selector: row => (
-                <>
-                    <Badge
-                        bg="primary"
-                        title="Generar una requsición"
-                        className="editar"
-                        onClick={() => {
-                            requisicionPlaneacion(row.id)
-                        }}
-                    >
-                        Generar
-                    </Badge>
-                </>
-            ),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: "Orden producción",
-            selector: row => (
-                <>
-                    <Badge
-                        bg="primary"
-                        title="Generar una orden de produción"
-                        className="editar"
-                        onClick={() => {
-                            produccionPlaneacion(row.id)
-                        }}
-                    >
-                        Generar
-                    </Badge>
-                </>
-            ),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
             name: 'Estado',
             center: true,
             reorder: false,
@@ -180,6 +140,60 @@ function ListProduccion(props) {
                             </Badge>
                         </>
                     )
+        },
+        {
+            name: "Requisicion",
+            selector: row => (
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="primary"
+                                title="Generar una requsición"
+                                className="editar"
+                                onClick={() => {
+                                    requisicionPlaneacion(row.id)
+                                }}
+                            >
+                                Generar
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponible"
+                    )
+            ),
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Orden producción",
+            selector: row => (
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="primary"
+                                title="Generar una orden de produción"
+                                className="editar"
+                                onClick={() => {
+                                    produccionPlaneacion(row.id)
+                                }}
+                            >
+                                Generar
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponible"
+                    )
+            ),
+            sortable: false,
+            center: true,
+            reorder: false
         },
         {
             name: "Ultima modificacion",

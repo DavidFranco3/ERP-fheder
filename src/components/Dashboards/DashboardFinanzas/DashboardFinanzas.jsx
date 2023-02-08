@@ -68,7 +68,7 @@ function DashboardFinanzas(props) {
                         </Col>
                     </Row>
                 </Alert>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-1">
                     <ItemCard
                         path={'/CuentasPorCobrar'}
                         logo={LogoCuentasCobrar}
