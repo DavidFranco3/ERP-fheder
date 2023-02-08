@@ -70,9 +70,9 @@ function DashboardFinanzas(props) {
                 </Alert>
                 <div className="grid grid-cols-1 gap-1">
                     <ItemCard
-                        path={'/CuentasPorCobrar'}
+                        path={'/Facturas'}
                         logo={LogoCuentasCobrar}
-                        title={'Cuentas por cobrar'}
+                        title={'Facturas'}
                     />
                 </div>
         </>

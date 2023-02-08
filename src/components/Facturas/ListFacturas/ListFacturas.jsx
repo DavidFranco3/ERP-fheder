@@ -5,17 +5,17 @@ import BasicModal from "../../Modal/BasicModal";
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
-import "./ListCuentasCobrar.scss";
+import "./ListFacturas.scss";
 import { estilos } from "../../../utils/tableStyled";
 import 'dayjs/locale/es'
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-import EliminacionLogicaCuentasCobrar from '../EliminacionLogica';
-import EliminacionFisicaCuentasCobrar from '../EliminacionFisica';
-import ListProductosCuentasCobrar from '../ListProductosCuentasCobrar';
+import EliminacionLogicaFacturas from '../EliminacionLogica';
+import EliminacionFisicaFacturas from '../EliminacionFisica';
+import ListProductosFacturas from '../ListProductosFacturas';
 
-function ListCuentasCobrar(props) {
-    const { setRefreshCheckLogin, listCuentasCobrar, history, location } = props;
+function ListFacturas(props) {
+    const { setRefreshCheckLogin, listFacturas, history, location } = props;
 
     const enrutamiento = useHistory();
 
@@ -28,23 +28,23 @@ function ListCuentasCobrar(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Para la eliminacion fisica de usuarios
-    const eliminaCuentaPorCobrar = (content) => {
-        setTitulosModal("Eliminando cuenta por cobrar");
+    const eliminaFactura = (content) => {
+        setTitulosModal("Eliminando factura");
         setContentModal(content);
         setShowModal(true);
     }
 
     //Para la eliminacion logica de usuarios
-    const eliminaLogicaCuentaPorCobrar = (content) => {
-        setTitulosModal("Cancelando la cuenta por cobrar");
+    const eliminaLogicaFactura = (content) => {
+        setTitulosModal("Cancelando la factura");
         setContentModal(content);
         setShowModal(true);
     }
 
 
     // Para la modificacion de datos del pedido
-    const modificaCuentasCobrar = (id) => {
-        enrutamiento.push(`/ModificaCuentasCobrar/${id}`);
+    const modificaFactura = (id) => {
+        enrutamiento.push(`/ModificaFacturas/${id}`);
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
@@ -53,7 +53,7 @@ function ListCuentasCobrar(props) {
     }
 
     const ExpandedComponent = ({ data }) => (
-        <ListProductosCuentasCobrar
+        <ListProductosFacturas
             folio={data.folio}
         />
     );
@@ -114,8 +114,8 @@ function ListCuentasCobrar(props) {
                                 title="Deshabilitar"
                                 className="editar"
                                 onClick={() => {
-                                    eliminaLogicaCuentaPorCobrar(
-                                        <EliminacionLogicaCuentasCobrar
+                                    eliminaLogicaFactura(
+                                        <EliminacionLogicaFacturas
                                             datos={row}
                                             setShowModal={setShowModal}
                                             history={history}
@@ -173,7 +173,7 @@ function ListCuentasCobrar(props) {
                         title="Modificar"
                         className="editar"
                         onClick={() => {
-                            modificaCuentasCobrar(row.id)
+                            modificaFactura(row.id)
                         }}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
@@ -183,8 +183,8 @@ function ListCuentasCobrar(props) {
                         title="Eliminar"
                         className="eliminar"
                         onClick={() => {
-                            eliminaCuentaPorCobrar(
-                                <EliminacionFisicaCuentasCobrar
+                            eliminaFactura(
+                                <EliminacionFisicaFacturas
                                     datos={row}
                                     setShowModal={setShowModal}
                                     history={history}
@@ -204,7 +204,7 @@ function ListCuentasCobrar(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listCuentasCobrar);
+            setRows(listFacturas);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -223,7 +223,7 @@ function ListCuentasCobrar(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={listCuentasCobrar}
+                    data={listFacturas}
                     expandableRows
                     expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}
@@ -242,4 +242,4 @@ function ListCuentasCobrar(props) {
     );
 }
 
-export default ListCuentasCobrar;
+export default ListFacturas;

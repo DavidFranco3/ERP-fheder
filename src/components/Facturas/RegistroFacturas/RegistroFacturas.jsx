@@ -4,10 +4,10 @@ import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-
 import { map } from "lodash";
 import { toast } from "react-toastify";
 import { listarClientes } from "../../../api/clientes";
-import { registraCuentasCobrar, obtenerNumeroCuentasCobrar } from "../../../api/cuentasPorCobrar";
+import { registraFactura, obtenerNumeroFactura } from "../../../api/facturas";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import "./RegistroCuentasCobrar.scss"
+import "./RegistroFacturas.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
@@ -21,7 +21,7 @@ import BuscarCliente from '../../../page/BuscarCliente';
 import BuscarOV from '../../../page/BuscarOV';
 import BuscarProducto from '../../../page/BuscarProducto';
 
-function RegistroCuentasCobrar(props) {
+function RegistroFacturas(props) {
     const { history, setRefreshCheckLogin, location } = props;
 
     // Cerrado de sesión automatico
@@ -110,7 +110,7 @@ function RegistroCuentasCobrar(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento.push("/CuentasPorCobrar");
+        enrutamiento.push("/Facturas");
     }
 
     // Para almacenar el folio actual
@@ -118,11 +118,11 @@ function RegistroCuentasCobrar(props) {
 
     useEffect(() => {
         try {
-            obtenerNumeroCuentasCobrar().then(response => {
+            obtenerNumeroFactura().then(response => {
                 const { data } = response;
                 // console.log(data)
-                const { noCuenta } = data;
-                setFolioActual(noCuenta)
+                const { noFactura } = data;
+                setFolioActual(noFactura)
             }).catch(e => {
                 console.log(e)
             })
@@ -238,14 +238,14 @@ function RegistroCuentasCobrar(props) {
         // console.log(dataTemp)
 
         // Modificar el pedido creado recientemente
-        registraCuentasCobrar(dataTemp).then(response => {
+        registraFactura(dataTemp).then(response => {
             const { data: { mensaje, datos } } = response;
             // console.log(response)
             toast.success(mensaje)
             // Log acerca del registro inicial del tracking
-            LogsInformativos("Se han registrado la orden de venta con folio " + dataTemp.noVenta, dataTemp)
+            LogsInformativos("Se han registrado la factura " + folioActual, dataTemp)
             // Registro inicial del tracking
-            LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
+            //LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
             setLoading(false)
             regresaListadoVentas()
         }).catch(e => {
@@ -1055,4 +1055,4 @@ function formatModelMatrizProductos(data) {
     return dataTemp;
 }
 
-export default RegistroCuentasCobrar;
+export default RegistroFacturas;

@@ -3,13 +3,11 @@ import { useHistory, useParams } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
-import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
-import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import { listarClientes } from "../../../api/clientes";
-import { registraCuentasCobrar, obtenerNumeroCuentasCobrar } from "../../../api/cuentasPorCobrar";
+import { actualizaFactura, obtenerFactura } from "../../../api/facturas";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import "./CuentasCobrarOV.scss"
+import "./ModificaFacturas.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
@@ -19,12 +17,15 @@ import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta";
 import { obtenerCliente } from "../../../api/clientes";
+import BuscarCliente from '../../../page/BuscarCliente';
+import BuscarOV from '../../../page/BuscarOV';
+import BuscarProducto from '../../../page/BuscarProducto';
 
-function CuentasCobrarOV(props) {
+function ModificaFacturas(props) {
     const { history, setRefreshCheckLogin, location } = props;
 
     const params = useParams();
-    const { ordenVenta } = params
+    const { id } = params
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -58,7 +59,7 @@ function CuentasCobrarOV(props) {
     const enrutamiento = useHistory();
 
     // Para guardar los datos del formulario
-    const [formData, setFormData] = useState(initialFormData());
+    const [formData, setFormData] = useState(initialFormDataInitial());
 
     // Para guardar los datos del formulario
     const [formDataVenta, setFormDataVenta] = useState(initialFormDataVentaInitial());
@@ -68,10 +69,13 @@ function CuentasCobrarOV(props) {
 
     useEffect(() => {
         //
-        obtenerDatosPedidoVenta(ordenVenta).then(response => {
+        obtenerFactura(id).then(response => {
             const { data } = response;
             //console.log(data)
+            setFormData(initialFormData(data));
             setFormDataVenta(initialFormDataVenta(data));
+            //setFormDataCliente(initialFormDataCliente(data));
+            // setFechaCreacion(fechaElaboracion)
             setListProductosCargados(data.productos);
         }).catch(e => {
             console.log(e)
@@ -102,8 +106,15 @@ function CuentasCobrarOV(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Para la eliminacion fisica de usuarios
-    const buscarOV = (content) => {
+    const buscarCliente = (content) => {
         setTitulosModal("Buscar cliente");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarVenta = (content) => {
+        setTitulosModal("Buscar orden de venta");
         setContentModal(content);
         setShowModal(true);
     }
@@ -117,26 +128,8 @@ function CuentasCobrarOV(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento.push("/Ventas");
+        enrutamiento.push("/Facturas");
     }
-
-    // Para almacenar el folio actual
-    const [folioActual, setFolioActual] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerNumeroCuentasCobrar().then(response => {
-                const { data } = response;
-                // console.log(data)
-                const { noCuenta } = data;
-                setFolioActual(noCuenta)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
@@ -225,11 +218,9 @@ function CuentasCobrarOV(props) {
         setLoading(true);
 
         const dataTemp = {
-            folio: folioActual,
-            ordenVenta: ordenVenta,
+            ordenVenta: formDataVenta.ordenVenta,
             cliente: formDataVenta.cliente,
             nombreCliente: formDataVenta.nombreCliente,
-            sucursal: getSucursal(),
             fechaEmision: formDataVenta.fechaPedido,
             fechaVencimiento: fechaVencimiento,
             nombreContacto: formDataCliente.nombreContacto,
@@ -237,21 +228,21 @@ function CuentasCobrarOV(props) {
             correo: formDataCliente.correo,
             productos: listProductosCargados,
             iva: IVA,
+            iva: formData.iva,
             subtotal: subTotal,
             total: total,
-            estado: "true",
         }
         // console.log(dataTemp)
 
         // Modificar el pedido creado recientemente
-        registraCuentasCobrar(dataTemp).then(response => {
+        actualizaFactura(id, dataTemp).then(response => {
             const { data: { mensaje, datos } } = response;
             // console.log(response)
             toast.success(mensaje)
             // Log acerca del registro inicial del tracking
-            LogsInformativos("Se han registrado la orden de venta con folio " + dataTemp.noVenta, dataTemp)
+            LogsInformativos("Se ha actualizado la cuenta por cobrar con folio " + formData.folio, dataTemp)
             // Registro inicial del tracking
-            LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
+            //LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
             setLoading(false)
             regresaListadoVentas()
         }).catch(e => {
@@ -394,6 +385,8 @@ function CuentasCobrarOV(props) {
                     : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
     }, [formDataVenta.fechaPedido, formDataCliente.diasCredito]);
 
+    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState();
+
     return (
         <>
             <Alert>
@@ -439,7 +432,7 @@ function CuentasCobrarOV(props) {
                                             type="text"
                                             placeholder="Folio"
                                             name="folio"
-                                            value={folioActual}
+                                            value={formData.folio}
                                             disabled
                                         />
                                     </Col>
@@ -456,13 +449,30 @@ function CuentasCobrarOV(props) {
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
+                                    <div className="flex items-center mb-1">
                                         <Form.Control
                                             type="text"
-                                            value={ordenVenta}
+                                            defaultValue={formDataVenta.ordenVenta}
                                             placeholder="Orden de venta"
                                             name="ordenVenta"
                                             disabled
                                         />
+                                        <FontAwesomeIcon
+                                                className="cursor-pointer py-2 -ml-6"
+                                                title="Buscar entre las ventas"
+                                                icon={faSearch}
+                                                onClick={() => {
+                                                    buscarVenta(
+                                                        <BuscarOV
+                                                            formData={formDataVenta}
+                                                            setProducto={setListProductosCargados}
+                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
+                                                            setFormData={setFormDataVenta}
+                                                            setShowModal={setShowModal}
+                                                        />)
+                                                }}
+                                            />
+                                        </div>
                                     </Col>
                                 </Form.Group>
                             </Row>
@@ -605,9 +615,9 @@ function CuentasCobrarOV(props) {
                                             name="iva"
                                         >
                                             <option>Elige una opción</option>
-                                            <option value="0.16">16%</option>
-                                            <option value="0">0%</option>
-                                            <option value="0">Expcento</option>
+                                            <option value="0.16" selected={formData.iva == "0.16"}>16%</option>
+                                            <option value="0" selected={formData.iva == "0"}>0%</option>
+                                            <option value="0.0" selected={formData.iva == "0.0"}>Expcento</option>
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
@@ -923,14 +933,23 @@ function CuentasCobrarOV(props) {
     );
 }
 
-function initialFormData() {
+function initialFormDataInitial() {
     return {
-        iva: "0.0"
+        iva: "",
+        folio: ""
+    }
+}
+
+function initialFormData(data) {
+    return {
+        folio: data.folio,
+        iva: data.ivaElegido
     }
 }
 
 function initialFormDataVentaInitial() {
     return {
+        ordenVenta: "",
         cliente: "",
         nombreCliente: "",
         fechaPedido: "",
@@ -939,9 +958,10 @@ function initialFormDataVentaInitial() {
 
 function initialFormDataVenta(data) {
     return {
+        ordenVenta: data.ordenVenta,
         cliente: data.cliente,
         nombreCliente: data.nombreCliente,
-        fechaPedido: data.fechaElaboracion,
+        fechaPedido: data.fechaEmision,
     }
 }
 
@@ -1049,4 +1069,4 @@ function formatModelMatrizProductos(data) {
     return dataTemp;
 }
 
-export default CuentasCobrarOV;
+export default ModificaFacturas;

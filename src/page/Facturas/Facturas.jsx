@@ -4,20 +4,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
-import ListCuentasCobrar from "../../components/CuentasPorCobrar/ListCuentasCobrar";
-import { listarCuentasCobrar } from "../../api/cuentasPorCobrar";
-import "./CuentasPorCobrar.scss"
+import ListFacturas from "../../components/Facturas/ListFacturas";
+import { listarFactura } from "../../api/facturas";
+import "./Facturas.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
-function CuentasPorCobrar(props) {
+function Facturas(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     const enrutamiento = useHistory();
 
     // Para almacenar la lista de pedidos de venta
-    const [listCuentasCobrar, setListCuentasCobrar] = useState(null);
+    const [listFacturas, setListFacturas] = useState(null);
 
     // Para determinar si hay conexion al servidor o a internet
     const [conexionInternet, setConexionInternet] = useState(true);
@@ -37,16 +37,16 @@ function CuentasPorCobrar(props) {
 
     useEffect(() => {
         try {
-            listarCuentasCobrar(getSucursal()).then(response => {
+            listarFactura(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
 
-                if (!listCuentasCobrar && data) {
-                    setListCuentasCobrar(formatModelCuentasCobrar(data));
+                if (!listFacturas && data) {
+                    setListFacturas(formatModelFacturas(data));
                 } else {
-                    const datosCuentas = formatModelCuentasCobrar(data);
-                    setListCuentasCobrar(datosCuentas);
+                    const datosFacturas = formatModelFacturas(data);
+                    setListFacturas(datosFacturas);
                 }
             }).catch(e => {
                 console.log(e)
@@ -57,12 +57,12 @@ function CuentasPorCobrar(props) {
     }, [location]);
 
     // Para ir hacia la ruta de registro del pedido de venta
-    const rutaRegistroCuentasCobrar = () => {
-        enrutamiento.push("/RegistroCuentasCobrar")
+    const rutaRegistroFacturas = () => {
+        enrutamiento.push("/RegistroFacturas")
     }
 
     const rutaRegreso = () => {
-        enrutamiento.push("/Clientes")
+        enrutamiento.push("/DashboardFinanzas")
     }
 
     return (
@@ -71,15 +71,15 @@ function CuentasPorCobrar(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Cuentas por cobrar
+                            Facturas
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
                     <Button
                             className="btnRegistroVentas"
-                            title="Registrar una nueva cuenta por cobrar"
+                            title="Registrar una nueva factura"
                             onClick={() => {
-                                rutaRegistroCuentasCobrar()
+                                rutaRegistroFacturas()
                             }}
                         >
                             <FontAwesomeIcon icon={faCirclePlus} /> Registrar
@@ -98,12 +98,12 @@ function CuentasPorCobrar(props) {
             </Alert>
 
             {
-                listCuentasCobrar ?
+                listFacturas?
                     (
                         <>
                             <Suspense fallback={<Spinner />}>
-                                <ListCuentasCobrar
-                                    listCuentasCobrar={listCuentasCobrar}
+                                <ListFacturas
+                                    listFacturas={listFacturas}
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
@@ -122,7 +122,7 @@ function CuentasPorCobrar(props) {
     );
 }
 
-function formatModelCuentasCobrar(data) {
+function formatModelFacturas(data) {
     //console.log(data)
     const dataTemp = []
     data.forEach(data => {
@@ -147,4 +147,4 @@ function formatModelCuentasCobrar(data) {
     return dataTemp;
 }
 
-export default withRouter(CuentasPorCobrar);
+export default withRouter(Facturas);

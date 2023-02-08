@@ -131,19 +131,19 @@ export const ENDPOINTListarPedidoVentaPaginacion = "/ventas/listarPaginando";
 export const ENDPOINTObtenerNoPedidoVenta = "/ventas/obtenerNoVenta";
 export const ENDPOINTTotalPedidoVenta = "/ventas/total";
 
-// Cuentas por cobrar
-export const ENDPOINTRegistraCuentasCobrar = "/cuentasPorCobrar/registro";
-export const ENDPOINTListarCuentasCobrar = "/cuentasPorCobrar/listar";
-export const ENDPOINTListarCuentasCobrarPorCliente = "/cuentasPorCobrar/listarPorCliente";
-export const ENDPOINTListarCuentasCobrarActivo = "/cuentasPorCobrar/listarActivas";
-export const ENDPOINTObtenerCuentasCobrar = "/cuentasPorCobrar/obtener";
-export const ENDPOINTObtenerDatosCuentasCobrar = "/cuentasPorCobrar/obtenerDatosCuenta";
-export const ENDPOINTEliminarCuentasCobrar = "/cuentasPorCobrar/eliminar";
-export const ENDPOINTActualizarCuentasCobrar = "/cuentasPorCobrar/actualizar";
-export const ENDPOINTActualizarEstadoCuentasCobrar = "/cuentasPorCobrar/actualizarEstado";
-export const ENDPOINTListarCuentasCobrarPaginacion = "/cuentasPorCobrar/listarPaginando";
-export const ENDPOINTObtenerNoCuentasCobrar = "/cuentasPorCobrar/obtenerNoCuenta";
-export const ENDPOINTTotalCuentasCobrar = "/cuentasPorCobrar/total";
+// Facturas
+export const ENDPOINTRegistraFactura = "/facturas/registro";
+export const ENDPOINTListarFactura = "/facturas/listar";
+export const ENDPOINTListarFacturaPorCliente = "/facturas/listarPorCliente";
+export const ENDPOINTListarFacturaActivo = "/facturas/listarActivas";
+export const ENDPOINTObtenerFactura = "/facturas/obtener";
+export const ENDPOINTObtenerDatosFactura = "/facturas/obtenerDatosFactura";
+export const ENDPOINTEliminarFactura = "/facturas/eliminar";
+export const ENDPOINTActualizarFactura = "/facturas/actualizar";
+export const ENDPOINTActualizarEstadoFactura = "/facturas/actualizarEstado";
+export const ENDPOINTListarFacturaPaginacion = "/facturas/listarPaginando";
+export const ENDPOINTObtenerNoFactura = "/facturas/obtenerNoFactura";
+export const ENDPOINTTotalFactura = "/facturas/total";
 
 // Recepcion de material e insumos
 export const ENDPOINTRegistraRecepcion = "/recepcionMaterialInsumos/registro";

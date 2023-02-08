@@ -3,10 +3,10 @@ import { eliminaUsuario } from "../../../api/usuarios";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
-import { eliminaCuentasCobrar } from "../../../api/cuentasPorCobrar";
+import { eliminaFactura } from "../../../api/facturas";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
-function EliminacionFisicaCuentasCobrar(props) {
+function EliminacionFisicaFacturas(props) {
     const { datos, setShowModal, history } = props;
     const { id, folio, ordenVenta, nombreCliente, nombreContacto, estado } = datos;
 
@@ -27,11 +27,11 @@ function EliminacionFisicaCuentasCobrar(props) {
         //console.log(dataTemp)
 
         try {
-            eliminaCuentasCobrar(id).then(response => {
+            eliminaFactura(id).then(response => {
                 const { data } = response;
                 // console.log(data)
                 toast.success(data.mensaje)
-                LogsInformativos("Se ha eliminado la cuenta por cobrar " + folio, datos)
+                LogsInformativos("Se ha eliminado la factura " + folio, datos)
                 setShowModal(false);
                 setLoading(false);
                 history.push({
@@ -131,4 +131,4 @@ function EliminacionFisicaCuentasCobrar(props) {
     );
 }
 
-export default EliminacionFisicaCuentasCobrar;
+export default EliminacionFisicaFacturas;

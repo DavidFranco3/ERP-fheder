@@ -62,7 +62,7 @@ import Sucursales from "../page/Sucursales";
 import GestionAlmacen from "../page/GestionAlmacen";
 import Almacenes from "../page/Almacenes";
 import Error404 from "../page/Error404";
-import CuentasPorCobrar from "../page/CuentasPorCobrar";
+import Facturas from "../page/Facturas";
 
 // importacion de dashboards
 import DashboardVentas from "../components/Dashboards/DashboardVentas";
@@ -229,9 +229,9 @@ import ModificaRequerimientosPlaneacion from "../components/RequerimientosPlanea
 import RequisicionPlaneacion from "../components/Requisiciones/RequisicionPlaneacion";
 
 // Rutas para cuentas por cobrar
-import CuentasCobrarOV from "../components/CuentasPorCobrar/CuentasCobrarOV";
-import RegistroCuentasCobrar from "../components/CuentasPorCobrar/RegistroCuentasCobrar";
-import ModificaCuentasCobrar from "../components/CuentasPorCobrar/ModificaCuentasCobrar";
+import FacturasOV from "../components/Facturas/FacturasOV";
+import RegistroFacturas from "../components/Facturas/RegistroFacturas";
+import ModificaFacturas from "../components/Facturas/ModificaFacturas";
 
 export default [
     {
@@ -250,19 +250,19 @@ export default [
         page: ModificaRequerimientosPlaneacion
     },
     {
-        path: "/CuentasCobrarOV/:ordenVenta",
+        path: "/FacturasOV/:ordenVenta",
         exact: true,
-        page: CuentasCobrarOV
+        page: FacturasOV
     },
     {
-        path: "/RegistroCuentasCobrar",
+        path: "/RegistroFacturas",
         exact: true,
-        page: RegistroCuentasCobrar
+        page: RegistroFacturas
     },
     {
-        path: "/ModificaCuentasCobrar/:id",
+        path: "/ModificaFacturas/:id",
         exact: true,
-        page: ModificaCuentasCobrar
+        page: ModificaFacturas
     },
     {
         path: "/RegistraSolicitudMaterialInsumo",
@@ -930,9 +930,9 @@ export default [
         page: SolicitudMaterialInsumo
     },
     {
-        path: "/CuentasPorCobrar",
+        path: "/Facturas",
         exact: true,
-        page: CuentasPorCobrar
+        page: Facturas
     },
     {
         path: "/DashboardVentas",

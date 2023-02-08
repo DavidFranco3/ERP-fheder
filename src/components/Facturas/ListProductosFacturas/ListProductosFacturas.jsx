@@ -1,23 +1,23 @@
 import { useState, useEffect } from 'react';
 import { Row, Col, Container, Badge } from "react-bootstrap"
-import { obtenerDatosCuentasCobrar } from "../../../api/cuentasPorCobrar";
+import { obtenerDatosFactura } from "../../../api/facturas";
 import moment from "moment";
 import { map } from "lodash";
-import "./ListProductosCuentasCobrar.scss"
+import "./ListProductosFacturas.scss"
 
-function ListProductosCuentasCobrar(props) {
+function ListProductosFacturas(props) {
     const { folio } = props;
     // console.log(ordenVenta)
 
     // Almacena los datos de la orden de venta
-    const [datosCuentaCobrar, setDatosCuentaCobrar] = useState(null);
+    const [datosFacturas, setDatosFacturas] = useState(null);
 
     useEffect(() => {
         try {
-            obtenerDatosCuentasCobrar(folio).then(response => {
+            obtenerDatosFactura(folio).then(response => {
                 const { data } = response;
                 // console.log(data)
-                setDatosCuentaCobrar(data)
+                setDatosFacturas(data)
             }).catch(e => {
                 console.log(e)
             })
@@ -30,12 +30,12 @@ function ListProductosCuentasCobrar(props) {
     return (
         <>
             {
-                datosCuentaCobrar ?
+                datosFacturas ?
                     (
                         <>
                             <Container fluid className="tablaProductos">
                                 <Badge bg="secondary" className="tituloFormularioDetalles">
-                                    <h4>Detalles de los productos de la cuenta por cobrar</h4>
+                                    <h4>Detalles de los productos de la factura</h4>
                                 </Badge>
                                 <table className="responsive-tableTrackingOV"
                                 >
@@ -50,9 +50,9 @@ function ListProductosCuentasCobrar(props) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {map(datosCuentaCobrar.productos, (datos, index) => (
+                                        {map(datosFacturas.productos, (datos, index) => (
                                             <>
-                                                {datosCuentaCobrar.folio == folio ? (
+                                                {datosFacturas.folio == folio ? (
                                                     <>
                                                         <tr key={datos.item}>
                                                             <td>
@@ -131,4 +131,4 @@ function formatModelPedidosventa(data) {
     return dataTemp;
 }
 
-export default ListProductosCuentasCobrar;
+export default ListProductosFacturas;

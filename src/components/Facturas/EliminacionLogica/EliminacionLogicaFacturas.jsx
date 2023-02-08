@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import queryString from "query-string";
-import "./EliminacionLogicaCuentasCobrar.scss";
+import "./EliminacionLogicaFacturas.scss";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { actualizaEstadoCuentasCobrar} from "../../../api/cuentasPorCobrar";
+import { actualizaEstadoFactura } from "../../../api/facturas";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 
-function EliminacionLogicaCuentasCobrar(props) {
+function EliminacionLogicaFacturas(props) {
     const { datos, setShowModal, history } = props;
     const { id, folio, ordenVenta, nombreCliente, nombreContacto, estado } = datos;
 
@@ -30,11 +30,11 @@ function EliminacionLogicaCuentasCobrar(props) {
         //console.log(dataTemp)
 
         try {
-            actualizaEstadoCuentasCobrar(id, dataTemp).then(response => {
+            actualizaEstadoFactura(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
                 toast.success(data.mensaje);
-                LogsInformativos("Se ha cancelado la cuenta por cobrar " + folio, datos);
+                LogsInformativos("Se ha cancelado la factura " + folio, datos);
                 //LogTrackingActualizacion(folio, "Cancelación", "0");
                 setShowModal(false);
                 history.push({
@@ -134,4 +134,4 @@ function EliminacionLogicaCuentasCobrar(props) {
     );
 }
 
-export default EliminacionLogicaCuentasCobrar;
+export default EliminacionLogicaFacturas;
