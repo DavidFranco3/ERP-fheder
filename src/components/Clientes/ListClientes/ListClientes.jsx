@@ -109,7 +109,7 @@ function ListClientes(props) {
                 (
                     <>
                         <Badge
-                            bg="success" 
+                            bg="success"
                             className="editar"
                             title="Deshabilitar cliente"
                             onClick={() => {
@@ -162,16 +162,6 @@ function ListClientes(props) {
             reorder: false,
             selector: row => (
                 <>
-                <Badge
-                        bg="primary"
-                        title="Ver cuentas por cobrar"
-                        className="editar"
-                        onClick={() => {
-                            irHaciaCuentasCobrar(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
                     <Badge
                         bg="success"
                         title="Modificar"

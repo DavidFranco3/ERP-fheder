@@ -43,8 +43,8 @@ function ListCuentasCobrar(props) {
 
 
     // Para la modificacion de datos del pedido
-    const modificaPedidoVenta = (folio) => {
-        enrutamiento.push(`/ModificacionPedido/${folio}`);
+    const modificaCuentasCobrar = (id) => {
+        enrutamiento.push(`/ModificaCuentasCobrar/${id}`);
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
@@ -168,16 +168,16 @@ function ListCuentasCobrar(props) {
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />
                     </Badge>
-                    {/*<Badge
+                    <Badge
                         bg="success"
                         title="Modificar"
                         className="editar"
                         onClick={() => {
-                            modificaPedidoVenta(row.folio)
+                            modificaCuentasCobrar(row.id)
                         }}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>*/}
+                    </Badge>
                     <Badge
                         bg="danger"
                         title="Eliminar"

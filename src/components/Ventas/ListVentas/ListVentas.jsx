@@ -52,7 +52,7 @@ function ListVentas(props) {
 
     // Para la modificacion de datos del pedido
     const registroCuentasCobrar = (folio) => {
-        enrutamiento.push(`/RegistroCuentasCobrar/${folio}`);
+        enrutamiento.push(`/CuentasCobrarOV/${folio}`);
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista

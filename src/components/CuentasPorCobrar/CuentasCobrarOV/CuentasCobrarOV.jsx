@@ -3,11 +3,13 @@ import { useHistory, useParams } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
+import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
+import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import { listarClientes } from "../../../api/clientes";
 import { registraCuentasCobrar, obtenerNumeroCuentasCobrar } from "../../../api/cuentasPorCobrar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import "./RegistroCuentasCobrar.scss"
+import "./CuentasCobrarOV.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
@@ -17,12 +19,12 @@ import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta";
 import { obtenerCliente } from "../../../api/clientes";
-import BuscarCliente from '../../../page/BuscarCliente';
-import BuscarOV from '../../../page/BuscarOV';
-import BuscarProducto from '../../../page/BuscarProducto';
 
-function RegistroCuentasCobrar(props) {
+function CuentasCobrarOV(props) {
     const { history, setRefreshCheckLogin, location } = props;
+
+    const params = useParams();
+    const { ordenVenta } = params
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -59,10 +61,22 @@ function RegistroCuentasCobrar(props) {
     const [formData, setFormData] = useState(initialFormData());
 
     // Para guardar los datos del formulario
-    const [formDataVenta, setFormDataVenta] = useState(initialFormDataVenta());
+    const [formDataVenta, setFormDataVenta] = useState(initialFormDataVentaInitial());
 
     // Para guardar los datos del formulario
     const [formDataCliente, setFormDataCliente] = useState(initialFormDataClienteInitial());
+
+    useEffect(() => {
+        //
+        obtenerDatosPedidoVenta(ordenVenta).then(response => {
+            const { data } = response;
+            //console.log(data)
+            setFormDataVenta(initialFormDataVenta(data));
+            setListProductosCargados(data.productos);
+        }).catch(e => {
+            console.log(e)
+        })
+    }, []);
 
     useEffect(() => {
         //
@@ -88,15 +102,8 @@ function RegistroCuentasCobrar(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Para la eliminacion fisica de usuarios
-    const buscarCliente = (content) => {
+    const buscarOV = (content) => {
         setTitulosModal("Buscar cliente");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    // Para la eliminacion fisica de usuarios
-    const buscarVenta = (content) => {
-        setTitulosModal("Buscar orden de venta");
         setContentModal(content);
         setShowModal(true);
     }
@@ -110,7 +117,7 @@ function RegistroCuentasCobrar(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento.push("/CuentasPorCobrar");
+        enrutamiento.push("/Ventas");
     }
 
     // Para almacenar el folio actual
@@ -219,7 +226,7 @@ function RegistroCuentasCobrar(props) {
 
         const dataTemp = {
             folio: folioActual,
-            ordenVenta: formDataVenta.ordenVenta,
+            ordenVenta: ordenVenta,
             cliente: formDataVenta.cliente,
             nombreCliente: formDataVenta.nombreCliente,
             sucursal: getSucursal(),
@@ -230,7 +237,6 @@ function RegistroCuentasCobrar(props) {
             correo: formDataCliente.correo,
             productos: listProductosCargados,
             iva: IVA,
-            ivaElegido: formData.iva,
             subtotal: subTotal,
             total: total,
             estado: "true",
@@ -388,8 +394,6 @@ function RegistroCuentasCobrar(props) {
                     : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
     }, [formDataVenta.fechaPedido, formDataCliente.diasCredito]);
 
-    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState();
-
     return (
         <>
             <Alert>
@@ -452,30 +456,13 @@ function RegistroCuentasCobrar(props) {
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                    <div className="flex items-center mb-1">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataVenta.ordenVenta}
+                                            value={ordenVenta}
                                             placeholder="Orden de venta"
                                             name="ordenVenta"
                                             disabled
                                         />
-                                        <FontAwesomeIcon
-                                                className="cursor-pointer py-2 -ml-6"
-                                                title="Buscar entre las ventas"
-                                                icon={faSearch}
-                                                onClick={() => {
-                                                    buscarVenta(
-                                                        <BuscarOV
-                                                            formData={formDataVenta}
-                                                            setProducto={setListProductosCargados}
-                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
-                                                            setFormData={setFormDataVenta}
-                                                            setShowModal={setShowModal}
-                                                        />)
-                                                }}
-                                            />
-                                        </div>
                                     </Col>
                                 </Form.Group>
                             </Row>
@@ -620,7 +607,7 @@ function RegistroCuentasCobrar(props) {
                                             <option>Elige una opción</option>
                                             <option value="0.16">16%</option>
                                             <option value="0">0%</option>
-                                            <option value="0.0">Expcento</option>
+                                            <option value="0">Expcento</option>
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
@@ -938,16 +925,23 @@ function RegistroCuentasCobrar(props) {
 
 function initialFormData() {
     return {
-        iva: ""
+        iva: "0.0"
     }
 }
 
-function initialFormDataVenta() {
+function initialFormDataVentaInitial() {
     return {
-        ordenVenta: "",
         cliente: "",
         nombreCliente: "",
         fechaPedido: "",
+    }
+}
+
+function initialFormDataVenta(data) {
+    return {
+        cliente: data.cliente,
+        nombreCliente: data.nombreCliente,
+        fechaPedido: data.fechaElaboracion,
     }
 }
 
@@ -1055,4 +1049,4 @@ function formatModelMatrizProductos(data) {
     return dataTemp;
 }
 
-export default RegistroCuentasCobrar;
+export default CuentasCobrarOV;

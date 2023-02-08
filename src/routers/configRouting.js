@@ -73,6 +73,7 @@ import DashboardCalidad from "../components/Dashboards/DashboardCalidad";
 import DashboardMantenimiento from "../components/Dashboards/DashboardMantenimiento";
 import DashboardCatalogos from "../components/Dashboards/DashboardCatalogos";
 import DashboardConfiguracion from "../components/Dashboards/DashboardConfiguracion";
+import DashboardFinanzas from "../components/Dashboards/DashboardFinanzas";
 
 // Importacion de componentes de vista previa de vista PDF
 import VistaPrevia from "../components/Ventas/VistaPrevia";
@@ -228,7 +229,9 @@ import ModificaRequerimientosPlaneacion from "../components/RequerimientosPlanea
 import RequisicionPlaneacion from "../components/Requisiciones/RequisicionPlaneacion";
 
 // Rutas para cuentas por cobrar
+import CuentasCobrarOV from "../components/CuentasPorCobrar/CuentasCobrarOV";
 import RegistroCuentasCobrar from "../components/CuentasPorCobrar/RegistroCuentasCobrar";
+import ModificaCuentasCobrar from "../components/CuentasPorCobrar/ModificaCuentasCobrar";
 
 export default [
     {
@@ -247,9 +250,19 @@ export default [
         page: ModificaRequerimientosPlaneacion
     },
     {
-        path: "/RegistroCuentasCobrar/:ordenVenta",
+        path: "/CuentasCobrarOV/:ordenVenta",
+        exact: true,
+        page: CuentasCobrarOV
+    },
+    {
+        path: "/RegistroCuentasCobrar",
         exact: true,
         page: RegistroCuentasCobrar
+    },
+    {
+        path: "/ModificaCuentasCobrar/:id",
+        exact: true,
+        page: ModificaCuentasCobrar
     },
     {
         path: "/RegistraSolicitudMaterialInsumo",
@@ -917,7 +930,7 @@ export default [
         page: SolicitudMaterialInsumo
     },
     {
-        path: "/CuentasPorCobrar/:cliente",
+        path: "/CuentasPorCobrar",
         exact: true,
         page: CuentasPorCobrar
     },
@@ -965,6 +978,11 @@ export default [
         path: "/DashboardConfiguracion",
         exact: true,
         page: DashboardConfiguracion
+    },
+    {
+        path: "/DashboardFinanzas",
+        exact: true,
+        page: DashboardFinanzas
     },
     {
         path: "/",

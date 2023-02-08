@@ -22,10 +22,13 @@ function BuscarOrdenVenta(props) {
     }
 
     // Gestionar el socio seleccionado
-    const ventaElegida = ({ folio, productos }) => {
+    const ventaElegida = ({ folio, productos, cliente, nombreCliente, fechaElaboracion }) => {
         // Almacena id, ficha y nombre del socio elegido
         const dataTemp = {
             ordenVenta: folio,
+            cliente: cliente,
+            nombreCliente: nombreCliente,
+            fechaPedido: fechaElaboracion,
             cantidadRequerida: productos.reduce((amount, item) => (amount + parseInt(item.cantidad)), 0)
         }
         setProducto(productos)

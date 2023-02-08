@@ -19,6 +19,7 @@ import LogoLogs from "../../assets/png/principales/logs.png";
 import LogoMantenimiento from "../../assets/png/principales/mantenimiento.png";
 import LogoCatalogos from "../../assets/png/principales/catalogos.png";
 import LogoConfiguracion  from "../../assets/png/principales/configuracion.png";
+import LogoFinanzas from "../../assets/png/principales/finanzas.png";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../api/auth";
 import { toast } from "react-toastify";
 import { obtenerUsuario } from "../../api/usuarios";
@@ -132,6 +133,11 @@ function Dashboard(props) {
                     path={'/DashboardConfiguracion'}
                     logo={LogoConfiguracion}
                     title={'Configuración'}
+                />
+                <ItemCard
+                    path={'/DashboardFinanzas'}
+                    logo={LogoFinanzas}
+                    title={'Finanzas'}
                 />
                 <ItemCard
                     path={'/Logs'}

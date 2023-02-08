@@ -2,10 +2,10 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter, useParams } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import ListCuentasCobrar from "../../components/CuentasPorCobrar/ListCuentasCobrar";
-import { listarCuentasCobrarPorCliente } from "../../api/cuentasPorCobrar";
+import { listarCuentasCobrar } from "../../api/cuentasPorCobrar";
 import "./CuentasPorCobrar.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
@@ -13,9 +13,6 @@ import AnimacionLoading from '../../assets/json/loading.json';
 
 function CuentasPorCobrar(props) {
     const { setRefreshCheckLogin, location, history } = props;
-
-    const params = useParams();
-    const { cliente } = params
 
     const enrutamiento = useHistory();
 
@@ -40,7 +37,7 @@ function CuentasPorCobrar(props) {
 
     useEffect(() => {
         try {
-            listarCuentasCobrarPorCliente(getSucursal(), cliente).then(response => {
+            listarCuentasCobrar(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -60,8 +57,8 @@ function CuentasPorCobrar(props) {
     }, [location]);
 
     // Para ir hacia la ruta de registro del pedido de venta
-    const rutaRegistroPedidoVenta = () => {
-        enrutamiento.push("/Pedido-de-Venta")
+    const rutaRegistroCuentasCobrar = () => {
+        enrutamiento.push("/RegistroCuentasCobrar")
     }
 
     const rutaRegreso = () => {
@@ -78,6 +75,15 @@ function CuentasPorCobrar(props) {
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
+                    <Button
+                            className="btnRegistroVentas"
+                            title="Registrar una nueva cuenta por cobrar"
+                            onClick={() => {
+                                rutaRegistroCuentasCobrar()
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                        </Button>
                         <Button
                             className="btnRegistroVentas"
                             title="Regresar al menú ventas"
