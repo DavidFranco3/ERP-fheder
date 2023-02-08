@@ -428,7 +428,7 @@ export const ENDPOINTObtenerPorNoInternoMatrizProductos = "/matrizProductos/obte
 export const ENDPOINTEliminarMatrizProductos = "/matrizProductos/eliminar";
 export const ENDPOINTActualizarEstadoMatrizProductos = "/matrizProductos/actualizarestado";
 export const ENDPOINTActualizarMatrizProductos = "/matrizProductos/actualizar";
-export const ENDPOINTTotalMatrizProductos = "/matrizProductos/total"
+export const ENDPOINTTotalMatrizProductos = "/matrizProductos/total";
 
 // Correos
 export const ENDPOINTEnviarCorreoNoReply = "/correos/enviar"

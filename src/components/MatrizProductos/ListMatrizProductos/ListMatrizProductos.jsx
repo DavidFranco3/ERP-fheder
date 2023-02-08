@@ -163,6 +163,7 @@ function ListMatrizProductos(props) {
                         bg="primary"
                         className="ver"
                         onClick={() => {
+                            rutaVistaDetalladaMatrizProductos(row.id)
                         }}
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />
