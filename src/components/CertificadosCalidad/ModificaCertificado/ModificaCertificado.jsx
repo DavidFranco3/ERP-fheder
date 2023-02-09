@@ -241,7 +241,7 @@ function ModificaCertificado(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Nueva certificado de calidad
+                            Modificar certificado de calidad
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

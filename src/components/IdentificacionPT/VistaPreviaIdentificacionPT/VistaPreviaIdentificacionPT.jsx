@@ -152,7 +152,7 @@ function VistaPreviaIdentificacionPT(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Vista detallada de etiquetas de Identificacion de PT
+                            Detalles de la etiqueta de identificacion de PT
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

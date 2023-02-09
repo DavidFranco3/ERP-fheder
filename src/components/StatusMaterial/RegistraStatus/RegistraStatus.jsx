@@ -285,8 +285,7 @@ function RegistraStatus(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Identificación de status del material
-
+                            Nueva identificación de status del material
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

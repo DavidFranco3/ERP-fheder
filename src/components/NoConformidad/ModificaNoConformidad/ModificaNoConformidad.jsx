@@ -203,7 +203,7 @@ function ModificaNoConformidad(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Nueva No Conformidad
+                            Modificar No Conformidad
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

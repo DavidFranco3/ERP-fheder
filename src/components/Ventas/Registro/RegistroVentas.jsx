@@ -410,7 +410,7 @@ function RegistroVentas(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Orden de venta
+                            Nueva orden de venta
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

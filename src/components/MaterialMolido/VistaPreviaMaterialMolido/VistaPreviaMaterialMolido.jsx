@@ -113,7 +113,7 @@ function VistaPreviaMaterialMolido(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Vista detallada de etiquetas de material molido
+                            Detalles de etiqueta de material molido
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

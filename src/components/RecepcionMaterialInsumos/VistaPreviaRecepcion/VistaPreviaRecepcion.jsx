@@ -440,7 +440,7 @@ function VistaPreviaRecepcion(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Recepcion de material e insumos
+                            Detalles de la recepción
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

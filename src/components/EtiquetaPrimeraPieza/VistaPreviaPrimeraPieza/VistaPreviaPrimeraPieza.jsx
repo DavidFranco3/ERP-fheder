@@ -198,7 +198,7 @@ function VistaPreviaPrimeraPieza(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Vista detallada de etiquetas de etiqueta de primera pieza
+                            Detalles de etiqueta de primera pieza
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

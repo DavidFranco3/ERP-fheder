@@ -274,7 +274,7 @@ function VistaPreviaRequisiciones(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Nueva requisición
+                            Detalles de la requisición
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

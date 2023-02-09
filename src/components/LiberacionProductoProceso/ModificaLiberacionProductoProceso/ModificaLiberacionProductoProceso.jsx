@@ -324,7 +324,7 @@ function ModificaLiberacionProductoProceso(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Nueva hoja de liberación de producto y proceso
+                            Modificar hoja de liberación de producto y proceso
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

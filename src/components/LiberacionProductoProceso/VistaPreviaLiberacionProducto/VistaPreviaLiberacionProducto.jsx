@@ -209,10 +209,6 @@ function VistaPreviaLiberacionProducto(props) {
         }
     }, []);
 
-    console.log(formData)
-    console.log(productoSeleccionado)
-    console.log(id)
-
     const onSubmit = e => {
         e.preventDefault();
 
@@ -330,7 +326,7 @@ function VistaPreviaLiberacionProducto(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Nueva hoja de liberación de producto y proceso
+                            Detalles de la hoja de liberación de producto y proceso
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

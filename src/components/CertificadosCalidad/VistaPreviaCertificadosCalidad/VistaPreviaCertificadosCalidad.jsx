@@ -248,7 +248,7 @@ function VistaPreviaCertificadosCalidad(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Nueva certificado de calidad
+                            Detalles del certificado de calidad
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

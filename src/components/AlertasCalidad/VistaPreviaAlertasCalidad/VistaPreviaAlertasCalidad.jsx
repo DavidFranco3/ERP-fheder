@@ -335,7 +335,7 @@ function VistaPreviaAlertasCalidad(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Nueva alerta de calidad
+                            Detalles de alerta de calidad
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

@@ -209,7 +209,7 @@ function VistaPreviaNoConformidad(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Nueva No Conformidad
+                            Detalles de la No Conformidad
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
@@ -493,7 +493,7 @@ function VistaPreviaNoConformidad(props) {
                                                 src={Regreso}
                                                 className="regresarVistaAnterior"
                                                 onClick={() => {
-                                                   rutaRegreso()
+                                                    rutaRegreso()
                                                 }}
                                             />
                                         </div>

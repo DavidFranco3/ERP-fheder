@@ -213,7 +213,7 @@ function VistaPreviaCalidad(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Nueva inspeccion de material
+                            Detalles de inspeccion de calidad de material
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

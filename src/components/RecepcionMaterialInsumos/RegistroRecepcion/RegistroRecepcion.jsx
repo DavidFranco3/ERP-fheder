@@ -420,7 +420,7 @@ function RegistroRecepcion(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Recepcion de material e insumos
+                            Nueva recepción
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

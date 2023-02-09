@@ -408,7 +408,7 @@ function ModificacionProduccion(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Nueva Orden de Producción
+                            Modificar orden de producción
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

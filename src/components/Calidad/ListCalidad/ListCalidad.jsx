@@ -45,7 +45,7 @@ function ListCalidad(props) {
     }
 
     const vistaPreviaCalidad = (id) => {
-        enrutamiento.push(`/VistaPreviaReporte/${id}`)
+        enrutamiento.push(`/VistaPreviaReporteCalidad/${id}`)
     }
 
     const columns = [

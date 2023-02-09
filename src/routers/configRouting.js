@@ -716,7 +716,7 @@ export default [
         page: ModificaReporte
     },
     {
-        path: "/VistaPreviaReporte/:id",
+        path: "/VistaPreviaReporteCalidad/:id",
         exact: true,
         page: VistaPreviaCalidad
     },
