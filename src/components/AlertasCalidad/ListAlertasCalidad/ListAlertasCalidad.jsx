@@ -41,13 +41,13 @@ function ListAlertasCalidad(props) {
     }
 
     // Para la modificacion de datos del pedido
-    const ModificaAlertasCalidad = (folio) => {
-        enrutamiento.push(`/ModificaAlertasCalidad/${folio}`);
+    const ModificaAlertasCalidad = (id) => {
+        enrutamiento.push(`/ModificaAlertasCalidad/${id}`);
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
-    const vistaPrevia = () => {
-        // enrutamiento.push("")
+    const vistaPrevia = (id) => {
+        enrutamiento.push(`/VistaPreviaAlertasCalidad/${id}`);
     }
 
     const columns = [
@@ -157,42 +157,50 @@ function ListAlertasCalidad(props) {
             center: true,
             reorder: false,
             selector: row => (
-                <>
-                    <Badge
-                        bg="primary"
-                        title="Generar PDF"
-                        className="ver"
-                        onClick={() => {
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editar"
-                        onClick={() => {
-                            ModificaAlertasCalidad(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminaAlertasCalidad(
-                                <EliminacionFisicaAlertasCalidad
-                                    datos={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="primary"
+                                title="Generar PDF"
+                                className="ver"
+                                onClick={() => {
+                                    vistaPrevia(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEye} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editar"
+                                onClick={() => {
+                                    ModificaAlertasCalidad(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminaAlertasCalidad(
+                                        <EliminacionFisicaAlertasCalidad
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         },
     ];

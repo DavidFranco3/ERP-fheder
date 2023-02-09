@@ -1,0 +1,39 @@
+@import "../../scss/index";
+
+.archivo {
+  position: left;
+  top: 0px;
+  display: block;
+  margin: auto;
+  background-image: url("../../assets/png/adjuntar.png");
+  width: 70px;
+  height: 70px;
+  border-radius: 0%;
+  background-size: cover;
+  background-position: left;
+  background-repeat: no-repeat;
+  align-items: left;
+  justify-content: left;
+
+  img {
+    width: 70px !important;
+    height: 70px !important;
+    border-radius: 0%;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  svg {
+    display: block;
+    margin: auto;
+    //margin-left: 45px;
+    //margin-top: 25px;
+    width: 0px;
+    fill: $font-dark;
+    &:hover {
+      fill: $font-light;
+    }
+  }
+}

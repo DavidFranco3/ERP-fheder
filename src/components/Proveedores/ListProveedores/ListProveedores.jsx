@@ -90,7 +90,7 @@ function ListProveedores(props) {
                 (
                     <>
                         <Badge
-                            bg="success" 
+                            bg="success"
                             className="editar"
                             title="Deshabilitar proveedores"
                             onClick={() => {
@@ -142,36 +142,41 @@ function ListProveedores(props) {
             center: true,
             reorder: false,
             selector: row => (
-                <>
-                <div className="flex justify-end items-center space-x-4">
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editar"
-                        onClick={() => {
-                            irHaciaModificacion(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminaProveedores(
-                            <EliminacionFisicaProveedores
-                                dataProveedor={row}
-                                title="Eliminar"
-                                setShowModal={setShowModal}
-                                history={history}
-                            />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                    </div>
-                </>
+                row.estadoProveedor === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editar"
+                                onClick={() => {
+                                    irHaciaModificacion(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminaProveedores(
+                                        <EliminacionFisicaProveedores
+                                            dataProveedor={row}
+                                            title="Eliminar"
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

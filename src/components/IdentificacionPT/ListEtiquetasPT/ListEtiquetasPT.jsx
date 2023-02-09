@@ -49,6 +49,11 @@ function ListEtiquetasPT(props) {
         setShowModal(true);
     }
 
+    // Para abrir en una pestaña nueva el pdf de la vista
+    const vistaPrevia = (id) => {
+        enrutamiento.push(`/VistaPreviaIdentificacionPT/${id}`);
+    }
+
     const columns = [
         {
             name: "ITEM",
@@ -156,48 +161,58 @@ function ListEtiquetasPT(props) {
             center: true,
             reorder: true,
             selector: row => (
-                <>
-                    <Badge
-                        bg="info"
-                        title="Generar PDF"
-                        className="evaluacionProveedor"
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="eliminarProveedor"
-                        onClick={() => {
-                            modifcaEtiqueta(
-                                <ModificaIdentificacionPT
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="info"
+                                title="Generar PDF"
+                                className="evaluacionProveedor"
+                                onClick={() => {
+                                    vistaPrevia(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEye} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="eliminarProveedor"
+                                onClick={() => {
+                                    modifcaEtiqueta(
+                                        <ModificaIdentificacionPT
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
 
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminarProveedor"
-                        onClick={() => {
-                            eliminacionEtiqueta(
-                                <EliminacionFisicaEtiquetasPT
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminarProveedor"
+                                onClick={() => {
+                                    eliminacionEtiqueta(
+                                        <EliminacionFisicaEtiquetasPT
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

@@ -1,13 +1,13 @@
-import {useEffect, useMemo, useState} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import {Badge, Button, Container, Table} from "react-bootstrap";
+import { Badge, Button, Container, Table } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaCertificados from '../EliminacionFisica/EliminacionFisicaCertificados';
-import DataTable  from 'react-data-table-component';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye} from "@fortawesome/free-solid-svg-icons";
+import DataTable from 'react-data-table-component';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./ListCertificadosCalidad.scss";
-import {estilos} from "../../../utils/tableStyled";
+import { estilos } from "../../../utils/tableStyled";
 import EliminacionLogicaCertificado from '../EliminacionLogica';
 import 'dayjs/locale/es'
 import dayjs from 'dayjs';
@@ -46,10 +46,10 @@ function ListCertificadosCalidad(props) {
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
-    const vistaPrevia = () => {
-        // enrutamiento.push("")
+    const vistaPrevia = (id) => {
+        enrutamiento.push(`/VistaPreviaCertificadosCalidad/${id}`);
     }
-    
+
     const columns = [
         {
             name: "ITEM",
@@ -150,42 +150,50 @@ function ListCertificadosCalidad(props) {
             center: true,
             reorder: true,
             selector: row => (
-                <>
-                    <Badge
-                        bg="primary"
-                        title="Generar PDF"
-                        className="ver"
-                        onClick={() => {
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editar"
-                        onClick={() => {
-                            modificaCertificado(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminaCertificado(
-                                <EliminacionFisicaCertificados
-                                    datos={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="primary"
+                                title="Generar PDF"
+                                className="ver"
+                                onClick={() => {
+                                    vistaPrevia(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEye} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editar"
+                                onClick={() => {
+                                    modificaCertificado(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminaCertificado(
+                                        <EliminacionFisicaCertificados
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];
@@ -213,8 +221,8 @@ function ListCertificadosCalidad(props) {
 
     return (
         <>
-        <Container fluid>
-            <DataTable
+            <Container fluid>
+                <DataTable
                     columns={columns}
                     // actions={descargaCSV}
                     data={listCertificados}
@@ -227,8 +235,8 @@ function ListCertificadosCalidad(props) {
                     paginationResetDefaultPage={resetPaginationToogle}
                     customStyles={estilos}
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
-            />
-        </Container>
+                />
+            </Container>
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}

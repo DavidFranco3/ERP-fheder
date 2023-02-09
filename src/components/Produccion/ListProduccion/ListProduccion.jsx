@@ -150,43 +150,50 @@ function ListProduccion(props) {
             center: true,
             reorder: true,
             selector: row => (
-                <>
-                    <Badge
-                        bg="primary"
-                        title="Generar PDF"
-                        className="ver"
-                        onClick={() => {
-                            vistaPreviaProduccion(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editar"
-                        onClick={() => {
-                            modificaPedidoVenta(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminaProduccion(
-                                <EliminacionFisicaProduccion
-                                    datos={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="primary"
+                                title="Generar PDF"
+                                className="ver"
+                                onClick={() => {
+                                    vistaPreviaProduccion(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEye} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editar"
+                                onClick={() => {
+                                    modificaPedidoVenta(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminaProduccion(
+                                        <EliminacionFisicaProduccion
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

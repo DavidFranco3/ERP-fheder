@@ -43,8 +43,8 @@ function ListIntegracionVentasGastos(props) {
         setShowModal(true);
     }
 
-     //Para la eliminacion logica de usuarios
-     const eliminaLogicaVentas = (content) => {
+    //Para la eliminacion logica de usuarios
+    const eliminaLogicaVentas = (content) => {
         setTitulosModal("Cancelando la integración de ventas y gastos");
         setContentModal(content);
         setShowModal(true);
@@ -178,38 +178,45 @@ function ListIntegracionVentasGastos(props) {
             center: true,
             reorder: true,
             selector: row => (
-                <>
-                    <Badge
-                        bg="success"
-                        className="editar"
-                        title="Modificar"
-                        onClick={() => {
-                            modificacionIntegracion(
-                                <ModificacionIntegracionVentasGastos
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminacionIntegracion(
-                                <EliminacionIntegracionVentasGastos
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                className="editar"
+                                title="Modificar"
+                                onClick={() => {
+                                    modificacionIntegracion(
+                                        <ModificacionIntegracionVentasGastos
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminacionIntegracion(
+                                        <EliminacionIntegracionVentasGastos
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

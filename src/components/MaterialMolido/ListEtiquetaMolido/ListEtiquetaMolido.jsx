@@ -40,7 +40,7 @@ function ListEtiquetaMolido(props) {
         setContentModal(content);
         setShowModal(true);
     }
-    
+
     // Para la eliminacion fisica de usuarios
     const modificacionEtiqueta = (content) => {
         setTitulosModal("Modificar");
@@ -49,8 +49,8 @@ function ListEtiquetaMolido(props) {
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
-    const vistaPrevia = () => {
-        // enrutamiento.push("")
+    const vistaPrevia = (id) => {
+        enrutamiento.push(`/VistaPreviaMaterialMolido/${id}`)
     }
 
     const columns = [
@@ -153,47 +153,55 @@ function ListEtiquetaMolido(props) {
             center: true,
             reorder: true,
             selector: row => (
-                <>
-                    <Badge
-                        bg="primary"
-                        title="Generar PDF"
-                        className="ver"
-                        onClick={() => {
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editar"
-                        onClick={() => {
-                            modificacionEtiqueta(
-                                <ModificaMaterialMolido
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminacionEtiqueta(
-                                <EliminacionEtiquetaMolido
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="primary"
+                                title="Generar PDF"
+                                className="ver"
+                                onClick={() => {
+                                    vistaPrevia(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEye} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editar"
+                                onClick={() => {
+                                    modificacionEtiqueta(
+                                        <ModificaMaterialMolido
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminacionEtiqueta(
+                                        <EliminacionEtiquetaMolido
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

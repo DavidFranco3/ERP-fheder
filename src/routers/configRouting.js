@@ -123,6 +123,7 @@ import ModificacionProveedores from "../components/Proveedores/Modificacion";
 // Rutas para las evaluaciones de proveedores
 import RegistroEvaluacionProveedores from "../components/EvaluacionProveedores/RegistraProveedores";
 import ModificacionEvaluacionProveedores from "../components/EvaluacionProveedores/ModificaProveedores";
+import VistaPreviaEvaluacionProveedores from "../components/EvaluacionProveedores/VistaPreviaEvaluacionProveedores";
 
 // Rutas para las razones sociales
 import RegistroRazonSocial from "../components/RazonesSociales/Registro";
@@ -193,22 +194,27 @@ import VistaPreviaInspeccion from "../components/InspeccionMaterial/VistaPreviaI
 // Rutas para la alerta de calidad
 import RegistroAlertasCalidad from "../components/AlertasCalidad/RegistraAlertasCalidad";
 import ModificaAlertasCalidad from "../components/AlertasCalidad/ModificaAlertasCalidad";
+import VistaPreviaAlertasCalidad from "../components/AlertasCalidad/VistaPreviaAlertasCalidad";
 
 // Rutas para la No Conformidad
 import RegistroNoConformidad from "../components/NoConformidad/RegistraNoConformidad";
 import ModificaNoConformidad from "../components/NoConformidad/ModificaNoConformidad";
+import VistaPreviaNoConformidad from "../components/NoConformidad/VistaPreviaNoConformidad";
 
 // Rutas para la Liberación de productos y procesos
 import RegistroLiberacionProductoProceso from "../components/LiberacionProductoProceso/RegistraLiberacionProductoProceso";
 import ModificaLiberacionProductoProceso from "../components/LiberacionProductoProceso/ModificaLiberacionProductoProceso";
+import VistaPreviaLiberacionProducto from "../components/LiberacionProductoProceso/VistaPreviaLiberacionProducto";
 
 // Rutas para la ficha tecnica
 import RegistroFichaTecnica from "../components/FichaTecnica/RegistraFichaTecnica";
 import ModificaFichaTecnica from "../components/FichaTecnica/ModificaFichaTecnica";
+import VistaPreviaFichasTecnicas from "../components/FichaTecnica/VistaPreviaFichasTecnicas";
 
 // Rutas para el certificado de calidad
 import RegistroCertificadoCalidad from "../components/CertificadosCalidad/RegistraCertificado";
 import ModificaCertificadoCalidad from "../components/CertificadosCalidad/ModificaCertificado";
+import VistaPreviaCertificadosCalidad from "../components/CertificadosCalidad/VistaPreviaCertificadosCalidad";
 
 // Rutas para el reporte de produccion
 import RegistroReporteProduccion from "../components/ReporteProduccion/RegistroReporteProduccion";
@@ -244,6 +250,15 @@ import FacturasOV from "../components/Facturas/FacturasOV";
 import RegistroFacturas from "../components/Facturas/RegistroFacturas";
 import ModificaFacturas from "../components/Facturas/ModificaFacturas";
 
+// Rutas para etiqueta de identificación de PT
+import VistaPreviaIdentificacionPT from "../components/IdentificacionPT/VistaPreviaIdentificacionPT";
+
+// Rutas para material molido
+import VistaPreviaMaterialMolido from "../components/MaterialMolido/VistaPreviaMaterialMolido";
+
+// Rutas para etiquetas de primera pieza
+import VistaPreviaPrimeraPieza from "../components/EtiquetaPrimeraPieza/VistaPreviaPrimeraPieza";
+
 export default [
     {
         path: "/Almacenes",
@@ -264,6 +279,21 @@ export default [
         path: "/VistaPreviaPlaneacion/:id",
         exact: true,
         page: VistaPreviaPlaneacion
+    },
+    {
+        path: "/VistaPreviaIdentificacionPT/:id",
+        exact: true,
+        page: VistaPreviaIdentificacionPT
+    },
+    {
+        path: "/VistaPreviaMaterialMolido/:id",
+        exact: true,
+        page: VistaPreviaMaterialMolido
+    },
+    {
+        path: "/VistaPreviaPrimeraPieza/:id",
+        exact: true,
+        page: VistaPreviaPrimeraPieza
     },
     {
         path: "/FacturasOV/:ordenVenta",
@@ -336,6 +366,11 @@ export default [
         page: ModificaCertificadoCalidad
     },
     {
+        path: "/VistaPreviaCertificadosCalidad/:id",
+        exact: true,
+        page: VistaPreviaCertificadosCalidad
+    },
+    {
         path: "/RegistroMaquinasMantenimientos",
         exact: true,
         page: RegistroMaquinasMantenimientos
@@ -401,6 +436,11 @@ export default [
         page: ModificaLiberacionProductoProceso
     },
     {
+        path: "/VistaPreviaLiberacionProducto/:id",
+        exact: true,
+        page: VistaPreviaLiberacionProducto
+    },
+    {
         path: "/ModificacionUsuarios/:id",
         exact: true,
         page: ModificacionUsuarios
@@ -441,6 +481,11 @@ export default [
         page: ModificaNoConformidad
     },
     {
+        path: "/VistaPreviaNoConformidad/:id",
+        exact: true,
+        page: VistaPreviaNoConformidad
+    },
+    {
         path: "/ModificacionClientes/:id",
         exact: true,
         page: ModificacionClientes
@@ -449,6 +494,11 @@ export default [
         path: "/ModificacionEvaluacionProveedores/:id",
         exact: true,
         page: ModificacionEvaluacionProveedores
+    },
+    {
+        path: "/VistaPreviaEvaluacionProveedores/:id",
+        exact: true,
+        page: VistaPreviaEvaluacionProveedores
     },
     {
         path: "/ModificacionProveedores/:id",
@@ -736,6 +786,11 @@ export default [
         page: ModificaAlertasCalidad
     },
     {
+        path: "/VistaPreviaAlertasCalidad/:id",
+        exact: true,
+        page: VistaPreviaAlertasCalidad
+    },
+    {
         path: "/RegistroFichaTecnica",
         exact: true,
         page: RegistroFichaTecnica
@@ -744,6 +799,11 @@ export default [
         path: "/ModificaFichaTecnica/:id",
         exact: true,
         page: ModificaFichaTecnica
+    },
+    {
+        path: "/VistaPreviaFichasTecnicas/:id",
+        exact: true,
+        page: VistaPreviaFichasTecnicas
     },
     {
         path: "/RegistroControlParametrosMaquina",

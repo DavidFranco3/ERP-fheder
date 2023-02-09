@@ -161,42 +161,49 @@ function ListMateriasPrimas(props) {
             center: true,
             reorder: false,
             selector: row => (
-                <>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editar"
-                        onClick={() => {
-                            cambiaInformacionMaterial(
-                                <ModificaMateriasPrimas
-                                    dataMateriaPrima={row}
-                                    location={location}
-                                    history={history}
-                                    setShowModal={setShowModal}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminaMaterial(
-                                <EliminaMateriasPrimas
-                                    dataMaterial={row}
-                                    location={location}
-                                    history={history}
-                                    setShowModal={setShowModal}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editar"
+                                onClick={() => {
+                                    cambiaInformacionMaterial(
+                                        <ModificaMateriasPrimas
+                                            dataMateriaPrima={row}
+                                            location={location}
+                                            history={history}
+                                            setShowModal={setShowModal}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminaMaterial(
+                                        <EliminaMateriasPrimas
+                                            dataMaterial={row}
+                                            location={location}
+                                            history={history}
+                                            setShowModal={setShowModal}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

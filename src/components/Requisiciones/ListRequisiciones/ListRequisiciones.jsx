@@ -150,44 +150,51 @@ function ListRequisiciones(props) {
             center: true,
             reorder: false,
             selector: row => (
-                <>
-                    <Badge
-                        bg="info"
-                        title="Generar PDF"
-                        className="evaluacionProveedor"
-                        onClick={() => {
-                            VistaPreviaRequisiciones(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editarProveedor"
-                        onClick={() => {
-                            ModificacionRequisicion(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminarProveedor"
-                        onClick={() => {
-                            eliminacionRequisicion(
-                                <EliminaRequisiciones
-                                    datosRequisicion={row}
-                                    history={history}
-                                    setShowModal={setShowModal}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="info"
+                                title="Generar PDF"
+                                className="evaluacionProveedor"
+                                onClick={() => {
+                                    VistaPreviaRequisiciones(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEye} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editarProveedor"
+                                onClick={() => {
+                                    ModificacionRequisicion(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminarProveedor"
+                                onClick={() => {
+                                    eliminacionRequisicion(
+                                        <EliminaRequisiciones
+                                            datosRequisicion={row}
+                                            history={history}
+                                            setShowModal={setShowModal}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

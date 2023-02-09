@@ -154,40 +154,46 @@ function ListClientes(props) {
             sortable: false,
             center: true,
             reorder: false
-        }
-        ,
+        },
         {
             name: 'Acciones',
             center: true,
             reorder: false,
             selector: row => (
-                <>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editar"
-                        onClick={() => {
-                            irHaciaModificacion(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminaClientes(<EliminacionFisicaClientes
-                                dataCliente={row}
-                                title="Eliminar"
-                                setShowModal={setShowModal}
-                                history={history}
-                            />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estadoCliente === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editar"
+                                onClick={() => {
+                                    irHaciaModificacion(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminaClientes(<EliminacionFisicaClientes
+                                        dataCliente={row}
+                                        title="Eliminar"
+                                        setShowModal={setShowModal}
+                                        history={history}
+                                    />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { listarProveedores } from "../../api/proveedores";
 import { toast } from "react-toastify";
-import ListProveedores from "../../components/Proveedores/ListProveedores";
+import ListProveedores from '../../components/Proveedores/ListProveedores';
 import { useHistory, withRouter } from "react-router-dom";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';

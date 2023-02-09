@@ -8,8 +8,6 @@ import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faArrowPointer } from "@fortawesome/free-solid-svg-icons";
 import "./ListEtiquetasPrimeraPieza.scss";
-import ClienteAsignado from "./ClienteAsignado";
-import ProductoAsignado from "./ProductoAsignado"
 import { estilos } from "../../../utils/tableStyled";
 import EliminacionLogicaPrimeraPieza from '../EliminacionLogica';
 import 'dayjs/locale/es'
@@ -36,8 +34,8 @@ function ListEtiquetasPrimeraPieza(props) {
         setShowModal(true);
     }
 
-     //Para la eliminacion logica de usuarios
-     const eliminaLogicaPrimeraPieza = (content) => {
+    //Para la eliminacion logica de usuarios
+    const eliminaLogicaPrimeraPieza = (content) => {
         setTitulosModal("Cancelando la etiqueta de primera pieza");
         setContentModal(content);
         setShowModal(true);
@@ -51,8 +49,8 @@ function ListEtiquetasPrimeraPieza(props) {
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
-    const vistaPrevia = () => {
-        // enrutamiento.push("")
+    const vistaPrevia = (id) => {
+        enrutamiento.push(`/VistaPreviaPrimeraPieza/${id}`);
     }
 
     const columns = [
@@ -176,47 +174,55 @@ function ListEtiquetasPrimeraPieza(props) {
             center: true,
             reorder: true,
             selector: row => (
-                <>
-                    <Badge
-                        bg="primary"
-                        title="Generar PDF"
-                        className="ver"
-                        onClick={() => {
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="success"
-                        className="editar"
-                        title="Modificar"
-                        onClick={() => {
-                            modificacionEtiqueta(
-                                <ModificacionEtiquetaPrimeraPieza
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        className="eliminar"
-                        title="Eliminar"
-                        onClick={() => {
-                            eliminacionEtiqueta(
-                                <EliminacionEtiquetasPrimeraPieza
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="primary"
+                                title="Generar PDF"
+                                className="ver"
+                                onClick={() => {
+                                    vistaPrevia(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEye} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="success"
+                                className="editar"
+                                title="Modificar"
+                                onClick={() => {
+                                    modificacionEtiqueta(
+                                        <ModificacionEtiquetaPrimeraPieza
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                className="eliminar"
+                                title="Eliminar"
+                                onClick={() => {
+                                    eliminacionEtiqueta(
+                                        <EliminacionEtiquetasPrimeraPieza
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

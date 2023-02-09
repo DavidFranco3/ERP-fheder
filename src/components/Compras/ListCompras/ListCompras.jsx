@@ -200,45 +200,51 @@ function ListCompras(props) {
             center: true,
             reorder: true,
             selector: row => (
-                <>
-                    <Badge
-                        bg="info"
-                        title="Generar PDF"
-                        className="evaluacionProveedor"
-                        onClick={() => {
-                            vistaPreviaCompra(row.folio)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editarProveedor"
-                        onClick={() => {
-                            modificacionCompra(row.folio)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-
-                    <Badge
-                        bg="danger"
-                        className="eliminarProveedor"
-                        title="Eliminar"
-                        onClick={() => {
-                            eliminacionCompra(
-                                <EliminacionFisicaCompras
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="info"
+                                title="Generar PDF"
+                                className="evaluacionProveedor"
+                                onClick={() => {
+                                    vistaPreviaCompra(row.folio)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEye} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editarProveedor"
+                                onClick={() => {
+                                    modificacionCompra(row.folio)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                className="eliminarProveedor"
+                                title="Eliminar"
+                                onClick={() => {
+                                    eliminacionCompra(
+                                        <EliminacionFisicaCompras
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

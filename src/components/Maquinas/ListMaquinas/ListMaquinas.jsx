@@ -16,7 +16,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function ListMaquinas(props) {
     const { setRefreshCheckLogin, listMaquinas, history, location } = props;
-    
+
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
 
@@ -114,7 +114,7 @@ function ListMaquinas(props) {
                 (
                     <>
                         <Badge
-                            bg="success" 
+                            bg="success"
                             className="activo"
                             title="Deshabilitar"
                             onClick={() => {
@@ -136,7 +136,7 @@ function ListMaquinas(props) {
                 (
                     <>
                         <Badge
-                            bg="danger" 
+                            bg="danger"
                             className="obsoleto"
                             title="Habilitar"
                             onClick={() => {
@@ -170,48 +170,47 @@ function ListMaquinas(props) {
             center: true,
             reorder: true,
             selector: row => (
-                <>
-                    <Badge
-                        bg="info"
-                        title="Generar PDF"
-                        className="evaluacionProveedor"
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="eliminarProveedor"
-                        onClick={() => {
-                            modifcaMaquina(
-                                <ModificaMaquinas
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminarProveedor"
-                        onClick={() => {
-                            eliminacionMaquina(
-                                <EliminacionFisicaMaquinas
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.status === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="eliminarProveedor"
+                                onClick={() => {
+                                    modifcaMaquina(
+                                        <ModificaMaquinas
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminarProveedor"
+                                onClick={() => {
+                                    eliminacionMaquina(
+                                        <EliminacionFisicaMaquinas
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

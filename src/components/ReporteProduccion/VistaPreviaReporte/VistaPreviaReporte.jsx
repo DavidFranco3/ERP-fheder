@@ -20,7 +20,6 @@ function VistaPreviaReporte(props) {
     const descargaPDF = async () => {
     }
 
-
     // Cerrado de sesión automatico
     useEffect(() => {
         if (getTokenApi()) {

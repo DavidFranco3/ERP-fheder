@@ -144,35 +144,42 @@ function ListCotizaciones(props) {
             center: true,
             reorder: false,
             selector: row => (
-                <>
-                    <Badge
-                        bg="success"
-                        className="editar"
-                        title="Modificar"
-                        onClick={() => {
-                            modificaCotizacion(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminaCotizacion(
-                                <EliminaCotizaciones
-                                    datosCotizacion={row}
-                                    location={location}
-                                    history={history}
-                                    setShowModal={setShowModal}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.status === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                className="editar"
+                                title="Modificar"
+                                onClick={() => {
+                                    modificaCotizacion(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminaCotizacion(
+                                        <EliminaCotizaciones
+                                            datosCotizacion={row}
+                                            location={location}
+                                            history={history}
+                                            setShowModal={setShowModal}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

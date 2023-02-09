@@ -101,7 +101,7 @@ function ListMatrizProductos(props) {
                 (
                     <>
                         <Badge
-                            bg="success" 
+                            bg="success"
                             title="Deshabilitar"
                             className="activo"
                             onClick={() => {
@@ -123,7 +123,7 @@ function ListMatrizProductos(props) {
                 (
                     <>
                         <Badge
-                            bg="danger" 
+                            bg="danger"
                             className="obsoleto"
                             title="Habilitar"
                             onClick={() => {
@@ -157,45 +157,52 @@ function ListMatrizProductos(props) {
             center: true,
             reorder: false,
             selector: row => (
-                <>
-                    <Badge
-                        title="Generar PDF"
-                        bg="primary"
-                        className="ver"
-                        onClick={() => {
-                            rutaVistaDetalladaMatrizProductos(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editar"
-                        onClick={() => {
-                            rutaModificaProductos(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminaProducto(
-                                <EliminaMatrizProductos
-                                    dataProducto={row}
-                                    location={location}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                title="Generar PDF"
+                                bg="primary"
+                                className="ver"
+                                onClick={() => {
+                                    rutaVistaDetalladaMatrizProductos(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEye} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editar"
+                                onClick={() => {
+                                    rutaModificaProductos(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminaProducto(
+                                        <EliminaMatrizProductos
+                                            dataProducto={row}
+                                            location={location}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

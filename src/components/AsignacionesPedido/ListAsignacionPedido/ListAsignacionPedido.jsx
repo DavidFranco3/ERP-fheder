@@ -176,40 +176,47 @@ function ListAsignacionPedido(props) {
             center: true,
             reorder: true,
             selector: row => (
-                <>
-                    <Badge
-                        bg={row.plantaAsignada && row.cantidadAsignada === "N/A" ? "warning" : "danger"}
-                        className="editarProveedor"
-                        title={row.plantaAsignada && row.cantidadAsignada === "N/A" ? "Asignar pedido" : "Reasignar pedido"}
-                        onClick={() => {
-                            asignarPedido(
-                                <AsignarPedido
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faArrowPointer} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminarProveedor"
-                        onClick={() => {
-                            eliminacionAsignacion(
-                                <EliminacionAsignacionPedido
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg={row.plantaAsignada && row.cantidadAsignada === "N/A" ? "warning" : "danger"}
+                                className="editarProveedor"
+                                title={row.plantaAsignada && row.cantidadAsignada === "N/A" ? "Asignar pedido" : "Reasignar pedido"}
+                                onClick={() => {
+                                    asignarPedido(
+                                        <AsignarPedido
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faArrowPointer} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminarProveedor"
+                                onClick={() => {
+                                    eliminacionAsignacion(
+                                        <EliminacionAsignacionPedido
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

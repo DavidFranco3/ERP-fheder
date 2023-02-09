@@ -175,42 +175,49 @@ function ListAlmacenMp(props) {
             center: true,
             reorder: false,
             selector: row => (
-                <>
-                    <Badge
-                        bg="success"
-                        className="editarProveedor"
-                        title="Modificar"
-                        onClick={() => {
-                            modificarAlmacenes(
-                                <ModificarAlmacenes
-                                    datos={row}
-                                    setShowModal={setShowModal}
-                                    location={location}
-                                    history={history}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        className="eliminarProveedor"
-                        title="Eliminar"
-                        onClick={() => {
-                            eliminacionAlmacenes(
-                                <EliminaAlmacenes
-                                    datos={row}
-                                    setShowModal={setShowModal}
-                                    location={location}
-                                    history={history}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                className="editarProveedor"
+                                title="Modificar"
+                                onClick={() => {
+                                    modificarAlmacenes(
+                                        <ModificarAlmacenes
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            location={location}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                className="eliminarProveedor"
+                                title="Eliminar"
+                                onClick={() => {
+                                    eliminacionAlmacenes(
+                                        <EliminaAlmacenes
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            location={location}
+                                            history={history}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];
@@ -306,23 +313,23 @@ function ListAlmacenMp(props) {
     }, [filterText, resetPaginationToogle]);
 
     const [totalEntrada, setTotalEntrada] = useState(0);
-    
+
     let cantidadTotalEntrada = 0;
 
     const [totalSalida, setTotalSalida] = useState(0);
-    
+
     let cantidadTotalSalida = 0;
 
 
     useEffect(() => {
         map(filteredItems, (articulos, index) => {
-            const {estado, cantidadExistencia, tipo} = articulos
+            const { estado, cantidadExistencia, tipo } = articulos
             if (estado == "true") {
                 if (tipo == "Entrada") {
-                cantidadTotalEntrada += parseFloat(cantidadExistencia);
+                    cantidadTotalEntrada += parseFloat(cantidadExistencia);
                 } else if (tipo == "Salida") {
                     cantidadTotalSalida += parseFloat(cantidadExistencia);
-                    }
+                }
             }
             setTotalEntrada(cantidadTotalEntrada)
             setTotalSalida(cantidadTotalSalida)
@@ -345,7 +352,7 @@ function ListAlmacenMp(props) {
                     sortIcon={<FontAwesomeIcon icon={faArrowDownLong} />}
                     pagination
                 />
-                Existencias de articulos: { parseFloat(totalEntrada - totalSalida) }
+                Existencias de articulos: {parseFloat(totalEntrada - totalSalida)}
             </Container>
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>

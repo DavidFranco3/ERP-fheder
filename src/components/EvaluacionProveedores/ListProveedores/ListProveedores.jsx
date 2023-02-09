@@ -40,9 +40,14 @@ function ListProveedores(props) {
         setShowModal(true);
     }
 
-     // Ruta para enlazar a pagina de usuarios
-     const irHaciaModificacion = (id) => {
+    // Ruta para enlazar a pagina de usuarios
+    const irHaciaModificacion = (id) => {
         enrutamiento.push(`/ModificacionEvaluacionProveedores/${id}`);
+    }
+
+    // Ruta para enlazar a pagina de usuarios
+    const vistaPreviaEvaluacionProveedores = (id) => {
+        enrutamiento.push(`/VistaPreviaEvaluacionProveedores/${id}`);
     }
 
     // Para llenar la evaluación del proveedor
@@ -185,41 +190,51 @@ function ListProveedores(props) {
             center: true,
             reorder: false,
             selector: row => (
-                <>
-                    <Badge
-                        bg="info"
-                        title="Generar PDF"
-                        className="evaluacionProveedor"
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editarProveedor"
-                        onClick={() => {
-                            irHaciaModificacion(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminarProveedor"
-                        onClick={() => {
-                            eliminacionProveedor(
-                                <EliminaProveedores
-                                    dataProveedor={row}
-                                    history={history}
-                                    setShowModal={setShowModal}
-                                />
-                            )
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="info"
+                                title="Generar PDF"
+                                className="evaluacionProveedor"
+                                onClick={() => {
+                                    vistaPreviaEvaluacionProveedores(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEye} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editarProveedor"
+                                onClick={() => {
+                                    irHaciaModificacion(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminarProveedor"
+                                onClick={() => {
+                                    eliminacionProveedor(
+                                        <EliminaProveedores
+                                            dataProveedor={row}
+                                            history={history}
+                                            setShowModal={setShowModal}
+                                        />
+                                    )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

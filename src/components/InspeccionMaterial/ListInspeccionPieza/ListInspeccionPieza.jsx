@@ -165,20 +165,19 @@ function ListInspeccionPieza(props) {
             center: true,
             reorder: true,
             selector: row => (
-                <>
-                    <Badge
-                        bg="info"
-                        className="evaluacionProveedor"
-                        title="Generar PDF"
-                        onClick={() => {
-                            vistaPrevia(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-
-                    {row.status != "false" &&
-                        (
+                row.status === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="info"
+                                className="evaluacionProveedor"
+                                title="Generar PDF"
+                                onClick={() => {
+                                    vistaPrevia(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEye} className="text-lg" />
+                            </Badge>
                             <Badge
                                 bg="success"
                                 title="Modificar"
@@ -189,23 +188,27 @@ function ListInspeccionPieza(props) {
                             >
                                 <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
                             </Badge>
-                        )}
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminacionInspeccion(
-                                <EliminacionFisicaInspeccion
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminacionInspeccion(
+                                        <EliminacionFisicaInspeccion
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

@@ -41,13 +41,13 @@ function ListEtiquetasMoldes(props) {
         setShowModal(true);
     }
 
-     //Para la eliminacion logica de usuarios
-     const habilitaMolde = (content) => {
+    //Para la eliminacion logica de usuarios
+    const habilitaMolde = (content) => {
         setTitulosModal("Habilitando el molde");
         setContentModal(content);
         setShowModal(true);
     }
-    
+
     // Para la eliminacion fisica de usuarios
     const modificacionEtiqueta = (content) => {
         setTitulosModal("Modificar");
@@ -168,38 +168,45 @@ function ListEtiquetasMoldes(props) {
             center: true,
             reorder: true,
             selector: row => (
-                <>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editar"
-                        onClick={() => {
-                            modificacionEtiqueta(
-                                <ModificaEtiquetasMoldes
-                                    datos={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminacionEtiqueta(
-                                <EliminacionFisicaMoldes
-                                    datos={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editar"
+                                onClick={() => {
+                                    modificacionEtiqueta(
+                                        <ModificaEtiquetasMoldes
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminacionEtiqueta(
+                                        <EliminacionFisicaMoldes
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];
