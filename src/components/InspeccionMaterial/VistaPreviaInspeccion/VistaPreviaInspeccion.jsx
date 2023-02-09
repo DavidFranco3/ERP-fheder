@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Alert, Button, Col, Form, Row, Container, Spinner, Badge } from "react-bootstrap";
+import { Alert, Button, Col, Form, Row, Container, Image, Spinner, Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, useParams } from "react-router-dom";
-import "./ModificaInspeccionMaterial.scss";
+import "./VistaPreviaInspeccion.scss";
 import BasicModal from "../../Modal/BasicModal";
 import CancelacionInspeccion from "../CancelacionInspeccion";
 import { obtenerDatosProduccion } from "../../../api/produccion";
@@ -12,9 +12,14 @@ import { obtenerInspeccionPieza, actualizaInspeccionPieza } from "../../../api/i
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import LogoPDF from "../../../assets/png/pdf.png";
+import Regreso from "../../../assets/png/back.png";
 
-function ModificaInspeccionMaterial(props) {
+function VistaPreviaInspeccion(props) {
     const { setRefreshCheckLogin } = props;
+
+    const descargaPDF = async () => {
+    }
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -318,8 +323,8 @@ function ModificaInspeccionMaterial(props) {
                 material: material,
                 cantidadLote: formData.cantidadLote,
                 turno1: {
-                    elaboro: formData.elaboro1,
-                    operador: formData.operador1,
+                    elaboro: formData.elaboro,
+                    operador: formData.operador,
                     revisiones: {
                         1: {
                             revision1: "1",
@@ -1028,6 +1033,7 @@ function ModificaInspeccionMaterial(props) {
                                                 placeholder="Fecha de elaboración"
                                                 name="fechaElaboracion"
                                                 defaultValue={formData.fechaElaboracion}
+                                                disabled
                                             />
                                         </Col>
 
@@ -1061,6 +1067,7 @@ function ModificaInspeccionMaterial(props) {
                                                 placeholder="Escribe el numero de la OP"
                                                 name="ordenProduccion"
                                                 defaultValue={formData.ordenProduccion}
+                                                disabled
                                             />
                                         </Col>
 
@@ -1094,6 +1101,7 @@ function ModificaInspeccionMaterial(props) {
                                                 placeholder="Fecha de arranque de maquina"
                                                 name="fechaArranque"
                                                 defaultValue={formData.fechaArranque}
+                                                disabled
                                             />
                                         </Col>
 
@@ -1127,6 +1135,7 @@ function ModificaInspeccionMaterial(props) {
                                                 placeholder="Mumero de la maquina"
                                                 name="numeroMaquina"
                                                 defaultValue={formData.numeroMaquina}
+                                                disabled
                                             />
                                         </Col>
 
@@ -1142,6 +1151,7 @@ function ModificaInspeccionMaterial(props) {
                                                 placeholder="Cantidad lote"
                                                 name="cantidadLote"
                                                 defaultValue={formData.cantidadLote}
+                                                disabled
                                             />
                                         </Col>
                                     </Form.Group>
@@ -1199,6 +1209,7 @@ function ModificaInspeccionMaterial(props) {
                                                 placeholder="Elaboro"
                                                 name="elaboro1"
                                                 defaultValue={formData.elaboro1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -1213,254 +1224,8 @@ function ModificaInspeccionMaterial(props) {
                                                 placeholder="Operador"
                                                 name="operador1"
                                                 defaultValue={formData.operador1}
+                                                disabled
                                             />
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <Row className="mb-3">
-                                    <Form.Group as={Row}>
-                                        <Col sm="2">
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision1 == 0 ? "success" : revision1 == 1 ? "warning" : revision1 == 2 ? "secondary" : "danger"}
-                                                title={revision1 == 0 ? "Iniciar" : revision1 == 1 ? "Guardar" : revision1 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision1(revision1 + 1);
-                                                    {
-                                                        (revision1 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion1}
-                                                                    revision={revision1 + 1}
-                                                                    setRevision={setRevision1}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision1 == 0 ? "Iniciar" : revision1 == 1 ? "Guardar" : revision1 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision2 == 0 ? "success" : revision2 == 1 ? "warning" : revision2 == 2 ? "secondary" : "danger"}
-                                                title={revision2 == 0 ? "Iniciar" : revision2 == 1 ? "Guardar" : revision2 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision2(revision2 + 1);
-                                                    {
-                                                        (revision2 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion2}
-                                                                    revision={revision2 + 1}
-                                                                    setRevision={setRevision2}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision2 == 0 ? "Iniciar" : revision2 == 1 ? "Guardar" : revision2 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision3 == 0 ? "success" : revision3 == 1 ? "warning" : revision3 == 2 ? "secondary" : "danger"}
-                                                title={revision3 == 0 ? "Iniciar" : revision3 == 1 ? "Guardar" : revision3 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision3(revision3 + 1);
-                                                    {
-                                                        (revision3 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion3}
-                                                                    revision={revision3 + 1}
-                                                                    setRevision={setRevision3}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision3 == 0 ? "Iniciar" : revision3 == 1 ? "Guardar" : revision3 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision4 == 0 ? "success" : revision4 == 1 ? "warning" : revision4 == 2 ? "secondary" : "danger"}
-                                                title={revision4 == 0 ? "Iniciar" : revision4 == 1 ? "Guardar" : revision4 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision4(revision4 + 1);
-                                                    {
-                                                        (revision4 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion4}
-                                                                    revision={revision4 + 1}
-                                                                    setRevision={setRevision4}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision4 == 0 ? "Iniciar" : revision4 == 1 ? "Guardar" : revision4 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision5 == 0 ? "success" : revision5 == 1 ? "warning" : revision5 == 2 ? "secondary" : "danger"}
-                                                title={revision5 == 0 ? "Iniciar" : revision5 == 1 ? "Guardar" : revision5 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision5(revision5 + 1);
-                                                    {
-                                                        (revision5 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion5}
-                                                                    revision={revision5 + 1}
-                                                                    setRevision={setRevision5}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision5 == 0 ? "Iniciar" : revision5 == 1 ? "Guardar" : revision5 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision6 == 0 ? "success" : revision6 == 1 ? "warning" : revision6 == 2 ? "secondary" : "danger"}
-                                                title={revision6 == 0 ? "Iniciar" : revision6 == 1 ? "Guardar" : revision6 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision6(revision6 + 1);
-                                                    {
-                                                        (revision6 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion6}
-                                                                    revision={revision6 + 1}
-                                                                    setRevision={setRevision6}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision6 == 0 ? "Iniciar" : revision6 == 1 ? "Guardar" : revision6 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision7 == 0 ? "success" : revision7 == 1 ? "warning" : revision7 == 2 ? "secondary" : "danger"}
-                                                title={revision7 == 0 ? "Iniciar" : revision7 == 1 ? "Guardar" : revision7 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision7(revision7 + 1);
-                                                    {
-                                                        (revision7 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion7}
-                                                                    revision={revision7 + 1}
-                                                                    setRevision={setRevision7}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision7 == 0 ? "Iniciar" : revision7 == 1 ? "Guardar" : revision7 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision8 == 0 ? "success" : revision8 == 1 ? "warning" : revision8 == 2 ? "secondary" : "danger"}
-                                                title={revision8 == 0 ? "Iniciar" : revision8 == 1 ? "Guardar" : revision8 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision8(revision8 + 1);
-                                                    {
-                                                        (revision8 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion8}
-                                                                    revision={revision8 + 1}
-                                                                    setRevision={setRevision8}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision8 == 0 ? "Iniciar" : revision8 == 1 ? "Guardar" : revision8 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision9 == 0 ? "success" : revision9 == 1 ? "warning" : revision9 == 2 ? "secondary" : "danger"}
-                                                title={revision9 == 0 ? "Iniciar" : revision9 == 1 ? "Guardar" : revision9 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision9(revision9 + 1);
-                                                    {
-                                                        (revision9 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion9}
-                                                                    revision={revision9 + 1}
-                                                                    setRevision={setRevision9}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision9 == 0 ? "Iniciar" : revision9 == 1 ? "Guardar" : revision9 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision10 == 0 ? "success" : revision10 == 1 ? "warning" : revision10 == 2 ? "secondary" : "danger"}
-                                                title={revision10 == 0 ? "Iniciar" : revision10 == 1 ? "Guardar" : revision10 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision10(revision10 + 1);
-                                                    {
-                                                        (revision10 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion10}
-                                                                    revision={revision10 + 1}
-                                                                    setRevision={setRevision10}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision10 == 0 ? "Iniciar" : revision10 == 1 ? "Guardar" : revision10 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
                                         </Col>
                                     </Form.Group>
                                 </Row>
@@ -1667,7 +1432,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono1"
                                                 defaultValue={formData.tono1}
-                                                disabled={revision1 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono1 == "ok"}>OK</option>
@@ -1678,7 +1443,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono2"
                                                 defaultValue={formData.tono2}
-                                                disabled={revision2 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono2 == "ok"}>OK</option>
@@ -1689,7 +1454,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono3"
                                                 defaultValue={formData.tono3}
-                                                disabled={revision3 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono3 == "ok"}>OK</option>
@@ -1700,7 +1465,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono4"
                                                 defaultValue={formData.tono4}
-                                                disabled={revision4 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono4 == "ok"}>OK</option>
@@ -1711,7 +1476,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono5"
                                                 defaultValue={formData.tono5}
-                                                disabled={revision5 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono5 == "ok"}>OK</option>
@@ -1722,7 +1487,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono6"
                                                 defaultValue={formData.tono6}
-                                                disabled={revision6 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono6 == "ok"}>OK</option>
@@ -1733,7 +1498,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono7"
                                                 defaultValue={formData.tono7}
-                                                disabled={revision7 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono7 == "ok"}>OK</option>
@@ -1744,7 +1509,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono8"
                                                 defaultValue={formData.tono8}
-                                                disabled={revision8 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono8 == "ok"}>OK</option>
@@ -1755,7 +1520,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono9"
                                                 defaultValue={formData.tono9}
-                                                disabled={revision9 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono9 == "ok"}>OK</option>
@@ -1766,7 +1531,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono10"
                                                 defaultValue={formData.tono10}
-                                                disabled={revision10 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono10 == "ok"}>OK</option>
@@ -1788,7 +1553,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion1"
                                                 defaultValue={formData.contaminacion1}
-                                                disabled={revision1 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion1 == "ok"}>OK</option>
@@ -1799,7 +1564,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion2"
                                                 defaultValue={formData.contaminacion2}
-                                                disabled={revision2 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion2 == "ok"}>OK</option>
@@ -1810,7 +1575,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion3"
                                                 defaultValue={formData.contaminacion3}
-                                                disabled={revision3 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion3 == "ok"}>OK</option>
@@ -1821,7 +1586,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion4"
                                                 defaultValue={formData.contaminacion4}
-                                                disabled={revision4 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion4 == "ok"}>OK</option>
@@ -1832,7 +1597,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion5"
                                                 defaultValue={formData.contaminacion5}
-                                                disabled={revision5 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion5 == "ok"}>OK</option>
@@ -1843,7 +1608,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion6"
                                                 defaultValue={formData.contaminacion6}
-                                                disabled={revision6 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion6 == "ok"}>OK</option>
@@ -1854,7 +1619,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion7"
                                                 defaultValue={formData.contaminacion7}
-                                                disabled={revision7 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion7 == "ok"}>OK</option>
@@ -1865,7 +1630,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion8"
                                                 defaultValue={formData.contaminacion8}
-                                                disabled={revision8 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion8 == "ok"}>OK</option>
@@ -1876,7 +1641,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion9"
                                                 defaultValue={formData.contaminacion9}
-                                                disabled={revision9 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion9 == "ok"}>OK</option>
@@ -1887,7 +1652,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion10"
                                                 defaultValue={formData.contaminacion10}
-                                                disabled={revision10 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion10 == "ok"}>OK</option>
@@ -1909,7 +1674,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada1"
                                                 defaultValue={formData.rebanada1}
-                                                disabled={revision1 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada1 == "ok"}>OK</option>
@@ -1920,7 +1685,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada2"
                                                 defaultValue={formData.rebanada2}
-                                                disabled={revision2 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada2 == "ok"}>OK</option>
@@ -1931,7 +1696,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada3"
                                                 defaultValue={formData.rebanada3}
-                                                disabled={revision3 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada3 == "ok"}>OK</option>
@@ -1942,7 +1707,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada4"
                                                 defaultValue={formData.rebanada4}
-                                                disabled={revision4 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada4 == "ok"}>OK</option>
@@ -1953,7 +1718,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada5"
                                                 defaultValue={formData.rebanada5}
-                                                disabled={revision5 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada5 == "ok"}>OK</option>
@@ -1964,7 +1729,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada6"
                                                 defaultValue={formData.rebanada6}
-                                                disabled={revision6 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada6 == "ok"}>OK</option>
@@ -1975,7 +1740,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada7"
                                                 defaultValue={formData.rebanada7}
-                                                disabled={revision7 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada7 == "ok"}>OK</option>
@@ -1986,7 +1751,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada8"
                                                 defaultValue={formData.rebanada8}
-                                                disabled={revision8 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada8 == "ok"}>OK</option>
@@ -1997,7 +1762,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada9"
                                                 defaultValue={formData.rebanada9}
-                                                disabled={revision9 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada9 == "ok"}>OK</option>
@@ -2008,7 +1773,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada10"
                                                 defaultValue={formData.rebanada10}
-                                                disabled={revision10 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada10 == "ok"}>OK</option>
@@ -2029,7 +1794,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga1"
                                                 defaultValue={formData.rafaga1}
-                                                disabled={revision1 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga1 == "ok"}>OK</option>
@@ -2040,7 +1805,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga2"
                                                 defaultValue={formData.rafaga2}
-                                                disabled={revision2 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga2 == "ok"}>OK</option>
@@ -2051,7 +1816,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga3"
                                                 defaultValue={formData.rafaga3}
-                                                disabled={revision3 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga3 == "ok"}>OK</option>
@@ -2062,7 +1827,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga4"
                                                 defaultValue={formData.rafaga4}
-                                                disabled={revision4 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga4 == "ok"}>OK</option>
@@ -2073,7 +1838,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga5"
                                                 defaultValue={formData.rafaga5}
-                                                disabled={revision5 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga5 == "ok"}>OK</option>
@@ -2084,7 +1849,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga6"
                                                 defaultValue={formData.rafaga6}
-                                                disabled={revision6 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga6 == "ok"}>OK</option>
@@ -2095,7 +1860,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga7"
                                                 defaultValue={formData.rafaga7}
-                                                disabled={revision7 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga7 == "ok"}>OK</option>
@@ -2106,7 +1871,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga8"
                                                 defaultValue={formData.rafaga8}
-                                                disabled={revision8 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga8 == "ok"}>OK</option>
@@ -2117,7 +1882,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga9"
                                                 defaultValue={formData.rafaga9}
-                                                disabled={revision9 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga9 == "ok"}>OK</option>
@@ -2128,7 +1893,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga10"
                                                 defaultValue={formData.rafaga10}
-                                                disabled={revision10 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga10 == "ok"}>OK</option>
@@ -2150,7 +1915,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe1"
                                                 defaultValue={formData.rechupe1}
-                                                disabled={revision1 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe1 == "ok"}>OK</option>
@@ -2161,7 +1926,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe2"
                                                 defaultValue={formData.rechupe2}
-                                                disabled={revision2 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe2 == "ok"}>OK</option>
@@ -2172,7 +1937,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe3"
                                                 defaultValue={formData.rechupe3}
-                                                disabled={revision3 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe3 == "ok"}>OK</option>
@@ -2183,7 +1948,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe4"
                                                 defaultValue={formData.rechupe4}
-                                                disabled={revision4 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe4 == "ok"}>OK</option>
@@ -2194,7 +1959,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe5"
                                                 defaultValue={formData.rechupe5}
-                                                disabled={revision5 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe5 == "ok"}>OK</option>
@@ -2205,7 +1970,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe6"
                                                 defaultValue={formData.rechupe6}
-                                                disabled={revision6 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe6 == "ok"}>OK</option>
@@ -2216,7 +1981,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe7"
                                                 defaultValue={formData.rechupe7}
-                                                disabled={revision7 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe7 == "ok"}>OK</option>
@@ -2227,7 +1992,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe8"
                                                 defaultValue={formData.rechupe8}
-                                                disabled={revision8 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe8 == "ok"}>OK</option>
@@ -2238,7 +2003,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe9"
                                                 defaultValue={formData.rechupe9}
-                                                disabled={revision9 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe9 == "ok"}>OK</option>
@@ -2249,7 +2014,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe10"
                                                 defaultValue={formData.rechupe10}
-                                                disabled={revision10 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe10 == "ok"}>OK</option>
@@ -2271,7 +2036,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta1"
                                                 defaultValue={formData.piezaCompleta1}
-                                                disabled={revision1 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta1 == "ok"}>OK</option>
@@ -2282,7 +2047,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta2"
                                                 defaultValue={formData.piezaCompleta2}
-                                                disabled={revision2 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta2 == "ok"}>OK</option>
@@ -2293,7 +2058,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta3"
                                                 defaultValue={formData.piezaCompleta3}
-                                                disabled={revision3 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta3 == "ok"}>OK</option>
@@ -2304,7 +2069,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta4"
                                                 defaultValue={formData.piezaCompleta4}
-                                                disabled={revision4 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta4 == "ok"}>OK</option>
@@ -2315,7 +2080,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta5"
                                                 defaultValue={formData.piezaCompleta5}
-                                                disabled={revision5 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta5 == "ok"}>OK</option>
@@ -2326,7 +2091,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta6"
                                                 defaultValue={formData.piezaCompleta6}
-                                                disabled={revision6 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta6 == "ok"}>OK</option>
@@ -2337,7 +2102,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta7"
                                                 defaultValue={formData.piezaCompleta7}
-                                                disabled={revision7 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta7 == "ok"}>OK</option>
@@ -2348,7 +2113,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta8"
                                                 defaultValue={formData.piezaCompleta8}
-                                                disabled={revision8 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta8 == "ok"}>OK</option>
@@ -2359,7 +2124,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta9"
                                                 defaultValue={formData.piezaCompleta9}
-                                                disabled={revision9 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta9 == "ok"}>OK</option>
@@ -2370,7 +2135,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta10"
                                                 defaultValue={formData.piezaCompleta10}
-                                                disabled={revision10 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta10 == "ok"}>OK</option>
@@ -2392,7 +2157,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas1"
                                                 defaultValue={formData.grietas1}
-                                                disabled={revision1 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas1 == "ok"}>OK</option>
@@ -2403,7 +2168,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas2"
                                                 defaultValue={formData.grietas2}
-                                                disabled={revision2 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas2 == "ok"}>OK</option>
@@ -2414,7 +2179,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas3"
                                                 defaultValue={formData.grietas3}
-                                                disabled={revision3 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas3 == "ok"}>OK</option>
@@ -2425,7 +2190,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas4"
                                                 defaultValue={formData.grietas4}
-                                                disabled={revision4 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas4 == "ok"}>OK</option>
@@ -2436,7 +2201,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas5"
                                                 defaultValue={formData.grietas5}
-                                                disabled={revision5 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas5 == "ok"}>OK</option>
@@ -2447,7 +2212,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas6"
                                                 defaultValue={formData.grietas6}
-                                                disabled={revision6 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas6 == "ok"}>OK</option>
@@ -2458,7 +2223,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas7"
                                                 defaultValue={formData.grietas7}
-                                                disabled={revision7 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas7 == "ok"}>OK</option>
@@ -2469,7 +2234,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas8"
                                                 defaultValue={formData.grietas8}
-                                                disabled={revision8 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas8 == "ok"}>OK</option>
@@ -2480,7 +2245,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas9"
                                                 defaultValue={formData.grietas9}
-                                                disabled={revision9 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas9 == "ok"}>OK</option>
@@ -2491,7 +2256,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas10"
                                                 defaultValue={formData.grietas10}
-                                                disabled={revision10 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas10 == "ok"}>OK</option>
@@ -2513,7 +2278,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion1"
                                                 defaultValue={formData.inyeccion1}
-                                                disabled={revision1 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion1 == "ok"}>OK</option>
@@ -2524,7 +2289,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion2"
                                                 defaultValue={formData.inyeccion2}
-                                                disabled={revision2 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion2 == "ok"}>OK</option>
@@ -2535,7 +2300,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion3"
                                                 defaultValue={formData.inyeccion3}
-                                                disabled={revision3 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion3 == "ok"}>OK</option>
@@ -2546,7 +2311,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion4"
                                                 defaultValue={formData.inyeccion4}
-                                                disabled={revision4 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion4 == "ok"}>OK</option>
@@ -2557,7 +2322,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion5"
                                                 defaultValue={formData.inyeccion5}
-                                                disabled={revision5 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion5 == "ok"}>OK</option>
@@ -2568,7 +2333,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion6"
                                                 defaultValue={formData.inyeccion6}
-                                                disabled={revision6 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion6 == "ok"}>OK</option>
@@ -2579,7 +2344,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion7"
                                                 defaultValue={formData.inyeccion7}
-                                                disabled={revision7 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion7 == "ok"}>OK</option>
@@ -2590,7 +2355,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion8"
                                                 defaultValue={formData.inyeccion8}
-                                                disabled={revision8 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion8 == "ok"}>OK</option>
@@ -2601,7 +2366,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion9"
                                                 defaultValue={formData.inyeccion9}
-                                                disabled={revision9 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion9 == "ok"}>OK</option>
@@ -2612,7 +2377,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion10"
                                                 defaultValue={formData.inyeccion10}
-                                                disabled={revision10 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion10 == "ok"}>OK</option>
@@ -2634,7 +2399,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia1"
                                                 defaultValue={formData.consistencia1}
-                                                disabled={revision1 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia1 == "ok"}>OK</option>
@@ -2645,7 +2410,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia2"
                                                 defaultValue={formData.consistencia2}
-                                                disabled={revision2 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia2 == "ok"}>OK</option>
@@ -2656,7 +2421,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia3"
                                                 defaultValue={formData.consistencia3}
-                                                disabled={revision3 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia3 == "ok"}>OK</option>
@@ -2667,7 +2432,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia4"
                                                 defaultValue={formData.consistencia4}
-                                                disabled={revision4 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia4 == "ok"}>OK</option>
@@ -2678,7 +2443,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia5"
                                                 defaultValue={formData.consistencia5}
-                                                disabled={revision5 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia5 == "ok"}>OK</option>
@@ -2689,7 +2454,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia6"
                                                 defaultValue={formData.consistencia6}
-                                                disabled={revision6 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia6 == "ok"}>OK</option>
@@ -2700,7 +2465,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia7"
                                                 defaultValue={formData.consistencia7}
-                                                disabled={revision7 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia7 == "ok"}>OK</option>
@@ -2711,7 +2476,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia8"
                                                 defaultValue={formData.consistencia8}
-                                                disabled={revision8 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia8 == "ok"}>OK</option>
@@ -2722,7 +2487,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia9"
                                                 defaultValue={formData.consistencia9}
-                                                disabled={revision9 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia9 == "ok"}>OK</option>
@@ -2733,7 +2498,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia10"
                                                 defaultValue={formData.consistencia10}
-                                                disabled={revision10 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia10 == "ok"}>OK</option>
@@ -2755,7 +2520,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad1"
                                                 defaultValue={formData.funcionalidad1}
-                                                disabled={revision1 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad1 == "ok"}>OK</option>
@@ -2766,7 +2531,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad2"
                                                 defaultValue={formData.funcionalidad2}
-                                                disabled={revision2 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad2 == "ok"}>OK</option>
@@ -2777,7 +2542,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad3"
                                                 defaultValue={formData.funcionalidad3}
-                                                disabled={revision3 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad3 == "ok"}>OK</option>
@@ -2788,7 +2553,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad4"
                                                 defaultValue={formData.funcionalidad4}
-                                                disabled={revision4 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad4 == "ok"}>OK</option>
@@ -2799,7 +2564,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad5"
                                                 defaultValue={formData.funcionalidad5}
-                                                disabled={revision5 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad5 == "ok"}>OK</option>
@@ -2810,7 +2575,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad6"
                                                 defaultValue={formData.funcionalidad6}
-                                                disabled={revision6 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad6 == "ok"}>OK</option>
@@ -2821,7 +2586,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad7"
                                                 defaultValue={formData.funcionalidad7}
-                                                disabled={revision7 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad7 == "ok"}>OK</option>
@@ -2832,7 +2597,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad8"
                                                 defaultValue={formData.funcionalidad8}
-                                                disabled={revision8 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad8 == "ok"}>OK</option>
@@ -2843,7 +2608,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad9"
                                                 defaultValue={formData.funcionalidad9}
-                                                disabled={revision9 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad9 == "ok"}>OK</option>
@@ -2854,7 +2619,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad10"
                                                 defaultValue={formData.funcionalidad10}
-                                                disabled={revision10 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad10 == "ok"}>OK</option>
@@ -2876,7 +2641,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque1"
                                                 defaultValue={formData.empaque1}
-                                                disabled={revision1 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque1 == "ok"}>OK</option>
@@ -2887,7 +2652,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque2"
                                                 defaultValue={formData.empaque2}
-                                                disabled={revision2 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque2 == "ok"}>OK</option>
@@ -2898,7 +2663,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque3"
                                                 defaultValue={formData.empaque3}
-                                                disabled={revision3 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque3 == "ok"}>OK</option>
@@ -2909,7 +2674,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque4"
                                                 defaultValue={formData.empaque4}
-                                                disabled={revision4 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque4 == "ok"}>OK</option>
@@ -2920,7 +2685,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque5"
                                                 defaultValue={formData.empaque5}
-                                                disabled={revision5 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque5 == "ok"}>OK</option>
@@ -2931,7 +2696,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque6"
                                                 defaultValue={formData.empaque6}
-                                                disabled={revision6 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque6 == "ok"}>OK</option>
@@ -2942,7 +2707,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque7"
                                                 defaultValue={formData.empaque7}
-                                                disabled={revision7 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque7 == "ok"}>OK</option>
@@ -2953,7 +2718,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque8"
                                                 defaultValue={formData.empaque8}
-                                                disabled={revision8 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque8 == "ok"}>OK</option>
@@ -2964,7 +2729,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque9"
                                                 defaultValue={formData.empaque9}
-                                                disabled={revision9 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque9 == "ok"}>OK</option>
@@ -2975,7 +2740,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque10"
                                                 defaultValue={formData.empaque10}
-                                                disabled={revision10 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque10 == "ok"}>OK</option>
@@ -2997,7 +2762,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros1"
                                                 defaultValue={formData.otros1}
-                                                disabled={revision1 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros1 == "ok"}>OK</option>
@@ -3008,7 +2773,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros2"
                                                 defaultValue={formData.otros2}
-                                                disabled={revision2 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros2 == "ok"}>OK</option>
@@ -3019,7 +2784,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros3"
                                                 defaultValue={formData.otros3}
-                                                disabled={revision3 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros3 == "ok"}>OK</option>
@@ -3030,7 +2795,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros4"
                                                 defaultValue={formData.otros4}
-                                                disabled={revision4 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros4 == "ok"}>OK</option>
@@ -3041,7 +2806,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros5"
                                                 defaultValue={formData.otros5}
-                                                disabled={revision5 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros5 == "ok"}>OK</option>
@@ -3052,7 +2817,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros6"
                                                 defaultValue={formData.otros6}
-                                                disabled={revision6 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros6 == "ok"}>OK</option>
@@ -3063,7 +2828,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros7"
                                                 defaultValue={formData.otros7}
-                                                disabled={revision7 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros7 == "ok"}>OK</option>
@@ -3074,7 +2839,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros8"
                                                 defaultValue={formData.otros8}
-                                                disabled={revision8 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros8 == "ok"}>OK</option>
@@ -3085,7 +2850,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros9"
                                                 defaultValue={formData.otros9}
-                                                disabled={revision9 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros9 == "ok"}>OK</option>
@@ -3096,7 +2861,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros10"
                                                 defaultValue={formData.otros10}
-                                                disabled={revision10 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros10 == "ok"}>OK</option>
@@ -3118,7 +2883,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas1"
                                                 defaultValue={formData.piezasRevisadas1}
-                                                disabled={revision1 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -3127,7 +2892,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas2"
                                                 defaultValue={formData.piezasRevisadas2}
-                                                disabled={revision2 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -3135,7 +2900,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas3"
                                                 defaultValue={formData.piezasRevisadas3}
-                                                disabled={revision3 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -3144,7 +2909,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas4"
                                                 defaultValue={formData.piezasRevisadas4}
-                                                disabled={revision4 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -3152,7 +2917,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas5"
                                                 defaultValue={formData.piezasRevisadas5}
-                                                disabled={revision5 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -3161,7 +2926,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas6"
                                                 defaultValue={formData.piezasRevisadas6}
-                                                disabled={revision6 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -3169,7 +2934,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas7"
                                                 defaultValue={formData.piezasRevisadas7}
-                                                disabled={revision7 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -3178,7 +2943,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas8"
                                                 defaultValue={formData.piezasRevisadas8}
-                                                disabled={revision8 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -3186,7 +2951,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas9"
                                                 defaultValue={formData.piezasRevisadas9}
-                                                disabled={revision9 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -3195,7 +2960,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas10"
                                                 defaultValue={formData.piezasRevisadas10}
-                                                disabled={revision10 != 1}
+                                                disabled
                                             />
                                         </Col>
                                     </Form.Group>
@@ -3213,7 +2978,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas1"
                                                 defaultValue={formData.cantidadPiezas1}
-                                                disabled={revision1 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -3222,7 +2987,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas2"
                                                 defaultValue={formData.cantidadPiezas2}
-                                                disabled={revision2 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -3230,7 +2995,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas3"
                                                 defaultValue={formData.cantidadPiezas3}
-                                                disabled={revision3 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -3239,7 +3004,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas4"
                                                 defaultValue={formData.cantidadPiezas4}
-                                                disabled={revision4 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -3247,7 +3012,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas5"
                                                 defaultValue={formData.cantidadPiezas5}
-                                                disabled={revision5 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -3256,7 +3021,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas6"
                                                 defaultValue={formData.cantidadPiezas6}
-                                                disabled={revision6 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -3264,7 +3029,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas7"
                                                 defaultValue={formData.cantidadPiezas7}
-                                                disabled={revision7 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -3273,7 +3038,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas8"
                                                 defaultValue={formData.cantidadPiezas8}
-                                                disabled={revision8 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -3281,7 +3046,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas9"
                                                 defaultValue={formData.cantidadPiezas9}
-                                                disabled={revision9 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -3290,7 +3055,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas10"
                                                 defaultValue={formData.cantidadPiezas10}
-                                                disabled={revision10 != 1}
+                                                disabled
                                             />
                                         </Col>
                                     </Form.Group>
@@ -3329,6 +3094,7 @@ function ModificaInspeccionMaterial(props) {
                                                 placeholder="Elaboro"
                                                 name="elaboro2"
                                                 defaultValue={formData.elaboro2}
+                                                disabled
                                             />
                                         </Col>
 
@@ -3343,254 +3109,8 @@ function ModificaInspeccionMaterial(props) {
                                                 placeholder="Operador"
                                                 name="operador2"
                                                 defaultValue={formData.operador2}
+                                                disabled
                                             />
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <Row className="mb-3">
-                                    <Form.Group as={Row}>
-                                        <Col sm="2">
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision11 == 0 ? "success" : revision11 == 1 ? "warning" : revision11 == 2 ? "secondary" : "danger"}
-                                                title={revision11 == 0 ? "Iniciar" : revision11 == 1 ? "Guardar" : revision11 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision11(revision11 + 1);
-                                                    {
-                                                        (revision11 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion11}
-                                                                    revision={revision11 + 1}
-                                                                    setRevision={setRevision11}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision11 == 0 ? "Iniciar" : revision11 == 1 ? "Guardar" : revision11 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision21 == 0 ? "success" : revision21 == 1 ? "warning" : revision21 == 2 ? "secondary" : "danger"}
-                                                title={revision21 == 0 ? "Iniciar" : revision21 == 1 ? "Guardar" : revision21 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision21(revision21 + 1);
-                                                    {
-                                                        (revision21 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion21}
-                                                                    revision={revision21 + 1}
-                                                                    setRevision={setRevision21}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision21 == 0 ? "Iniciar" : revision21 == 1 ? "Guardar" : revision21 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision31 == 0 ? "success" : revision31 == 1 ? "warning" : revision31 == 2 ? "secondary" : "danger"}
-                                                title={revision31 == 0 ? "Iniciar" : revision31 == 1 ? "Guardar" : revision31 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision31(revision31 + 1);
-                                                    {
-                                                        (revision31 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion31}
-                                                                    revision={revision31 + 1}
-                                                                    setRevision={setRevision31}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision31 == 0 ? "Iniciar" : revision31 == 1 ? "Guardar" : revision31 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision41 == 0 ? "success" : revision41 == 1 ? "warning" : revision41 == 2 ? "secondary" : "danger"}
-                                                title={revision41 == 0 ? "Iniciar" : revision41 == 1 ? "Guardar" : revision41 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision41(revision41 + 1);
-                                                    {
-                                                        (revision41 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion41}
-                                                                    revision={revision41 + 1}
-                                                                    setRevision={setRevision41}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision41 == 0 ? "Iniciar" : revision41 == 1 ? "Guardar" : revision41 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision51 == 0 ? "success" : revision51 == 1 ? "warning" : revision51 == 2 ? "secondary" : "danger"}
-                                                title={revision51 == 0 ? "Iniciar" : revision51 == 1 ? "Guardar" : revision51 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision51(revision51 + 1);
-                                                    {
-                                                        (revision51 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion51}
-                                                                    revision={revision51 + 1}
-                                                                    setRevision={setRevision51}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision51 == 0 ? "Iniciar" : revision51 == 1 ? "Guardar" : revision51 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision61 == 0 ? "success" : revision61 == 1 ? "warning" : revision61 == 2 ? "secondary" : "danger"}
-                                                className="boton"
-                                                title={revision61 == 0 ? "Iniciar" : revision61 == 1 ? "Guardar" : revision61 == 2 ? "Finalizado" : "Cancelado"}
-                                                onClick={() => {
-                                                    setRevision61(revision61 + 1);
-                                                    {
-                                                        (revision61 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion61}
-                                                                    revision={revision61 + 1}
-                                                                    setRevision={setRevision61}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision61 == 0 ? "Iniciar" : revision61 == 1 ? "Guardar" : revision61 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision71 == 0 ? "success" : revision71 == 1 ? "warning" : revision71 == 2 ? "secondary" : "danger"}
-                                                title={revision71 == 0 ? "Iniciar" : revision71 == 1 ? "Guardar" : revision71 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision71(revision71 + 1);
-                                                    {
-                                                        (revision71 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion71}
-                                                                    revision={revision71 + 1}
-                                                                    setRevision={setRevision71}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision71 == 0 ? "Iniciar" : revision71 == 1 ? "Guardar" : revision71 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision81 == 0 ? "success" : revision81 == 1 ? "warning" : revision81 == 2 ? "secondary" : "danger"}
-                                                title={revision81 == 0 ? "Iniciar" : revision81 == 1 ? "Guardar" : revision81 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision81(revision81 + 1);
-                                                    {
-                                                        (revision81 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion81}
-                                                                    revision={revision81 + 1}
-                                                                    setRevision={setRevision81}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision81 == 0 ? "Iniciar" : revision81 == 1 ? "Guardar" : revision81 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision91 == 0 ? "success" : revision91 == 1 ? "warning" : revision91 == 2 ? "secondary" : "danger"}
-                                                tile={revision91 == 0 ? "Iniciar" : revision91 == 1 ? "Guardar" : revision91 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision91(revision91 + 1);
-                                                    {
-                                                        (revision91 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion91}
-                                                                    revision={revision91 + 1}
-                                                                    setRevision={setRevision91}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision91 == 0 ? "Iniciar" : revision91 == 1 ? "Guardar" : revision91 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
-                                        </Col>
-                                        <Col>
-                                            <Badge
-                                                bg={revision101 == 0 ? "success" : revision101 == 1 ? "warning" : revision101 == 2 ? "secondary" : "danger"}
-                                                title={revision101 == 0 ? "Iniciar" : revision101 == 1 ? "Guardar" : revision101 == 2 ? "Finalizado" : "Cancelado"}
-                                                className="boton"
-                                                onClick={() => {
-                                                    setRevision101(revision101 + 1);
-                                                    {
-                                                        (revision101 == 2 &&
-                                                            cancelacionInspeccion(
-                                                                <CancelacionInspeccion
-                                                                    setShowModal={setShowModal}
-                                                                    setMotivoCancelacion={setMotivoCancelacion101}
-                                                                    revision={revision101 + 1}
-                                                                    setRevision={setRevision101}
-                                                                />
-                                                            )
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                {revision101 == 0 ? "Iniciar" : revision101 == 1 ? "Guardar" : revision101 == 2 ? "Finalizado" : "Cancelado"}
-                                            </Badge>
                                         </Col>
                                     </Form.Group>
                                 </Row>
@@ -3797,7 +3317,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono11"
                                                 defaultValue={formData.tono11}
-                                                disabled={revision11 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono11 == "ok"}>OK</option>
@@ -3808,7 +3328,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono21"
                                                 defaultValue={formData.tono21}
-                                                disabled={revision21 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono21 == "ok"}>OK</option>
@@ -3819,7 +3339,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono31"
                                                 defaultValue={formData.tono31}
-                                                disabled={revision31 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono31 == "ok"}>OK</option>
@@ -3830,7 +3350,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono41"
                                                 defaultValue={formData.tono41}
-                                                disabled={revision41 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono41 == "ok"}>OK</option>
@@ -3841,7 +3361,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono51"
                                                 defaultValue={formData.tono51}
-                                                disabled={revision51 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono51 == "ok"}>OK</option>
@@ -3852,7 +3372,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono61"
                                                 defaultValue={formData.tono61}
-                                                disabled={revision61 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono61 == "ok"}>OK</option>
@@ -3863,7 +3383,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono71"
                                                 defaultValue={formData.tono71}
-                                                disabled={revision71 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono71 == "ok"}>OK</option>
@@ -3874,7 +3394,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono81"
                                                 defaultValue={formData.tono81}
-                                                disabled={revision81 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono81 == "ok"}>OK</option>
@@ -3885,7 +3405,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono91"
                                                 defaultValue={formData.tono91}
-                                                disabled={revision91 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono91 == "ok"}>OK</option>
@@ -3896,7 +3416,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="tono101"
                                                 defaultValue={formData.tono101}
-                                                disabled={revision101 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.tono101 == "ok"}>OK</option>
@@ -3917,7 +3437,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion11"
                                                 defaultValue={formData.contaminacion11}
-                                                disabled={revision11 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion11 == "ok"}>OK</option>
@@ -3928,7 +3448,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion21"
                                                 defaultValue={formData.contaminacion21}
-                                                disabled={revision21 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion21 == "ok"}>OK</option>
@@ -3939,7 +3459,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion31"
                                                 defaultValue={formData.contaminacion31}
-                                                disabled={revision31 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion31 == "ok"}>OK</option>
@@ -3950,7 +3470,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion41"
                                                 defaultValue={formData.contaminacion41}
-                                                disabled={revision41 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion41 == "ok"}>OK</option>
@@ -3961,7 +3481,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion51"
                                                 defaultValue={formData.contaminacion51}
-                                                disabled={revision51 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion51 == "ok"}>OK</option>
@@ -3972,7 +3492,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion61"
                                                 defaultValue={formData.contaminacion61}
-                                                disabled={revision61 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion61 == "ok"}>OK</option>
@@ -3983,7 +3503,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion71"
                                                 defaultValue={formData.contaminacion71}
-                                                disabled={revision71 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion71 == "ok"}>OK</option>
@@ -3994,7 +3514,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion81"
                                                 defaultValue={formData.contaminacion81}
-                                                disabled={revision81 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion81 == "ok"}>OK</option>
@@ -4005,7 +3525,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion91"
                                                 defaultValue={formData.contaminacion91}
-                                                disabled={revision91 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion91 == "ok"}>OK</option>
@@ -4016,7 +3536,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="contaminacion101"
                                                 defaultValue={formData.contaminacion101}
-                                                disabled={revision101 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.contaminacion101 == "ok"}>OK</option>
@@ -4037,7 +3557,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada11"
                                                 defaultValue={formData.rebanada11}
-                                                disabled={revision11 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada11 == "ok"}>OK</option>
@@ -4048,7 +3568,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada21"
                                                 defaultValue={formData.rebanada21}
-                                                disabled={revision21 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada21 == "ok"}>OK</option>
@@ -4059,7 +3579,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada31"
                                                 defaultValue={formData.rebanada31}
-                                                disabled={revision31 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada31 == "ok"}>OK</option>
@@ -4070,7 +3590,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada41"
                                                 defaultValue={formData.rebanada41}
-                                                disabled={revision41 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada41 == "ok"}>OK</option>
@@ -4081,7 +3601,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada51"
                                                 defaultValue={formData.rebanada51}
-                                                disabled={revision51 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada51 == "ok"}>OK</option>
@@ -4092,7 +3612,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada61"
                                                 defaultValue={formData.rebanada61}
-                                                disabled={revision61 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada61 == "ok"}>OK</option>
@@ -4103,7 +3623,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada71"
                                                 defaultValue={formData.rebanada71}
-                                                disabled={revision71 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada71 == "ok"}>OK</option>
@@ -4114,7 +3634,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada81"
                                                 defaultValue={formData.rebanada81}
-                                                disabled={revision81 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada81 == "ok"}>OK</option>
@@ -4125,7 +3645,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada91"
                                                 defaultValue={formData.rebanada91}
-                                                disabled={revision91 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada91 == "ok"}>OK</option>
@@ -4136,7 +3656,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rebanada101"
                                                 defaultValue={formData.rebanada101}
-                                                disabled={revision101 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rebanada101 == "ok"}>OK</option>
@@ -4158,7 +3678,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga11"
                                                 defaultValue={formData.rafaga11}
-                                                disabled={revision11 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga11 == "ok"}>OK</option>
@@ -4169,7 +3689,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga21"
                                                 defaultValue={formData.rafaga21}
-                                                disabled={revision21 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga21 == "ok"}>OK</option>
@@ -4180,7 +3700,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga31"
                                                 defaultValue={formData.rafaga31}
-                                                disabled={revision31 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga31 == "ok"}>OK</option>
@@ -4191,7 +3711,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga41"
                                                 defaultValue={formData.rafaga41}
-                                                disabled={revision41 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga41 == "ok"}>OK</option>
@@ -4202,7 +3722,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga51"
                                                 defaultValue={formData.rafaga51}
-                                                disabled={revision51 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga51 == "ok"}>OK</option>
@@ -4213,7 +3733,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga61"
                                                 defaultValue={formData.rafaga61}
-                                                disabled={revision61 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga61 == "ok"}>OK</option>
@@ -4224,7 +3744,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga71"
                                                 defaultValue={formData.rafaga71}
-                                                disabled={revision71 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga71 == "ok"}>OK</option>
@@ -4235,7 +3755,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga81"
                                                 defaultValue={formData.rafaga81}
-                                                disabled={revision81 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga81 == "ok"}>OK</option>
@@ -4246,7 +3766,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga91"
                                                 defaultValue={formData.rafaga91}
-                                                disabled={revision91 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga91 == "ok"}>OK</option>
@@ -4257,7 +3777,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rafaga101"
                                                 defaultValue={formData.rafaga101}
-                                                disabled={revision101 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rafaga101 == "ok"}>OK</option>
@@ -4279,7 +3799,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe11"
                                                 defaultValue={formData.rechupe11}
-                                                disabled={revision11 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe11 == "ok"}>OK</option>
@@ -4290,7 +3810,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe21"
                                                 defaultValue={formData.rechupe21}
-                                                disabled={revision21 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe21 == "ok"}>OK</option>
@@ -4301,7 +3821,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe31"
                                                 defaultValue={formData.rechupe31}
-                                                disabled={revision31 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe31 == "ok"}>OK</option>
@@ -4312,7 +3832,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe41"
                                                 defaultValue={formData.rechupe41}
-                                                disabled={revision41 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe41 == "ok"}>OK</option>
@@ -4323,7 +3843,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe51"
                                                 defaultValue={formData.rechupe51}
-                                                disabled={revision51 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe51 == "ok"}>OK</option>
@@ -4334,7 +3854,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe61"
                                                 defaultValue={formData.rechupe61}
-                                                disabled={revision61 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe61 == "ok"}>OK</option>
@@ -4345,7 +3865,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe71"
                                                 defaultValue={formData.rechupe71}
-                                                disabled={revision71 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe71 == "ok"}>OK</option>
@@ -4356,7 +3876,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe81"
                                                 defaultValue={formData.rechupe81}
-                                                disabled={revision81 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe81 == "ok"}>OK</option>
@@ -4367,7 +3887,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe91"
                                                 defaultValue={formData.rechupe91}
-                                                disabled={revision91 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe91 == "ok"}>OK</option>
@@ -4378,7 +3898,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="rechupe101"
                                                 defaultValue={formData.rechupe101}
-                                                disabled={revision101 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.rechupe101 == "ok"}>OK</option>
@@ -4400,7 +3920,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta11"
                                                 defaultValue={formData.piezaCompleta11}
-                                                disabled={revision11 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta11 == "ok"}>OK</option>
@@ -4411,7 +3931,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta21"
                                                 defaultValue={formData.piezaCompleta21}
-                                                disabled={revision21 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta21 == "ok"}>OK</option>
@@ -4422,7 +3942,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta31"
                                                 defaultValue={formData.piezaCompleta31}
-                                                disabled={revision31 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta31 == "ok"}>OK</option>
@@ -4433,7 +3953,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta41"
                                                 defaultValue={formData.piezaCompleta41}
-                                                disabled={revision41 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta41 == "ok"}>OK</option>
@@ -4444,7 +3964,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta51"
                                                 defaultValue={formData.piezaCompleta51}
-                                                disabled={revision51 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta51 == "ok"}>OK</option>
@@ -4455,7 +3975,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta61"
                                                 defaultValue={formData.piezaCompleta61}
-                                                disabled={revision61 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta61 == "ok"}>OK</option>
@@ -4466,7 +3986,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta71"
                                                 defaultValue={formData.piezaCompleta71}
-                                                disabled={revision71 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta71 == "ok"}>OK</option>
@@ -4477,7 +3997,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta81"
                                                 defaultValue={formData.piezaCompleta81}
-                                                disabled={revision81 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta81 == "ok"}>OK</option>
@@ -4488,7 +4008,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta91"
                                                 defaultValue={formData.piezaCompleta91}
-                                                disabled={revision91 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta91 == "ok"}>OK</option>
@@ -4499,7 +4019,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="piezaCompleta101"
                                                 defaultValue={formData.piezaCompleta101}
-                                                disabled={revision101 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.piezaCompleta101 == "ok"}>OK</option>
@@ -4521,7 +4041,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas11"
                                                 defaultValue={formData.grietas11}
-                                                disabled={revision11 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas11 == "ok"}>OK</option>
@@ -4532,7 +4052,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas21"
                                                 defaultValue={formData.grietas21}
-                                                disabled={revision21 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas21 == "ok"}>OK</option>
@@ -4543,7 +4063,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas31"
                                                 defaultValue={formData.grietas31}
-                                                disabled={revision31 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas31 == "ok"}>OK</option>
@@ -4554,7 +4074,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas41"
                                                 defaultValue={formData.grietas41}
-                                                disabled={revision41 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas41 == "ok"}>OK</option>
@@ -4565,7 +4085,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas51"
                                                 defaultValue={formData.grietas51}
-                                                disabled={revision51 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas51 == "ok"}>OK</option>
@@ -4576,7 +4096,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas61"
                                                 defaultValue={formData.grietas61}
-                                                disabled={revision61 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas61 == "ok"}>OK</option>
@@ -4587,7 +4107,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas71"
                                                 defaultValue={formData.grietas71}
-                                                disabled={revision71 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas71 == "ok"}>OK</option>
@@ -4598,7 +4118,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas81"
                                                 defaultValue={formData.grietas81}
-                                                disabled={revision81 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas81 == "ok"}>OK</option>
@@ -4609,7 +4129,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas91"
                                                 defaultValue={formData.grietas91}
-                                                disabled={revision91 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas91 == "ok"}>OK</option>
@@ -4620,7 +4140,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="grietas101"
                                                 defaultValue={formData.grietas101}
-                                                disabled={revision101 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.grietas101 == "ok"}>OK</option>
@@ -4642,7 +4162,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion11"
                                                 defaultValue={formData.inyeccion11}
-                                                disabled={revision11 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion11 == "ok"}>OK</option>
@@ -4653,7 +4173,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion21"
                                                 defaultValue={formData.inyeccion21}
-                                                disabled={revision21 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion21 == "ok"}>OK</option>
@@ -4664,7 +4184,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion31"
                                                 defaultValue={formData.inyeccion31}
-                                                disabled={revision31 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion31 == "ok"}>OK</option>
@@ -4675,7 +4195,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion41"
                                                 defaultValue={formData.inyeccion41}
-                                                disabled={revision41 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion41 == "ok"}>OK</option>
@@ -4686,7 +4206,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion51"
                                                 defaultValue={formData.inyeccion51}
-                                                disabled={revision51 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion51 == "ok"}>OK</option>
@@ -4697,7 +4217,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion61"
                                                 defaultValue={formData.inyeccion61}
-                                                disabled={revision61 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion61 == "ok"}>OK</option>
@@ -4708,7 +4228,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion71"
                                                 defaultValue={formData.inyeccion71}
-                                                disabled={revision71 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion71 == "ok"}>OK</option>
@@ -4719,7 +4239,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion81"
                                                 defaultValue={formData.inyeccion81}
-                                                disabled={revision81 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion81 == "ok"}>OK</option>
@@ -4730,7 +4250,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion91"
                                                 defaultValue={formData.inyeccion91}
-                                                disabled={revision91 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion91 == "ok"}>OK</option>
@@ -4741,7 +4261,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="inyeccion101"
                                                 defaultValue={formData.inyeccion101}
-                                                disabled={revision101 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.inyeccion101 == "ok"}>OK</option>
@@ -4763,7 +4283,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia11"
                                                 defaultValue={formData.consistencia11}
-                                                disabled={revision11 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia11 == "ok"}>OK</option>
@@ -4774,7 +4294,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia21"
                                                 defaultValue={formData.consistencia21}
-                                                disabled={revision21 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia21 == "ok"}>OK</option>
@@ -4785,7 +4305,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia31"
                                                 defaultValue={formData.consistencia31}
-                                                disabled={revision31 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia31 == "ok"}>OK</option>
@@ -4796,7 +4316,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia41"
                                                 defaultValue={formData.consistencia41}
-                                                disabled={revision41 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia41 == "ok"}>OK</option>
@@ -4807,7 +4327,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia51"
                                                 defaultValue={formData.consistencia51}
-                                                disabled={revision51 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia51 == "ok"}>OK</option>
@@ -4818,7 +4338,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia61"
                                                 defaultValue={formData.consistencia61}
-                                                disabled={revision61 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia61 == "ok"}>OK</option>
@@ -4829,7 +4349,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia71"
                                                 defaultValue={formData.consistencia71}
-                                                disabled={revision71 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia71 == "ok"}>OK</option>
@@ -4840,7 +4360,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia81"
                                                 defaultValue={formData.consistencia81}
-                                                disabled={revision81 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia81 == "ok"}>OK</option>
@@ -4851,7 +4371,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia91"
                                                 defaultValue={formData.consistencia91}
-                                                disabled={revision91 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia91 == "ok"}>OK</option>
@@ -4862,7 +4382,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="consistencia101"
                                                 defaultValue={formData.consistencia101}
-                                                disabled={revision101 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.consistencia101 == "ok"}>OK</option>
@@ -4884,7 +4404,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad11"
                                                 defaultValue={formData.funcionalidad11}
-                                                disabled={revision11 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad11 == "ok"}>OK</option>
@@ -4895,7 +4415,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad21"
                                                 defaultValue={formData.funcionalidad21}
-                                                disabled={revision21 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad21 == "ok"}>OK</option>
@@ -4906,7 +4426,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad31"
                                                 defaultValue={formData.funcionalidad31}
-                                                disabled={revision31 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad31 == "ok"}>OK</option>
@@ -4917,7 +4437,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad41"
                                                 defaultValue={formData.funcionalidad41}
-                                                disabled={revision41 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad41 == "ok"}>OK</option>
@@ -4928,7 +4448,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad51"
                                                 defaultValue={formData.funcionalidad51}
-                                                disabled={revision51 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad51 == "ok"}>OK</option>
@@ -4939,7 +4459,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad61"
                                                 defaultValue={formData.funcionalidad61}
-                                                disabled={revision61 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad61 == "ok"}>OK</option>
@@ -4950,7 +4470,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad71"
                                                 defaultValue={formData.funcionalidad71}
-                                                disabled={revision71 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad71 == "ok"}>OK</option>
@@ -4961,7 +4481,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad81"
                                                 defaultValue={formData.funcionalidad81}
-                                                disabled={revision81 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad81 == "ok"}>OK</option>
@@ -4972,7 +4492,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad91"
                                                 defaultValue={formData.funcionalidad91}
-                                                disabled={revision91 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad91 == "ok"}>OK</option>
@@ -4983,7 +4503,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="funcionalidad101"
                                                 defaultValue={formData.funcionalidad101}
-                                                disabled={revision101 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.funcionalidad101 == "ok"}>OK</option>
@@ -5005,7 +4525,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque11"
                                                 defaultValue={formData.empaque11}
-                                                disabled={revision11 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque11 == "ok"}>OK</option>
@@ -5016,7 +4536,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque21"
                                                 defaultValue={formData.empaque21}
-                                                disabled={revision21 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque21 == "ok"}>OK</option>
@@ -5027,7 +4547,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque31"
                                                 defaultValue={formData.empaque31}
-                                                disabled={revision31 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque31 == "ok"}>OK</option>
@@ -5038,7 +4558,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque41"
                                                 defaultValue={formData.empaque41}
-                                                disabled={revision41 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque41 == "ok"}>OK</option>
@@ -5049,7 +4569,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque51"
                                                 defaultValue={formData.empaque51}
-                                                disabled={revision51 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque51 == "ok"}>OK</option>
@@ -5060,7 +4580,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque61"
                                                 defaultValue={formData.empaque61}
-                                                disabled={revision61 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque61 == "ok"}>OK</option>
@@ -5071,7 +4591,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque71"
                                                 defaultValue={formData.empaque71}
-                                                disabled={revision71 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque71 == "ok"}>OK</option>
@@ -5082,7 +4602,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque81"
                                                 defaultValue={formData.empaque81}
-                                                disabled={revision81 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque81 == "ok"}>OK</option>
@@ -5093,7 +4613,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque91"
                                                 defaultValue={formData.empaque91}
-                                                disabled={revision91 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque91 == "ok"}>OK</option>
@@ -5104,7 +4624,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="empaque101"
                                                 defaultValue={formData.empaque101}
-                                                disabled={revision101 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.empaque101 == "ok"}>OK</option>
@@ -5126,7 +4646,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros11"
                                                 defaultValue={formData.otros11}
-                                                disabled={revision11 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros11 == "ok"}>OK</option>
@@ -5137,7 +4657,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros21"
                                                 defaultValue={formData.otros21}
-                                                disabled={revision21 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros21 == "ok"}>OK</option>
@@ -5148,7 +4668,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros31"
                                                 defaultValue={formData.otros31}
-                                                disabled={revision31 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros31 == "ok"}>OK</option>
@@ -5159,7 +4679,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros41"
                                                 defaultValue={formData.otros41}
-                                                disabled={revision41 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros41 == "ok"}>OK</option>
@@ -5170,7 +4690,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros51"
                                                 defaultValue={formData.otros51}
-                                                disabled={revision51 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros51 == "ok"}>OK</option>
@@ -5181,7 +4701,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros61"
                                                 defaultValue={formData.otros61}
-                                                disabled={revision61 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros61 == "ok"}>OK</option>
@@ -5192,7 +4712,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros71"
                                                 defaultValue={formData.otros71}
-                                                disabled={revision71 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros71 == "ok"}>OK</option>
@@ -5203,7 +4723,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros81"
                                                 defaultValue={formData.otros81}
-                                                disabled={revision81 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros81 == "ok"}>OK</option>
@@ -5214,7 +4734,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros91"
                                                 defaultValue={formData.otros91}
-                                                disabled={revision91 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros91 == "ok"}>OK</option>
@@ -5225,7 +4745,7 @@ function ModificaInspeccionMaterial(props) {
                                                 as="select"
                                                 name="otros101"
                                                 defaultValue={formData.otros101}
-                                                disabled={revision101 != 1}
+                                                disabled
                                             >
                                                 <option></option>
                                                 <option value="ok" selected={formData.otros101 == "ok"}>OK</option>
@@ -5247,7 +4767,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas11"
                                                 defaultValue={formData.piezasRevisadas11}
-                                                disabled={revision11 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -5256,7 +4776,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas21"
                                                 defaultValue={formData.piezasRevisadas21}
-                                                disabled={revision21 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -5264,7 +4784,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas31"
                                                 defaultValue={formData.piezasRevisadas31}
-                                                disabled={revision31 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -5273,7 +4793,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas41"
                                                 defaultValue={formData.piezasRevisadas41}
-                                                disabled={revision41 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -5281,7 +4801,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas51"
                                                 defaultValue={formData.piezasRevisadas51}
-                                                disabled={revision51 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -5290,7 +4810,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas61"
                                                 defaultValue={formData.piezasRevisadas61}
-                                                disabled={revision61 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -5298,7 +4818,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas71"
                                                 defaultValue={formData.piezasRevisadas71}
-                                                disabled={revision71 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -5307,7 +4827,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas81"
                                                 defaultValue={formData.piezasRevisadas81}
-                                                disabled={revision81 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -5315,7 +4835,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas91"
                                                 defaultValue={formData.piezasRevisadas91}
-                                                disabled={revision91 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -5324,7 +4844,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="piezasRevisadas101"
                                                 defaultValue={formData.piezasRevisadas101}
-                                                disabled={revision101 != 1}
+                                                disabled
                                             />
                                         </Col>
                                     </Form.Group>
@@ -5342,7 +4862,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas11"
                                                 defaultValue={formData.cantidadPiezas11}
-                                                disabled={revision11 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -5351,7 +4871,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas21"
                                                 defaultValue={formData.cantidadPiezas21}
-                                                disabled={revision21 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -5359,7 +4879,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas31"
                                                 defaultValue={formData.cantidadPiezas31}
-                                                disabled={revision31 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -5368,7 +4888,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas41"
                                                 defaultValue={formData.cantidadPiezas41}
-                                                disabled={revision41 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -5376,7 +4896,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas51"
                                                 defaultValue={formData.cantidadPiezas51}
-                                                disabled={revision51 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -5385,7 +4905,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas61"
                                                 defaultValue={formData.cantidadPiezas61}
-                                                disabled={revision61 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -5393,7 +4913,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas71"
                                                 defaultValue={formData.cantidadPiezas71}
-                                                disabled={revision71 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -5402,7 +4922,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas81"
                                                 defaultValue={formData.cantidadPiezas81}
-                                                disabled={revision81 != 1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -5410,7 +4930,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas91"
                                                 defaultValue={formData.cantidadPiezas91}
-                                                disabled={revision91 != 1}
+                                                disabled
                                             />
                                         </Col>
 
@@ -5419,7 +4939,7 @@ function ModificaInspeccionMaterial(props) {
                                                 type="text"
                                                 name="cantidadPiezas101"
                                                 defaultValue={formData.cantidadPiezas101}
-                                                disabled={revision101 != 1}
+                                                disabled
                                             />
                                         </Col>
                                     </Form.Group>
@@ -5443,6 +4963,7 @@ function ModificaInspeccionMaterial(props) {
                                                 placeholder="Observaciones"
                                                 name="observaciones"
                                                 defaultValue={formData.observaciones}
+                                                disabled
                                             />
                                         </Col>
                                     </Form.Group>
@@ -5450,30 +4971,40 @@ function ModificaInspeccionMaterial(props) {
                             </Container>
                         </div>
 
-                        <Form.Group as={Row} className="botones">
-                            <Col>
-                                <Button
-                                    type="submit"
-                                    title="Actualizar el registro"
-                                    variant="success"
-                                    className="registrar"
-                                >
-                                    {!loading ? "Modificar" : <Spinner animation="border" />}
-                                </Button>
-                            </Col>
-                            <Col>
-                                <Button
-                                    variant="danger"
-                                    title="Cerrar el formulario"
-                                    className="cancelar"
-                                    onClick={() => {
-                                        rutaRegreso()
-                                    }}
-                                >
-                                    Cancelar
-                                </Button>
-                            </Col>
-                        </Form.Group>
+                        <br />
+
+                        <div className="botones">
+                            <Form.Group as={Row} className="botones">
+                                <Row>
+                                    <Col>
+                                        <div
+                                            className="generacionPDF"
+                                        >
+                                            <Image
+                                                src={LogoPDF}
+                                                className="logoPDF"
+                                                onClick={() => {
+                                                    descargaPDF()
+                                                }}
+                                            />
+                                        </div>
+                                    </Col>
+                                    <Col>
+                                        <div
+                                            className="regreso"
+                                        >
+                                            <Image
+                                                src={Regreso}
+                                                className="regresarVistaAnterior"
+                                                onClick={() => {
+                                                    rutaRegreso()
+                                                }}
+                                            />
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Form.Group>
+                        </div>
 
                         <br />
 
@@ -5826,6 +5357,7 @@ function initialFormData() {
         cantidadPiezas101: "",
 
         observaciones: "",
+        operador1: "",
     }
 }
 
@@ -6130,4 +5662,4 @@ function valoresAlmacenados(data) {
     }
 }
 
-export default ModificaInspeccionMaterial;
+export default VistaPreviaInspeccion;

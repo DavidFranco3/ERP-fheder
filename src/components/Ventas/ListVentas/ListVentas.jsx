@@ -51,6 +51,11 @@ function ListVentas(props) {
     }
 
     // Para la modificacion de datos del pedido
+    const vistaPreviaVentas = (folio) => {
+        enrutamiento.push(`/VistaPreviaVenta/${folio}`);
+    }
+
+    // Para la modificacion de datos del pedido
     const registroCuentasCobrar = (folio) => {
         enrutamiento.push(`/FacturasOV/${folio}`);
     }
@@ -226,6 +231,7 @@ function ListVentas(props) {
                         title="Generar PDF"
                         className="ver"
                         onClick={() => {
+                            vistaPreviaVentas(row.folio)
                         }}
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />

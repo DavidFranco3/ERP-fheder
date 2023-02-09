@@ -48,6 +48,10 @@ function ListRecepciones(props) {
         enrutamiento.push(`/ModificaRecepcion/${id}`);
     }
 
+    const vistaPreviaRecepcion = (id) => {
+        enrutamiento.push(`/VistaPreviaRecepcion/${id}`);
+    }
+
     const ExpandedComponent = ({ data }) => (
         <ListProductosRecepcion
             numeroRecepcion={data.folio}
@@ -169,6 +173,7 @@ function ListRecepciones(props) {
                         title="Generar PDF"
                         className="ver"
                         onClick={() => {
+                            vistaPreviaRecepcion(row.id)
                         }}
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />

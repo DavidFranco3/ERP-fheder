@@ -44,6 +44,10 @@ function ListCalidad(props) {
         enrutamiento.push(`/ModificacionReporte/${id}`)
     }
 
+    const vistaPreviaCalidad = (id) => {
+        enrutamiento.push(`/VistaPreviaReporte/${id}`)
+    }
+
     const columns = [
         {
             name: "ITEM",
@@ -168,7 +172,11 @@ function ListCalidad(props) {
                 <>
                     <Badge
                         bg="info"
+                        title="Modificar"
                         className="evaluacionProveedor"
+                        onClick={() => {
+                            vistaPreviaCalidad(row.id)
+                        }}
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />
                     </Badge>

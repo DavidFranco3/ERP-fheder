@@ -179,8 +179,8 @@ function RegistraInspeccionMaterial(props) {
                     material: material,
                     cantidadLote: formData.cantidadLote,
                     turno1: {
-                        elaboro: formData.elaboro,
-                        operador: formData.operador,
+                        elaboro: formData.elaboro1,
+                        operador: formData.operador1,
                         revisiones: {
                             1: {
                                 revision1: "1",

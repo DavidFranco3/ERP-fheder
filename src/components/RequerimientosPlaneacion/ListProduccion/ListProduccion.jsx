@@ -57,8 +57,8 @@ function ListProduccion(props) {
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
-    const vistaPrevia = () => {
-        // enrutamiento.push("")
+    const vistaPreviaPlaneacion = (id) => {
+        enrutamiento.push(`/VistaPreviaPlaneacion/${id}`);
     }
 
     const columns = [
@@ -213,6 +213,7 @@ function ListProduccion(props) {
                         title="Generar PDF"
                         className="ver"
                         onClick={() => {
+                            vistaPreviaPlaneacion(row.id)
                         }}
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />

@@ -46,8 +46,8 @@ function ListInspeccionPieza(props) {
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
-    const vistaPrevia = () => {
-        // enrutamiento.push("")
+    const vistaPrevia = (id) => {
+        enrutamiento.push(`/VistaPreviaInspeccion/${id}`);
     }
 
     const columns = [
@@ -169,6 +169,10 @@ function ListInspeccionPieza(props) {
                     <Badge
                         bg="info"
                         className="evaluacionProveedor"
+                        title="Generar PDF"
+                        onClick={() => {
+                            vistaPrevia(row.id)
+                        }}
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />
                     </Badge>

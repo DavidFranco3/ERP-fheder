@@ -47,6 +47,11 @@ function ListProgramaProduccion(props) {
         enrutamiento.push(`/ModificaProgramaProduccion/${id}`);
     }
 
+    //Para la modificacion de datos
+    const vistaPreviaProgramaProduccion = (id) => {
+        enrutamiento.push(`/VistaPreviaProgramaProduccion/${id}`);
+    }
+
     const columns = [
         {
             name: 'Folio',
@@ -181,6 +186,7 @@ function ListProgramaProduccion(props) {
                         title="Generar PDF"
                         className="ver"
                         onClick={() => {
+                            vistaPreviaProgramaProduccion(row.id)
                         }}
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />

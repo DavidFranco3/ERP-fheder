@@ -47,6 +47,10 @@ function ListCompras(props) {
         enrutamiento.push(`/ModificacionCompras/${folio}`)
     }
 
+    const vistaPreviaCompra = (folio) => {
+        enrutamiento.push(`/VistaPreviaCompras/${folio}`)
+    }
+
     const ExpandedComponent = ({ data }) => (
         <ListProductosCompras
             ordenCompra={data.folio}
@@ -201,6 +205,9 @@ function ListCompras(props) {
                         bg="info"
                         title="Generar PDF"
                         className="evaluacionProveedor"
+                        onClick={() => {
+                            vistaPreviaCompra(row.folio)
+                        }}
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />
                     </Badge>

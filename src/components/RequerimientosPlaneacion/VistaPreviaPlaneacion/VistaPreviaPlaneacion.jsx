@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
+import { Alert, Button, Col, Row, Form, Container, Image, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOV from "../../../page/BuscarOV";
 import { useHistory, useParams } from "react-router-dom";
-import "./ModificacionProduccion.scss";
+import "./VistaPreviaPlaneacion.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { listarMatrizProductosActivos, obtenerMatrizProducto } from "../../../api/matrizProductos";
@@ -17,9 +17,14 @@ import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
 import { obtenerDatosArticulo } from '../../../api/almacenes';
+import LogoPDF from "../../../assets/png/pdf.png";
+import Regreso from "../../../assets/png/back.png";
 
-function ModificacionProduccion(props) {
+function VistaPreviaPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
+
+    const descargaPDF = async () => {
+    }
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -614,21 +619,6 @@ function ModificacionProduccion(props) {
 
     let piezasTurno3 = (((3600 / Number(formDataPlaneacion.tiempoCiclo3)) * Number(formDataPlaneacion.cavMolde)) * 12);
 
-
-    console.log(kgMaterial, cantidadProductoAlmacen)
-
-    useEffect(() => {
-        setCantidadPedir(Number(kgMaterial) - Number(cantidadProductoAlmacen))
-    }, [formData.materiaPrima, formDataPlaneacion.idMaterial, totalProducir]);
-
-    useEffect(() => {
-        setCantidadPedirMB(Number(pigMB) - Number(cantidadMBAlmacen))
-    }, [formData.materiaPrima, formDataPlaneacion.idMaterial, totalProducir]);
-
-    useEffect(() => {
-        setCantidadPedirEmpaques(Number(bolsasCajasUtilizar) - Number(cantidadEmpaquesAlmacen))
-    }, [formData.materiaPrima, formDataPlaneacion.idMaterial, totalProducir]);
-
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
         setFormDataPlaneacion({ ...formDataPlaneacion, [e.target.name]: e.target.value })
@@ -699,112 +689,6 @@ function ModificacionProduccion(props) {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
-                                            ITEM
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="itemOV"
-                                            name="itemOV"
-                                            value={itemOV}
-                                            disabled
-                                        />
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formHorizontalNoParte">
-                                        <Form.Label align="center">
-                                            Orden de venta
-                                        </Form.Label>
-                                        <div className="flex items-center mb-1">
-                                            <Form.Control
-                                                id="ordenVenta"
-                                                type="text"
-                                                placeholder="Orden de venta"
-                                                name="ordenVenta"
-                                                value={formDataVenta.ordenVenta}
-                                                disabled
-                                            />
-                                            <FontAwesomeIcon
-                                                className="cursor-pointer py-2 -ml-6"
-                                                title="Buscar entre las ordenes de venta"
-                                                icon={faSearch}
-                                                onClick={() => {
-                                                    buscarOV(
-                                                        <BuscarOV
-                                                            setFormData={setFormDataVenta}
-                                                            setProducto={setProducto}
-                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
-                                                            setShowModal={setShowModal}
-                                                        />)
-                                                }}
-                                            />
-                                        </div>
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formHorizontalProducto">
-                                        <Form.Label align="center">
-                                            Cantidad pedida
-                                        </Form.Label>
-                                        <Form.Control
-                                            id="cantidadPedidaOV"
-                                            type="number"
-                                            min="0"
-                                            placeholder="Cantidad pedida"
-                                            name="cantidadPedidaVenta"
-                                            value={formDataVenta.cantidadRequerida}
-                                            disabled
-                                        />
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formHorizontalProducto">
-                                        <Form.Label align="center">
-                                            Cantidad a producir
-                                        </Form.Label>
-                                        <Form.Control
-                                            id="cantidadProducirOV"
-                                            type="number"
-                                            placeholder="Cantidad a producir"
-                                            name="cantidadProducirVenta"
-                                        />
-                                    </Form.Group>
-
-                                    <Col sm="1">
-                                        <Form.Group as={Row} className="formGridCliente">
-                                            <Form.Label>
-                                                &nbsp;
-                                            </Form.Label>
-
-                                            <Col>
-                                                <Button
-                                                    variant="success"
-                                                    title=" Agregar la orden de venta"
-                                                    className="editar"
-                                                    onClick={() => {
-                                                        addItemsOV()
-                                                    }}
-                                                >
-                                                    <FontAwesomeIcon icon={faCirclePlus} className="text-lg" />
-                                                </Button>
-                                            </Col>
-                                            <Col>
-                                                <Button
-                                                    variant="danger"
-                                                    title="Cancelar la orden de venta"
-                                                    className="editar"
-                                                    onClick={() => {
-                                                        cancelarCargaOV()
-                                                    }}
-                                                >
-                                                    <FontAwesomeIcon icon={faX} className="text-lg" />
-                                                </Button>
-                                            </Col>
-                                        </Form.Group>
-                                    </Col>
-
-                                </Row>
-
-                                <Row className="mb-3">
-                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
-                                        <Form.Label align="center">
                                             Semana
                                         </Form.Label>
                                         <Form.Control
@@ -813,6 +697,7 @@ function ModificacionProduccion(props) {
                                             placeholder="Semana"
                                             name="semana"
                                             defaultValue={informacionRequerimiento.semana}
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -826,6 +711,7 @@ function ModificacionProduccion(props) {
                                                     type="text"
                                                     defaultValue={formDataPlaneacion.descripcion}
                                                     name="materiaPrima"
+                                                    disabled
                                                 />
                                             </>
                                         ) : (
@@ -836,6 +722,7 @@ function ModificacionProduccion(props) {
                                                     }}
                                                     defaultValue={formData.materiaPrima}
                                                     name="materiaPrima"
+                                                    disabled
                                                 >
                                                     <option>Elige una opción</option>
                                                     {map(producto, (productos, index) => (
@@ -860,6 +747,7 @@ function ModificacionProduccion(props) {
                                             defaultValue={formDataPlaneacion.um}
                                             placeholder="UM"
                                             name="um"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -873,6 +761,7 @@ function ModificacionProduccion(props) {
                                             onChange={e => setAlmacenProducto(e.target.value)}
                                             placeholder="Almacen producto terminado"
                                             name="almacenPT"
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
@@ -893,7 +782,6 @@ function ModificacionProduccion(props) {
                                             <th scope="col">Orden de venta</th>
                                             <th scope="col">Cantidad pedida</th>
                                             <th scope="col">Cantidad a producir</th>
-                                            <th scope="col">Eliminar</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -912,17 +800,6 @@ function ModificacionProduccion(props) {
                                                 </td>
                                                 <td data-title="cantidadProducirOV">
                                                     {ordenVenta.cantidadProducirOV}
-                                                </td>
-                                                <td data-title="Eliminar">
-                                                    <div
-                                                        className="eliminarProductoListado"
-                                                        title="Eliminar la orden de venta"
-                                                        onClick={() => {
-                                                            removeItemOV(ordenVenta)
-                                                        }}
-                                                    >
-                                                        ❌
-                                                    </div>
                                                 </td>
                                             </tr>
                                         ))}
@@ -970,6 +847,7 @@ function ModificacionProduccion(props) {
                                             placeholder="Numero de molde"
                                             defaultValue={formDataPlaneacion.noMolde}
                                             name="noMolde"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -982,6 +860,7 @@ function ModificacionProduccion(props) {
                                             defaultValue={formDataPlaneacion.cavMolde}
                                             placeholder="Numero de cavidades"
                                             name="numeroCavidades"
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1027,6 +906,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="numeroMaquina1"
                                                 defaultValue={numeroMaquina1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -1034,6 +914,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="maquina1"
                                                 defaultValue={nombreMaquina1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -1041,6 +922,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="ciclo1"
                                                 defaultValue={formDataPlaneacion.tiempoCiclo1}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -1048,6 +930,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="pieza1"
                                                 value={piezasTurno1.toFixed(2)}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -1055,6 +938,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="bolsa1"
                                                 defaultValue={formDataPlaneacion.noPiezasxEmpaque}
+                                                disabled
                                             />
                                         </Col>
                                     </Form.Group>
@@ -1072,6 +956,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="numeroMaquina2"
                                                 defaultValue={numeroMaquina2}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -1079,6 +964,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="maquina2"
                                                 defaultValue={nombreMaquina2}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -1086,6 +972,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="ciclo2"
                                                 defaultValue={formDataPlaneacion.tiempoCiclo2}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -1093,6 +980,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="pieza2"
                                                 value={piezasTurno2.toFixed(2)}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -1100,6 +988,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="bolsa2"
                                                 defaultValue={formDataPlaneacion.noPiezasxEmpaque}
+                                                disabled
                                             />
                                         </Col>
                                     </Form.Group>
@@ -1117,6 +1006,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="numeroMaquina3"
                                                 defaultValue={numeroMaquina3}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -1124,6 +1014,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="maquina3"
                                                 defaultValue={nombreMaquina3}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -1131,6 +1022,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="ciclo3"
                                                 defaultValue={formDataPlaneacion.tiempoCiclo3}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -1138,6 +1030,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="pieza3"
                                                 value={piezasTurno3.toFixed(2)}
+                                                disabled
                                             />
                                         </Col>
                                         <Col>
@@ -1145,6 +1038,7 @@ function ModificacionProduccion(props) {
                                                 type="text"
                                                 name="bolsa3"
                                                 defaultValue={formDataPlaneacion.noPiezasxEmpaque}
+                                                disabled
                                             />
                                         </Col>
                                     </Form.Group>
@@ -1172,6 +1066,7 @@ function ModificacionProduccion(props) {
                                             defaultValue={formDataPlaneacion.descripcionMP}
                                             placeholder="Material"
                                             name="Material"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -1184,6 +1079,7 @@ function ModificacionProduccion(props) {
                                             placeholder="Molido"
                                             defaultValue={formDataPlaneacion.porcentajeMolido}
                                             name="Molido"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -1196,6 +1092,7 @@ function ModificacionProduccion(props) {
                                             defaultValue={formDataPlaneacion.pesoPiezas}
                                             placeholder="Peso de la pieza"
                                             name="pesoPieza"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -1208,6 +1105,7 @@ function ModificacionProduccion(props) {
                                             defaultValue={formDataPlaneacion.pesoColada}
                                             placeholder="Peso colada"
                                             name="pesoColada"
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1222,6 +1120,7 @@ function ModificacionProduccion(props) {
                                             defaultValue={formDataPlaneacion.descripcionBolsa}
                                             placeholder="Empaque"
                                             name="empaque"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -1234,6 +1133,7 @@ function ModificacionProduccion(props) {
                                             placeholder="Pigmento/MB"
                                             defaultValue={formDataPlaneacion.descripcionPigmento}
                                             name="Pigmento"
+                                            disabled
                                         />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -1245,6 +1145,7 @@ function ModificacionProduccion(props) {
                                             defaultValue={formDataPlaneacion.aplicacionGxKG}
                                             placeholder="Apliación (gr/kg)"
                                             name="aplicacion"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -1257,6 +1158,7 @@ function ModificacionProduccion(props) {
                                             value={Math.ceil(bolsasCajasUtilizar)}
                                             placeholder="Bolsas o cajas a utilizar"
                                             name="bolsasCajasUtilizar"
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1271,6 +1173,7 @@ function ModificacionProduccion(props) {
                                             placeholder="Material x turno"
                                             name="materialTurno"
                                             value={materialTurno.toFixed(3)}
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -1283,6 +1186,7 @@ function ModificacionProduccion(props) {
                                             placeholder="merma"
                                             name="merma"
                                             defaultValue={formDataPlaneacion.porcentajeScrap}
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -1295,6 +1199,7 @@ function ModificacionProduccion(props) {
                                             placeholder="Kg de material"
                                             name="kgMaterial"
                                             value={kgMaterial.toFixed(2)}
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -1307,6 +1212,7 @@ function ModificacionProduccion(props) {
                                             placeholder="Kg de PIG o MB"
                                             name="kgPIGMB"
                                             value={pigMB.toFixed(2)}
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1389,6 +1295,7 @@ function ModificacionProduccion(props) {
                                             name="cantidadPedir"
                                             onChange={e => setCantidadPedir(e.target.value)}
                                             value={cantidadPedir}
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1458,6 +1365,7 @@ function ModificacionProduccion(props) {
                                             name="cantidadPedirMB"
                                             onChange={e => setCantidadPedirMB(e.target.value)}
                                             value={cantidadPedirMB}
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1527,6 +1435,7 @@ function ModificacionProduccion(props) {
                                             name="cantidadPedirEmpaques"
                                             onChange={e => setCantidadPedirEmpaques(e.target.value)}
                                             value={Math.ceil(cantidadPedirEmpaques)}
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1535,30 +1444,38 @@ function ModificacionProduccion(props) {
 
                         <br />
 
-                        <Form.Group as={Row} className="botones">
-                            <Col>
-                                <Button
-                                    type="submit"
-                                    title="Guardar la información del formulario"
-                                    variant="success"
-                                    className="registrar"
-                                >
-                                    {!loading ? "Modificar" : <Spinner animation="border" />}
-                                </Button>
-                            </Col>
-                            <Col>
-                                <Button
-                                    variant="danger"
-                                    title="Cerrar el formulario"
-                                    className="cancelar"
-                                    onClick={() => {
-                                        rutaRegreso()
-                                    }}
-                                >
-                                    Cancelar
-                                </Button>
-                            </Col>
-                        </Form.Group>
+                        <div className="botones">
+                            <Form.Group as={Row} className="botones">
+                                <Row>
+                                    <Col>
+                                        <div
+                                            className="generacionPDF"
+                                        >
+                                            <Image
+                                                src={LogoPDF}
+                                                className="logoPDF"
+                                                onClick={() => {
+                                                    descargaPDF()
+                                                }}
+                                            />
+                                        </div>
+                                    </Col>
+                                    <Col>
+                                        <div
+                                            className="regreso"
+                                        >
+                                            <Image
+                                                src={Regreso}
+                                                className="regresarVistaAnterior"
+                                                onClick={() => {
+                                                    rutaRegreso()
+                                                }}
+                                            />
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Form.Group>
+                        </div>
 
                         <br />
 
@@ -1864,4 +1781,4 @@ function formatModelMatrizProductos(data) {
     return dataTemp;
 }
 
-export default ModificacionProduccion;
+export default VistaPreviaPlaneacion;

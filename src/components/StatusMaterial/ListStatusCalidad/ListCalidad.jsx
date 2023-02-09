@@ -47,8 +47,8 @@ function ListCalidad(props) {
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
-    const vistaPrevia = () => {
-        // enrutamiento.push("")
+    const vistaPrevia = (id) => {
+        enrutamiento.push(`/VistaPreviaStatus/${id}`);
     }
     
     const columns = [
@@ -136,6 +136,7 @@ function ListCalidad(props) {
                         title="Generar PDF"
                         className="ver"
                         onClick={() => {
+                            vistaPrevia(row.id)
                         }}
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />

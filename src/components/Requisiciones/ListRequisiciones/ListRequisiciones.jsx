@@ -47,8 +47,8 @@ function ListRequisiciones(props) {
         enrutamiento.push(`/ModificacionRequisicion/${id}`);
     }
 
-    // Para llenar la evaluación del proveedor
-    const registraEvaluacion = (idProveedor) => {
+    const VistaPreviaRequisiciones = (id) => {
+        enrutamiento.push(`/VistaPreviaRequisiciones/${id}`);
     }
 
     const ExpandedComponent = ({ data }) => (
@@ -155,6 +155,9 @@ function ListRequisiciones(props) {
                         bg="info"
                         title="Generar PDF"
                         className="evaluacionProveedor"
+                        onClick={() => {
+                            VistaPreviaRequisiciones(row.id)
+                        }}
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />
                     </Badge>

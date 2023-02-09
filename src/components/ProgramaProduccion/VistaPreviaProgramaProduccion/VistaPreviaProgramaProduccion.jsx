@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
+import { Alert, Button, Col, Row, Form, Container, Image, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOV from "../../../page/BuscarOV";
 import { useHistory, useParams } from "react-router-dom";
-import "./RegistraProgramaProduccion.scss";
+import "./VistaPreviaProgramaProduccion.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { listarMatrizProductosActivos, obtenerMatrizProducto, obtenerPorNoInternoMatrizProducto } from "../../../api/matrizProductos";
 import { map } from "lodash";
 import { listarAlmacenPT, obtenerDatosAlmacenPT } from "../../../api/almacenPT";
 import { obtenerDatosMP } from "../../../api/almacenMP";
-import { registraPrograma, obtenerNumeroPrograma } from "../../../api/programaProduccion";
+import { actualizaPrograma, obtenerNumeroPrograma, obtenerPrograma } from "../../../api/programaProduccion";
 import { toast } from "react-toastify";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { obtenerMaquina } from "../../../api/maquinas";
@@ -18,13 +18,17 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../ap
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { obtenerDatosArticulo } from '../../../api/almacenes';
 import BuscarPlaneaccion from '../../../page/BuscarPlaneacion';
-import BuscarProduccion from '../../../page/BuscarProduccion';
 import { listarMaquina } from "../../../api/maquinas";
-import { obtenerDatosSemana } from "../../../api/semana";
+import BuscarProduccion from '../../../page/BuscarProduccion';
 import { obtenerDatosRequerimiento } from "../../../api/requerimientosPlaneacion";
+import LogoPDF from "../../../assets/png/pdf.png";
+import Regreso from "../../../assets/png/back.png";
 
-function RegistraProgramaProduccion(props) {
+function VistaPreviaProgramaProduccion(props) {
     const { setRefreshCheckLogin } = props;
+
+    const descargaPDF = async () => {
+    }
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -39,9 +43,6 @@ function RegistraProgramaProduccion(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-    const params = useParams();
-    const { semana } = params;
-
     // Para la eliminacion fisica de usuarios
     const buscarOP = (content) => {
         setTitulosModal("Buscar Orden de producción");
@@ -50,7 +51,7 @@ function RegistraProgramaProduccion(props) {
     }
 
     // Para almacenar la informacion del formulario
-    const [formData, setFormData] = useState(initialFormData());
+    const [formData, setFormData] = useState(initialFormDataInitial());
 
     // Para almacenar la informacion del formulario
     const [formDataReqPlan, setFormDataReqPlan] = useState(initialValuesReqPlan());
@@ -59,16 +60,10 @@ function RegistraProgramaProduccion(props) {
     const [maquinas, setMaquinas] = useState();
 
     // Para almacenar la informacion del formulario
-    const [formDataProduccion, setFormDataProduccion] = useState(initialFormDataProduccion());
+    const [formDataProduccion, setFormDataProduccion] = useState(initialFormDataProduccionInitial());
 
     // Para almacenar la informacion del formulario
     const [formDataPrograma, setFormDataPrograma] = useState(initialFormDataProgramaInitial());
-
-    console.log("Requerimientos y planeacion", formDataReqPlan);
-
-    console.log("programa", formDataPrograma);
-
-    console.log("Produccion", formDataProduccion);
 
     // Para almacenar la informacion del formulario
     const [formDataPlaneacion, setFormDataPlaneacion] = useState(initialFormDataPlaneacionInitial());
@@ -97,6 +92,29 @@ function RegistraProgramaProduccion(props) {
 
     // Para almacenar el listado de maquinas
     const [listMaquinas, setListMaquinas] = useState(null);
+
+    // Define el uso de los parametros
+    const parametros = useParams()
+    const { id } = parametros
+
+    // Recupera la información de la compra
+    useEffect(() => {
+        try {
+            obtenerPrograma(id).then(response => {
+                const { data } = response;
+                // console.log(data)
+                const { fechaSolicitud, proveedor, nombreProveedor, tipoCompra, fechaEntrega, autoriza, productos } = data;
+                setFormDataProduccion(initialFormDataProduccion(data));
+                setFormData(initialFormData(data));
+                //setFormDataOC(cargaFormDataOC(data))
+                //setFormData(dataCompras(fechaSolicitud, proveedor, nombreProveedor, tipoCompra, fechaEntrega, autoriza, productos))
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
 
     useEffect(() => {
         try {
@@ -151,25 +169,6 @@ function RegistraProgramaProduccion(props) {
             console.log(e)
         }
     }, [formDataPlaneacion.idMaterial]);
-
-    const [fechaInicial, setFechaInicial] = useState("");
-
-    useEffect(() => {
-        // Para buscar el producto en la matriz de productos
-        try {
-            obtenerDatosSemana(semana).then(response => {
-                const { data } = response;
-                console.log(data)
-                setFechaInicial(data.fechaInicial)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
-    console.log(fechaInicial)
 
     useEffect(() => {
         const temp = formData.materiaPrima.split("/");
@@ -460,7 +459,7 @@ function RegistraProgramaProduccion(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push(`/ProgramaProduccion/${semana}`)
+        enrutamiento.push(`/ProgramaProduccion/${formDataProduccion.semana}`)
     }
 
     // Para controlar la animacion
@@ -551,78 +550,55 @@ function RegistraProgramaProduccion(props) {
         }
     }, []);
 
+    console.log(formDataProduccion.nombreProducto);
+
     const onSubmit = e => {
         e.preventDefault();
 
-        //console.log("Continuar")
-        setLoading(true);
-        const temp = formData.noMaquina.split("/");
+        if (!formData.fechaInicio) {
+            toast.warning("Completa el formulario");
+        } else {
+            //console.log("Continuar")
+            setLoading(true);
+            const temp = formData.noMaquina.split("/");
 
-        const dataTemp = {
-            folio: folioActual,
-            folioOP: formDataProduccion.ordenProduccion,
-            folioPlaneacion: formDataProduccion.folioPlaneacion,
-            sucursal: getSucursal(),
-            semana: semana,
-            ordenProduccion: {
-                noMaquina: temp[0],
-                maquina: temp[1],
-                semana: semana,
-                fechaInicio: fechaInicial,
-                cliente: formDataPrograma.cliente,
-                nombreCliente: formDataPrograma.nombreCliente,
-                producto: formDataProduccion.producto,
-                nombreProducto: formDataReqPlan.idProducto,
-                cantidadFabricar: formDataReqPlan.cantidadFabricar,
-                acumulado: formDataReqPlan.acumulado,
-                ciclo: formDataPrograma.ciclo,
-                cavidades: formDataReqPlan.cavidades,
-                stdTurno: formDataPrograma.stdTurno,
-                pendienteFabricar: formDataReqPlan.pendienteFabricar,
-                operadores: formDataPrograma.operadores,
-                noInterno: formDataPrograma.noInterno,
-                turnosRequeridos: turnosReq,
-            },
-            programa: {
-                fechaInicio: fechaInicial,
-                lunesT1: lunesT1,
-                estadoLT1: "false",
-                lunesT2: lunesT2,
-                estadoLT2: "false",
-                martesT1: martesT1,
-                estadoMT1: "false",
-                martesT2: martesT2,
-                estadoMT2: "false",
-                miercolesT1: miercolesT1,
-                estadoMIT1: "false",
-                miercolesT2: miercolesT2,
-                estadoMIT2: "false",
-                juevesT1: juevesT1,
-                estadoJT1: "false",
-                juevesT2: juevesT2,
-                estadoJT2: "false",
-                viernesT1: viernesT1,
-                estadoVT1: "false",
-                viernesT2: viernesT2,
-                estadoVT2: "false",
-                sabadoT1: sabadoT1,
-                estadoST1: "false",
-            },
-            estado: "true",
+            const dataTemp = {
+                folioOP: formDataProduccion.ordenProduccion,
+                folioPlaneacion: formDataProduccion.folioPlaneacion,
+                ordenProduccion: {
+                    noMaquina: temp[0],
+                    maquina: temp.length == 1 ? formData.maquina : temp[1],
+                    semana: formDataProduccion.semana,
+                    fechaInicio: formData.fechaInicio,
+                    cliente: formDataPrograma.cliente,
+                    nombreCliente: formDataPrograma.nombreCliente,
+                    producto: formDataProduccion.producto,
+                    nombreProducto: formDataReqPlan.idProducto,
+                    cantidadFabricar: formDataReqPlan.cantidadFabricar,
+                    acumulado: formDataReqPlan.acumulado,
+                    ciclo: formDataPrograma.ciclo,
+                    cavidades: formDataReqPlan.cavidades,
+                    stdTurno: formDataPrograma.stdTurno,
+                    pendienteFabricar: formDataReqPlan.pendienteFabricar,
+                    operadores: formDataPrograma.operadores,
+                    noInterno: formDataPrograma.noInterno,
+                    turnosRequeridos: turnosReq,
+                }
+            }
+            // console.log(dataTemp)
+            // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
+            LogsInformativos("Se ha actualizado el programa de produccion con folio " + dataTemp.folio, dataTemp)
+            // Modificar el pedido creado recientemente
+            actualizaPrograma(id, dataTemp).then(response => {
+                const { data: { mensaje, datos } } = response;
+                // console.log(response)
+                toast.success(mensaje)
+                setLoading(false)
+                rutaRegreso()
+            }).catch(e => {
+                console.log(e)
+            })
         }
-        // console.log(dataTemp)
-        // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
-        LogsInformativos("Se ha registrado un nuevo programa de produccion con folio " + dataTemp.folio, dataTemp)
-        // Modificar el pedido creado recientemente
-        registraPrograma(dataTemp).then(response => {
-            const { data: { mensaje, datos } } = response;
-            // console.log(response)
-            toast.success(mensaje)
-            setLoading(false)
-            rutaRegreso()
-        }).catch(e => {
-            console.log(e)
-        })
     }
 
     const [listOVCargadas, setListOVCargadas] = useState([]);
@@ -730,7 +706,7 @@ function RegistraProgramaProduccion(props) {
 
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(fechaInicial);
+        const TuFecha = new Date(formData.fechaInicio);
 
         //nueva fecha sumada
         TuFecha.setDate(TuFecha.getDate() + 1);
@@ -738,7 +714,7 @@ function RegistraProgramaProduccion(props) {
         setLunesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
 
         setLunesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [fechaInicial]);
+    }, [formData.fechaInicio]);
 
     const [martesT1, setMartesT1] = useState();
 
@@ -746,7 +722,7 @@ function RegistraProgramaProduccion(props) {
 
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(fechaInicial);
+        const TuFecha = new Date(formData.fechaInicio);
 
         //nueva fecha sumada
         TuFecha.setDate(TuFecha.getDate() + 2);
@@ -754,7 +730,7 @@ function RegistraProgramaProduccion(props) {
         setMartesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
 
         setMartesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [fechaInicial]);
+    }, [formData.fechaInicio]);
 
     const [miercolesT1, setMiercolesT1] = useState();
 
@@ -762,7 +738,7 @@ function RegistraProgramaProduccion(props) {
 
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(fechaInicial);
+        const TuFecha = new Date(formData.fechaInicio);
 
         //nueva fecha sumada
         TuFecha.setDate(TuFecha.getDate() + 3);
@@ -770,7 +746,7 @@ function RegistraProgramaProduccion(props) {
         setMiercolesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
 
         setMiercolesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [fechaInicial]);
+    }, [formData.fechaInicio]);
 
     const [juevesT1, setJuevesT1] = useState();
 
@@ -778,7 +754,7 @@ function RegistraProgramaProduccion(props) {
 
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(fechaInicial);
+        const TuFecha = new Date(formData.fechaInicio);
 
         //nueva fecha sumada
         TuFecha.setDate(TuFecha.getDate() + 4);
@@ -786,7 +762,7 @@ function RegistraProgramaProduccion(props) {
         setJuevesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
 
         setJuevesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [fechaInicial]);
+    }, [formData.fechaInicio]);
 
     const [viernesT1, setViernesT1] = useState();
 
@@ -794,7 +770,7 @@ function RegistraProgramaProduccion(props) {
 
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(fechaInicial);
+        const TuFecha = new Date(formData.fechaInicio);
 
         //nueva fecha sumada
         TuFecha.setDate(TuFecha.getDate() + 5);
@@ -802,19 +778,19 @@ function RegistraProgramaProduccion(props) {
         setViernesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
 
         setViernesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [fechaInicial]);
+    }, [formData.fechaInicio]);
 
     const [sabadoT1, setSabadoT1] = useState();
 
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(fechaInicial);
+        const TuFecha = new Date(formData.fechaInicio);
 
         //nueva fecha sumada
         TuFecha.setDate(TuFecha.getDate() + 6);
         //formato de salida para la fecha
         setSabadoT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [fechaInicial]);
+    }, [formData.fechaInicio]);
 
     return (
         <>
@@ -862,7 +838,7 @@ function RegistraProgramaProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="Folio"
-                                            value={folioActual}
+                                            value={formData.folio}
                                             name="folio"
                                             disabled
                                         />
@@ -872,27 +848,13 @@ function RegistraProgramaProduccion(props) {
                                         <Form.Label align="center">
                                             Orden de producción
                                         </Form.Label>
-                                        <div className="flex items-center mb-1">
-                                            <Form.Control
-                                                type="text"
-                                                defaultValue={formDataProduccion.ordenProduccion}
-                                                placeholder="Orden de producción"
-                                                name="ordenProduccion"
-                                            />
-                                            <FontAwesomeIcon
-                                                className="cursor-pointer py-2 -ml-6"
-                                                title="Buscar entre los productos"
-                                                icon={faSearch}
-                                                onClick={() => {
-                                                    buscarOP(
-                                                        <BuscarProduccion
-                                                            formData={formDataProduccion}
-                                                            setFormData={setFormDataProduccion}
-                                                            setShowModal={setShowModal}
-                                                        />)
-                                                }}
-                                            />
-                                        </div>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={formDataProduccion.ordenProduccion}
+                                            placeholder="Orden de producción"
+                                            name="ordenProduccion"
+                                            disabled
+                                        />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -901,7 +863,7 @@ function RegistraProgramaProduccion(props) {
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            defaultValue={semana}
+                                            defaultValue={formDataProduccion.semana}
                                             placeholder="Semana"
                                             name="semana"
                                             disabled
@@ -919,10 +881,11 @@ function RegistraProgramaProduccion(props) {
                                             defaultValue={formData.noMaquina}
                                             placeholder="Numero de maquina"
                                             name="noMaquina"
+                                            disabled
                                         >
                                             <option>Elige una opción</option>
                                             {map(listMaquinas, (maquina, index) => (
-                                                <option value={maquina?.numeroMaquina + "/" + maquina?.marca}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                <option value={maquina?.numeroMaquina + "/" + maquina?.marca} selected={maquina?.numeroMaquina == formData.noMaquina}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
                                             ))}
                                         </Form.Control>
                                     </Form.Group>
@@ -934,11 +897,12 @@ function RegistraProgramaProduccion(props) {
                                         <Form.Control
                                             type="text"
                                             placeholder="Maquina"
-                                            value={temp == "" ? formData.maquina : temp[1]}
+                                            value={temp.length == 1 ? formData.maquina : temp[1]}
                                             name="maquina"
                                             disabled
                                         />
                                     </Form.Group>
+
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
                                             Cliente
@@ -948,13 +912,12 @@ function RegistraProgramaProduccion(props) {
                                             defaultValue={formDataPrograma.cliente}
                                             placeholder="Cliente"
                                             name="cliente"
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
 
                                 <Row className="mb-3">
-
-
                                     <Form.Group as={Col} controlId="formHorizontalNoParte">
                                         <Form.Label align="center">
                                             Producto a fabricar
@@ -964,6 +927,7 @@ function RegistraProgramaProduccion(props) {
                                             placeholder="Producto"
                                             defaultValue={formDataReqPlan.idProducto}
                                             name="producto"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -976,6 +940,7 @@ function RegistraProgramaProduccion(props) {
                                             defaultValue={formDataReqPlan.cantidadFabricar}
                                             placeholder="Cantidad a fabricar"
                                             name="cantidadFabricar"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -988,6 +953,7 @@ function RegistraProgramaProduccion(props) {
                                             defaultValue={formDataReqPlan.acumulado}
                                             placeholder="Acumulado"
                                             name="acumulado"
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1002,6 +968,7 @@ function RegistraProgramaProduccion(props) {
                                             defaultValue={formDataPrograma.ciclo}
                                             placeholder="Ciclo"
                                             name="ciclo"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -1014,6 +981,7 @@ function RegistraProgramaProduccion(props) {
                                             placeholder="Cavidades"
                                             defaultValue={formDataReqPlan.cavidades}
                                             name="cavidades"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -1026,6 +994,7 @@ function RegistraProgramaProduccion(props) {
                                             defaultValue={formDataPrograma.stdTurno}
                                             placeholder="Standard por turno"
                                             name="stdTurno"
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1040,6 +1009,7 @@ function RegistraProgramaProduccion(props) {
                                             defaultValue={formDataReqPlan.pendienteFabricar}
                                             placeholder="Pendiente de fabricar"
                                             name="pendienteFabricar"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -1052,6 +1022,7 @@ function RegistraProgramaProduccion(props) {
                                             defaultValue={formDataPrograma.operadores}
                                             placeholder="Operadores"
                                             name="operadores"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -1064,6 +1035,7 @@ function RegistraProgramaProduccion(props) {
                                             placeholder="Numero interno"
                                             defaultValue={formDataPrograma.noInterno}
                                             name="noInterno"
+                                            disabled
                                         />
                                     </Form.Group>
 
@@ -1100,10 +1072,11 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={lunesT1}
                                                 type="radio"
-                                                label={"Lunes T1 " + lunesT1}
+                                                label={formData.fechaInicio == "" ? "Lunes T1" : "Lunes T1 " + lunesT1}
                                                 name="lunesT1"
                                                 id={lunesT1}
                                                 defaultValue={formData.lunesT1}
+                                                checked={formData.lunesT1 == lunesT1}
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -1112,10 +1085,11 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={miercolesT1}
                                                 type="radio"
-                                                label={"Miercoles T1 " + miercolesT1}
+                                                label={formData.fechaInicio == "" ? "Miercoles T1" : "Miercoles T1 " + miercolesT1}
                                                 name="miercolesT1"
                                                 id={miercolesT1}
                                                 defaultValue={formData.miercolesT1}
+                                                checked={formData.miercolesT1 == miercolesT1}
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -1124,10 +1098,11 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={viernesT1}
                                                 type="radio"
-                                                label={"Viernes T1 " + viernesT1}
+                                                label={formData.fechaInicio == "" ? "Viernes T1" : "Viernes T1 " + viernesT1}
                                                 name="viernesT1"
                                                 id={viernesT1}
                                                 defaultValue={formData.viernesT1}
+                                                checked={formData.viernesT1 == viernesT1}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -1139,10 +1114,11 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={lunesT2}
                                                 type="radio"
-                                                label={"Lunes T2 " + lunesT2}
+                                                label={formData.fechaInicio == "" ? "Lunes T2" : "Lunes T2 " + lunesT2}
                                                 name="lunesT2"
                                                 id={lunesT2}
                                                 defaultValue={formData.lunesT2}
+                                                checked={formData.lunesT2 == lunesT2}
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -1151,10 +1127,11 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={miercolesT2}
                                                 type="radio"
-                                                label={"Miercoles T2 " + miercolesT2}
+                                                label={formData.fechaInicio == "" ? "Miercoles T2" : "Miercoles T2 " + miercolesT2}
                                                 name="miercolesT2"
                                                 id={miercolesT2}
                                                 defaultValue={formData.miercolesT2}
+                                                checked={formData.miercolesT2 == miercolesT2}
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -1163,10 +1140,11 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={viernesT2}
                                                 type="radio"
-                                                label={"Viernes T2 " + viernesT2}
+                                                label={formData.fechaInicio == "" ? "Viernes T2" : "Viernes T2 " + viernesT2}
                                                 name="viernesT2"
                                                 id={viernesT2}
                                                 defaultValue={formData.viernesT2}
+                                                checked={formData.viernesT2 == viernesT2}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -1178,10 +1156,11 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={martesT1}
                                                 type="radio"
-                                                label={"Martes T1 " + martesT1}
+                                                label={formData.fechaInicio == "" ? "Martes T1" : "Martes T1 " + martesT1}
                                                 name="martesT1"
                                                 id={martesT1}
                                                 defaultValue={formData.martesT1}
+                                                checked={formData.martesT1 == martesT1}
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -1190,10 +1169,11 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={juevesT1}
                                                 type="radio"
-                                                label={"Jueves T1 " + juevesT1}
+                                                label={formData.fechaInicio == "" ? "Jueves T1" : "Jueves T1 " + juevesT1}
                                                 name="juevesT1"
                                                 id={juevesT1}
                                                 defaultValue={formData.juevesT1}
+                                                checked={formData.juevesT1 == juevesT1}
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -1202,10 +1182,11 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={sabadoT1}
                                                 type="radio"
-                                                label={"Sabado T1 " + sabadoT1}
+                                                label={formData.fechaInicio == "" ? "Sabado T1" : "Sabado T1 " + sabadoT1}
                                                 name="sabadoT1"
                                                 id={sabadoT1}
                                                 defaultValue={formData.sabadoT1}
+                                                checked={formData.sabadoT1 == sabadoT1}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -1217,10 +1198,11 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={martesT2}
                                                 type="radio"
-                                                label={"Martes T2 " + martesT2}
+                                                label={formData.fechaInicio == "" ? "Martes T2" : "Martes T2 " + martesT2}
                                                 name="martesT2"
                                                 id={martesT2}
                                                 defaultValue={formData.martesT2}
+                                                checked={formData.martesT2 == martesT2}
                                             />
                                         </Col>
                                         <Col sm={1}>
@@ -1229,10 +1211,11 @@ function RegistraProgramaProduccion(props) {
                                             <Form.Check
                                                 value={juevesT2}
                                                 type="radio"
-                                                label={"Jueves T2 " + juevesT2}
+                                                label={formData.fechaInicio == "" ? "Jueves T2" : "Jueves T2 " + juevesT2}
                                                 name="juevesT2"
                                                 id={juevesT2}
                                                 defaultValue={formData.juevesT2}
+                                                checked={formData.juevesT2 == juevesT2}
                                             />
                                         </Col>
                                     </Form.Group>
@@ -1243,30 +1226,38 @@ function RegistraProgramaProduccion(props) {
 
                         <br />
 
-                        <Form.Group as={Row} className="botones">
-                            <Col>
-                                <Button
-                                    type="submit"
-                                    title="Guardar la información del formulario"
-                                    variant="success"
-                                    className="registrar"
-                                >
-                                    {!loading ? "Registrar" : <Spinner animation="border" />}
-                                </Button>
-                            </Col>
-                            <Col>
-                                <Button
-                                    variant="danger"
-                                    title="Cerrar el formulario"
-                                    className="cancelar"
-                                    onClick={() => {
-                                        rutaRegreso()
-                                    }}
-                                >
-                                    Cancelar
-                                </Button>
-                            </Col>
-                        </Form.Group>
+                        <div className="botones">
+                            <Form.Group as={Row} className="botones">
+                                <Row>
+                                    <Col>
+                                        <div
+                                            className="generacionPDF"
+                                        >
+                                            <Image
+                                                src={LogoPDF}
+                                                className="logoPDF"
+                                                onClick={() => {
+                                                    descargaPDF()
+                                                }}
+                                            />
+                                        </div>
+                                    </Col>
+                                    <Col>
+                                        <div
+                                            className="regreso"
+                                        >
+                                            <Image
+                                                src={Regreso}
+                                                className="regresarVistaAnterior"
+                                                onClick={() => {
+                                                    rutaRegreso()
+                                                }}
+                                            />
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Form.Group>
+                        </div>
 
                         <br />
 
@@ -1282,7 +1273,23 @@ function RegistraProgramaProduccion(props) {
     );
 }
 
-function initialFormDataProduccion() {
+function initialFormDataProduccion(data) {
+    return {
+        semana: data.ordenProduccion.semana,
+        ordenProduccion: data.folioOP,
+        idProducto: data.ordenProduccion.nombreProducto,
+        producto: data.ordenProduccion.producto,
+        cantidadFabricar: data.ordenProduccion.cantidadFabricar,
+        acumulado: data.ordenProduccion.acumulado,
+        cavidades: data.ordenProduccion.cavidades,
+        standarTurno: data.ordenProduccion.stdTurno,
+        pendienteFabricar: data.ordenProduccion.pendienteFabricar,
+        noInterno: data.ordenProduccion.noInterno,
+        folioPlaneacion: data.folioPlaneacion,
+    }
+}
+
+function initialFormDataProduccionInitial() {
     return {
         semana: "",
         ordenProduccion: "",
@@ -1428,7 +1435,51 @@ function initialFormDataPlaneacionInitial() {
     }
 }
 
-function initialFormData() {
+function initialFormData(data) {
+    return {
+        cantidadMP: 0,
+        materiaPrima: "",
+        semana: "",
+        numeroMaquina1: "",
+        maquina1: "",
+        ciclo1: "",
+        pieza1: "",
+        bolsa1: "",
+        numeroMaquina2: "",
+        maquina2: "",
+        ciclo2: "",
+        pieza2: "",
+        bolsa2: "",
+        numeroMaquina3: "",
+        maquina3: "",
+        ciclo3: "",
+        pieza3: "",
+        bolsa3: "",
+        materialTurno: "",
+        merma: "",
+        kgMaterial: "",
+        kgPIGMB: "",
+
+        folio: data.folio,
+        fechaInicio: data.ordenProduccion.fechaInicio,
+        noMaquina: data.ordenProduccion.noMaquina,
+        maquina: data.ordenProduccion.maquina,
+
+        lunesT1: data.programa.lunesT1,
+        lunesT2: data.programa.lunesT2,
+        martesT1: data.programa.martesT1,
+        martesT2: data.programa.martesT2,
+        miercolesT1: data.programa.miercolesT1,
+        miercolesT2: data.programa.miercolesT2,
+        juevesT1: data.programa.juevesT1,
+        juevesT2: data.programa.juevesT2,
+        viernesT1: data.programa.viernesT1,
+        viernesT2: data.programa.viernesT2,
+        sabadoT1: data.programa.sabadoT1
+    }
+}
+
+function initialFormDataInitial() {
     return {
         cantidadMP: 0,
         materiaPrima: "",
@@ -1584,4 +1635,4 @@ function valoresAlmacenadosReqPlan(data) {
     }
 }
 
-export default RegistraProgramaProduccion;
+export default VistaPreviaProgramaProduccion;

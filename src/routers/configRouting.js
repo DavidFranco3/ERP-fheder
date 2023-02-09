@@ -81,6 +81,7 @@ import VistaPrevia from "../components/Ventas/VistaPrevia";
 // Rutas para el programa de producción
 import RegistraProgramaProduccion from "../components/ProgramaProduccion/Registro";
 import ModificaProgramaProduccion from "../components/ProgramaProduccion/Modificacion";
+import VistaPreviaProgramaProduccion from "../components/ProgramaProduccion/VistaPreviaProgramaProduccion";
 
 // Rutas para la matriz de productos
 import ModificaMatrizProductos from "../components/MatrizProductos/ModificaMatrizProductos";
@@ -90,11 +91,14 @@ import VistaDetallada from "../components/MatrizProductos/VistaDetallada";
 // Rutas para calidad
 import RegistraReporte from "../components/Calidad/RegistraReporte";
 import ModificaReporte from "../components/Calidad/ModificaReporte";
+import VistaPreviaCalidad from "../components/Calidad/VistaPreviaCalidad";
 
 // Rutas para las requisiciones
 import RegistraRequisiciones from "../components/Requisiciones/RegistraRequisiciones";
 import ModificaRequisiciones from "../components/Requisiciones/ModificaRequisiciones";
-import RequisicionesPlaneacion from "../components/Requisiciones/RequisicionPlaneacion";
+import RequisicionPlaneacion from "../components/Requisiciones/RequisicionPlaneacion";
+import VistaPreviaRequisiciones from "../components/Requisiciones/VistaPreviaRequisiciones";
+
 
 // Rutas para las renisiones
 import RegistraRemisiones from "../components/Remisiones/RegistraRemisiones";
@@ -131,6 +135,7 @@ import ModificacionTiquets from "../components/Tiquets/Modificacion";
 // Rutas para las compras
 import RegistroCompras from "../components/Compras/Registro";
 import ModificacionCompras from "../components/Compras/Modificacion";
+import VistaPreviaCompras from "../components/Compras/VistaPrevia";
 
 // Rutas para el embarque
 import RegistroEmbarque from "../components/Embarque/Registro";
@@ -147,6 +152,7 @@ import ModificacionLogistica from "../components/Logistica/Modificacion";
 // Rutas para la logística
 import RegistroRecepcion from "../components/RecepcionMaterialInsumos/RegistroRecepcion";
 import ModificacionRecepcion from "../components/RecepcionMaterialInsumos/ModificaRecepcion";
+import VistaPreviaRecepcion from "../components/RecepcionMaterialInsumos/VistaPreviaRecepcion";
 
 // Rutas para planeación
 import RegistroPlaneacion from "../components/Planeacion/Registro";
@@ -155,11 +161,13 @@ import ModificacionPlaneacion from "../components/Planeacion/Modificacion";
 // Rutas para las ventas
 import RegistroVentas from "../components/Ventas/Registro";
 import ModificacionVentas from "../components/Ventas/Modificacion";
+import VistaPreviaVentas from "../components/Ventas/VistaPrevia";
 
 // Rutas para producción
 import RegistroProduccion from "../components/Produccion/Registro";
 import ModificacionProduccion from "../components/Produccion/Modificacion";
 import ProduccionPlaneacion from "../components/Produccion/ProduccionPlaneacion";
+import VistaPreviaProduccion from "../components/Produccion/VistaPreviaProduccion";
 
 // Rutas para rechazos
 import RegistroRechazos from "../components/Rechazos/RegistraRechazos";
@@ -175,10 +183,12 @@ import RegistroDevoluciones from "../components/Devoluciones/RegistraDevolucione
 // Rutas para status de material
 import RegistroStatusMaterial from "../components/StatusMaterial/RegistraStatus";
 import ModificaStatusMaterial from "../components/StatusMaterial/ModificaStatus";
+import VistaPreviaStatus from "../components/StatusMaterial/VistaPreviaStatus";
 
 // Rutas para la inspeccion de material
 import RegistroInspeccionPieza from "../components/InspeccionMaterial/RegistraInspeccionMaterial";
 import ModificaInspeccionPieza from "../components/InspeccionMaterial/ModificaInspeccionMaterial";
+import VistaPreviaInspeccion from "../components/InspeccionMaterial/VistaPreviaInspeccion";
 
 // Rutas para la alerta de calidad
 import RegistroAlertasCalidad from "../components/AlertasCalidad/RegistraAlertasCalidad";
@@ -203,6 +213,7 @@ import ModificaCertificadoCalidad from "../components/CertificadosCalidad/Modifi
 // Rutas para el reporte de produccion
 import RegistroReporteProduccion from "../components/ReporteProduccion/RegistroReporteProduccion";
 import ModificaReporteProduccion from "../components/ReporteProduccion/ModificaReporteProduccion";
+import VistaPreviaReporte from "../components/ReporteProduccion/VistaPreviaReporte";
 
 // Rutas para las carpetas de proceso
 import RegistroCarpetasProceso from "../components/CarpetasProceso/RegistroCarpetasProceso";
@@ -226,7 +237,7 @@ import RegistraSolicitudMaterialInsumo from "../components/SolicitudMaterialInsu
 // Rutas para Registro de entrada y salida de moldes
 import RegistraRequerimientosPlaneacion from "../components/RequerimientosPlaneacion/Registro";
 import ModificaRequerimientosPlaneacion from "../components/RequerimientosPlaneacion/Modificacion";
-import RequisicionPlaneacion from "../components/Requisiciones/RequisicionPlaneacion";
+import VistaPreviaPlaneacion from "../components/RequerimientosPlaneacion/VistaPreviaPlaneacion";
 
 // Rutas para cuentas por cobrar
 import FacturasOV from "../components/Facturas/FacturasOV";
@@ -248,6 +259,11 @@ export default [
         path: "/ModificaRequerimientosPlaneacion/:id",
         exact: true,
         page: ModificaRequerimientosPlaneacion
+    },
+    {
+        path: "/VistaPreviaPlaneacion/:id",
+        exact: true,
+        page: VistaPreviaPlaneacion
     },
     {
         path: "/FacturasOV/:ordenVenta",
@@ -280,6 +296,11 @@ export default [
         page: ModificaInspeccionPieza
     },
     {
+        path: "/VistaPreviaInspeccion/:id",
+        exact: true,
+        page: VistaPreviaInspeccion
+    },
+    {
         path: "/RegistraDevoluciones",
         exact: true,
         page: RegistroDevoluciones
@@ -293,6 +314,11 @@ export default [
         path: "/ModificaStatusMaterial/:id",
         exact: true,
         page: ModificaStatusMaterial
+    },
+    {
+        path: "/VistaPreviaStatus/:id",
+        exact: true,
+        page: VistaPreviaStatus
     },
     {
         path: "/RegistraAcusesRecibo",
@@ -455,6 +481,11 @@ export default [
         page: ModificaProgramaProduccion
     },
     {
+        path: "/VistaPreviaProgramaProduccion/:id",
+        exact: true,
+        page: VistaPreviaProgramaProduccion
+    },
+    {
         path: "/ModificacionTiquets",
         exact: true,
         page: ModificacionTiquets
@@ -480,6 +511,11 @@ export default [
         page: ModificaReporteProduccion
     },
     {
+        path: "/VistaPreviaReporte/:id",
+        exact: true,
+        page: VistaPreviaReporte
+    },
+    {
         path: "/RegistroCompras",
         exact: true,
         page: RegistroCompras
@@ -488,6 +524,11 @@ export default [
         path: "/ModificacionCompras/:folio",
         exact: true,
         page: ModificacionCompras
+    },
+    {
+        path: "/VistaPreviaCompras/:folio",
+        exact: true,
+        page: VistaPreviaCompras
     },
     {
         path: "/RegistroEmbarque",
@@ -530,6 +571,11 @@ export default [
         page: ModificacionRecepcion
     },
     {
+        path: "/VistaPreviaRecepcion/:id",
+        exact: true,
+        page: VistaPreviaRecepcion
+    },
+    {
         path: "/RegistroPlaneacion",
         exact: true,
         page: RegistroPlaneacion
@@ -550,6 +596,11 @@ export default [
         page: ModificacionVentas
     },
     {
+        path: "/VistaPreviaVenta/:folio",
+        exact: true,
+        page: VistaPreviaVentas
+    },
+    {
         path: "/ModificacionPedido",
         exact: true,
         page: ModificacionVentas
@@ -565,6 +616,11 @@ export default [
         page: ModificacionProduccion
     },
     {
+        path: "/VistaPreviaProduccion/:id",
+        exact: true,
+        page: VistaPreviaProduccion
+    },
+    {
         path: "/ProduccionPlaneacion/:id",
         exact: true,
         page: ProduccionPlaneacion
@@ -578,6 +634,11 @@ export default [
         path: "/ModificacionRequisicion/:id",
         exact: true,
         page: ModificaRequisiciones
+    },
+    {
+        path: "/VistaPreviaRequisiciones/:id",
+        exact: true,
+        page: VistaPreviaRequisiciones
     },
     {
         path: "/RequisicionPlaneacion/:id",
@@ -603,6 +664,11 @@ export default [
         path: "/ModificacionReporte/:id",
         exact: true,
         page: ModificaReporte
+    },
+    {
+        path: "/VistaPreviaReporte/:id",
+        exact: true,
+        page: VistaPreviaCalidad
     },
     {
         path: "/MatrizProductos",
