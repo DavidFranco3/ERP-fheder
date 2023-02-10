@@ -48,8 +48,8 @@ function ListFacturas(props) {
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
-    const vistaPrevia = () => {
-        // enrutamiento.push("")
+    const vistaPrevia = (id) => {
+        enrutamiento.push(`/VistaPreviaFactura/${id}`);
     }
 
     const ExpandedComponent = ({ data }) => (
@@ -164,6 +164,7 @@ function ListFacturas(props) {
                         title="Generar PDF"
                         className="ver"
                         onClick={() => {
+                            vistaPrevia(row.id);
                         }}
                     >
                         <FontAwesomeIcon icon={faEye} className="text-lg" />

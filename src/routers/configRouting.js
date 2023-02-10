@@ -249,6 +249,7 @@ import VistaPreviaPlaneacion from "../components/RequerimientosPlaneacion/VistaP
 import FacturasOV from "../components/Facturas/FacturasOV";
 import RegistroFacturas from "../components/Facturas/RegistroFacturas";
 import ModificaFacturas from "../components/Facturas/ModificaFacturas";
+import VistaPreviaFactura from "../components/Facturas/VistaPreviaFactura";
 
 // Rutas para etiqueta de identificación de PT
 import VistaPreviaIdentificacionPT from "../components/IdentificacionPT/VistaPreviaIdentificacionPT";
@@ -309,6 +310,11 @@ export default [
         path: "/ModificaFacturas/:id",
         exact: true,
         page: ModificaFacturas
+    },
+    {
+        path: "/VistaPreviaFactura/:id",
+        exact: true,
+        page: VistaPreviaFactura
     },
     {
         path: "/RegistraSolicitudMaterialInsumo",
