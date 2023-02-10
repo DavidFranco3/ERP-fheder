@@ -280,7 +280,7 @@ function RegistraRequisiciones(props) {
                         tipoRequisicion: formData.tipoRequisicion,
                         tipoAplicacion: formData.tipoAplicacion,
                         productosSolicitados: listProductosCargados,
-                        status: formData.estado
+                        estado: "true",
                     }
                     // console.log(data)
                     registraRequisicion(dataTemp).then(response => {
@@ -809,24 +809,6 @@ function RegistraRequisiciones(props) {
                             </Form.Control>
                         </Form.Group>
 
-                        <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
-                            <Form.Label>
-                                Estado
-                            </Form.Label>
-                            <Form.Control
-                                as="select"
-                                name="estado"
-                                defaultValue={formData.estado}
-                            //disabled={departamentoUsuario !== "Compras"}
-                            >
-                                <option >Elige</option>
-                                <option value="true">Aceptado</option>
-                                <option value="false">Rechazado</option>
-                            </Form.Control>
-                        </Form.Group>
-                    </Row>
-
-                    <Row className="mb-3">
                         <Form.Group as={Col} className="mb-3" controlId="formHorizontalNumeroInterno">
                             <Form.Label>
                                 Comentarios
