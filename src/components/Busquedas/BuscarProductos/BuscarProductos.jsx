@@ -33,7 +33,10 @@ function BuscarProductos(props) {
             peso: datosPieza.pesoPiezas,
             noCavidades: datosMolde.cavMolde,
 
-            nombreArticulo: descripcion
+            nombreArticulo: descripcion,
+            folioArticulo: noInterno,
+            idArticulo: id,
+
         }
         setFormData(dataTemp);
         cancelarBusqueda();

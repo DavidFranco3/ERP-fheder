@@ -116,54 +116,6 @@ function ListAlmacenMp(props) {
             reorder: false
         },
         {
-            name: 'Estado',
-            sortable: false,
-            center: true,
-            reorder: false,
-            selector: row => row.estado === "true" ?
-                (
-                    <>
-                        <Badge
-                            bg="success"
-                            className="editar"
-                            title="Deshabilitar articulo"
-                            onClick={() => {
-                                eliminaLogicaArticulos(
-                                    <CambiarEstadoAlmacenes
-                                        datos={row}
-                                        setShowModal={setShowModal}
-                                        history={history}
-                                    />
-                                )
-                            }}
-                        >
-                            Activo
-                        </Badge>
-                    </>
-                )
-                :
-                (
-                    <>
-                        <Badge
-                            bg="danger"
-                            className="eliminar"
-                            title="Habilitar articulo"
-                            onClick={() => {
-                                habilitaArticulos(
-                                    <CambiarEstadoAlmacenes
-                                        datos={row}
-                                        setShowModal={setShowModal}
-                                        history={history}
-                                    />
-                                )
-                            }}
-                        >
-                            Inactivo
-                        </Badge>
-                    </>
-                )
-        },
-        {
             name: "Fecha del movimiento",
             selector: row => dayjs(row.fecha).format('LL'),
             sortable: false,

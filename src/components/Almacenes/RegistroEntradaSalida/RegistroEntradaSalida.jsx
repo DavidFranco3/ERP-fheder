@@ -168,10 +168,12 @@ function RegistroEntradaSalida(props) {
                     // console.log(data)
                     const { noAlmacen } = data;
 
+                    const temp = noAlmacen.split("-");
+
                     // console.log(temp)
 
                     const dataTemp = {
-                        item: itemActual,
+                        item: temp[1],
                         folio: noAlmacen,
                         idArticulo: formDataBusqueda.idArticulo,
                         folioArticulo: formDataBusqueda.folioArticulo,
