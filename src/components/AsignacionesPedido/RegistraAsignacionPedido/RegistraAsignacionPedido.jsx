@@ -20,6 +20,11 @@ function RegistraAsignacionPedido(props) {
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
 
+    // Para guardar los datos del formulario
+    const [formDataVenta, setFormDataVenta] = useState(initialFormDataVenta());
+
+    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState();
+
     // Para hacer uso del modal
     const [showModal2, setShowModal2] = useState(false);
     const [contentModal, setContentModal] = useState(null);
@@ -28,9 +33,6 @@ function RegistraAsignacionPedido(props) {
     const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
 
     const [producto, setProducto] = useState([]);
-
-    // Para almacenar la OV
-    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
@@ -128,14 +130,13 @@ function RegistraAsignacionPedido(props) {
             obtenerItem().then(response => {
                 const { data } = response;
                 const { item } = data;
-                console.log(data)
 
                 const dataTemp = {
                     item: item,
-                    folio: ordenVenta,
-                    cliente: idCliente,
-                    fechaPedido: fechaPedido,
-                    fechaEntrega: fechaEntrega,
+                    folio: formDataVenta.ordenVenta,
+                    cliente: formDataVenta.cliente,
+                    fechaPedido: formDataVenta.fechaPedido,
+                    fechaEntrega: formDataVenta.fechaEntrega,
                     sucursal: getSucursal(),
                     um: almacenPT.um,
                     cantidadPedida: almacenPT.cantidadPedida,
@@ -194,7 +195,7 @@ function RegistraAsignacionPedido(props) {
                                             type="text"
                                             placeholder="Orden de venta"
                                             name="ordenVenta"
-                                            value={ordenVenta}
+                                            value={formDataVenta.ordenVenta}
                                             disabled
                                         />
                                         <FontAwesomeIcon
@@ -203,12 +204,7 @@ function RegistraAsignacionPedido(props) {
                                             onClick={() => {
                                                 buscarOV(
                                                     <BuscarOV
-                                                        setOrdenVenta={setOrdenVenta}
-                                                        setCantidadRequeridaOV={setCantidadRequeridaOV}
-                                                        setIdCliente={setIdCliente}
-                                                        setNombreCliente={setNombreCliente}
-                                                        setFechaPedido={setFechaPedido}
-                                                        setFechaEntrega={setFechaEntrega}
+                                                        setFormData={setFormDataVenta}
                                                         setOrdenVentaPrincipal={setOrdenVentaPrincipal}
                                                         setProducto={setProducto}
                                                         setShowModal={setShowModal2}
@@ -232,7 +228,7 @@ function RegistraAsignacionPedido(props) {
                                         type="text"
                                         placeholder="Cliente"
                                         name="cliente"
-                                        value={nombreCliente}
+                                        value={formDataVenta.nombreCliente}
                                         disabled
                                     />
                                 </Col>
@@ -251,7 +247,7 @@ function RegistraAsignacionPedido(props) {
                                         type="date"
                                         placeholder="Fecha pedido"
                                         name="fechaPedido"
-                                        value={fechaPedido}
+                                        value={formDataVenta.fechaPedido}
                                         disabled
                                     />
                                 </Col>
@@ -270,7 +266,7 @@ function RegistraAsignacionPedido(props) {
                                         type="date"
                                         placeholder="Fecha entrega"
                                         name="fechaEntrega"
-                                        value={fechaEntrega}
+                                        value={formDataVenta.fechaEntrega}
                                         disabled
                                     />
                                 </Col>
@@ -344,6 +340,16 @@ function initialFormData(folio, fecha) {
     return {
         buscar: "",
         producto: "",
+    }
+}
+
+function initialFormDataVenta() {
+    return {
+        ordenVenta: "",
+        nombreCliente: "",
+        fechaPedido: "",
+        cliente: "",
+        fechaEntrega: ""
     }
 }
 

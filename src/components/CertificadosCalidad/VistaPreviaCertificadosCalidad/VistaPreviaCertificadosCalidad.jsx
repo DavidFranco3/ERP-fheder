@@ -1695,7 +1695,7 @@ function initialFormDataProduccion(data) {
         cliente: data.cliente,
         nombreProducto: data.descripcion,
         numeroParte: data.numeroParte,
-        cantidadProducir: data.planeacion.cantidadProducir
+        cantidadProducir: ""
     }
 }
 

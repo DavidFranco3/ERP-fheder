@@ -66,8 +66,9 @@ function ModificaCertificado(props) {
                     setFormDataProduccion(initialFormDataProduccion(data));
                 } else {
                     const datosInspeccion = valoresAlmacenados(data);
+                    const datosProduccion = initialFormDataProduccion(data);
                     setFormData(datosInspeccion);
-                    setFormDataProduccion(initialFormDataProduccion(data));
+                    setFormDataProduccion(datosProduccion);
                 }
             }).catch(e => {
                 console.log(e)
@@ -94,7 +95,7 @@ function ModificaCertificado(props) {
                 fecha: formData.fecha,
                 noOrdenInterna: formData.ordenInterna,
                 tamañoLote: formData.tamañoLote,
-                piezasRechazadas: parseInt(formDataProduccion.cantidadProducir) - parseInt(formData.tamañoLote),
+                piezasRechazadas: formDataProduccion.cantidadProducir == "" ? formData.piezasRechazadas : parseInt(formDataProduccion.cantidadProducir) - parseInt(formData.tamañoLote),
                 cliente: formData.cliente,
                 descripcion: formData.descripcion,
                 numeroParte: formData.numeroParte,
@@ -1595,7 +1596,7 @@ function initialFormDataProduccion(data) {
         cliente: data.cliente,
         nombreProducto: data.descripcion,
         numeroParte: data.numeroParte,
-        cantidadProducir: data.planeacion.cantidadProducir
+        cantidadProducir: ""
     }
 }
 
@@ -1682,6 +1683,7 @@ function initialFormData() {
         referencia: "",
         realizo: "",
         correo: "",
+        piezasRechazadas: ""
     }
 }
 
@@ -1768,6 +1770,7 @@ function valoresAlmacenados(data) {
         referencia: data.referencia,
         realizo: data.realizo,
         correo: data.correo,
+        piezasRechazadas: data.piezasRechazadas
     }
 }
 
