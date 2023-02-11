@@ -62,6 +62,8 @@ function Graficas(props) {
         }
     }, []);
 
+    console.log(cantidadRechazada);
+
     const data = {
         labels: ordenesProduccion,
         datasets: [{
@@ -74,26 +76,26 @@ function Graficas(props) {
             fill: false,
             type: "line"
         },
-        {
+        /*{
             label: "Cantidad producida",
             backgroundColor: "rgb(0, 0, 255)",
             borderColor: "rgb(0, 0, 255)",
             borderWidth: 1,
             data: resultados,
             stack: 1
-        },
+        },*/
         {
             label: "Cantidad aprobada",
-            backgroundColor: "rgb(0,255,0)",
-            borderColor: "rgb(0,255,0)",
+            backgroundColor: "rgb(0, 0, 255)",
+            borderColor: "rgb(0, 0, 255)",
             borderWidth: 1,
             data: lotes,
             stack: 2
         },
         {
             label: "Cantidad rechazada",
-            backgroundColor: "rgb(255,0,0)",
-            borderColor: "rgb(255,0,0)",
+            backgroundColor: "rgb(255, 128, 0)",
+            borderColor: "rgb(255, 128, 0)",
             borderWidth: 1,
             data: cantidadRechazada,
             stack: 2

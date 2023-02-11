@@ -21,13 +21,16 @@ function BuscarProducciones(props) {
     // Gestionar el socio seleccionado
     const produccionElegida = ({ folio, generalidades, planeacion }) => {
         // Almacena id, ficha y nombre del socio elegido
+
+        console.log(planeacion)
         const dataTemp = {
             nombreProducto: generalidades.producto,
             ordenInterna: folio,
             ordenProduccion: folio,
             cliente: generalidades.nombreCliente,
             numeroParte: planeacion.noParte,
-            folioPlaneacion: generalidades.folioPlaneacion
+            folioPlaneacion: generalidades.folioPlaneacion,
+            cantidadProducir: planeacion.cantidadProducir
         }
         setFormData(dataTemp);
         cancelarBusqueda();

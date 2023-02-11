@@ -37,8 +37,8 @@ function RegistraReporte(props) {
     const [contentModal, setContentModal] = useState(null);
     const [titulosModal, setTitulosModal] = useState(null);
 
-     // Para la eliminacion fisica de usuarios
-     const buscarProduccion = (content) => {
+    // Para la eliminacion fisica de usuarios
+    const buscarProduccion = (content) => {
         setTitulosModal("Buscar producción");
         setContentModal(content);
         setShowModal(true);
@@ -71,6 +71,9 @@ function RegistraReporte(props) {
             console.log(e)
         }
     }, []);
+
+
+    console.log(formDataProduccion.cantidadProducir)
 
     const onSubmit = e => {
         e.preventDefault();
@@ -310,27 +313,27 @@ function RegistraReporte(props) {
                                             </Form.Label>
                                         </Col>
                                         <Col>
-                                        <div className="flex items-center mb-1">
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="No. Orden interna"
-                                                name="ordenInterna"
-                                                defaultValue={formDataProduccion.ordenInterna}
-                                            />
-                                            <FontAwesomeIcon
-                                                className="cursor-pointer py-2 -ml-6"
-                                                title="Agregar un resultado"
-                                                icon={faSearch}
-                                                onClick={() => {
-                                                    buscarProduccion(
-                                                        <BuscarProduccion
-                                                            setFormData={setFormDataProduccion}
-                                                            formData={formDataProduccion}
-                                                            setShowModal={setShowModal}
-                                                        />)
-                                                }}
-                                            />
-                                        </div>
+                                            <div className="flex items-center mb-1">
+                                                <Form.Control
+                                                    type="text"
+                                                    placeholder="No. Orden interna"
+                                                    name="ordenInterna"
+                                                    defaultValue={formDataProduccion.ordenInterna}
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="cursor-pointer py-2 -ml-6"
+                                                    title="Agregar un resultado"
+                                                    icon={faSearch}
+                                                    onClick={() => {
+                                                        buscarProduccion(
+                                                            <BuscarProduccion
+                                                                setFormData={setFormDataProduccion}
+                                                                formData={formDataProduccion}
+                                                                setShowModal={setShowModal}
+                                                            />)
+                                                    }}
+                                                />
+                                            </div>
                                         </Col>
                                         <Col sm="2">
                                             <Form.Label>
