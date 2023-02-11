@@ -125,8 +125,8 @@ function ModificaReporte(props) {
                 presentaHumedad: formData.presentaHumedad,
                 certificadoCalidad: formData.certificadoCalidad,
                 empaqueDañado: formData.empaqueDañado,
-                etiqueta: formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si" ? "Aceptado" : formData.etiqueta,
-                resultadoFinalInspeccion: formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si" ? "ok" : "no Ok",
+                etiqueta: formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != "" ? "Aceptado" : formData.etiqueta,
+                resultadoFinalInspeccion: formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != "" ? "ok" : "no Ok",
                 observaciones: formData.observaciones
             }
             // console.log(dataTemp)
@@ -606,7 +606,7 @@ function ModificaReporte(props) {
                                                 name="resultadoFinalInspeccion"
                                                 id="si"
                                                 defaultValue={formData.resultadoFinalInspeccion}
-                                                checked={formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si"}
+                                                checked={formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != ""}
                                                 disabled
                                             />
                                         </Col>
@@ -620,7 +620,7 @@ function ModificaReporte(props) {
                                                 name="resultadoFinalInspeccion"
                                                 id="no"
                                                 defaultValue={formData.resultadoFinalInspeccion}
-                                                checked={formData.contaminacion == "no" || formData.presentaHumedad == "no" || formData.certificadoCalidad == "no" || formData.empaqueDañado == "no"}
+                                                checked={formData.contaminacion == "" || formData.presentaHumedad == "" || formData.certificadoCalidad == "" || formData.empaqueDañado == ""}
                                                 disabled
                                             />
                                         </Col>
@@ -628,7 +628,7 @@ function ModificaReporte(props) {
                                 </Row>
 
                                 {
-                                    formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si" ?
+                                    formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != "" ?
                                         (
                                             <>
                                                 <Row className="mb-3">
@@ -644,8 +644,8 @@ function ModificaReporte(props) {
                                                             disabled
                                                         >
                                                             <option>Elige una opción</option>
-                                                            <option value="Aceptado" selected={formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si"}>Aceptado</option>
-                                                            </Form.Control>
+                                                            <option value="Aceptado" selected={formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != ""}>Aceptado</option>
+                                                        </Form.Control>
                                                     </Form.Group>
                                                 </Row>
                                             </>
@@ -663,8 +663,8 @@ function ModificaReporte(props) {
                                                             defaultValue={formData.etiqueta}
                                                         >
                                                             <option>Elige una opción</option>
-                                                            <option value="No Conforme" selected={formData.etiqueta="No Conforme"}>No conforme</option>
-                                                            <option value="Material Sospechoso" selected={formData.etiqueta="Material Sospechoso"}>Material sospechoso</option>
+                                                            <option value="No Conforme" selected={formData.etiqueta = "No Conforme"}>No conforme</option>
+                                                            <option value="Material Sospechoso" selected={formData.etiqueta = "Material Sospechoso"}>Material sospechoso</option>
                                                         </Form.Control>
                                                     </Form.Group>
                                                 </Row>

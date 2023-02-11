@@ -86,56 +86,56 @@ function RegistraReporte(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-            //console.log("Continuar")
-            setLoading(true)
-            const temp = formData.nombreDescripcion.split("/")
-            // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            obtenerItemInspeccion().then(response => {
-                const { data } = response;
-                const dataTemp = {
-                    item: data.item,
-                    folio: folioActual,
-                    ordenVenta: formDataRecepcion.folioRecepcion,
-                    fecha: fechaActual,
-                    lote: formData.lote,
-                    sucursal: getSucursal(),
-                    propiedad: formData.propiedad,
-                    tipoMaterial: tipoMaterial,
-                    nombre: temp[1],
-                    cantidad: cantidad,
-                    unidadMedida: unidadMedida,
-                    nombreRecibio: formData.nombreRecibio,
-                    estadoMateriaPrima: formData.estadoMateriaPrima,
-                    contaminacion: formData.contaminacion,
-                    presentaHumedad: formData.presentaHumedad,
-                    certificadoCalidad: formData.certificadoCalidad,
-                    empaqueDañado: formData.empaqueDañado,
-                    etiqueta: formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si" ? "Aceptado" : formData.etiqueta,
-                    resultadoFinalInspeccion: formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si" ? "ok" : "no Ok",
-                    observaciones: formData.observaciones,
-                    estado: "true"
-                }
-                // console.log(dataTemp)
-                // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
-                // 
-                // Modificar el pedido creado recientemente
-                registraInspeccion(dataTemp).then(response => {
-                    const { data: { mensaje, datos } } = response;
+        //console.log("Continuar")
+        setLoading(true)
+        const temp = formData.nombreDescripcion.split("/")
+        // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
+        obtenerItemInspeccion().then(response => {
+            const { data } = response;
+            const dataTemp = {
+                item: data.item,
+                folio: folioActual,
+                ordenVenta: formDataRecepcion.folioRecepcion,
+                fecha: fechaActual,
+                lote: formData.lote,
+                sucursal: getSucursal(),
+                propiedad: formData.propiedad,
+                tipoMaterial: tipoMaterial,
+                nombre: temp[1],
+                cantidad: cantidad,
+                unidadMedida: unidadMedida,
+                nombreRecibio: formData.nombreRecibio,
+                estadoMateriaPrima: formData.estadoMateriaPrima,
+                contaminacion: formData.contaminacion,
+                presentaHumedad: formData.presentaHumedad,
+                certificadoCalidad: formData.certificadoCalidad,
+                empaqueDañado: formData.empaqueDañado,
+                etiqueta: formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != "" ? "Aceptado" : formData.etiqueta,
+                resultadoFinalInspeccion: formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != "" ? "ok" : "no Ok",
+                observaciones: formData.observaciones,
+                estado: "true"
+            }
+            // console.log(dataTemp)
+            // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
+            // 
+            // Modificar el pedido creado recientemente
+            registraInspeccion(dataTemp).then(response => {
+                const { data: { mensaje, datos } } = response;
 
-                    LogsInformativos("Se ha registrado el reporte de calidad " + folioActual, dataTemp);
+                LogsInformativos("Se ha registrado el reporte de calidad " + folioActual, dataTemp);
 
-                    // Actualizacion del tracking
-                    LogTrackingActualizacion(ordenVenta, "En inspeccion de calidad", "4")
-                    // console.log(response)
-                    toast.success(mensaje)
-                    setLoading(false)
-                    rutaRegreso()
-                }).catch(e => {
-                    console.log(e)
-                })
+                // Actualizacion del tracking
+                LogTrackingActualizacion(ordenVenta, "En inspeccion de calidad", "4")
+                // console.log(response)
+                toast.success(mensaje)
+                setLoading(false)
+                rutaRegreso()
             }).catch(e => {
                 console.log(e)
             })
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     const onChange = e => {
@@ -593,11 +593,11 @@ function RegistraReporte(props) {
                                             <Form.Check
                                                 value="ok"
                                                 type="radio"
-                                                label="Si"
+                                                label="OK"
                                                 name="resultadoInspeccion"
                                                 id="si"
                                                 defaultValue={formData.resultadoInspeccion}
-                                                checked={formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si"}
+                                                checked={formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != ""}
                                                 disabled
                                             />
                                         </Col>
@@ -607,11 +607,11 @@ function RegistraReporte(props) {
                                             <Form.Check
                                                 value="no Ok"
                                                 type="radio"
-                                                label="No"
+                                                label="NO OK"
                                                 name="resultadoInspeccion"
                                                 id="no"
                                                 defaultValue={formData.resultadoInspeccion}
-                                                checked={formData.contaminacion == "no" || formData.presentaHumedad == "no" || formData.certificadoCalidad == "no" || formData.empaqueDañado == "no"}
+                                                checked={formData.contaminacion == "" || formData.presentaHumedad == "" || formData.certificadoCalidad == "" || formData.empaqueDañado == ""}
                                                 disabled
                                             />
                                         </Col>
@@ -619,7 +619,7 @@ function RegistraReporte(props) {
                                 </Row>
 
                                 {
-                                    formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si" ?
+                                    formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != "" ?
                                         (
                                             <>
                                                 <Row className="mb-3">
@@ -635,8 +635,8 @@ function RegistraReporte(props) {
                                                             disabled
                                                         >
                                                             <option>Elige una opción</option>
-                                                            <option value="Aceptado" selected={formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si"}>Aceptado</option>
-                                                            </Form.Control>
+                                                            <option value="Aceptado" selected={formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != ""}>Aceptado</option>
+                                                        </Form.Control>
                                                     </Form.Group>
                                                 </Row>
                                             </>
