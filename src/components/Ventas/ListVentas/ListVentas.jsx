@@ -189,7 +189,7 @@ function ListVentas(props) {
             reorder: false
         },
         {
-            name: "Cuentas por cobrar",
+            name: "Factura",
             selector: row => (
                 row.estado === "true" ?
                     (
