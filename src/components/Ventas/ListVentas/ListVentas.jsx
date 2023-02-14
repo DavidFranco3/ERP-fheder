@@ -196,7 +196,7 @@ function ListVentas(props) {
                         <>
                             <Badge
                                 bg="primary"
-                                title="Generar una cuenta por cobrar"
+                                title="Generar una factura"
                                 className="editar"
                                 onClick={() => {
                                     registroCuentasCobrar(row.folio)

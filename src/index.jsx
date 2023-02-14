@@ -1,4 +1,4 @@
-import React from 'react';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.scss';
 import App from './App';
@@ -9,13 +9,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-bootstrap-wizard/dist/react-wizard.scss"
 import 'react-toastify/dist/ReactToastify.css';
 
-const container =   document.getElementById('root');
-const root = createRoot(container);
+const root = createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <StrictMode>
+    <App tab="home" />
+  </StrictMode>,
 );
 
 // If you want your app to work offline and load faster, you can change
