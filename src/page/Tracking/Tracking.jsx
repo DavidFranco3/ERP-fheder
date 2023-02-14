@@ -1,5 +1,6 @@
 import { useState, useEffect, Suspense } from 'react';
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import { listarTracking } from "../../api/tracking";
@@ -14,10 +15,10 @@ import AnimacionLoading from '../../assets/json/loading.json';
 function Tracking(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const rutaRegreso = () => {
-        enrutamiento.push("/")
+        enrutamiento("/")
     }
 
     // Cerrado de sesión automatico

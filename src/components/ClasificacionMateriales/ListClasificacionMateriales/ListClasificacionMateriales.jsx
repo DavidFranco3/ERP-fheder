@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./ListClasificacionMateriales.scss"
 import { Badge, Button, Container, Form, Col } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
@@ -19,7 +19,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 function ListClasificacionMateriales(props) {
     const { listClasificacionMateriales, history, location, setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)

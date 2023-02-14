@@ -38,7 +38,7 @@ function EliminacionFisicaClasificacionMaquinaria(props) {
                 eliminaClasificacionMaquinaria(id).then(response => {
                     const { data } = response;
                     LogsInformativos("Se ha eliminado la maquinaria " + formData.nombre, formData);
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     toast.success(data.mensaje);

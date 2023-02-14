@@ -37,7 +37,7 @@ function EliminacionLogicaCalidad(props) {
                 LogsInformativos("Se ha cancelado la inspeccion de calidad del material " + folio, dataTemp);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

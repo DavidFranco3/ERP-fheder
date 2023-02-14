@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Image, Row, Spinner, Table, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import "./RegistroCompras.scss"
@@ -39,10 +39,10 @@ function RegistroCompras(props) {
     // Termina cerrado de sesión automatico
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
     // Para definir la ruta de regreso a compras
     const regresaCompras = () => {
-        enrutamiento.push("/Compras")
+        enrutamiento("/Compras")
     }
 
     // Para guardar los datos del formulario

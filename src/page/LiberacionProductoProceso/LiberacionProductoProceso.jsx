@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { listarLiberacionProducto } from "../../api/liberacionProductoProceso";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -14,15 +15,15 @@ function LiberacionProductoProceso(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroLiberacionProductoProceso")
+        enrutamiento("/RegistroLiberacionProductoProceso")
     }
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCalidad")
+        enrutamiento("/DashboardCalidad")
     }
 
     // Cerrado de sesión automatico

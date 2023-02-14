@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroPrimeraPieza from "../../components/EtiquetaPrimeraPieza/RegistraPrimeraPieza";
 import { listarEtiquetasPiezas } from "../../api/etiquetaPrimeraPieza";
@@ -65,10 +66,10 @@ function EtiquetaPrimeraPieza(props) {
     }, [location]);
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCalidad")
+        enrutamiento("/DashboardCalidad")
     }
 
     return (

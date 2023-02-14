@@ -41,7 +41,7 @@ function EliminacionLogicaClasificacionMateriales(props) {
                 LogsInformativos("Se actualizo el estado del material " + formData.nombre, dataTemp)
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

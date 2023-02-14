@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Badge, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import DataTable from 'react-data-table-component';
@@ -16,7 +16,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 function ListFichasTecnicas(props) {
     const { setRefreshCheckLogin, listFichasTecnicas, history, location } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -42,12 +42,12 @@ function ListFichasTecnicas(props) {
 
     // Para la modificacion de datos del pedido
     const modificaFichaTecnica = (id) => {
-        enrutamiento.push(`/ModificaFichaTecnica/${id}`);
+        enrutamiento(`/ModificaFichaTecnica/${id}`);
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
     const vistaPrevia = (id) => {
-        enrutamiento.push(`/VistaPreviaFichasTecnicas/${id}`);
+        enrutamiento(`/VistaPreviaFichasTecnicas/${id}`);
     }
 
     const columns = [

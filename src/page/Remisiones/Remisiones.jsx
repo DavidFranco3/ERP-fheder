@@ -2,18 +2,19 @@ import { useEffect } from 'react';
 import { Alert, Button, Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import { withRouter, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 import { toast } from "react-toastify";
 
 function Remisiones(props) {
     const { setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para definir la ruta de registro de los productos
     const rutaRegistraRemisiones = () => {
-        enrutamiento.push("/RegistroRemision")
+        enrutamiento("/RegistroRemision")
     }
 
     // Cerrado de sesión automatico

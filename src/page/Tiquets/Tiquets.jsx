@@ -5,16 +5,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faPlus, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import { toast } from "react-toastify";
-import { withRouter, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 
 function Tiquets(props) {
     const { setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para definir la ruta de registro de los productos
     const rutaRegistraTiquets = () => {
-        enrutamiento.push("/RegistroTiquets")
+        enrutamiento("/RegistroTiquets")
     }
 
     // Cerrado de sesión automatico

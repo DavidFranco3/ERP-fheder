@@ -30,7 +30,7 @@ function EliminacionAsignacionPedido(props) {
                 toast.success(data.mensaje)
                 LogsInformativos("Se ha eliminado la asignacion de pedido con el folio " + folio, data);
                 setShowModal(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             }).catch(e => {

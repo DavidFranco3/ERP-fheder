@@ -41,7 +41,7 @@ function EstadoPrograma(props) {
                 LogsInformativos("Se cancelo el programa de producción " + folio, dataTemp);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

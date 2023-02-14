@@ -37,7 +37,7 @@ function EliminacionLogicaIntegracion(props) {
                 LogsInformativos("Se ha cancelado la integracion de ventas y gastos " + folio, dataTemp);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Alert, Badge, Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { map } from "lodash";
 import { actualizaOrdenCompra, obtenerDatosCompra } from "../../../api/compras";
 import { obtenerDatosRequisiciones } from "../../../api/requisicion";
@@ -22,11 +22,11 @@ function ModificacionCompras(props) {
     const { setRefreshCheckLogin } = props;
 
     // Define el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define el regreso hacia compras
     const regresaCompras = () => {
-        enrutamiento.push("/Compras")
+        enrutamiento("/Compras")
     }
 
     // Cerrado de sesión automatico

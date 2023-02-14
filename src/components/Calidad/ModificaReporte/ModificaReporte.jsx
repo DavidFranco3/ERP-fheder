@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import BuscarOV from "../../../page/BuscarOV";
 import BasicModal from "../../Modal/BasicModal";
 import { obtenerInspeccion, actualizaInspeccion } from "../../../api/inspeccionMaterial";
@@ -45,7 +45,7 @@ function ModificaReporte(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const [folioMaterial, setFolioMaterial] = useState("");
     const [cantidad, setCantidad] = useState("");
@@ -84,7 +84,7 @@ function ModificaReporte(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/Calidad")
+        enrutamiento("/Calidad")
     }
 
     const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");

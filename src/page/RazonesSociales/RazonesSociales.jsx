@@ -6,7 +6,8 @@ import { faCirclePlus, faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/f
 import { listarRazonSocial } from "../../api/razonesSociales";
 import { toast } from "react-toastify";
 import ListRazonesSociales from "../../components/RazonesSociales/ListRazonesSociales";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -14,10 +15,10 @@ import AnimacionLoading from '../../assets/json/loading.json';
 function RazonesSociales(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardConfiguracion")
+        enrutamiento("/DashboardConfiguracion")
     }
 
     // Cerrado de sesión automatico
@@ -35,7 +36,7 @@ function RazonesSociales(props) {
 
     // Ir hacia ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroRazonesSociales");
+        enrutamiento("/RegistroRazonesSociales");
     }
 
     // Para almacenar los usuarios

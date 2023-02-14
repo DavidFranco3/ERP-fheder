@@ -39,7 +39,7 @@ function RegistroClasificacionMateriales(props) {
                 registraClasificacionMaterial(dataTemp).then(response => {
                     const { data } = response;
                     LogsInformativos("Se ha registrado un nuevo material " + dataTemp.nombre, dataTemp);
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     toast.success(data.mensaje);

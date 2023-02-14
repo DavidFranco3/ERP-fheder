@@ -3,7 +3,7 @@ import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstr
 import BasicModal from "../../Modal/BasicModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { registraCertificado, obtenerNumeroCertificado, obtenerItemCertificado } from "../../../api/certificadosCalidad";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
@@ -45,11 +45,11 @@ function RegistraReporte(props) {
     }
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/CertificadosCalidad")
+        enrutamiento("/CertificadosCalidad")
     }
 
     // Para controlar la animacion

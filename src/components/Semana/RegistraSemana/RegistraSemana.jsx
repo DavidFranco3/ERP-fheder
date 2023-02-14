@@ -63,7 +63,7 @@ function RegistraSemana(props) {
                     LogsInformativos("Se a registrado una nueva semana " + dataTemp.folio, dataTemp)
                     toast.success(data.mensaje);
                     setLoading(false)
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     setShowModal(false)

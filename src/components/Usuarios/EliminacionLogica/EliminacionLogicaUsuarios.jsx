@@ -42,7 +42,7 @@ function EliminacionLogicaUsuarios(props) {
                 LogsInformativos("Se ha actualizado el estado del usuario " + formData.nombre, dataUsuario);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

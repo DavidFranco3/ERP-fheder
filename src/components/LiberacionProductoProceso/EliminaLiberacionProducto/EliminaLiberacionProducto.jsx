@@ -33,7 +33,7 @@ function EliminaLiberacionProducto(props) {
                 toast.success(data.mensaje)
                 LogsInformativos("Se ha eliminado la liberacion de producto y proceso con el folio " + folio, datos)
                 setShowModal(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

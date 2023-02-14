@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { listarMateriaPrima } from "../../../api/materiaPrima";
 import { toast } from "react-toastify";
 import { listarClientes } from "../../../api/clientes";
@@ -90,11 +90,11 @@ function RegistraMatrizProductos(props) {
     const [dataEmpaque, setDataEmpaque] = useState(initialEmpaque());
 
     // Para definir el enrutamiento hacia productos
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Define el regreso hacia los productos
     const rutaRegresoProductos = () => {
-        enrutamiento.push("/MatrizProductos")
+        enrutamiento("/MatrizProductos")
     }
 
     // Para hacer uso del modal

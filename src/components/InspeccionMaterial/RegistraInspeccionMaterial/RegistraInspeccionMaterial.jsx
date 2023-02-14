@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner, Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./RegistraInspeccionMaterial.scss";
 import BasicModal from "../../Modal/BasicModal";
 import CancelacionInspeccion from "../CancelacionInspeccion";
@@ -34,11 +34,11 @@ function RegistraInspeccionMaterial(props) {
     const [formData, setFormData] = useState(initialFormData());
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/InspeccionPieza")
+        enrutamiento("/InspeccionPieza")
     }
 
     // Para hacer uso del modal

@@ -3,7 +3,7 @@ import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-
 import BasicModal from "../../Modal/BasicModal";
 import AgregarResultado from "../AgregarResultado";
 import AgregarRegistro from "../AgregarRegistro";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./RegistroProduccion.scss";
 import { map } from "lodash";
 import { listarMatrizProductosActivos, obtenerMatrizProducto } from "../../../api/matrizProductos";
@@ -155,11 +155,11 @@ function RegistroProduccion(props) {
     }
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/Produccion")
+        enrutamiento("/Produccion")
     }
 
     // Para controlar la animacion

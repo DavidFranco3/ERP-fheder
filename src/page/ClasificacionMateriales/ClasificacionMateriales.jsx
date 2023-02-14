@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import "./ClasificacionMateriales.scss";
 import { listarClasificacionMaterial } from "../../api/clasificacionMateriales";
 import { toast } from "react-toastify";
@@ -17,10 +18,10 @@ import { getSucursal } from '../../api/auth';
 function ClasificacionMateriales(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardConfiguracion")
+        enrutamiento("/DashboardConfiguracion")
     }
 
     // Cerrado de sesión automatico

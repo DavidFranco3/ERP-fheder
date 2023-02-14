@@ -5,7 +5,7 @@ import { actualizaEtiquetaMolido, obtenerEtiquetaMolido } from '../../../api/eti
 import queryString from "query-string";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
@@ -32,7 +32,7 @@ function VistaPreviaMaterialMolido(props) {
     // Termina cerrado de sesión automatico
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Define el uso de los parametros
     const parametros = useParams()
@@ -40,7 +40,7 @@ function VistaPreviaMaterialMolido(props) {
 
      // Define la ruta de registro
      const rutaRegreso = () => {
-        enrutamiento.push("/MaterialMolido")
+        enrutamiento("/MaterialMolido")
     }
 
     // Para guardar los datos del formulario

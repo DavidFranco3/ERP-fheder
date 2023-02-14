@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory, useNavigate } from "react-router-dom";
 import { Alert, Button, Col, Row, Form, Container, Badge } from "react-bootstrap";
 import "./RegistroTiquets.scss";
 import { toast } from "react-toastify";
@@ -23,11 +23,11 @@ function RegistroTiquets(props) {
 
     const [loading, setLoading] = useState(false);
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/Tiquets")
+        enrutamiento("/Tiquets")
     }
 
     return (

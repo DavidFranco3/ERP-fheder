@@ -5,7 +5,8 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import { listarOrdenesCompra } from "../../api/compras";
-import { withRouter, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import ListCompras from "../../components/Compras/ListCompras";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -27,7 +28,7 @@ function Compras(props) {
     // Termina cerrado de sesión automatico
 
     // Para definir el salto entre rutas
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para almacenar el listado de compras realizadas
     const [listCompras, setListCompras] = useState(null);
@@ -55,11 +56,11 @@ function Compras(props) {
 
     // Define el registro de una nueva compra y enruta hacia la vista de registro
     const registraCompra = () => {
-        enrutamiento.push("/RegistroCompras")
+        enrutamiento("/RegistroCompras")
     }
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCompras")
+        enrutamiento("/DashboardCompras")
     }
 
     return (

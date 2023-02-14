@@ -3,7 +3,7 @@ import { Alert, Button, Col, Form, Row, Container, Image, Spinner } from "react-
 import BasicModal from "../../Modal/BasicModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { obtenerCertificado, actualizaCertificado } from "../../../api/certificadosCalidad";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
@@ -54,11 +54,11 @@ function VistaPreviaCertificadosCalidad(props) {
     const { id } = params
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/CertificadosCalidad");
+        enrutamiento("/CertificadosCalidad");
     }
 
     useEffect(() => {

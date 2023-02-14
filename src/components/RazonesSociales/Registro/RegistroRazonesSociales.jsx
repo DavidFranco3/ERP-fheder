@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { listarDepartamento } from "../../../api/departamentos";
 import { isCurpValid, isEmailValid, isRFCValid } from "../../../utils/validations";
 import { toast } from "react-toastify";
@@ -18,7 +18,7 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../ap
 function RegistroRazonesSociales(props) {
     const { setRefreshCheckLogin, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -35,7 +35,7 @@ function RegistroRazonesSociales(props) {
 
     // Ruta para enlazar a pagina de usuarios
     const regresaPagina = () => {
-        enrutamiento.push("/RazonesSociales");
+        enrutamiento("/RazonesSociales");
     }
 
     // Para almacenar la foto de perfil del usuario
@@ -86,7 +86,7 @@ function RegistroRazonesSociales(props) {
                     LogsInformativos("Se ha registrado la razon social" + dataTempFinal.nombre, dataTempFinal)
                     toast.success(data.mensaje)
                     setLoading(false);
-                    enrutamiento.push("/RazonesSociales");
+                    enrutamiento("/RazonesSociales");
                 }).catch(e => {
                     console.log(e)
                     if (e.message === 'Network Error') {

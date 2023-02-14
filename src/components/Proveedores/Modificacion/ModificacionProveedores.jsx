@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { listarDepartamento } from "../../../api/departamentos";
 import { actualizaUsuario, obtenerUsuario } from "../../../api/usuarios";
 import { toast } from "react-toastify";
@@ -17,7 +17,7 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../ap
 function ModificacionProveedores(props) {
     const { setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const params = useParams();
 
@@ -36,7 +36,7 @@ function ModificacionProveedores(props) {
 
     // Ruta para enlazar a pagina de usuarios
     const regresaPagina = () => {
-        enrutamiento.push("/Proveedores");
+        enrutamiento("/Proveedores");
     }
 
     // Para almacenar la foto de perfil del usuario

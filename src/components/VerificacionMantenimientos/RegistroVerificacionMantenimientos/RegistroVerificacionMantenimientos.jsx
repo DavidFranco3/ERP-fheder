@@ -2,18 +2,18 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPrint, faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BasicModal from "../../Modal/BasicModal";
 import AgregarItem from "../AgregarItem";
 
 function RegistroVerificacionMantenimientos(props) {
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/RegistroMaquinasMantenimientos")
+        enrutamiento("/RegistroMaquinasMantenimientos")
     }
 
     // Para hacer uso del modal

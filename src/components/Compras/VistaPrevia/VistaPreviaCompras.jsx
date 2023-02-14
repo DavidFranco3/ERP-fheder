@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Alert, Badge, Button, Col, Form, Row, Spinner, Image, Container } from "react-bootstrap";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { map } from "lodash";
 import "./VistaPreviaCompras.scss";
 import { actualizaOrdenCompra, obtenerDatosCompra } from "../../../api/compras";
@@ -28,11 +28,11 @@ function VistaPreviaCompras(props) {
     }
 
     // Define el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define el regreso hacia compras
     const regresaCompras = () => {
-        enrutamiento.push("/Compras")
+        enrutamiento("/Compras")
     }
 
     // Cerrado de sesión automatico

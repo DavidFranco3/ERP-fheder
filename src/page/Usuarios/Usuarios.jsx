@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import "./Usuarios.scss";
 import { listarUsuarios } from "../../api/usuarios";
 import { toast } from "react-toastify";
@@ -15,10 +16,10 @@ import AnimacionLoading from '../../assets/json/loading.json';
 function Usuarios(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCatalogos")
+        enrutamiento("/DashboardCatalogos")
     }
 
     // Cerrado de sesión automatico
@@ -68,7 +69,7 @@ function Usuarios(props) {
 
     // Para controlar el acceso a la ruta de registro y de modificacion
     const registraColaborador = () => {
-        enrutamiento.push("/RegistroUsuarios")
+        enrutamiento("/RegistroUsuarios")
     }
 
 

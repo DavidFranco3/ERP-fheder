@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Image, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./VistaPreviaReporte.scss";
 import NuevoRegistro from "../NuevoRegistro";
 import { registraReporteProducción, obtenerNumeroReporteProduccion, obtenerReporteProduccion, actualizaReporteProduccion } from "../../../api/reporteProduccion";
@@ -77,11 +77,11 @@ function VistaPreviaReporte(props) {
     }
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/ReporteProduccion")
+        enrutamiento("/ReporteProduccion")
     }
 
     // Para controlar la animacion

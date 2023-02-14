@@ -42,7 +42,7 @@ function CambiarEstadoAlmacenes(props) {
                     toast.success(data.mensaje);
                 }
                 setShowModal(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

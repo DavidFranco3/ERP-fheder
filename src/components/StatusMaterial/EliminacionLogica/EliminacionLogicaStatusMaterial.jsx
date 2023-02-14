@@ -37,7 +37,7 @@ function EliminacionLogicaStatusMaterial(props) {
                 LogsInformativos("Se ha cancelado la identificación de status de material " + folio, datosStatus);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

@@ -66,7 +66,7 @@ function ModificaEtiquetasMoldes(props) {
                 LogsInformativos("Se ha actualizado el molde " + formData.folio, dataTemp);
                 toast.success(data.mensaje)
                 setTimeout(() => {
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     setShowModal(false)

@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { toast } from "react-toastify";
 import { listarInspeccionPieza } from "../../api/inspeccionPieza";
 import ListInspeccion from '../../components/InspeccionMaterial/ListInspeccionPieza';
@@ -27,15 +28,15 @@ function InspeccionPieza(props) {
     // Termina cerrado de sesión automatico
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistraInspeccionPieza")
+        enrutamiento("/RegistraInspeccionPieza")
     }
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCalidad")
+        enrutamiento("/DashboardCalidad")
     }
 
     // Para almacenar el listado de compras realizadas

@@ -31,7 +31,7 @@ function EliminaReporte(props) {
                 LogsInformativos("Se ha eliminado la inspeccion de calidad de material con el folio " + folio, data);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             }).catch(e => {

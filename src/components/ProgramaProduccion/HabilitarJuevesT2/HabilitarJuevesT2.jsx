@@ -70,7 +70,7 @@ function HabilitarJuevesT2(props) {
                 LogsInformativos("Se actualizo el estado del segundo turno del jueves " + folio, dataTemp);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

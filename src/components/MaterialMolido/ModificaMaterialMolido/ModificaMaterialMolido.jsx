@@ -67,7 +67,7 @@ function ModificaMaterialMolido(props) {
                 toast.success(data.mensaje)
                 setTimeout(() => {
                     setLoading(false)
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     setShowModal(false)

@@ -37,7 +37,7 @@ function EliminacionLogicaCertificado(props) {
                 LogsInformativos("Se ha cancelado el certificado de calidad " + folio, datos);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

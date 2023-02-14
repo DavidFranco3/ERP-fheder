@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DropzoneFormularios from "../../DropzoneFormularios";
 import { toast } from "react-toastify";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from "../../../api/auth";
@@ -13,7 +13,7 @@ import { subeArchivosCloudinary } from "../../../api/cloudinary";
 function RegistraAlertasCalidad(props) {
     const { setRefreshCheckLogin } = props;
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -229,7 +229,7 @@ function RegistraAlertasCalidad(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/AlertasCalidad")
+        enrutamiento("/AlertasCalidad")
     }
 
     // Para controlar la animacion

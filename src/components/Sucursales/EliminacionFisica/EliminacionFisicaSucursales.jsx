@@ -38,7 +38,7 @@ function EliminacionFisicaSucursales(props) {
                 eliminaSucursal(id).then(response => {
                     const { data } = response;
                     LogsInformativos("Se ha eliminado la sucursal " + formData.nombre, data);
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     toast.success(data.mensaje);

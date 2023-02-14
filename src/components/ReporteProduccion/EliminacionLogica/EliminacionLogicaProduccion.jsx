@@ -37,7 +37,7 @@ function EliminacionLogicaProduccion(props) {
                 LogsInformativos("Se ha cancelado el reporte de producción " + folio, datos);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

@@ -44,7 +44,7 @@ function EliminacionLogicaInspecciones(props) {
                     LogsInformativos("Se ha cancelado la inspección de pieza " + folio, dataTemp)
                     setShowModal(false);
                     setLoading(false);
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                 })

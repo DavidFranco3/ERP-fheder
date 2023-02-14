@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Badge, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaProduccion from "../EliminacionFisica";
@@ -17,7 +17,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 function ListProduccion(props) {
     const { setRefreshCheckLogin, listProduccion, history, location } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -43,12 +43,12 @@ function ListProduccion(props) {
 
     // Para la modificacion de datos del pedido
     const modificaPedidoVenta = (id) => {
-        enrutamiento.push(`/ModificacionProduccion/${id}`);
+        enrutamiento(`/ModificacionProduccion/${id}`);
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
     const vistaPreviaProduccion = (id) => {
-        enrutamiento.push(`/VistaPreviaProduccion/${id}`);
+        enrutamiento(`/VistaPreviaProduccion/${id}`);
     }
 
     const columns = [

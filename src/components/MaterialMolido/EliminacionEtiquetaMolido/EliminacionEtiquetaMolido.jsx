@@ -31,7 +31,7 @@ function EliminacionEtiquetaMolido(props) {
                 LogsInformativos("Se ha eliminado la etiqueta de material molido " + folio, data)
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             }).catch(e => {

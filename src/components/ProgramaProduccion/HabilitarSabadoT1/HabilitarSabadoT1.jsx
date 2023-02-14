@@ -70,7 +70,7 @@ function HabilitarSabadoT1(props) {
                 LogsInformativos("Se actualizo el estado del primer turno del sabado " + folio, dataTemp);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

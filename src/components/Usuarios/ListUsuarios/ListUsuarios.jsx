@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./ListUsuarios.scss"
 import { Badge, Button, Container, Col, Form } from "react-bootstrap";
 import EliminacionLogicaUsuarios from "../EliminacionLogica";
@@ -18,7 +18,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 function ListUsuarios(props) {
     const { listUsuarios, history, location, setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -51,7 +51,7 @@ function ListUsuarios(props) {
 
     //Para la modificacion de datos
     const modificaUsuarios = (id) => {
-        enrutamiento.push(`/ModificacionUsuarios/${id}`);
+        enrutamiento(`/ModificacionUsuarios/${id}`);
     }
 
     // Definicion de tabla

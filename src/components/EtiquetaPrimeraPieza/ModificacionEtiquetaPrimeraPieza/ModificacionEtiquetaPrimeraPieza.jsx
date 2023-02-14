@@ -139,7 +139,7 @@ function RegistraReporte(props) {
                 const { data } = response;
                 LogsInformativos("Informacion de la primera pieza actualizada " + id, dataTemp)
                 toast.success(data.mensaje);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
                 setShowModal(false)

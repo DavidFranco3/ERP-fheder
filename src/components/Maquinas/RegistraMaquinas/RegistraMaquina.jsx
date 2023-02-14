@@ -96,7 +96,7 @@ function RegistraMaquinas(props) {
                     const { data } = response;
                     toast.success(data.mensaje)
                     LogsInformativos("Se ha registrado una nueva maquina " + formData.numeroMaquina, dataTemp)
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     setShowModal(false)

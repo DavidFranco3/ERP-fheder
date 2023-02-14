@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
 import { FormCheck, Badge } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
-import {obtenerProductoCatalogo} from "../../../../api/catalogoProductos";
-import {obtenerDatosAlmacenMPFolio} from "../../../../api/almacenMP";
+import { useNavigate } from "react-router-dom";
+import { obtenerProductoCatalogo } from "../../../../api/catalogoProductos";
+import { obtenerDatosAlmacenMPFolio } from "../../../../api/almacenMP";
 import "./Planeacion.scss"
 
 function VerificacionExistencias(props) {
     const { folio, cantidadPedida } = props;
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Define la ruta hacia compras
     const rutaHaciaCompras = () => {
-        enrutamiento.push("/Compras/AlmacenMP")
+        enrutamiento("/Compras/AlmacenMP")
     }
 
     // Para validar si hay existencias
@@ -31,10 +31,10 @@ function VerificacionExistencias(props) {
                 obtenerDatosAlmacenMPFolio(materiaPrima).then(response => {
                     const { data } = response;
                     // console.log(data)
-                    if(data) {
+                    if (data) {
                         setHayExistencias(true)
                         const { existenciasStock } = data;
-                        if(existenciasStock === 0){
+                        if (existenciasStock === 0) {
                             setValidaExistenciasMP(0)
                         } else {
 
@@ -46,7 +46,7 @@ function VerificacionExistencias(props) {
                                 const totalTemp = parseFloat(pesoPiezas) * parseInt(cantidadPedida)
                                 const tempDiferencia = parseFloat(existenciasStock) - totalTemp
                                 // Calculo si la existencia es mayor a lo que se requiere para producir
-                                if(existenciasStock > totalTemp) {
+                                if (existenciasStock > totalTemp) {
                                     setValidaExistenciasMP(true)
                                 } else {
                                     setValidaExistenciasMP(false)

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Badge, Button, Container } from "react-bootstrap";
 import EliminacionLogicaClientes from "../EliminacionLogica";
 import BasicModal from "../../Modal/BasicModal";
@@ -20,16 +20,16 @@ function ListClientes(props) {
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para ir hacia la ruta de modificacion
     const irHaciaModificacion = (id) => {
-        enrutamiento.push(`/ModificacionClientes/${id}`);
+        enrutamiento(`/ModificacionClientes/${id}`);
     }
 
     // Para ir hacia la ruta de modificacion
     const irHaciaCuentasCobrar = (id) => {
-        enrutamiento.push(`/CuentasPorCobrar/${id}`);
+        enrutamiento(`/CuentasPorCobrar/${id}`);
     }
 
     // Para hacer uso del modal

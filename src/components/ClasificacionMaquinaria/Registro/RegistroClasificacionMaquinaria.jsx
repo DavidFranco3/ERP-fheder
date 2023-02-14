@@ -39,7 +39,7 @@ function RegistroClasificacionMaquinaria(props) {
                 registraClasificacionMaquinaria(dataTemp).then(response => {
                     const { data } = response;
                     LogsInformativos("Se ha registrado una nueva maquinaria " + dataTemp.nombre, dataTemp);
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     toast.success(data.mensaje);

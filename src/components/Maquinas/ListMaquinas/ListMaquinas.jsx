@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BasicModal from "../../Modal/BasicModal";
 import { Badge, Button, Container, } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -26,7 +26,7 @@ function ListMaquinas(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Configura el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     //Para la eliminacion de compras
     const eliminacionMaquina = (content) => {
@@ -51,11 +51,11 @@ function ListMaquinas(props) {
 
     //Para la modificacion de compras
     const modificacionCompraAlmacen = (folio) => {
-        enrutamiento.push(`/Compras/AlmacenMP/Modificacion/${folio}`)
+        enrutamiento(`/Compras/AlmacenMP/Modificacion/${folio}`)
     }
 
     const modificacionCompra = (folio) => {
-        enrutamiento.push(`/ModificacionCompras/${folio}`)
+        enrutamiento(`/ModificacionCompras/${folio}`)
     }
 
     const columns = [

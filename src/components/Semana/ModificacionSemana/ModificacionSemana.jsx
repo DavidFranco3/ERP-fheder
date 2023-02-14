@@ -38,7 +38,7 @@ function ModificacionSemana(props) {
                 LogsInformativos("Se a modificado la semana " + folio, dataTemp);
                 toast.success(data.mensaje);
                 setLoading(false)
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
                 setShowModal(false)

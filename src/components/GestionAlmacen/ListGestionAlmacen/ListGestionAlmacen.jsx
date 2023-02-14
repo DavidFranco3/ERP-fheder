@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./ListGestionAlmacen.scss"
 import { Badge, Button, Container, Form, Col } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
@@ -19,7 +19,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 function ListGestionAlmacen(props) {
     const { listGestionAlmacen, history, location, setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -59,7 +59,7 @@ function ListGestionAlmacen(props) {
 
     //Para la modificacion de datos
     const modificaUsuarios = (id) => {
-        enrutamiento.push(`/ModificacionUsuarios/${id}`);
+        enrutamiento(`/ModificacionUsuarios/${id}`);
     }
 
     // Definicion de tabla

@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
 import DataTable from 'react-data-table-component';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ListProductosRequisicion from '../ListProductosRequisicion';
 import EliminacionLogicaRequisiciones from '../EliminacionLogica';
 import 'dayjs/locale/es'
@@ -20,7 +20,7 @@ function ListRequisiciones(props) {
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -44,11 +44,11 @@ function ListRequisiciones(props) {
 
     //Para la eliminacion de proveedores
     const ModificacionRequisicion = (id) => {
-        enrutamiento.push(`/ModificacionRequisicion/${id}`);
+        enrutamiento(`/ModificacionRequisicion/${id}`);
     }
 
     const VistaPreviaRequisiciones = (id) => {
-        enrutamiento.push(`/VistaPreviaRequisiciones/${id}`);
+        enrutamiento(`/VistaPreviaRequisiciones/${id}`);
     }
 
     const ExpandedComponent = ({ data }) => (

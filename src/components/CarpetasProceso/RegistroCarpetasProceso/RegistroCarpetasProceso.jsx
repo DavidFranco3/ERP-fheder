@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./RegistroCarpetasProceso.scss";
 import NuevoRegistroHerramienta from "../RegistroHerramientasEquipos";
 import NuevoRegistroProteccion from "../RegistroProteccionPersonal";
@@ -37,11 +37,11 @@ function RegistroCarpetasProceso(props) {
     }
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/CarpetasProceso")
+        enrutamiento("/CarpetasProceso")
     }
 
     // Para controlar la animacion

@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { listarRegistrosAlmacen } from "../../api/almacenes";
 import ListAlmacenes from "../../components/Almacenes/ListAlmacenes";
-import { withRouter, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroEntradaSalida from "../../components/Almacenes/RegistroEntradaSalida";
 import Lottie from 'react-lottie-player';
@@ -18,7 +19,7 @@ function Almacenes(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -111,11 +112,11 @@ function Almacenes(props) {
     }, [location]);
 
     const rutaRegreso = () => {
-        enrutamiento.push("/")
+        enrutamiento("/")
     }
 
     const rutaMovimientos = () => {
-        enrutamiento.push("/MovimientosAlmacenes");
+        enrutamiento("/MovimientosAlmacenes");
     }
 
     return (

@@ -33,7 +33,7 @@ function EliminacionFisicaFichasTecnicas(props) {
                 toast.success(data.mensaje)
                 LogsInformativos("Se ha eliminado la ficha tecnica con el folio " + folio, datos)
                 setShowModal(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

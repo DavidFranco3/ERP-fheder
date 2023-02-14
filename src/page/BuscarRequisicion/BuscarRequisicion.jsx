@@ -2,7 +2,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { toast } from "react-toastify";
 //import BuscarClientes from '../../components/Busquedas/BuscarClientes';
 import { listarRequisicionesActivas } from "../../api/requisicion";
@@ -15,8 +15,6 @@ import BuscarRequisiciones from '../../components/Busquedas/BuscarRequisiciones'
 
 function BuscarRequisicion(props) {
     const { setFormData, formData, productosRequisicion, setProductosRequisicion, setShowModal, setRefreshCheckLogin, location, history } = props;
-
-    const enrutamiento = useHistory();
 
     // Cerrado de sesión automatico
     useEffect(() => {

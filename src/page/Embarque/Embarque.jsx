@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faPlus, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import { toast } from "react-toastify";
-import { withRouter, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 
 function Embarque(props) {
     const { setRefreshCheckLogin } = props;
@@ -22,11 +23,11 @@ function Embarque(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para definir la ruta de registro de los productos
     const rutaRegistraEmbarques = () => {
-        enrutamiento.push("/RegistroEmbarque")
+        enrutamiento("/RegistroEmbarque")
     }
 
     return (

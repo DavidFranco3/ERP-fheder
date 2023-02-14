@@ -9,10 +9,10 @@ import {
 } from "../../api/auth";
 import { map } from "lodash";
 import {
-    useHistory
+    useNavigate
 } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react"
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline"
+import { BellIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
 import LogoFredherBlanco from "../../assets/png/logo-fredher-blanco.png";
 import ImagenPerfil from "../../assets/png/user-avatar.png";
@@ -24,13 +24,13 @@ import {LogsInformativos, LogsInformativosLogout} from "../../components/Logs/Lo
 function LayoutPrincipal(props) {
     const { setRefreshCheckLogin, children } = props;
 
-    const redirecciona = useHistory();
+    const redirecciona = useNavigate();
 
     //Para cerrar la sesion
     const cerrarSesion = () => {
         LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
         logoutApi();
-        redirecciona.push("")
+        redirecciona("")
         setRefreshCheckLogin(true);
         toast.success("Sesión cerrada");
     }
@@ -84,7 +84,7 @@ function LayoutPrincipal(props) {
 
     // Para ir hacia el inicio
     const rutaInicio = () => {
-        redirecciona.push("/")
+        redirecciona("/")
     }
 
 return (
@@ -175,9 +175,9 @@ return (
                                     <Disclosure.Button className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                                         <span className="sr-only">Open main menu</span>
                                         {open ? (
-                                            <XIcon className="block h-6 w-6" aria-hidden="true" />
+                                            <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                                         ) : (
-                                            <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+                                            <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                                         )}
                                     </Disclosure.Button>
                                 </div>

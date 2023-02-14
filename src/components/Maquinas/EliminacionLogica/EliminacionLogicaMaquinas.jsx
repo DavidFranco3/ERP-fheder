@@ -39,7 +39,7 @@ function EliminacionLogicaMaquinas(props) {
                 LogsInformativos("Se ha actualizado el estado de la maquina " + numeroMaquina, dataTemp);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

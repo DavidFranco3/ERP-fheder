@@ -35,7 +35,7 @@ function ModificacionUnidadesMedida(props) {
                     toast.success(data.status);
                     setShowModal(false);
                     setLoading(false);
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                 })

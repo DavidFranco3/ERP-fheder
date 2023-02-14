@@ -1,11 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Alert, Col, Button, Spinner, Form, Container, Row } from "react-bootstrap";
-import EncabezadoOV from "../../Ventas/Registro/Pasos/OrdenVenta/EncabezadoOV/EncabezadoOV";
-import FooterOv from "../../Ventas/Registro/Pasos/OrdenVenta/FooterOV";
-import NuevaOrden from "../../Ventas/Registro/Pasos/OrdenVenta/NuevaOrden";
-import DetallesMateriaPrima from "../../Ventas/Registro/Pasos/OrdenVenta/DetallesMateriaPrima";
-import TiemposEspera from "../../Ventas/Registro/Pasos/OrdenVenta/TiemposEspera";
 import { obtenerCotizacion, registraCotizacion, obtenerNumeroCotizacion, actualizaCotizacion } from "../../../api/cotizaciones";
 import { listarClientes } from "../../../api/clientes";
 import { listarEvaluacionProveedores } from "../../../api/evaluacionProveedores";
@@ -33,11 +28,11 @@ function ModificacionesCotizaciones(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoCotizaciones = () => {
-        enrutamiento.push("/Cotizaciones");
+        enrutamiento("/Cotizaciones");
     }
 
     // Para almacenar los datos del formulario de Inicial, Partidas y VistaPrevia

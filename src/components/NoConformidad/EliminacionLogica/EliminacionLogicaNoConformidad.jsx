@@ -37,7 +37,7 @@ function EliminacionLogicaNoConformidad(props) {
                 LogsInformativos("Se ha cancelado el control de no conformidad " + folio, datos);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

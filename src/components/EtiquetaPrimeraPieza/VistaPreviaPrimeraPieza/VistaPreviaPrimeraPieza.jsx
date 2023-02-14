@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Alert, Button, Col, Form, Row, Container, Image, Spinner } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
@@ -38,7 +38,7 @@ function VistaPreviaPrimeraPieza(props) {
     // Termina cerrado de sesión automatico
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Define el uso de los parametros
     const parametros = useParams()
@@ -46,7 +46,7 @@ function VistaPreviaPrimeraPieza(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/EtiquetaPrimeraPieza")
+        enrutamiento("/EtiquetaPrimeraPieza")
     }
 
     // Para guardar los datos del formulario

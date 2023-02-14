@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner, Image, Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft, faX } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./VistaPreviaFichasTecnicas.scss";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { toast } from "react-toastify";
@@ -19,7 +19,7 @@ function VistaPreviaFichasTecnicas(props) {
     }
     
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -56,7 +56,7 @@ function VistaPreviaFichasTecnicas(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/FichaTecnica")
+        enrutamiento("/FichaTecnica")
     }
 
     // Para controlar la animacion

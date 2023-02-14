@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./ModificaIdentificacionPT.scss";
 import { listarProduccion } from "../../../api/produccion";
 import { actualizaEtiquetaPT, obtenerEtiquetaPT } from "../../../api/etiquetaIdentificacionPT";
@@ -123,7 +123,7 @@ function ModificaIdentificacionPT(props) {
                 // console.log(response)
                 toast.success(mensaje);
                 setShowModal(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             }).catch(e => {

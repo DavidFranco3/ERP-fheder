@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Image, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOV from "../../../page/BuscarOV";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./VistaPreviaProgramaProduccion.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -455,11 +455,11 @@ function VistaPreviaProgramaProduccion(props) {
     }
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push(`/ProgramaProduccion/${formDataProduccion.semana}`)
+        enrutamiento(`/ProgramaProduccion/${formDataProduccion.semana}`)
     }
 
     // Para controlar la animacion

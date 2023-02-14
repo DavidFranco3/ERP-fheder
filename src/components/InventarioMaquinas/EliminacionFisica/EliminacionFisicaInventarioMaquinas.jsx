@@ -31,7 +31,7 @@ function EliminacionFisicaInventarioMaquinas(props) {
                 LogsInformativos("Se ha eliminado el inventario de la maquina " + noMaquina, datos);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

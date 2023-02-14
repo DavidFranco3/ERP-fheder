@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import LayoutPrincipal from "../../../layout/layoutPrincipal";
 import { Alert, Badge, Col, Container, Form, Row } from "react-bootstrap";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./ModificacionPlaneacion.scss"
 import { obtenerPlaneacionFolio } from "../../../api/planeacion";
 import ListDetalles from "./ListDetalles";
@@ -25,11 +25,11 @@ function ModificacionPlaneacion(props) {
     // Termina cerrado de sesión automatico
 
     // Define el uso del enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define el regreso hacia planeación
     const regresaPlaneacion = () => {
-        enrutamiento.push("/Planeacion")
+        enrutamiento("/Planeacion")
     }
 
     // Define el uso de parametros

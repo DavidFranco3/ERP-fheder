@@ -37,7 +37,7 @@ function EliminacionLogicaDepartamentos(props) {
                 LogsInformativos("Se ha actualizado el estado del departamento " + nombre, dataDepto);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

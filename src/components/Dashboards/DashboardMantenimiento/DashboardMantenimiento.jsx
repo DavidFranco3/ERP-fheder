@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ImagenPanel from "../../../assets/svg/panelPrincipal.svg";
 import "./DashboardMantenimiento.scss";
 import { Alert, Button, Col, Row, Card, Container, CardGroup, Image } from "react-bootstrap";
@@ -22,7 +22,7 @@ import { LogGeneral } from "../../Logs/LogsSistema/LogsSistema";
 function DashboardMantenimiento(props) {
     const { setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -40,10 +40,10 @@ function DashboardMantenimiento(props) {
     // Define las rutas
 
     const rutaRegreso = () => {
-        enrutamiento.push("/")
+        enrutamiento("/")
     }
 
-    const goTo = (ruta) => enrutamiento.push(ruta);
+    const goTo = (ruta) => enrutamiento(ruta);
 
     const ItemCard = ({ path, logo, title }) => (
         <Card className="contenidoCentrado" >

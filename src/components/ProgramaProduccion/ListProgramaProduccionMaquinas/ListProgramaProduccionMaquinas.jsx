@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./ListProgramaProduccionMaquinas.scss"
 import { Badge, Button, Container, Form, Col } from "react-bootstrap";
 import BasicModal from '../../Modal/BasicModal';
@@ -31,7 +31,7 @@ import HabilitarSabadoT1 from '../HabilitarSabadoT1';
 function ListProgramaProduccionMaquinas(props) {
     const { listProgramaProduccion, history, location, setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -283,7 +283,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             // console.log(data)
                                             toast.success(data.mensaje);
                                             LogsInformativos("Se actualizo el estado del primer turno del lunes " + row.folio, dataTemp);
-                                            history.push({
+                                            history({
                                                 search: queryString.stringify(""),
                                             });
                                         })
@@ -366,7 +366,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             // console.log(data)
                                             toast.success(data.mensaje);
                                             LogsInformativos("Se actualizo el estado del segundo turno del lunes " + row.folio, dataTemp);
-                                            history.push({
+                                            history({
                                                 search: queryString.stringify(""),
                                             });
                                         })
@@ -449,7 +449,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             // console.log(data)
                                             toast.success(data.mensaje);
                                             LogsInformativos("Se actualizo el estado del segundo turno del lunes " + row.folio, dataTemp);
-                                            history.push({
+                                            history({
                                                 search: queryString.stringify(""),
                                             });
                                         })
@@ -532,7 +532,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             // console.log(data)
                                             toast.success(data.mensaje);
                                             LogsInformativos("Se actualizo el estado del segundo turno del martes " + row.folio, dataTemp);
-                                            history.push({
+                                            history({
                                                 search: queryString.stringify(""),
                                             });
                                         })
@@ -615,7 +615,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             // console.log(data)
                                             toast.success(data.mensaje);
                                             LogsInformativos("Se actualizo el estado del primer turno del miercoles " + row.folio, dataTemp);
-                                            history.push({
+                                            history({
                                                 search: queryString.stringify(""),
                                             });
                                         })
@@ -698,7 +698,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             // console.log(data)
                                             toast.success(data.mensaje);
                                             LogsInformativos("Se actualizo el estado del segundo turno del miercoles " + row.folio, dataTemp);
-                                            history.push({
+                                            history({
                                                 search: queryString.stringify(""),
                                             });
                                         })
@@ -781,7 +781,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             // console.log(data)
                                             toast.success(data.mensaje);
                                             LogsInformativos("Se actualizo el estado del segundo turno del miercoles " + row.olio, dataTemp);
-                                            history.push({
+                                            history({
                                                 search: queryString.stringify(""),
                                             });
                                         })
@@ -864,7 +864,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             // console.log(data)
                                             toast.success(data.mensaje);
                                             LogsInformativos("Se actualizo el estado del segundo turno del miercoles " + row.olio, dataTemp);
-                                            history.push({
+                                            history({
                                                 search: queryString.stringify(""),
                                             });
                                         })
@@ -947,7 +947,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             // console.log(data)
                                             toast.success(data.mensaje);
                                             LogsInformativos("Se actualizo el estado del segundo turno del miercoles " + row.olio, dataTemp);
-                                            history.push({
+                                            history({
                                                 search: queryString.stringify(""),
                                             });
                                         })
@@ -1030,7 +1030,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             // console.log(data)
                                             toast.success(data.mensaje);
                                             LogsInformativos("Se actualizo el estado del segundo turno del miercoles " + row.olio, dataTemp);
-                                            history.push({
+                                            history({
                                                 search: queryString.stringify(""),
                                             });
                                         })
@@ -1113,7 +1113,7 @@ function ListProgramaProduccionMaquinas(props) {
                                             // console.log(data)
                                             toast.success(data.mensaje);
                                             LogsInformativos("Se actualizo el estado del primer turno del sabado " + row.folio, dataTemp);
-                                            history.push({
+                                            history({
                                                 search: queryString.stringify(""),
                                             });
                                         })

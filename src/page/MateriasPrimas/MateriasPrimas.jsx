@@ -1,5 +1,6 @@
 import { useState, useEffect, Suspense } from 'react';
-import { withRouter, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
@@ -63,10 +64,10 @@ function MateriasPrimas(props) {
     }
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCatalogos")
+        enrutamiento("/DashboardCatalogos")
     }
 
     return (

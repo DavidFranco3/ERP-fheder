@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
@@ -54,7 +54,7 @@ function RegistroVentas(props) {
 
     const [listProductosCargados, setListProductosCargados] = useState([]);
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -86,7 +86,7 @@ function RegistroVentas(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento.push("/Ventas");
+        enrutamiento("/Ventas");
     }
 
     // Para almacenar el folio actual

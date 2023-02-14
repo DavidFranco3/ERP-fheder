@@ -2,7 +2,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { toast } from "react-toastify";
 import BuscarOrdenVenta from "../../components/Busquedas/BuscarOrdenVenta"
 import { listarPedidosVentaActiva} from "../../api/pedidoVenta";
@@ -14,8 +14,6 @@ import AnimacionLoading from '../../assets/json/loading.json';
 
 function BuscarOV(props) {
     const { setProducto, setFormData, setShowModal, setOrdenVentaPrincipal, setRefreshCheckLogin, location, history } = props;
-
-    const enrutamiento = useHistory();
 
     // Cerrado de sesión automatico
     useEffect(() => {

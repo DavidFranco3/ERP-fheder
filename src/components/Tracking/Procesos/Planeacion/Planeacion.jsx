@@ -1,7 +1,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { Row, Col, Container, Spinner, Badge } from "react-bootstrap"
 import { map } from "lodash";
-import { withRouter } from "react-router-dom";
+import { withRouter } from "../../../../utils/withRouter";
 import "./Planeacion.scss"
 import { listarRequerimiento } from "../../../../api/requerimientosPlaneacion";
 import { getSucursal } from '../../../../api/auth';

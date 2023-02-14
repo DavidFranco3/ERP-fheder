@@ -60,7 +60,7 @@ function AsignarPedido(props) {
                 LogsInformativos("Se asigno el pedido " + data.folio + " a la planta" + formData.plantaAsignada, dataTemp)
                 setTimeout(() => {
                     setLoading(false)
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     setShowModal(false)

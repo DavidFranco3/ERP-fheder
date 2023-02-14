@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Badge, Button, Container } from "react-bootstrap";
 import EliminacionLogicaRazonSocial from "../EliminacionLogica";
 import BasicModal from "../../Modal/BasicModal";
@@ -19,11 +19,11 @@ function ListRazonesSociales(props) {
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para ir hacia la ruta de modificacion
     const irHaciaModificacion = (id) => {
-        enrutamiento.push(`/ModificacionRazonesSociales/${id}`);
+        enrutamiento(`/ModificacionRazonesSociales/${id}`);
     }
 
     // Para hacer uso del modal

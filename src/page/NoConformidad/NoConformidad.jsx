@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
@@ -15,15 +16,15 @@ function NoConformidad(props) {
     const { location, history, setRefreshCheckLogin } = props;
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroNoConformidad")
+        enrutamiento("/RegistroNoConformidad")
     }
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCalidad")
+        enrutamiento("/DashboardCalidad")
     }
 
     // Cerrado de sesión automatico

@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { listarReportesProduccion } from "../../api/reporteProduccion";
 import "./ReporteProduccion.scss";
 import Lottie from 'react-lottie-player';
@@ -15,11 +16,11 @@ function ReporteProduccion(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroReporteProduccion")
+        enrutamiento("/RegistroReporteProduccion")
     }
 
     // Cerrado de sesión automatico
@@ -36,7 +37,7 @@ function ReporteProduccion(props) {
     // Termina cerrado de sesión automatico
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardProduccion")
+        enrutamiento("/DashboardProduccion")
     }
 
     // Para almacenar la lista de pedidos de venta

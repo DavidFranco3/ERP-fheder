@@ -34,7 +34,7 @@ function EliminacionFisicaProduccion(props) {
                 LogsInformativos("Se ha eliminado el requerimiento y planeacion con el folio " + folio, datos);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

@@ -36,7 +36,7 @@ function EliminacionLogicaPrimeraPieza(props) {
                 toast.success(data.mensaje);
                 LogsInformativos("Se ha cancelado la etiqueta de primera piieza " + folio, dataTemp);
                 setShowModal(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

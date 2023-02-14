@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Col, Form, Row, Spinner, Alert, Container, Badge } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { actualizaEvaluacionProveedores, obtenerEvaluacionProveedores } from "../../../api/evaluacionProveedores";
@@ -17,7 +17,7 @@ import { map } from "lodash";
 function ModificaProveedores(props) {
     const { setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const params = useParams();
     const { id } = params;
@@ -37,7 +37,7 @@ function ModificaProveedores(props) {
 
     // Ruta para enlazar a pagina de usuarios
     const regresaPagina = () => {
-        enrutamiento.push("/EvaluacionProveedores");
+        enrutamiento("/EvaluacionProveedores");
     }
     // Para almacenar la informacion
     const [formData, setFormData] = useState(initialFormData());

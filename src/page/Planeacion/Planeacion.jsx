@@ -1,5 +1,6 @@
 import { useState, useEffect, Suspense } from 'react';
-import { withRouter, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faPlus, faUsers } from "@fortawesome/free-solid-svg-icons";
@@ -14,7 +15,7 @@ import AnimacionLoading from '../../assets/json/loading.json';
 function Planeacion(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -31,7 +32,7 @@ function Planeacion(props) {
 
     // Para ir hacia la ruta de registro del pedido de venta
     const rutaRegistroPlaneacion = () => {
-        enrutamiento.push("/RegistroPlaneacion")
+        enrutamiento("/RegistroPlaneacion")
     }
 
     // Para almacenar el listado de planeaciones

@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import BasicModal from "../../Modal/BasicModal";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./ListAlmacenes.scss"
 import { Badge, Container, Button, Col, Form } from "react-bootstrap";
 import EliminaAlmacenes from '../EliminaAlmacenes';
@@ -28,7 +28,7 @@ function ListAlmacenMp(props) {
     dayjs.extend(localizedFormat)
 
     // define el uso del enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Para el modal de eliminación de materias primas
     const eliminacionAlmacenes = (content) => {

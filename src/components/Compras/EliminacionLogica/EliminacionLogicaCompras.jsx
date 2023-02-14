@@ -38,7 +38,7 @@ function EliminacionLogicaCompras(props) {
 
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

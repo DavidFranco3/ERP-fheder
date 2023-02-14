@@ -37,7 +37,7 @@ function EliminacionFisicaVentas(props) {
                 LogsInformativos("Se ha eliminado la requisición con el folio " + folio, datosRequisicion);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

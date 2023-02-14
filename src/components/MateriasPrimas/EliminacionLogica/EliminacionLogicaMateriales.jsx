@@ -37,7 +37,7 @@ function EliminacionLogicaMateriales(props) {
                 LogsInformativos("Se ha actualizado el estado del material " + folio, dataMaterial);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

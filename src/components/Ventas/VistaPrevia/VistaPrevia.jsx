@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     actualizaPedidoVenta,
     obtenerDatosPedidoVenta
@@ -46,7 +46,7 @@ function VistaPrevia(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const params = useParams();
     const { folio } = params
@@ -100,7 +100,7 @@ function VistaPrevia(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento.push("/Ventas");
+        enrutamiento("/Ventas");
     }
 
     // Inicia almacenaje de información registrada para su modificación

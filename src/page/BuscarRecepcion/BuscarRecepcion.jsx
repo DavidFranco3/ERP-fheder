@@ -2,7 +2,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { toast } from "react-toastify";
 //import BuscarClientes from '../../components/Busquedas/BuscarClientes';
 import { listarRecepcionActiva } from "../../api/recepcionMaterialInsumos";
@@ -14,8 +14,6 @@ import BuscarRecepciones from '../../components/Busquedas/BuscarRecepciones';
 
 function BuscarRecepcion(props) {
     const { setFormData, formData, productosRecepcion, setProductosRecepcion, setShowModal, setRefreshCheckLogin, location, history } = props;
-
-    const enrutamiento = useHistory();
 
     // Cerrado de sesión automatico
     useEffect(() => {

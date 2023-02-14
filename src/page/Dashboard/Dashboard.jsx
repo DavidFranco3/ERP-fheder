@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Dashboard.scss";
 import { Card, Image } from "react-bootstrap";
 // Importacion de imagenes para los iconos de los menus
@@ -28,7 +28,7 @@ import { LogGeneral } from "../../components/Logs/LogsSistema/LogsSistema";
 function Dashboard(props) {
     const { setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -43,7 +43,7 @@ function Dashboard(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-    const goTo = (ruta) => enrutamiento.push(ruta);
+    const goTo = (ruta) => enrutamiento(ruta);
 
     const ItemCard = ({ path, logo, title }) => (
         <Card className="contenidoCentrado" >

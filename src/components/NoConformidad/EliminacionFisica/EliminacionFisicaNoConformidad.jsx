@@ -33,7 +33,7 @@ function EliminacionFisicaNoConformidad(props) {
                 toast.success(data.mensaje)
                 LogsInformativos("Se ha eliminado la no conformidad con el folio " + folio, datos)
                 setShowModal(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

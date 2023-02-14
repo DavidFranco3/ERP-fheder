@@ -37,7 +37,7 @@ function EliminacionLogicaLiberacion(props) {
                 LogsInformativos("Se ha cancelado la hoja de liberación de producto y proceso " + folio, datos);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

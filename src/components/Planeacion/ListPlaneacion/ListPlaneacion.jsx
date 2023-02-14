@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import moment from "moment";
 import {Badge, Button, Container} from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./ListPlaneacion.scss"
 // Inician importaciones para la tabla
 import TableRow from '@mui/material/TableRow';
@@ -28,7 +28,7 @@ function ListPlaneacion(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     //Para eliminar la planeación
     const eliminacionPlaneacion = (content) => {
@@ -39,7 +39,7 @@ function ListPlaneacion(props) {
 
     //Para la modificacion de planeaciones
     const modificacionPlaneacion = (folio) => {
-        enrutamiento.push(`/ModificacionPlaneacion/${folio}`)
+        enrutamiento(`/ModificacionPlaneacion/${folio}`)
     }
     
     // Campos de las columnas

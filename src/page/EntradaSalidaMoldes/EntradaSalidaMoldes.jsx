@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import RegistroEtiquetasMoldes from "../../components/EtiquetasMoldes/RegistraEtiquetasMoldes";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 import { toast } from "react-toastify";
@@ -24,15 +25,15 @@ function EntradaSalidaMoldes(props) {
     // Termina cerrado de sesión automatico
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroEntradaSalidaMoldes")
+        enrutamiento("/RegistroEntradaSalidaMoldes")
     }
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardMantenimiento")
+        enrutamiento("/DashboardMantenimiento")
     }
 
     return (

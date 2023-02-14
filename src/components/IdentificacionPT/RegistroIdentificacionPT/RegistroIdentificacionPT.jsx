@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./RegistroIdentificacionPT.scss";
 import { listarProduccion } from "../../../api/produccion";
 import { registraEtiquetaPT, obtenerNoEtiquetaPT, obtenerItemEtiquetaPT } from "../../../api/etiquetaIdentificacionPT";
@@ -117,7 +117,7 @@ function RegistroIdentificacionPT(props) {
                     LogsInformativos("Nueva etiqueta de identificacion de PT" + folioActual, dataTemp)
                     // console.log(response)
                     toast.success(mensaje);
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     setShowModal(false);

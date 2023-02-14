@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Image, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./VistaPreviaIdentificacionPT.scss";
 import { listarProduccion } from "../../../api/produccion";
 import { actualizaEtiquetaPT, obtenerEtiquetaPT } from "../../../api/etiquetaIdentificacionPT";
@@ -35,7 +35,7 @@ function VistaPreviaIdentificacionPT(props) {
     // Termina cerrado de sesión automatico
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Define el uso de los parametros
     const parametros = useParams()
@@ -43,7 +43,7 @@ function VistaPreviaIdentificacionPT(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/IdentificacionPT")
+        enrutamiento("/IdentificacionPT")
     }
 
     // Para almacenar la informacion del formulario

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../../api/auth";
 
@@ -10,11 +10,11 @@ const {setRefreshCheckLogin} = props;
     const [loading, setLoading] = useState(false);
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/Acuses_de_Recibos")
+        enrutamiento("/Acuses_de_Recibos")
     }
 
      // Cerrado de sesión automatico

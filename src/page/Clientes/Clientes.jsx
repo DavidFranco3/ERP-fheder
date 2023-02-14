@@ -6,7 +6,8 @@ import { faCirclePlus, faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/f
 import { listarClientes } from "../../api/clientes";
 import { toast } from "react-toastify";
 import ListClientes from "../../components/Clientes/ListClientes";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -14,10 +15,10 @@ import AnimacionLoading from '../../assets/json/loading.json';
 function Clientes(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCatalogos")
+        enrutamiento("/DashboardCatalogos")
     }
 
     // Cerrado de sesión automatico
@@ -35,7 +36,7 @@ function Clientes(props) {
 
     // Ir hacia ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroClientes");
+        enrutamiento("/RegistroClientes");
     }
 
     // Para almacenar los usuarios

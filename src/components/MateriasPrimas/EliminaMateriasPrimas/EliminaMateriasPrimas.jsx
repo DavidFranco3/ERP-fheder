@@ -28,7 +28,7 @@ function EliminaMateriasPrimas(props) {
                 toast.success(data.mensaje)
                 setLoading(false)
                 setShowModal(false)
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             }).catch(e => {

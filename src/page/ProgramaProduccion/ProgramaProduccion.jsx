@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner, Form, Tabs, Tab, } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { toast } from "react-toastify";
 import ListProgramaProduccion from "../../components/ProgramaProduccion/ListProgramaProduccion";
 import ListProgramaProduccionMaquinas from '../../components/ProgramaProduccion/ListProgramaProduccionMaquinas';
@@ -22,7 +23,7 @@ function ProgramaProduccion(props) {
     const [tab, setTab] = useState('general')
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -52,7 +53,7 @@ function ProgramaProduccion(props) {
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push(`/RegistroProgramaProduccion/${semana}`);
+        enrutamiento(`/RegistroProgramaProduccion/${semana}`);
     }
 
     // Para almacenar la lista de pedidos de venta
@@ -94,7 +95,7 @@ function ProgramaProduccion(props) {
     }, [location]);
 
     const rutaRegreso = () => {
-        enrutamiento.push("/Semana")
+        enrutamiento("/Semana")
     }
 
     return (

@@ -24,7 +24,7 @@ function EstadoProveedor(props) {
                 const { data } = response;
                 toast.success(data.mensaje)
                 LogsInformativos("Se ha cancelado la evaluación del proveedor con folio " + folio, dataTemp)
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
                 setShowModal(false)

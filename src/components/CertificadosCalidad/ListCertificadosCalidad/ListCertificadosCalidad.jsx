@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Badge, Button, Container, Table } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaCertificados from '../EliminacionFisica/EliminacionFisicaCertificados';
@@ -16,7 +16,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 function ListCertificadosCalidad(props) {
     const { setRefreshCheckLogin, listCertificados, history, location } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -42,12 +42,12 @@ function ListCertificadosCalidad(props) {
 
     // Para la modificacion de datos del pedido
     const modificaCertificado = (id) => {
-        enrutamiento.push(`/ModificaCertificadoCalidad/${id}`);
+        enrutamiento(`/ModificaCertificadoCalidad/${id}`);
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
     const vistaPrevia = (id) => {
-        enrutamiento.push(`/VistaPreviaCertificadosCalidad/${id}`);
+        enrutamiento(`/VistaPreviaCertificadosCalidad/${id}`);
     }
 
     const columns = [

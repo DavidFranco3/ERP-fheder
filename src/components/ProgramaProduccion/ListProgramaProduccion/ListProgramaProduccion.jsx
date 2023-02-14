@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./ListProgramaProduccion.scss"
 import { Badge, Button, Container, Navbar, Table, Form, Col } from "react-bootstrap";
 import BasicModal from '../../Modal/BasicModal';
@@ -18,7 +18,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 function ListProgramaProduccion(props) {
     const { listProgramaProduccion, history, location, setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -44,12 +44,12 @@ function ListProgramaProduccion(props) {
 
     //Para la modificacion de datos
     const modificaRecepcion = (id) => {
-        enrutamiento.push(`/ModificaProgramaProduccion/${id}`);
+        enrutamiento(`/ModificaProgramaProduccion/${id}`);
     }
 
     //Para la modificacion de datos
     const vistaPreviaProgramaProduccion = (id) => {
-        enrutamiento.push(`/VistaPreviaProgramaProduccion/${id}`);
+        enrutamiento(`/VistaPreviaProgramaProduccion/${id}`);
     }
 
     const columns = [

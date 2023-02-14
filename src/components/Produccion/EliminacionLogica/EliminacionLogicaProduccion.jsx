@@ -37,7 +37,7 @@ function EliminacionLogicaProduccion(props) {
                 LogsInformativos("Se ha cancelado la orden de produccion " + folio, datos);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {useHistory} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import {TablePagination} from "@mui/material";
+import { TablePagination } from "@mui/material";
 import BasicModal from "../../Modal/BasicModal";
 
 function ListFactura(props) {
@@ -31,7 +31,7 @@ function ListFactura(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // define el uso del enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Para el modal de eliminación de facturas
     const eliminacionFacturas = (content) => {

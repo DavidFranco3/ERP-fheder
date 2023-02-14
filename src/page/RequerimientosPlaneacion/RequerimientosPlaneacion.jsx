@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { toast } from "react-toastify";
 import ListRequerimientosPlaneacion from "../../components/RequerimientosPlaneacion/ListProduccion/";
 import { listarRequerimiento } from "../../api/requerimientosPlaneacion";
@@ -15,11 +16,11 @@ function RequerimientosPlaneacion(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("RegistraRequerimientosPlaneacion")
+        enrutamiento("/RegistraRequerimientosPlaneacion")
     }
 
     // Para almacenar la lista de pedidos de venta
@@ -61,7 +62,7 @@ function RequerimientosPlaneacion(props) {
     }, [location]);
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardPlaneacion")
+        enrutamiento("/DashboardPlaneacion")
     }
 
     return (

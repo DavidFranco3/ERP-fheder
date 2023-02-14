@@ -41,7 +41,7 @@ function EliminacionLogicaRazonSocial(props) {
                     toast.success(data.mensaje);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

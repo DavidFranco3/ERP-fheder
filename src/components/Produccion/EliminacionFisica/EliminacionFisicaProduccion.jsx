@@ -38,7 +38,7 @@ function EliminacionFisicaProduccion(props) {
                 LogsInformativos("Se ha eliminado la produccion con el folio " + folio, datos)
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

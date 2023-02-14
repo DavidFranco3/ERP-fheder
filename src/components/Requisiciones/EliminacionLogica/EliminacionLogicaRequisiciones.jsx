@@ -37,7 +37,7 @@ function EliminacionLogicaRequisiciones(props) {
                 LogsInformativos("Se ha cancelado la requisicion " + folio, datosRequisicion);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

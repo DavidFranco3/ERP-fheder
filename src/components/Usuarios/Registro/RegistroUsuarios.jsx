@@ -4,7 +4,7 @@ import { Alert, Button, Col, Form, Row, Spinner, Container } from "react-bootstr
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import Dropzone from "../../Dropzone";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { listarDepartamento } from "../../../api/departamentos";
 import { map } from "lodash";
 import { isCurpValid, isEmailValid, isRFCValid } from "../../../utils/validations";
@@ -17,11 +17,11 @@ import { getSucursal } from '../../../api/auth';
 function RegistroUsuarios(props) {
     const { setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Ruta para enlazar a pagina de usuarios
     const regresaPagina = () => {
-        enrutamiento.push("/Usuarios");
+        enrutamiento("/Usuarios");
     }
 
     // Para almacenar la foto de perfil del usuario

@@ -1,5 +1,6 @@
 import { useState, useEffect, Suspense } from 'react';
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
@@ -14,7 +15,7 @@ import AnimacionLoading from '../../assets/json/loading.json';
 function MatrizProductos(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -31,7 +32,7 @@ function MatrizProductos(props) {
 
     // Para definir la ruta de registro de los productos
     const rutaRegistraProductos = () => {
-        enrutamiento.push("/Registra-Matriz-Productos")
+        enrutamiento("/Registra-Matriz-Productos")
     }
 
     // Para almacenar el listado de productos
@@ -59,7 +60,7 @@ function MatrizProductos(props) {
     }, [location]);
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCatalogos")
+        enrutamiento("/DashboardCatalogos")
     }
 
     return (

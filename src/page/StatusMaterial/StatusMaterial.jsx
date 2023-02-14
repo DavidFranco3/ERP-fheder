@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { listarStatusMaterial } from "../../api/statusMaterial";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -27,14 +28,14 @@ function StatusMaterial(props) {
     // Termina cerrado de sesión automatico
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCalidad")
+        enrutamiento("/DashboardCalidad")
     }
 
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroStatusMaterial")
+        enrutamiento("/RegistroStatusMaterial")
     }
 
     // Para almacenar la lista de pedidos de venta

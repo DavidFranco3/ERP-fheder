@@ -43,7 +43,7 @@ function ModificacionClasificacionMateriales(props) {
                 actualizaClasificacionMaterial(id, dataTemp).then(response => {
                     const { data } = response;
                     LogsInformativos("Se ha modificado el material " + dataTemp.nombre, dataTemp);
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     toast.success(data.mensaje);

@@ -41,7 +41,7 @@ function EliminacionLogicaSucursales(props) {
                 LogsInformativos("Se ha actualizado el estado de la sucursal " + formData.nombre, data)
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

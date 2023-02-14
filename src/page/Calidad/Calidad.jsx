@@ -5,7 +5,8 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import { listarInspeccion } from "../../api/inspeccionMaterial";
-import { withRouter, useHistory } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import ListInspeccion from "../../components/Calidad/ListCalidad"
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -14,11 +15,11 @@ function Calidad(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroReporte")
+        enrutamiento("/RegistroReporte")
     }
 
     // Cerrado de sesión automatico
@@ -59,7 +60,7 @@ function Calidad(props) {
     }, [location]);
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCalidad")
+        enrutamiento("/DashboardCalidad")
     }
 
     return (

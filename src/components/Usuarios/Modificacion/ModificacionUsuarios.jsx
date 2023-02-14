@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { listarDepartamento } from "../../../api/departamentos";
 import { isCurpValid, isEmailValid, isRFCValid } from "../../../utils/validations";
 import { toast } from "react-toastify";
@@ -16,7 +16,7 @@ import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
 function ModificacionUsuarios(props) {
     const { setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const params = useParams();
 
@@ -24,7 +24,7 @@ function ModificacionUsuarios(props) {
 
     // Ruta para enlazar a pagina de usuarios
     const regresaPagina = () => {
-        enrutamiento.push("/Usuarios");
+        enrutamiento("/Usuarios");
     }
 
     // Para almacenar la foto de perfil del usuario

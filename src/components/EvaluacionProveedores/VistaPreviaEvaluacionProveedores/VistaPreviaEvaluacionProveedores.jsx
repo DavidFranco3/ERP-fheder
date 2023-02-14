@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Col, Form, Row, Spinner, Alert, Image, Container, Badge } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { actualizaEvaluacionProveedores, obtenerEvaluacionProveedores } from "../../../api/evaluacionProveedores";
@@ -23,7 +23,7 @@ function VistaPreviaEvaluacionProveedores(props) {
     const descargaPDF = async () => {
     }
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const params = useParams();
     const { id } = params;
@@ -43,7 +43,7 @@ function VistaPreviaEvaluacionProveedores(props) {
 
     // Ruta para enlazar a pagina de usuarios
     const regresaPagina = () => {
-        enrutamiento.push("/EvaluacionProveedores");
+        enrutamiento("/EvaluacionProveedores");
     }
     // Para almacenar la informacion
     const [formData, setFormData] = useState(initialFormData());

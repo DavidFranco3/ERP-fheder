@@ -29,7 +29,7 @@ function EliminaAlmacenes(props) {
                 toast.success(data.mensaje)
                 setLoading(false)
                 LogsInformativos("Se ha eliminado el articulo del almacen " + folio, datos)
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
                 setShowModal(false)

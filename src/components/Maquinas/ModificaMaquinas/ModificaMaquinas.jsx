@@ -118,7 +118,7 @@ function ModificaMaquinas(props) {
                     const { data } = response;
                     toast.success(data.mensaje)
                     LogsInformativos("Se ha modificadp la maquina " + formData.numeroMaquina, dataTemp)
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     setShowModal(false)

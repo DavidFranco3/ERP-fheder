@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { Alert, Button, Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import { withRouter, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 import { toast } from "react-toastify";
 
@@ -22,11 +23,11 @@ function Devoluciones(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para definir la ruta de registro de los productos
     const rutaRegistraDevoluciones = () => {
-        enrutamiento.push("/RegistraDevoluciones")
+        enrutamiento("/RegistraDevoluciones")
     }
 
     return (

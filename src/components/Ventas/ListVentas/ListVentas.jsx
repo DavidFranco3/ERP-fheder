@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Badge, Button, Container, Table } from "react-bootstrap";
 import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaVentas from "../EliminacionFisica";
 import styled from 'styled-components';
-import DataTable, { createTheme } from 'react-data-table-component';
+import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./ListVentas.scss";
@@ -20,7 +20,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 function ListVentas(props) {
     const { setRefreshCheckLogin, listPedidosVenta, history, location } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -47,22 +47,17 @@ function ListVentas(props) {
 
     // Para la modificacion de datos del pedido
     const modificaPedidoVenta = (folio) => {
-        enrutamiento.push(`/ModificacionPedido/${folio}`);
+        enrutamiento(`/ModificacionPedido/${folio}`);
     }
 
     // Para la modificacion de datos del pedido
     const vistaPreviaVentas = (folio) => {
-        enrutamiento.push(`/VistaPreviaVenta/${folio}`);
+        enrutamiento(`/VistaPreviaVenta/${folio}`);
     }
 
     // Para la modificacion de datos del pedido
     const registroCuentasCobrar = (folio) => {
-        enrutamiento.push(`/FacturasOV/${folio}`);
-    }
-
-    // Para abrir en una pestaña nueva el pdf de la vista
-    const vistaPrevia = () => {
-        // enrutamiento.push("")
+        enrutamiento(`/FacturasOV/${folio}`);
     }
 
     const ExpandedComponent = ({ data }) => (

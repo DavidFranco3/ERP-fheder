@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistraMantenimientoPreventivo from "../../components/MantenimientoPreventivo/RegistraMantenimientoPreventivo";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
@@ -16,7 +17,7 @@ function MantenimientoPreventivo(props) {
     const { setRefreshCheckLogin, history, location } = props;
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -45,7 +46,7 @@ function MantenimientoPreventivo(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardMantenimiento")
+        enrutamiento("/DashboardMantenimiento")
     }
 
     const [listMantenimientos, setListMantenimientos] = useState(null);

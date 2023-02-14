@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Badge, Container } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import BasicModal from "../../Modal/BasicModal";
@@ -18,7 +18,7 @@ function ListCotizaciones(props) {
     const { setRefreshCheckLogin, location, history, listCotizaciones } = props;
 
     // Para definir el uso del enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -44,12 +44,12 @@ function ListCotizaciones(props) {
 
     // Para la ruta de registro de la cotizacion
     const registraCotizacion = (id) => {
-        enrutamiento.push(`/ModificaCotizacion/${id}`)
+        enrutamiento(`/ModificaCotizacion/${id}`)
     }
 
     // Para la modificacion de la cotizacion
     const modificaCotizacion = (id) => {
-        enrutamiento.push(`/ModificaCotizacion/${id}`);
+        enrutamiento(`/ModificaCotizacion/${id}`);
     }
 
     const columns = [

@@ -37,7 +37,7 @@ function EliminacionLogicaMaterialMolido(props) {
                 LogsInformativos("Se ha cancelado la etiqueta de identificación de material molido " + folio, dataTemp);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

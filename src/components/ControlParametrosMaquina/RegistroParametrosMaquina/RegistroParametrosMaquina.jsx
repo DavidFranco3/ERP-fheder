@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useState} from 'react';
 import {Alert, Button, Col, Row, Form, Container, Badge} from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DropzoneFormularios from "../../DropzoneFormularios";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { toast } from "react-toastify";
@@ -28,14 +28,14 @@ function RegistroParametrosMaquina(props) {
     const [titulosModal, setTitulosModal] = useState(null);
     
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
     
     // Para almacenar la foto de perfil del usuario
     const [fotoUsuario, setFotoUsuario] = useState(null);
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/ControlParametrosMaquina")
+        enrutamiento("/ControlParametrosMaquina")
     }
     
     // Para controlar la animacion

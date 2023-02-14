@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 import { toast } from "react-toastify";
 
@@ -10,11 +11,11 @@ function SolicitudMaterialInsumo(props) {
     const { setRefreshCheckLogin } = props;
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistraSolicitudMaterialInsumo")
+        enrutamiento("/RegistraSolicitudMaterialInsumo")
     }
 
     // Cerrado de sesión automatico

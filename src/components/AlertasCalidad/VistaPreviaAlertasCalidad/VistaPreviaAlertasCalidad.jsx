@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Image, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DropzoneDeshabilitado from "../../DropzoneDeshabilitado";
 import { toast } from "react-toastify";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from "../../../api/auth";
@@ -20,7 +20,7 @@ function VistaPreviaAlertasCalidad(props) {
     }
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -262,7 +262,7 @@ function VistaPreviaAlertasCalidad(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/AlertasCalidad")
+        enrutamiento("/AlertasCalidad")
     }
 
     // Para controlar la animacion

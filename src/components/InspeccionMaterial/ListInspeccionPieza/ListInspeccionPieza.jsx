@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Badge, Button, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaInspeccion from '../EliminacionFisica';
@@ -16,7 +16,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 function ListInspeccionPieza(props) {
     const { setRefreshCheckLogin, listInspeccion, history, location } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -42,12 +42,12 @@ function ListInspeccionPieza(props) {
 
     // Para la modificacion de la inspeccion
     const modificaInspeccion = (id) => {
-        enrutamiento.push(`/ModificaInspeccionPieza/${id}`);
+        enrutamiento(`/ModificaInspeccionPieza/${id}`);
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
     const vistaPrevia = (id) => {
-        enrutamiento.push(`/VistaPreviaInspeccion/${id}`);
+        enrutamiento(`/VistaPreviaInspeccion/${id}`);
     }
 
     const columns = [

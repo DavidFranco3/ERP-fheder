@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
@@ -38,7 +38,7 @@ function ModificaRecepcion(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const params = useParams();
     const { id } = params
@@ -86,7 +86,7 @@ function ModificaRecepcion(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento.push("/RecepcionMaterialInsumos");
+        enrutamiento("/RecepcionMaterialInsumos");
     }
 
     // Para almacenar las sucursales registradas

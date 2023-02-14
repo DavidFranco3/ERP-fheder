@@ -31,7 +31,7 @@ function EliminacionFisicaCompras(props) {
                 LogsInformativos("Se ha eliminado la compra con el folio " + folio, data)
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             }).catch(e => {

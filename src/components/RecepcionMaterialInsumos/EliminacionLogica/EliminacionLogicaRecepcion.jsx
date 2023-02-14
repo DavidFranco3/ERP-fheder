@@ -37,7 +37,7 @@ function EliminacionLogicaRecepcion(props) {
                 LogsInformativos("Se ha cancelado la recepcion de materiales e insumos " + folio, datos);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

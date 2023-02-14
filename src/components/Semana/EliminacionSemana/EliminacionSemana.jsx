@@ -31,7 +31,7 @@ function EliminacionSemana(props) {
                 LogsInformativos("Se ha eliminado la semana " + folio, data)
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             }).catch(e => {

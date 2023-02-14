@@ -37,7 +37,7 @@ function EliminacionLogicaVentas(props) {
                 LogsInformativos("Se ha cancelado la orden de venta " + folio, datos);
                 LogTrackingActualizacion(folio, "Cancelación", "0");
                 setShowModal(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

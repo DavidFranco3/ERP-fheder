@@ -4,17 +4,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import { toast } from "react-toastify";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 
 function ControlParametrosMaquina(props) {
     const { setRefreshCheckLogin } = props;
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroControlParametrosMaquina")
+        enrutamiento("/RegistroControlParametrosMaquina")
     }
 
     // Cerrado de sesión automatico
@@ -31,7 +32,7 @@ function ControlParametrosMaquina(props) {
     // Termina cerrado de sesión automatico
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardProduccion")
+        enrutamiento("/DashboardProduccion")
     }
 
     return (

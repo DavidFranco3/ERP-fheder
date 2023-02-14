@@ -85,11 +85,11 @@ function ModificacionIntegracionVentasGastos(props) {
                 toast.success(data.mensaje);
                 setTimeout(() => {
                     setLoading(false)
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     setShowModal(false)
-                }, 2000)
+                }, 0)
 
             }).catch(e => {
                 console.log(e)

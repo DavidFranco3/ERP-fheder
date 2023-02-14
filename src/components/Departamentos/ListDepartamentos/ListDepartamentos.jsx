@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import { Button, Container } from "react-bootstrap";
 import DataTable from 'react-data-table-component';
@@ -22,7 +22,7 @@ function ListDepartamentos(props) {
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);

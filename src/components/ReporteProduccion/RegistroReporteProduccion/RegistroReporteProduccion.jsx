@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./RegistroReporteProduccion.scss";
 import NuevoRegistro from "../NuevoRegistro";
 import { registraReporteProducción, obtenerNumeroReporteProduccion } from "../../../api/reporteProduccion";
@@ -46,11 +46,11 @@ function RegistroReporteProduccion(props) {
     }
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/ReporteProduccion")
+        enrutamiento("/ReporteProduccion")
     }
 
     // Para controlar la animacion

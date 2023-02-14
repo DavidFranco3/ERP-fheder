@@ -2,7 +2,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
@@ -10,6 +10,7 @@ import AnimacionLoading from '../../assets/json/loading.json';
 import "./AlertasCalidad.scss";
 import { listarAlertasCalidad } from "../../api/alertasCalidad";
 import ListAlertasCalidad from '../../components/AlertasCalidad/ListAlertasCalidad';
+import { withRouter } from "../../utils/withRouter";
 
 function AlertasCalidad(props) {
     const { location, history, setRefreshCheckLogin } = props;
@@ -28,15 +29,15 @@ function AlertasCalidad(props) {
     // Termina cerrado de sesión automatico
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroAlertasCalidad")
+        enrutamiento("/RegistroAlertasCalidad")
     }
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCalidad")
+        enrutamiento("/DashboardCalidad")
     }
 
     // Para almacenar la lista de pedidos de venta

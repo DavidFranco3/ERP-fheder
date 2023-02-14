@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Container, Form, Image, Row, Spinner, Table } from "react-bootstrap";
-import { withRouter, useHistory } from "react-router-dom";
+import { withRouter, useNavigate } from "react-router-dom";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { toast } from "react-toastify";
 
@@ -23,11 +23,11 @@ function RegistroPlaneacion(props) {
     // Para la animacion del spinner
     const [loading, setLoading] = useState(false);
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para ir hacia la ruta de registro del pedido de venta
     const rutaRegresoPlaneacion = () => {
-        enrutamiento.push("/Planeacion")
+        enrutamiento("/Planeacion")
     }
 
     return (

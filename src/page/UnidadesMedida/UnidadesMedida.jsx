@@ -4,7 +4,8 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { listarUM } from "../../api/unidadesMedida";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import ListUnidadesMedida from "../../components/UnidadesMedida/ListUnidadesMedida";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroUnidadesMedida from "../../components/UnidadesMedida/Registro";
@@ -16,10 +17,10 @@ import AnimacionLoading from '../../assets/json/loading.json';
 function UnidadesMedida(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardConfiguracion")
+        enrutamiento("/DashboardConfiguracion")
     }
 
     // Para almacenar los departamentos

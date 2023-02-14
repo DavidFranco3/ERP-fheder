@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { toast } from "react-toastify";
 import ListFacturas from "../../components/Facturas/ListFacturas";
 import { listarFactura } from "../../api/facturas";
@@ -14,7 +15,7 @@ import AnimacionLoading from '../../assets/json/loading.json';
 function Facturas(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para almacenar la lista de pedidos de venta
     const [listFacturas, setListFacturas] = useState(null);
@@ -58,11 +59,11 @@ function Facturas(props) {
 
     // Para ir hacia la ruta de registro del pedido de venta
     const rutaRegistroFacturas = () => {
-        enrutamiento.push("/RegistroFacturas")
+        enrutamiento("/RegistroFacturas")
     }
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardFinanzas")
+        enrutamiento("/DashboardFinanzas")
     }
 
     return (

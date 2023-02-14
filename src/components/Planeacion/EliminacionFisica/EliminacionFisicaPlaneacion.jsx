@@ -30,7 +30,7 @@ function EliminacionFisicaPlaneacion(props) {
                 toast.success(data.mensaje)
                 setLoading(false)
                 LogsInformativos(`Se ha eliminado la planeación con folio ${folio}`, datos)
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
                 setShowModal(false)

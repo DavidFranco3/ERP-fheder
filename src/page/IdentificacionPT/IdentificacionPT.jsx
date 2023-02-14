@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroIdentificacionPT from "../../components/IdentificacionPT/RegistroIdentificacionPT";
 import Lottie from 'react-lottie-player';
@@ -41,15 +42,15 @@ function IdentificacionPT(props) {
     }
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroReporte")
+        enrutamiento("/RegistroReporte")
     }
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardProduccion")
+        enrutamiento("/DashboardProduccion")
     }
 
     // Para almacenar el listado de compras realizadas

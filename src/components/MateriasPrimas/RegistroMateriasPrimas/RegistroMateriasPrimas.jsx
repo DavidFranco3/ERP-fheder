@@ -111,7 +111,7 @@ function RegistroMateriasPrimas(props) {
                     LogsInformativos("Nuevo material registrado " + formData.descripcion, dataTemp)
                     toast.success(data.mensaje)
                     setLoading(false)
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     setShowModal(false)

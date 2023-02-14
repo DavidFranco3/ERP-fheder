@@ -36,7 +36,7 @@ function EliminacionLogicaSemana(props) {
                 LogsInformativos("Se ha cancelado el mes " + folio, data);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

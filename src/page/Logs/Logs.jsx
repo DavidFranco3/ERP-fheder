@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { listarLogs } from "../../api/logsGenerales";
 import ListLogs from "../../components/Logs/ListLogs";
 import "./Logs.scss";
@@ -14,7 +15,7 @@ import AnimacionLoading from '../../assets/json/loading.json';
 function Logs(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -30,7 +31,7 @@ function Logs(props) {
     // Termina cerrado de sesión automatico
 
     const rutaRegreso = () => {
-        enrutamiento.push("/")
+        enrutamiento("/")
     }
 
     // Para almacenar todos los log del sistema

@@ -153,7 +153,7 @@ function RegistraAsignacionPedido(props) {
                     LogsInformativos("Se ha registrado la asignacion de pedido " + ordenVenta, dataTemp)
                     setTimeout(() => {
                         setLoading(false)
-                        history.push({
+                        history({
                             search: queryString.stringify(""),
                         });
                         setShowModal(false)

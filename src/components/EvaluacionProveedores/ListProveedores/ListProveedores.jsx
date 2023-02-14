@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
 import { estilos } from "../../../utils/tableStyled";
 import DataTable from 'react-data-table-component';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import 'dayjs/locale/es'
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -19,7 +19,7 @@ function ListProveedores(props) {
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -42,12 +42,12 @@ function ListProveedores(props) {
 
     // Ruta para enlazar a pagina de usuarios
     const irHaciaModificacion = (id) => {
-        enrutamiento.push(`/ModificacionEvaluacionProveedores/${id}`);
+        enrutamiento(`/ModificacionEvaluacionProveedores/${id}`);
     }
 
     // Ruta para enlazar a pagina de usuarios
     const vistaPreviaEvaluacionProveedores = (id) => {
-        enrutamiento.push(`/VistaPreviaEvaluacionProveedores/${id}`);
+        enrutamiento(`/VistaPreviaEvaluacionProveedores/${id}`);
     }
 
     // Para llenar la evaluación del proveedor

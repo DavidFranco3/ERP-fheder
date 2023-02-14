@@ -30,7 +30,7 @@ function EliminacionFisicaMaquinas(props) {
                 toast.success(data.mensaje)
                 LogsInformativos("Se ha eliminado la maquina con el numero " + numeroMaquina, data)
                 setShowModal(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             }).catch(e => {

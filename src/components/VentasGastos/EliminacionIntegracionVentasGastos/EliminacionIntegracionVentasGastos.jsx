@@ -31,7 +31,7 @@ function EliminacionIntegracionVentasGastos(props) {
                 LogsInformativos("Se ha eliminado la integracion de ventas y gastos con el folio " + folio, data);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             }).catch(e => {

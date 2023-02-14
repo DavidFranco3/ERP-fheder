@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function AgregarItem(props) {
     const { setShowModal } = props;
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const cancelarRegistro = () => {
@@ -16,7 +16,7 @@ function AgregarItem(props) {
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroVerificacionMantenimientos")
+        enrutamiento("/RegistroVerificacionMantenimientos")
     }
 
     // Para controlar la animacion

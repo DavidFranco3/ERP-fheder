@@ -36,7 +36,7 @@ function EliminacionLogicaMoldes(props) {
                 LogsInformativos("Se actualizo el estado del molde " + folio, datos);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

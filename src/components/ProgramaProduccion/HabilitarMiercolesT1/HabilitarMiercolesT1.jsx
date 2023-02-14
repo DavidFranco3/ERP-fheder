@@ -70,7 +70,7 @@ function HabilitarMiercolesT1(props) {
                 LogsInformativos("Se actualizo el estado del primer turno del miercoles " + folio, dataTemp);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

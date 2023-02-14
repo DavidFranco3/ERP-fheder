@@ -36,7 +36,7 @@ function EliminacionLogicaAlertasCalidad(props) {
                 toast.success(data.mensaje);
                 LogsInformativos("Se ha cancelado la alerta de calidad " + folio, datos);
                 setShowModal(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

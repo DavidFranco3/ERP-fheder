@@ -70,7 +70,7 @@ function HabilitarLunesT2(props) {
                 LogsInformativos("Se actualizo el estado del segundo turno del lunes " + folio, dataTemp);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

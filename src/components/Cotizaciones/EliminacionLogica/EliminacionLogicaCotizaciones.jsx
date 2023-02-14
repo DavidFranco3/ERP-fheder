@@ -41,7 +41,7 @@ function EliminacionLogicaCotizaciones(props) {
                 LogsInformativos("Se ha cancelado la cotización " + formData.cliente + " " + formData.vendedor, dataTemp)
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

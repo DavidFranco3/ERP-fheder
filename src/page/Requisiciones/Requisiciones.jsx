@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { withRouter, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
@@ -14,11 +15,11 @@ import ListRequisiciones from '../../components/Requisiciones/ListRequisiciones'
 function Requisiciones(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para definir la ruta de registro de los productos
     const rutaRegistraRequisiciones = () => {
-        enrutamiento.push("/RegistroRequisicion")
+        enrutamiento("/RegistroRequisicion")
     }
 
     // Para almacenar el listado de compras realizadas
@@ -57,7 +58,7 @@ function Requisiciones(props) {
     // Termina cerrado de sesión automatico
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCompras")
+        enrutamiento("/DashboardCompras")
     }
 
     return (

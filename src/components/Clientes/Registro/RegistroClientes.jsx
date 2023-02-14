@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button, Col, Form, Row, Spinner, Container, Alert, Badge } from "react-bootstrap";
 import { map } from "lodash";
@@ -12,7 +12,7 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../ap
 function RegistroClientes(props) {
     const { setRefreshCheckLogin, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -29,7 +29,7 @@ function RegistroClientes(props) {
 
     // Ruta para enlazar a pagina de usuarios
     const regresaPagina = () => {
-        enrutamiento.push("/Clientes");
+        enrutamiento("/Clientes");
     }
 
     // Para almacenar los datos del formulario

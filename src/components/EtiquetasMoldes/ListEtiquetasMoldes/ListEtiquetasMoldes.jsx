@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Badge, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import DataTable from 'react-data-table-component';
@@ -17,7 +17,7 @@ import ModificaEtiquetasMoldes from '../ModificaEtiquetasMoldes';
 function ListEtiquetasMoldes(props) {
     const { setRefreshCheckLogin, listEtiquetas, history, location } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)

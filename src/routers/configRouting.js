@@ -263,867 +263,695 @@ import VistaPreviaPrimeraPieza from "../components/EtiquetaPrimeraPieza/VistaPre
 export default [
     {
         path: "/Almacenes",
-        exact: true,
         page: Almacenes
     },
     {
         path: "/RegistraRequerimientosPlaneacion",
-        exact: true,
         page: RegistraRequerimientosPlaneacion
     },
     {
         path: "/ModificaRequerimientosPlaneacion/:id",
-        exact: true,
         page: ModificaRequerimientosPlaneacion
     },
     {
         path: "/VistaPreviaPlaneacion/:id",
-        exact: true,
         page: VistaPreviaPlaneacion
     },
     {
         path: "/VistaPreviaIdentificacionPT/:id",
-        exact: true,
         page: VistaPreviaIdentificacionPT
     },
     {
         path: "/VistaPreviaMaterialMolido/:id",
-        exact: true,
         page: VistaPreviaMaterialMolido
     },
     {
         path: "/VistaPreviaPrimeraPieza/:id",
-        exact: true,
         page: VistaPreviaPrimeraPieza
     },
     {
         path: "/FacturasOV/:ordenVenta",
-        exact: true,
         page: FacturasOV
     },
     {
         path: "/RegistroFacturas",
-        exact: true,
         page: RegistroFacturas
     },
     {
         path: "/ModificaFacturas/:id",
-        exact: true,
         page: ModificaFacturas
     },
     {
         path: "/VistaPreviaFactura/:id",
-        exact: true,
         page: VistaPreviaFactura
     },
     {
         path: "/RegistraSolicitudMaterialInsumo",
-        exact: true,
         page: RegistraSolicitudMaterialInsumo
     },
     {
         path: "/RegistraInspeccionPieza",
-        exact: true,
         page: RegistroInspeccionPieza
     },
     {
         path: "/ModificaInspeccionPieza/:id",
-        exact: true,
         page: ModificaInspeccionPieza
     },
     {
         path: "/VistaPreviaInspeccion/:id",
-        exact: true,
         page: VistaPreviaInspeccion
     },
     {
         path: "/RegistraDevoluciones",
-        exact: true,
         page: RegistroDevoluciones
     },
     {
         path: "/RegistroStatusMaterial",
-        exact: true,
         page: RegistroStatusMaterial
     },
     {
         path: "/ModificaStatusMaterial/:id",
-        exact: true,
         page: ModificaStatusMaterial
     },
     {
         path: "/VistaPreviaStatus/:id",
-        exact: true,
         page: VistaPreviaStatus
     },
     {
         path: "/RegistraAcusesRecibo",
-        exact: true,
         page: RegistroAcusesRecibo
     },
     {
         path: "/RegistroCertificadoCalidad",
-        exact: true,
         page: RegistroCertificadoCalidad
     },
     {
         path: "/ModificaCertificadoCalidad/:id",
-        exact: true,
         page: ModificaCertificadoCalidad
     },
     {
         path: "/VistaPreviaCertificadosCalidad/:id",
-        exact: true,
         page: VistaPreviaCertificadosCalidad
     },
     {
         path: "/RegistroMaquinasMantenimientos",
-        exact: true,
         page: RegistroMaquinasMantenimientos
     },
     {
         path: "/RegistroVerificacionMantenimientos",
-        exact: true,
         page: RegistroVerificacionMantenimientos
     },
     {
         path: "/ModificaAcusesRecibo",
-        exact: true,
         page: ModificacionAcusesRecibo
     }, 
     {
         path: "/RegistraRechazos",
-        exact: true,
         page: RegistroRechazos
     },
     {
         path: "/ModificaRechazos",
-        exact: true,
         page: ModificacionRechazos
     },    
     {
         path: "/RegistroCotizaciones",
-        exact: true,
         page: RegistraCotizaciones
     },
     {
         path: "/Detalles_matriz_producto/:producto",
-        exact: true,
         page: VistaDetallada
     },
     {
         path: "/ModificaCotizacion/:id",
-        exact: true,
         page: ModificaCotizaciones
     },
     {
         path: "/Registra-Matriz-Productos",
-        exact: true,
         page: RegistraMatrizProductos
     },
     {
         path: "/Modifica-Matriz-Productos/:producto",
-        exact: true,
         page: ModificaMatrizProductos
     },
     {
         path: "/RegistroUsuarios",
-        exact: true,
         page: RegistroUsuarios
     },
     {
         path: "/RegistroLiberacionProductoProceso",
-        exact: true,
         page: RegistroLiberacionProductoProceso
     },
     {
         path: "/ModificaLiberacionProductoProceso/:id",
-        exact: true,
         page: ModificaLiberacionProductoProceso
     },
     {
         path: "/VistaPreviaLiberacionProducto/:id",
-        exact: true,
         page: VistaPreviaLiberacionProducto
     },
     {
         path: "/ModificacionUsuarios/:id",
-        exact: true,
         page: ModificacionUsuarios
     },
     {
         path: "/ModificacionUsuarios",
-        exact: true,
         page: ModificacionUsuarios
     },
     {
         path: "/RegistroClientes",
-        exact: true,
         page: RegistroClientes
     },
     {
         path: "/RegistroProveedores",
-        exact: true,
         page: RegistroProveedores
     },
     {
         path: "/RegistroEvaluacionProveedores",
-        exact: true,
         page: RegistroEvaluacionProveedores
     },
     {
         path: "/RegistroRazonesSociales",
-        exact: true,
         page: RegistroRazonSocial
     },
     {
         path: "/RegistroNoConformidad",
-        exact: true,
         page: RegistroNoConformidad
     },
     {
         path: "/ModificaNoConformidad/:id",
-        exact: true,
         page: ModificaNoConformidad
     },
     {
         path: "/VistaPreviaNoConformidad/:id",
-        exact: true,
         page: VistaPreviaNoConformidad
     },
     {
         path: "/ModificacionClientes/:id",
-        exact: true,
         page: ModificacionClientes
     },
     {
         path: "/ModificacionEvaluacionProveedores/:id",
-        exact: true,
         page: ModificacionEvaluacionProveedores
     },
     {
         path: "/VistaPreviaEvaluacionProveedores/:id",
-        exact: true,
         page: VistaPreviaEvaluacionProveedores
     },
     {
         path: "/ModificacionProveedores/:id",
-        exact: true,
         page: ModificacionProveedores
     },
     {
         path: "/ModificacionRazonesSociales/:id",
-        exact: true,
         page: ModificacionRazonSocial
     },
     {
         path: "/ModificacionClientes",
-        exact: true,
         page: ModificacionClientes
     },
     {
         path: "/RegistroTiquets",
-        exact: true,
         page: RegistroTiquets
     },
     {
         path: "/RegistroProgramaProduccion/:semana",
-        exact: true,
         page: RegistraProgramaProduccion
     },
     {
         path: "/ModificaProgramaProduccion/:id",
-        exact: true,
         page: ModificaProgramaProduccion
     },
     {
         path: "/VistaPreviaProgramaProduccion/:id",
-        exact: true,
         page: VistaPreviaProgramaProduccion
     },
     {
         path: "/ModificacionTiquets",
-        exact: true,
         page: ModificacionTiquets
     },
     {
         path: "/RegistroEntradaSalidaMoldes",
-        exact: true,
         page: RegistroEntradaSalidaMoldes
     },
     {
         path: "/RegistroCarpetasProceso",
-        exact: true,
         page: RegistroCarpetasProceso
     },
     {
         path: "/RegistroReporteProduccion",
-        exact: true,
         page: RegistroReporteProduccion
     },
     {
         path: "/ModificaReporteProduccion/:id",
-        exact: true,
         page: ModificaReporteProduccion
     },
     {
         path: "/VistaPreviaReporte/:id",
-        exact: true,
         page: VistaPreviaReporte
     },
     {
         path: "/RegistroCompras",
-        exact: true,
         page: RegistroCompras
     },
     {
         path: "/ModificacionCompras/:folio",
-        exact: true,
         page: ModificacionCompras
     },
     {
         path: "/VistaPreviaCompras/:folio",
-        exact: true,
         page: VistaPreviaCompras
     },
     {
         path: "/RegistroEmbarque",
-        exact: true,
         page: RegistroEmbarque
     },
     {
         path: "/ModificacionEmbarque",
-        exact: true,
         page: ModificacionEmbarque
     },
     {
         path: "/RegistroFactura",
-        exact: true,
         page: RegistroFactura
     },
     {
         path: "/ModificacionFactura",
-        exact: true,
         page: ModificacionFactura
     },
     {
         path: "/RegistroLogistica",
-        exact: true,
         page: RegistroLogistica
     },
     {
         path: "/ModificacionLogistica",
-        exact: true,
         page: ModificacionLogistica
     },
     {
         path: "/RegistroRecepcion",
-        exact: true,
         page: RegistroRecepcion
     },
     {
         path: "/ModificaRecepcion/:id",
-        exact: true,
         page: ModificacionRecepcion
     },
     {
         path: "/VistaPreviaRecepcion/:id",
-        exact: true,
         page: VistaPreviaRecepcion
     },
     {
         path: "/RegistroPlaneacion",
-        exact: true,
         page: RegistroPlaneacion
     },
     {
         path: "/ModificacionPlaneacion/:folio",
-        exact: true,
         page: ModificacionPlaneacion
     },
     {
         path: "/Pedido-de-Venta",
-        exact: true,
         page: RegistroVentas
     },
     {
         path: "/ModificacionPedido/:folio",
-        exact: true,
         page: ModificacionVentas
     },
     {
         path: "/VistaPreviaVenta/:folio",
-        exact: true,
         page: VistaPreviaVentas
     },
     {
         path: "/ModificacionPedido",
-        exact: true,
         page: ModificacionVentas
     },
     {
         path: "/RegistroProduccion",
-        exact: true,
         page: RegistroProduccion
     },
     {
         path: "/ModificacionProduccion/:id",
-        exact: true,
         page: ModificacionProduccion
     },
     {
         path: "/VistaPreviaProduccion/:id",
-        exact: true,
         page: VistaPreviaProduccion
     },
     {
         path: "/ProduccionPlaneacion/:id",
-        exact: true,
         page: ProduccionPlaneacion
     },
     {
         path: "/RegistroRequisicion",
-        exact: true,
         page: RegistraRequisiciones
     },
     {
         path: "/ModificacionRequisicion/:id",
-        exact: true,
         page: ModificaRequisiciones
     },
     {
         path: "/VistaPreviaRequisiciones/:id",
-        exact: true,
         page: VistaPreviaRequisiciones
     },
     {
         path: "/RequisicionPlaneacion/:id",
-        exact: true,
         page: RequisicionPlaneacion
     },
     {
         path: "/RegistroRemision",
-        exact: true,
         page: RegistraRemisiones
     },
     {
         path: "/Modifica remision",
-        exact: true,
         page: ModificaRemisiones
     },
     {
         path: "/RegistroReporte",
-        exact: true,
         page: RegistraReporte
     },
     {
         path: "/ModificacionReporte/:id",
-        exact: true,
         page: ModificaReporte
     },
     {
         path: "/VistaPreviaReporteCalidad/:id",
-        exact: true,
         page: VistaPreviaCalidad
     },
     {
         path: "/MatrizProductos",
-        exact: true,
         page: MatrizProductos
     },
     {
         path: "/AlertasCalidad",
-        exact: true,
         page: AlertasCalidad
     },
     {
         path: "/Devoluciones",
-        exact: true,
         page: Devoluciones
     },
     {
         path: "/LiberacionProductoProceso",
-        exact: true,
         page: LiberacionProductoProceso
     },
     {
         path: "/StatusMaterial",
-        exact: true,
         page: StatusMaterial
     },
     {
         path: "/UnidadesMedida",
-        exact: true,
         page: UnidadesMedida
     },
     {
         path: "/Acuses_de_Recibos",
-        exact: true,
         page: AcusesRecibo
     },
     {
         path: "/Rechazos",
-        exact: true,
         page: Rechazos
     },
     {
         path: "/Sucursales",
-        exact: true,
         page: Sucursales
     },
     {
         path: "/FichaTecnica",
-        exact: true,
         page: FichaTecnica
     },
     {
         path: "/NoConformidad",
-        exact: true,
         page: NoConformidad
     },
     {
         path: "/RegistroAlertasCalidad",
-        exact: true,
         page: RegistroAlertasCalidad
     },
     {
         path: "/ModificaAlertasCalidad/:id",
-        exact: true,
         page: ModificaAlertasCalidad
     },
     {
         path: "/VistaPreviaAlertasCalidad/:id",
-        exact: true,
         page: VistaPreviaAlertasCalidad
     },
     {
         path: "/RegistroFichaTecnica",
-        exact: true,
         page: RegistroFichaTecnica
     },
     {
         path: "/ModificaFichaTecnica/:id",
-        exact: true,
         page: ModificaFichaTecnica
     },
     {
         path: "/VistaPreviaFichasTecnicas/:id",
-        exact: true,
         page: VistaPreviaFichasTecnicas
     },
     {
         path: "/RegistroControlParametrosMaquina",
-        exact: true,
         page: RegistroControlParametrosMaquina
     },
     {
         path: "/RegistroMantenimiento",
-        exact: true,
         page: RegistroMantenimiento
     },
     {
         path: "/InspeccionPieza",
-        exact: true,
         page: InspeccionPieza
     },
     {
         path: "/Remisión",
-        exact: true,
         page: Remisiones
     },
     {
         path: "/Calidad",
-        exact: true,
         page: Calidad
     },
     {
         path: "/ClasificacionMateriales",
-        exact: true,
         page: ClasificacionMateriales
     },
     {
         path: "/ClasificacionMaquinaria",
-        exact: true,
         page: ClasificacionMaquinaria
     },
     {
         path: "/Logs",
-        exact: true,
         page: Logs
     },
     {
         path: "/Requisiciones",
-        exact: true,
         page: Requisiciones
     },
     {
         path: "/EtiquetaPrimeraPieza",
-        exact: true,
         page: EtiquetaPrimeraPieza
     },
     {
         path: "/EvaluacionProveedores",
-        exact: true,
         page: EvaluacionProveedores
     },
     {
         path: "/Usuarios",
-        exact: true,
         page: Usuarios
     },
     {
         path: "/GestionAlmacen",
-        exact: true,
         page: GestionAlmacen
     },
     {
         path: "/Materiales",
-        exact: true,
         page: MateriasPrimas
     },
     {
         path: "/Departamentos",
-        exact: true,
         page: Departamentos
     },
     {
         path: "/VentasGastos",
-        exact: true,
         page: VentasGastos
     },
     {
         path: "/Clientes",
-        exact: true,
         page: Clientes
     },
     {
         path: "/Proveedores",
-        exact: true,
         page: Proveedores
     },
     {
         path: "/RazonesSociales",
-        exact: true,
         page: RazonesSociales
     },
     {
         path: "/Tracking",
-        exact: true,
         page: Tracking
     },
     {
         path: "/Compras",
-        exact: true,
         page: Compras
     },
     {
         path: "/AsignacionPedido",
-        exact: true,
         page: AsignacionPedido
     },
     {
         path: "/Embarque",
-        exact: true,
         page: Embarque
     },
     {
         path: "/Facturacion",
-        exact: true,
         page: Facturacion
     },
     {
         path: "/Logistica",
-        exact: true,
         page: Logistica
     },
     {
         path: "/ProgramaProduccion/:semana",
-        exact: true,
         page: ProgramaProduccion
     },
     {
         path: "/CertificadosCalidad",
-        exact: true,
         page: CertificadosCalidad
     },
     {
         path: "/Planeacion",
-        exact: true,
         page: Planeacion
     },
     {
         path: "/Cotizaciones",
-        exact: true,
         page: Cotizaciones
     },
     {
         path: "/Produccion",
-        exact: true,
         page: Produccion
     },
     {
         path: "/Ventas",
-        exact: true,
         page: Ventas
     },
     {
         path: "/Tiquets",
-        exact: true,
         page: Tiquets
     },
     {
         path: "/RecepcionMaterialInsumos",
-        exact: true,
         page: RecepcionMaterialInsumos
     },
     {
         path: "/Mes",
-        exact: true,
         page: Mes
     },
     {
         path: "/Semana",
-        exact: true,
         page: Semana
     },
     {
         path: "/Maquinaria",
-        exact: true,
         page: Maquinaria
     },
     {
         path: "/Maquinas",
-        exact: true,
         page: Maquinas
     },
     {
         path: "/ReporteProduccion",
-        exact: true,
         page: ReporteProduccion
     },
     {
         path: "/IdentificacionPT",
-        exact: true,
         page: IdentificacionPT
     },
     {
         path: "/MaterialMolido",
-        exact: true,
         page: MaterialMolido
     },
     {
         path: "/CarpetasProceso",
-        exact: true,
         page: CarpetasProceso
     },
     {
         path: "/ControlParametrosMaquina",
-        exact: true,
         page: ControlParametrosMaquina
     },
     {
         path: "/Mantenimiento",
-        exact: true,
         page: Mantenimiento
     },
     {
         path: "/EtiquetasMoldes",
-        exact: true,
         page: EtiquetasMoldes
     },
     {
         path: "/InventarioMaquinas",
-        exact: true,
         page: InventarioMaquinas
     },
     {
         path: "/InventarioMoldes",
-        exact: true,
         page: InventarioMoldes
     },
     {
         path: "/MantenimientoPreventivo",
-        exact: true,
         page: MantenimientoPreventivo
     },
     {
         path: "/EntradaSalidaMoldes",
-        exact: true,
         page: EntradaSalidaMoldes
     },
     {
         path: "/VerificacionMantenimientos",
-        exact: true,
         page: VerificacionMantenimientos
     },
     {
         path: "/SolicitudMaterialInsumo",
-        exact: true,
         page: SolicitudMaterialInsumo
     },
     {
         path: "/Facturas",
-        exact: true,
         page: Facturas
     },
     {
         path: "/DashboardVentas",
-        exact: true,
         page: DashboardVentas
     },
     {
         path: "/DashboardCompras",
-        exact: true,
         page: DashboardCompras
     },
     {
         path: "/DashboardPlaneacion",
-        exact: true,
         page: DashboardPlaneacion
     },
     {
         path: "/DashboardProduccion",
-        exact: true,
         page: DashboardProduccion
     },
     {
         path: "/DashboardCalidad",
-        exact: true,
         page: DashboardCalidad
     },
     {
         path: "/DashboardMantenimiento",
-        exact: true,
         page: DashboardMantenimiento
     },
     {
         path: "/RequerimientosPlaneacion",
-        exact: true,
         page: RequerimientosPlaneacion
     },
     {
         path: "/DashboardCatalogos",
-        exact: true,
         page: DashboardCatalogos
     },
     {
         path: "/DashboardConfiguracion",
-        exact: true,
         page: DashboardConfiguracion
     },
     {
         path: "/DashboardFinanzas",
-        exact: true,
         page: DashboardFinanzas
     },
     {
         path: "/",
-        exact: true,
+        default: true,
         page: Dashboard
     },
     {
         path: "*",
-        exact: true,
         page: Error404
     }
 ]

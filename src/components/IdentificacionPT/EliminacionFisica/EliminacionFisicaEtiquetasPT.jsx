@@ -30,7 +30,7 @@ function EliminacionFisicaEtiquetasPT(props) {
                 toast.success(data.mensaje)
                 LogsInformativos("Se ha eliminado la etiqueta PT con el folio " + folio, data)
                 setShowModal(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             }).catch(e => {

@@ -89,7 +89,7 @@ function RegistraInventarioMaquinas(props) {
                 LogsInformativos("Se a registrado el inventario de la maquina " + formDataMaquina.noMaquina, dataTemp);
                 toast.success(data.mensaje)
                 setTimeout(() => {
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     setShowModal(false)

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // Inician importaciones para la tabla
 import BasicModal from "../../Modal/BasicModal";
 import { Badge, Button, Container, } from "react-bootstrap";
@@ -27,7 +27,7 @@ function ListCompras(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Configura el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     //Para la eliminacion de compras
     const eliminacionCompra = (content) => {
@@ -44,11 +44,11 @@ function ListCompras(props) {
     }
 
     const modificacionCompra = (folio) => {
-        enrutamiento.push(`/ModificacionCompras/${folio}`)
+        enrutamiento(`/ModificacionCompras/${folio}`)
     }
 
     const vistaPreviaCompra = (folio) => {
-        enrutamiento.push(`/VistaPreviaCompras/${folio}`)
+        enrutamiento(`/VistaPreviaCompras/${folio}`)
     }
 
     const ExpandedComponent = ({ data }) => (

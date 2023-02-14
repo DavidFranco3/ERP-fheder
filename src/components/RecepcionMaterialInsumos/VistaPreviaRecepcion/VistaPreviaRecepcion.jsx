@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Image, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
@@ -43,7 +43,7 @@ function VistaPreviaRecepcion(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const params = useParams();
     const { id } = params
@@ -91,7 +91,7 @@ function VistaPreviaRecepcion(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento.push("/RecepcionMaterialInsumos");
+        enrutamiento("/RecepcionMaterialInsumos");
     }
 
     // Para almacenar las sucursales registradas

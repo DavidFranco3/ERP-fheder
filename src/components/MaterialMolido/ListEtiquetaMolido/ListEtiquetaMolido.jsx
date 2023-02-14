@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Badge, Button, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionEtiquetaMolido from '../EliminacionEtiquetaMolido';
@@ -17,7 +17,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 function ListEtiquetaMolido(props) {
     const { setRefreshCheckLogin, listEtiquetas, history, location } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -50,7 +50,7 @@ function ListEtiquetaMolido(props) {
 
     // Para abrir en una pestaña nueva el pdf de la vista
     const vistaPrevia = (id) => {
-        enrutamiento.push(`/VistaPreviaMaterialMolido/${id}`)
+        enrutamiento(`/VistaPreviaMaterialMolido/${id}`)
     }
 
     const columns = [

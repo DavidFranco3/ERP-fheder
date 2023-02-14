@@ -31,7 +31,7 @@ function EliminacionFisicaInspeccionPieza(props) {
                 LogsInformativos("Se ha eliminado la inspeccion de pieza con folio " + folio, data)
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             }).catch(e => {

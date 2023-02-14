@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Badge, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import DataTable from 'react-data-table-component';
@@ -17,7 +17,7 @@ import ModificaInventarioMoldes from '../ModificaInventarioMoldes';
 function ListInventarioMolde(props) {
     const { setRefreshCheckLogin, listInventarios, history, location } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -49,7 +49,7 @@ function ListInventarioMolde(props) {
 
     // Para abrir en una pestaña nueva el pdf de la vista
     const vistaPrevia = () => {
-        // enrutamiento.push("")
+        // enrutamiento("")
     }
 
     const columns = [

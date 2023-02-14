@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { listarDepartamento } from "../../../api/departamentos";
 import { actualizaUsuario, obtenerUsuario } from "../../../api/usuarios";
 import { toast } from "react-toastify";
@@ -17,7 +17,7 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../ap
 function ModificacionRazonSocial(props) {
     const { setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const params = useParams();
 
@@ -36,7 +36,7 @@ function ModificacionRazonSocial(props) {
 
     // Ruta para enlazar a pagina de usuarios
     const regresaPagina = () => {
-        enrutamiento.push("/RazonesSociales");
+        enrutamiento("/RazonesSociales");
     }
 
     // Para almacenar la foto de perfil del usuario
@@ -64,7 +64,7 @@ function ModificacionRazonSocial(props) {
                 if (e.message == 'Network Error') {
                     //console.log("No hay internet")
                     toast.error("Conexión a Internet no Disponible");
-                    enrutamiento.push("/RazonesSociales");
+                    enrutamiento("/RazonesSociales");
                     setConexionInternet(false);
                 }
             })
@@ -110,7 +110,7 @@ function ModificacionRazonSocial(props) {
                     LogsInformativos("Los datos de la razón social " + dataTempFinal.nombre  + " fueron modificados", dataTempFinal)
                     toast.success(data.mensaje)
                     setLoading(false);
-                    enrutamiento.push("/razonesSociales");
+                    enrutamiento("/razonesSociales");
                 }).catch(e => {
                     console.log(e)
                     if (e.message === 'Network Error') {

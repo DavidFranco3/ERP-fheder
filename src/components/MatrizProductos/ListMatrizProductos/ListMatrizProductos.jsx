@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Badge, Container } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,19 +18,19 @@ function ListMatrizProductos(props) {
     const { listProductos, history, location, setRefreshCheckLogin } = props;
     //console.log(listProductos)
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
 
     // Para ir hacia la ruta de modificacion
     const rutaModificaProductos = (id) => {
-        enrutamiento.push(`Modifica-Matriz-Productos/${id}`)
+        enrutamiento(`Modifica-Matriz-Productos/${id}`)
     }
 
     // Para definir la ruta de la vista detallada de productos en la matriz de productos
     const rutaVistaDetalladaMatrizProductos = (producto) => {
-        enrutamiento.push(`/Detalles_matriz_producto/${producto}`)
+        enrutamiento(`/Detalles_matriz_producto/${producto}`)
     }
 
 

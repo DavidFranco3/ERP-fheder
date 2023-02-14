@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Image, Spinner, Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./VistaPreviaInspeccion.scss";
 import BasicModal from "../../Modal/BasicModal";
 import CancelacionInspeccion from "../CancelacionInspeccion";
@@ -38,14 +38,14 @@ function VistaPreviaInspeccion(props) {
     const [formData, setFormData] = useState(initialFormData());
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const params = useParams();
     const { id } = params
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/InspeccionPieza");
+        enrutamiento("/InspeccionPieza");
     }
 
     // Para hacer uso del modal

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Image, Badge, Spinner } from "react-bootstrap";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { map } from "lodash";
@@ -59,11 +59,11 @@ function VistaPreviaRequisiciones(props) {
     const [listProductosCargados, setListProductosCargados] = useState([]);
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/Requisiciones")
+        enrutamiento("/Requisiciones")
     }
 
     // Para almacenar la OV

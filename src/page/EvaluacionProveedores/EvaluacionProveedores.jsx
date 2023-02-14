@@ -5,7 +5,8 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import { listarEvaluacionProveedores } from "../../api/evaluacionProveedores";
-import { withRouter, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import ListProveedores from "../../components/EvaluacionProveedores/ListProveedores";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistraProveedores from "../../components/EvaluacionProveedores/RegistraProveedores";
@@ -29,7 +30,7 @@ function EvaluacionProveedores(props) {
     // Termina cerrado de sesión automatico
 
     // Para definir el salto entre rutas
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para determinar el estado de la conexion
     const [conexionInternet, setConexionInternet] = useState(true);
@@ -71,12 +72,12 @@ function EvaluacionProveedores(props) {
     }
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCompras")
+        enrutamiento("/DashboardCompras")
     }
 
     // Ir hacia ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroEvaluacionProveedores");
+        enrutamiento("/RegistroEvaluacionProveedores");
     }
 
     return (

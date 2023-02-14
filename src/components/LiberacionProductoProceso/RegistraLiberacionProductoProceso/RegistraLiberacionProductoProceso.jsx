@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { registraLiberacionProducto, obtenerNumeroLiberacionProducto, obtenerItemLiberacionProducto } from "../../../api/liberacionProductoProceso";
 import { toast } from "react-toastify";
 import { listarClientes } from "../../../api/clientes";
@@ -79,7 +79,7 @@ function RegistraLiberacionProductoProceso(props) {
     }
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -95,7 +95,7 @@ function RegistraLiberacionProductoProceso(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/LiberacionProductoProceso")
+        enrutamiento("/LiberacionProductoProceso")
     }
 
     // Para controlar la animacion

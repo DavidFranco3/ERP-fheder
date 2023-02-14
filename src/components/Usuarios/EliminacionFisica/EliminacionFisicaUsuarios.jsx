@@ -38,7 +38,7 @@ function EliminacionFisicaUsuarios(props) {
                 LogsInformativos("Se ha eliminado el usuario " + formData.nombre, dataUsuario);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

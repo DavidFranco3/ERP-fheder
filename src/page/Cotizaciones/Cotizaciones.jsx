@@ -1,7 +1,8 @@
 import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { withRouter, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { listarCotizacion } from "../../api/cotizaciones";
 import ListCotizaciones from "../../components/Cotizaciones/ListCotizaciones";
@@ -14,10 +15,10 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/a
 function Cotizaciones(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     const rutaRegreso = () => {
-        enrutamiento.push("/")
+        enrutamiento("/")
     }
 
     // Cerrado de sesión automatico
@@ -35,7 +36,7 @@ function Cotizaciones(props) {
 
     // Ruta de acceso
     const rutaRegistroCotizaciones = () => {
-        enrutamiento.push("/RegistroCotizaciones")
+        enrutamiento("/RegistroCotizaciones")
     }
 
     // Para almacenar el listado de cotizaciones

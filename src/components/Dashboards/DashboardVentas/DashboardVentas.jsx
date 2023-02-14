@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./DashboardVentas.scss";
 import { Alert, Button, Col, Row, Card, Container, CardGroup, Image, Badge } from "react-bootstrap";
 // Importacion de imagenes para los iconos de los menus
@@ -13,7 +13,7 @@ import {faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
 function DashboardVentas(props) {
     const { setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -30,7 +30,7 @@ function DashboardVentas(props) {
 
     // Define las rutas
 
-    const goTo = (ruta) => enrutamiento.push(ruta);
+    const goTo = (ruta) => enrutamiento(ruta);
 
     const ItemCard = ({ path, logo, title }) => (
         <Card className="contenidoCentrado" >
@@ -44,7 +44,7 @@ function DashboardVentas(props) {
     )
 
     const rutaRegreso = () => {
-        enrutamiento.push("/")
+        enrutamiento("/")
     }
 
     return (

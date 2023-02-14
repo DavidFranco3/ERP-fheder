@@ -67,7 +67,7 @@ function ModificaInventarioMoldes(props) {
                 LogsInformativos("Se a actualizado el inventario del molde " + formDataMolde.noInterno, dataTemp);
                 toast.success(data.mensaje)
                 setTimeout(() => {
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     setShowModal(false)

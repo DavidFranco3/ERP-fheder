@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
@@ -56,7 +56,7 @@ function ModificaFacturas(props) {
 
     const [listProductosCargados, setListProductosCargados] = useState([]);
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormDataInitial());
@@ -128,7 +128,7 @@ function ModificaFacturas(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento.push("/Facturas");
+        enrutamiento("/Facturas");
     }
 
     // Para almacenar la lista completa de clientes

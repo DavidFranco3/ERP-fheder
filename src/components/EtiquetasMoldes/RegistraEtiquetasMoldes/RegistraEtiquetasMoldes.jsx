@@ -85,7 +85,7 @@ function RegistraEtiquetasMoldes(props) {
                 LogsInformativos("Se a registrado el molde " + folioActual, dataTemp);
                 toast.success(data.mensaje)
                 setTimeout(() => {
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     setShowModal(false)

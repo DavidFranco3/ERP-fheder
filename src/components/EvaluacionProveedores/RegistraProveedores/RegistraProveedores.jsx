@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers, faArrowCircleLeft, faSearch, faCirclePlus, faX } from "@fortawesome/free-solid-svg-icons";
 import BuscarProveedor from '../../../page/BuscarProveedor';
@@ -20,7 +20,7 @@ function RegistraProveedores(props) {
     // Para controlar la animación
     const [loading, setLoading] = useState(false);
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -37,7 +37,7 @@ function RegistraProveedores(props) {
 
     // Ruta para enlazar a pagina de usuarios
     const regresaPagina = () => {
-        enrutamiento.push("/EvaluacionProveedores");
+        enrutamiento("/EvaluacionProveedores");
     }
 
     // Para hacer uso del modal

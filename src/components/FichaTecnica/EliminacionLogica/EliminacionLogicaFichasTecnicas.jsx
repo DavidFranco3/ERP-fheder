@@ -37,7 +37,7 @@ function EliminacionLogicaFichasTecnicas(props) {
                 LogsInformativos("Se ha cancelado la ficha tecnica " + folio, datos);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

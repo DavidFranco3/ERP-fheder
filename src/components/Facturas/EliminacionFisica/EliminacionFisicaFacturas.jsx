@@ -34,7 +34,7 @@ function EliminacionFisicaFacturas(props) {
                 LogsInformativos("Se ha eliminado la factura " + folio, datos)
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

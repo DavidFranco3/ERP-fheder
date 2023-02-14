@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Badge, Button, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import DataTable from 'react-data-table-component';
@@ -17,7 +17,7 @@ import ListProductosFacturas from '../ListProductosFacturas';
 function ListFacturas(props) {
     const { setRefreshCheckLogin, listFacturas, history, location } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -44,12 +44,12 @@ function ListFacturas(props) {
 
     // Para la modificacion de datos del pedido
     const modificaFactura = (id) => {
-        enrutamiento.push(`/ModificaFacturas/${id}`);
+        enrutamiento(`/ModificaFacturas/${id}`);
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
     const vistaPrevia = (id) => {
-        enrutamiento.push(`/VistaPreviaFactura/${id}`);
+        enrutamiento(`/VistaPreviaFactura/${id}`);
     }
 
     const ExpandedComponent = ({ data }) => (

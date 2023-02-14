@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import { toast } from "react-toastify";
 import ListVentas from "../../components/Ventas/ListVentas";
 import { listarPedidosVenta } from "../../api/pedidoVenta";
@@ -15,7 +16,7 @@ import AnimacionLoading from '../../assets/json/loading.json';
 function Ventas(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para almacenar la lista de pedidos de venta
     const [listPedidosVenta, setListPedidosVenta] = useState(null);
@@ -59,11 +60,11 @@ function Ventas(props) {
 
     // Para ir hacia la ruta de registro del pedido de venta
     const rutaRegistroPedidoVenta = () => {
-        enrutamiento.push("/Pedido-de-Venta")
+        enrutamiento("/Pedido-de-Venta")
     }
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardVentas")
+        enrutamiento("/DashboardVentas")
     }
 
     return (

@@ -36,7 +36,7 @@ function EliminacionLogicaPlaneacion(props) {
                 LogsInformativos("Se ha cancelado la planeación " + folio, datos);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

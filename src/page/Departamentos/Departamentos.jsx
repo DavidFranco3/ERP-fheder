@@ -4,7 +4,8 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { listarDepartamento } from "../../api/departamentos";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import ListDepartamentos from "../../components/Departamentos/ListDepartamentos";
 import BasicModal from "../../components/Modal/BasicModal";
 import RegistroDepartamentos from "../../components/Departamentos/Registro";
@@ -16,10 +17,10 @@ import AnimacionLoading from '../../assets/json/loading.json';
 function Departamentos(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardCatalogos")
+        enrutamiento("/DashboardCatalogos")
     }
 
     // Para almacenar los departamentos

@@ -36,7 +36,7 @@ function EliminacionFisicaRecepcion(props) {
                 LogTrackingEliminacion(folio)
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

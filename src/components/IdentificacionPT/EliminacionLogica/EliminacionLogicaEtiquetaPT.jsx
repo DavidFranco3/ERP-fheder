@@ -37,7 +37,7 @@ function EliminacionLogicaEtiquetaPT(props) {
                 LogsInformativos("Se ha cancelado la etiqueta de identificacion de PT " + folio, dataTemp);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

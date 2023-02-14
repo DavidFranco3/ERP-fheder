@@ -41,7 +41,7 @@ function EliminacionLogicaClasificacionMaquinaria(props) {
                     LogsInformativos("Se actualizo el estado de la maquinaria " + formData.nombre, dataTemp)
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

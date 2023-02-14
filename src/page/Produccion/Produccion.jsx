@@ -3,7 +3,8 @@ import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import { toast } from "react-toastify";
@@ -15,11 +16,11 @@ function Produccion(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Define la ruta de registro
     const rutaRegistro = () => {
-        enrutamiento.push("/RegistroProduccion")
+        enrutamiento("/RegistroProduccion")
     }
 
     // Cerrado de sesión automatico
@@ -58,7 +59,7 @@ function Produccion(props) {
     }, [location]);
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardPlaneacion")
+        enrutamiento("/DashboardPlaneacion")
     }
 
     return (

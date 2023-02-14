@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
 import { toast } from "react-toastify";
 
@@ -21,7 +21,7 @@ function Error404(props) {
 
     return (
         <>
-            <Redirect to="/" />
+            <Navigate to="/" />
         </>
     );
 }

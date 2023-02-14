@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
@@ -37,7 +37,7 @@ function RegistroRecepcion(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -81,7 +81,7 @@ function RegistroRecepcion(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento.push("/RecepcionMaterialInsumos");
+        enrutamiento("/RecepcionMaterialInsumos");
     }
 
     // Para almacenar las sucursales registradas

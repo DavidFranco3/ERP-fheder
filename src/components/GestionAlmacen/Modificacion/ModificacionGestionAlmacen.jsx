@@ -43,7 +43,7 @@ function ModificacionGestionAlmacen(props) {
                 actualizaAlmacen(id, dataTemp).then(response => {
                     const { data } = response;
                     LogsInformativos("Se ha modificado el almacen " + dataTemp.nombre, dataTemp);
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     toast.success(data.mensaje);

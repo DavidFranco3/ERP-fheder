@@ -31,7 +31,7 @@ function EliminacionEtiquetasPrimeraPieza(props) {
                 LogsInformativos("Se ha eliminado la primera pieza " + folio, data)
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             }).catch(e => {

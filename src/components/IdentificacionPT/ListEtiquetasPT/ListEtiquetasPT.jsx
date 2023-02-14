@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BasicModal from "../../Modal/BasicModal";
 import { Badge, Button, Container, } from "react-bootstrap";
 import EliminacionFisicaEtiquetasPT from "../EliminacionFisica";
@@ -26,7 +26,7 @@ function ListEtiquetasPT(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Configura el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     //Para la eliminacion de compras
     const eliminacionEtiqueta = (content) => {
@@ -51,7 +51,7 @@ function ListEtiquetasPT(props) {
 
     // Para abrir en una pestaña nueva el pdf de la vista
     const vistaPrevia = (id) => {
-        enrutamiento.push(`/VistaPreviaIdentificacionPT/${id}`);
+        enrutamiento(`/VistaPreviaIdentificacionPT/${id}`);
     }
 
     const columns = [

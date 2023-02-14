@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {map} from "lodash";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MaterialUsado from "../../Tracking/Procesos/Planeacion/MaterialUsado";
 import CantidadNecesaria from "../../Tracking/Procesos/Planeacion/CantidadNecesaria";
 import RevisaExistenciasStock from "../../Tracking/Procesos/Planeacion/RevisaExistenciasStock";
@@ -13,7 +13,7 @@ function ListDetalles(props) {
     const { detalles, datosPlaneacion } = props;
 
     // Para definir el uso del enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ function ListDetalles(props) {
 
     // Para cancelar la autorizacion
     const cancelar = () => {
-        enrutamiento.push("/Planeacion");
+        enrutamiento("/Planeacion");
     }
 
     return (

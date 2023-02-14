@@ -44,7 +44,7 @@ function RegistroGestionAlmacen(props) {
                 registraAlmacenes(dataTemp).then(response => {
                     const { data } = response;
                     LogsInformativos("Se ha registrado un nuevo almacen " + dataTemp.nombre, dataTemp);
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     toast.success(data.mensaje);

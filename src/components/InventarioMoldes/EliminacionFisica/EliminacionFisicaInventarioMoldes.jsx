@@ -31,7 +31,7 @@ function EliminacionFisicaInventarioMoldes(props) {
                 LogsInformativos("Se ha eliminado el inventario del molde " + noInterno, datos);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

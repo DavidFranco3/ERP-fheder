@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { listarDepartamento } from "../../../api/departamentos";
 import { actualizaUsuario, obtenerUsuario } from "../../../api/usuarios";
 import { toast } from "react-toastify";
@@ -17,7 +17,7 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../ap
 function ModificacionClientes(props) {
     const { setRefreshCheckLogin } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const params = useParams();
 
@@ -36,7 +36,7 @@ function ModificacionClientes(props) {
 
     // Ruta para enlazar a pagina de usuarios
     const regresaPagina = () => {
-        enrutamiento.push("/Clientes");
+        enrutamiento("/Clientes");
     }
 
     // Para almacenar la foto de perfil del usuario
@@ -70,7 +70,7 @@ function ModificacionClientes(props) {
                 if (e.message == 'Network Error') {
                     //console.log("No hay internet")
                     toast.error("Conexión a Internet no Disponible");
-                    enrutamiento.push("/Clientes");
+                    enrutamiento("/Clientes");
                     setConexionInternet(false);
                 }
             })
@@ -195,7 +195,7 @@ function ModificacionClientes(props) {
                     LogsInformativos("Los datos del cliente " + dataTempFinal.nombre + " fueron modificados", dataTempFinal)
                     toast.success(data.mensaje)
                     setLoading(false);
-                    enrutamiento.push("/Clientes");
+                    enrutamiento("/Clientes");
                 }).catch(e => {
                     console.log(e)
                     if (e.message === 'Network Error') {

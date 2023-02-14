@@ -37,7 +37,7 @@ function EliminacionLogicaAsignacion(props) {
                 LogsInformativos("Se ha cancelado la asignacion de pedido" + folio, dataTemp);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

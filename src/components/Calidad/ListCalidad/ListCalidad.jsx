@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BasicModal from "../../Modal/BasicModal";
 import { Badge, Button, Container, } from "react-bootstrap";
 import EliminaReporte from "../EliminaReporte";
@@ -24,7 +24,7 @@ function ListCalidad(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Configura el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     //Para la eliminacion de compras
     const eliminacionInspeccion = (content) => {
@@ -41,11 +41,11 @@ function ListCalidad(props) {
     }
 
     const modificacionCalidad = (id) => {
-        enrutamiento.push(`/ModificacionReporte/${id}`)
+        enrutamiento(`/ModificacionReporte/${id}`)
     }
 
     const vistaPreviaCalidad = (id) => {
-        enrutamiento.push(`/VistaPreviaReporteCalidad/${id}`)
+        enrutamiento(`/VistaPreviaReporteCalidad/${id}`)
     }
 
     const columns = [

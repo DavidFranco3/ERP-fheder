@@ -1,18 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Alert, Col, Button, Spinner, Form, Container, Row } from "react-bootstrap";
-import { Wizard } from "react-use-wizard";
-import EncabezadoOV from "../../Ventas/Registro/Pasos/OrdenVenta/EncabezadoOV/EncabezadoOV";
-import FooterOv from "../../Ventas/Registro/Pasos/OrdenVenta/FooterOV";
-import NuevaOrden from "../../Ventas/Registro/Pasos/OrdenVenta/NuevaOrden";
-import DetallesMateriaPrima from "../../Ventas/Registro/Pasos/OrdenVenta/DetallesMateriaPrima";
-import TiemposEspera from "../../Ventas/Registro/Pasos/OrdenVenta/TiemposEspera";
 import { obtenerCotizacion, registraCotizacion, obtenerNumeroCotizacion, actualizaCotizacion } from "../../../api/cotizaciones";
-import EncabezadoCotizacion from "./Pasos/Cotizacion/EncabezadoCotizacion";
-import FooterCotizacion from "./Pasos/Cotizacion/FooterCotizacion";
-import Inicial from "./Pasos/Cotizacion/Inicial";
-import Partidas from "./Pasos/Cotizacion/Partidas";
-import VistaPrevia from "./Pasos/Cotizacion/VistaPrevia";
 import { listarClientes } from "../../../api/clientes";
 import { listarEvaluacionProveedores } from "../../../api/evaluacionProveedores";
 import { toast } from "react-toastify";
@@ -36,11 +25,11 @@ function RegistraCotizaciones(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoCotizaciones = () => {
-        enrutamiento.push("/Cotizaciones");
+        enrutamiento("/Cotizaciones");
     }
 
     // Para almacenar los datos del formulario de Inicial, Partidas y VistaPrevia

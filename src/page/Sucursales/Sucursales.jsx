@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "../../utils/withRouter";
 import "./Sucursales.scss";
 import { listarSucursales } from "../../api/sucursales";
 import { toast } from "react-toastify";
@@ -17,10 +18,10 @@ import { getSucursal } from '../../api/auth';
 function Sucursales(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     const rutaRegreso = () => {
-        enrutamiento.push("/DashboardConfiguracion")
+        enrutamiento("/DashboardConfiguracion")
     }
 
     // Cerrado de sesión automatico
@@ -65,7 +66,7 @@ function Sucursales(props) {
 
     // Para controlar el acceso a la ruta de registro y de modificacion
     const registraColaborador = () => {
-        enrutamiento.push("/RegistroUsuarios")
+        enrutamiento("/RegistroUsuarios")
     }
 
     // Para hacer uso del modal

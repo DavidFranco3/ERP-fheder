@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./ModificaMatrizProductos.scss";
 import { Alert, Button, Col, Container, Form, Image, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -62,7 +62,7 @@ function ModificaMatrizProductos(props) {
     }, []);
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para extraer los parametros de la ruta
     const parametros = useParams();
@@ -101,7 +101,7 @@ function ModificaMatrizProductos(props) {
 
     // Define el regreso hacia los productos
     const rutaRegresoProductos = () => {
-        enrutamiento.push("/MatrizProductos")
+        enrutamiento("/MatrizProductos")
     }
 
     const descargaPDF = () => {

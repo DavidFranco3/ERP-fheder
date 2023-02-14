@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./ListRecepciones.scss"
 import { Badge, Button, Container, Navbar, Table, Form, Col } from "react-bootstrap";
 import BasicModal from '../../Modal/BasicModal';
@@ -22,7 +22,7 @@ function ListRecepciones(props) {
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
 
-    const enrutamiento = useHistory();
+    const enrutamiento = useNavigate();
 
     // Para hacer uso del modal
     const [showModal, setShowModal] = useState(false);
@@ -45,11 +45,11 @@ function ListRecepciones(props) {
 
     //Para la modificacion de datos
     const modificaRecepcion = (id) => {
-        enrutamiento.push(`/ModificaRecepcion/${id}`);
+        enrutamiento(`/ModificaRecepcion/${id}`);
     }
 
     const vistaPreviaRecepcion = (id) => {
-        enrutamiento.push(`/VistaPreviaRecepcion/${id}`);
+        enrutamiento(`/VistaPreviaRecepcion/${id}`);
     }
 
     const ExpandedComponent = ({ data }) => (

@@ -158,7 +158,7 @@ function ModificarAlmacenes(props) {
                         const { mensaje, datos } = data;
                         toast.success(mensaje);
                         LogsInformativos("Se ha modificado el articulo " + formData.nombreArticulo, dataTemp)
-                        history.push({
+                        history({
                             search: queryString.stringify(""),
                         });
                         setShowModal(false)

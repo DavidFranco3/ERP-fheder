@@ -75,7 +75,7 @@ function RegistraMantenimientoPreventivo(props) {
                 LogsInformativos("Se a registrado el programa de mantenimiento preventivo " + formData.ident, dataTemp);
                 toast.success(data.mensaje)
                 setTimeout(() => {
-                    history.push({
+                    history({
                         search: queryString.stringify(""),
                     });
                     setShowModal(false)

@@ -31,7 +31,7 @@ function EliminacionFisicaMantenimientoPreventivo(props) {
                 LogsInformativos("Se ha eliminado el programa de mantenimiento preventivo " + ident, datos);
                 setShowModal(false);
                 setLoading(false);
-                history.push({
+                history({
                     search: queryString.stringify(""),
                 });
             })

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BuscarOV from "../../../page/BuscarOV";
 import BasicModal from "../../Modal/BasicModal";
 import { obtenerNumeroInspeccion, registraInspeccion, obtenerItemInspeccion } from "../../../api/inspeccionMaterial";
@@ -45,7 +45,7 @@ function RegistraReporte(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Para definir el enrutamiento
-    const enrutamiento = useHistory()
+    const enrutamiento = useNavigate()
 
     // Para almacenar el folio actual
     const [folioActual, setFolioActual] = useState("");
@@ -67,7 +67,7 @@ function RegistraReporte(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento.push("/Calidad")
+        enrutamiento("/Calidad")
     }
 
     const [cantidadRequeridaOV, setCantidadRequeridaOV] = useState("");
