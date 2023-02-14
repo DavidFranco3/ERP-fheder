@@ -1,52 +1,46 @@
 import { useState, useEffect } from 'react';
 import { Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
-import { actualizaProductosOV } from "../../../api/productosOV";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function ModificacionProductos(props) {
-    const { datos, setShowModal, history, setListProductosCargados } = props;
+    const { datos, setShowModal, history, setListProductosCargados, listProductosCargados } = props;
+
+    console.log(listProductosCargados);
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData(datos));
 
-    const { _id, numeroParte, descripcion } = datos;
+    const { _id, ID, item, idProducto } = datos;
     // Para determinar si hay conexion con el servidor o a internet
     const [conexionInternet, setConexionInternet] = useState(true);
 
     // Cancelar y cerrar el formulario
     const cancelarRegistro = () => {
-        setListProductosCargados([]);
         setShowModal(false)
     }
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
-    const onSubmit = (e) => {
-        e.preventDefault()
+    function cambiarValor(valorABuscar, valorViejo, valorNuevo) {
+        listProductosCargados.forEach(function (elemento) { // recorremos el array
 
-        setLoading(true)
-        setListProductosCargados(null);
-        // Realiza registro de la aportación
-        const dataTemp = {
-            numeroParte: numeroParte,
-            descripcion: descripcion,
-            cantidad: formData.cantidad,
-            um: formData.um,
-            precioUnitario: formData.precioUnitario,
-            total: parseFloat(formData.precioUnitario) * parseInt(formData.cantidad)
-        }
-
-        actualizaProductosOV(_id, dataTemp).then(response => {
-            const { data } = response;
-            setListProductosCargados([]);
-            setShowModal(false);
-
-        }).catch(e => {
-            console.log(e)
+            //asignamos el valor del elemento dependiendo del valor a buscar, validamos que el valor sea el mismo y se reemplaza con el nuevo. 
+            elemento[valorABuscar] = elemento[valorABuscar] == valorViejo ? valorNuevo : elemento[valorABuscar]
         })
+    }
+
+    const addItems = () => {
+
+        setLoading(true);
+
+        cambiarValor("cantidad", datos.cantidad, formData.cantidad);
+        cambiarValor("um", datos.um, formData.um);
+        cambiarValor("total", datos.total, parseFloat(formData.precioUnitario) * parseInt(formData.cantidad))
+
+        cancelarRegistro();
     }
 
     const onChange = e => {
@@ -57,15 +51,16 @@ function ModificacionProductos(props) {
         <>
             <Container fluid>
                 <div className="formularioDatos">
-                    <Form onChange={onChange} onSubmit={onSubmit}>
+                    <Form onChange={onChange}>
                         <Row>
                             <Form.Group as={Col} controlId="formGridCliente">
                                 <Form.Label>
                                     Numero de parte
                                 </Form.Label>
                                 <Form.Control
+                                    id="material"
                                     type="text"
-                                    value={numeroParte}
+                                    value={ID}
                                     disabled
                                 />
                             </Form.Group>
@@ -74,8 +69,9 @@ function ModificacionProductos(props) {
                                     Descripcion
                                 </Form.Label>
                                 <Form.Control
+                                    id="descripcion"
                                     type="text"
-                                    value={descripcion}
+                                    value={item}
                                     disabled
                                 />
                             </Form.Group>
@@ -89,6 +85,7 @@ function ModificacionProductos(props) {
                                     Cantidad
                                 </Form.Label>
                                 <Form.Control
+                                    id="cantidad"
                                     type="text"
                                     defaultValue={formData.cantidad}
                                     name="cantidad"
@@ -99,6 +96,7 @@ function ModificacionProductos(props) {
                                     UM
                                 </Form.Label>
                                 <Form.Control
+                                    id="um"
                                     type="text"
                                     defaultValue={formData.um}
                                     name="um"
@@ -114,6 +112,7 @@ function ModificacionProductos(props) {
                                     Precio unitario
                                 </Form.Label>
                                 <Form.Control
+                                    id="precioUnitario"
                                     type="text"
                                     value={formData.precioUnitario}
                                     name="precioUnitario"
@@ -125,6 +124,7 @@ function ModificacionProductos(props) {
                                     Total
                                 </Form.Label>
                                 <Form.Control
+                                    id="total"
                                     type="text"
                                     value={parseFloat(formData.precioUnitario) * parseInt(formData.cantidad)}
                                     name="total"
@@ -135,10 +135,12 @@ function ModificacionProductos(props) {
                         <Form.Group as={Row} className="botones">
                             <Col>
                                 <Button
-                                    type="submit"
                                     title="Actualizar el registro"
                                     variant="success"
                                     className="registrar"
+                                    onClick={() => {
+                                        addItems()
+                                    }}
                                 >
                                     {!loading ? "Modificar" : <Spinner animation="border" />}
                                 </Button>

@@ -16,14 +16,7 @@ import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import BasicModal from "../../Modal/BasicModal";
-import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
-import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
-import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogRegistroProductosOV } from '../../ProductosOV/Gestion/GestionProductosOV';
-import { obtenerDatosProductosOV } from "../../../api/productosOV";
-import EliminacionProductosOV from '../../ProductosOV/EliminacionProductosOV';
-import ModificacionProductos from '../../ProductosOV/ModificacionProductos';
 import LogoPDF from "../../../assets/png/pdf.png";
 import Regreso from "../../../assets/png/back.png";
 
@@ -395,20 +388,6 @@ function VistaPrevia(props) {
     const [listProductosOV, setListProductosOV] = useState([]);
 
     const renglon = listProductosCargados.length + 1;
-
-    useEffect(() => {
-        try {
-            obtenerDatosProductosOV(informacionPedido.folio).then(response => {
-                const { data } = response;
-                console.log(data)
-                setListProductosOV(data)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, [listProductosCargados]);
 
     return (
         <>

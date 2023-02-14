@@ -9,20 +9,25 @@ import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { listarPedidosVenta } from "../../../api/pedidoVenta";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faX, faArrowCircleLeft, faSearch, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import BuscarProveedor from '../../../page/BuscarProveedor';
 import BasicModal from "../../Modal/BasicModal";
-import BuscarMaterial from '../../../page/BuscarMaterial';
-import BuscarInsumos from '../../../page/BuscarInsumos';
-import BuscarOV from '../../../page/BuscarOV';
 import BuscarRequisicion from '../../../page/BuscarRequisicion';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import ModificacionProductos from '../ModificacionProductos';
 
 function ModificacionCompras(props) {
     const { setRefreshCheckLogin } = props;
 
     // Define el enrutamiento
     const enrutamiento = useNavigate()
+
+    // Para la eliminacion fisica de usuarios
+    const modificaProducto = (content) => {
+        setTitulosModal("Modificando el producto");
+        setContentModal(content);
+        setShowModal(true);
+    }
 
     // Define el regreso hacia compras
     const regresaCompras = () => {
@@ -118,7 +123,7 @@ function ModificacionCompras(props) {
                 // console.log(data)
                 const { productosSolicitados } = data;
                 setProductosRequisicion(productosSolicitados)
-                }).catch(e => {
+            }).catch(e => {
                 console.log(e)
             })
         } catch (e) {
@@ -197,7 +202,7 @@ function ModificacionCompras(props) {
             toast.warning("Completa la informacion del producto");
         } else {
             const temp = descripcion.split("/");
-            
+
             const dataTemp = {
                 folio: folio,
                 cantidad: cantidad,
@@ -505,7 +510,7 @@ function ModificacionCompras(props) {
                     {/* Cantidad, um, descripción */}
                     <Row className="mb-3">
 
-                    <Form.Group as={Col}>
+                        <Form.Group as={Col}>
                             <Form.Label>
                                 ITEM
                             </Form.Label>
@@ -681,7 +686,7 @@ function ModificacionCompras(props) {
                                 <th scope="col">Precio</th>
                                 <th scope="col">Subtotal</th>
                                 <th scope="col">Referencia</th>
-                                <th scope="col">Eliminar</th>
+                                <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -720,15 +725,32 @@ function ModificacionCompras(props) {
                                         {producto.referencia}
                                     </td>
                                     <td data-title="Eliminar">
-                                        <div
-                                            className="eliminarProductoListado"
-                                            title="Eliminar el producto agregado"
+                                        <Badge
+                                            bg="success"
+                                            title="Modificar"
+                                            className="editar"
+                                            onClick={() => {
+                                                modificaProducto(
+                                                    <ModificacionProductos
+                                                        datos={producto}
+                                                        setShowModal={setShowModal}
+                                                        listProductosCargados={listProductosCargados}
+                                                        setListProductosCargados={setListProductosCargados}
+                                                    />)
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                                        </Badge>
+                                        <Badge
+                                            bg="danger"
+                                            title="Eliminar"
+                                            className="eliminar"
                                             onClick={() => {
                                                 removeItem(producto)
                                             }}
                                         >
-                                            ❌
-                                        </div>
+                                            <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                                        </Badge>
                                     </td>
                                 </tr>
                             ))}

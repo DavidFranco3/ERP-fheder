@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faX, faArrowCircleLeft, faSearch, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { map } from "lodash";
 import { listarPedidosVenta } from "../../../api/pedidoVenta";
 import { obtenerNumeroRequisicion, registraRequisicion, obtenerItem } from "../../../api/requisicion";
@@ -15,6 +15,7 @@ import BuscarInsumos from '../../../page/BuscarInsumos';
 import BuscarOV from '../../../page/BuscarOV';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
+import ModificacionProductos from '../ModificacionProductos';
 
 function RegistraRequisiciones(props) {
     const { setRefreshCheckLogin } = props;
@@ -32,11 +33,19 @@ function RegistraRequisiciones(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
+    // Para la eliminacion fisica de usuarios
+    const modificaProducto = (content) => {
+        setTitulosModal("Modificando el producto");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
 
-     // Para guardar los datos del formulario
-     const [formDataVenta, setFormDataVenta] = useState(initialFormDataVenta());
+    // Para guardar los datos del formulario
+    const [formDataVenta, setFormDataVenta] = useState(initialFormDataVenta());
 
     // Para guardar los datos del formulario
     const [departamentoElegido, setDepartamentoElegido] = useState(initialDepartamento());
@@ -672,7 +681,7 @@ function RegistraRequisiciones(props) {
                                 <th scope="col">Precio</th>
                                 <th scope="col">Subtotal</th>
                                 <th scope="col">Referencia</th>
-                                <th scope="col">Eliminar</th>
+                                <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -717,15 +726,32 @@ function RegistraRequisiciones(props) {
                                         {producto.referencia}
                                     </td>
                                     <td data-title="Eliminar">
-                                        <div
-                                            className="eliminarProductoListado"
-                                            title="Eliminar el producto"
+                                        <Badge
+                                            bg="success"
+                                            title="Modificar"
+                                            className="editar"
+                                            onClick={() => {
+                                                modificaProducto(
+                                                    <ModificacionProductos
+                                                        datos={producto}
+                                                        setShowModal={setShowModal}
+                                                        listProductosCargados={listProductosCargados}
+                                                        setListProductosCargados={setListProductosCargados}
+                                                    />)
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                                        </Badge>
+                                        <Badge
+                                            bg="danger"
+                                            title="Eliminar"
+                                            className="eliminar"
                                             onClick={() => {
                                                 removeItem(producto)
                                             }}
                                         >
-                                            ❌
-                                        </div>
+                                            <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                                        </Badge>
                                     </td>
                                 </tr>
                             ))}
@@ -806,7 +832,7 @@ function RegistraRequisiciones(props) {
 
 function initialFormDataVenta() {
     return {
-       ordenVenta: "",
+        ordenVenta: "",
     }
 }
 

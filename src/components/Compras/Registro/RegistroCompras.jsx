@@ -9,15 +9,13 @@ import { obtenerNumeroOrdenCompra, registraOrdenCompra, obtenerItem } from "../.
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { listarPedidosVenta } from "../../../api/pedidoVenta";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faX, faArrowCircleLeft, faSearch, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import BuscarProveedor from '../../../page/BuscarProveedor';
 import BasicModal from "../../Modal/BasicModal";
-import BuscarMaterial from '../../../page/BuscarMaterial';
-import BuscarInsumos from '../../../page/BuscarInsumos';
-import BuscarOV from '../../../page/BuscarOV';
 import BuscarRequisicion from '../../../page/BuscarRequisicion';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import ModificacionProductos from '../ModificacionProductos';
 
 function RegistroCompras(props) {
     const { setRefreshCheckLogin } = props;
@@ -37,6 +35,13 @@ function RegistroCompras(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
+
+    // Para la eliminacion fisica de usuarios
+    const modificaProducto = (content) => {
+        setTitulosModal("Modificando el producto");
+        setContentModal(content);
+        setShowModal(true);
+    }
 
     // Para definir el enrutamiento
     const enrutamiento = useNavigate();
@@ -261,7 +266,7 @@ function RegistroCompras(props) {
     // Para eliminar productos del listado
     const removeItem = (producto) => {
         let newArray = listProductosCargados;
-        newArray.splice(newArray.findIndex(a => a.descripcion === producto.descripcion), 1);
+        newArray.splice(newArray.findIndex(a => a.folio === producto.folio), 1);
         setListProductosCargados([...newArray]);
     }
     // Termina gestión de los articulos cargados
@@ -694,7 +699,7 @@ function RegistroCompras(props) {
                                 <th scope="col">Precio</th>
                                 <th scope="col">Subtotal</th>
                                 <th scope="col">Referencia</th>
-                                <th scope="col">Eliminar</th>
+                                <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -733,15 +738,32 @@ function RegistroCompras(props) {
                                         {producto.referencia}
                                     </td>
                                     <td data-title="Eliminar">
-                                        <div
-                                            className="eliminarProductoListado"
-                                            title="Eliminar el producto agregado"
+                                        <Badge
+                                            bg="success"
+                                            title="Modificar"
+                                            className="editar"
+                                            onClick={() => {
+                                                modificaProducto(
+                                                    <ModificacionProductos
+                                                        datos={producto}
+                                                        setShowModal={setShowModal}
+                                                        listProductosCargados={listProductosCargados}
+                                                        setListProductosCargados={setListProductosCargados}
+                                                    />)
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                                        </Badge>
+                                        <Badge
+                                            bg="danger"
+                                            title="Eliminar"
+                                            className="eliminar"
                                             onClick={() => {
                                                 removeItem(producto)
                                             }}
                                         >
-                                            ❌
-                                        </div>
+                                            <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                                        </Badge>
                                     </td>
                                 </tr>
                             ))}

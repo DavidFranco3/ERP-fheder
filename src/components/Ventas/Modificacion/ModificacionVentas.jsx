@@ -20,10 +20,7 @@ import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
 import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogRegistroProductosOV } from '../../ProductosOV/Gestion/GestionProductosOV';
-import { obtenerDatosProductosOV } from "../../../api/productosOV";
-import EliminacionProductosOV from '../../ProductosOV/EliminacionProductosOV';
-import ModificacionProductos from '../../ProductosOV/ModificacionProductos';
+import ModificacionProductos from '../ModificacionProductos';
 
 function ModificacionVentas(props) {
     const { history, setRefreshCheckLogin } = props;
@@ -359,7 +356,7 @@ function ModificacionVentas(props) {
     // Para eliminar productos del listado
     const removeItem = (producto) => {
         let newArray = listProductosCargados;
-        newArray.splice(newArray.findIndex(a => a.item === producto.item), 1);
+        newArray.splice(newArray.findIndex(a => a.ID === producto.ID), 1);
         setListProductosCargados([...newArray]);
     }
 
@@ -390,20 +387,6 @@ function ModificacionVentas(props) {
     const [listProductosOV, setListProductosOV] = useState([]);
 
     const renglon = listProductosCargados.length + 1;
-
-    useEffect(() => {
-        try {
-            obtenerDatosProductosOV(informacionPedido.folio).then(response => {
-                const { data } = response;
-                console.log(data)
-                setListProductosOV(data)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, [listProductosCargados]);
 
     return (
         <>
@@ -806,7 +789,7 @@ function ModificacionVentas(props) {
                                         <th scope="col">UM</th>
                                         <th scope="col">Precio unitario</th>
                                         <th scope="col">Total</th>
-                                        <th scope="col">Eliminar</th>
+                                        <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -842,15 +825,32 @@ function ModificacionVentas(props) {
                                                 }).format(producto.total)} MXN
                                             </td>
                                             <td data-title="Eliminar">
-                                                <div
-                                                    className="eliminarProductoListado"
-                                                    title="Eliminar el producto agregado"
+                                                <Badge
+                                                    bg="success"
+                                                    title="Modificar"
+                                                    className="editar"
+                                                    onClick={() => {
+                                                        modificaProducto(
+                                                            <ModificacionProductos
+                                                                datos={producto}
+                                                                setShowModal={setShowModal}
+                                                                listProductosCargados={listProductosCargados}
+                                                                setListProductosCargados={setListProductosCargados}
+                                                            />)
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                                                </Badge>
+                                                <Badge
+                                                    bg="danger"
+                                                    title="Eliminar"
+                                                    className="eliminar"
                                                     onClick={() => {
                                                         removeItem(producto)
                                                     }}
                                                 >
-                                                    ❌
-                                                </div>
+                                                    <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                                                </Badge>
                                             </td>
                                         </tr>
                                     ))}

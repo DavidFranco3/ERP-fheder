@@ -8,7 +8,7 @@ import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import { listarClientes } from "../../../api/clientes";
 import { obtenerRecepcion, actualizaRecepcion } from "../../../api/recepcionMaterialInsumos";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faX, faArrowCircleLeft, faSearch, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import "./ModificaRecepcion.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { obtenerDatosCompra } from "../../../api/compras"
@@ -21,6 +21,7 @@ import BuscarOC from '../../../page/BuscarOC';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { listarAlmacenes } from '../../../api/gestionAlmacen';
 import { LogRegistroAlmacenes } from '../../Almacenes/Gestion/GestionAlmacenes';
+import ModificacionProductos from '../ModificacionProductos';
 
 function ModificaRecepcion(props) {
     const { setRefreshCheckLogin } = props;
@@ -37,6 +38,13 @@ function ModificaRecepcion(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
+
+    // Para la eliminacion fisica de usuarios
+    const modificaProducto = (content) => {
+        setTitulosModal("Modificando el producto");
+        setContentModal(content);
+        setShowModal(true);
+    }
 
     const enrutamiento = useNavigate();
 
@@ -717,8 +725,8 @@ function ModificaRecepcion(props) {
                                         <th scope="col">U.M.</th>
                                         <th scope="col">Precio unitario</th>
                                         <th scope="col">Subtotal</th>
-                                        <th scope="col">Tipo de mercancia</th>
-                                        <th scope="col">Eliminar</th>
+                                        <th scope="col">Almacen</th>
+                                        <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -757,15 +765,32 @@ function ModificaRecepcion(props) {
                                                 {producto.tipoMercancia}
                                             </td>
                                             <td data-title="Eliminar">
-                                                <div
-                                                    className="eliminarProductoListado"
-                                                    title="Eliminar producto"
+                                                <Badge
+                                                    bg="success"
+                                                    title="Modificar"
+                                                    className="editar"
+                                                    onClick={() => {
+                                                        modificaProducto(
+                                                            <ModificacionProductos
+                                                                datos={producto}
+                                                                setShowModal={setShowModal}
+                                                                listProductosCargados={listProductosCargados}
+                                                                setListProductosCargados={setListProductosCargados}
+                                                            />)
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                                                </Badge>
+                                                <Badge
+                                                    bg="danger"
+                                                    title="Eliminar"
+                                                    className="eliminar"
                                                     onClick={() => {
                                                         removeItem(producto)
                                                     }}
                                                 >
-                                                    ❌
-                                                </div>
+                                                    <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                                                </Badge>
                                             </td>
                                         </tr>
                                     ))}

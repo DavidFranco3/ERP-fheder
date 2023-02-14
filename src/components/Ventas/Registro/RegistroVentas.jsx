@@ -8,7 +8,7 @@ import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import { listarClientes } from "../../../api/clientes";
 import { registraPedidoVenta, obtenerNumeroPedidoVenta } from "../../../api/pedidoVenta";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDownLong, faCircleInfo, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import "./RegistroVentas.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -17,10 +17,7 @@ import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogRegistroProductosOV } from '../../ProductosOV/Gestion/GestionProductosOV';
-import { obtenerDatosProductosOV } from "../../../api/productosOV";
-import EliminacionProductosOV from '../../ProductosOV/EliminacionProductosOV';
-import ModificacionProductos from '../../ProductosOV/ModificacionProductos';
+import ModificacionProductos from '../ModificacionProductos';
 
 function RegistroVentas(props) {
     const { history, setRefreshCheckLogin, location } = props;
@@ -141,22 +138,6 @@ function RegistroVentas(props) {
     const [listProductosOV, setListProductosOV] = useState([]);
 
     const renglon = listProductosCargados.length + 1;
-
-    console.log(listProductosCargados)
-
-    useEffect(() => {
-        try {
-            obtenerDatosProductosOV(folioActual).then(response => {
-                const { data } = response;
-                console.log(data)
-                setListProductosOV(data)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, [listProductosCargados]);
 
     // Obten el listado de productos
     // Para almacenar el listado de productos activos
@@ -366,7 +347,7 @@ function RegistroVentas(props) {
     // Para eliminar productos del listado
     const removeItem = (producto) => {
         let newArray = listProductosCargados;
-        newArray.splice(newArray.findIndex(a => a.item === producto.item), 1);
+        newArray.splice(newArray.findIndex(a => a.ID === producto.ID), 1);
         setListProductosCargados([...newArray]);
     }
 
@@ -805,7 +786,7 @@ function RegistroVentas(props) {
                                         <th scope="col">UM</th>
                                         <th scope="col">Precio unitario</th>
                                         <th scope="col">Total</th>
-                                        <th scope="col">Eliminar</th>
+                                        <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -841,15 +822,32 @@ function RegistroVentas(props) {
                                                 }).format(producto.total)} MXN
                                             </td>
                                             <td data-title="Eliminar">
-                                            <div
-                                                    className="eliminarProductoListado"
-                                                    title="Eliminar el producto agregado"
+                                                <Badge
+                                                    bg="success"
+                                                    title="Modificar"
+                                                    className="editar"
+                                                    onClick={() => {
+                                                        modificaProducto(
+                                                            <ModificacionProductos
+                                                                datos={producto}
+                                                                setShowModal={setShowModal}
+                                                                listProductosCargados={listProductosCargados}
+                                                                setListProductosCargados={setListProductosCargados}
+                                                            />)
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                                                </Badge>
+                                                <Badge
+                                                    bg="danger"
+                                                    title="Eliminar"
+                                                    className="eliminar"
                                                     onClick={() => {
                                                         removeItem(producto)
                                                     }}
                                                 >
-                                                    ❌
-                                                </div>
+                                                    <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                                                </Badge>
                                             </td>
                                         </tr>
                                     ))}

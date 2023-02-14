@@ -8,7 +8,7 @@ import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import { listarClientes } from "../../../api/clientes";
 import { registraRecepcion, obtenerNumeroRecepcion } from "../../../api/recepcionMaterialInsumos";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faX, faArrowCircleLeft, faSearch, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import "./RegistroRecepcion.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -20,6 +20,7 @@ import BasicModal from "../../Modal/BasicModal";
 import BuscarOC from '../../../page/BuscarOC';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { listarAlmacenes } from '../../../api/gestionAlmacen';
+import ModificacionProductos from '../ModificacionProductos';
 
 function RegistroRecepcion(props) {
     const { setRefreshCheckLogin } = props;
@@ -36,6 +37,13 @@ function RegistroRecepcion(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
+
+    // Para la eliminacion fisica de usuarios
+    const modificaProducto = (content) => {
+        setTitulosModal("Modificando el producto");
+        setContentModal(content);
+        setShowModal(true);
+    }
 
     const enrutamiento = useNavigate();
 
@@ -237,47 +245,47 @@ function RegistroRecepcion(props) {
 
     const onSubmit = e => {
         e.preventDefault();
-        
-            //console.log("Continuar")
-            setLoading(true)
 
-            // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            obtenerNumeroRecepcion().then(response => {
-                const { data } = response;
-                const dataTemp = {
-                    folio: data.noRequerimiento,
-                    ordenCompra: formDataOC.ordenCompra,
-                    proveedor: formDataOC.proveedor,
-                    nombreProveedor: formDataOC.nombreProveedor,
-                    fechaRecepcion: fechaElaboracion,
-                    precio: precioTotal,
-                    sucursal: getSucursal(),
-                    cantidad: cantidadTotal,
-                    valorTotal: totalSinIVA,
-                    productos: listProductosCargados,
-                    estado: "true"
-                }
-                // console.log(dataTemp)
-                // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos)
-                //LogRegistroPlaneacion(data.noVenta, listProductosCargados)
-                // 
-                // Modificar el pedido creado recientemente
-                registraRecepcion(dataTemp).then(response => {
-                    const { data: { mensaje, datos } } = response;
-                    // console.log(response)
-                    toast.success(mensaje)
-                    // Log acerca del registro inicial del tracking
-                    LogsInformativos("Se han registrado la recepcion de material e insumos " + dataTemp.folio, dataTemp)
-                    // Registro inicial del tracking
-                    //LogTrackingRegistro(data.noVenta, clienteSeleccionado.id, formData.fechaElaboracion)
-                    setLoading(false)
-                    regresaListadoVentas()
-                }).catch(e => {
-                    console.log(e)
-                })
+        //console.log("Continuar")
+        setLoading(true)
+
+        // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
+        obtenerNumeroRecepcion().then(response => {
+            const { data } = response;
+            const dataTemp = {
+                folio: data.noRequerimiento,
+                ordenCompra: formDataOC.ordenCompra,
+                proveedor: formDataOC.proveedor,
+                nombreProveedor: formDataOC.nombreProveedor,
+                fechaRecepcion: fechaElaboracion,
+                precio: precioTotal,
+                sucursal: getSucursal(),
+                cantidad: cantidadTotal,
+                valorTotal: totalSinIVA,
+                productos: listProductosCargados,
+                estado: "true"
+            }
+            // console.log(dataTemp)
+            // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos)
+            //LogRegistroPlaneacion(data.noVenta, listProductosCargados)
+            // 
+            // Modificar el pedido creado recientemente
+            registraRecepcion(dataTemp).then(response => {
+                const { data: { mensaje, datos } } = response;
+                // console.log(response)
+                toast.success(mensaje)
+                // Log acerca del registro inicial del tracking
+                LogsInformativos("Se han registrado la recepcion de material e insumos " + dataTemp.folio, dataTemp)
+                // Registro inicial del tracking
+                //LogTrackingRegistro(data.noVenta, clienteSeleccionado.id, formData.fechaElaboracion)
+                setLoading(false)
+                regresaListadoVentas()
             }).catch(e => {
                 console.log(e)
             })
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     const [cargaProductos, setCargaProductos] = useState(initialFormDataProductos());
@@ -703,8 +711,8 @@ function RegistroRecepcion(props) {
                                         <th scope="col">U.M.</th>
                                         <th scope="col">Precio unitario</th>
                                         <th scope="col">Subtotal</th>
-                                        <th scope="col">Tipo de mercancia</th>
-                                        <th scope="col">Eliminar</th>
+                                        <th scope="col">Almacen</th>
+                                        <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -743,15 +751,32 @@ function RegistroRecepcion(props) {
                                                 {producto.tipoMercancia}
                                             </td>
                                             <td data-title="Eliminar">
-                                                <div
-                                                    className="eliminarProductoListado"
-                                                    title="Eliminar producto"
+                                                <Badge
+                                                    bg="success"
+                                                    title="Modificar"
+                                                    className="editar"
+                                                    onClick={() => {
+                                                        modificaProducto(
+                                                            <ModificacionProductos
+                                                                datos={producto}
+                                                                setShowModal={setShowModal}
+                                                                listProductosCargados={listProductosCargados}
+                                                                setListProductosCargados={setListProductosCargados}
+                                                            />)
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                                                </Badge>
+                                                <Badge
+                                                    bg="danger"
+                                                    title="Eliminar"
+                                                    className="eliminar"
                                                     onClick={() => {
                                                         removeItem(producto)
                                                     }}
                                                 >
-                                                    ❌
-                                                </div>
+                                                    <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                                                </Badge>
                                             </td>
                                         </tr>
                                     ))}
