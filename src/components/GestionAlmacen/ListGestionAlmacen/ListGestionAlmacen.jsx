@@ -147,36 +147,44 @@ function ListGestionAlmacen(props) {
             reorder: false,
             selector: row => (
                 <>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editar"
-                        onClick={() => {
-                            modificaAlmacen(
-                                <ModificacionGestionAlmacen
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminaAlmacen(
-                                <EliminacionFisicaGestionAlmacen
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
+                    {row.nombre != "Materias primas" && row.nombre != "Productos terminados" ?
+                        (
+                            <>
+                                <Badge
+                                    bg="success"
+                                    title="Modificar"
+                                    className="editar"
+                                    onClick={() => {
+                                        modificaAlmacen(
+                                            <ModificacionGestionAlmacen
+                                                data={row}
+                                                setShowModal={setShowModal}
+                                                history={history}
+                                            />)
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                                </Badge>
+                                <Badge
+                                    bg="danger"
+                                    title="Eliminar"
+                                    className="eliminar"
+                                    onClick={() => {
+                                        eliminaAlmacen(
+                                            <EliminacionFisicaGestionAlmacen
+                                                data={row}
+                                                setShowModal={setShowModal}
+                                                history={history}
+                                            />)
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                                </Badge>
+                            </>
+                        ):(
+                            "No disponibles"
+                        )
+                    }
                 </>
             )
         }
