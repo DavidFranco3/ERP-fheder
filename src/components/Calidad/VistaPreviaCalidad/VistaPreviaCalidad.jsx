@@ -239,21 +239,7 @@ function VistaPreviaCalidad(props) {
                         <div className="encabezado">
                             <Container fluid>
                                 <br />
-
                                 <Row className="mb-3">
-                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
-                                        <Form.Label align="center">
-                                            Recepcion
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Recepcion"
-                                            name="recpecion"
-                                            value={formDataRecepcion.folioRecepcion}
-                                            disabled
-                                        />
-                                    </Form.Group>
-
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
                                             Folio
@@ -263,6 +249,19 @@ function VistaPreviaCalidad(props) {
                                             placeholder="Orden de venta"
                                             name="ordenVenta"
                                             value={formData.folio}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label align="center">
+                                            Recepcion
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Recepcion"
+                                            name="recpecion"
+                                            value={formDataRecepcion.folioRecepcion}
                                             disabled
                                         />
                                     </Form.Group>
@@ -531,7 +530,7 @@ function VistaPreviaCalidad(props) {
                                     <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                         <Col align="left" sm={3}>
                                             <Form.Label>
-                                                Certificado de calidad:
+                                                Sin certificado de calidad:
                                             </Form.Label>
                                         </Col>
                                         <Col sm={1}>
@@ -610,11 +609,11 @@ function VistaPreviaCalidad(props) {
                                             <Form.Check
                                                 value="ok"
                                                 type="radio"
-                                                label="Si"
+                                                label="OK"
                                                 name="resultadoFinalInspeccion"
                                                 id="si"
                                                 defaultValue={formData.resultadoFinalInspeccion}
-                                                checked={formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si"}
+                                                checked={formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no"}
                                                 disabled
                                             />
                                         </Col>
@@ -624,11 +623,11 @@ function VistaPreviaCalidad(props) {
                                             <Form.Check
                                                 value="no Ok"
                                                 type="radio"
-                                                label="No"
+                                                label="NO OK"
                                                 name="resultadoFinalInspeccion"
                                                 id="no"
                                                 defaultValue={formData.resultadoFinalInspeccion}
-                                                checked={formData.contaminacion == "no" || formData.presentaHumedad == "no" || formData.certificadoCalidad == "no" || formData.empaqueDañado == "no"}
+                                                checked={formData.contaminacion == "si" || formData.presentaHumedad == "si" || formData.certificadoCalidad == "si" || formData.empaqueDañado == "si"}
                                                 disabled
                                             />
                                         </Col>
@@ -636,7 +635,7 @@ function VistaPreviaCalidad(props) {
                                 </Row>
 
                                 {
-                                    formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si" ?
+                                    formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no" ?
                                         (
                                             <>
                                                 <Row className="mb-3">
@@ -652,7 +651,7 @@ function VistaPreviaCalidad(props) {
                                                             disabled
                                                         >
                                                             <option>Elige una opción</option>
-                                                            <option value="Aceptado" selected={formData.contaminacion == "si" && formData.presentaHumedad == "si" && formData.certificadoCalidad == "si" && formData.empaqueDañado == "si"}>Aceptado</option>
+                                                            <option value="Aceptado" selected={formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no"}>Aceptado</option>
                                                         </Form.Control>
                                                     </Form.Group>
                                                 </Row>
@@ -672,8 +671,8 @@ function VistaPreviaCalidad(props) {
                                                             disabled
                                                         >
                                                             <option>Elige una opción</option>
-                                                            <option value="No Conforme" selected={formData.etiqueta = "No Conforme"}>No conforme</option>
-                                                            <option value="Material Sospechoso" selected={formData.etiqueta = "Material Sospechoso"}>Material sospechoso</option>
+                                                            <option value="No Conforme" selected={formData.etiqueta == "No Conforme"}>No conforme</option>
+                                                            <option value="Material Sospechoso" selected={formData.etiqueta == "Material Sospechoso"}>Material sospechoso</option>
                                                         </Form.Control>
                                                     </Form.Group>
                                                 </Row>

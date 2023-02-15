@@ -236,6 +236,19 @@ function RegistraReporte(props) {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
+                                            Folio
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Orden de venta"
+                                            name="ordenVenta"
+                                            value={folioActual}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label align="center">
                                             Recepcion
                                         </Form.Label>
                                         <div className="flex items-center mb-1">
@@ -262,19 +275,6 @@ function RegistraReporte(props) {
                                                 }}
                                             />
                                         </div>
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
-                                        <Form.Label align="center">
-                                            Folio
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Orden de venta"
-                                            name="ordenVenta"
-                                            value={folioActual}
-                                            disabled
-                                        />
                                     </Form.Group>
                                 </Row>
 
