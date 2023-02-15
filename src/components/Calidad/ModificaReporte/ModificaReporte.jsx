@@ -125,8 +125,8 @@ function ModificaReporte(props) {
                 presentaHumedad: formData.presentaHumedad,
                 certificadoCalidad: formData.certificadoCalidad,
                 empaqueDañado: formData.empaqueDañado,
-                etiqueta: formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != "" ? "Aceptado" : formData.etiqueta,
-                resultadoFinalInspeccion: formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != "" ? "ok" : "no Ok",
+                etiqueta: formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no" ? "Aceptado" : formData.etiqueta,
+                resultadoFinalInspeccion: formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no" ? "ok" : "no Ok",
                 observaciones: formData.observaciones
             }
             // console.log(dataTemp)
@@ -200,6 +200,8 @@ function ModificaReporte(props) {
             console.log(e)
         }
     }, []);
+
+    console.log(formData.etiqueta)
 
     return (
         <>
@@ -527,7 +529,7 @@ function ModificaReporte(props) {
                                     <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                         <Col align="left" sm={3}>
                                             <Form.Label>
-                                                Certificado de calidad:
+                                                Sin certificado de calidad:
                                             </Form.Label>
                                         </Col>
                                         <Col sm={1}>
@@ -602,11 +604,11 @@ function ModificaReporte(props) {
                                             <Form.Check
                                                 value="ok"
                                                 type="radio"
-                                                label="Si"
+                                                label="OK"
                                                 name="resultadoFinalInspeccion"
                                                 id="si"
                                                 defaultValue={formData.resultadoFinalInspeccion}
-                                                checked={formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != ""}
+                                                checked={formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no"}
                                                 disabled
                                             />
                                         </Col>
@@ -616,11 +618,11 @@ function ModificaReporte(props) {
                                             <Form.Check
                                                 value="no Ok"
                                                 type="radio"
-                                                label="No"
+                                                label="NO OK"
                                                 name="resultadoFinalInspeccion"
                                                 id="no"
                                                 defaultValue={formData.resultadoFinalInspeccion}
-                                                checked={formData.contaminacion == "" || formData.presentaHumedad == "" || formData.certificadoCalidad == "" || formData.empaqueDañado == ""}
+                                                checked={formData.contaminacion == "si" || formData.presentaHumedad == "si" || formData.certificadoCalidad == "si" || formData.empaqueDañado == "si"}
                                                 disabled
                                             />
                                         </Col>
@@ -628,48 +630,48 @@ function ModificaReporte(props) {
                                 </Row>
 
                                 {
-                                    formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != "" ?
-                                        (
-                                            <>
-                                                <Row className="mb-3">
-                                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
-                                                        <Form.Label>
-                                                            Selección de etiqueta
-                                                        </Form.Label>
-                                                        <Form.Control
-                                                            as="select"
-                                                            name="etiqueta"
-                                                            id="etiqueta"
-                                                            defaultValue={formData.etiqueta}
-                                                            disabled
-                                                        >
-                                                            <option>Elige una opción</option>
-                                                            <option value="Aceptado" selected={formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != ""}>Aceptado</option>
-                                                        </Form.Control>
-                                                    </Form.Group>
-                                                </Row>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Row className="mb-3">
-                                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
-                                                        <Form.Label>
-                                                            Selección de etiqueta
-                                                        </Form.Label>
-                                                        <Form.Control
-                                                            as="select"
-                                                            name="etiqueta"
-                                                            id="etiqueta"
-                                                            defaultValue={formData.etiqueta}
-                                                        >
-                                                            <option>Elige una opción</option>
-                                                            <option value="No Conforme" selected={formData.etiqueta = "No Conforme"}>No conforme</option>
-                                                            <option value="Material Sospechoso" selected={formData.etiqueta = "Material Sospechoso"}>Material sospechoso</option>
-                                                        </Form.Control>
-                                                    </Form.Group>
-                                                </Row>
-                                            </>
-                                        )
+                                    formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no" ? 
+                                    (
+                                        <>
+                                            <Row className="mb-3">
+                                                <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                                    <Form.Label>
+                                                        Selección de etiqueta
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        as="select"
+                                                        name="etiqueta"
+                                                        id="etiqueta"
+                                                        defaultValue={formData.etiqueta}
+                                                        disabled
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        <option value="Aceptado" selected={formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no"}>Aceptado</option>
+                                                    </Form.Control>
+                                                </Form.Group>
+                                            </Row>
+                                        </>
+                                    ) : (
+                                <>
+                                    <Row className="mb-3">
+                                        <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                            <Form.Label>
+                                                Selección de etiqueta
+                                            </Form.Label>
+                                            <Form.Control
+                                                as="select"
+                                                name="etiqueta"
+                                                id="etiqueta"
+                                                defaultValue={formData.etiqueta}
+                                            >
+                                                <option>Elige una opción</option>
+                                                <option value="No Conforme" selected={formData.etiqueta == "No Conforme"}>No conforme</option>
+                                                <option value="Material Sospechoso" selected={formData.etiqueta == "Material Sospechoso"}>Material sospechoso</option>
+                                            </Form.Control>
+                                        </Form.Group>
+                                    </Row>
+                                </>
+                                )
                                 }
 
                                 <Row ClassName="mb-3">

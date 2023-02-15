@@ -110,8 +110,8 @@ function RegistraReporte(props) {
                 presentaHumedad: formData.presentaHumedad,
                 certificadoCalidad: formData.certificadoCalidad,
                 empaqueDañado: formData.empaqueDañado,
-                etiqueta: formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != "" ? "Aceptado" : formData.etiqueta,
-                resultadoFinalInspeccion: formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != "" ? "ok" : "no Ok",
+                etiqueta: formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no" ? "Aceptado" : formData.etiqueta,
+                resultadoFinalInspeccion: formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no" ? "Ok" : "no Ok",
                 observaciones: formData.observaciones,
                 estado: "true"
             }
@@ -522,7 +522,7 @@ function RegistraReporte(props) {
                                     <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                         <Col align="left" sm={3}>
                                             <Form.Label>
-                                                Certificado de calidad:
+                                                Sin certificado de calidad:
                                             </Form.Label>
                                         </Col>
                                         <Col sm={1}>
@@ -597,7 +597,7 @@ function RegistraReporte(props) {
                                                 name="resultadoInspeccion"
                                                 id="si"
                                                 defaultValue={formData.resultadoInspeccion}
-                                                checked={formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != ""}
+                                                checked={formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no"}
                                                 disabled
                                             />
                                         </Col>
@@ -611,7 +611,7 @@ function RegistraReporte(props) {
                                                 name="resultadoInspeccion"
                                                 id="no"
                                                 defaultValue={formData.resultadoInspeccion}
-                                                checked={formData.contaminacion == "" || formData.presentaHumedad == "" || formData.certificadoCalidad == "" || formData.empaqueDañado == ""}
+                                                checked={formData.contaminacion == "si" || formData.presentaHumedad == "si" || formData.certificadoCalidad == "si" || formData.empaqueDañado == "si"}
                                                 disabled
                                             />
                                         </Col>
@@ -619,7 +619,7 @@ function RegistraReporte(props) {
                                 </Row>
 
                                 {
-                                    formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != "" ?
+                                    formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no" ?
                                         (
                                             <>
                                                 <Row className="mb-3">
@@ -635,7 +635,7 @@ function RegistraReporte(props) {
                                                             disabled
                                                         >
                                                             <option>Elige una opción</option>
-                                                            <option value="Aceptado" selected={formData.contaminacion != "" && formData.presentaHumedad != "" && formData.certificadoCalidad != "" && formData.empaqueDañado != ""}>Aceptado</option>
+                                                            <option value="Aceptado" selected={formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no"}>Aceptado</option>
                                                         </Form.Control>
                                                     </Form.Group>
                                                 </Row>
