@@ -4,6 +4,7 @@ import "./DashboardFinanzas.scss";
 import { Alert, Button, Col, Row, Card, Container, CardGroup, Image, Badge } from "react-bootstrap";
 // Importacion de imagenes para los iconos de los menus
 import LogoCuentasCobrar from "../../../assets/png/menus/cuentasPorCobrar.png";
+import LogoNotas from "../../../assets/png/menus/notas.png";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../../api/auth";
 import { toast } from "react-toastify";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -52,7 +53,7 @@ function DashboardFinanzas(props) {
                     <Row>
                         <Col xs={12} md={8}>
                             <h1>
-                                Ventas
+                                Finanzas
                             </h1>
                         </Col>
                         <Col xs={6} md={4}>
@@ -68,11 +69,16 @@ function DashboardFinanzas(props) {
                         </Col>
                     </Row>
                 </Alert>
-                <div className="grid grid-cols-1 gap-1">
+                <div className="grid grid-cols-2 gap-2">
                     <ItemCard
                         path={'/Facturas'}
                         logo={LogoCuentasCobrar}
                         title={'Facturas'}
+                    />
+                    <ItemCard
+                        path={'/Notas'}
+                        logo={LogoNotas}
+                        title={'Notas'}
                     />
                 </div>
         </>

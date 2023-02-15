@@ -107,6 +107,22 @@ export const ENDPOINTDeshabilitarRazonSocial = "/razonesSociales/deshabilitar";
 export const ENDPOINTListarRazonSocialPaginacion = "/razonesSociales/listarPaginando";
 export const ENDPOINTTotalRazonSocial = "/razonesSociales/total";
 
+// Notas
+export const ENDPOINTRegistraNota = "/notas/registro";
+export const ENDPOINTListarNotas = "/notas/listar";
+export const ENDPOINTListarNotasPorTipo = "/notas/listarPorTipo";
+export const ENDPOINTListarNotasActivas = "/notas/listarActivas";
+export const ENDPOINTObtenerNotas = "/notas/obtener";
+export const ENDPOINTObtenerDatosNotas = "/notas/obtenerDatosNota";
+export const ENDPOINTEliminarNotas = "/notas/eliminar";
+export const ENDPOINTActualizarNotas = "/notas/actualizar";
+export const ENDPOINTActualizarEstadoNotas = "/notas/actualizarEstado";
+export const ENDPOINTListarNotasPaginacion = "/notas/listarPaginando";
+export const ENDPOINTObtenerNoNotasCredito = "/notas/obtenerNoNotaCredito";
+export const ENDPOINTObtenerNoNotasCargo = "/notas/obtenerNoNotaCargo";
+export const ENDPOINTObtenerNoNotasDevolucion = "/notas/obtenerNoNotaDevolucion";
+export const ENDPOINTTotalNotas = "/notas/total";
+
 // Pedidos de venta
 export const ENDPOINTRegistraPedidoVenta = "/ventas/registro";
 export const ENDPOINTListarPedidoVenta = "/ventas/listar";

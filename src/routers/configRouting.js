@@ -63,6 +63,7 @@ import GestionAlmacen from "../page/GestionAlmacen";
 import Almacenes from "../page/Almacenes";
 import Error404 from "../page/Error404";
 import Facturas from "../page/Facturas";
+import Notas from "../page/Notas"
 
 // importacion de dashboards
 import DashboardVentas from "../components/Dashboards/DashboardVentas";
@@ -260,10 +261,27 @@ import VistaPreviaMaterialMolido from "../components/MaterialMolido/VistaPreviaM
 // Rutas para etiquetas de primera pieza
 import VistaPreviaPrimeraPieza from "../components/EtiquetaPrimeraPieza/VistaPreviaPrimeraPieza";
 
+// Rutas para notas
+import RegistroNota from "../components/Notas/Registro";
+import ModificacionNotas from "../components/Notas/Modificacion";
+import VistaPreviaNota from "../components/Notas/VistaPrevia";
+
 export default [
     {
         path: "/Almacenes",
         page: Almacenes
+    },
+    {
+        path: "/RegistroNota",
+        page: RegistroNota
+    },
+    {
+        path: "/ModificacionNotas/:id",
+        page: ModificacionNotas
+    },
+    {
+        path: "/VistaPreviaNotas/:id",
+        page: VistaPreviaNota
     },
     {
         path: "/RegistraRequerimientosPlaneacion",
@@ -672,6 +690,10 @@ export default [
     {
         path: "/FichaTecnica",
         page: FichaTecnica
+    },
+    {
+        path: "/Notas",
+        page: Notas
     },
     {
         path: "/NoConformidad",

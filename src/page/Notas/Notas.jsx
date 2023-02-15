@@ -1,66 +1,25 @@
 import { useState, useEffect, Suspense } from 'react';
-import { Alert, Button, Col, Row, Spinner, Form, Tabs, Tab, } from "react-bootstrap";
+import { Alert, Button, Col, Row, Spinner, Tabs, Tab, } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { withRouter } from "../../utils/withRouter";
 import { toast } from "react-toastify";
-import ListProgramaProduccion from "../../components/ProgramaProduccion/ListProgramaProduccion";
-import ListProgramaProduccionMaquinas from '../../components/ProgramaProduccion/ListProgramaProduccionMaquinas';
-import Graficas from '../../components/ProgramaProduccion/Graficas';
-import { listarProgramaPorSemana } from "../../api/programaProduccion";
-import { obtenerDatosSemana } from "../../api/semana";
-import "./ProgramaProduccion.scss"
+import ListNotasCargo from "../../components/Notas/ListNotasCargo";
+import ListNotasCredito from "../../components/Notas/ListNotasCredito";
+import ListNotasDevolucion from "../../components/Notas/ListNotasDevolucion";
+import { listarNotasPorTipo } from "../../api/notas";
+import "./Notas.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
+import { obtenerUsuario } from "../../api/usuarios";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
-import 'dayjs/locale/es'
-import dayjs from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-function ProgramaProduccion(props) {
+function Notas(props) {
     const { setRefreshCheckLogin, location, history } = props;
     const [tab, setTab] = useState('general')
 
-    // Para definir el enrutamiento
     const enrutamiento = useNavigate();
-
-    dayjs.locale('es') // use Spanish locale globally
-    dayjs.extend(localizedFormat)
-
-    const params = useParams();
-    const { semana } = params;
-
-    // Para almacenar la lista de las integraciones de ventas y gastos
-    const [folio, setFolio] = useState("");
-    const [fechaInicial, setFechaInicial] = useState("");
-    const [fechaFinal, setFechaFinal] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerDatosSemana(semana).then(response => {
-                const { data } = response;
-                setFolio(data.folio);
-                setFechaInicial(data.fechaInicial);
-                setFechaFinal(data.fechaFinal);
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, [location]);
-
-    // Define la ruta de registro
-    const rutaRegistro = () => {
-        enrutamiento(`/RegistroProgramaProduccion/${semana}`);
-    }
-
-    // Para almacenar la lista de pedidos de venta
-    const [listProgramaProduccion, setListProgramaProduccion] = useState(null);
-
-    // Para determinar si hay conexion al servidor o a internet
-    const [conexionInternet, setConexionInternet] = useState(true);
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -75,16 +34,21 @@ function ProgramaProduccion(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
+    // Para almacenar la lista de pedidos de venta
+    const [listNotasCargo, setListNotasCargo] = useState(null);
+
     useEffect(() => {
         try {
-            listarProgramaPorSemana(getSucursal(), semana).then(response => {
+            listarNotasPorTipo("Cargo", getSucursal()).then(response => {
                 const { data } = response;
 
-                if (!listProgramaProduccion && data) {
-                    setListProgramaProduccion(formatModelProgramaProduccion(data));
+                console.log(data);
+
+                if (!listNotasCargo && data) {
+                    setListNotasCargo(formatModelNotas(data));
                 } else {
-                    const datosPrograma = formatModelProgramaProduccion(data);
-                    setListProgramaProduccion(datosPrograma);
+                    const datosNotas = formatModelNotas(data);
+                    setListNotasCargo(datosNotas);
                 }
             }).catch(e => {
                 console.log(e)
@@ -94,9 +58,64 @@ function ProgramaProduccion(props) {
         }
     }, [location]);
 
-    const rutaRegreso = () => {
-        enrutamiento("/Semana")
+    // Para almacenar la lista de pedidos de venta
+    const [listNotasCredito, setListNotasCredito] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarNotasPorTipo("Credito", getSucursal()).then(response => {
+                const { data } = response;
+
+                console.log(data);
+
+                if (!listNotasCredito && data) {
+                    setListNotasCredito(formatModelNotas(data));
+                } else {
+                    const datosNotas = formatModelNotas(data);
+                    setListNotasCredito(datosNotas);
+                }
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [location]);
+
+    // Para almacenar la lista de pedidos de venta
+    const [listNotasDevolucion, setListNotasDevolucion] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarNotasPorTipo("Devolución", getSucursal()).then(response => {
+                const { data } = response;
+
+                console.log(data);
+
+                if (!listNotasDevolucion && data) {
+                    setListNotasDevolucion(formatModelNotas(data));
+                } else {
+                    const datosNotas = formatModelNotas(data);
+                    setListNotasDevolucion(datosNotas);
+                }
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [location]);
+
+    // Para ir hacia la ruta de registro del pedido de venta
+    const rutaRegistroNota = () => {
+        enrutamiento("/RegistroNota")
     }
+
+    const rutaRegreso = () => {
+        enrutamiento("/DashboardFinanzas")
+    }
+
+    console.log(listNotasDevolucion)
 
     return (
         <>
@@ -104,22 +123,22 @@ function ProgramaProduccion(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Programa producción
+                            Notas
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
                         <Button
                             className="btnRegistroVentas"
-                            title="Registrar un nuevo programa de produccion"
+                            title="Registrar una nueva nota"
                             onClick={() => {
-                                rutaRegistro()
+                                rutaRegistroNota()
                             }}
                         >
                             <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                         </Button>
                         <Button
                             className="btnRegistroVentas"
-                            title="Regresar al menú planeación"
+                            title="Regresar al menú ventas"
                             onClick={() => {
                                 rutaRegreso()
                             }}
@@ -130,20 +149,8 @@ function ProgramaProduccion(props) {
                 </Row>
             </Alert>
 
-
-            <Row>
-                <Col xs={6} md={4}>
-
-                </Col>
-                <Col xs={8} md={6}>
-                    <Form.Label>
-                        {folio} [{dayjs(fechaInicial).format("LL")} al {dayjs(fechaFinal).format("LL")}]
-                    </Form.Label>
-                </Col>
-            </Row>
-
             {
-                listProgramaProduccion ?
+                listNotasCargo && listNotasCredito && listNotasDevolucion ?
                     (
                         <>
                             <Tabs
@@ -156,13 +163,13 @@ function ProgramaProduccion(props) {
                                     key={0}
                                     tabClassName="font-semibold text-lg"
                                     eventKey="general"
-                                    title="Vista por programas"
+                                    title="Cargo"
                                 >
                                     <br />
 
                                     <Suspense fallback={<Spinner />}>
-                                        <ListProgramaProduccion
-                                            listProgramaProduccion={listProgramaProduccion}
+                                        <ListNotasCargo
+                                            listNotas={listNotasCargo}
                                             location={location}
                                             history={history}
                                             setRefreshCheckLogin={setRefreshCheckLogin}
@@ -174,13 +181,13 @@ function ProgramaProduccion(props) {
                                     key={1}
                                     tabClassName="font-semibold text-lg"
                                     eventKey="maquina"
-                                    title="Vista por maquinas"
+                                    title="Credito"
                                 >
                                     <br />
 
                                     <Suspense fallback={<Spinner />}>
-                                        <ListProgramaProduccionMaquinas
-                                            listProgramaProduccion={listProgramaProduccion}
+                                        <ListNotasCredito
+                                            listNotas={listNotasCredito}
                                             location={location}
                                             history={history}
                                             setRefreshCheckLogin={setRefreshCheckLogin}
@@ -192,13 +199,13 @@ function ProgramaProduccion(props) {
                                     key={2}
                                     tabClassName="font-semibold text-lg"
                                     eventKey="graficas"
-                                    title="Graficas"
+                                    title="Devolución"
                                 >
                                     <br />
 
                                     <Suspense fallback={<Spinner />}>
-                                        <Graficas
-                                            listProgramaProduccion={listProgramaProduccion}
+                                        <ListNotasDevolucion
+                                            listNotas={listNotasDevolucion}
                                             location={location}
                                             history={history}
                                             setRefreshCheckLogin={setRefreshCheckLogin}
@@ -219,17 +226,20 @@ function ProgramaProduccion(props) {
     );
 }
 
-function formatModelProgramaProduccion(data) {
+function formatModelNotas(data) {
     //console.log(data)
     const dataTemp = []
     data.forEach(data => {
         dataTemp.push({
             id: data._id,
-            item: data.item,
             folio: data.folio,
-            folioOP: data.folioOP,
-            ordenProduccion: data.ordenProduccion,
-            programa: data.programa,
+            factura: data.factura,
+            tipo: data.tipo,
+            concepto: data.concepto,
+            totalSinIva: data.totalSinIva,
+            iva: data.iva,
+            total: data.total,
+            sucursal: data.sucursal,
             estado: data.estado,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
@@ -238,4 +248,4 @@ function formatModelProgramaProduccion(data) {
     return dataTemp;
 }
 
-export default withRouter(ProgramaProduccion);
+export default withRouter(Notas);

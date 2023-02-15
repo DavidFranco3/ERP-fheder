@@ -620,7 +620,6 @@ function RegistroFacturas(props) {
                                             <option>Elige una opción</option>
                                             <option value="0.16">16%</option>
                                             <option value="0">0%</option>
-                                            <option value="0.0">Expcento</option>
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
