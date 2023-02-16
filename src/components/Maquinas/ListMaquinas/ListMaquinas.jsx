@@ -109,7 +109,7 @@ function ListMaquinas(props) {
             reorder: false
         },
         {
-            name: "Status",
+            name: "Estado",
             selector: row => row.status === "true" ?
                 (
                     <>

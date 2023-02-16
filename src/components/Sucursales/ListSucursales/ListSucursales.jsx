@@ -176,38 +176,45 @@ function ListSucursales(props) {
             center: true,
             reorder: false,
             selector: row => (
-                <>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editar"
-                        onClick={() => {
-                            modificaSucursales(
-                                <ModificacionSucursales
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminaSucursal(
-                                <EliminacionFisicaSucursales
-                                    data={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estadoSucursal === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editar"
+                                onClick={() => {
+                                    modificaSucursales(
+                                        <ModificacionSucursales
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminaSucursal(
+                                        <EliminacionFisicaSucursales
+                                            data={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

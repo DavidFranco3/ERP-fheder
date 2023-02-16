@@ -173,47 +173,54 @@ function ListInventarioMaquina(props) {
             center: true,
             reorder: true,
             selector: row => (
-                <>
-                <Badge
-                        bg="primary"
-                        title="Generar PDF"
-                        className="ver"
-                        onClick={() => {
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editar"
-                        onClick={() => {
-                            modificacionInventario(
-                                <ModificaInventarioMaquinas
-                                    datos={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="danger"
-                        title="Eliminar"
-                        className="eliminar"
-                        onClick={() => {
-                            eliminacionInventario(
-                                <EliminacionFisicaInventarioMaquinas
-                                    datos={row}
-                                    setShowModal={setShowModal}
-                                    history={history}
-                                />)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                    </Badge>
-                </>
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="primary"
+                                title="Generar PDF"
+                                className="ver"
+                                onClick={() => {
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEye} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editar"
+                                onClick={() => {
+                                    modificacionInventario(
+                                        <ModificaInventarioMaquinas
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                title="Eliminar"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminacionInventario(
+                                        <EliminacionFisicaInventarioMaquinas
+                                            datos={row}
+                                            setShowModal={setShowModal}
+                                            history={history}
+                                        />)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];

@@ -142,37 +142,42 @@ function ListRazonesSociales(props) {
             center: true,
             reorder: false,
             selector: row => (
-                <>
-                    <div className="flex justify-end items-center space-x-4">
-                        <Badge
-                            bg="success"
-                            title="Modificar"
-                            className="editar"
-                            onClick={() => {
-                                irHaciaModificacion(row.id)
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                        </Badge>
-                        <Badge
-                            bg="danger"
-                            className="eliminar"
-                            onClick={() => {
-                                eliminaRazonSocial
-                                    (
-                                        <EliminacionFisicaRazonSocial
-                                            dataRazonSocial={row}
-                                            title="Eliminar"
-                                            setShowModal={setShowModal}
-                                            history={history}
-                                        />
-                                    )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
-                        </Badge>
-                    </div>
-                </>
+                row.estadoRazonSocial === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editar"
+                                onClick={() => {
+                                    irHaciaModificacion(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="danger"
+                                className="eliminar"
+                                onClick={() => {
+                                    eliminaRazonSocial
+                                        (
+                                            <EliminacionFisicaRazonSocial
+                                                dataRazonSocial={row}
+                                                title="Eliminar"
+                                                setShowModal={setShowModal}
+                                                history={history}
+                                            />
+                                        )
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} className="text-lg" />
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponibles"
+                    )
             )
         }
     ];
