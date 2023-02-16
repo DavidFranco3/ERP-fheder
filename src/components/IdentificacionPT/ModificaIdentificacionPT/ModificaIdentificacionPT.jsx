@@ -10,43 +10,37 @@ import { toast } from "react-toastify";
 import queryString from "query-string";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { getSucursal } from '../../../api/auth';
+import BuscarProduccion from '../../../page/BuscarProduccion';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 function ModificaIdentificacionPT(props) {
     const { history, setShowModal, data } = props;
 
     const { id } = data;
 
+    // Para hacer uso del modal
+    const [showModal2, setShowModal2] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    // Para la eliminacion fisica de usuarios
+    const buscarOP = (content) => {
+        setTitulosModal("Buscar Orden de producción");
+        setContentModal(content);
+        setShowModal2(true);
+    }
+
     // Para almacenar la informacion del formulario
-    const [formData, setFormData] = useState(initialFormData());
+    const [formData, setFormData] = useState(initialFormData(data));
+
+     // Para almacenar la informacion del formulario
+     const [formDataProduccion, setFormDataProduccion] = useState(initialFormDataProduccion(data));
 
     // Cancelar y cerrar el formulario
     const cancelarRegistro = () => {
         setShowModal(false)
     }
-
-    useEffect(() => {
-        //
-        obtenerEtiquetaPT(id).then(response => {
-            const { data } = response;
-            //console.log(data)
-            const { fecha, descripcion, noParte, noOrden, cantidad, turno, operador, supervisor, inspector } = data;
-            const dataTemp = {
-                fecha: fecha,
-                descripcion: descripcion,
-                noParte: noParte,
-                noOrden: noOrden,
-                cantidad: cantidad,
-                turno: turno,
-                operador: operador,
-                supervisor: supervisor,
-                inspector: inspector
-            }
-            setFormData(valoresAlmacenados(dataTemp))
-            // setFechaCreacion(fechaElaboracion)
-        }).catch(e => {
-            console.log(e)
-        })
-    }, []);
 
     // Para almacenar el listado de productos activos
     const [listProduccion, setListProduccion] = useState(null);
@@ -104,9 +98,9 @@ function ModificaIdentificacionPT(props) {
             // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
             const dataTemp = {
                 fecha: formData.fecha,
-                descripcion: producto == "" ? formData.descripcion : producto.descripcionProducto,
-                noParte: producto == "" ? formData.noParte : producto.numeroParte,
-                noOrden: producto == "" ? formData.noOrden : producto.ordenProduccion,
+                descripcion: formDataProduccion.descripcionProducto,
+                noParte: formDataProduccion.numeroParte,
+                noOrden: formDataProduccion.ordenProduccion,
                 cantidad: formData.cantidad,
                 turno: formData.turno,
                 operador: formData.operador,
@@ -134,6 +128,7 @@ function ModificaIdentificacionPT(props) {
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataProduccion({ ...formDataProduccion, [e.target.name]: e.target.value })
     }
 
     return (
@@ -167,24 +162,27 @@ function ModificaIdentificacionPT(props) {
                                     </Form.Label>
                                 </Col>
                                 <Col>
-                                    <Form.Control
-                                        as="select"
-                                        onChange={(e) => {
-                                            handleProducto(e.target.value)
-                                        }}
-                                        defaultValue={formData.noOrden}
-                                        name="noOrden"
-                                    >
-                                        <option>Elige</option>
-                                        {map(listProduccion, (produccion, index) => (
-                                            <option
-                                                key={index}
-                                                value={produccion.folio + "/" + produccion.generalidades.producto + "/" + produccion.generalidades.noParte} selected={formData.noOrden == produccion.folio}
-                                            >
-                                                {produccion.folio}
-                                            </option>
-                                        ))}
-                                    </Form.Control>
+                                    <div className="flex items-center mb-1">
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={formDataProduccion.ordenProduccion}
+                                            placeholder="Orden de producción"
+                                            name="ordenProduccion"
+                                        />
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre las ordenes de produccion"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarOP(
+                                                    <BuscarProduccion
+                                                        formData={formDataProduccion}
+                                                        setFormData={setFormDataProduccion}
+                                                        setShowModal={setShowModal2}
+                                                    />)
+                                            }}
+                                        />
+                                    </div>
                                 </Col>
                             </Form.Group>
                         </Row>
@@ -200,9 +198,8 @@ function ModificaIdentificacionPT(props) {
                                     <Form.Control
                                         type="text"
                                         placeholder="Descripción del producto"
-                                        name="descripcion"
-                                        value={producto == "" ? formData.descripcion : producto.descripcionProducto}
-                                        disabled
+                                        name="descripcionProducto"
+                                        defaultValue={formDataProduccion.descripcionProducto}
                                     />
                                 </Col>
                             </Form.Group>
@@ -219,9 +216,8 @@ function ModificaIdentificacionPT(props) {
                                     <Form.Control
                                         type="number"
                                         placeholder="Numero de parte"
-                                        name="noParte"
-                                        value={producto == "" ? formData.noParte : producto.numeroParte}
-                                        disabled
+                                        name="numeroParte"
+                                        defaultValue={formDataProduccion.numeroParte}
                                     />
                                 </Col>
                             </Form.Group>
@@ -345,40 +341,36 @@ function ModificaIdentificacionPT(props) {
                                 </Button>
                             </Col>
                         </Form.Group>
-
                     </Form>
                 </div>
             </Container>
+
+            <BasicModal show={showModal2} setShow={setShowModal2} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }
 
-function initialFormData() {
+function initialFormData(data) {
     return {
-        fecha: "",
-        descripcion: "",
-        noParte: "",
-        noOrden: "",
-        cantidad: "",
-        turno: "",
-        operador: "",
-        supervisor: "",
-        inspector: ""
+        fecha: data.fecha,
+        descripcion: data.descripcion,
+        noParte: data.noParte,
+        noOrden: data.noOrden,
+        cantidad: data.cantidad,
+        turno: data.turno,
+        operador: data.operador,
+        supervisor: data.supervisor,
+        inspector: data.inspector
     }
 }
 
-function valoresAlmacenados(data) {
-    const { fecha, descripcion, noParte, noOrden, cantidad, turno, operador, supervisor, inspector } = data;
+function initialFormDataProduccion(data) {
     return {
-        fecha: fecha,
-        descripcion: descripcion,
-        noParte: noParte,
-        noOrden: noOrden,
-        cantidad: cantidad,
-        turno: turno,
-        operador: operador,
-        supervisor: supervisor,
-        inspector: inspector
+        ordenProduccion: data.noOrden,
+        descripcionProducto: data.descripcion,
+        numeroParte: data.noParte,
     }
 }
 

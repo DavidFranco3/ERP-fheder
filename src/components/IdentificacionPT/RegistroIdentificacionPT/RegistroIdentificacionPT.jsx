@@ -10,12 +10,30 @@ import { toast } from "react-toastify";
 import { getSucursal } from "../../../api/auth";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
+import BuscarProduccion from '../../../page/BuscarProduccion';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 function RegistroIdentificacionPT(props) {
     const { setShowModal, history } = props;
 
+    // Para hacer uso del modal
+    const [showModal2, setShowModal2] = useState(false);
+    const [contentModal, setContentModal] = useState(null);
+    const [titulosModal, setTitulosModal] = useState(null);
+
+    // Para la eliminacion fisica de usuarios
+    const buscarOP = (content) => {
+        setTitulosModal("Buscar Orden de producción");
+        setContentModal(content);
+        setShowModal2(true);
+    }
+
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
+
+    // Para almacenar la informacion del formulario
+    const [formDataProduccion, setFormDataProduccion] = useState(initialFormDataProduccion());
 
     // Cancelar y cerrar el formulario
     const cancelarRegistro = () => {
@@ -87,50 +105,51 @@ function RegistroIdentificacionPT(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-            //console.log("Continuar")
-            setLoading(true)
+        //console.log("Continuar")
+        setLoading(true)
 
-            // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            obtenerItemEtiquetaPT().then(response => {
-                const { data } = response;
-                const dataTemp = {
-                    item: data.item,
-                    folio: folioActual,
-                    fecha: fechaActual,
-                    descripcion: producto.descripcionProducto,
-                    noParte: producto.numeroParte,
-                    noOrden: producto.ordenProduccion,
-                    sucursal: getSucursal(),
-                    cantidad: formData.cantidad,
-                    turno: formData.turno,
-                    operador: formData.operador,
-                    supervisor: formData.supervisor,
-                    inspector: formData.inspector,
-                    estado: "true"
-                }
-                // console.log(dataTemp)
-                // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
-                // 
-                // Modificar el pedido creado recientemente
-                registraEtiquetaPT(dataTemp).then(response => {
-                    const { data: { mensaje, datos } } = response;
-                    LogsInformativos("Nueva etiqueta de identificacion de PT" + folioActual, dataTemp)
-                    // console.log(response)
-                    toast.success(mensaje);
-                    history({
-                        search: queryString.stringify(""),
-                    });
-                    setShowModal(false);
-                }).catch(e => {
-                    console.log(e)
-                })
+        // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
+        obtenerItemEtiquetaPT().then(response => {
+            const { data } = response;
+            const dataTemp = {
+                item: data.item,
+                folio: folioActual,
+                fecha: fechaActual,
+                descripcion: formDataProduccion.descripcionProducto,
+                noParte: formDataProduccion.numeroParte,
+                noOrden: formDataProduccion.ordenProduccion,
+                sucursal: getSucursal(),
+                cantidad: formData.cantidad,
+                turno: formData.turno,
+                operador: formData.operador,
+                supervisor: formData.supervisor,
+                inspector: formData.inspector,
+                estado: "true"
+            }
+            // console.log(dataTemp)
+            // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
+            // 
+            // Modificar el pedido creado recientemente
+            registraEtiquetaPT(dataTemp).then(response => {
+                const { data: { mensaje, datos } } = response;
+                LogsInformativos("Nueva etiqueta de identificacion de PT" + folioActual, dataTemp)
+                // console.log(response)
+                toast.success(mensaje);
+                history({
+                    search: queryString.stringify(""),
+                });
+                setShowModal(false);
             }).catch(e => {
                 console.log(e)
             })
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormDataProduccion({ ...formDataProduccion, [e.target.name]: e.target.value })
     }
 
     const hoy = new Date();
@@ -174,24 +193,27 @@ function RegistroIdentificacionPT(props) {
                                     </Form.Label>
                                 </Col>
                                 <Col>
-                                    <Form.Control
-                                        as="select"
-                                        onChange={(e) => {
-                                            handleProducto(e.target.value)
-                                        }}
-                                        defaultValue={formData.ordenProduccion}
-                                        name="ordenProduccion"
-                                    >
-                                        <option>Elige</option>
-                                        {map(listProduccion, (produccion, index) => (
-                                            <option
-                                                key={index}
-                                                value={produccion.folio + "/" + produccion.generalidades.producto + "/" + produccion.generalidades.noParte}
-                                            >
-                                                {produccion.folio}
-                                            </option>
-                                        ))}
-                                    </Form.Control>
+                                    <div className="flex items-center mb-1">
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={formDataProduccion.ordenProduccion}
+                                            placeholder="Orden de producción"
+                                            name="ordenProduccion"
+                                        />
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer py-2 -ml-6"
+                                            title="Buscar entre las ordenes de produccion"
+                                            icon={faSearch}
+                                            onClick={() => {
+                                                buscarOP(
+                                                    <BuscarProduccion
+                                                        formData={formDataProduccion}
+                                                        setFormData={setFormDataProduccion}
+                                                        setShowModal={setShowModal2}
+                                                    />)
+                                            }}
+                                        />
+                                    </div>
                                 </Col>
                             </Form.Group>
                         </Row>
@@ -208,8 +230,7 @@ function RegistroIdentificacionPT(props) {
                                         type="text"
                                         placeholder="Descripción del producto"
                                         name="descripcion"
-                                        value={producto.descripcionProducto}
-                                        disabled
+                                        defaultValue={formDataProduccion.descripcionProducto}
                                     />
                                 </Col>
                             </Form.Group>
@@ -227,8 +248,7 @@ function RegistroIdentificacionPT(props) {
                                         type="number"
                                         placeholder="Numero de parte"
                                         name="numeroParte"
-                                        value={producto.numeroParte}
-                                        disabled
+                                        defaultValue={formDataProduccion.numeroParte}
                                     />
                                 </Col>
                             </Form.Group>
@@ -356,6 +376,10 @@ function RegistroIdentificacionPT(props) {
                     </Form>
                 </div>
             </Container>
+
+            <BasicModal show={showModal2} setShow={setShowModal2} title={titulosModal}>
+                {contentModal}
+            </BasicModal>
         </>
     );
 }
@@ -371,6 +395,14 @@ function initialFormData() {
         operador: "",
         supervisor: "",
         inspector: ""
+    }
+}
+
+function initialFormDataProduccion() {
+    return {
+        ordenProduccion: "",
+        descripcionProducto: "",
+        numeroParte: "",
     }
 }
 

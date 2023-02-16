@@ -64,12 +64,6 @@ function RegistraProgramaProduccion(props) {
     // Para almacenar la informacion del formulario
     const [formDataPrograma, setFormDataPrograma] = useState(initialFormDataProgramaInitial());
 
-    console.log("Requerimientos y planeacion", formDataReqPlan);
-
-    console.log("programa", formDataPrograma);
-
-    console.log("Produccion", formDataProduccion);
-
     // Para almacenar la informacion del formulario
     const [formDataPlaneacion, setFormDataPlaneacion] = useState(initialFormDataPlaneacionInitial());
 

@@ -25,6 +25,8 @@ function BuscarProducciones(props) {
         console.log(planeacion)
         const dataTemp = {
             nombreProducto: generalidades.producto,
+            descripcionProducto: generalidades.producto,
+            numeroParte: generalidades.noParte,
             ordenInterna: folio,
             ordenProduccion: folio,
             cliente: generalidades.nombreCliente,
