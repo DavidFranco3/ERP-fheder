@@ -148,7 +148,7 @@ function VistaPrevia(props) {
         //
         obtenerRazonSocialPorNombre(getSucursal()).then(response => {
             const { data } = response;
-            console.log(data)
+            //console.log(data)
             setFormDataSucursal(initialFormDataSucursal(data));
         }).catch(e => {
             console.log(e)
@@ -507,7 +507,7 @@ function VistaPrevia(props) {
                     style: 'tableExample',
                     table: {
                         widths: ['25%', '25%', '25%', '25%'],
-                        heights: [10, 10, 10, 10, 30, 10],
+                        heights: [10, 10, 10, 10, 30],
                         headerRows: 1,
                         body: [
                             [
@@ -633,7 +633,7 @@ function VistaPrevia(props) {
                         body: [
                             [
                                 {
-                                    text: 'ITEM ',
+                                    text: '# ',
                                     fontSize: 9,
                                     bold: true,
                                 },
@@ -683,7 +683,7 @@ function VistaPrevia(props) {
                 {
                     style: 'tableExample',
                     table: {
-                        widths: ['98%'],
+                        widths: ['98.3%'],
                         heights: [10],
                         body: [
                             [
@@ -731,7 +731,7 @@ function VistaPrevia(props) {
             </Alert>
 
             <Container fluid>
-                <div id="pdfOV" className="formularioRegistroOrdenVenta">
+                <div className="formularioRegistroOrdenVenta">
                     <Form onChange={onChange} onSubmit={onSubmit}>
 
                         {/* Datos de encabezado de la orden de venta*/}
@@ -998,7 +998,6 @@ function VistaPrevia(props) {
                                             className="generacionPDF"
                                         >
                                             <Image
-                                                id="imagen"
                                                 src={LogoPDF}
                                                 className="logoPDF"
                                                 onClick={() => {
@@ -1012,7 +1011,6 @@ function VistaPrevia(props) {
                                             className="regreso"
                                         >
                                             <Image
-                                                id="imagen2"
                                                 src={Regreso}
                                                 className="regresarVistaAnterior"
                                                 onClick={() => {
@@ -1043,7 +1041,7 @@ function initialFormData(folio, fecha) {
     }
 }
 
-function initialFormDataSucursalInitial(data) {
+function initialFormDataSucursalInitial() {
     return {
         rfc: "",
         calle: "",
