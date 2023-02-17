@@ -462,7 +462,7 @@ function VistaPreviaRequisiciones(props) {
                                 },
                                 {
                                     text: [
-                                        'Productos: ',
+                                        'Artículos: ',
                                         {
                                             text: listProductosCargados.length,
                                             bold: false

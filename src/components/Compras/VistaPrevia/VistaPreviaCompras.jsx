@@ -543,7 +543,7 @@ function VistaPreviaCompras(props) {
                                 },
                                 {
                                     text: [
-                                        'Productos: ',
+                                        'Artículos: ',
                                         {
                                             text: listProductosCargados.length,
                                             bold: false

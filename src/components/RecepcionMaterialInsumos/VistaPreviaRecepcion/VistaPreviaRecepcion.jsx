@@ -595,6 +595,20 @@ function VistaPreviaRecepcion(props) {
                                 {
                                 }
                             ],
+                            [
+                                {
+                                    text: `Artículos:  ${listProductosCargados.length}`,
+                                    colSpan: 4,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                },
+                                {
+                                },
+                                {
+                                }
+                            ],
                         ]
                     }
                 },
