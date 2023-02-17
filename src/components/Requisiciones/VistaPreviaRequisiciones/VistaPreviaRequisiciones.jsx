@@ -595,10 +595,8 @@ function VistaPreviaRequisiciones(props) {
                 },
             ],
         };
-
         const pdf = pdfMake.createPdf(docDefinition);
         pdf.download(`${formData.folio}.pdf`);
-
     }
 
     return (

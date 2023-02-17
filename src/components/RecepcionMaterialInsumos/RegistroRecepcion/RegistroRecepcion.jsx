@@ -788,18 +788,7 @@ function RegistroRecepcion(props) {
 
                             {/* Subtotal */}
                             <Row>
-                                <Col>Precio total</Col>
-                                <Col>
-                                    {new Intl.NumberFormat('es-MX', {
-                                        style: "currency",
-                                        currency: "MXN"
-                                    }).format(precioTotal)} MXN
-                                </Col>
-                                <Col>Articulos pedidos</Col>
-                                <Col>
-                                    {cantidadTotal}
-                                </Col>
-                                <Col>Valor total de la recepcion</Col>
+                                <Col>Valor total sin IVA</Col>
                                 <Col>
                                     {new Intl.NumberFormat('es-MX', {
                                         style: "currency",
