@@ -247,7 +247,7 @@ function ModificaProveedores(props) {
                                         type="text"
                                         name="nombre"
                                         placeholder="Escribe el nombre"
-                                        defaultValue={formData.nombre}
+                                        defaultValue={proveedorSeleccionado.nombreProveedor}
                                     />
                                     <FontAwesomeIcon
                                         className="cursor-pointer py-2 -ml-6"
@@ -329,7 +329,7 @@ function ModificaProveedores(props) {
                                     type="text"
                                     name="correo"
                                     placeholder="Escribe el correo"
-                                    defaultValue={formData.correo}
+                                    defaultValue={proveedorSeleccionado.correoProveedor}
                                 />
                             </Form.Group>
 
