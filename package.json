@@ -27,9 +27,7 @@
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.7",
     "faker": "6.6.6",
-    "husky": "^8.0.3",
     "jwt-decode": "^3.1.2",
-    "lint-staged": "^13.1.2",
     "lodash": "^4.17.21",
     "moment": "2.29.4",
     "node-sass": "8.0.0",
@@ -99,14 +97,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js": "eslint --cache --fix",
-    "*.{js,css,md}": "prettier --write"
   }
 }
