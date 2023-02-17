@@ -848,12 +848,19 @@ function VistaPreviaRecepcion(props) {
 
                             {/* Subtotal */}
                             <Row>
-                                <Col>Valor total sin IVA</Col>
-                                <Col>
-                                    {new Intl.NumberFormat('es-MX', {
-                                        style: "currency",
-                                        currency: "MXN"
-                                    }).format(totalSinIVA)} MXN
+                                <Col xs={12} md={8}>
+                                </Col>
+                                <Col xs={6} md={4}>
+                                    {/* Subtotal */}
+                                    <Row>
+                                        <Col>Valor total sin IVA</Col>
+                                        <Col>
+                                            {new Intl.NumberFormat('es-MX', {
+                                                style: "currency",
+                                                currency: "MXN"
+                                            }).format(totalSinIVA)} MXN
+                                        </Col>
+                                    </Row>
                                 </Col>
                             </Row>
 
