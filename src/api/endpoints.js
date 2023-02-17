@@ -101,6 +101,7 @@ export const ENDPOINTRegistraRazonSocial = "/razonesSociales/registro";
 export const ENDPOINTListarRazonSocial = "/razonesSociales/listar";
 export const ENDPOINTListarRazonSocialActiva = "/razonesSociales/listarActivos";
 export const ENDPOINTObtenerRazonSocial = "/razonesSociales/obtener";
+export const ENDPOINTObtenerRazonSocialPorNombre = "/razonesSociales/obtenerDatos";
 export const ENDPOINTEliminarRazonSocial = "/razonesSociales/eliminar";
 export const ENDPOINTActualizarRazonSocial = "/razonesSociales/actualizar";
 export const ENDPOINTDeshabilitarRazonSocial = "/razonesSociales/deshabilitar";

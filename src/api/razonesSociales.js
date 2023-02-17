@@ -4,6 +4,7 @@ import {
     ENDPOINTListarRazonSocial,
     ENDPOINTListarRazonSocialActiva,
     ENDPOINTObtenerRazonSocial,
+    ENDPOINTObtenerRazonSocialPorNombre,
     ENDPOINTEliminarRazonSocial,
     ENDPOINTActualizarRazonSocial,
     ENDPOINTDeshabilitarRazonSocial,
@@ -51,6 +52,19 @@ export async function obtenerRazonSocial(params) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTObtenerRazonSocial + `/${params}`, config);
+}
+
+// Para obtener todos los datos del cliente
+export async function obtenerRazonSocialPorNombre(params) {
+    //console.log(params)
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTObtenerRazonSocialPorNombre + `/${params}`, config);
 }
 
 // Para listar todos los clientes
