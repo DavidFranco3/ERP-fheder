@@ -346,7 +346,24 @@ function VistaPreviaRequisiciones(props) {
     const descargaPDF = async () => {
 
         const docDefinition = {
-
+            pageSize: 'LETTER',
+            footer: function (currentPage, pageCount) {
+                return {
+                    table: {
+                        widths: ['100%'],
+                        body: [
+                            [
+                                {
+                                    border: [false, false, false, false],
+                                    text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
+                                    alignment: 'right',
+                                    margin: [5, 2, 10, 20]
+                                }
+                            ]
+                        ]
+                    },
+                }
+            },
             content: [
                 {
                     alignment: 'center',

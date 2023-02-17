@@ -64,7 +64,7 @@ function ModificacionRazonSocial(props) {
                 if (e.message == 'Network Error') {
                     //console.log("No hay internet")
                     toast.error("Conexión a Internet no Disponible");
-                    enrutamiento("/RazonesSociales");
+                    regresaPagina();
                     setConexionInternet(false);
                 }
             })
@@ -110,7 +110,7 @@ function ModificacionRazonSocial(props) {
                     LogsInformativos("Los datos de la razón social " + dataTempFinal.nombre  + " fueron modificados", dataTempFinal)
                     toast.success(data.mensaje)
                     setLoading(false);
-                    enrutamiento("/razonesSociales");
+                    regresaPagina()
                 }).catch(e => {
                     console.log(e)
                     if (e.message === 'Network Error') {
