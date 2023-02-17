@@ -329,6 +329,9 @@ function RegistraRequisiciones(props) {
 
     const [fechaRequisicion, setFechaRequisicion] = useState(fecha);
 
+    // Calcula el subtotal de la lista de artículos cargados
+    const subTotal = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.subtotal)), 0);
+
     return (
         <>
             <Alert>
@@ -813,6 +816,23 @@ function RegistraRequisiciones(props) {
                         </tbody>
                     </table>
                     {/* Termina tabla informativa del listado de articulos */}
+
+                    <Row>
+                        <Col xs={12} md={8}>
+                        </Col>
+                        <Col xs={6} md={4}>
+                            {/* Subtotal */}
+                            <Row>
+                                <Col>Valor total sin IVA</Col>
+                                <Col>
+                                    {new Intl.NumberFormat('es-MX', {
+                                        style: "currency",
+                                        currency: "MXN"
+                                    }).format(subTotal)} MXN
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
 
                     <hr />
                     <Badge bg="secondary" className="tituloFormularioDetalles">

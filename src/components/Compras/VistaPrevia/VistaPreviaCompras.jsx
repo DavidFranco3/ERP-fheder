@@ -561,7 +561,7 @@ function VistaPreviaCompras(props) {
                 },
                 {
                     alignment: 'center',
-                    text: 'Listado de productos seleccionados',
+                    text: 'Listado de artículos seleccionados',
                     style: 'header',
                     fontSize: 23,
                     bold: true,
@@ -580,12 +580,12 @@ function VistaPreviaCompras(props) {
                                     bold: true,
                                 },
                                 {
-                                    text: 'Descripción',
+                                    text: 'Folio',
                                     fontSize: 9,
                                     bold: true,
                                 },
                                 {
-                                    text: 'Numero de parte',
+                                    text: 'Descripción',
                                     fontSize: 9,
                                     bold: true,
                                 },
