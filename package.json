@@ -29,6 +29,7 @@
     "faker": "6.6.6",
     "husky": "^8.0.3",
     "jwt-decode": "^3.1.2",
+    "lint-staged": "^13.1.2",
     "lodash": "^4.17.21",
     "moment": "2.29.4",
     "node-sass": "8.0.0",
