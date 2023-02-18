@@ -22,6 +22,18 @@ function Requisiciones(props) {
         enrutamiento("/RegistroRequisicion")
     }
 
+    // Recuperación de la razón social seleccionada
+    const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
+
+    useEffect(() => {
+        if (getSucursal()) {
+            setRazonSocialElegida(getSucursal)
+        } else {
+            setRazonSocialElegida("Sin Selección")
+        }
+    }, []);
+    // Termina recuperación de la razón social recuperada
+
     // Para almacenar el listado de compras realizadas
     const [listRequisiciones, setListRequisiciones] = useState(null);
 
@@ -63,57 +75,73 @@ function Requisiciones(props) {
 
     return (
         <>
-            <Alert>
-                <Row>
-                    <Col xs={12} md={8}>
-                        <h1>
-                            Requisiciones
-                        </h1>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Registrar una requisición"
-                            onClick={() => {
-                                rutaRegistraRequisiciones()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                        </Button>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú compras"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
-                </Row>
-            </Alert>
-
             {
-                listRequisiciones ?
+                razonSocialElegida === "Sin Selección" ?
                     (
                         <>
-                            <Suspense fallback={<Spinner />}>
-                                <ListRequisiciones
-                                    setRefreshCheckLogin={setRefreshCheckLogin}
-                                    listRequisiciones={listRequisiciones}
-                                    history={history}
-                                    location={location}
-                                />
-                            </Suspense>
+                            <Lottie
+                                loop={true}
+                                play={true}
+                                animationData={AnimacionLoading}
+                            />
                         </>
                     )
                     :
                     (
                         <>
-                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                            <Alert>
+                                <Row>
+                                    <Col xs={12} md={8}>
+                                        <h1>
+                                            Requisiciones
+                                        </h1>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Registrar una requisición"
+                                            onClick={() => {
+                                                rutaRegistraRequisiciones()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                                        </Button>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Regresar al menú compras"
+                                            onClick={() => {
+                                                rutaRegreso()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Alert>
+
+                            {
+                                listRequisiciones ?
+                                    (
+                                        <>
+                                            <Suspense fallback={<Spinner />}>
+                                                <ListRequisiciones
+                                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                                    listRequisiciones={listRequisiciones}
+                                                    history={history}
+                                                    location={location}
+                                                />
+                                            </Suspense>
+                                        </>
+                                    )
+                                    :
+                                    (
+                                        <>
+                                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                                        </>
+                                    )
+                            }
                         </>
-                    )
-            }
+                    )}
         </>
     );
 }

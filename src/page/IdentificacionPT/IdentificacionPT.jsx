@@ -53,6 +53,18 @@ function IdentificacionPT(props) {
         enrutamiento("/DashboardProduccion")
     }
 
+    // Recuperación de la razón social seleccionada
+    const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
+
+    useEffect(() => {
+        if (getSucursal()) {
+            setRazonSocialElegida(getSucursal)
+        } else {
+            setRazonSocialElegida("Sin Selección")
+        }
+    }, []);
+    // Termina recuperación de la razón social recuperada
+
     // Para almacenar el listado de compras realizadas
     const [listEtiquetas, setListEtiquetas] = useState(null);
 
@@ -80,63 +92,79 @@ function IdentificacionPT(props) {
 
     return (
         <>
-            <Alert>
-                <Row>
-                    <Col xs={12} md={8}>
-                        <h1>
-                            Etiqueta de identificacion PT
-                        </h1>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Registrar una nueva etiqueta de identificación de producto terminado"
-                            onClick={() => {
-                                nuevaEtiqueta(
-                                    <RegistroIdentificacionPT
-                                        setShowModal={setShowModal}
-                                        location={location}
-                                        history={history}
-                                    />
-                                )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                        </Button>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú producción"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
-                </Row>
-            </Alert>
-
             {
-                listEtiquetas ?
+                razonSocialElegida === "Sin Selección" ?
                     (
                         <>
-                            <Suspense fallback={<Spinner />}>
-                                <ListEtiquetasPT
-                                    setRefreshCheckLogin={setRefreshCheckLogin}
-                                    listEtiquetas={listEtiquetas}
-                                    history={history}
-                                    location={location}
-                                />
-                            </Suspense>
+                            <Lottie
+                                loop={true}
+                                play={true}
+                                animationData={AnimacionLoading}
+                            />
                         </>
                     )
                     :
                     (
                         <>
-                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                            <Alert>
+                                <Row>
+                                    <Col xs={12} md={8}>
+                                        <h1>
+                                            Etiqueta de identificacion PT
+                                        </h1>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Registrar una nueva etiqueta de identificación de producto terminado"
+                                            onClick={() => {
+                                                nuevaEtiqueta(
+                                                    <RegistroIdentificacionPT
+                                                        setShowModal={setShowModal}
+                                                        location={location}
+                                                        history={history}
+                                                    />
+                                                )
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                                        </Button>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Regresar al menú producción"
+                                            onClick={() => {
+                                                rutaRegreso()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Alert>
+
+                            {
+                                listEtiquetas ?
+                                    (
+                                        <>
+                                            <Suspense fallback={<Spinner />}>
+                                                <ListEtiquetasPT
+                                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                                    listEtiquetas={listEtiquetas}
+                                                    history={history}
+                                                    location={location}
+                                                />
+                                            </Suspense>
+                                        </>
+                                    )
+                                    :
+                                    (
+                                        <>
+                                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                                        </>
+                                    )
+                            }
                         </>
-                    )
-            }
+                    )}
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}

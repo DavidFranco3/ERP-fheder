@@ -30,6 +30,18 @@ function Compras(props) {
     // Para definir el salto entre rutas
     const enrutamiento = useNavigate();
 
+    // Recuperación de la razón social seleccionada
+    const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
+
+    useEffect(() => {
+        if (getSucursal()) {
+            setRazonSocialElegida(getSucursal)
+        } else {
+            setRazonSocialElegida("Sin Selección")
+        }
+    }, []);
+    // Termina recuperación de la razón social recuperada
+
     // Para almacenar el listado de compras realizadas
     const [listCompras, setListCompras] = useState(null);
 
@@ -65,57 +77,73 @@ function Compras(props) {
 
     return (
         <>
-            <Alert>
-                <Row>
-                    <Col xs={12} md={8} className="tituloPrincipal">
-                        <h1>
-                            Compras
-                        </h1>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Registrar una nueva orden de compra"
-                            onClick={() => {
-                                registraCompra()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                        </Button>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú compras"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
-                </Row>
-            </Alert>
-
             {
-                listCompras ?
+                razonSocialElegida === "Sin Selección" ?
                     (
                         <>
-                            <Suspense fallback={<Spinner />}>
-                                <ListCompras
-                                    setRefreshCheckLogin={setRefreshCheckLogin}
-                                    listCompras={listCompras}
-                                    history={history}
-                                    location={location}
-                                />
-                            </Suspense>
+                            <Lottie
+                                loop={true}
+                                play={true}
+                                animationData={AnimacionLoading}
+                            />
                         </>
                     )
                     :
                     (
                         <>
-                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                            <Alert>
+                                <Row>
+                                    <Col xs={12} md={8} className="tituloPrincipal">
+                                        <h1>
+                                            Compras
+                                        </h1>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Registrar una nueva orden de compra"
+                                            onClick={() => {
+                                                registraCompra()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                                        </Button>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Regresar al menú compras"
+                                            onClick={() => {
+                                                rutaRegreso()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Alert>
+
+                            {
+                                listCompras ?
+                                    (
+                                        <>
+                                            <Suspense fallback={<Spinner />}>
+                                                <ListCompras
+                                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                                    listCompras={listCompras}
+                                                    history={history}
+                                                    location={location}
+                                                />
+                                            </Suspense>
+                                        </>
+                                    )
+                                    :
+                                    (
+                                        <>
+                                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                                        </>
+                                    )
+                            }
                         </>
-                    )
-            }
+                    )}
         </>
     );
 }

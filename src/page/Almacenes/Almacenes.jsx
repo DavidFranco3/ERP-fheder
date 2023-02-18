@@ -73,12 +73,6 @@ function Almacenes(props) {
     const [contentModal, setContentModal] = useState(null);
     const [titulosModal, setTitulosModal] = useState(null);
 
-    // Para el registro en el almacen de mp
-    const nuevoRegistro = (content) => {
-        setTitulosModal("Nuevo registro");
-        setContentModal(content);
-        setShowModal(true);
-    }
 
     // Para el registro de entradas o salidas
     const nuevaEntradaSalida = (content) => {
@@ -86,6 +80,18 @@ function Almacenes(props) {
         setContentModal(content);
         setShowModal(true);
     }
+
+    // Recuperación de la razón social seleccionada
+    const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
+
+    useEffect(() => {
+        if (getSucursal()) {
+            setRazonSocialElegida(getSucursal)
+        } else {
+            setRazonSocialElegida("Sin Selección")
+        }
+    }, []);
+    // Termina recuperación de la razón social recuperada
 
     // Almacenar el listado de materias primas registradas
     const [listAlmacenes, setListAlmacenes] = useState(null);
@@ -115,94 +121,106 @@ function Almacenes(props) {
         enrutamiento("/")
     }
 
-    const rutaMovimientos = () => {
-        enrutamiento("/MovimientosAlmacenes");
-    }
-
     return (
         <>
-            <Alert>
-                <Row>
-                    <Col xs={12} md={8} className="tituloPrincipal">
-                        <h1>
-                            Almacenes
-                        </h1>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Registrar una entrada/salida"
-                            onClick={() => {
-                                nuevaEntradaSalida(
-                                    <RegistroEntradaSalida
-                                        setShowModal={setShowModal}
-                                        location={location}
-                                        history={history}
-                                    />
-                                )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar E / S
-                        </Button>
-
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú almacenes"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-
-                    </Col>
-                </Row>
-            </Alert>
-
-            <Row>
-                <Col xs={6} md={4}>
-
-                </Col>
-                <Col xs={6} md={4}>
-                    <Form.Control
-                        as="select"
-                        aria-label="indicadorAlmacen"
-                        name="almacen"
-                        className="cajaSucursal"
-                        defaultValue={almacenElegido}
-                        onChange={(e) => {
-                            almacenaAlmacen(e.target.value)
-                        }}
-                    >
-                        <option>Elige una opción</option>
-                        {map(almacenesRegistrados, (almacen, index) => (
-                            <option key={index} value={almacen?.nombre} selected={almacenElegido == almacen?.nombre}>{almacen?.nombre}</option>
-                        ))}
-                    </Form.Control>
-                </Col>
-            </Row>
-
             {
-                listAlmacenes ?
+                razonSocialElegida === "Sin Selección" ?
                     (
                         <>
-                            <Suspense fallback={<Spinner />}>
-                                <ListAlmacenes
-                                    listAlmacenes={listAlmacenes}
-                                    location={location}
-                                    history={history}
-                                    setRefreshCheckLogin={setRefreshCheckLogin}
-                                />
-                            </Suspense>
+                            <Lottie
+                                loop={true}
+                                play={true}
+                                animationData={AnimacionLoading}
+                            />
                         </>
                     )
                     :
                     (
                         <>
-                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                            <Alert>
+                                <Row>
+                                    <Col xs={12} md={8} className="tituloPrincipal">
+                                        <h1>
+                                            Almacenes
+                                        </h1>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Registrar una entrada/salida"
+                                            onClick={() => {
+                                                nuevaEntradaSalida(
+                                                    <RegistroEntradaSalida
+                                                        setShowModal={setShowModal}
+                                                        location={location}
+                                                        history={history}
+                                                    />
+                                                )
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar E / S
+                                        </Button>
+
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Regresar al menú almacenes"
+                                            onClick={() => {
+                                                rutaRegreso()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                                        </Button>
+
+                                    </Col>
+                                </Row>
+                            </Alert>
+
+                            <Row>
+                                <Col xs={6} md={4}>
+
+                                </Col>
+                                <Col xs={6} md={4}>
+                                    <Form.Control
+                                        as="select"
+                                        aria-label="indicadorAlmacen"
+                                        name="almacen"
+                                        className="cajaSucursal"
+                                        defaultValue={almacenElegido}
+                                        onChange={(e) => {
+                                            almacenaAlmacen(e.target.value)
+                                        }}
+                                    >
+                                        <option>Elige una opción</option>
+                                        {map(almacenesRegistrados, (almacen, index) => (
+                                            <option key={index} value={almacen?.nombre} selected={almacenElegido == almacen?.nombre}>{almacen?.nombre}</option>
+                                        ))}
+                                    </Form.Control>
+                                </Col>
+                            </Row>
+
+                            {
+                                listAlmacenes ?
+                                    (
+                                        <>
+                                            <Suspense fallback={<Spinner />}>
+                                                <ListAlmacenes
+                                                    listAlmacenes={listAlmacenes}
+                                                    location={location}
+                                                    history={history}
+                                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                                />
+                                            </Suspense>
+                                        </>
+                                    )
+                                    :
+                                    (
+                                        <>
+                                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                                        </>
+                                    )
+                            }
                         </>
-                    )
-            }
+                    )}
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}

@@ -35,6 +35,18 @@ function MatrizProductos(props) {
         enrutamiento("/Registra-Matriz-Productos")
     }
 
+    // Recuperación de la razón social seleccionada
+    const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
+
+    useEffect(() => {
+        if (getSucursal()) {
+            setRazonSocialElegida(getSucursal)
+        } else {
+            setRazonSocialElegida("Sin Selección")
+        }
+    }, []);
+    // Termina recuperación de la razón social recuperada
+
     // Para almacenar el listado de productos
     const [listProductos, setListProductos] = useState(null);
 
@@ -65,57 +77,73 @@ function MatrizProductos(props) {
 
     return (
         <>
-            <Alert>
-                <Row>
-                    <Col xs={12} md={8}>
-                        <h1>
-                            Productos
-                        </h1>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Registrar un nuevo producto"
-                            onClick={() => {
-                                rutaRegistraProductos()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                        </Button>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú catalogos"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
-                </Row>
-            </Alert>
-
             {
-                listProductos ?
+                razonSocialElegida === "Sin Selección" ?
                     (
                         <>
-                            <Suspense fallback={<Spinner />}>
-                                <ListMatrizProductos
-                                    listProductos={listProductos}
-                                    location={location}
-                                    history={history}
-                                    setRefreshCheckLogin={setRefreshCheckLogin}
-                                />
-                            </Suspense>
+                            <Lottie
+                                loop={true}
+                                play={true}
+                                animationData={AnimacionLoading}
+                            />
                         </>
                     )
                     :
                     (
                         <>
-                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                            <Alert>
+                                <Row>
+                                    <Col xs={12} md={8}>
+                                        <h1>
+                                            Productos
+                                        </h1>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Registrar un nuevo producto"
+                                            onClick={() => {
+                                                rutaRegistraProductos()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                                        </Button>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Regresar al menú catalogos"
+                                            onClick={() => {
+                                                rutaRegreso()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Alert>
+
+                            {
+                                listProductos ?
+                                    (
+                                        <>
+                                            <Suspense fallback={<Spinner />}>
+                                                <ListMatrizProductos
+                                                    listProductos={listProductos}
+                                                    location={location}
+                                                    history={history}
+                                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                                />
+                                            </Suspense>
+                                        </>
+                                    )
+                                    :
+                                    (
+                                        <>
+                                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                                        </>
+                                    )
+                            }
                         </>
-                    )
-            }
+                    )}
         </>
     );
 }

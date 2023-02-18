@@ -37,6 +37,18 @@ function VentasGastos(props) {
         enrutamiento("/RegistroReporte")
     }
 
+    // Recuperación de la razón social seleccionada
+    const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
+
+    useEffect(() => {
+        if (getSucursal()) {
+            setRazonSocialElegida(getSucursal)
+        } else {
+            setRazonSocialElegida("Sin Selección")
+        }
+    }, []);
+    // Termina recuperación de la razón social recuperada
+
     // Para almacenar la lista de las integraciones de ventas y gastos
     const [listIntegraciones, setListIntegraciones] = useState(null);
 
@@ -79,69 +91,85 @@ function VentasGastos(props) {
 
     return (
         <>
-            <Alert>
-                <Row>
-                    <Col xs={12} md={8}>
-                        <h1>
-                            Integración de ventas/gastos
-                        </h1>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Registrar una nueva integración de ventas/gastos"
-                            onClick={() => {
-                                nuevoRegistro(
-                                    <RegistroVentasGastos
-                                        setShowModal={setShowModal}
-                                        location={location}
-                                        history={history}
-                                    />
-                                )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                        </Button>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Ver reporte"
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Ver reporte
-                        </Button>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú ventas"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
-                </Row>
-            </Alert>
-
             {
-                listIntegraciones ?
+                razonSocialElegida === "Sin Selección" ?
                     (
                         <>
-                            <Suspense fallback={<Spinner />}>
-                                <ListIntegracionVentasGastos
-                                    listIntegraciones={listIntegraciones}
-                                    location={location}
-                                    history={history}
-                                    setRefreshCheckLogin={setRefreshCheckLogin}
-                                />
-                            </Suspense>
+                            <Lottie
+                                loop={true}
+                                play={true}
+                                animationData={AnimacionLoading}
+                            />
                         </>
                     )
                     :
                     (
                         <>
-                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                            <Alert>
+                                <Row>
+                                    <Col xs={12} md={8}>
+                                        <h1>
+                                            Integración de ventas/gastos
+                                        </h1>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Registrar una nueva integración de ventas/gastos"
+                                            onClick={() => {
+                                                nuevoRegistro(
+                                                    <RegistroVentasGastos
+                                                        setShowModal={setShowModal}
+                                                        location={location}
+                                                        history={history}
+                                                    />
+                                                )
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                                        </Button>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Ver reporte"
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlus} /> Ver reporte
+                                        </Button>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Regresar al menú ventas"
+                                            onClick={() => {
+                                                rutaRegreso()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Alert>
+
+                            {
+                                listIntegraciones ?
+                                    (
+                                        <>
+                                            <Suspense fallback={<Spinner />}>
+                                                <ListIntegracionVentasGastos
+                                                    listIntegraciones={listIntegraciones}
+                                                    location={location}
+                                                    history={history}
+                                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                                />
+                                            </Suspense>
+                                        </>
+                                    )
+                                    :
+                                    (
+                                        <>
+                                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                                        </>
+                                    )
+                            }
                         </>
-                    )
-            }
+                    )}
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}

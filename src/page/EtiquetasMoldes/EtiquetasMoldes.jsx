@@ -31,6 +31,18 @@ function EtiquetasMoldes(props) {
         setShowModal(true);
     }
 
+    // Recuperación de la razón social seleccionada
+    const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
+
+    useEffect(() => {
+        if (getSucursal()) {
+            setRazonSocialElegida(getSucursal)
+        } else {
+            setRazonSocialElegida("Sin Selección")
+        }
+    }, []);
+    // Termina recuperación de la razón social recuperada
+
     // Cerrado de sesión automatico
     useEffect(() => {
         if (getTokenApi()) {
@@ -72,62 +84,78 @@ function EtiquetasMoldes(props) {
 
     return (
         <>
-            <Alert>
-                <Row>
-                    <Col xs={12} md={8}>
-                        <h1>
-                            Moldes
-                        </h1>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Registrar una nueva etiqueta de moldes"
-                            onClick={() => {
-                                nuevoRegistro(
-                                    <RegistroEtiquetasMoldes
-                                        setShowModal={setShowModal}
-                                        history={history}
-                                    />
-                                )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registro
-                        </Button>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú mantenimiento"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
-                </Row>
-            </Alert>
-
             {
-                listEtiquetas ?
+                razonSocialElegida === "Sin Selección" ?
                     (
                         <>
-                            <Suspense fallback={<Spinner />}>
-                                <ListEtiquetasMoldes
-                                    listEtiquetas={listEtiquetas}
-                                    location={location}
-                                    history={history}
-                                    setRefreshCheckLogin={setRefreshCheckLogin}
-                                />
-                            </Suspense>
+                            <Lottie
+                                loop={true}
+                                play={true}
+                                animationData={AnimacionLoading}
+                            />
                         </>
                     )
                     :
                     (
                         <>
-                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                            <Alert>
+                                <Row>
+                                    <Col xs={12} md={8}>
+                                        <h1>
+                                            Moldes
+                                        </h1>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Registrar una nueva etiqueta de moldes"
+                                            onClick={() => {
+                                                nuevoRegistro(
+                                                    <RegistroEtiquetasMoldes
+                                                        setShowModal={setShowModal}
+                                                        history={history}
+                                                    />
+                                                )
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlus} /> Registro
+                                        </Button>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Regresar al menú mantenimiento"
+                                            onClick={() => {
+                                                rutaRegreso()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Alert>
+
+                            {
+                                listEtiquetas ?
+                                    (
+                                        <>
+                                            <Suspense fallback={<Spinner />}>
+                                                <ListEtiquetasMoldes
+                                                    listEtiquetas={listEtiquetas}
+                                                    location={location}
+                                                    history={history}
+                                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                                />
+                                            </Suspense>
+                                        </>
+                                    )
+                                    :
+                                    (
+                                        <>
+                                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                                        </>
+                                    )
+                            }
                         </>
-                    )
-            }
+                    )}
 
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}

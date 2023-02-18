@@ -34,6 +34,18 @@ function Notas(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
+    // Recuperación de la razón social seleccionada
+    const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
+
+    useEffect(() => {
+        if (getSucursal()) {
+            setRazonSocialElegida(getSucursal)
+        } else {
+            setRazonSocialElegida("Sin Selección")
+        }
+    }, []);
+    // Termina recuperación de la razón social recuperada
+
     // Para almacenar la lista de pedidos de venta
     const [listNotasCargo, setListNotasCargo] = useState(null);
 
@@ -119,109 +131,125 @@ function Notas(props) {
 
     return (
         <>
-            <Alert>
-                <Row>
-                    <Col xs={12} md={8}>
-                        <h1>
-                            Notas
-                        </h1>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Registrar una nueva nota"
-                            onClick={() => {
-                                rutaRegistroNota()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                        </Button>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú ventas"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
-                </Row>
-            </Alert>
-
             {
-                listNotasCargo && listNotasCredito && listNotasDevolucion ?
+                razonSocialElegida === "Sin Selección" ?
                     (
                         <>
-                            <Tabs
-                                activeKey={tab}
-                                onSelect={(k) => setTab(k)}
-                                className="flex w-full"
-                                id="uncontrolled-tab-estados"
-                            >
-                                <Tab
-                                    key={0}
-                                    tabClassName="font-semibold text-lg"
-                                    eventKey="general"
-                                    title="Cargo"
-                                >
-                                    <br />
-
-                                    <Suspense fallback={<Spinner />}>
-                                        <ListNotasCargo
-                                            listNotas={listNotasCargo}
-                                            location={location}
-                                            history={history}
-                                            setRefreshCheckLogin={setRefreshCheckLogin}
-                                        />
-                                    </Suspense>
-                                </Tab>
-
-                                <Tab
-                                    key={1}
-                                    tabClassName="font-semibold text-lg"
-                                    eventKey="maquina"
-                                    title="Credito"
-                                >
-                                    <br />
-
-                                    <Suspense fallback={<Spinner />}>
-                                        <ListNotasCredito
-                                            listNotas={listNotasCredito}
-                                            location={location}
-                                            history={history}
-                                            setRefreshCheckLogin={setRefreshCheckLogin}
-                                        />
-                                    </Suspense>
-                                </Tab>
-
-                                <Tab
-                                    key={2}
-                                    tabClassName="font-semibold text-lg"
-                                    eventKey="graficas"
-                                    title="Devolución"
-                                >
-                                    <br />
-
-                                    <Suspense fallback={<Spinner />}>
-                                        <ListNotasDevolucion
-                                            listNotas={listNotasDevolucion}
-                                            location={location}
-                                            history={history}
-                                            setRefreshCheckLogin={setRefreshCheckLogin}
-                                        />
-                                    </Suspense>
-                                </Tab>
-                            </Tabs>
+                            <Lottie
+                                loop={true}
+                                play={true}
+                                animationData={AnimacionLoading}
+                            />
                         </>
                     )
                     :
                     (
                         <>
-                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                            <Alert>
+                                <Row>
+                                    <Col xs={12} md={8}>
+                                        <h1>
+                                            Notas
+                                        </h1>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Registrar una nueva nota"
+                                            onClick={() => {
+                                                rutaRegistroNota()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                                        </Button>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Regresar al menú ventas"
+                                            onClick={() => {
+                                                rutaRegreso()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Alert>
+
+                            {
+                                listNotasCargo && listNotasCredito && listNotasDevolucion ?
+                                    (
+                                        <>
+                                            <Tabs
+                                                activeKey={tab}
+                                                onSelect={(k) => setTab(k)}
+                                                className="flex w-full"
+                                                id="uncontrolled-tab-estados"
+                                            >
+                                                <Tab
+                                                    key={0}
+                                                    tabClassName="font-semibold text-lg"
+                                                    eventKey="general"
+                                                    title="Cargo"
+                                                >
+                                                    <br />
+
+                                                    <Suspense fallback={<Spinner />}>
+                                                        <ListNotasCargo
+                                                            listNotas={listNotasCargo}
+                                                            location={location}
+                                                            history={history}
+                                                            setRefreshCheckLogin={setRefreshCheckLogin}
+                                                        />
+                                                    </Suspense>
+                                                </Tab>
+
+                                                <Tab
+                                                    key={1}
+                                                    tabClassName="font-semibold text-lg"
+                                                    eventKey="maquina"
+                                                    title="Credito"
+                                                >
+                                                    <br />
+
+                                                    <Suspense fallback={<Spinner />}>
+                                                        <ListNotasCredito
+                                                            listNotas={listNotasCredito}
+                                                            location={location}
+                                                            history={history}
+                                                            setRefreshCheckLogin={setRefreshCheckLogin}
+                                                        />
+                                                    </Suspense>
+                                                </Tab>
+
+                                                <Tab
+                                                    key={2}
+                                                    tabClassName="font-semibold text-lg"
+                                                    eventKey="graficas"
+                                                    title="Devolución"
+                                                >
+                                                    <br />
+
+                                                    <Suspense fallback={<Spinner />}>
+                                                        <ListNotasDevolucion
+                                                            listNotas={listNotasDevolucion}
+                                                            location={location}
+                                                            history={history}
+                                                            setRefreshCheckLogin={setRefreshCheckLogin}
+                                                        />
+                                                    </Suspense>
+                                                </Tab>
+                                            </Tabs>
+                                        </>
+                                    )
+                                    :
+                                    (
+                                        <>
+                                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                                        </>
+                                    )
+                            }
                         </>
-                    )
-            }
+                    )}
         </>
     );
 }

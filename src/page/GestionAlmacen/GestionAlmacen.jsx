@@ -39,8 +39,17 @@ function GestionAlmacen(props) {
     // Para almacenar los usuarios
     const [listGestionAlmacen, setListGestionAlmacen] = useState(null);
 
-    // Para determinar el estado de la conexion
-    const [conexionInternet, setConexionInternet] = useState(true);
+    // Recuperación de la razón social seleccionada
+    const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
+
+    useEffect(() => {
+        if (getSucursal()) {
+            setRazonSocialElegida(getSucursal)
+        } else {
+            setRazonSocialElegida("Sin Selección")
+        }
+    }, []);
+    // Termina recuperación de la razón social recuperada
 
     useEffect(() => {
         try {
@@ -75,65 +84,81 @@ function GestionAlmacen(props) {
         setShowModal(true);
     }
 
-
     return (
         <>
-            <Alert>
-                <Row>
-                    <Col xs={12} md={8}>
-                        <h1>
-                            Mis almacenes
-                        </h1>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Registrar un nuevo almacen"
-                            onClick={() => {
-                                nuevoRegistro(
-                                    <RegistroGestionAlmacen
-                                        setShowModal={setShowModal}
-                                        location={location}
-                                        history={history}
-                                    />
-                                )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                        </Button>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú configuración"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
-                </Row>
-            </Alert>
-
-            {listGestionAlmacen ?
-                (
-                    <>
-                        <Suspense fallback={<Spinner />}>
-                            <ListGestionAlmacen
-                                listGestionAlmacen={listGestionAlmacen}
-                                location={location}
-                                history={history}
-                                setRefreshCheckLogin={setRefreshCheckLogin}
+            {
+                razonSocialElegida === "Sin Selección" ?
+                    (
+                        <>
+                            <Lottie
+                                loop={true}
+                                play={true}
+                                animationData={AnimacionLoading}
                             />
-                        </Suspense>
-                    </>
-                )
-                :
-                (
-                    <>
-                        <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                    </>
-                )
-            }
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Alert>
+                                <Row>
+                                    <Col xs={12} md={8}>
+                                        <h1>
+                                            Mis almacenes
+                                        </h1>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Registrar un nuevo almacen"
+                                            onClick={() => {
+                                                nuevoRegistro(
+                                                    <RegistroGestionAlmacen
+                                                        setShowModal={setShowModal}
+                                                        location={location}
+                                                        history={history}
+                                                    />
+                                                )
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                                        </Button>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Regresar al menú configuración"
+                                            onClick={() => {
+                                                rutaRegreso()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Alert>
+
+                            {listGestionAlmacen ?
+                                (
+                                    <>
+                                        <Suspense fallback={<Spinner />}>
+                                            <ListGestionAlmacen
+                                                listGestionAlmacen={listGestionAlmacen}
+                                                location={location}
+                                                history={history}
+                                                setRefreshCheckLogin={setRefreshCheckLogin}
+                                            />
+                                        </Suspense>
+                                    </>
+                                )
+                                :
+                                (
+                                    <>
+                                        <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                                    </>
+                                )
+                            }
+                        </>
+                    )}
+
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}
             </BasicModal>

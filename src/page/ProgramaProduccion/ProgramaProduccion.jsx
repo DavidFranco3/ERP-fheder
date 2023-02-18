@@ -56,12 +56,6 @@ function ProgramaProduccion(props) {
         enrutamiento(`/RegistroProgramaProduccion/${semana}`);
     }
 
-    // Para almacenar la lista de pedidos de venta
-    const [listProgramaProduccion, setListProgramaProduccion] = useState(null);
-
-    // Para determinar si hay conexion al servidor o a internet
-    const [conexionInternet, setConexionInternet] = useState(true);
-
     // Cerrado de sesión automatico
     useEffect(() => {
         if (getTokenApi()) {
@@ -74,6 +68,9 @@ function ProgramaProduccion(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
+
+    // Para almacenar la lista de pedidos de venta
+    const [listProgramaProduccion, setListProgramaProduccion] = useState(null);
 
     useEffect(() => {
         try {

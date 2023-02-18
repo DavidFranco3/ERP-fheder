@@ -10,10 +10,9 @@ import { toast } from "react-toastify";
 import ListSucursales from "../../components/Sucursales/ListSucursales";
 import RegistroSucursales from "../../components/Sucursales/Registro";
 import BasicModal from "../../components/Modal/BasicModal";
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
-import { getSucursal } from '../../api/auth';
 
 function Sucursales(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -36,6 +35,18 @@ function Sucursales(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
+
+    // Recuperación de la razón social seleccionada
+    const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
+
+    useEffect(() => {
+        if (getSucursal()) {
+            setRazonSocialElegida(getSucursal)
+        } else {
+            setRazonSocialElegida("Sin Selección")
+        }
+    }, []);
+    // Termina recuperación de la razón social recuperada
 
     // Para almacenar los usuarios
     const [listSucursales, setListSucursales] = useState(null);
@@ -84,62 +95,79 @@ function Sucursales(props) {
 
     return (
         <>
-            <Alert>
-                <Row>
-                    <Col xs={12} md={8}>
-                        <h1>
-                            Mis sucursales
-                        </h1>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Registrar una nueva sucursal"
-                            onClick={() => {
-                                nuevoRegistro(
-                                    <RegistroSucursales
-                                        setShowModal={setShowModal}
-                                        location={location}
-                                        history={history}
-                                    />
-                                )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                        </Button>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú configuración"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
-                </Row>
-            </Alert>
-
-            {listSucursales ?
-                (
-                    <>
-                        <Suspense fallback={<Spinner />}>
-                            <ListSucursales
-                                listSucursales={listSucursales}
-                                location={location}
-                                history={history}
-                                setRefreshCheckLogin={setRefreshCheckLogin}
+            {
+                razonSocialElegida === "Sin Selección" ?
+                    (
+                        <>
+                            <Lottie
+                                loop={true}
+                                play={true}
+                                animationData={AnimacionLoading}
                             />
-                        </Suspense>
-                    </>
-                )
-                :
-                (
-                    <>
-                        <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                    </>
-                )
-            }
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Alert>
+                                <Row>
+                                    <Col xs={12} md={8}>
+                                        <h1>
+                                            Mis sucursales
+                                        </h1>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Registrar una nueva sucursal"
+                                            onClick={() => {
+                                                nuevoRegistro(
+                                                    <RegistroSucursales
+                                                        setShowModal={setShowModal}
+                                                        location={location}
+                                                        history={history}
+                                                    />
+                                                )
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                                        </Button>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Regresar al menú configuración"
+                                            onClick={() => {
+                                                rutaRegreso()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Alert>
+
+                            {listSucursales ?
+                                (
+                                    <>
+                                        <Suspense fallback={<Spinner />}>
+                                            <ListSucursales
+                                                listSucursales={listSucursales}
+                                                location={location}
+                                                history={history}
+                                                setRefreshCheckLogin={setRefreshCheckLogin}
+                                            />
+                                        </Suspense>
+                                    </>
+                                )
+                                :
+                                (
+                                    <>
+                                        <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                                    </>
+                                )
+                            }
+                        </>
+                    )}
+
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}
             </BasicModal>

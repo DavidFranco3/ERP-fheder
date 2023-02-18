@@ -8,8 +8,6 @@ import { listarEvaluacionProveedores } from "../../api/evaluacionProveedores";
 import { useNavigate } from "react-router-dom";
 import { withRouter } from "../../utils/withRouter";
 import ListProveedores from "../../components/EvaluacionProveedores/ListProveedores";
-import BasicModal from "../../components/Modal/BasicModal";
-import RegistraProveedores from "../../components/EvaluacionProveedores/RegistraProveedores";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -29,19 +27,23 @@ function EvaluacionProveedores(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
+    // Recuperación de la razón social seleccionada
+    const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
+
+    useEffect(() => {
+        if (getSucursal()) {
+            setRazonSocialElegida(getSucursal)
+        } else {
+            setRazonSocialElegida("Sin Selección")
+        }
+    }, []);
+    // Termina recuperación de la razón social recuperada
+
     // Para definir el salto entre rutas
     const enrutamiento = useNavigate();
 
-    // Para determinar el estado de la conexion
-    const [conexionInternet, setConexionInternet] = useState(true);
-
     // Para almacenar el listado de proveedores
     const [listProveedores, setListProveedores] = useState(null);
-
-    // Para hacer uso del modal
-    const [showModal, setShowModal] = useState(false);
-    const [contentModal, setContentModal] = useState(null);
-    const [titulosModal, setTitulosModal] = useState(null);
 
     useEffect(() => {
         try {
@@ -64,13 +66,6 @@ function EvaluacionProveedores(props) {
         }
     }, [location]);
 
-    //Para el registro de proveedores
-    const registraProveedor = (content) => {
-        setTitulosModal("Registra proveedor");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
     const rutaRegreso = () => {
         enrutamiento("/DashboardCompras")
     }
@@ -82,59 +77,72 @@ function EvaluacionProveedores(props) {
 
     return (
         <>
-            <Alert>
-                <Row>
-                    <Col xs={12} md={8}>
-                        <h1>
-                            Evaluación de proveedores
-                        </h1>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Registrar un nuevo proveedor"
-                            onClick={() => {
-                                rutaRegistro()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                        </Button>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú catalogos"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
-                </Row>
-            </Alert>
-
-            {listProveedores ?
-                (
-                    <>
-                        <Suspense fallback={<Spinner />}>
-                            <ListProveedores
-                                listProveedores={listProveedores}
-                                history={history}
-                                setRefreshCheckLogin={setRefreshCheckLogin}
-                                location={location}
+            {
+                razonSocialElegida === "Sin Selección" ?
+                    (
+                        <>
+                            <Lottie
+                                loop={true}
+                                play={true}
+                                animationData={AnimacionLoading}
                             />
-                        </Suspense>
-                    </>
-                )
-                :
-                (
-                    <>
-                        <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                    </>
-                )
-            }
-            <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
-                {contentModal}
-            </BasicModal>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Alert>
+                                <Row>
+                                    <Col xs={12} md={8}>
+                                        <h1>
+                                            Evaluación de proveedores
+                                        </h1>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Registrar un nuevo proveedor"
+                                            onClick={() => {
+                                                rutaRegistro()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                                        </Button>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Regresar al menú catalogos"
+                                            onClick={() => {
+                                                rutaRegreso()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Alert>
+
+                            {listProveedores ?
+                                (
+                                    <>
+                                        <Suspense fallback={<Spinner />}>
+                                            <ListProveedores
+                                                listProveedores={listProveedores}
+                                                history={history}
+                                                setRefreshCheckLogin={setRefreshCheckLogin}
+                                                location={location}
+                                            />
+                                        </Suspense>
+                                    </>
+                                )
+                                :
+                                (
+                                    <>
+                                        <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                                    </>
+                                )
+                            }
+                        </>
+                    )}
         </>
     );
 }

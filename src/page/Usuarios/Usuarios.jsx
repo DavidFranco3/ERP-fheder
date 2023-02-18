@@ -8,8 +8,7 @@ import "./Usuarios.scss";
 import { listarUsuarios } from "../../api/usuarios";
 import { toast } from "react-toastify";
 import ListUsuarios from "../../components/Usuarios/ListUsuarios";
-import BasicModal from "../../components/Modal/BasicModal";
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
@@ -35,16 +34,20 @@ function Usuarios(props) {
     }, []);
     // Termina cerrado de sesión automatico
 
-    // Para controlar la paginación
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [page, setPage] = useState(1);
-    const [noTotalUsuarios, setNoTotalUsuarios] = useState(0);
+    // Recuperación de la razón social seleccionada
+    const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
+
+    useEffect(() => {
+        if (getSucursal()) {
+            setRazonSocialElegida(getSucursal)
+        } else {
+            setRazonSocialElegida("Sin Selección")
+        }
+    }, []);
+    // Termina recuperación de la razón social recuperada
 
     // Para almacenar los usuarios
     const [listUsuarios, setListUsuarios] = useState(null);
-
-    // Para determinar el estado de la conexion
-    const [conexionInternet, setConexionInternet] = useState(true);
 
     useEffect(() => {
         try {
@@ -72,59 +75,74 @@ function Usuarios(props) {
         enrutamiento("/RegistroUsuarios")
     }
 
-
     return (
         <>
-            <Alert>
-                <Row>
-                    <Col xs={12} md={8}>
-                        <h1>
-                            Usuarios
-                        </h1>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Registrar un nuevo usuario"
-                            onClick={() => {
-                                registraColaborador()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                        </Button>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú catalogos"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
-                </Row>
-            </Alert>
-
-            {listUsuarios ?
-                (
-                    <>
-                        <Suspense fallback={<Spinner />}>
-                            <ListUsuarios
-                                listUsuarios={listUsuarios}
-                                location={location}
-                                history={history}
-                                setRefreshCheckLogin={setRefreshCheckLogin}
+            {
+                razonSocialElegida === "Sin Selección" ?
+                    (
+                        <>
+                            <Lottie
+                                loop={true}
+                                play={true}
+                                animationData={AnimacionLoading}
                             />
-                        </Suspense>
-                    </>
-                )
-                :
-                (
-                    <>
-                        <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                    </>
-                )
-            }
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Alert>
+                                <Row>
+                                    <Col xs={12} md={8}>
+                                        <h1>
+                                            Usuarios
+                                        </h1>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Registrar un nuevo usuario"
+                                            onClick={() => {
+                                                registraColaborador()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                                        </Button>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Regresar al menú catalogos"
+                                            onClick={() => {
+                                                rutaRegreso()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Alert>
+
+                            {listUsuarios ?
+                                (
+                                    <>
+                                        <Suspense fallback={<Spinner />}>
+                                            <ListUsuarios
+                                                listUsuarios={listUsuarios}
+                                                location={location}
+                                                history={history}
+                                                setRefreshCheckLogin={setRefreshCheckLogin}
+                                            />
+                                        </Suspense>
+                                    </>
+                                )
+                                :
+                                (
+                                    <>
+                                        <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                                    </>
+                                )
+                            }
+                        </>
+                    )}
         </>
     );
 }

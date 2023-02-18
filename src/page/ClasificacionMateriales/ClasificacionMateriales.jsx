@@ -10,10 +10,9 @@ import { toast } from "react-toastify";
 import ListClasificacionMateriales from "../../components/ClasificacionMateriales/ListClasificacionMateriales";
 import RegistroClasificacionMateriales from "../../components/ClasificacionMateriales/Registro";
 import BasicModal from "../../components/Modal/BasicModal";
-import { getTokenApi, isExpiredToken, logoutApi } from "../../api/auth";
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
-import { getSucursal } from '../../api/auth';
 
 function ClasificacionMateriales(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -36,6 +35,18 @@ function ClasificacionMateriales(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
+
+    // Recuperación de la razón social seleccionada
+    const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
+
+    useEffect(() => {
+        if (getSucursal()) {
+            setRazonSocialElegida(getSucursal)
+        } else {
+            setRazonSocialElegida("Sin Selección")
+        }
+    }, []);
+    // Termina recuperación de la razón social recuperada
 
     // Para almacenar los usuarios
     const [listClasificacionMateriales, setListClasificacionMateriales] = useState(null);
@@ -76,62 +87,80 @@ function ClasificacionMateriales(props) {
 
     return (
         <>
-            <Alert>
-                <Row>
-                    <Col xs={12} md={8}>
-                        <h1>
-                            Clasificación Materiales
-                        </h1>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Registrar un nuevo material"
-                            onClick={() => {
-                                nuevoRegistro(
-                                    <RegistroClasificacionMateriales
-                                        setShowModal={setShowModal}
-                                        location={location}
-                                        history={history}
-                                    />
-                                )
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
-                        </Button>
-                        <Button
-                            className="btnRegistroVentas"
-                            title="Regresar al menú configuración"
-                            onClick={() => {
-                                rutaRegreso()
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
-                        </Button>
-                    </Col>
-                </Row>
-            </Alert>
-
-            {listClasificacionMateriales ?
-                (
-                    <>
-                        <Suspense fallback={<Spinner />}>
-                            <ListClasificacionMateriales
-                                listClasificacionMateriales={listClasificacionMateriales}
-                                location={location}
-                                history={history}
-                                setRefreshCheckLogin={setRefreshCheckLogin}
+            {
+                razonSocialElegida === "Sin Selección" ?
+                    (
+                        <>
+                            <Lottie
+                                loop={true}
+                                play={true}
+                                animationData={AnimacionLoading}
                             />
-                        </Suspense>
-                    </>
-                )
-                :
-                (
-                    <>
-                        <Lottie loop={true} play={true} animationData={AnimacionLoading} />
-                    </>
-                )
-            }
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <Alert>
+                                <Row>
+                                    <Col xs={12} md={8}>
+                                        <h1>
+                                            Clasificación Materiales
+                                        </h1>
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Registrar un nuevo material"
+                                            onClick={() => {
+                                                nuevoRegistro(
+                                                    <RegistroClasificacionMateriales
+                                                        setShowModal={setShowModal}
+                                                        location={location}
+                                                        history={history}
+                                                    />
+                                                )
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlus} /> Registrar
+                                        </Button>
+                                        <Button
+                                            className="btnRegistroVentas"
+                                            title="Regresar al menú configuración"
+                                            onClick={() => {
+                                                rutaRegreso()
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowCircleLeft} /> Regresar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Alert>
+
+                            {
+                                listClasificacionMateriales ?
+                                    (
+                                        <>
+                                            <Suspense fallback={<Spinner />}>
+                                                <ListClasificacionMateriales
+                                                    listClasificacionMateriales={listClasificacionMateriales}
+                                                    location={location}
+                                                    history={history}
+                                                    setRefreshCheckLogin={setRefreshCheckLogin}
+                                                />
+                                            </Suspense>
+                                        </>
+                                    )
+                                    :
+                                    (
+                                        <>
+                                            <Lottie loop={true} play={true} animationData={AnimacionLoading} />
+                                        </>
+                                    )
+                            }
+                        </>
+                    )}
+
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}
             </BasicModal>
