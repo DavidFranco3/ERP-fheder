@@ -267,7 +267,7 @@ function RegistroReporteProduccion(props) {
                                     <th scope="col">Estandar</th>
                                     <th scope="col">Scrap</th>
                                     <th scope="col">Observaciones</th>
-                                    <th scope="col"></th>
+                                    <th scope="col">Eliminar</th>
                                 </tr>
                             </thead>
                             <tfoot>
