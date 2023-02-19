@@ -110,7 +110,7 @@ function DashboardMantenimiento(props) {
                         title={'Entradas y salidas de moldes'}
                     />
                     <ItemCard
-                        path={'VerificacionMantenimientos'}
+                        path={'/VerificacionMantenimientos'}
                         logo={LogoLista}
                         title={'Lista de verificacion de mantenimientos preventivos'}
                     />

@@ -658,6 +658,8 @@ function ModificacionProduccion(props) {
         }
     }, [informacionRequerimiento.producto]);
 
+    const temp = informacionRequerimiento.producto.split("/");
+
     return (
         <>
             <Alert>
@@ -834,14 +836,14 @@ function ModificacionProduccion(props) {
                                                     onChange={(e) => {
                                                         handleMateriaPrima(e.target.value)
                                                     }}
-                                                    defaultValue={formData.materiaPrima}
+                                                    defaultValue={informacionRequerimiento.producto}
                                                     name="materiaPrima"
                                                 >
                                                     <option>Elige una opción</option>
                                                     {map(producto, (productos, index) => (
                                                         <option
                                                             key={index}
-                                                            value={productos?.ID + "/" + productos?.item}
+                                                            value={productos?.ID + "/" + productos?.item} selected={productos?.item == temp[1]}
                                                         >
                                                             {productos?.item}
                                                         </option>

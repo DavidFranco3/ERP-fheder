@@ -165,12 +165,14 @@ function ListVentas(props) {
             name: "Orden venta",
             selector: row => (
                 <>
-                    {row.cotizacion !== "" ?
+                    {row.cotizacion !== "" && row.estado === "true" ?
                         (
                             <>
                                 <a
                                     className="text-emerald-700 no-underline"
-                                    title="Ir al sitio web de la empresa"
+                                    //className="editar"
+                                    //cursor= "pointer !important"
+                                    title="Descargar la Orden de venta adjunta"
                                     href={row.cotizacion}
                                     target="_blank"
                                     rel="noreferrer"

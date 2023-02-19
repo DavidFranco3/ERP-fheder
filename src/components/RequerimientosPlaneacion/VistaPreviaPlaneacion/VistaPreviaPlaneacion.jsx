@@ -648,6 +648,8 @@ function VistaPreviaPlaneacion(props) {
         }
     }, [informacionRequerimiento.producto]);
 
+    const temp = informacionRequerimiento.producto.split("/");
+
     return (
         <>
             <Alert>
@@ -729,7 +731,7 @@ function VistaPreviaPlaneacion(props) {
                                                     {map(producto, (productos, index) => (
                                                         <option
                                                             key={index}
-                                                            value={productos?.ID + "/" + productos?.item}
+                                                            value={productos?.ID + "/" + productos?.item} selected={productos?.item == temp[1]}
                                                         >
                                                             {productos?.item}
                                                         </option>
