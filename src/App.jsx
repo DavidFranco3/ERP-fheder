@@ -6,7 +6,6 @@ import { AuthContext } from "./utils/contexts";
 import { isUserLogedApi } from "./api/auth";
 import { ToastContainer } from "react-toastify";
 
-
 function App() {
     const [user, setUser] = useState(null);
     const [LoadUser, setLoadUser] = useState(false);
@@ -22,13 +21,14 @@ function App() {
 
     return (
         <AuthContext.Provider value={user}>
-            {user ? (
-                <>
-                    <Routing
-                        setRefreshCheckLogin={setRefreshCheckLogin}
-                    />
-                </>
-            )
+            {user ?
+                (
+                    <>
+                        <Routing
+                            setRefreshCheckLogin={setRefreshCheckLogin}
+                        />
+                    </>
+                )
                 :
                 (
                     <Login

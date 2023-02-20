@@ -30,7 +30,7 @@ function LayoutPrincipal(props) {
     const cerrarSesion = () => {
         LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
         logoutApi();
-        redirecciona("")
+        redirecciona("");
         setRefreshCheckLogin(true);
         toast.success("Sesión cerrada");
     }
@@ -76,6 +76,7 @@ function LayoutPrincipal(props) {
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
+                redirecciona("");
                 setRefreshCheckLogin(true);
             }
         }
