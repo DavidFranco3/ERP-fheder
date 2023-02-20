@@ -413,6 +413,11 @@ function VistaPreviaCompras(props) {
                     bold: true,
                 },
                 {
+                    text: detalle.requisicion,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
                     text: detalle.referencia,
                     fontSize: 9,
                     bold: true,
@@ -438,7 +443,7 @@ function VistaPreviaCompras(props) {
                                     border: [false, false, false, false],
                                     text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
                                     alignment: 'right',
-                                    margin: [ 5, 2, 10, 20 ]
+                                    margin: [5, 2, 10, 20]
                                 }
                             ]
                         ]
@@ -587,7 +592,7 @@ function VistaPreviaCompras(props) {
                 {
                     style: 'tableExample',
                     table: {
-                        widths: ['12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%'],
+                        widths: ['11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%'],
                         heights: [10],
                         body: [
                             [
@@ -627,6 +632,11 @@ function VistaPreviaCompras(props) {
                                     bold: true,
                                 },
                                 {
+                                    text: 'Requisición',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
                                     text: 'Referencia',
                                     fontSize: 9,
                                     bold: true,
@@ -638,7 +648,7 @@ function VistaPreviaCompras(props) {
                 {
                     style: 'tableExample',
                     table: {
-                        widths: ['12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%'],
+                        widths: ['11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%'],
                         heights: [10],
                         body:
                             list,
@@ -647,7 +657,7 @@ function VistaPreviaCompras(props) {
                 {
                     style: 'tableExample',
                     table: {
-                        widths: ['33.3%', '33.3%', '33.3%'],
+                        widths: ['33.36%', '33.36%', '33.36%'],
                         heights: [10],
                         body: [
                             [
@@ -829,6 +839,7 @@ function VistaPreviaCompras(props) {
                                 <th scope="col">UM</th>
                                 <th scope="col">Precio</th>
                                 <th scope="col">Subtotal</th>
+                                <th scope="col">Requisición</th>
                                 <th scope="col">Referencia</th>
                             </tr>
                         </thead>
@@ -837,9 +848,9 @@ function VistaPreviaCompras(props) {
                         <tbody>
                             {map(listProductosCargados, (producto, index) => (
                                 <tr key={index}>
-                                    <th scope="row">
+                                    <td scope="row">
                                         {index + 1}
-                                    </th>
+                                    </td>
                                     <td data-title="Folio">
                                         {producto.folio}
                                     </td>
@@ -863,6 +874,9 @@ function VistaPreviaCompras(props) {
                                             style: "currency",
                                             currency: "MXN"
                                         }).format(producto.subtotal)} MXN
+                                    </td>
+                                    <td data-title="Requisicion">
+                                        {producto.requisicion}
                                     </td>
                                     <td data-title="Referencia">
                                         {producto.referencia}

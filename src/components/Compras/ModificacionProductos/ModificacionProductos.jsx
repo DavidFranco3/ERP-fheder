@@ -39,6 +39,7 @@ function ModificacionProductos(props) {
         cambiarValor("cantidad", datos.cantidad, formData.cantidad);
         cambiarValor("um", datos.um, formData.um);
         cambiarValor("subtotal", datos.subtotal, parseFloat(formData.precio) * parseInt(formData.cantidad));
+        cambiarValor("requisicion", datos.requisicion, formData.requisicion);
         cambiarValor("referencia", datos.referencia, formData.referencia);
 
         cancelarRegistro();
@@ -142,7 +143,18 @@ function ModificacionProductos(props) {
                                     Referencia
                                 </Form.Label>
                                 <Form.Control
-                                    id="total"
+                                    id="requision"
+                                    type="text"
+                                    defaultValue={formData.requisicion}
+                                    name="requisicion"
+                                />
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridCliente">
+                                <Form.Label>
+                                    Referencia
+                                </Form.Label>
+                                <Form.Control
+                                    id="referencia"
                                     type="text"
                                     defaultValue={formData.referencia}
                                     name="referencia"
@@ -190,6 +202,7 @@ function initialFormData(data) {
         um: data.um,
         precio: data.precio,
         subtotal: data.subtotal,
+        requisicion: data.requisicion,
         referencia: data.referencia
     }
 }

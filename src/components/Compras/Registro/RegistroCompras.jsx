@@ -222,6 +222,7 @@ function RegistroCompras(props) {
         const descripcion = document.getElementById("descripcion").value
         const precio = document.getElementById("precio").value
         const referencia = document.getElementById("referencia").value
+        const requisicion = formDataOC.requisicion
 
         if (!cantidad || !um || !descripcion || !precio || !referencia) {
             toast.warning("Completa la informacion del producto");
@@ -235,6 +236,7 @@ function RegistroCompras(props) {
                 descripcion: temp[2],
                 precio: precio,
                 referencia: referencia,
+                requisicion: requisicion,
                 subtotal: parseInt(cantidad) * parseInt(precio)
             }
             // console.log(dataTemp)
@@ -698,6 +700,7 @@ function RegistroCompras(props) {
                                 <th scope="col">UM</th>
                                 <th scope="col">Precio</th>
                                 <th scope="col">Subtotal</th>
+                                <th scope="col">Requisición</th>
                                 <th scope="col">Referencia</th>
                                 <th scope="col">Acciones</th>
                             </tr>
@@ -707,9 +710,9 @@ function RegistroCompras(props) {
                         <tbody>
                             {map(listProductosCargados, (producto, index) => (
                                 <tr key={index}>
-                                    <th scope="row">
+                                    <td scope="row">
                                         {index + 1}
-                                    </th>
+                                    </td>
                                     <td data-title="Folio">
                                         {producto.folio}
                                     </td>
@@ -733,6 +736,9 @@ function RegistroCompras(props) {
                                             style: "currency",
                                             currency: "MXN"
                                         }).format(producto.subtotal)} MXN
+                                    </td>
+                                    <td data-title="Requisicion">
+                                        {producto.requisicion}
                                     </td>
                                     <td data-title="Referencia">
                                         {producto.referencia}
