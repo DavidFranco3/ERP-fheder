@@ -40,6 +40,7 @@ function ModificacionProductos(props) {
         cambiarValor("um", datos.um, formData.um);
         cambiarValor("subtotal", datos.subtotal, parseFloat(formData.precioUnitario) * parseInt(formData.cantidad));
         cambiarValor("referencia", datos.referencia, formData.referencia);
+        cambiarValor("ordenCompra", datos.ordenCompra, formData.ordenCompra);
 
         cancelarRegistro();
     }
@@ -149,6 +150,17 @@ function ModificacionProductos(props) {
                                     disabled
                                 />
                             </Form.Group>
+                            <Form.Group as={Col} controlId="formGridCliente">
+                                <Form.Label>
+                                    Orden compra
+                                </Form.Label>
+                                <Form.Control
+                                    id="total"
+                                    type="text"
+                                    defaultValue={formData.ordenCompra}
+                                    name="ordenCompra"
+                                />
+                            </Form.Group>
                         </Row>
 
                         <Form.Group as={Row} className="botones">
@@ -192,7 +204,8 @@ function initialFormData(data) {
         precioUnitario: data.precioUnitario,
         subtotal: data.subtotal,
         referencia: data.referencia,
-        almacen: data.tipoMercancia
+        almacen: data.tipoMercancia,
+        ordenCompra: data.ordenCompra
     }
 }
 

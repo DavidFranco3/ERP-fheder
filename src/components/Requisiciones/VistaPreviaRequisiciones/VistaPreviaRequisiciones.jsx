@@ -332,6 +332,11 @@ function VistaPreviaRequisiciones(props) {
                     bold: true,
                 },
                 {
+                    text: detalle.requisicion,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
                     text: detalle.referencia,
                     fontSize: 9,
                     bold: true,
@@ -534,7 +539,7 @@ function VistaPreviaRequisiciones(props) {
                 {
                     style: 'tableExample',
                     table: {
-                        widths: ['12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%'],
+                        widths: ['11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%'],
                         heights: [10],
                         body: [
                             [
@@ -574,6 +579,11 @@ function VistaPreviaRequisiciones(props) {
                                     bold: true,
                                 },
                                 {
+                                    text: 'Requisición',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
                                     text: 'Referencia',
                                     fontSize: 9,
                                     bold: true,
@@ -585,7 +595,7 @@ function VistaPreviaRequisiciones(props) {
                 {
                     style: 'tableExample',
                     table: {
-                        widths: ['12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%'],
+                        widths: ['11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%'],
                         heights: [10],
                         body:
                             list,
@@ -594,7 +604,7 @@ function VistaPreviaRequisiciones(props) {
                 {
                     style: 'tableExample',
                     table: {
-                        widths: ['100%'],
+                        widths: ['100.08%'],
                         heights: [10],
                         body: [
                             [
@@ -774,6 +784,7 @@ function VistaPreviaRequisiciones(props) {
                                 <th scope="col">Cantidad</th>
                                 <th scope="col">Precio</th>
                                 <th scope="col">Subtotal</th>
+                                <th scope="col">Requisición</th>
                                 <th scope="col">Referencia</th>
                             </tr>
                         </thead>
@@ -814,6 +825,9 @@ function VistaPreviaRequisiciones(props) {
                                             }).format(producto.subtotal) : "No disponible"}
                                             { } MXN
                                         </>
+                                    </td>
+                                    <td data-title="Requisición">
+                                        {producto.requisicion}
                                     </td>
                                     <td data-title="Referencia">
                                         {producto.referencia}

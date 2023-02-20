@@ -115,6 +115,24 @@ function RegistraRequisiciones(props) {
         setShowModal(true);
     }
 
+    // Para almacenar el folio actual
+    const [folioActual, setFolioActual] = useState("");
+
+    useEffect(() => {
+        try {
+            obtenerNumeroRequisicion().then(response => {
+                const { data } = response;
+                console.log(data)
+                const { noRequisicion } = data;
+                setFolioActual(noRequisicion)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
     useEffect(() => {
         let cantidad = "";
         let referencia = "";
@@ -135,6 +153,7 @@ function RegistraRequisiciones(props) {
                     proveedor: requerimiento.nombreProveedor,
                     precioUnitario: bom.precioMaterial,
                     subtotal: parseFloat(bom.precioMaterial) * parseFloat(datosRequisicion.cantidadPedir),
+                    requisicion: folioActual,
                     referencia: referencia
                 },
                 {
@@ -145,6 +164,7 @@ function RegistraRequisiciones(props) {
                     proveedor: requerimiento.nombreProveedor,
                     precioUnitario: bom.precioEmpaque,
                     subtotal: parseFloat(bom.precioEmpaque) * parseFloat(datosRequisicion.cantidadPedirEmpaques),
+                    requisicion: folioActual,
                     referencia: referencia
                 },
                 {
@@ -155,6 +175,7 @@ function RegistraRequisiciones(props) {
                     proveedor: requerimiento.nombreProveedor,
                     precioUnitario: bom.precioPigmento,
                     subtotal: parseFloat(bom.precioPigmento) * parseFloat(datosRequisicion.cantidadPedirMB),
+                    requisicion: folioActual,
                     referencia: referencia
                 }
             ]
@@ -164,7 +185,7 @@ function RegistraRequisiciones(props) {
         }).catch(e => {
             console.log(e)
         })
-    }, []);
+    }, [folioActual]);
 
     // Para almacenar el listado de ordenes de venta
     const [listOrdenesVenta, setListOrdenesVenta] = useState(null);
@@ -201,6 +222,7 @@ function RegistraRequisiciones(props) {
         const descripcion = document.getElementById("descripcion").value
         const referencia = document.getElementById("referencia").value
         const precioUnitario = document.getElementById("precioUnitario").value
+        const requisicion = folioActual
 
         if (!cantidad || !um || !descripcion || !precioUnitario || !referencia) {
             toast.warning("Completa la informacion del producto");
@@ -212,6 +234,7 @@ function RegistraRequisiciones(props) {
                 descripcion: descripcion,
                 referencia: referencia,
                 precioUnitario: precioUnitario,
+                requisicion: requisicion,
                 subtotal: parseFloat(precioUnitario) * parseFloat(cantidad)
             }
 
@@ -243,24 +266,6 @@ function RegistraRequisiciones(props) {
         setListProductosCargados([...newArray]);
     }
     // Termina gestión de los articulos cargados
-
-    // Para almacenar el folio actual
-    const [folioActual, setFolioActual] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerNumeroRequisicion().then(response => {
-                const { data } = response;
-                console.log(data)
-                const { noRequisicion } = data;
-                setFolioActual(noRequisicion)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -632,7 +637,7 @@ function RegistraRequisiciones(props) {
                                         <Form.Control
                                             id="referencia"
                                             type="text"
-                                            defaultValue={formData.ordenVenta}
+                                            defaultValue={formDataVenta.ordenVenta}
                                             name="referencia"
                                         />
                                         <FontAwesomeIcon
@@ -738,6 +743,7 @@ function RegistraRequisiciones(props) {
                                 <th scope="col">Cantidad</th>
                                 <th scope="col">Precio</th>
                                 <th scope="col">Subtotal</th>
+                                <th scope="col">Requisición</th>
                                 <th scope="col">Referencia</th>
                                 <th scope="col">Acciones</th>
                             </tr>
@@ -779,6 +785,9 @@ function RegistraRequisiciones(props) {
                                             }).format(producto.subtotal) : "No disponible"}
                                             { } MXN
                                         </>
+                                    </td>
+                                    <td data-title="Requisicion">
+                                        {producto.requisicion}
                                     </td>
                                     <td data-title="Referencia">
                                         {producto.referencia}

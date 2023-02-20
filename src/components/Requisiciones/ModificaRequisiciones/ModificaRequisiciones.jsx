@@ -161,6 +161,7 @@ function ModificaRequisiciones(props) {
         const descripcion = document.getElementById("descripcion").value
         const referencia = document.getElementById("referencia").value
         const precioUnitario = document.getElementById("precioUnitario").value
+        const requisicion = formData.folio
 
         if (!cantidad || !um || !descripcion || !precioUnitario || !referencia) {
             toast.warning("Completa la informacion del producto");
@@ -172,6 +173,7 @@ function ModificaRequisiciones(props) {
                 descripcion: descripcion,
                 referencia: referencia,
                 precioUnitario: precioUnitario,
+                requisicion: requisicion,
                 subtotal: parseFloat(precioUnitario) * parseFloat(cantidad)
             }
 
@@ -678,6 +680,7 @@ function ModificaRequisiciones(props) {
                                 <th scope="col">Cantidad</th>
                                 <th scope="col">Precio</th>
                                 <th scope="col">Subtotal</th>
+                                <th scope="col">Requisición</th>
                                 <th scope="col">Referencia</th>
                                 <th scope="col">Acciones</th>
                             </tr>
@@ -719,6 +722,9 @@ function ModificaRequisiciones(props) {
                                             }).format(producto.subtotal) : "No disponible"}
                                             { } MXN
                                         </>
+                                    </td>
+                                    <td data-title="Requisicion">
+                                        {producto.requisicion}
                                     </td>
                                     <td data-title="Referencia">
                                         {producto.referencia}

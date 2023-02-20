@@ -504,6 +504,11 @@ function VistaPreviaRecepcion(props) {
                     fontSize: 9,
                     bold: true,
                 },
+                {
+                    text: detalle.ordenCompra,
+                    fontSize: 9,
+                    bold: true,
+                },
             ])
         });
         return newArray;
@@ -641,7 +646,7 @@ function VistaPreviaRecepcion(props) {
                 {
                     style: 'tableExample',
                     table: {
-                        widths: ['12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%'],
+                        widths: ['11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%'],
                         heights: [10],
                         body: [
                             [
@@ -684,6 +689,11 @@ function VistaPreviaRecepcion(props) {
                                     text: 'Almacen',
                                     fontSize: 9,
                                     bold: true,
+                                },
+                                {
+                                    text: 'Orden compra',
+                                    fontSize: 9,
+                                    bold: true,
                                 }
                             ],
                         ],
@@ -692,7 +702,7 @@ function VistaPreviaRecepcion(props) {
                 {
                     style: 'tableExample',
                     table: {
-                        widths: ['12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%', '12.5%'],
+                        widths: ['11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%'],
                         heights: [10],
                         body:
                             list,
@@ -701,7 +711,7 @@ function VistaPreviaRecepcion(props) {
                 {
                     style: 'tableExample',
                     table: {
-                        widths: ['100%'],
+                        widths: ['100.08%'],
                         heights: [10],
                         body: [
                             [
@@ -833,6 +843,7 @@ function VistaPreviaRecepcion(props) {
                                         <th scope="col">Precio unitario</th>
                                         <th scope="col">Subtotal</th>
                                         <th scope="col">Almacen</th>
+                                        <th scope="col">Orden compra</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -869,6 +880,9 @@ function VistaPreviaRecepcion(props) {
                                             </td>
                                             <td data-title="tipoMercancia">
                                                 {producto.tipoMercancia}
+                                            </td>
+                                            <td data-title="tipoMercancia">
+                                                {producto.ordenCompra}
                                             </td>
                                         </tr>
                                     ))}

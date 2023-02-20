@@ -331,6 +331,7 @@ function RegistroRecepcion(props) {
         const um = document.getElementById("um").value
         const tipoMercancia = document.getElementById("tipoMercancia").value
         const precioUnitario = document.getElementById("precioUnitario").value
+        const ordenCompra = formDataOC.ordenCompra
 
         if (!producto || !cantidad || !um || !tipoMercancia || !precioUnitario) {
             toast.warning("Completa la información del producto");
@@ -344,7 +345,8 @@ function RegistroRecepcion(props) {
                 um: um,
                 tipoMercancia: tipoMercancia,
                 precioUnitario: precioUnitario,
-                subtotal: parseFloat(cargaProductos.cantidad) * parseFloat(cargaProductos.precioUnitario)
+                subtotal: parseFloat(cargaProductos.cantidad) * parseFloat(cargaProductos.precioUnitario),
+                ordenCompra: ordenCompra
             }
             // console.log(dataTemp)
 
@@ -712,6 +714,7 @@ function RegistroRecepcion(props) {
                                         <th scope="col">Precio unitario</th>
                                         <th scope="col">Subtotal</th>
                                         <th scope="col">Almacen</th>
+                                        <th scope="col">Orden compra</th>
                                         <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
@@ -749,6 +752,9 @@ function RegistroRecepcion(props) {
                                             </td>
                                             <td data-title="tipoMercancia">
                                                 {producto.tipoMercancia}
+                                            </td>
+                                            <td data-title="ordenCompra">
+                                                {producto.ordenCompra}
                                             </td>
                                             <td data-title="Eliminar">
                                                 <Badge
