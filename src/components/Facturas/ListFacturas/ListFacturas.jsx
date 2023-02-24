@@ -29,14 +29,14 @@ function ListFacturas(props) {
 
     // Para la eliminacion fisica de usuarios
     const eliminaFactura = (content) => {
-        setTitulosModal("Eliminando factura");
+        setTitulosModal("Eliminando cuenta por cobrar");
         setContentModal(content);
         setShowModal(true);
     }
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaFactura = (content) => {
-        setTitulosModal("Cancelando la factura");
+        setTitulosModal("Cancelando la cuenta por cobrar");
         setContentModal(content);
         setShowModal(true);
     }

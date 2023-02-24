@@ -11,6 +11,7 @@ import "./AlertasCalidad.scss";
 import { listarAlertasCalidad } from "../../api/alertasCalidad";
 import ListAlertasCalidad from '../../components/AlertasCalidad/ListAlertasCalidad';
 import { withRouter } from "../../utils/withRouter";
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function AlertasCalidad(props) {
     const { location, history, setRefreshCheckLogin } = props;
@@ -19,6 +20,7 @@ function AlertasCalidad(props) {
     useEffect(() => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();

@@ -743,7 +743,7 @@ function VistaPreviaFactura(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Vista detallada de la factura
+                            Vista detallada de la cuenta por cobrar
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

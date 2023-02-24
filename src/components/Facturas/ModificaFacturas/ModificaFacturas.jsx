@@ -393,7 +393,7 @@ function ModificaFacturas(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Modificando factura
+                            Modificando cuenta por cobrar
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>

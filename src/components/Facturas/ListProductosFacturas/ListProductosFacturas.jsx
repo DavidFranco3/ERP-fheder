@@ -35,7 +35,7 @@ function ListProductosFacturas(props) {
                         <>
                             <Container fluid className="tablaProductos">
                                 <Badge bg="secondary" className="tituloFormularioDetalles">
-                                    <h4>Detalles de los productos de la factura</h4>
+                                    <h4>Detalles de los productos de la cuenta por cobrar</h4>
                                 </Badge>
                                 <table className="responsive-tableTrackingOV"
                                 >

@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi, getAlmacen, setAlmacen } from '../../api/auth';
 import { listarAlmacenes } from '../../api/gestionAlmacen';
 import { map } from "lodash";
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function Almacenes(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -25,6 +26,7 @@ function Almacenes(props) {
     useEffect(() => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();

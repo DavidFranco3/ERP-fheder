@@ -12,6 +12,7 @@ import AnimacionLoading from '../../assets/json/loading.json';
 import ListAsignacionPedido from "../../components/AsignacionesPedido/ListAsignacionPedido";
 import { toast } from "react-toastify";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function AsignacionPedido(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -32,6 +33,7 @@ function AsignacionPedido(props) {
     useEffect(() => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();

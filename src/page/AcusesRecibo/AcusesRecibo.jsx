@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { withRouter } from "../../utils/withRouter";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 import { toast } from "react-toastify";
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function AcusesRecibo(props) {
     const { setRefreshCheckLogin } = props;
@@ -14,6 +15,7 @@ function AcusesRecibo(props) {
     useEffect(() => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
