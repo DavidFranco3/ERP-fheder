@@ -63,7 +63,8 @@ import GestionAlmacen from "../page/GestionAlmacen";
 import Almacenes from "../page/Almacenes";
 import Error404 from "../page/Error404";
 import Facturas from "../page/Facturas";
-import Notas from "../page/Notas"
+import Notas from "../page/Notas";
+import CuentasClientes from "../page/CuentasClientes";
 
 // importacion de dashboards
 import DashboardVentas from "../components/Dashboards/DashboardVentas";
@@ -754,6 +755,10 @@ export default [
     {
         path: "/Logs",
         page: Logs
+    },
+    {
+        path: "/CuentasClientes",
+        page: CuentasClientes
     },
     {
         path: "/Requisiciones",

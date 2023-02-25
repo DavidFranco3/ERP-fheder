@@ -20,6 +20,7 @@ import { obtenerCliente } from "../../../api/clientes";
 import BuscarCliente from '../../../page/BuscarCliente';
 import BuscarOV from '../../../page/BuscarOV';
 import BuscarProducto from '../../../page/BuscarProducto';
+import { LogCuentaRegistro, LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
 
 function RegistroFacturas(props) {
     const { history, setRefreshCheckLogin, location } = props;
@@ -242,6 +243,9 @@ function RegistroFacturas(props) {
             const { data: { mensaje, datos } } = response;
             // console.log(response)
             toast.success(mensaje)
+            // Log acerca del registro de cuentas de clientes
+            LogCuentaRegistro(formDataVenta.cliente, formDataVenta.nombreCliente, total);
+            LogCuentaActualizacion(formDataVenta.cliente, formDataVenta.nombreCliente, total);
             // Log acerca del registro inicial del tracking
             LogsInformativos("Se han registrado la factura " + folioActual, dataTemp)
             // Registro inicial del tracking
@@ -452,15 +456,15 @@ function RegistroFacturas(props) {
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                    <div className="flex items-center mb-1">
-                                        <Form.Control
-                                            type="text"
-                                            defaultValue={formDataVenta.ordenVenta}
-                                            placeholder="Orden de venta"
-                                            name="ordenVenta"
-                                            disabled
-                                        />
-                                        <FontAwesomeIcon
+                                        <div className="flex items-center mb-1">
+                                            <Form.Control
+                                                type="text"
+                                                defaultValue={formDataVenta.ordenVenta}
+                                                placeholder="Orden de venta"
+                                                name="ordenVenta"
+                                                disabled
+                                            />
+                                            <FontAwesomeIcon
                                                 className="cursor-pointer py-2 -ml-6"
                                                 title="Buscar entre las ventas"
                                                 icon={faSearch}

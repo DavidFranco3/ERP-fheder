@@ -15,6 +15,7 @@ import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
 //import ModificacionProductos from '../ModificacionProductos';
 
 function RegistroNota(props) {
@@ -280,7 +281,8 @@ function RegistroNota(props) {
                 // console.log(response)
                 toast.success(mensaje)
                 // Log acerca del registro inicial del tracking
-                LogsInformativos("Se ha registrado la nota de " + formData.tipo + folioActual, dataTemp)
+                LogsInformativos("Se ha registrado la nota de " + formData.tipo + folioActual, dataTemp);
+                LogCuentaActualizacion(formDataFactura.cliente, formDataFactura.nombreCliente, formData.tipo == "Cargo" ? total : formData.tipo == "Credito" ? parseFloat(total) * parseInt(-1) : parseFloat(total) * parseInt(-1));
                 // Registro inicial del tracking
                 //LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
                 setLoading(false)
@@ -650,7 +652,9 @@ function initialFormDataFactura() {
         factura: "",
         ivaElegido: "",
         subtotal: "",
-        total: ""
+        total: "",
+        cliente: "",
+        nombreCliente: ""
     }
 }
 

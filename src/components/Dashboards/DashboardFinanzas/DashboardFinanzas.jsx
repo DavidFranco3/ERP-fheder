@@ -5,6 +5,7 @@ import { Alert, Button, Col, Row, Card, Container, CardGroup, Image, Badge } fro
 // Importacion de imagenes para los iconos de los menus
 import LogoCuentasCobrar from "../../../assets/png/menus/cuentasPorCobrar.png";
 import LogoNotas from "../../../assets/png/menus/notas.png";
+import LogoCuentasClientes from "../../../assets/png/menus/cuentasClientes.png";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../../api/auth";
 import { toast } from "react-toastify";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -70,7 +71,7 @@ function DashboardFinanzas(props) {
                         </Col>
                     </Row>
                 </Alert>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-3 gap-3">
                     <ItemCard
                         path={'/Facturas'}
                         logo={LogoCuentasCobrar}
@@ -80,6 +81,11 @@ function DashboardFinanzas(props) {
                         path={'/Notas'}
                         logo={LogoNotas}
                         title={'Notas'}
+                    />
+                    <ItemCard
+                        path={'/CuentasClientes'}
+                        logo={LogoCuentasClientes}
+                        title={'Cuentas de los clientes'}
                     />
                 </div>
         </>

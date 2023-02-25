@@ -151,6 +151,19 @@ export const ENDPOINTListarFacturaPaginacion = "/facturas/listarPaginando";
 export const ENDPOINTObtenerNoFactura = "/facturas/obtenerNoFactura";
 export const ENDPOINTTotalFactura = "/facturas/total";
 
+// Cuentas clientes
+export const ENDPOINTRegistraCuentaCliente = "/cuentasClientes/registro";
+export const ENDPOINTListarCuentaCliente = "/cuentasClientes/listar";
+export const ENDPOINTListarCuentaClienteActivo = "/cuentasClientes/listarActivas";
+export const ENDPOINTObtenerCuentaCliente = "/cuentasClientes/obtener";
+export const ENDPOINTObtenerDatosCuentaCliente = "/cuentasClientes/obtenerDatosCuenta";
+export const ENDPOINTEliminarCuentaCliente = "/cuentasClientes/eliminar";
+export const ENDPOINTActualizarCuentaCliente = "/cuentasClientes/actualizar";
+export const ENDPOINTActualizarEstadoCuentaCliente = "/cuentasClientes/actualizarEstado";
+export const ENDPOINTListarCuentaClientePaginacion = "/cuentasClientes/listarPaginando";
+export const ENDPOINTObtenerNoCuentaCliente = "/cuentasClientes/obtenerNoCuenta";
+export const ENDPOINTTotalCuentaCliente = "/cuentasClientes/total";
+
 // Recepcion de material e insumos
 export const ENDPOINTRegistraRecepcion = "/recepcionMaterialInsumos/registro";
 export const ENDPOINTListarRecepcion = "/recepcionMaterialInsumos/listar";

@@ -22,13 +22,15 @@ function BuscarFacturas(props) {
     }
 
     // Gestionar el socio seleccionado
-    const facturaElegida = ({ folio, ivaElegido, subtotal, total }) => {
+    const facturaElegida = ({ folio, ivaElegido, subtotal, total, cliente, nombreCliente }) => {
         // Almacena id, ficha y nombre del socio elegido
         const dataTemp = {
             factura: folio,
             ivaElegido: ivaElegido,
             subtotal: subtotal,
-            total: total
+            total: total,
+            cliente: cliente,
+            nombreCliente: nombreCliente,
         }
         setFormData(dataTemp);
         cancelarBusqueda();
