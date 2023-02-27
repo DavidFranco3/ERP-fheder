@@ -75,7 +75,7 @@ function DashboardFinanzas(props) {
                     <ItemCard
                         path={'/Facturas'}
                         logo={LogoCuentasCobrar}
-                        title={'Facturas'}
+                        title={'Cuentas por cobrar'}
                     />
                     <ItemCard
                         path={'/Notas'}
@@ -85,7 +85,7 @@ function DashboardFinanzas(props) {
                     <ItemCard
                         path={'/CuentasClientes'}
                         logo={LogoCuentasClientes}
-                        title={'Cuentas de los clientes'}
+                        title={'Saldos'}
                     />
                 </div>
         </>
