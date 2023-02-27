@@ -5,10 +5,11 @@ import queryString from "query-string";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { eliminaFactura } from "../../../api/facturas";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
 
 function EliminacionFisicaFacturas(props) {
     const { datos, setShowModal, history } = props;
-    const { id, folio, ordenVenta, nombreCliente, nombreContacto, estado } = datos;
+    const { id, folio, ordenVenta, cliente, nombreCliente, nombreContacto, total } = datos;
 
     //console.log(datosPedido)
 
@@ -31,7 +32,8 @@ function EliminacionFisicaFacturas(props) {
                 const { data } = response;
                 // console.log(data)
                 toast.success(data.mensaje)
-                LogsInformativos("Se ha eliminado la factura " + folio, datos)
+                LogsInformativos("Se ha eliminado la factura " + folio, datos);
+                LogCuentaActualizacion(cliente, nombreCliente, parseFloat(total) * -1);
                 setShowModal(false);
                 setLoading(false);
                 history({

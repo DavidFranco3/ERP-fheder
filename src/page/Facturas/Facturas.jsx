@@ -165,6 +165,7 @@ function formatModelFacturas(data) {
             nombreContacto: data.nombreContacto,
             telefono: data.telefono,
             correo: data.correo,
+            total: data.total,
             productos: data.productos,
             estado: data.estado,
             fechaRegistro: data.createdAt,

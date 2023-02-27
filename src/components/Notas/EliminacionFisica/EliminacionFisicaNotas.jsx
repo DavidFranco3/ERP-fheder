@@ -3,7 +3,9 @@ import { toast } from "react-toastify";
 import queryString from "query-string";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { eliminaNotas } from "../../../api/notas";
+import { obtenerDatosFactura } from "../../../api/facturas";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
 
 function EliminacionFisicaNotas(props) {
     const { datos, setShowModal, history } = props;
@@ -19,6 +21,21 @@ function EliminacionFisicaNotas(props) {
     // Para determinar el uso de la animacion
     const [loading, setLoading] = useState(false);
 
+    const [cliente, setCliente] = useState("");
+    const [nombreCliente, setNombreCliente] = useState("");
+
+    useEffect(() => {
+        //
+        obtenerDatosFactura(factura).then(response => {
+            const { data } = response;
+            //console.log(data)
+            setCliente(data.cliente);
+            setNombreCliente(data.nombreCliente);
+        }).catch(e => {
+            console.log(e)
+        })
+    }, []);
+
     const onSubmit = e => {
         e.preventDefault();
 
@@ -30,7 +47,8 @@ function EliminacionFisicaNotas(props) {
                 const { data } = response;
                 // console.log(data)
                 toast.success(data.mensaje)
-                LogsInformativos("Se ha eliminado la nota con el folio de " + tipo + " con folio" + folio, datos)
+                LogsInformativos("Se ha eliminado la nota con el folio de " + tipo + " con folio" + folio, datos);
+                LogCuentaActualizacion(cliente, nombreCliente, tipo == "Cargo" ? parseFloat(total) * -1 : tipo == "Credito" ? parseFloat(total) : tipo == "Devolución" ? parseFloat(total) : "");
                 //LogTrackingEliminacion(folio)
                 setShowModal(false);
                 setLoading(false);

@@ -39,7 +39,7 @@ export function LogCuentaRegistro(cliente, nombreCliente, total) {
 
 // Realiza la modificación de saldos al realizar un movimiento
 export function LogCuentaActualizacion(cliente, nombreCliente, total) {
-     console.log(cliente)
+     console.log(total);
     try {
         obtenerCuentaCliente(cliente).then(response => {
             const { data } = response;

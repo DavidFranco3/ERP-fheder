@@ -4,7 +4,9 @@ import "./EliminacionLogicaNotas.scss";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { actualizaEstadoNotas } from "../../../api/notas";
+import { obtenerDatosFactura } from "../../../api/facturas";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
 
 function EliminacionLogicaNotas(props) {
     const { datos, setShowModal, history } = props;
@@ -17,6 +19,21 @@ function EliminacionLogicaNotas(props) {
     const cancelar = () => {
         setShowModal(false)
     }
+
+    const [cliente, setCliente] = useState("");
+    const [nombreCliente, setNombreCliente] = useState("");
+
+    useEffect(() => {
+        //
+        obtenerDatosFactura(factura).then(response => {
+            const { data } = response;
+            //console.log(data)
+            setCliente(data.cliente);
+            setNombreCliente(data.nombreCliente);
+        }).catch(e => {
+            console.log(e)
+        })
+    }, []);
 
     const onSubmit = e => {
         e.preventDefault();
@@ -34,6 +51,7 @@ function EliminacionLogicaNotas(props) {
                 //console.log(data)
                 toast.success(data.mensaje);
                 LogsInformativos("Se ha cancelado la nota de " + tipo + " con folio " + folio, datos);
+                LogCuentaActualizacion(cliente, nombreCliente, tipo == "Cargo" ? parseFloat(total) * -1 : tipo == "Credito" ? parseFloat(total) : tipo == "Devolución" ? parseFloat(total) : "");
                 setShowModal(false);
                 history({
                     search: queryString.stringify(""),

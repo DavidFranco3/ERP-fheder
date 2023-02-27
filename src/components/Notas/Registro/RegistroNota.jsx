@@ -282,7 +282,7 @@ function RegistroNota(props) {
                 toast.success(mensaje)
                 // Log acerca del registro inicial del tracking
                 LogsInformativos("Se ha registrado la nota de " + formData.tipo + folioActual, dataTemp);
-                LogCuentaActualizacion(formDataFactura.cliente, formDataFactura.nombreCliente, formData.tipo == "Cargo" ? total : formData.tipo == "Credito" ? parseFloat(total) * parseInt(-1) : parseFloat(total) * parseInt(-1));
+                LogCuentaActualizacion(formDataFactura.cliente, formDataFactura.nombreCliente, formData.tipo == "Cargo" ? total : formData.tipo == "Credito" ? parseFloat(total) * -1 : formData.tipo == "Devolución" ? parseFloat(formDataFactura.total) * -1 : "");
                 // Registro inicial del tracking
                 //LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
                 setLoading(false)

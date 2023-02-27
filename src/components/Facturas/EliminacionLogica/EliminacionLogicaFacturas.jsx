@@ -5,11 +5,11 @@ import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { actualizaEstadoFactura } from "../../../api/facturas";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
+import { LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
 
 function EliminacionLogicaFacturas(props) {
     const { datos, setShowModal, history } = props;
-    const { id, folio, ordenVenta, nombreCliente, nombreContacto, estado } = datos;
+    const { id, folio, ordenVenta, cliente, nombreCliente, nombreContacto, total, estado } = datos;
 
     // Para determinar el uso de la animacion
     const [loading, setLoading] = useState(false);
@@ -35,7 +35,7 @@ function EliminacionLogicaFacturas(props) {
                 //console.log(data)
                 toast.success(data.mensaje);
                 LogsInformativos("Se ha cancelado la factura " + folio, datos);
-                //LogTrackingActualizacion(folio, "Cancelación", "0");
+                LogCuentaActualizacion(cliente, nombreCliente, parseFloat(total) * -1);
                 setShowModal(false);
                 history({
                     search: queryString.stringify(""),
