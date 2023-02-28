@@ -46,13 +46,13 @@ function ListCuentasPagar(props) {
 
 
     // Para la modificacion de datos del pedido
-    const modificaFactura = (id) => {
-        enrutamiento(`/ModificaFacturas/${id}`);
+    const modificaCuentasPagar = (id) => {
+        enrutamiento(`/ModificaCuentasPagar/${id}`);
     }
 
     // Para abrir en una pestaña nueva el pdf de la vista
     const vistaPrevia = (id) => {
-        enrutamiento(`/VistaPreviaFactura/${id}`);
+        enrutamiento(`/VistaPreviaCuentasPagar/${id}`);
     }
 
     const ExpandedComponent = ({ data }) => (
@@ -164,26 +164,26 @@ function ListCuentasPagar(props) {
                 row.estado === "true" ?
                     (
                         <>
-                            {/*<Badge
-                        bg="primary"
-                        title="Generar PDF"
-                        className="ver"
-                        onClick={() => {
-                            vistaPrevia(row.id);
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faEye} className="text-lg" />
-                    </Badge>
-                    <Badge
-                        bg="success"
-                        title="Modificar"
-                        className="editar"
-                        onClick={() => {
-                            modificaFactura(row.id)
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                    </Badge>*/}
+                            <Badge
+                                bg="primary"
+                                title="Generar PDF"
+                                className="ver"
+                                onClick={() => {
+                                    vistaPrevia(row.id);
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEye} className="text-lg" />
+                            </Badge>
+                            <Badge
+                                bg="success"
+                                title="Modificar"
+                                className="editar"
+                                onClick={() => {
+                                    modificaCuentasPagar(row.id)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                            </Badge>
                             <Badge
                                 bg="danger"
                                 title="Eliminar"

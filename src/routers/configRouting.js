@@ -90,6 +90,9 @@ import VistaDetallada from "../components/MatrizProductos/VistaDetallada";
 
 // Rutas para cuentas por pagar
 import RegistroCuentasPagar from "../components/CuentasPagar/RegistroCuentasPagar";
+import ModificaCuentasPagar from "../components/CuentasPagar/ModificaCuentasPagar";
+import CuentasPagarOC from "../components/CuentasPagar/CuentasPagarOC";
+import VistaPreviaCuentasPagar from "../components/CuentasPagar/VistaPreviaCuentasPagar";
 
 // Rutas para calidad
 import RegistraReporte from "../components/Calidad/RegistraReporte";
@@ -288,6 +291,18 @@ export default [
     {
         path: "/RegistroCuentasPagar",
         page: RegistroCuentasPagar
+    },
+    {
+        path: "/ModificaCuentasPagar/:id",
+        page: ModificaCuentasPagar
+    },
+    {
+        path: "/VistaPreviaCuentasPagar/:id",
+        page: VistaPreviaCuentasPagar
+    },
+    {
+        path: "/CuentasPagarOC/:ordenCompra",
+        page: CuentasPagarOC
     },
     {
         path: "/RegistraRequerimientosPlaneacion",

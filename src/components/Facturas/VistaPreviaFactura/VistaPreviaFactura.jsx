@@ -473,7 +473,7 @@ function VistaPreviaFactura(props) {
                                     border: [false, false, false, false],
                                     text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
                                     alignment: 'right',
-                                    margin: [ 5, 2, 10, 20 ]
+                                    margin: [5, 2, 10, 20]
                                 }
                             ]
                         ]
@@ -1068,39 +1068,39 @@ function VistaPreviaFactura(props) {
                         </div>
 
                         {/* Botones de envio del formulario */}
-                    <br />
-                    <div className="botones">
-                        <Form.Group as={Row} className="botones">
-                            <Row>
-                                <Col>
-                                    <div
-                                        className="generacionPDF"
-                                    >
-                                        <Image
-                                            src={LogoPDF}
-                                            className="logoPDF"
-                                            onClick={() => {
-                                                descargaPDF()
-                                            }}
-                                        />
-                                    </div>
-                                </Col>
-                                <Col>
-                                    <div
-                                        className="regreso"
-                                    >
-                                        <Image
-                                            src={Regreso}
-                                            className="regresarVistaAnterior"
-                                            onClick={() => {
-                                                regresaListadoVentas()
-                                            }}
-                                        />
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Form.Group>
-                    </div>
+                        <br />
+                        <div className="botones">
+                            <Form.Group as={Row} className="botones">
+                                <Row>
+                                    <Col>
+                                        <div
+                                            className="generacionPDF"
+                                        >
+                                            <Image
+                                                src={LogoPDF}
+                                                className="logoPDF"
+                                                onClick={() => {
+                                                    descargaPDF()
+                                                }}
+                                            />
+                                        </div>
+                                    </Col>
+                                    <Col>
+                                        <div
+                                            className="regreso"
+                                        >
+                                            <Image
+                                                src={Regreso}
+                                                className="regresarVistaAnterior"
+                                                onClick={() => {
+                                                    regresaListadoVentas()
+                                                }}
+                                            />
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Form.Group>
+                        </div>
                     </Form>
                 </div>
             </Container>

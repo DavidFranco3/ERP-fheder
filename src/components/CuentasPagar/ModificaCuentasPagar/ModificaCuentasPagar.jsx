@@ -3,28 +3,23 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
-import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
-import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import { listarClientes } from "../../../api/clientes";
-import { registraFactura, obtenerNumeroFactura } from "../../../api/facturas";
+import { actualizaCuentasPagar, obtenerCuentasPagar } from "../../../api/cuentasPorPagar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import "./FacturasOV.scss"
+import { faSearch, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import "./ModificaCuentasPagar.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
-import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
-import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta";
-import { obtenerCliente } from "../../../api/clientes";
+import { obtenerProveedores } from "../../../api/proveedores";
+import BuscarOC from '../../../page/BuscarOC';
 
-function FacturasOV(props) {
+function ModificaCuentasPagar(props) {
     const { history, setRefreshCheckLogin, location } = props;
 
     const params = useParams();
-    const { ordenVenta } = params
+    const { id } = params
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -58,20 +53,23 @@ function FacturasOV(props) {
     const enrutamiento = useNavigate();
 
     // Para guardar los datos del formulario
-    const [formData, setFormData] = useState(initialFormData());
+    const [formData, setFormData] = useState(initialFormDataInitial());
 
     // Para guardar los datos del formulario
-    const [formDataVenta, setFormDataVenta] = useState(initialFormDataVentaInitial());
+    const [formDataCompra, setFormDataCompra] = useState(initialFormDataCompraInitial());
 
     // Para guardar los datos del formulario
-    const [formDataCliente, setFormDataCliente] = useState(initialFormDataClienteInitial());
+    const [formDataProveedor, setFormDataProveedor] = useState(initialFormDataProveedorInitial());
 
     useEffect(() => {
         //
-        obtenerDatosPedidoVenta(ordenVenta).then(response => {
+        obtenerCuentasPagar(id).then(response => {
             const { data } = response;
             //console.log(data)
-            setFormDataVenta(initialFormDataVenta(data));
+            setFormData(initialFormData(data));
+            setFormDataCompra(initialFormDataCompra(data));
+            //setFormDataCliente(initialFormDataCliente(data));
+            // setFechaCreacion(fechaElaboracion)
             setListProductosCargados(data.productos);
         }).catch(e => {
             console.log(e)
@@ -80,15 +78,15 @@ function FacturasOV(props) {
 
     useEffect(() => {
         //
-        obtenerCliente(formDataVenta.cliente).then(response => {
+        obtenerProveedores(formDataCompra.proveedor).then(response => {
             const { data } = response;
             //console.log(data)
-            setFormDataCliente(initialFormDataCliente(data));
+            setFormDataProveedor(initialFormDataProveedor(data));
             //setListProductosCargados(data.productos);
         }).catch(e => {
             console.log(e)
         })
-    }, [formDataVenta.cliente]);
+    }, [formDataCompra.proveedor]);
 
     // Para determinar el uso de la animacion de carga mientras se guarda el pedido
     const [loading, setLoading] = useState(false);
@@ -102,8 +100,15 @@ function FacturasOV(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Para la eliminacion fisica de usuarios
-    const buscarOV = (content) => {
+    const buscarCliente = (content) => {
         setTitulosModal("Buscar cliente");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const buscarCompra = (content) => {
+        setTitulosModal("Buscar orden de compra");
         setContentModal(content);
         setShowModal(true);
     }
@@ -117,26 +122,8 @@ function FacturasOV(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento("/Ventas");
+        enrutamiento("/CuentasPorPagar");
     }
-
-    // Para almacenar el folio actual
-    const [folioActual, setFolioActual] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerNumeroFactura().then(response => {
-                const { data } = response;
-                // console.log(data)
-                const { noFactura } = data;
-                setFolioActual(noFactura)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
@@ -208,7 +195,7 @@ function FacturasOV(props) {
     }, [formData.iva]);
 
     // Calcula el subtotal de la lista de artículos cargados
-    const subTotal = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.total)), 0);
+    const subTotal = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.subtotal)), 0);
 
     //Calcula el IVA de la lista de productos agregados
     const IVA = parseFloat(subTotal * iva);
@@ -225,31 +212,29 @@ function FacturasOV(props) {
         setLoading(true);
 
         const dataTemp = {
-            folio: folioActual,
-            ordenVenta: ordenVenta,
-            cliente: formDataVenta.cliente,
-            nombreCliente: formDataVenta.nombreCliente,
-            sucursal: getSucursal(),
-            fechaEmision: formDataVenta.fechaPedido,
+            ordenCompra: formDataCompra.ordenCompra,
+            proveedor: formDataCompra.proveedor,
+            nombreProveedor: formDataCompra.nombreProveedor,
+            fechaEmision: formDataCompra.fechaPedido,
             fechaVencimiento: fechaVencimiento,
-            nombreContacto: formDataCliente.nombreContacto,
-            telefono: formDataCliente.telefono,
-            correo: formDataCliente.correo,
+            nombreContacto: formDataProveedor.nombreContacto,
+            telefono: formDataProveedor.telefono,
+            correo: formDataProveedor.correo,
             productos: listProductosCargados,
             iva: IVA,
+            ivaElegido: formData.iva,
             subtotal: subTotal,
             total: total,
-            estado: "true",
         }
         // console.log(dataTemp)
 
         // Modificar el pedido creado recientemente
-        registraFactura(dataTemp).then(response => {
+        actualizaCuentasPagar(id, dataTemp).then(response => {
             const { data: { mensaje, datos } } = response;
             // console.log(response)
             toast.success(mensaje)
             // Log acerca del registro inicial del tracking
-            LogsInformativos("Se han registrado la factura " + folioActual, dataTemp)
+            LogsInformativos("Se ha actualizado la cuenta por pagar con folio " + formData.folio, dataTemp)
             // Registro inicial del tracking
             //LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
             setLoading(false)
@@ -261,8 +246,8 @@ function FacturasOV(props) {
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
-        setFormDataVenta({ ...formDataVenta, [e.target.name]: e.target.value })
-        setFormDataCliente({ ...formDataCliente, [e.target.name]: e.target.value })
+        setFormDataCompra({ ...formDataCompra, [e.target.name]: e.target.value })
+        setFormDataProveedor({ ...formDataProveedor, [e.target.name]: e.target.value })
     }
 
     // Para la carga y el listado de productos
@@ -379,20 +364,20 @@ function FacturasOV(props) {
 
     const [fechaVencimiento, setFechaVencimiento] = useState();
 
-    console.log(formDataVenta.fechaPedido);
-
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(formDataVenta.fechaPedido);
+        const TuFecha = new Date(formDataCompra.fechaPedido);
 
         //nueva fecha sumada
-        TuFecha.setDate(TuFecha.getDate() + parseInt(formDataCliente.diasCredito));
+        TuFecha.setDate(TuFecha.getDate() + parseInt(formDataProveedor.diasCredito));
         //formato de salida para la fecha
         setFechaVencimiento((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
             : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
                 : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
                     : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [formDataVenta.fechaPedido, formDataCliente.diasCredito]);
+    }, [formDataCompra.fechaPedido, formDataProveedor.diasCredito]);
+
+    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState();
 
     return (
         <>
@@ -400,7 +385,7 @@ function FacturasOV(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Registrar factura
+                            Registrar cuenta por pagar
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
@@ -439,7 +424,7 @@ function FacturasOV(props) {
                                             type="text"
                                             placeholder="Folio"
                                             name="folio"
-                                            value={folioActual}
+                                            value={formData.folio}
                                             disabled
                                         />
                                     </Col>
@@ -452,17 +437,33 @@ function FacturasOV(props) {
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Orden de venta
+                                            Orden de compra
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                        <Form.Control
-                                            type="text"
-                                            value={ordenVenta}
-                                            placeholder="Orden de venta"
-                                            name="ordenVenta"
-                                            disabled
-                                        />
+                                        <div className="flex items-center mb-1">
+                                            <Form.Control
+                                                type="text"
+                                                defaultValue={formDataCompra.ordenCompra}
+                                                placeholder="Orden de compra"
+                                                name="ordenCompra"
+                                                disabled
+                                            />
+                                            <FontAwesomeIcon
+                                                className="cursor-pointer py-2 -ml-6"
+                                                title="Buscar entre las ventas"
+                                                icon={faSearch}
+                                                onClick={() => {
+                                                    buscarCompra(
+                                                        <BuscarOC
+                                                            formData={formDataCompra}
+                                                            setProductosOC={setListProductosCargados}
+                                                            setFormData={setFormDataCompra}
+                                                            setShowModal={setShowModal}
+                                                        />)
+                                                }}
+                                            />
+                                        </div>
                                     </Col>
                                 </Form.Group>
                             </Row>
@@ -473,15 +474,15 @@ function FacturasOV(props) {
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Cliente
+                                            Proveedor
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataVenta.nombreCliente}
-                                            placeholder="Nombre del cliente"
-                                            name="nombreCliente"
+                                            defaultValue={formDataCompra.nombreProveedor}
+                                            placeholder="Nombre del proveedor"
+                                            name="nombreProveedor"
                                         />
                                     </Col>
                                 </Form.Group>
@@ -499,7 +500,7 @@ function FacturasOV(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="date"
-                                            defaultValue={formDataVenta.fechaPedido}
+                                            defaultValue={formDataCompra.fechaPedido}
                                             placeholder="Fecha de pedido"
                                             name="fechaPedido"
                                         />
@@ -540,7 +541,7 @@ function FacturasOV(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataCliente.nombreContacto}
+                                            defaultValue={formDataProveedor.nombreContacto}
                                             placeholder="Nombre del comprador"
                                             name="nombreContacto"
                                         />
@@ -560,7 +561,7 @@ function FacturasOV(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataCliente.telefono}
+                                            defaultValue={formDataProveedor.telefono}
                                             placeholder="Telefono"
                                             name="telefono"
                                         />
@@ -580,7 +581,7 @@ function FacturasOV(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataCliente.correo}
+                                            defaultValue={formDataProveedor.correo}
                                             placeholder="correo"
                                             name="correo"
                                         />
@@ -605,9 +606,8 @@ function FacturasOV(props) {
                                             name="iva"
                                         >
                                             <option>Elige una opción</option>
-                                            <option value="0.16">16%</option>
-                                            <option value="0">0%</option>
-                                            <option value="0">Expcento</option>
+                                            <option value="0.16" selected={formData.iva == "0.16"}>16%</option>
+                                            <option value="0" selected={formData.iva == "0"}>0%</option>
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
@@ -616,14 +616,13 @@ function FacturasOV(props) {
                         </div>
                         <br />
 
-                        <hr />
                         {/* Listado de productos  */}
                         <div className="tablaProductos">
 
                             {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
                             {/* Inicia tabla informativa  */}
                             <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
-                                <h4>Listado de productos seleccionados</h4>
+                                <h4>Listado de articulos de la orden de compra</h4>
                             </Badge>
                             <br />
                             <hr />
@@ -631,13 +630,15 @@ function FacturasOV(props) {
                             >
                                 <thead>
                                     <tr>
-                                        <th scope="col">ITEM</th>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Folio</th>
                                         <th scope="col">Descripción</th>
-                                        <th scope="col">Numero de parte</th>
                                         <th scope="col">Cantidad</th>
                                         <th scope="col">UM</th>
-                                        <th scope="col">Precio unitario</th>
-                                        <th scope="col">Total</th>
+                                        <th scope="col">Precio</th>
+                                        <th scope="col">Subtotal</th>
+                                        <th scope="col">Requisición</th>
+                                        <th scope="col">Referencia</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -645,32 +646,38 @@ function FacturasOV(props) {
                                 <tbody>
                                     {map(listProductosCargados, (producto, index) => (
                                         <tr key={index}>
-                                            <th scope="row">
+                                            <td scope="row">
                                                 {index + 1}
-                                            </th>
-                                            <td data-title="Descripcion">
-                                                {producto.item}
                                             </td>
-                                            <td data-title="Material">
-                                                {producto.ID}
-                                            </td>
-                                            <td data-title="UM">
-                                                {producto.cantidad}
+                                            <td data-title="Folio">
+                                                {producto.folio}
                                             </td>
                                             <td data-title="Descripción">
+                                                {producto.descripcion}
+                                            </td>
+                                            <td data-title="Cantidad">
+                                                {producto.cantidad}
+                                            </td>
+                                            <td data-title="UM">
                                                 {producto.um}
                                             </td>
                                             <td data-title="Orden de compra">
                                                 {new Intl.NumberFormat('es-MX', {
                                                     style: "currency",
                                                     currency: "MXN"
-                                                }).format(producto.precioUnitario)} MXN
+                                                }).format(producto.precio)} MXN
                                             </td>
                                             <td data-title="Observaciones">
                                                 {new Intl.NumberFormat('es-MX', {
                                                     style: "currency",
                                                     currency: "MXN"
-                                                }).format(producto.total)} MXN
+                                                }).format(producto.subtotal)} MXN
+                                            </td>
+                                            <td data-title="Requisicion">
+                                                {producto.requisicion}
+                                            </td>
+                                            <td data-title="Referencia">
+                                                {producto.referencia}
                                             </td>
                                         </tr>
                                     ))}
@@ -754,29 +761,30 @@ function FacturasOV(props) {
     );
 }
 
-function initialFormData() {
+function initialFormDataInitial() {
     return {
-        iva: "0.0"
+        iva: "",
+        folio: ""
     }
 }
 
-function initialFormDataVentaInitial() {
+function initialFormData(data) {
     return {
-        cliente: "",
-        nombreCliente: "",
+        folio: data.folio,
+        iva: data.ivaElegido
+    }
+}
+
+function initialFormDataCompraInitial() {
+    return {
+        ordenCompra: "",
+        proveedor: "",
+        nombreProveedor: "",
         fechaPedido: "",
     }
 }
 
-function initialFormDataVenta(data) {
-    return {
-        cliente: data.cliente,
-        nombreCliente: data.nombreCliente,
-        fechaPedido: data.fechaElaboracion,
-    }
-}
-
-function initialFormDataClienteInitial() {
+function initialFormDataProveedorInitial() {
     return {
         nombreContacto: "",
         telefono: "",
@@ -785,9 +793,18 @@ function initialFormDataClienteInitial() {
     }
 }
 
-function initialFormDataCliente(data) {
+function initialFormDataCompra(data) {
     return {
-        nombreContacto: data.comprador,
+        ordenCompra: data.ordenCompra,
+        proveedor: data.proveedor,
+        nombreProveedor: data.nombreProveedor,
+        fechaPedido: data.fechaEmision,
+    }
+}
+
+function initialFormDataProveedor(data) {
+    return {
+        nombreContacto: data.personalContacto,
         telefono: data.telefonoCelular,
         correo: data.correo,
         diasCredito: data.diasCredito
@@ -880,4 +897,4 @@ function formatModelMatrizProductos(data) {
     return dataTemp;
 }
 
-export default FacturasOV;
+export default ModificaCuentasPagar;

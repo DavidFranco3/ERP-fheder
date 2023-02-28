@@ -3,11 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
+import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
+import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import { listarClientes } from "../../../api/clientes";
-import { actualizaFactura, obtenerFactura } from "../../../api/facturas";
+import { registraCuentasPagar, obtenerNumeroCuentasPagar } from "../../../api/cuentasPorPagar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import "./ModificaFacturas.scss"
+import "./CuentasPagarOC.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
@@ -15,17 +17,14 @@ import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta";
-import { obtenerCliente } from "../../../api/clientes";
-import BuscarCliente from '../../../page/BuscarCliente';
-import BuscarOV from '../../../page/BuscarOV';
-import BuscarProducto from '../../../page/BuscarProducto';
+import { obtenerDatosCompra } from "../../../api/compras";
+import { obtenerProveedores } from "../../../api/proveedores";
 
-function ModificaFacturas(props) {
+function CuentasPagarOC(props) {
     const { history, setRefreshCheckLogin, location } = props;
 
     const params = useParams();
-    const { id } = params
+    const { ordenCompra } = params
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -59,23 +58,20 @@ function ModificaFacturas(props) {
     const enrutamiento = useNavigate();
 
     // Para guardar los datos del formulario
-    const [formData, setFormData] = useState(initialFormDataInitial());
+    const [formData, setFormData] = useState(initialFormData());
 
     // Para guardar los datos del formulario
-    const [formDataVenta, setFormDataVenta] = useState(initialFormDataVentaInitial());
+    const [formDataCompra, setFormDataCompra] = useState(initialFormDataCompraInitial());
 
     // Para guardar los datos del formulario
-    const [formDataCliente, setFormDataCliente] = useState(initialFormDataClienteInitial());
+    const [formDataProveedor, setFormDataProveedor] = useState(initialFormDataProveedorInitial());
 
     useEffect(() => {
         //
-        obtenerFactura(id).then(response => {
+        obtenerDatosCompra(ordenCompra).then(response => {
             const { data } = response;
             //console.log(data)
-            setFormData(initialFormData(data));
-            setFormDataVenta(initialFormDataVenta(data));
-            //setFormDataCliente(initialFormDataCliente(data));
-            // setFechaCreacion(fechaElaboracion)
+            setFormDataCompra(initialFormDataCompra(data));
             setListProductosCargados(data.productos);
         }).catch(e => {
             console.log(e)
@@ -84,15 +80,15 @@ function ModificaFacturas(props) {
 
     useEffect(() => {
         //
-        obtenerCliente(formDataVenta.cliente).then(response => {
+        obtenerProveedores(formDataCompra.proveedor).then(response => {
             const { data } = response;
             //console.log(data)
-            setFormDataCliente(initialFormDataCliente(data));
+            setFormDataProveedor(initialFormDataProveedor(data));
             //setListProductosCargados(data.productos);
         }).catch(e => {
             console.log(e)
         })
-    }, [formDataVenta.cliente]);
+    }, [formDataCompra.proveedor]);
 
     // Para determinar el uso de la animacion de carga mientras se guarda el pedido
     const [loading, setLoading] = useState(false);
@@ -106,15 +102,8 @@ function ModificaFacturas(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Para la eliminacion fisica de usuarios
-    const buscarCliente = (content) => {
+    const buscarOV = (content) => {
         setTitulosModal("Buscar cliente");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    // Para la eliminacion fisica de usuarios
-    const buscarVenta = (content) => {
-        setTitulosModal("Buscar orden de venta");
         setContentModal(content);
         setShowModal(true);
     }
@@ -128,8 +117,26 @@ function ModificaFacturas(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento("/Facturas");
+        enrutamiento("/Compras");
     }
+
+    // Para almacenar el folio actual
+    const [folioActual, setFolioActual] = useState("");
+
+    useEffect(() => {
+        try {
+            obtenerNumeroCuentasPagar().then(response => {
+                const { data } = response;
+                // console.log(data)
+                const { noCuenta } = data;
+                setFolioActual(noCuenta)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
 
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
@@ -193,15 +200,13 @@ function ModificaFacturas(props) {
 
     const [iva, setIva] = useState(0);
 
-    console.log(iva);
-
     // Para traer el listado de productos activos
     useEffect(() => {
         setIva(parseFloat(formData.iva))
     }, [formData.iva]);
 
     // Calcula el subtotal de la lista de artículos cargados
-    const subTotal = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.total)), 0);
+    const subTotal = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.subtotal)), 0);
 
     //Calcula el IVA de la lista de productos agregados
     const IVA = parseFloat(subTotal * iva);
@@ -218,29 +223,32 @@ function ModificaFacturas(props) {
         setLoading(true);
 
         const dataTemp = {
-            ordenVenta: formDataVenta.ordenVenta,
-            cliente: formDataVenta.cliente,
-            nombreCliente: formDataVenta.nombreCliente,
-            fechaEmision: formDataVenta.fechaPedido,
+            folio: folioActual,
+            ordenCompra: ordenCompra,
+            proveedor: formDataCompra.proveedor,
+            nombreProveedor: formDataCompra.nombreProveedor,
+            sucursal: getSucursal(),
+            fechaEmision: formDataCompra.fechaPedido,
             fechaVencimiento: fechaVencimiento,
-            nombreContacto: formDataCliente.nombreContacto,
-            telefono: formDataCliente.telefono,
-            correo: formDataCliente.correo,
+            nombreContacto: formDataProveedor.nombreContacto,
+            telefono: formDataProveedor.telefono,
+            correo: formDataProveedor.correo,
             productos: listProductosCargados,
             iva: IVA,
-            iva: formData.iva,
+            ivaElegido: formData.iva,
             subtotal: subTotal,
             total: total,
+            estado: "true",
         }
         // console.log(dataTemp)
 
         // Modificar el pedido creado recientemente
-        actualizaFactura(id, dataTemp).then(response => {
+        registraCuentasPagar(dataTemp).then(response => {
             const { data: { mensaje, datos } } = response;
             // console.log(response)
             toast.success(mensaje)
             // Log acerca del registro inicial del tracking
-            LogsInformativos("Se ha actualizado la cuenta por cobrar con folio " + formData.folio, dataTemp)
+            LogsInformativos("Se han registrado la cuenta por pagar " + folioActual, dataTemp)
             // Registro inicial del tracking
             //LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
             setLoading(false)
@@ -252,8 +260,8 @@ function ModificaFacturas(props) {
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
-        setFormDataVenta({ ...formDataVenta, [e.target.name]: e.target.value })
-        setFormDataCliente({ ...formDataCliente, [e.target.name]: e.target.value })
+        setFormDataCompra({ ...formDataCompra, [e.target.name]: e.target.value })
+        setFormDataProveedor({ ...formDataProveedor, [e.target.name]: e.target.value })
     }
 
     // Para la carga y el listado de productos
@@ -370,22 +378,19 @@ function ModificaFacturas(props) {
 
     const [fechaVencimiento, setFechaVencimiento] = useState();
 
-    console.log(formDataVenta.fechaPedido);
-
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(formDataVenta.fechaPedido);
+        const TuFecha = new Date(formDataCompra.fechaPedido);
 
         //nueva fecha sumada
-        TuFecha.setDate(TuFecha.getDate() + parseInt(formDataCliente.diasCredito));
+        TuFecha.setDate(TuFecha.getDate() + parseInt(formDataProveedor.diasCredito));
         //formato de salida para la fecha
         setFechaVencimiento((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
             : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
                 : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
                     : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [formDataVenta.fechaPedido, formDataCliente.diasCredito]);
-
-    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState();
+    }, [formDataCompra.fechaPedido, formDataProveedor.diasCredito]);
+     
 
     return (
         <>
@@ -393,7 +398,7 @@ function ModificaFacturas(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Modificando cuenta por cobrar
+                            Registrar cuenta por pagar
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
@@ -432,7 +437,7 @@ function ModificaFacturas(props) {
                                             type="text"
                                             placeholder="Folio"
                                             name="folio"
-                                            value={formData.folio}
+                                            value={folioActual}
                                             disabled
                                         />
                                     </Col>
@@ -445,34 +450,17 @@ function ModificaFacturas(props) {
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Orden de venta
+                                            Orden de compra
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                    <div className="flex items-center mb-1">
-                                        <Form.Control
-                                            type="text"
-                                            defaultValue={formDataVenta.ordenVenta}
-                                            placeholder="Orden de venta"
-                                            name="ordenVenta"
-                                            disabled
-                                        />
-                                        <FontAwesomeIcon
-                                                className="cursor-pointer py-2 -ml-6"
-                                                title="Buscar entre las ventas"
-                                                icon={faSearch}
-                                                onClick={() => {
-                                                    buscarVenta(
-                                                        <BuscarOV
-                                                            formData={formDataVenta}
-                                                            setProducto={setListProductosCargados}
-                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
-                                                            setFormData={setFormDataVenta}
-                                                            setShowModal={setShowModal}
-                                                        />)
-                                                }}
+                                            <Form.Control
+                                                type="text"
+                                                defaultValue={ordenCompra}
+                                                placeholder="Orden de compra"
+                                                name="ordenCompra"
+                                                disabled
                                             />
-                                        </div>
                                     </Col>
                                 </Form.Group>
                             </Row>
@@ -483,15 +471,15 @@ function ModificaFacturas(props) {
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Cliente
+                                            Proveedor
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataVenta.nombreCliente}
-                                            placeholder="Nombre del cliente"
-                                            name="nombreCliente"
+                                            defaultValue={formDataCompra.nombreProveedor}
+                                            placeholder="Nombre del proveedor"
+                                            name="nombreProveedor"
                                         />
                                     </Col>
                                 </Form.Group>
@@ -509,7 +497,7 @@ function ModificaFacturas(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="date"
-                                            defaultValue={formDataVenta.fechaPedido}
+                                            defaultValue={formDataCompra.fechaPedido}
                                             placeholder="Fecha de pedido"
                                             name="fechaPedido"
                                         />
@@ -550,7 +538,7 @@ function ModificaFacturas(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataCliente.nombreContacto}
+                                            defaultValue={formDataProveedor.nombreContacto}
                                             placeholder="Nombre del comprador"
                                             name="nombreContacto"
                                         />
@@ -570,7 +558,7 @@ function ModificaFacturas(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataCliente.telefono}
+                                            defaultValue={formDataProveedor.telefono}
                                             placeholder="Telefono"
                                             name="telefono"
                                         />
@@ -590,7 +578,7 @@ function ModificaFacturas(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataCliente.correo}
+                                            defaultValue={formDataProveedor.correo}
                                             placeholder="correo"
                                             name="correo"
                                         />
@@ -615,8 +603,8 @@ function ModificaFacturas(props) {
                                             name="iva"
                                         >
                                             <option>Elige una opción</option>
-                                            <option value="0.16" selected={formData.iva == "0.16"}>16%</option>
-                                            <option value="0" selected={formData.iva == "0"}>0%</option>
+                                            <option value="0.16">16%</option>
+                                            <option value="0">0%</option>
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
@@ -624,164 +612,6 @@ function ModificaFacturas(props) {
 
                         </div>
                         <br />
-                        {/* Seleccion de productos */}
-
-                        <hr />
-                        <Badge bg="secondary" className="tituloFormularioDetalles">
-                            <h4>A continuación, especifica los detalles del artículo y agregalo</h4>
-                        </Badge>
-                        <br />
-                        <hr />
-
-                        <Row>
-
-                            <Form.Group as={Col} controlId="formGridPorcentaje scrap">
-                                <Form.Label>
-                                    ITEM
-                                </Form.Label>
-                                <Form.Control type="number"
-                                    id="index"
-                                    value={renglon}
-                                    name="index"
-                                    disabled
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridPorcentaje scrap">
-                                <Form.Label>
-                                    Descripción
-                                </Form.Label>
-                                <div className="flex items-center mb-1">
-                                    <Form.Control
-                                        type="text"
-                                        id="descripcion"
-                                        defaultValue={cargaProductos.item}
-                                        name="descripcion"
-                                    />
-                                    <FontAwesomeIcon
-                                        className="cursor-pointer py-2 -ml-6"
-                                        title="Buscar entre los productos"
-                                        icon={faSearch}
-                                        onClick={() => {
-                                            buscarProducto(
-                                                <BuscarProducto
-                                                    formData={cargaProductos}
-                                                    setFormData={setCargaProductos}
-                                                    setShowModal={setShowModal}
-                                                />)
-                                        }}
-                                    />
-                                </div>
-                            </Form.Group>
-
-
-                            <Form.Group as={Col} controlId="formGridCliente">
-                                <Form.Label>
-                                    Numero de parte
-                                </Form.Label>
-                                <Form.Control
-                                    id="material"
-                                    type="text"
-                                    placeholder="Descripcion"
-                                    name="MateriaPrima"
-                                    defaultValue={cargaProductos.ID}
-                                    disabled
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridCliente">
-                                <Form.Label>
-                                    Cantidad
-                                </Form.Label>
-                                <Form.Control
-                                    id="cantidad"
-                                    type="number"
-                                    placeholder="Cantidad"
-                                    name="Cantidad"
-                                    onChange={(e) => { calcularTotalUnitario(e.target.value) }}
-                                    defaultValue={cargaProductos.cantidad}
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col}>
-                                <Form.Label>
-                                    UM
-                                </Form.Label>
-                                <Form.Control
-                                    id="um"
-                                    type="text"
-                                    name="um"
-                                    value="Piezas"
-                                    disabled
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridCliente">
-                                <Form.Label>
-                                    Precio unitario
-                                </Form.Label>
-                                <Form.Control
-                                    id="precioUnitario"
-                                    type="number"
-                                    placeholder="Precio unitario"
-                                    name="precioUnitario"
-                                    onChange={(e) => { calcularTotalUnitario(e.target.value) }}
-                                    defaultValue={cargaProductos.precioUnitario}
-                                    disabled
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridCliente">
-                                <Form.Label>
-                                    Total
-                                </Form.Label>
-                                <Form.Control
-                                    id="total"
-                                    type="text"
-                                    placeholder="Total"
-                                    name="total"
-                                    onChange={(e) => { calcularTotalUnitario(e.target.value) }}
-                                    value={totalUnitario}
-                                    disabled
-                                />
-                            </Form.Group>
-
-                            <Col sm="1">
-                                <Form.Group as={Row} className="formGridCliente">
-                                    <Form.Label>
-                                        &nbsp;
-                                    </Form.Label>
-
-                                    <Col>
-                                        <Button
-                                            variant="success"
-                                            title="Agregar el producto"
-                                            className="editar"
-                                            onClick={() => {
-                                                addItems()
-                                            }}
-                                        >
-                                            <FontAwesomeIcon icon={faCirclePlus} className="text-lg" />
-                                        </Button>
-                                    </Col>
-                                    <Col>
-                                        <Button
-                                            variant="danger"
-                                            title="Cancelar el producto"
-                                            className="editar"
-                                            onClick={() => {
-                                                cancelarCargaProducto()
-                                            }}
-                                        >
-                                            <FontAwesomeIcon icon={faX} className="text-lg" />
-                                        </Button>
-                                    </Col>
-
-                                </Form.Group>
-                            </Col>
-                        </Row>
-
-                        <hr />
 
                         {/* Listado de productos  */}
                         <div className="tablaProductos">
@@ -789,7 +619,7 @@ function ModificaFacturas(props) {
                             {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
                             {/* Inicia tabla informativa  */}
                             <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
-                                <h4>Listado de productos seleccionados</h4>
+                                <h4>Listado de articulos de la orden de compra</h4>
                             </Badge>
                             <br />
                             <hr />
@@ -797,14 +627,15 @@ function ModificaFacturas(props) {
                             >
                                 <thead>
                                     <tr>
-                                        <th scope="col">ITEM</th>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Folio</th>
                                         <th scope="col">Descripción</th>
-                                        <th scope="col">Numero de parte</th>
                                         <th scope="col">Cantidad</th>
                                         <th scope="col">UM</th>
-                                        <th scope="col">Precio unitario</th>
-                                        <th scope="col">Total</th>
-                                        <th scope="col">Eliminar</th>
+                                        <th scope="col">Precio</th>
+                                        <th scope="col">Subtotal</th>
+                                        <th scope="col">Requisición</th>
+                                        <th scope="col">Referencia</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -812,43 +643,38 @@ function ModificaFacturas(props) {
                                 <tbody>
                                     {map(listProductosCargados, (producto, index) => (
                                         <tr key={index}>
-                                            <th scope="row">
+                                            <td scope="row">
                                                 {index + 1}
-                                            </th>
-                                            <td data-title="Descripcion">
-                                                {producto.item}
                                             </td>
-                                            <td data-title="Material">
-                                                {producto.ID}
-                                            </td>
-                                            <td data-title="UM">
-                                                {producto.cantidad}
+                                            <td data-title="Folio">
+                                                {producto.folio}
                                             </td>
                                             <td data-title="Descripción">
+                                                {producto.descripcion}
+                                            </td>
+                                            <td data-title="Cantidad">
+                                                {producto.cantidad}
+                                            </td>
+                                            <td data-title="UM">
                                                 {producto.um}
                                             </td>
                                             <td data-title="Orden de compra">
                                                 {new Intl.NumberFormat('es-MX', {
                                                     style: "currency",
                                                     currency: "MXN"
-                                                }).format(producto.precioUnitario)} MXN
+                                                }).format(producto.precio)} MXN
                                             </td>
                                             <td data-title="Observaciones">
                                                 {new Intl.NumberFormat('es-MX', {
                                                     style: "currency",
                                                     currency: "MXN"
-                                                }).format(producto.total)} MXN
+                                                }).format(producto.subtotal)} MXN
                                             </td>
-                                            <td data-title="Eliminar">
-                                                <div
-                                                    className="eliminarProductoListado"
-                                                    title="Eliminar el producto agregado"
-                                                    onClick={() => {
-                                                        removeItem(producto)
-                                                    }}
-                                                >
-                                                    ❌
-                                                </div>
+                                            <td data-title="Requisicion">
+                                                {producto.requisicion}
+                                            </td>
+                                            <td data-title="Referencia">
+                                                {producto.referencia}
                                             </td>
                                         </tr>
                                     ))}
@@ -932,39 +758,21 @@ function ModificaFacturas(props) {
     );
 }
 
-function initialFormDataInitial() {
+function initialFormData() {
     return {
-        iva: "",
-        folio: ""
+        iva: "0.0"
     }
 }
 
-function initialFormData(data) {
+function initialFormDataCompraInitial(data) {
     return {
-        folio: data.folio,
-        iva: data.ivaElegido
+        proveedor: "",
+        nombreProveedor: "",
+        fechaPedido: ""
     }
 }
 
-function initialFormDataVentaInitial() {
-    return {
-        ordenVenta: "",
-        cliente: "",
-        nombreCliente: "",
-        fechaPedido: "",
-    }
-}
-
-function initialFormDataVenta(data) {
-    return {
-        ordenVenta: data.ordenVenta,
-        cliente: data.cliente,
-        nombreCliente: data.nombreCliente,
-        fechaPedido: data.fechaEmision,
-    }
-}
-
-function initialFormDataClienteInitial() {
+function initialFormDataProveedorInitial() {
     return {
         nombreContacto: "",
         telefono: "",
@@ -973,9 +781,17 @@ function initialFormDataClienteInitial() {
     }
 }
 
-function initialFormDataCliente(data) {
+function initialFormDataCompra(data) {
     return {
-        nombreContacto: data.comprador,
+        proveedor: data.proveedor,
+        nombreProveedor: data.nombreProveedor,
+        fechaPedido: data.fechaSolicitud,
+    }
+}
+
+function initialFormDataProveedor(data) {
+    return {
+        nombreContacto: data.personalContacto,
         telefono: data.telefonoCelular,
         correo: data.correo,
         diasCredito: data.diasCredito
@@ -1068,4 +884,4 @@ function formatModelMatrizProductos(data) {
     return dataTemp;
 }
 
-export default ModificaFacturas;
+export default CuentasPagarOC;

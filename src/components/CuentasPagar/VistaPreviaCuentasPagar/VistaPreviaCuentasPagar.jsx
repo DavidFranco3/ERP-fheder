@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import { Alert, Button, Col, Container, Form, Row, Spinner, Image, Badge } from "react-bootstrap";
+import { Alert, Button, Col, Container, Form, Row, Image, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
 import { listarClientes } from "../../../api/clientes";
-import { actualizaFactura, obtenerFactura } from "../../../api/facturas";
+import { actualizaCuentasPagar, obtenerCuentasPagar } from "../../../api/cuentasPorPagar";
+import { obtenerRazonSocialPorNombre } from "../../../api/razonesSociales";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import "./VistaPreviaFactura.scss"
+import { faSearch, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import "./VistaPreviaCuentasPagar.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { obtenerRazonSocialPorNombre } from "../../../api/razonesSociales";
 import BasicModal from "../../Modal/BasicModal";
-import { obtenerCliente } from "../../../api/clientes";
-import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta";
+import { obtenerProveedores } from "../../../api/proveedores";
+import BuscarOC from '../../../page/BuscarOC';
 import LogoPDF from "../../../assets/png/pdf.png";
 import Regreso from "../../../assets/png/back.png";
 import pdfMake from "pdfmake/build/pdfmake";
@@ -25,27 +24,11 @@ import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-function VistaPreviaFactura(props) {
+function VistaPreviaCuentasPagar(props) {
     const { history, setRefreshCheckLogin, location } = props;
-
-    dayjs.locale('es') // use Spanish locale globally
-    dayjs.extend(localizedFormat)
 
     const params = useParams();
     const { id } = params
-
-    const [formDataSucursal, setFormDataSucursal] = useState(initialFormDataSucursalInitial());
-
-    useEffect(() => {
-        //
-        obtenerRazonSocialPorNombre(getSucursal()).then(response => {
-            const { data } = response;
-            //console.log(data)
-            setFormDataSucursal(initialFormDataSucursal(data));
-        }).catch(e => {
-            console.log(e)
-        })
-    }, [getSucursal()]);
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -82,18 +65,18 @@ function VistaPreviaFactura(props) {
     const [formData, setFormData] = useState(initialFormDataInitial());
 
     // Para guardar los datos del formulario
-    const [formDataVenta, setFormDataVenta] = useState(initialFormDataVentaInitial());
+    const [formDataCompra, setFormDataCompra] = useState(initialFormDataCompraInitial());
 
     // Para guardar los datos del formulario
-    const [formDataCliente, setFormDataCliente] = useState(initialFormDataClienteInitial());
+    const [formDataProveedor, setFormDataProveedor] = useState(initialFormDataProveedorInitial());
 
     useEffect(() => {
         //
-        obtenerFactura(id).then(response => {
+        obtenerCuentasPagar(id).then(response => {
             const { data } = response;
             //console.log(data)
             setFormData(initialFormData(data));
-            setFormDataVenta(initialFormDataVenta(data));
+            setFormDataCompra(initialFormDataCompra(data));
             //setFormDataCliente(initialFormDataCliente(data));
             // setFechaCreacion(fechaElaboracion)
             setListProductosCargados(data.productos);
@@ -104,15 +87,15 @@ function VistaPreviaFactura(props) {
 
     useEffect(() => {
         //
-        obtenerCliente(formDataVenta.cliente).then(response => {
+        obtenerProveedores(formDataCompra.proveedor).then(response => {
             const { data } = response;
             //console.log(data)
-            setFormDataCliente(initialFormDataCliente(data));
+            setFormDataProveedor(initialFormDataProveedor(data));
             //setListProductosCargados(data.productos);
         }).catch(e => {
             console.log(e)
         })
-    }, [formDataVenta.cliente]);
+    }, [formDataCompra.proveedor]);
 
     // Para determinar el uso de la animacion de carga mientras se guarda el pedido
     const [loading, setLoading] = useState(false);
@@ -133,8 +116,8 @@ function VistaPreviaFactura(props) {
     }
 
     // Para la eliminacion fisica de usuarios
-    const buscarVenta = (content) => {
-        setTitulosModal("Buscar orden de venta");
+    const buscarCompra = (content) => {
+        setTitulosModal("Buscar orden de compra");
         setContentModal(content);
         setShowModal(true);
     }
@@ -148,7 +131,7 @@ function VistaPreviaFactura(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento("/Facturas");
+        enrutamiento("/CuentasPorPagar");
     }
 
     // Para almacenar la lista completa de clientes
@@ -211,6 +194,19 @@ function VistaPreviaFactura(props) {
         }
     }, []);
 
+    const [formDataSucursal, setFormDataSucursal] = useState(initialFormDataSucursalInitial());
+
+    useEffect(() => {
+        //
+        obtenerRazonSocialPorNombre(getSucursal()).then(response => {
+            const { data } = response;
+            //console.log(data)
+            setFormDataSucursal(initialFormDataSucursal(data));
+        }).catch(e => {
+            console.log(e)
+        })
+    }, [getSucursal()]);
+
     const [iva, setIva] = useState(0);
 
     console.log(iva);
@@ -221,7 +217,7 @@ function VistaPreviaFactura(props) {
     }, [formData.iva]);
 
     // Calcula el subtotal de la lista de artículos cargados
-    const subTotal = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.total)), 0);
+    const subTotal = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.subtotal)), 0);
 
     //Calcula el IVA de la lista de productos agregados
     const IVA = parseFloat(subTotal * iva);
@@ -238,29 +234,29 @@ function VistaPreviaFactura(props) {
         setLoading(true);
 
         const dataTemp = {
-            ordenVenta: formDataVenta.ordenVenta,
-            cliente: formDataVenta.cliente,
-            nombreCliente: formDataVenta.nombreCliente,
-            fechaEmision: formDataVenta.fechaPedido,
+            ordenCompra: formDataCompra.ordenCompra,
+            proveedor: formDataCompra.proveedor,
+            nombreProveedor: formDataCompra.nombreProveedor,
+            fechaEmision: formDataCompra.fechaPedido,
             fechaVencimiento: fechaVencimiento,
-            nombreContacto: formDataCliente.nombreContacto,
-            telefono: formDataCliente.telefono,
-            correo: formDataCliente.correo,
+            nombreContacto: formDataProveedor.nombreContacto,
+            telefono: formDataProveedor.telefono,
+            correo: formDataProveedor.correo,
             productos: listProductosCargados,
             iva: IVA,
-            iva: formData.iva,
+            ivaElegido: formData.iva,
             subtotal: subTotal,
             total: total,
         }
         // console.log(dataTemp)
 
         // Modificar el pedido creado recientemente
-        actualizaFactura(id, dataTemp).then(response => {
+        actualizaCuentasPagar(id, dataTemp).then(response => {
             const { data: { mensaje, datos } } = response;
             // console.log(response)
             toast.success(mensaje)
             // Log acerca del registro inicial del tracking
-            LogsInformativos("Se ha actualizado la cuenta por cobrar con folio " + formData.folio, dataTemp)
+            LogsInformativos("Se ha actualizado la cuenta por pagar con folio " + formData.folio, dataTemp)
             // Registro inicial del tracking
             //LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
             setLoading(false)
@@ -272,8 +268,8 @@ function VistaPreviaFactura(props) {
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
-        setFormDataVenta({ ...formDataVenta, [e.target.name]: e.target.value })
-        setFormDataCliente({ ...formDataCliente, [e.target.name]: e.target.value })
+        setFormDataCompra({ ...formDataCompra, [e.target.name]: e.target.value })
+        setFormDataProveedor({ ...formDataProveedor, [e.target.name]: e.target.value })
     }
 
     // Para la carga y el listado de productos
@@ -375,7 +371,7 @@ function VistaPreviaFactura(props) {
         })
     }
 
-    const totalSinIVA = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.total)), 0);
+    const totalSinIVA = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.subtotal)), 0);
 
     const hoy = new Date();
     // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
@@ -390,20 +386,18 @@ function VistaPreviaFactura(props) {
 
     const [fechaVencimiento, setFechaVencimiento] = useState();
 
-    console.log(formDataVenta.fechaPedido);
-
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(formDataVenta.fechaPedido);
+        const TuFecha = new Date(formDataCompra.fechaPedido);
 
         //nueva fecha sumada
-        TuFecha.setDate(TuFecha.getDate() + parseInt(formDataCliente.diasCredito));
+        TuFecha.setDate(TuFecha.getDate() + parseInt(formDataProveedor.diasCredito));
         //formato de salida para la fecha
         setFechaVencimiento((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
             : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
                 : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
                     : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [formDataVenta.fechaPedido, formDataCliente.diasCredito]);
+    }, [formDataCompra.fechaPedido, formDataProveedor.diasCredito]);
 
     const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState();
 
@@ -417,12 +411,12 @@ function VistaPreviaFactura(props) {
                     bold: true,
                 },
                 {
-                    text: detalle.item,
+                    text: detalle.folio,
                     fontSize: 9,
                     bold: true,
                 },
                 {
-                    text: detalle.ID,
+                    text: detalle.descripcion,
                     fontSize: 9,
                     bold: true,
                 },
@@ -440,7 +434,7 @@ function VistaPreviaFactura(props) {
                     text: `${new Intl.NumberFormat('es-MX', {
                         style: "currency",
                         currency: "MXN"
-                    }).format(detalle.precioUnitario)} MXN`,
+                    }).format(detalle.precio)} MXN`,
                     fontSize: 9,
                     bold: true,
                 },
@@ -448,10 +442,20 @@ function VistaPreviaFactura(props) {
                     text: `${new Intl.NumberFormat('es-MX', {
                         style: "currency",
                         currency: "MXN"
-                    }).format(detalle.total)} MXN`,
+                    }).format(detalle.subtotal)} MXN`,
                     fontSize: 9,
                     bold: true,
-                }
+                },
+                {
+                    text: detalle.requisicion,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.referencia,
+                    fontSize: 9,
+                    bold: true,
+                },
             ])
         });
         return newArray;
@@ -473,7 +477,7 @@ function VistaPreviaFactura(props) {
                                     border: [false, false, false, false],
                                     text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
                                     alignment: 'right',
-                                    margin: [ 5, 2, 10, 20 ]
+                                    margin: [5, 2, 10, 20]
                                 }
                             ]
                         ]
@@ -534,7 +538,7 @@ function VistaPreviaFactura(props) {
                                 {
                                 },
                                 {
-                                    text: `Orden de venta:  ${formDataVenta.ordenVenta}`,
+                                    text: `Orden de compra:  ${formDataCompra.ordenCompra}`,
                                     fontSize: 9,
                                     colSpan: 2,
                                     bold: true,
@@ -544,7 +548,7 @@ function VistaPreviaFactura(props) {
                             ],
                             [
                                 {
-                                    text: `Cliente:  ${formDataVenta.nombreCliente}`,
+                                    text: `Proveedor:  ${formDataCompra.nombreProveedor}`,
                                     colSpan: 2,
                                     bold: true,
                                     fontSize: 9
@@ -552,7 +556,7 @@ function VistaPreviaFactura(props) {
                                 {
                                 },
                                 {
-                                    text: `Nombre del contacto:  ${formDataCliente.nombreContacto}`,
+                                    text: `Nombre del contacto:  ${formDataProveedor.nombreContacto}`,
                                     colSpan: 2,
                                     fontSize: 9,
                                     bold: true
@@ -562,7 +566,7 @@ function VistaPreviaFactura(props) {
                             ],
                             [
                                 {
-                                    text: `Fecha de emisión:  ${dayjs(formDataVenta.fechaPedido).format("LL")}`,
+                                    text: `Fecha de emisión:  ${dayjs(formDataCompra.fechaPedido).format("LL")}`,
                                     colSpan: 2,
                                     fontSize: 9,
                                     bold: true
@@ -595,7 +599,7 @@ function VistaPreviaFactura(props) {
                                 },
                                 {
                                     text: [
-                                        'Productos: ',
+                                        'Articulos: ',
                                         {
                                             text: listProductosCargados.length,
                                             bold: true
@@ -610,7 +614,7 @@ function VistaPreviaFactura(props) {
                             ],
                             [
                                 {
-                                    text: `Teléfono:  ${formDataCliente.telefono}`,
+                                    text: `Teléfono:  ${formDataProveedor.telefono}`,
                                     colSpan: 2,
                                     fontSize: 9,
                                     bold: true
@@ -618,7 +622,7 @@ function VistaPreviaFactura(props) {
                                 {
                                 },
                                 {
-                                    text: `Correo:  ${formDataCliente.correo}`,
+                                    text: `Correo:  ${formDataProveedor.correo}`,
                                     colSpan: 2,
                                     fontSize: 9,
                                     bold: true
@@ -631,7 +635,7 @@ function VistaPreviaFactura(props) {
                 },
                 {
                     alignment: 'center',
-                    text: 'Listado de productos seleccionados',
+                    text: 'Listado de articulos de la orden de compra',
                     style: 'header',
                     fontSize: 23,
                     bold: true,
@@ -640,42 +644,52 @@ function VistaPreviaFactura(props) {
                 {
                     style: 'tableExample',
                     table: {
-                        widths: ['14%', '14%', '14%', '14%', '14%', '14%', '14%'],
+                        widths: ['11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%'],
                         heights: [10],
                         body: [
                             [
                                 {
-                                    text: '# ',
+                                    text: '#',
                                     fontSize: 9,
                                     bold: true,
                                 },
                                 {
-                                    text: 'Descripción ',
+                                    text: 'Folio',
                                     fontSize: 9,
                                     bold: true,
                                 },
                                 {
-                                    text: 'Numero de parte ',
+                                    text: 'Descripción',
                                     fontSize: 9,
                                     bold: true,
                                 },
                                 {
-                                    text: 'Cantidad ',
+                                    text: 'Cantidad',
                                     fontSize: 9,
                                     bold: true,
                                 },
                                 {
-                                    text: 'UM ',
+                                    text: 'UM',
                                     fontSize: 9,
                                     bold: true,
                                 },
                                 {
-                                    text: 'Precio unitario ',
+                                    text: 'Precio',
                                     fontSize: 9,
                                     bold: true,
                                 },
                                 {
-                                    text: 'Total ',
+                                    text: 'Subtotal',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Requisición',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Referencia',
                                     fontSize: 9,
                                     bold: true,
                                 }
@@ -686,7 +700,7 @@ function VistaPreviaFactura(props) {
                 {
                     style: 'tableExample',
                     table: {
-                        widths: ['14%', '14%', '14%', '14%', '14%', '14%', '14%'],
+                        widths: ['11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%', '11.12%'],
                         heights: [10],
                         body:
                             list,
@@ -695,7 +709,7 @@ function VistaPreviaFactura(props) {
                 {
                     style: 'tableExample',
                     table: {
-                        widths: ['32.76%', '32.76%', '32.76%'],
+                        widths: ['33.36%', '33.36%', '33.36%'],
                         heights: [10],
                         border: [true, false, true, true],
                         body: [
@@ -737,13 +751,14 @@ function VistaPreviaFactura(props) {
 
     }
 
+
     return (
         <>
             <Alert>
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Vista detallada de la cuenta por cobrar
+                            Vista detallada de la cuenta por pagar
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
@@ -795,15 +810,15 @@ function VistaPreviaFactura(props) {
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Orden de venta
+                                            Orden de compra
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataVenta.ordenVenta}
-                                            placeholder="Orden de venta"
-                                            name="ordenVenta"
+                                            defaultValue={formDataCompra.ordenCompra}
+                                            placeholder="Orden de compra"
+                                            name="ordenCompra"
                                             disabled
                                         />
                                     </Col>
@@ -816,15 +831,15 @@ function VistaPreviaFactura(props) {
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Cliente
+                                            Proveedor
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataVenta.nombreCliente}
-                                            placeholder="Nombre del cliente"
-                                            name="nombreCliente"
+                                            defaultValue={formDataCompra.nombreProveedor}
+                                            placeholder="Nombre del proveedor"
+                                            name="nombreProveedor"
                                             disabled
                                         />
                                     </Col>
@@ -843,7 +858,7 @@ function VistaPreviaFactura(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="date"
-                                            defaultValue={formDataVenta.fechaPedido}
+                                            defaultValue={formDataCompra.fechaPedido}
                                             placeholder="Fecha de pedido"
                                             name="fechaPedido"
                                             disabled
@@ -886,7 +901,7 @@ function VistaPreviaFactura(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataCliente.nombreContacto}
+                                            defaultValue={formDataProveedor.nombreContacto}
                                             placeholder="Nombre del comprador"
                                             name="nombreContacto"
                                             disabled
@@ -907,7 +922,7 @@ function VistaPreviaFactura(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataCliente.telefono}
+                                            defaultValue={formDataProveedor.telefono}
                                             placeholder="Telefono"
                                             name="telefono"
                                             disabled
@@ -928,7 +943,7 @@ function VistaPreviaFactura(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataCliente.correo}
+                                            defaultValue={formDataProveedor.correo}
                                             placeholder="correo"
                                             name="correo"
                                             disabled
@@ -957,7 +972,6 @@ function VistaPreviaFactura(props) {
                                             <option>Elige una opción</option>
                                             <option value="0.16" selected={formData.iva == "0.16"}>16%</option>
                                             <option value="0" selected={formData.iva == "0"}>0%</option>
-                                            <option value="0.0" selected={formData.iva == "0.0"}>Expcento</option>
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
@@ -965,7 +979,6 @@ function VistaPreviaFactura(props) {
 
                         </div>
                         <br />
-                        <hr />
 
                         {/* Listado de productos  */}
                         <div className="tablaProductos">
@@ -973,7 +986,7 @@ function VistaPreviaFactura(props) {
                             {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
                             {/* Inicia tabla informativa  */}
                             <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
-                                <h4>Listado de productos seleccionados</h4>
+                                <h4>Listado de articulos de la orden de compra</h4>
                             </Badge>
                             <br />
                             <hr />
@@ -981,13 +994,15 @@ function VistaPreviaFactura(props) {
                             >
                                 <thead>
                                     <tr>
-                                        <th scope="col">ITEM</th>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Folio</th>
                                         <th scope="col">Descripción</th>
-                                        <th scope="col">Numero de parte</th>
                                         <th scope="col">Cantidad</th>
                                         <th scope="col">UM</th>
-                                        <th scope="col">Precio unitario</th>
-                                        <th scope="col">Total</th>
+                                        <th scope="col">Precio</th>
+                                        <th scope="col">Subtotal</th>
+                                        <th scope="col">Requisición</th>
+                                        <th scope="col">Referencia</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -995,32 +1010,38 @@ function VistaPreviaFactura(props) {
                                 <tbody>
                                     {map(listProductosCargados, (producto, index) => (
                                         <tr key={index}>
-                                            <th scope="row">
+                                            <td scope="row">
                                                 {index + 1}
-                                            </th>
-                                            <td data-title="Descripcion">
-                                                {producto.item}
                                             </td>
-                                            <td data-title="Material">
-                                                {producto.ID}
-                                            </td>
-                                            <td data-title="UM">
-                                                {producto.cantidad}
+                                            <td data-title="Folio">
+                                                {producto.folio}
                                             </td>
                                             <td data-title="Descripción">
+                                                {producto.descripcion}
+                                            </td>
+                                            <td data-title="Cantidad">
+                                                {producto.cantidad}
+                                            </td>
+                                            <td data-title="UM">
                                                 {producto.um}
                                             </td>
                                             <td data-title="Orden de compra">
                                                 {new Intl.NumberFormat('es-MX', {
                                                     style: "currency",
                                                     currency: "MXN"
-                                                }).format(producto.precioUnitario)} MXN
+                                                }).format(producto.precio)} MXN
                                             </td>
                                             <td data-title="Observaciones">
                                                 {new Intl.NumberFormat('es-MX', {
                                                     style: "currency",
                                                     currency: "MXN"
-                                                }).format(producto.total)} MXN
+                                                }).format(producto.subtotal)} MXN
+                                            </td>
+                                            <td data-title="Requisicion">
+                                                {producto.requisicion}
+                                            </td>
+                                            <td data-title="Referencia">
+                                                {producto.referencia}
                                             </td>
                                         </tr>
                                     ))}
@@ -1068,39 +1089,39 @@ function VistaPreviaFactura(props) {
                         </div>
 
                         {/* Botones de envio del formulario */}
-                    <br />
-                    <div className="botones">
-                        <Form.Group as={Row} className="botones">
-                            <Row>
-                                <Col>
-                                    <div
-                                        className="generacionPDF"
-                                    >
-                                        <Image
-                                            src={LogoPDF}
-                                            className="logoPDF"
-                                            onClick={() => {
-                                                descargaPDF()
-                                            }}
-                                        />
-                                    </div>
-                                </Col>
-                                <Col>
-                                    <div
-                                        className="regreso"
-                                    >
-                                        <Image
-                                            src={Regreso}
-                                            className="regresarVistaAnterior"
-                                            onClick={() => {
-                                                regresaListadoVentas()
-                                            }}
-                                        />
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Form.Group>
-                    </div>
+                        <br />
+                        <div className="botones">
+                            <Form.Group as={Row} className="botones">
+                                <Row>
+                                    <Col>
+                                        <div
+                                            className="generacionPDF"
+                                        >
+                                            <Image
+                                                src={LogoPDF}
+                                                className="logoPDF"
+                                                onClick={() => {
+                                                    descargaPDF()
+                                                }}
+                                            />
+                                        </div>
+                                    </Col>
+                                    <Col>
+                                        <div
+                                            className="regreso"
+                                        >
+                                            <Image
+                                                src={Regreso}
+                                                className="regresarVistaAnterior"
+                                                onClick={() => {
+                                                    regresaListadoVentas()
+                                                }}
+                                            />
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Form.Group>
+                        </div>
                     </Form>
                 </div>
             </Container>
@@ -1156,25 +1177,16 @@ function initialFormData(data) {
     }
 }
 
-function initialFormDataVentaInitial() {
+function initialFormDataCompraInitial() {
     return {
-        ordenVenta: "",
-        cliente: "",
-        nombreCliente: "",
+        ordenCompra: "",
+        proveedor: "",
+        nombreProveedor: "",
         fechaPedido: "",
     }
 }
 
-function initialFormDataVenta(data) {
-    return {
-        ordenVenta: data.ordenVenta,
-        cliente: data.cliente,
-        nombreCliente: data.nombreCliente,
-        fechaPedido: data.fechaEmision,
-    }
-}
-
-function initialFormDataClienteInitial() {
+function initialFormDataProveedorInitial() {
     return {
         nombreContacto: "",
         telefono: "",
@@ -1183,9 +1195,18 @@ function initialFormDataClienteInitial() {
     }
 }
 
-function initialFormDataCliente(data) {
+function initialFormDataCompra(data) {
     return {
-        nombreContacto: data.comprador,
+        ordenCompra: data.ordenCompra,
+        proveedor: data.proveedor,
+        nombreProveedor: data.nombreProveedor,
+        fechaPedido: data.fechaEmision,
+    }
+}
+
+function initialFormDataProveedor(data) {
+    return {
+        nombreContacto: data.personalContacto,
         telefono: data.telefonoCelular,
         correo: data.correo,
         diasCredito: data.diasCredito
@@ -1278,4 +1299,4 @@ function formatModelMatrizProductos(data) {
     return dataTemp;
 }
 
-export default VistaPreviaFactura;
+export default VistaPreviaCuentasPagar;

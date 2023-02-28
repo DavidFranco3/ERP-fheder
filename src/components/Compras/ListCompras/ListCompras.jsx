@@ -51,6 +51,11 @@ function ListCompras(props) {
         enrutamiento(`/VistaPreviaCompras/${folio}`)
     }
 
+    // Para la modificacion de datos del pedido
+    const registroCuentasPagar = (folio) => {
+        enrutamiento(`/CuentasPagarOC/${folio}`);
+    }
+
     const ExpandedComponent = ({ data }) => (
         <ListProductosCompras
             ordenCompra={data.folio}
@@ -191,6 +196,33 @@ function ListCompras(props) {
         {
             name: "Autoriza",
             selector: row => row.autoriza,
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
+            name: "Cuenta por pagar",
+            selector: row => (
+                row.estado === "true" ?
+                    (
+                        <>
+                            <Badge
+                                bg="primary"
+                                title="Generar una cuenta por pagar"
+                                className="editar"
+                                onClick={() => {
+                                    registroCuentasPagar(row.folio)
+                                }}
+                            >
+                                Generar
+                            </Badge>
+                        </>
+                    )
+                    :
+                    (
+                        "No disponible"
+                    )
+            ),
             sortable: false,
             center: true,
             reorder: false
