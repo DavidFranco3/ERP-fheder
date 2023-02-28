@@ -16,12 +16,13 @@ function BuscarCompras(props) {
     }
 
     // Gestionar el socio seleccionado
-    const compraElegida = ({ folio, proveedor, nombreProveedor, productos }) => {
+    const compraElegida = ({ folio, proveedor, nombreProveedor, fechaSolicitud, productos }) => {
         // Almacena id, ficha y nombre del socio elegido
         const dataTemp = {
             ordenCompra: folio,
             proveedor: proveedor,
             nombreProveedor: nombreProveedor,
+            fechaPedido: fechaSolicitud,
         }
         setFormData(dataTemp);
         setProductosOC(productos);

@@ -151,6 +151,20 @@ export const ENDPOINTListarFacturaPaginacion = "/facturas/listarPaginando";
 export const ENDPOINTObtenerNoFactura = "/facturas/obtenerNoFactura";
 export const ENDPOINTTotalFactura = "/facturas/total";
 
+// Cuentas por pagar
+export const ENDPOINTRegistraCuentasPagar = "/cuentasPorPagar/registro";
+export const ENDPOINTListarCuentasPagar = "/cuentasPorPagar/listar";
+export const ENDPOINTListarCuentasPagarPorProveedor = "/cuentasPorPagar/listarPorProveedor";
+export const ENDPOINTListarCuentasPagarActivo = "/cuentasPorPagar/listarActivas";
+export const ENDPOINTObtenerCuentasPagar = "/cuentasPorPagar/obtener";
+export const ENDPOINTObtenerDatosCuentasPagar = "/cuentasPorPagar/obtenerDatosCuentaPagar";
+export const ENDPOINTEliminarCuentasPagar = "/cuentasPorPagar/eliminar";
+export const ENDPOINTActualizarCuentasPagar = "/cuentasPorPagar/actualizar";
+export const ENDPOINTActualizarEstadoCuentasPagar = "/cuentasPorPagar/actualizarEstado";
+export const ENDPOINTListarCuentasPagarPaginacion = "/cuentasPorPagar/listarPaginando";
+export const ENDPOINTObtenerNoCuentasPagar = "/cuentasPorPagar/obtenerNoCuentaPagar";
+export const ENDPOINTTotalCuentasPagar = "/cuentasPorPagar/total";
+
 // Cuentas clientes
 export const ENDPOINTRegistraCuentaCliente = "/cuentasClientes/registro";
 export const ENDPOINTListarCuentaCliente = "/cuentasClientes/listar";

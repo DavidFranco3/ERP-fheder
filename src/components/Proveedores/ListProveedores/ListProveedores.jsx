@@ -82,6 +82,13 @@ function ListProveedores(props) {
             reorder: false
         },
         {
+            name: 'Dias de credito',
+            selector: row => row.diasCredito + " dias",
+            sortable: false,
+            center: true,
+            reorder: false
+        },
+        {
             name: 'Estado',
             sortable: false,
             center: true,

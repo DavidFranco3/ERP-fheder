@@ -626,163 +626,6 @@ function RegistroFacturas(props) {
 
                         </div>
                         <br />
-                        {/* Seleccion de productos */}
-
-                        <hr />
-                        <Badge bg="secondary" className="tituloFormularioDetalles">
-                            <h4>A continuación, especifica los detalles del artículo y agregalo</h4>
-                        </Badge>
-                        <br />
-                        <hr />
-
-                        <Row>
-
-                            <Form.Group as={Col} controlId="formGridPorcentaje scrap">
-                                <Form.Label>
-                                    ITEM
-                                </Form.Label>
-                                <Form.Control type="number"
-                                    id="index"
-                                    value={renglon}
-                                    name="index"
-                                    disabled
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridPorcentaje scrap">
-                                <Form.Label>
-                                    Descripción
-                                </Form.Label>
-                                <div className="flex items-center mb-1">
-                                    <Form.Control
-                                        type="text"
-                                        id="descripcion"
-                                        defaultValue={cargaProductos.item}
-                                        name="descripcion"
-                                    />
-                                    <FontAwesomeIcon
-                                        className="cursor-pointer py-2 -ml-6"
-                                        title="Buscar entre los productos"
-                                        icon={faSearch}
-                                        onClick={() => {
-                                            buscarProducto(
-                                                <BuscarProducto
-                                                    formData={cargaProductos}
-                                                    setFormData={setCargaProductos}
-                                                    setShowModal={setShowModal}
-                                                />)
-                                        }}
-                                    />
-                                </div>
-                            </Form.Group>
-
-
-                            <Form.Group as={Col} controlId="formGridCliente">
-                                <Form.Label>
-                                    Numero de parte
-                                </Form.Label>
-                                <Form.Control
-                                    id="material"
-                                    type="text"
-                                    placeholder="Descripcion"
-                                    name="MateriaPrima"
-                                    defaultValue={cargaProductos.ID}
-                                    disabled
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridCliente">
-                                <Form.Label>
-                                    Cantidad
-                                </Form.Label>
-                                <Form.Control
-                                    id="cantidad"
-                                    type="number"
-                                    placeholder="Cantidad"
-                                    name="Cantidad"
-                                    onChange={(e) => { calcularTotalUnitario(e.target.value) }}
-                                    defaultValue={cargaProductos.cantidad}
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col}>
-                                <Form.Label>
-                                    UM
-                                </Form.Label>
-                                <Form.Control
-                                    id="um"
-                                    type="text"
-                                    name="um"
-                                    value="Piezas"
-                                    disabled
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridCliente">
-                                <Form.Label>
-                                    Precio unitario
-                                </Form.Label>
-                                <Form.Control
-                                    id="precioUnitario"
-                                    type="number"
-                                    placeholder="Precio unitario"
-                                    name="precioUnitario"
-                                    onChange={(e) => { calcularTotalUnitario(e.target.value) }}
-                                    defaultValue={cargaProductos.precioUnitario}
-                                    disabled
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridCliente">
-                                <Form.Label>
-                                    Total
-                                </Form.Label>
-                                <Form.Control
-                                    id="total"
-                                    type="text"
-                                    placeholder="Total"
-                                    name="total"
-                                    onChange={(e) => { calcularTotalUnitario(e.target.value) }}
-                                    value={totalUnitario}
-                                    disabled
-                                />
-                            </Form.Group>
-
-                            <Col sm="1">
-                                <Form.Group as={Row} className="formGridCliente">
-                                    <Form.Label>
-                                        &nbsp;
-                                    </Form.Label>
-
-                                    <Col>
-                                        <Button
-                                            variant="success"
-                                            title="Agregar el producto"
-                                            className="editar"
-                                            onClick={() => {
-                                                addItems()
-                                            }}
-                                        >
-                                            <FontAwesomeIcon icon={faCirclePlus} className="text-lg" />
-                                        </Button>
-                                    </Col>
-                                    <Col>
-                                        <Button
-                                            variant="danger"
-                                            title="Cancelar el producto"
-                                            className="editar"
-                                            onClick={() => {
-                                                cancelarCargaProducto()
-                                            }}
-                                        >
-                                            <FontAwesomeIcon icon={faX} className="text-lg" />
-                                        </Button>
-                                    </Col>
-
-                                </Form.Group>
-                            </Col>
-                        </Row>
-
                         <hr />
 
                         {/* Listado de productos  */}
@@ -791,7 +634,7 @@ function RegistroFacturas(props) {
                             {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
                             {/* Inicia tabla informativa  */}
                             <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
-                                <h4>Listado de productos seleccionados</h4>
+                                <h4>Listado de productos de la orden de venta</h4>
                             </Badge>
                             <br />
                             <hr />
@@ -806,7 +649,6 @@ function RegistroFacturas(props) {
                                         <th scope="col">UM</th>
                                         <th scope="col">Precio unitario</th>
                                         <th scope="col">Total</th>
-                                        <th scope="col">Eliminar</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -840,17 +682,6 @@ function RegistroFacturas(props) {
                                                     style: "currency",
                                                     currency: "MXN"
                                                 }).format(producto.total)} MXN
-                                            </td>
-                                            <td data-title="Eliminar">
-                                                <div
-                                                    className="eliminarProductoListado"
-                                                    title="Eliminar el producto agregado"
-                                                    onClick={() => {
-                                                        removeItem(producto)
-                                                    }}
-                                                >
-                                                    ❌
-                                                </div>
                                             </td>
                                         </tr>
                                     ))}

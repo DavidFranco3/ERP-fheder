@@ -3,11 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
+import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
+import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import { listarClientes } from "../../../api/clientes";
-import { actualizaFactura, obtenerFactura } from "../../../api/facturas";
+import { registraFactura, obtenerNumeroFactura } from "../../../api/facturas";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import "./ModificaFacturas.scss"
+import "./FacturasOV.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
@@ -17,15 +19,12 @@ import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta";
 import { obtenerCliente } from "../../../api/clientes";
-import BuscarCliente from '../../../page/BuscarCliente';
-import BuscarOV from '../../../page/BuscarOV';
-import BuscarProducto from '../../../page/BuscarProducto';
 
-function ModificaFacturas(props) {
+function FacturasOV(props) {
     const { history, setRefreshCheckLogin, location } = props;
 
     const params = useParams();
-    const { id } = params
+    const { ordenVenta } = params
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -59,7 +58,7 @@ function ModificaFacturas(props) {
     const enrutamiento = useNavigate();
 
     // Para guardar los datos del formulario
-    const [formData, setFormData] = useState(initialFormDataInitial());
+    const [formData, setFormData] = useState(initialFormData());
 
     // Para guardar los datos del formulario
     const [formDataVenta, setFormDataVenta] = useState(initialFormDataVentaInitial());
@@ -69,13 +68,10 @@ function ModificaFacturas(props) {
 
     useEffect(() => {
         //
-        obtenerFactura(id).then(response => {
+        obtenerDatosPedidoVenta(ordenVenta).then(response => {
             const { data } = response;
             //console.log(data)
-            setFormData(initialFormData(data));
             setFormDataVenta(initialFormDataVenta(data));
-            //setFormDataCliente(initialFormDataCliente(data));
-            // setFechaCreacion(fechaElaboracion)
             setListProductosCargados(data.productos);
         }).catch(e => {
             console.log(e)
@@ -106,15 +102,8 @@ function ModificaFacturas(props) {
     const [titulosModal, setTitulosModal] = useState(null);
 
     // Para la eliminacion fisica de usuarios
-    const buscarCliente = (content) => {
+    const buscarOV = (content) => {
         setTitulosModal("Buscar cliente");
-        setContentModal(content);
-        setShowModal(true);
-    }
-
-    // Para la eliminacion fisica de usuarios
-    const buscarVenta = (content) => {
-        setTitulosModal("Buscar orden de venta");
         setContentModal(content);
         setShowModal(true);
     }
@@ -128,8 +117,26 @@ function ModificaFacturas(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento("/Facturas");
+        enrutamiento("/Ventas");
     }
+
+    // Para almacenar el folio actual
+    const [folioActual, setFolioActual] = useState("");
+
+    useEffect(() => {
+        try {
+            obtenerNumeroFactura().then(response => {
+                const { data } = response;
+                // console.log(data)
+                const { noFactura } = data;
+                setFolioActual(noFactura)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
 
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
@@ -218,9 +225,11 @@ function ModificaFacturas(props) {
         setLoading(true);
 
         const dataTemp = {
-            ordenVenta: formDataVenta.ordenVenta,
+            folio: folioActual,
+            ordenVenta: ordenVenta,
             cliente: formDataVenta.cliente,
             nombreCliente: formDataVenta.nombreCliente,
+            sucursal: getSucursal(),
             fechaEmision: formDataVenta.fechaPedido,
             fechaVencimiento: fechaVencimiento,
             nombreContacto: formDataCliente.nombreContacto,
@@ -228,19 +237,19 @@ function ModificaFacturas(props) {
             correo: formDataCliente.correo,
             productos: listProductosCargados,
             iva: IVA,
-            iva: formData.iva,
             subtotal: subTotal,
             total: total,
+            estado: "true",
         }
         // console.log(dataTemp)
 
         // Modificar el pedido creado recientemente
-        actualizaFactura(id, dataTemp).then(response => {
+        registraFactura(dataTemp).then(response => {
             const { data: { mensaje, datos } } = response;
             // console.log(response)
             toast.success(mensaje)
             // Log acerca del registro inicial del tracking
-            LogsInformativos("Se ha actualizado la cuenta por cobrar con folio " + formData.folio, dataTemp)
+            LogsInformativos("Se han registrado la factura " + folioActual, dataTemp)
             // Registro inicial del tracking
             //LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
             setLoading(false)
@@ -385,15 +394,13 @@ function ModificaFacturas(props) {
                     : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
     }, [formDataVenta.fechaPedido, formDataCliente.diasCredito]);
 
-    const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState();
-
     return (
         <>
             <Alert>
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Modificando cuenta por cobrar
+                            Registrar factura
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
@@ -432,7 +439,7 @@ function ModificaFacturas(props) {
                                             type="text"
                                             placeholder="Folio"
                                             name="folio"
-                                            value={formData.folio}
+                                            value={folioActual}
                                             disabled
                                         />
                                     </Col>
@@ -449,30 +456,13 @@ function ModificaFacturas(props) {
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                    <div className="flex items-center mb-1">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataVenta.ordenVenta}
+                                            value={ordenVenta}
                                             placeholder="Orden de venta"
                                             name="ordenVenta"
                                             disabled
                                         />
-                                        <FontAwesomeIcon
-                                                className="cursor-pointer py-2 -ml-6"
-                                                title="Buscar entre las ventas"
-                                                icon={faSearch}
-                                                onClick={() => {
-                                                    buscarVenta(
-                                                        <BuscarOV
-                                                            formData={formDataVenta}
-                                                            setProducto={setListProductosCargados}
-                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
-                                                            setFormData={setFormDataVenta}
-                                                            setShowModal={setShowModal}
-                                                        />)
-                                                }}
-                                            />
-                                        </div>
                                     </Col>
                                 </Form.Group>
                             </Row>
@@ -615,8 +605,9 @@ function ModificaFacturas(props) {
                                             name="iva"
                                         >
                                             <option>Elige una opción</option>
-                                            <option value="0.16" selected={formData.iva == "0.16"}>16%</option>
-                                            <option value="0" selected={formData.iva == "0"}>0%</option>
+                                            <option value="0.16">16%</option>
+                                            <option value="0">0%</option>
+                                            <option value="0">Expcento</option>
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
@@ -624,15 +615,15 @@ function ModificaFacturas(props) {
 
                         </div>
                         <br />
-                        <hr />
 
+                        <hr />
                         {/* Listado de productos  */}
                         <div className="tablaProductos">
 
                             {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
                             {/* Inicia tabla informativa  */}
                             <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
-                                <h4>Listado de productos de la orden de venta</h4>
+                                <h4>Listado de productos seleccionados</h4>
                             </Badge>
                             <br />
                             <hr />
@@ -763,23 +754,14 @@ function ModificaFacturas(props) {
     );
 }
 
-function initialFormDataInitial() {
+function initialFormData() {
     return {
-        iva: "",
-        folio: ""
-    }
-}
-
-function initialFormData(data) {
-    return {
-        folio: data.folio,
-        iva: data.ivaElegido
+        iva: "0.0"
     }
 }
 
 function initialFormDataVentaInitial() {
     return {
-        ordenVenta: "",
         cliente: "",
         nombreCliente: "",
         fechaPedido: "",
@@ -788,10 +770,9 @@ function initialFormDataVentaInitial() {
 
 function initialFormDataVenta(data) {
     return {
-        ordenVenta: data.ordenVenta,
         cliente: data.cliente,
         nombreCliente: data.nombreCliente,
-        fechaPedido: data.fechaEmision,
+        fechaPedido: data.fechaElaboracion,
     }
 }
 
@@ -899,4 +880,4 @@ function formatModelMatrizProductos(data) {
     return dataTemp;
 }
 
-export default ModificaFacturas;
+export default FacturasOV;

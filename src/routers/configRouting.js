@@ -65,6 +65,7 @@ import Error404 from "../page/Error404";
 import Facturas from "../page/Facturas";
 import Notas from "../page/Notas";
 import CuentasClientes from "../page/CuentasClientes";
+import CuentasPorPagar from "../page/CuentasPorPagar";
 
 // importacion de dashboards
 import DashboardVentas from "../components/Dashboards/DashboardVentas";
@@ -77,9 +78,6 @@ import DashboardCatalogos from "../components/Dashboards/DashboardCatalogos";
 import DashboardConfiguracion from "../components/Dashboards/DashboardConfiguracion";
 import DashboardFinanzas from "../components/Dashboards/DashboardFinanzas";
 
-// Importacion de componentes de vista previa de vista PDF
-import VistaPrevia from "../components/Ventas/VistaPrevia";
-
 // Rutas para el programa de producción
 import RegistraProgramaProduccion from "../components/ProgramaProduccion/Registro";
 import ModificaProgramaProduccion from "../components/ProgramaProduccion/Modificacion";
@@ -89,6 +87,9 @@ import VistaPreviaProgramaProduccion from "../components/ProgramaProduccion/Vist
 import ModificaMatrizProductos from "../components/MatrizProductos/ModificaMatrizProductos";
 import RegistraMatrizProductos from "../components/MatrizProductos/RegistraMatrizProductos";
 import VistaDetallada from "../components/MatrizProductos/VistaDetallada";
+
+// Rutas para cuentas por pagar
+import RegistroCuentasPagar from "../components/CuentasPagar/RegistroCuentasPagar";
 
 // Rutas para calidad
 import RegistraReporte from "../components/Calidad/RegistraReporte";
@@ -283,6 +284,10 @@ export default [
     {
         path: "/VistaPreviaNotas/:id",
         page: VistaPreviaNota
+    },
+    {
+        path: "/RegistroCuentasPagar",
+        page: RegistroCuentasPagar
     },
     {
         path: "/RegistraRequerimientosPlaneacion",
@@ -931,6 +936,10 @@ export default [
     {
         path: "/Facturas",
         page: Facturas
+    },
+    {
+        path: "/CuentasPorPagar",
+        page: CuentasPorPagar
     },
     {
         path: "/DashboardVentas",

@@ -5,17 +5,20 @@ import BasicModal from "../../Modal/BasicModal";
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
-import "./ListFacturas.scss";
+import "./ListCuentasPagar.scss";
 import { estilos } from "../../../utils/tableStyled";
 import 'dayjs/locale/es'
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-import EliminacionLogicaFacturas from '../EliminacionLogica';
+import ListProductosCuentasPagar from '../ListProductosCuentasPagar';
+import EliminacionFisicaCuentasPagar from '../EliminacionFisica';
+import EliminacionLogicaCuentasPagar from '../EliminacionLogica';
+/*import EliminacionLogicaFacturas from '../EliminacionLogica';
 import EliminacionFisicaFacturas from '../EliminacionFisica';
-import ListProductosFacturas from '../ListProductosFacturas';
+import ListProductosFacturas from '../ListProductosFacturas';*/
 
-function ListFacturas(props) {
-    const { setRefreshCheckLogin, listFacturas, history, location } = props;
+function ListCuentasPagar(props) {
+    const { setRefreshCheckLogin, listCuentasPagar, history, location } = props;
 
     const enrutamiento = useNavigate();
 
@@ -29,14 +32,14 @@ function ListFacturas(props) {
 
     // Para la eliminacion fisica de usuarios
     const eliminaFactura = (content) => {
-        setTitulosModal("Eliminando cuenta por cobrar");
+        setTitulosModal("Eliminando cuenta por pagar");
         setContentModal(content);
         setShowModal(true);
     }
 
     //Para la eliminacion logica de usuarios
     const eliminaLogicaFactura = (content) => {
-        setTitulosModal("Cancelando la cuenta por cobrar");
+        setTitulosModal("Cancelando la cuenta por pagar");
         setContentModal(content);
         setShowModal(true);
     }
@@ -53,7 +56,7 @@ function ListFacturas(props) {
     }
 
     const ExpandedComponent = ({ data }) => (
-        <ListProductosFacturas
+        <ListProductosCuentasPagar
             folio={data.folio}
         />
     );
@@ -67,15 +70,15 @@ function ListFacturas(props) {
             reorder: false
         },
         {
-            name: "Orden de venta",
-            selector: row => row.ordenVenta,
+            name: "Orden de compra",
+            selector: row => row.ordenCompra,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: "Cliente",
-            selector: row => row.nombreCliente,
+            name: "Proveedor",
+            selector: row => row.nombreProveedor,
             sortable: false,
             center: true,
             reorder: false
@@ -115,7 +118,7 @@ function ListFacturas(props) {
                                 className="editar"
                                 onClick={() => {
                                     eliminaLogicaFactura(
-                                        <EliminacionLogicaFacturas
+                                        <EliminacionLogicaCuentasPagar
                                             datos={row}
                                             setShowModal={setShowModal}
                                             history={history}
@@ -161,33 +164,33 @@ function ListFacturas(props) {
                 row.estado === "true" ?
                     (
                         <>
-                            <Badge
-                                bg="primary"
-                                title="Generar PDF"
-                                className="ver"
-                                onClick={() => {
-                                    vistaPrevia(row.id);
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faEye} className="text-lg" />
-                            </Badge>
-                            <Badge
-                                bg="success"
-                                title="Modificar"
-                                className="editar"
-                                onClick={() => {
-                                    modificaFactura(row.id)
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
-                            </Badge>
+                            {/*<Badge
+                        bg="primary"
+                        title="Generar PDF"
+                        className="ver"
+                        onClick={() => {
+                            vistaPrevia(row.id);
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faEye} className="text-lg" />
+                    </Badge>
+                    <Badge
+                        bg="success"
+                        title="Modificar"
+                        className="editar"
+                        onClick={() => {
+                            modificaFactura(row.id)
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faPenToSquare} className="text-lg" />
+                    </Badge>*/}
                             <Badge
                                 bg="danger"
                                 title="Eliminar"
                                 className="eliminar"
                                 onClick={() => {
                                     eliminaFactura(
-                                        <EliminacionFisicaFacturas
+                                        <EliminacionFisicaCuentasPagar
                                             datos={row}
                                             setShowModal={setShowModal}
                                             history={history}
@@ -212,7 +215,7 @@ function ListFacturas(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listFacturas);
+            setRows(listCuentasPagar);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -231,7 +234,7 @@ function ListFacturas(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={listFacturas}
+                    data={listCuentasPagar}
                     expandableRows
                     expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}
@@ -250,4 +253,4 @@ function ListFacturas(props) {
     );
 }
 
-export default ListFacturas;
+export default ListCuentasPagar;

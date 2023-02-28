@@ -631,7 +631,7 @@ function VistaPreviaFactura(props) {
                 },
                 {
                     alignment: 'center',
-                    text: 'Listado de productos seleccionados',
+                    text: 'Listado de productos de la orden de venta',
                     style: 'header',
                     fontSize: 23,
                     bold: true,
@@ -973,7 +973,7 @@ function VistaPreviaFactura(props) {
                             {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
                             {/* Inicia tabla informativa  */}
                             <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
-                                <h4>Listado de productos seleccionados</h4>
+                                <h4>Listado de productos de la orden de venta</h4>
                             </Badge>
                             <br />
                             <hr />

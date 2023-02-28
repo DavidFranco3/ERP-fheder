@@ -1,31 +1,24 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
 import { listarClientes } from "../../../api/clientes";
-import { actualizaFactura, obtenerFactura } from "../../../api/facturas";
+import { registraCuentasPagar, obtenerNumeroCuentasPagar } from "../../../api/cuentasPorPagar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import "./ModificaFacturas.scss"
+import { faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import "./RegistroCuentasPagar.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
-import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
-import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta";
-import { obtenerCliente } from "../../../api/clientes";
-import BuscarCliente from '../../../page/BuscarCliente';
-import BuscarOV from '../../../page/BuscarOV';
+import { obtenerProveedores } from "../../../api/proveedores";
+import BuscarOC from '../../../page/BuscarOC';
 import BuscarProducto from '../../../page/BuscarProducto';
+import { LogCuentaRegistro, LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
 
-function ModificaFacturas(props) {
+function RegistroCuentasPagar(props) {
     const { history, setRefreshCheckLogin, location } = props;
-
-    const params = useParams();
-    const { id } = params
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -59,40 +52,25 @@ function ModificaFacturas(props) {
     const enrutamiento = useNavigate();
 
     // Para guardar los datos del formulario
-    const [formData, setFormData] = useState(initialFormDataInitial());
+    const [formData, setFormData] = useState(initialFormData());
 
     // Para guardar los datos del formulario
-    const [formDataVenta, setFormDataVenta] = useState(initialFormDataVentaInitial());
+    const [formDataCompra, setFormDataCompra] = useState(initialFormDataCompra());
 
     // Para guardar los datos del formulario
-    const [formDataCliente, setFormDataCliente] = useState(initialFormDataClienteInitial());
+    const [formDataProveedor, setFormDataProveedor] = useState(initialFormDataProveedorInitial());
 
     useEffect(() => {
         //
-        obtenerFactura(id).then(response => {
+        obtenerProveedores(formDataCompra.proveedor).then(response => {
             const { data } = response;
             //console.log(data)
-            setFormData(initialFormData(data));
-            setFormDataVenta(initialFormDataVenta(data));
-            //setFormDataCliente(initialFormDataCliente(data));
-            // setFechaCreacion(fechaElaboracion)
-            setListProductosCargados(data.productos);
-        }).catch(e => {
-            console.log(e)
-        })
-    }, []);
-
-    useEffect(() => {
-        //
-        obtenerCliente(formDataVenta.cliente).then(response => {
-            const { data } = response;
-            //console.log(data)
-            setFormDataCliente(initialFormDataCliente(data));
+            setFormDataProveedor(initialFormDataProveedor(data));
             //setListProductosCargados(data.productos);
         }).catch(e => {
             console.log(e)
         })
-    }, [formDataVenta.cliente]);
+    }, [formDataCompra.proveedor]);
 
     // Para determinar el uso de la animacion de carga mientras se guarda el pedido
     const [loading, setLoading] = useState(false);
@@ -113,8 +91,8 @@ function ModificaFacturas(props) {
     }
 
     // Para la eliminacion fisica de usuarios
-    const buscarVenta = (content) => {
-        setTitulosModal("Buscar orden de venta");
+    const buscarCompra = (content) => {
+        setTitulosModal("Buscar orden de compra");
         setContentModal(content);
         setShowModal(true);
     }
@@ -128,8 +106,26 @@ function ModificaFacturas(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento("/Facturas");
+        enrutamiento("/CuentasPorPagar");
     }
+
+    // Para almacenar el folio actual
+    const [folioActual, setFolioActual] = useState("");
+
+    useEffect(() => {
+        try {
+            obtenerNumeroCuentasPagar().then(response => {
+                const { data } = response;
+                // console.log(data)
+                const { noCuenta } = data;
+                setFolioActual(noCuenta)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
 
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
@@ -201,7 +197,7 @@ function ModificaFacturas(props) {
     }, [formData.iva]);
 
     // Calcula el subtotal de la lista de artículos cargados
-    const subTotal = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.total)), 0);
+    const subTotal = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.subtotal)), 0);
 
     //Calcula el IVA de la lista de productos agregados
     const IVA = parseFloat(subTotal * iva);
@@ -218,29 +214,35 @@ function ModificaFacturas(props) {
         setLoading(true);
 
         const dataTemp = {
-            ordenVenta: formDataVenta.ordenVenta,
-            cliente: formDataVenta.cliente,
-            nombreCliente: formDataVenta.nombreCliente,
-            fechaEmision: formDataVenta.fechaPedido,
+            folio: folioActual,
+            ordenCompra: formDataCompra.ordenCompra,
+            proveedor: formDataCompra.proveedor,
+            nombreProveedor: formDataCompra.nombreProveedor,
+            sucursal: getSucursal(),
+            fechaEmision: formDataCompra.fechaPedido,
             fechaVencimiento: fechaVencimiento,
-            nombreContacto: formDataCliente.nombreContacto,
-            telefono: formDataCliente.telefono,
-            correo: formDataCliente.correo,
+            nombreContacto: formDataProveedor.nombreContacto,
+            telefono: formDataProveedor.telefono,
+            correo: formDataProveedor.correo,
             productos: listProductosCargados,
             iva: IVA,
-            iva: formData.iva,
+            ivaElegido: formData.iva,
             subtotal: subTotal,
             total: total,
+            estado: "true",
         }
         // console.log(dataTemp)
 
         // Modificar el pedido creado recientemente
-        actualizaFactura(id, dataTemp).then(response => {
+        registraCuentasPagar(dataTemp).then(response => {
             const { data: { mensaje, datos } } = response;
             // console.log(response)
             toast.success(mensaje)
+            // Log acerca del registro de cuentas de clientes
+            //LogCuentaRegistro(formDataVenta.cliente, formDataVenta.nombreCliente, total);
+            //LogCuentaActualizacion(formDataVenta.cliente, formDataVenta.nombreCliente, total);
             // Log acerca del registro inicial del tracking
-            LogsInformativos("Se ha actualizado la cuenta por cobrar con folio " + formData.folio, dataTemp)
+            LogsInformativos("Se han registrado la cuenta por pagar " + folioActual, dataTemp)
             // Registro inicial del tracking
             //LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
             setLoading(false)
@@ -252,8 +254,8 @@ function ModificaFacturas(props) {
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
-        setFormDataVenta({ ...formDataVenta, [e.target.name]: e.target.value })
-        setFormDataCliente({ ...formDataCliente, [e.target.name]: e.target.value })
+        setFormDataCompra({ ...formDataCompra, [e.target.name]: e.target.value })
+        setFormDataProveedor({ ...formDataProveedor, [e.target.name]: e.target.value })
     }
 
     // Para la carga y el listado de productos
@@ -370,20 +372,19 @@ function ModificaFacturas(props) {
 
     const [fechaVencimiento, setFechaVencimiento] = useState();
 
-    console.log(formDataVenta.fechaPedido);
 
     useEffect(() => {
         //la fecha
-        const TuFecha = new Date(formDataVenta.fechaPedido);
+        const TuFecha = new Date(formDataCompra.fechaPedido);
 
         //nueva fecha sumada
-        TuFecha.setDate(TuFecha.getDate() + parseInt(formDataCliente.diasCredito));
+        TuFecha.setDate(TuFecha.getDate() + parseInt(formDataProveedor.diasCredito));
         //formato de salida para la fecha
         setFechaVencimiento((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
             : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
                 : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
                     : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
-    }, [formDataVenta.fechaPedido, formDataCliente.diasCredito]);
+    }, [formDataCompra.fechaPedido, formDataProveedor.diasCredito]);
 
     const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState();
 
@@ -393,7 +394,7 @@ function ModificaFacturas(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Modificando cuenta por cobrar
+                            Registrar cuenta por pagar
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
@@ -432,7 +433,7 @@ function ModificaFacturas(props) {
                                             type="text"
                                             placeholder="Folio"
                                             name="folio"
-                                            value={formData.folio}
+                                            value={folioActual}
                                             disabled
                                         />
                                     </Col>
@@ -445,29 +446,28 @@ function ModificaFacturas(props) {
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Orden de venta
+                                            Orden de compra
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                    <div className="flex items-center mb-1">
-                                        <Form.Control
-                                            type="text"
-                                            defaultValue={formDataVenta.ordenVenta}
-                                            placeholder="Orden de venta"
-                                            name="ordenVenta"
-                                            disabled
-                                        />
-                                        <FontAwesomeIcon
+                                        <div className="flex items-center mb-1">
+                                            <Form.Control
+                                                type="text"
+                                                defaultValue={formDataCompra.ordenCompra}
+                                                placeholder="Orden de compra"
+                                                name="ordenCompra"
+                                                disabled
+                                            />
+                                            <FontAwesomeIcon
                                                 className="cursor-pointer py-2 -ml-6"
                                                 title="Buscar entre las ventas"
                                                 icon={faSearch}
                                                 onClick={() => {
-                                                    buscarVenta(
-                                                        <BuscarOV
-                                                            formData={formDataVenta}
-                                                            setProducto={setListProductosCargados}
-                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
-                                                            setFormData={setFormDataVenta}
+                                                    buscarCompra(
+                                                        <BuscarOC
+                                                            formData={formDataCompra}
+                                                            setProductosOC={setListProductosCargados}
+                                                            setFormData={setFormDataCompra}
                                                             setShowModal={setShowModal}
                                                         />)
                                                 }}
@@ -483,15 +483,15 @@ function ModificaFacturas(props) {
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Cliente
+                                            Proveedor
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataVenta.nombreCliente}
-                                            placeholder="Nombre del cliente"
-                                            name="nombreCliente"
+                                            defaultValue={formDataCompra.nombreProveedor}
+                                            placeholder="Nombre del proveedor"
+                                            name="nombreProveedor"
                                         />
                                     </Col>
                                 </Form.Group>
@@ -509,7 +509,7 @@ function ModificaFacturas(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="date"
-                                            defaultValue={formDataVenta.fechaPedido}
+                                            defaultValue={formDataCompra.fechaPedido}
                                             placeholder="Fecha de pedido"
                                             name="fechaPedido"
                                         />
@@ -550,7 +550,7 @@ function ModificaFacturas(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataCliente.nombreContacto}
+                                            defaultValue={formDataProveedor.nombreContacto}
                                             placeholder="Nombre del comprador"
                                             name="nombreContacto"
                                         />
@@ -570,7 +570,7 @@ function ModificaFacturas(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataCliente.telefono}
+                                            defaultValue={formDataProveedor.telefono}
                                             placeholder="Telefono"
                                             name="telefono"
                                         />
@@ -590,7 +590,7 @@ function ModificaFacturas(props) {
                                     <Col sm="4">
                                         <Form.Control
                                             type="text"
-                                            defaultValue={formDataCliente.correo}
+                                            defaultValue={formDataProveedor.correo}
                                             placeholder="correo"
                                             name="correo"
                                         />
@@ -615,8 +615,8 @@ function ModificaFacturas(props) {
                                             name="iva"
                                         >
                                             <option>Elige una opción</option>
-                                            <option value="0.16" selected={formData.iva == "0.16"}>16%</option>
-                                            <option value="0" selected={formData.iva == "0"}>0%</option>
+                                            <option value="0.16">16%</option>
+                                            <option value="0">0%</option>
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
@@ -624,7 +624,6 @@ function ModificaFacturas(props) {
 
                         </div>
                         <br />
-                        <hr />
 
                         {/* Listado de productos  */}
                         <div className="tablaProductos">
@@ -632,7 +631,7 @@ function ModificaFacturas(props) {
                             {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
                             {/* Inicia tabla informativa  */}
                             <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
-                                <h4>Listado de productos de la orden de venta</h4>
+                                <h4>Listado de articulos de la orden de compra</h4>
                             </Badge>
                             <br />
                             <hr />
@@ -640,13 +639,15 @@ function ModificaFacturas(props) {
                             >
                                 <thead>
                                     <tr>
-                                        <th scope="col">ITEM</th>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Folio</th>
                                         <th scope="col">Descripción</th>
-                                        <th scope="col">Numero de parte</th>
                                         <th scope="col">Cantidad</th>
                                         <th scope="col">UM</th>
-                                        <th scope="col">Precio unitario</th>
-                                        <th scope="col">Total</th>
+                                        <th scope="col">Precio</th>
+                                        <th scope="col">Subtotal</th>
+                                        <th scope="col">Requisición</th>
+                                        <th scope="col">Referencia</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -654,32 +655,38 @@ function ModificaFacturas(props) {
                                 <tbody>
                                     {map(listProductosCargados, (producto, index) => (
                                         <tr key={index}>
-                                            <th scope="row">
+                                            <td scope="row">
                                                 {index + 1}
-                                            </th>
-                                            <td data-title="Descripcion">
-                                                {producto.item}
                                             </td>
-                                            <td data-title="Material">
-                                                {producto.ID}
-                                            </td>
-                                            <td data-title="UM">
-                                                {producto.cantidad}
+                                            <td data-title="Folio">
+                                                {producto.folio}
                                             </td>
                                             <td data-title="Descripción">
+                                                {producto.descripcion}
+                                            </td>
+                                            <td data-title="Cantidad">
+                                                {producto.cantidad}
+                                            </td>
+                                            <td data-title="UM">
                                                 {producto.um}
                                             </td>
                                             <td data-title="Orden de compra">
                                                 {new Intl.NumberFormat('es-MX', {
                                                     style: "currency",
                                                     currency: "MXN"
-                                                }).format(producto.precioUnitario)} MXN
+                                                }).format(producto.precio)} MXN
                                             </td>
                                             <td data-title="Observaciones">
                                                 {new Intl.NumberFormat('es-MX', {
                                                     style: "currency",
                                                     currency: "MXN"
-                                                }).format(producto.total)} MXN
+                                                }).format(producto.subtotal)} MXN
+                                            </td>
+                                            <td data-title="Requisicion">
+                                                {producto.requisicion}
+                                            </td>
+                                            <td data-title="Referencia">
+                                                {producto.referencia}
                                             </td>
                                         </tr>
                                     ))}
@@ -763,39 +770,22 @@ function ModificaFacturas(props) {
     );
 }
 
-function initialFormDataInitial() {
+function initialFormData() {
     return {
-        iva: "",
-        folio: ""
+        iva: ""
     }
 }
 
-function initialFormData(data) {
+function initialFormDataCompra() {
     return {
-        folio: data.folio,
-        iva: data.ivaElegido
-    }
-}
-
-function initialFormDataVentaInitial() {
-    return {
-        ordenVenta: "",
-        cliente: "",
-        nombreCliente: "",
+        ordenCompra: "",
+        proveedor: "",
+        nombreProveedor: "",
         fechaPedido: "",
     }
 }
 
-function initialFormDataVenta(data) {
-    return {
-        ordenVenta: data.ordenVenta,
-        cliente: data.cliente,
-        nombreCliente: data.nombreCliente,
-        fechaPedido: data.fechaEmision,
-    }
-}
-
-function initialFormDataClienteInitial() {
+function initialFormDataProveedorInitial() {
     return {
         nombreContacto: "",
         telefono: "",
@@ -804,9 +794,9 @@ function initialFormDataClienteInitial() {
     }
 }
 
-function initialFormDataCliente(data) {
+function initialFormDataProveedor(data) {
     return {
-        nombreContacto: data.comprador,
+        nombreContacto: data.personalContacto,
         telefono: data.telefonoCelular,
         correo: data.correo,
         diasCredito: data.diasCredito
@@ -899,4 +889,4 @@ function formatModelMatrizProductos(data) {
     return dataTemp;
 }
 
-export default ModificaFacturas;
+export default RegistroCuentasPagar;

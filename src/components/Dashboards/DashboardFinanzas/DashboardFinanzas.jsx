@@ -6,6 +6,7 @@ import { Alert, Button, Col, Row, Card, Container, CardGroup, Image, Badge } fro
 import LogoCuentasCobrar from "../../../assets/png/menus/cuentasPorCobrar.png";
 import LogoNotas from "../../../assets/png/menus/notas.png";
 import LogoCuentasClientes from "../../../assets/png/menus/cuentasClientes.png";
+import LogoCuentasPagar from "../../../assets/png/menus/cuentasPagar.png";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../../api/auth";
 import { toast } from "react-toastify";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -86,6 +87,11 @@ function DashboardFinanzas(props) {
                         path={'/CuentasClientes'}
                         logo={LogoCuentasClientes}
                         title={'Saldos'}
+                    />
+                    <ItemCard
+                        path={'/CuentasPorPagar'}
+                        logo={LogoCuentasPagar}
+                        title={'Cuentas por pagar'}
                     />
                 </div>
         </>

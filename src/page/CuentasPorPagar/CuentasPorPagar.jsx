@@ -1,25 +1,24 @@
 import { useState, useEffect, Suspense } from 'react';
-import "./Proveedores.scss";
 import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { listarProveedores } from "../../api/proveedores";
-import { toast } from "react-toastify";
-import ListProveedores from '../../components/Proveedores/ListProveedores';
+import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { withRouter } from "../../utils/withRouter";
+import { toast } from "react-toastify";
+import ListCuentasPagar from "../../components/CuentasPagar/ListCuentasPagar";
+import { listarCuentasPagar } from "../../api/cuentasPorPagar";
+import "./CuentasPorPagar.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
-function Proveedores(props) {
+function CuentasPorPagar(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     const enrutamiento = useNavigate();
 
-    const rutaRegreso = () => {
-        enrutamiento("/DashboardCatalogos")
-    }
+    // Para almacenar la lista de pedidos de venta
+    const [listCuentasPagar, setListCuentasPagar] = useState(null);
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -47,26 +46,18 @@ function Proveedores(props) {
     }, []);
     // Termina recuperación de la razón social recuperada
 
-    // Ir hacia ruta de registro
-    const rutaRegistro = () => {
-        enrutamiento("/RegistroProveedores");
-    }
-
-    // Para almacenar los usuarios
-    const [listProveedores, setListProveedores] = useState(null);
-
     useEffect(() => {
         try {
-            listarProveedores(getSucursal()).then(response => {
+            listarCuentasPagar(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
 
-                if (!listProveedores && data) {
-                    setListProveedores(formatModelProveedores(data));
+                if (!listCuentasPagar && data) {
+                    setListCuentasPagar(formatModelCuentasPagar(data));
                 } else {
-                    const datosProveedores = formatModelProveedores(data);
-                    setListProveedores(datosProveedores);
+                    const datosCuentasPagar = formatModelCuentasPagar(data);
+                    setListCuentasPagar(datosCuentasPagar);
                 }
             }).catch(e => {
                 console.log(e)
@@ -75,6 +66,15 @@ function Proveedores(props) {
             console.log(e)
         }
     }, [location]);
+
+    // Para ir hacia la ruta de registro del pedido de venta
+    const rutaRegistroCuentasPagar = () => {
+        enrutamiento("/RegistroCuentasPagar")
+    }
+
+    const rutaRegreso = () => {
+        enrutamiento("/DashboardFinanzas")
+    }
 
     return (
         <>
@@ -96,22 +96,22 @@ function Proveedores(props) {
                                 <Row>
                                     <Col xs={12} md={8}>
                                         <h1>
-                                            Mis proveedores
+                                            Cuentas por pagar
                                         </h1>
                                     </Col>
                                     <Col xs={6} md={4}>
                                         <Button
                                             className="btnRegistroVentas"
-                                            title="Registrar un nuevo cliente"
+                                            title="Registrar una nueva cuenta por pagar"
                                             onClick={() => {
-                                                rutaRegistro()
+                                                rutaRegistroCuentasPagar()
                                             }}
                                         >
                                             <FontAwesomeIcon icon={faCirclePlus} /> Registrar
                                         </Button>
                                         <Button
                                             className="btnRegistroVentas"
-                                            title="Regresar al menú catalogos"
+                                            title="Regresar al menú ventas"
                                             onClick={() => {
                                                 rutaRegreso()
                                             }}
@@ -123,12 +123,12 @@ function Proveedores(props) {
                             </Alert>
 
                             {
-                                listProveedores ?
+                                listCuentasPagar ?
                                     (
                                         <>
                                             <Suspense fallback={<Spinner />}>
-                                                <ListProveedores
-                                                    listProveedores={listProveedores}
+                                                <ListCuentasPagar
+                                                    listCuentasPagar={listCuentasPagar}
                                                     location={location}
                                                     history={history}
                                                     setRefreshCheckLogin={setRefreshCheckLogin}
@@ -149,34 +149,30 @@ function Proveedores(props) {
     );
 }
 
-function formatModelProveedores(data) {
+function formatModelCuentasPagar(data) {
     //console.log(data)
     const dataTemp = []
     data.forEach(data => {
-        const { direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais } } = data;
         dataTemp.push({
             id: data._id,
-            nombre: data.nombre,
-            apellidos: data.apellidos,
+            folio: data.folio,
+            ordenCompra: data.ordenCompra,
+            proveedor: data.proveedor,
+            nombreProveedor: data.nombreProveedor,
             sucursal: data.sucursal,
-            rfc: data.rfc,
-            telefonoCelular: data.telefonoCelular,
-            personalContacto: data.personalContacto,
-            diasCredito: data.diasCredito,
-            calle: calle,
-            numeroExterior: numeroExterior,
-            numeroInterior: numeroInterior,
-            colonia: colonia,
-            municipio: municipio,
-            estado: estado,
-            pais: pais,
+            fechaEmision: data.fechaEmision,
+            fechaVencimiento: data.fechaVencimiento,
+            nombreContacto: data.nombreContacto,
+            telefono: data.telefono,
             correo: data.correo,
-            foto: data.foto,
-            estadoProveedor: data.estadoProveedor,
+            total: data.total,
+            productos: data.productos,
+            estado: data.estado,
+            fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });
     });
     return dataTemp;
 }
 
-export default withRouter(Proveedores);
+export default withRouter(CuentasPorPagar);

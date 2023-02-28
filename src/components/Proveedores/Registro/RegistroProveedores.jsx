@@ -64,6 +64,7 @@ function RegistroProveedores(props) {
                 regimenFiscal: formData.regimenFiscal,
                 sucursal: getSucursal(),
                 personalContacto: formData.personalContacto,
+                diasCredito: formData.diasCredito,
                 direccion: {
                     calle: formData.calle,
                     numeroExterior: formData.numeroExterior,
@@ -282,6 +283,18 @@ function RegistroProveedores(props) {
 
                             <Form.Group as={Col} controlId="formGridTelefonoFijo">
                                 <Form.Label>
+                                    Dias de credito
+                                </Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    placeholder="Dias de credito"
+                                    name="diasCredito"
+                                    defaultValue={formData.diasCredito}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridTelefonoFijo">
+                                <Form.Label>
                                     Personal de contacto
                                 </Form.Label>
                                 <Form.Control
@@ -465,6 +478,7 @@ function initialFormData() {
     return {
         nombre: "",
         apellidos: "",
+        diasCredito: "",
         rfc: "",
         regimenFiscal: "",
         telefonoCelular: "",
