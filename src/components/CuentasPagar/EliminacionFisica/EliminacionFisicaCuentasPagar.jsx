@@ -5,7 +5,7 @@ import queryString from "query-string";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { eliminaCuentasPagar } from "../../../api/cuentasPorPagar";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
+import { LogCuentaActualizacion } from "../../CuentasProveedores/Gestion/GestionCuentasProveedores";
 
 function EliminacionFisicaCuentasPagar(props) {
     const { datos, setShowModal, history } = props;
@@ -33,7 +33,7 @@ function EliminacionFisicaCuentasPagar(props) {
                 // console.log(data)
                 toast.success(data.mensaje)
                 LogsInformativos("Se ha eliminado la cuenta por pagar " + folio, datos);
-                //LogCuentaActualizacion(cliente, nombreCliente, parseFloat(total) * -1);
+                LogCuentaActualizacion(proveedor, nombreProveedor, parseFloat(total) * -1);
                 setShowModal(false);
                 setLoading(false);
                 history({

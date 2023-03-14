@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { actualizaEstadoNotasPagar } from "../../../api/notasPagar";
 import { obtenerDatosCuentasPagar } from "../../../api/cuentasPorPagar";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-//import { LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
+import { LogCuentaActualizacion } from "../../CuentasProveedores/Gestion/GestionCuentasProveedores";
 
 function EliminacionLogicaNotasPagar(props) {
     const { datos, setShowModal, history } = props;
@@ -51,7 +51,7 @@ function EliminacionLogicaNotasPagar(props) {
                 //console.log(data)
                 toast.success(data.mensaje);
                 LogsInformativos("Se ha cancelado la nota de " + tipo + " con folio " + folio, datos);
-                //LogCuentaActualizacion(cliente, nombreCliente, tipo == "Cargo" ? parseFloat(total) * -1 : tipo == "Credito" ? parseFloat(total) : tipo == "Devolución" ? parseFloat(total) : "");
+                LogCuentaActualizacion(proveedor, nombreProveedor, tipo == "Cargo" ? parseFloat(total) * -1 : tipo == "Credito" ? parseFloat(total) : tipo == "Devolución" ? parseFloat(total) : "");
                 setShowModal(false);
                 history({
                     search: queryString.stringify(""),

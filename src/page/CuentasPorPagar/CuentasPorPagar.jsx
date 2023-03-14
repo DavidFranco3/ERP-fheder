@@ -73,7 +73,7 @@ function CuentasPorPagar(props) {
     }
 
     const rutaRegreso = () => {
-        enrutamiento("/DashboardFinanzas")
+        enrutamiento("/DashboardCuentasPorPagar")
     }
 
     return (

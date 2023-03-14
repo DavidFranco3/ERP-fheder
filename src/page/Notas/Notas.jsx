@@ -125,7 +125,7 @@ function Notas(props) {
     }
 
     const rutaRegreso = () => {
-        enrutamiento("/DashboardFinanzas")
+        enrutamiento("/DashboardCuentasPorCobrar")
     }
 
     console.log(listNotasDevolucion)

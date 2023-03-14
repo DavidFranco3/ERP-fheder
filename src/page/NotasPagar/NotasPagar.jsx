@@ -125,7 +125,7 @@ function NotasPagar(props) {
     }
 
     const rutaRegreso = () => {
-        enrutamiento("/DashboardFinanzas")
+        enrutamiento("/DashboardCuentasPorPagar")
     }
 
     return (
@@ -148,7 +148,7 @@ function NotasPagar(props) {
                                 <Row>
                                     <Col xs={12} md={8}>
                                         <h1>
-                                            Notas de CXP
+                                            Notas
                                         </h1>
                                     </Col>
                                     <Col xs={6} md={4}>

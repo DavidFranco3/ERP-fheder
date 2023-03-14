@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import "./DashboardFinanzas.scss";
+import "./DashboardCuentasPorCobrar.scss";
 import { Alert, Button, Col, Row, Card, Container, CardGroup, Image, Badge } from "react-bootstrap";
 // Importacion de imagenes para los iconos de los menus
 import LogoCuentasCobrar from "../../../assets/png/menus/cuentasPorCobrar.png";
 import LogoNotas from "../../../assets/png/menus/notas.png";
 import LogoCuentasClientes from "../../../assets/png/menus/cuentasClientes.png";
-import LogoCuentasPagar from "../../../assets/png/menus/cuentasPagar.png";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../../api/auth";
 import { toast } from "react-toastify";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
 
-function DashboardFinanzas(props) {
+function DashboardCuentasPorCobrar(props) {
     const { setRefreshCheckLogin } = props;
 
     const enrutamiento = useNavigate();
@@ -47,7 +46,7 @@ function DashboardFinanzas(props) {
     )
 
     const rutaRegreso = () => {
-        enrutamiento("/")
+        enrutamiento("/DashboardFinanzas")
     }
 
     return (
@@ -56,7 +55,7 @@ function DashboardFinanzas(props) {
                     <Row>
                         <Col xs={12} md={8}>
                             <h1>
-                                Finanzas
+                                Cuentas por cobrar
                             </h1>
                         </Col>
                         <Col xs={6} md={4}>
@@ -72,20 +71,25 @@ function DashboardFinanzas(props) {
                         </Col>
                     </Row>
                 </Alert>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-3 gap-3">
                     <ItemCard
-                        path={'/DashboardCuentasPorCobrar'}
+                        path={'/Facturas'}
                         logo={LogoCuentasCobrar}
                         title={'Cuentas por cobrar'}
                     />
                     <ItemCard
-                        path={'/DashboardCuentasPorPagar'}
-                        logo={LogoCuentasPagar}
-                        title={'Cuentas por pagar'}
+                        path={'/Notas'}
+                        logo={LogoNotas}
+                        title={'Notas'}
+                    />
+                    <ItemCard
+                        path={'/CuentasClientes'}
+                        logo={LogoCuentasClientes}
+                        title={'Saldos'}
                     />
                 </div>
         </>
     );
 }
 
-export default DashboardFinanzas;
+export default DashboardCuentasPorCobrar;

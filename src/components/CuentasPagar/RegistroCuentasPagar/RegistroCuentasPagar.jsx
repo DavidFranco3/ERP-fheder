@@ -15,7 +15,7 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../ap
 import { obtenerProveedores } from "../../../api/proveedores";
 import BuscarOC from '../../../page/BuscarOC';
 import BuscarProducto from '../../../page/BuscarProducto';
-import { LogCuentaRegistro, LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
+import {LogCuentaRegistro, LogCuentaActualizacion} from '../../CuentasProveedores/Gestion/GestionCuentasProveedores';
 
 function RegistroCuentasPagar(props) {
     const { history, setRefreshCheckLogin, location } = props;
@@ -238,13 +238,11 @@ function RegistroCuentasPagar(props) {
             const { data: { mensaje, datos } } = response;
             // console.log(response)
             toast.success(mensaje)
-            // Log acerca del registro de cuentas de clientes
-            //LogCuentaRegistro(formDataVenta.cliente, formDataVenta.nombreCliente, total);
-            //LogCuentaActualizacion(formDataVenta.cliente, formDataVenta.nombreCliente, total);
+            // Log acerca del registro de cuentas de proveedores
+            LogCuentaRegistro(formDataCompra.proveedor, formDataCompra.nombreProveedor, total);
+            LogCuentaActualizacion(formDataCompra.proveedor, formDataCompra.nombreProveedor, total);
             // Log acerca del registro inicial del tracking
             LogsInformativos("Se han registrado la cuenta por pagar " + folioActual, dataTemp)
-            // Registro inicial del tracking
-            //LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
             setLoading(false)
             regresaListadoVentas()
         }).catch(e => {

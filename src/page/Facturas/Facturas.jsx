@@ -73,7 +73,7 @@ function Facturas(props) {
     }
 
     const rutaRegreso = () => {
-        enrutamiento("/DashboardFinanzas")
+        enrutamiento("/DashboardCuentasPorCobrar")
     }
 
     return (

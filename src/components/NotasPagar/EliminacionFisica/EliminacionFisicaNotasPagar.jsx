@@ -5,7 +5,7 @@ import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { eliminaNotasPagar } from "../../../api/notasPagar";
 import { obtenerDatosCuentasPagar } from "../../../api/cuentasPorPagar";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-//import { LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
+import { LogCuentaActualizacion } from "../../CuentasProveedores/Gestion/GestionCuentasProveedores";
 
 function EliminacionFisicaNotasPagar(props) {
     const { datos, setShowModal, history } = props;
@@ -48,7 +48,7 @@ function EliminacionFisicaNotasPagar(props) {
                 // console.log(data)
                 toast.success(data.mensaje)
                 LogsInformativos("Se ha eliminado la nota con el folio de " + tipo + " con folio" + folio, datos);
-                //LogCuentaActualizacion(cliente, nombreCliente, tipo == "Cargo" ? parseFloat(total) * -1 : tipo == "Credito" ? parseFloat(total) : tipo == "Devolución" ? parseFloat(total) : "");
+                LogCuentaActualizacion(proveedor, nombreProveedor, tipo == "Cargo" ? parseFloat(total) * -1 : tipo == "Credito" ? parseFloat(total) : tipo == "Devolución" ? parseFloat(total) : "");
                 //LogTrackingEliminacion(folio)
                 setShowModal(false);
                 setLoading(false);

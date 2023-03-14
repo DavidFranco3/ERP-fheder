@@ -5,7 +5,7 @@ import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { actualizaEstadoCuentasPagar } from "../../../api/cuentasPorPagar";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
+import { LogCuentaActualizacion } from "../../CuentasProveedores/Gestion/GestionCuentasProveedores";
 
 function EliminacionLogicaCuentasPagar(props) {
     const { datos, setShowModal, history } = props;
@@ -35,7 +35,7 @@ function EliminacionLogicaCuentasPagar(props) {
                 //console.log(data)
                 toast.success(data.mensaje);
                 LogsInformativos("Se ha cancelado la cuenta por pagar " + folio, datos);
-                //LogCuentaActualizacion(cliente, nombreCliente, parseFloat(total) * -1);
+                LogCuentaActualizacion(proveedor, nombreProveedor, parseFloat(total) * -1);
                 setShowModal(false);
                 history({
                     search: queryString.stringify(""),

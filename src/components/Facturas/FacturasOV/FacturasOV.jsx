@@ -19,6 +19,7 @@ import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta";
 import { obtenerCliente } from "../../../api/clientes";
+import { LogCuentaRegistro, LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
 
 function FacturasOV(props) {
     const { history, setRefreshCheckLogin, location } = props;
@@ -248,6 +249,9 @@ function FacturasOV(props) {
             const { data: { mensaje, datos } } = response;
             // console.log(response)
             toast.success(mensaje)
+            // Log acerca del registro de cuentas de clientes
+            LogCuentaRegistro(formDataVenta.cliente, formDataVenta.nombreCliente, total);
+            LogCuentaActualizacion(formDataVenta.cliente, formDataVenta.nombreCliente, total);
             // Log acerca del registro inicial del tracking
             LogsInformativos("Se han registrado la factura " + folioActual, dataTemp)
             // Registro inicial del tracking

@@ -1,27 +1,27 @@
 import { getSucursal } from "../../../api/auth";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { registraCuentaCliente, obtenerCuentaCliente, obtenerNumeroCuentaCliente, actualizaCuentaCliente } from "../../../api/cuentasCliente";
+import { registraCuentaProveedor, obtenerCuentaProveedor, obtenerNumeroCuentaProveedor, actualizaCuentaProveedor } from "../../../api/cuentasProveedor";
 
 // Para el registro del tracking
-export function LogCuentaRegistro(cliente, nombreCliente, total) {
+export function LogCuentaRegistro(proveedor, nombreProveedor, total) {
     try {
         // Inicia la obtención del folio correspondiente
-        obtenerNumeroCuentaCliente().then(response => {
+        obtenerNumeroCuentaProveedor().then(response => {
             const { data } = response;
 
             // Formación del data para registro de tracking
             const dataTemp = {
                 folio: data.noCuenta,
-                cliente: cliente,
-                nombreCliente: nombreCliente,
+                proveedor: proveedor,
+                nombreProveedor: nombreProveedor,
                 sucursal: getSucursal(),
                 total: total,
             }
 
             // Inicia el registro del tracking
-            registraCuentaCliente(dataTemp).then(response => {
+            registraCuentaProveedor(dataTemp).then(response => {
                 const { data } = response;
-                LogsInformativos("Se registrado una nueva cuenta para el cliente" + nombreCliente, data.datos);
+                LogsInformativos("Se registrado una nueva cuenta para el proveedor " + nombreProveedor, data.datos);
             }).catch(e => {
                 console.log(e)
             })
@@ -37,10 +37,10 @@ export function LogCuentaRegistro(cliente, nombreCliente, total) {
 }
 
 // Realiza la modificación de saldos al realizar un movimiento
-export function LogCuentaActualizacion(cliente, nombreCliente, total) {
-     console.log(total);
+export function LogCuentaActualizacion(proveedor, nombreProveedor, total) {
+    console.log(total);
     try {
-        obtenerCuentaCliente(cliente).then(response => {
+        obtenerCuentaProveedor(proveedor).then(response => {
             const { data } = response;
             console.log(data);
 
@@ -52,9 +52,9 @@ export function LogCuentaActualizacion(cliente, nombreCliente, total) {
             console.log(dataTemp);
 
             // Inicia actualización de saldos de los socios
-            actualizaCuentaCliente(cliente, dataTemp).then(response => {
+            actualizaCuentaProveedor(proveedor, dataTemp).then(response => {
                 const { data } = response;
-                LogsInformativos("Se a actualizado la cuenta del cliente " + nombreCliente, dataTemp)
+                LogsInformativos("Se a actualizado la cuenta del proveedor " + nombreProveedor, dataTemp)
                 // console.log("Actualización de saldo personal")
             }).catch(e => {
                 // console.log(e)

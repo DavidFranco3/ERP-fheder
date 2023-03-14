@@ -19,6 +19,7 @@ import Dropzone from "../../Dropzone";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { obtenerDatosCompra } from "../../../api/compras";
 import { obtenerProveedores } from "../../../api/proveedores";
+import {LogCuentaRegistro, LogCuentaActualizacion} from '../../CuentasProveedores/Gestion/GestionCuentasProveedores';
 
 function CuentasPagarOC(props) {
     const { history, setRefreshCheckLogin, location } = props;
@@ -247,6 +248,9 @@ function CuentasPagarOC(props) {
             const { data: { mensaje, datos } } = response;
             // console.log(response)
             toast.success(mensaje)
+            // Log acerca del registro de cuentas de proveedores
+            LogCuentaRegistro(formDataCompra.proveedor, formDataCompra.nombreProveedor, total);
+            LogCuentaActualizacion(formDataCompra.proveedor, formDataCompra.nombreProveedor, total);
             // Log acerca del registro inicial del tracking
             LogsInformativos("Se han registrado la cuenta por pagar " + folioActual, dataTemp)
             // Registro inicial del tracking

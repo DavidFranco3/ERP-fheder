@@ -67,6 +67,7 @@ import Notas from "../page/Notas";
 import CuentasClientes from "../page/CuentasClientes";
 import CuentasPorPagar from "../page/CuentasPorPagar";
 import NotasPagar from "../page/NotasPagar";
+import CuentasProveedores from "../page/CuentasProveedores";
 
 // importacion de dashboards
 import DashboardVentas from "../components/Dashboards/DashboardVentas";
@@ -78,6 +79,8 @@ import DashboardMantenimiento from "../components/Dashboards/DashboardMantenimie
 import DashboardCatalogos from "../components/Dashboards/DashboardCatalogos";
 import DashboardConfiguracion from "../components/Dashboards/DashboardConfiguracion";
 import DashboardFinanzas from "../components/Dashboards/DashboardFinanzas";
+import DashboardCuentasPorCobrar from "../components/Dashboards/DashboardCuentasPorCobrar";
+import DashboardCuentasPorPagar from "../components/Dashboards/DashboardCuentasPorPagar";
 
 // Rutas para el programa de producción
 import RegistraProgramaProduccion from "../components/ProgramaProduccion/Registro";
@@ -803,6 +806,10 @@ export default [
         page: CuentasClientes
     },
     {
+        path: "/CuentasProveedores",
+        page: CuentasProveedores
+    },
+    {
         path: "/Requisiciones",
         page: Requisiciones
     },
@@ -1017,6 +1024,14 @@ export default [
     {
         path: "/DashboardFinanzas",
         page: DashboardFinanzas
+    },
+    {
+        path: "/DashboardCuentasPorCobrar",
+        page: DashboardCuentasPorCobrar
+    },
+    {
+        path: "/DashboardCuentasPorPagar",
+        page: DashboardCuentasPorPagar
     },
     {
         path: "/",

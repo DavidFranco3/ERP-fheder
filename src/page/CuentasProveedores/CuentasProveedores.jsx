@@ -5,14 +5,14 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { useNavigate } from "react-router-dom";
 import { withRouter } from "../../utils/withRouter";
 import { toast } from "react-toastify";
-import ListCuentasClientes from "../../components/CuentasClientes/ListCuentasClientes";
-import { listarCuentaCliente } from "../../api/cuentasCliente";
-import "./CuentasClientes.scss"
+import ListCuentasProveedores from "../../components/CuentasProveedores/ListCuentasProveedores";
+import { listarCuentaProveedor } from "../../api/cuentasProveedor";
+import "./CuentasProveedores.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 
-function CuentasClientes(props) {
+function CuentasProveedores(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
     const enrutamiento = useNavigate();
@@ -48,7 +48,7 @@ function CuentasClientes(props) {
 
     useEffect(() => {
         try {
-            listarCuentaCliente(getSucursal()).then(response => {
+            listarCuentaProveedor(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -73,7 +73,7 @@ function CuentasClientes(props) {
     }
 
     const rutaRegreso = () => {
-        enrutamiento("/DashboardCuentasPorCobrar")
+        enrutamiento("/DashboardCuentasPorPagar")
     }
 
     return (
@@ -118,7 +118,7 @@ function CuentasClientes(props) {
                                     (
                                         <>
                                             <Suspense fallback={<Spinner />}>
-                                                <ListCuentasClientes
+                                                <ListCuentasProveedores
                                                     listCuentas={listCuentas}
                                                     location={location}
                                                     history={history}
@@ -147,8 +147,8 @@ function formatModelCuentas(data) {
         dataTemp.push({
             id: data._id,
             folio: data.folio,
-            cliente: data.cliente,
-            nombreCliente: data.nombreCliente,
+            proveedor: data.proveedor,
+            nombreProveedor: data.nombreProveedor,
             sucursal: data.sucursal,
             total: data.total,
             fechaRegistro: data.createdAt,
@@ -158,4 +158,4 @@ function formatModelCuentas(data) {
     return dataTemp;
 }
 
-export default withRouter(CuentasClientes);
+export default withRouter(CuentasProveedores);
