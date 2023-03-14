@@ -1,35 +1,36 @@
 import { useState, useEffect } from 'react';
-import queryString from "query-string";
-import "./EliminacionLogicaNotas.scss";
-import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { actualizaEstadoNotas } from "../../../api/notas";
-import { obtenerDatosFactura } from "../../../api/facturas";
+import queryString from "query-string";
+import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
+import { eliminaNotasPagar } from "../../../api/notasPagar";
+import { obtenerDatosCuentasPagar } from "../../../api/cuentasPorPagar";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
+//import { LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
 
-function EliminacionLogicaNotas(props) {
+function EliminacionFisicaNotasPagar(props) {
     const { datos, setShowModal, history } = props;
-    const { id, folio, factura, tipo, total, estado } = datos;
+    const { id, folio, factura, tipo, total } = datos;
+
+    //console.log(datosPedido)
+
+    // Para cancelar la actualizacion
+    const cancelarEliminacion = () => {
+        setShowModal(false)
+    }
 
     // Para determinar el uso de la animacion
     const [loading, setLoading] = useState(false);
 
-    // Para cancelar el registro
-    const cancelar = () => {
-        setShowModal(false)
-    }
-
-    const [cliente, setCliente] = useState("");
-    const [nombreCliente, setNombreCliente] = useState("");
+    const [proveedor, setProveedor] = useState("");
+    const [nombreProveedor, setNombreProveedor] = useState("");
 
     useEffect(() => {
         //
-        obtenerDatosFactura(factura).then(response => {
+        obtenerDatosCuentasPagar(factura).then(response => {
             const { data } = response;
             //console.log(data)
-            setCliente(data.cliente);
-            setNombreCliente(data.nombreCliente);
+            setProveedor(data.proveedor);
+            setNombreProveedor(data.nombreProveedor);
         }).catch(e => {
             console.log(e)
         })
@@ -39,20 +40,18 @@ function EliminacionLogicaNotas(props) {
         e.preventDefault();
 
         setLoading(true);
-
-        const dataTemp = {
-            estado: estado === "false" ? "true" : "false"
-        }
         //console.log(dataTemp)
 
         try {
-            actualizaEstadoNotas(id, dataTemp).then(response => {
+            eliminaNotasPagar(id).then(response => {
                 const { data } = response;
-                //console.log(data)
-                toast.success(data.mensaje);
-                LogsInformativos("Se ha cancelado la nota de " + tipo + " con folio " + folio, datos);
-                LogCuentaActualizacion(cliente, nombreCliente, tipo == "Cargo" ? parseFloat(total) * -1 : tipo == "Credito" ? parseFloat(total) : tipo == "Devolución" ? parseFloat(total) : "");
+                // console.log(data)
+                toast.success(data.mensaje)
+                LogsInformativos("Se ha eliminado la nota con el folio de " + tipo + " con folio" + folio, datos);
+                //LogCuentaActualizacion(cliente, nombreCliente, tipo == "Cargo" ? parseFloat(total) * -1 : tipo == "Credito" ? parseFloat(total) : tipo == "Devolución" ? parseFloat(total) : "");
+                //LogTrackingEliminacion(folio)
                 setShowModal(false);
+                setLoading(false);
                 history({
                     search: queryString.stringify(""),
                 });
@@ -70,10 +69,9 @@ function EliminacionLogicaNotas(props) {
                 <Alert variant="danger">
                     <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
                     <p className="mensaje">
-                        Esta acción cancelara la orden de venta de {tipo}.
+                        Esta acción eliminara del sistema la nota de {tipo}.
                     </p>
                 </Alert>
-
                 <Row>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
@@ -87,7 +85,7 @@ function EliminacionLogicaNotas(props) {
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Cuenta por cobrar
+                            Cuenta por pagar
                         </Form.Label>
                         <Form.Control
                             type="text"
@@ -125,11 +123,12 @@ function EliminacionLogicaNotas(props) {
                 <Form.Group as={Row} className="botones">
                     <Col>
                         <Button
-                            variant="success"
-                            title={estado === "true" ? "Deshabilitar" : "Habilitar"}
                             type="submit"
-                            className="registrar">
-                            {!loading ? "Aceptar" : <Spinner animation="border" />}
+                            title="Eliminar el registro"
+                            variant="success"
+                            className="registrar"
+                        >
+                            {!loading ? "Eliminar" : <Spinner animation="border" />}
                         </Button>
                     </Col>
                     <Col>
@@ -138,10 +137,10 @@ function EliminacionLogicaNotas(props) {
                             title="Cerrar el formulario"
                             className="cancelar"
                             onClick={() => {
-                                cancelar()
+                                cancelarEliminacion()
                             }}
                         >
-                            Cerrar
+                            Cancelar
                         </Button>
                     </Col>
                 </Form.Group>
@@ -150,4 +149,4 @@ function EliminacionLogicaNotas(props) {
     );
 }
 
-export default EliminacionLogicaNotas;
+export default EliminacionFisicaNotasPagar;

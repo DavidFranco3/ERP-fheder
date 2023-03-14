@@ -11,10 +11,6 @@ import "./Login.scss";
 import { obtenerUsuario } from "../../api/usuarios";
 import LogoFredher from "../../assets/png/logoFredher.png";
 import { LogGeneral, LogsInformativos } from "../../components/Logs/LogsSistema/LogsSistema";
-import LogoCartoEmpaques from "../../assets/png/logoCartoEmpaques.png";
-import LogoMapiic from "../../assets/png/logoMapiic.png";
-import LogoreciPelel from "../../assets/png/logoReciPelel.png";
-
 
 function Login({ setRefreshCheckLogin }) {
     const [formData, setFormData] = useState(initialFormValue)
@@ -85,15 +81,15 @@ function Login({ setRefreshCheckLogin }) {
             <div className="container px-6 py-12 h-full">
                 <div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
                     <div className="md:w-8/12 lg:w-6/12 mb-12 md:mb-0 space-y-4">
-                        <img
+                        <Image
                             className="w-full pb-5"
                             src={LogoFredher}
                             alt="Fredher"
                             title="Fredher"
                         />
-                        <form onSubmit={onSubmit} onChange={onChange}>
+                        <Form onSubmit={onSubmit} onChange={onChange}>
                             <div className="mb-6">
-                                <input
+                                <Form.Control
                                     type="text"
                                     name="correo"
                                     defaultValue={formData.correo}
@@ -103,7 +99,7 @@ function Login({ setRefreshCheckLogin }) {
                             </div>
 
                             <div className="flex items-center mb-6">
-                                <input
+                                <Form.Control
                                     type={mostrarPassword ? 'text' : 'password'}
                                     name="password"
                                     defaultValue={formData.password}
@@ -133,7 +129,7 @@ function Login({ setRefreshCheckLogin }) {
                                     )}
                                 </button>
                             </div>
-                        </form>
+                        </Form>
                     </div>
                 </div>
                 <div className="w-full text-center lg:text-left">

@@ -93,6 +93,11 @@ function DashboardFinanzas(props) {
                         logo={LogoCuentasPagar}
                         title={'Cuentas por pagar'}
                     />
+                    <ItemCard
+                        path={'/NotasPagar'}
+                        logo={LogoNotas}
+                        title={'Notas de CXP'}
+                    />
                 </div>
         </>
     );

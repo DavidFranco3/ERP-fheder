@@ -66,6 +66,7 @@ import Facturas from "../page/Facturas";
 import Notas from "../page/Notas";
 import CuentasClientes from "../page/CuentasClientes";
 import CuentasPorPagar from "../page/CuentasPorPagar";
+import NotasPagar from "../page/NotasPagar";
 
 // importacion de dashboards
 import DashboardVentas from "../components/Dashboards/DashboardVentas";
@@ -271,6 +272,11 @@ import RegistroNota from "../components/Notas/Registro";
 import ModificacionNotas from "../components/Notas/Modificacion";
 import VistaPreviaNota from "../components/Notas/VistaPrevia";
 
+// Rutas para notas por pagar
+import RegistroNotaPagar from "../components/NotasPagar/Registro";
+import ModificacionNotasPagar from "../components/NotasPagar/Modificacion";
+import VistaPreviaNotaPagar from "../components/NotasPagar/VistaPrevia";
+
 export default [
     {
         path: "/Almacenes",
@@ -287,6 +293,18 @@ export default [
     {
         path: "/VistaPreviaNotas/:id",
         page: VistaPreviaNota
+    },
+    {
+        path: "/RegistroNotaPagar",
+        page: RegistroNotaPagar
+    },
+    {
+        path: "/ModificacionNotasPagar/:id",
+        page: ModificacionNotasPagar
+    },
+    {
+        path: "/VistaPreviaNotasPagar/:id",
+        page: VistaPreviaNotaPagar
     },
     {
         path: "/RegistroCuentasPagar",
@@ -715,6 +733,10 @@ export default [
     {
         path: "/Notas",
         page: Notas
+    },
+    {
+        path: "/NotasPagar",
+        page: NotasPagar
     },
     {
         path: "/NoConformidad",

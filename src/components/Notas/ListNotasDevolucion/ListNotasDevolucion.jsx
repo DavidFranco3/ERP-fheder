@@ -68,7 +68,7 @@ function ListNotasDevolucion(props) {
             reorder: false
         },
         {
-            name: "Factura",
+            name: "CXC",
             selector: row => row.factura,
             sortable: false,
             center: true,

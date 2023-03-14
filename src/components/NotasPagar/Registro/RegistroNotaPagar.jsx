@@ -1,27 +1,24 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { toast } from "react-toastify";
-import BuscarFactura from '../../../page/BuscarFactura';
+import BuscarCXP from '../../../page/BuscarCXP';
 import { listarClientes } from "../../../api/clientes";
 import { registraPedidoVenta, obtenerNumeroPedidoVenta } from "../../../api/pedidoVenta";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import "./ModificacionNotas.scss"
+import "./RegistroNotaPagar.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
-import { actualizaNotas, obtenerNotas } from "../../../api/notas";
+import { registraNotaPagar ,obtenerNumeroNotaPagarCredito, obtenerNumeroNotaPagarCargo, obtenerNumeroNotaPagarDevolucion } from "../../../api/notasPagar";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-//import ModificacionProductos from '../ModificacionProductos';
+//import { LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
 
-function ModificacionNotas(props) {
+function RegistroNotaPagar(props) {
     const { history, setRefreshCheckLogin, location } = props;
-
-    const parametros = useParams();
-    const { id } = parametros
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -55,22 +52,10 @@ function ModificacionNotas(props) {
     const enrutamiento = useNavigate();
 
     // Para guardar los datos del formulario
-    const [formData, setFormData] = useState(initialFormDataInitial());
+    const [formData, setFormData] = useState(initialFormData());
 
     // Para guardar los datos del formulario
-    const [formDataFactura, setFormDataFactura] = useState(initialFormDataFacturaInitial());
-
-    useEffect(() => {
-        //
-        obtenerNotas(id).then(response => {
-            const { data } = response;
-            //console.log(data)
-            setFormData(initialFormData(data));
-            setFormDataFactura(initialFormDataFactura(data));
-        }).catch(e => {
-            console.log(e)
-        })
-    }, []);
+    const [formDataFactura, setFormDataFactura] = useState(initialFormDataFactura());
 
     // Para determinar el uso de la animacion de carga mientras se guarda el pedido
     const [loading, setLoading] = useState(false);
@@ -92,7 +77,7 @@ function ModificacionNotas(props) {
 
     // Para la eliminacion fisica de usuarios
     const buscarFactura = (content) => {
-        setTitulosModal("Buscar factura");
+        setTitulosModal("Buscar cuenta por pagar");
         setContentModal(content);
         setShowModal(true);
     }
@@ -106,8 +91,48 @@ function ModificacionNotas(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento("/Notas");
+        enrutamiento("/NotasPagar");
     }
+
+    // Para almacenar el folio actual
+    const [folioActual, setFolioActual] = useState("");
+
+    useEffect(() => {
+        try {
+            if (formData.tipo == "Cargo") {
+                obtenerNumeroNotaPagarCargo().then(response => {
+                    const { data } = response;
+                    // console.log(data)
+                    const { noNota } = data;
+                    setFolioActual(noNota)
+                }).catch(e => {
+                    console.log(e)
+                })
+            } else if (formData.tipo == "Credito") {
+                obtenerNumeroNotaPagarCredito().then(response => {
+                    const { data } = response;
+                    // console.log(data)
+                    const { noNota } = data;
+                    setFolioActual(noNota)
+                }).catch(e => {
+                    console.log(e)
+                })
+            } else if (formData.tipo == "Devolución") {
+                obtenerNumeroNotaPagarDevolucion().then(response => {
+                    const { data } = response;
+                    // console.log(data)
+                    const { noNota } = data;
+                    setFolioActual(noNota)
+                }).catch(e => {
+                    console.log(e)
+                })
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }, [formData.tipo]);
+
+    console.log(folioActual);
 
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
@@ -237,21 +262,26 @@ function ModificacionNotas(props) {
             setLoading(true);
 
             const dataTemp = {
+                folio: folioActual,
                 factura: formDataFactura.factura,
+                tipo: formData.tipo,
                 concepto: formData.concepto,
                 totalSinIva: formData.tipo == "Devolución" ? formDataFactura.subtotal : formData.totalSinIVA,
                 iva: formData.tipo == "Devolución" ? formDataFactura.ivaElegido : formData.iva,
                 total: formData.tipo == "Devolución" ? formDataFactura.total : total,
+                sucursal: getSucursal(),
+                estado: "true"
             }
             // console.log(dataTemp)
 
             // Modificar el pedido creado recientemente
-            actualizaNotas(id, dataTemp).then(response => {
+            registraNotaPagar(dataTemp).then(response => {
                 const { data: { mensaje, datos } } = response;
                 // console.log(response)
                 toast.success(mensaje)
                 // Log acerca del registro inicial del tracking
-                LogsInformativos("Se ha actualizado la nota de " + formData.tipo + formData.folio, dataTemp)
+                LogsInformativos("Se ha registrado la nota de " + formData.tipo + folioActual, dataTemp);
+                //LogCuentaActualizacion(formDataFactura.cliente, formDataFactura.nombreCliente, formData.tipo == "Cargo" ? total : formData.tipo == "Credito" ? parseFloat(total) * -1 : formData.tipo == "Devolución" ? parseFloat(formDataFactura.total) * -1 : "");
                 // Registro inicial del tracking
                 //LogTrackingRegistro(folioActual, formData.cliente, formData.fechaElaboracion)
                 setLoading(false)
@@ -393,7 +423,7 @@ function ModificacionNotas(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Modificando nota
+                            Nueva nota
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
@@ -422,7 +452,7 @@ function ModificacionNotas(props) {
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Cuenta por cobrar
+                                            Cuenta por pagar
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
@@ -440,7 +470,7 @@ function ModificacionNotas(props) {
                                                 icon={faSearch}
                                                 onClick={() => {
                                                     buscarFactura(
-                                                        <BuscarFactura
+                                                        <BuscarCXP
                                                             formData={formDataFactura}
                                                             setFormData={setFormDataFactura}
                                                             setShowModal={setShowModal}
@@ -467,12 +497,11 @@ function ModificacionNotas(props) {
                                             defaultValue={formData.tipo}
                                             placeholder="Tipo"
                                             name="tipo"
-                                            disabled
                                         >
                                             <option>Elige una opción</option>
-                                            <option value="Cargo" selected={formData.tipo == "Cargo"}>Cargo</option>
-                                            <option value="Credito" selected={formData.tipo == "Credito"}>Credito</option>
-                                            <option value="Devolución" selected={formData.tipo == "Devolución"}>Devolución</option>
+                                            <option value="Cargo">Cargo</option>
+                                            <option value="Credito">Credito</option>
+                                            <option value="Devolución">Devolución</option>
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
@@ -538,8 +567,8 @@ function ModificacionNotas(props) {
                                             disabled={formData.tipo == "Devolución"}
                                         >
                                             <option>Elige una opción</option>
-                                            <option value="0" selected={formData.tipo == "Devolución" && formDataFactura.ivaElegido == "0" || formData.iva == "0"}>0%</option>
-                                            <option value="0.16" selected={formData.tipo == "Devolución" && formDataFactura.ivaElegido == "0.16" || formData.iva == "0.16"}>16%</option>
+                                            <option value="0" selected={formData.tipo == "Devolución" && formDataFactura.ivaElegido == "0"}>0%</option>
+                                            <option value="0.16" selected={formData.tipo == "Devolución" && formDataFactura.ivaElegido == "0.16"}>16%</option>
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
@@ -579,7 +608,7 @@ function ModificacionNotas(props) {
                                         variant="success"
                                         className="registrar"
                                     >
-                                        {!loading ? "Modificar" : <Spinner animation="border" />}
+                                        {!loading ? "Registrar" : <Spinner animation="border" />}
                                     </Button>
                                 </Col>
                                 <Col>
@@ -607,7 +636,7 @@ function ModificacionNotas(props) {
     );
 }
 
-function initialFormDataInitial() {
+function initialFormData() {
     return {
         tipo: "",
         concepto: "",
@@ -617,32 +646,14 @@ function initialFormDataInitial() {
     }
 }
 
-function initialFormDataFacturaInitial() {
+function initialFormDataFactura() {
     return {
         factura: "",
         ivaElegido: "",
         subtotal: "",
-        total: ""
-    }
-}
-
-function initialFormData(data) {
-    return {
-        folio: data.folio,
-        tipo: data.tipo,
-        concepto: data.concepto,
-        totalSinIVA: data.totalSinIva,
-        iva: data.iva,
-        total: data.total
-    }
-}
-
-function initialFormDataFactura(data) {
-    return {
-        factura: data.factura,
-        ivaElegido: data.iva,
-        subtotal: data.totalSinIva,
-        total: data.total
+        total: "",
+        proveedor: "",
+        nombreProveedor: ""
     }
 }
 
@@ -732,4 +743,4 @@ function formatModelMatrizProductos(data) {
     return dataTemp;
 }
 
-export default ModificacionNotas;
+export default RegistroNotaPagar;

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
+import { Form, Image } from "react-bootstrap";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 import fotoNoDisponible from "../../assets/png/adjuntar.png"
@@ -46,7 +46,7 @@ function DropzoneDeshabilitado(props) {
     const visualizarSlide1 = slide.map(file => (
         <div key={file.name}>
             <div>
-                <img
+                <Image
                     src={file.preview}
                 />
             </div>
@@ -61,7 +61,7 @@ function DropzoneDeshabilitado(props) {
                 (
                     <>
                         <aside>
-                            <img
+                            <Image
                                 src={imagenBD}
                             />
                         </aside>
@@ -81,14 +81,14 @@ function DropzoneDeshabilitado(props) {
                         (
                             <>
                                 <aside>
-                                    <img src={fotoNoDisponible} />
+                                    <Image src={fotoNoDisponible} />
                                 </aside>
                             </>
                         )
                 )
             }
 
-            <input {...getInputProps()} />
+            <Form.Control {...getInputProps()} />
         </div>
     );
 }

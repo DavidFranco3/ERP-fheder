@@ -12,11 +12,11 @@ import {
     useNavigate
 } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react"
-import { BellIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
 import LogoFredherBlanco from "../../assets/png/logo-fredher-blanco.png";
 import ImagenPerfil from "../../assets/png/user-avatar.png";
-import { Button, Row, Container, Form } from "react-bootstrap";
+import { Button, Row, Container, Form, Image } from "react-bootstrap";
 import "./layoutPrincipal.scss";
 import { listarRazonSocialActiva } from "../../api/razonesSociales";
 import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
@@ -99,7 +99,7 @@ function LayoutPrincipal(props) {
                                 <div className="flex items-center justify-between h-16">
                                     <div className="flex items-center">
                                         <div className="flex-shrink-0">
-                                            <img
+                                            <Image
                                                 src={LogoFredherBlanco}
                                                 width="125px"
                                                 alt="Workflow"
@@ -131,20 +131,20 @@ function LayoutPrincipal(props) {
                                     </div>
                                     <div className="hidden md:block">
                                         <div className="ml-4 flex items-center md:ml-6">
-                                            <button
-                                                type="button"
+                                            <Button
+                                                //type="button"
                                                 className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                                             >
                                                 <span className="sr-only">View notifications</span>
                                                 <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                            </button>
+                                            </Button>
 
                                             {/* Profile dropdown */}
                                             <Menu as="div" className="ml-3 relative">
                                                 <div>
                                                     <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                                                         <span className="sr-only">Open user menu</span>
-                                                        <img className="h-8 w-8 rounded-full" src={ImagenPerfil} alt="" />
+                                                        <Image className="h-8 w-8 rounded-full" src={ImagenPerfil} alt="" />
                                                     </Menu.Button>
                                                 </div>
                                                 <Transition
@@ -158,14 +158,14 @@ function LayoutPrincipal(props) {
                                                 >
                                                     <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                                         {({ active }) => (
-                                                            <button
+                                                            <Button
                                                                 onClick={() => {
                                                                     cerrarSesion()
                                                                 }}
                                                                 className="cerrarSesion"
                                                             >
                                                                 Cerrar sesion
-                                                            </button>
+                                                            </Button>
                                                         )}
                                                     </Menu.Items>
                                                 </Transition>

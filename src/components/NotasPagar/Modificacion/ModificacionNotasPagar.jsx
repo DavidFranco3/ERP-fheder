@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { toast } from "react-toastify";
-import BuscarFactura from '../../../page/BuscarFactura';
+import BuscarCXP from '../../../page/BuscarCXP';
 import { listarClientes } from "../../../api/clientes";
 import { registraPedidoVenta, obtenerNumeroPedidoVenta } from "../../../api/pedidoVenta";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import "./ModificacionNotas.scss"
+import "./ModificacionNotasPagar.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
-import { actualizaNotas, obtenerNotas } from "../../../api/notas";
+import { actualizaNotasPagar, obtenerNotasPagar } from "../../../api/notasPagar";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
@@ -17,7 +17,7 @@ import BasicModal from "../../Modal/BasicModal";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 //import ModificacionProductos from '../ModificacionProductos';
 
-function ModificacionNotas(props) {
+function ModificacionNotasPagar(props) {
     const { history, setRefreshCheckLogin, location } = props;
 
     const parametros = useParams();
@@ -62,7 +62,7 @@ function ModificacionNotas(props) {
 
     useEffect(() => {
         //
-        obtenerNotas(id).then(response => {
+        obtenerNotasPagar(id).then(response => {
             const { data } = response;
             //console.log(data)
             setFormData(initialFormData(data));
@@ -106,7 +106,7 @@ function ModificacionNotas(props) {
 
     // Para determinar el regreso a la ruta de pedidos
     const regresaListadoVentas = () => {
-        enrutamiento("/Notas");
+        enrutamiento("/NotasPagar");
     }
 
     // Para almacenar la lista completa de clientes
@@ -246,7 +246,7 @@ function ModificacionNotas(props) {
             // console.log(dataTemp)
 
             // Modificar el pedido creado recientemente
-            actualizaNotas(id, dataTemp).then(response => {
+            actualizaNotasPagar(id, dataTemp).then(response => {
                 const { data: { mensaje, datos } } = response;
                 // console.log(response)
                 toast.success(mensaje)
@@ -422,7 +422,7 @@ function ModificacionNotas(props) {
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Cuenta por cobrar
+                                            Cuenta por pagar
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
@@ -440,7 +440,7 @@ function ModificacionNotas(props) {
                                                 icon={faSearch}
                                                 onClick={() => {
                                                     buscarFactura(
-                                                        <BuscarFactura
+                                                        <BuscarCXP
                                                             formData={formDataFactura}
                                                             setFormData={setFormDataFactura}
                                                             setShowModal={setShowModal}
@@ -732,4 +732,4 @@ function formatModelMatrizProductos(data) {
     return dataTemp;
 }
 
-export default ModificacionNotas;
+export default ModificacionNotasPagar;

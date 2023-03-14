@@ -85,7 +85,7 @@ function EliminacionFisicaNotas(props) {
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Factura
+                            Cuenta por cobrar
                         </Form.Label>
                         <Form.Control
                             type="text"

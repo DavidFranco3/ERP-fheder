@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import queryString from "query-string";
-import "./EliminacionLogicaNotas.scss";
+import "./EliminacionLogicaNotasPagar.scss";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { actualizaEstadoNotas } from "../../../api/notas";
-import { obtenerDatosFactura } from "../../../api/facturas";
+import { actualizaEstadoNotasPagar } from "../../../api/notasPagar";
+import { obtenerDatosCuentasPagar } from "../../../api/cuentasPorPagar";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
+//import { LogCuentaActualizacion } from "../../CuentasClientes/Gestion/GestionCuentasClientes";
 
-function EliminacionLogicaNotas(props) {
+function EliminacionLogicaNotasPagar(props) {
     const { datos, setShowModal, history } = props;
     const { id, folio, factura, tipo, total, estado } = datos;
 
@@ -20,16 +20,16 @@ function EliminacionLogicaNotas(props) {
         setShowModal(false)
     }
 
-    const [cliente, setCliente] = useState("");
-    const [nombreCliente, setNombreCliente] = useState("");
+    const [proveedor, setProveedor] = useState("");
+    const [nombreProveedor, setNombreProveedor] = useState("");
 
     useEffect(() => {
         //
-        obtenerDatosFactura(factura).then(response => {
+        obtenerDatosCuentasPagar(factura).then(response => {
             const { data } = response;
             //console.log(data)
-            setCliente(data.cliente);
-            setNombreCliente(data.nombreCliente);
+            setProveedor(data.proveedor);
+            setNombreProveedor(data.nombreProveedor);
         }).catch(e => {
             console.log(e)
         })
@@ -46,12 +46,12 @@ function EliminacionLogicaNotas(props) {
         //console.log(dataTemp)
 
         try {
-            actualizaEstadoNotas(id, dataTemp).then(response => {
+            actualizaEstadoNotasPagar(id, dataTemp).then(response => {
                 const { data } = response;
                 //console.log(data)
                 toast.success(data.mensaje);
                 LogsInformativos("Se ha cancelado la nota de " + tipo + " con folio " + folio, datos);
-                LogCuentaActualizacion(cliente, nombreCliente, tipo == "Cargo" ? parseFloat(total) * -1 : tipo == "Credito" ? parseFloat(total) : tipo == "Devolución" ? parseFloat(total) : "");
+                //LogCuentaActualizacion(cliente, nombreCliente, tipo == "Cargo" ? parseFloat(total) * -1 : tipo == "Credito" ? parseFloat(total) : tipo == "Devolución" ? parseFloat(total) : "");
                 setShowModal(false);
                 history({
                     search: queryString.stringify(""),
@@ -87,7 +87,7 @@ function EliminacionLogicaNotas(props) {
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridCliente">
                         <Form.Label>
-                            Cuenta por cobrar
+                            Cuenta por pagar
                         </Form.Label>
                         <Form.Control
                             type="text"
@@ -150,4 +150,4 @@ function EliminacionLogicaNotas(props) {
     );
 }
 
-export default EliminacionLogicaNotas;
+export default EliminacionLogicaNotasPagar;

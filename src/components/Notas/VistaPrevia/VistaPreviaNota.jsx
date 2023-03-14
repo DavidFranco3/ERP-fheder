@@ -482,7 +482,7 @@ function VistaPreviaNota(props) {
                                 {
                                 },
                                 {
-                                    text: `Factura:  ${formDataFactura.factura}`,
+                                    text: `Cuenta por cobrar:  ${formDataFactura.factura}`,
                                     fontSize: 9,
                                     colSpan: 2,
                                     bold: true,
@@ -593,7 +593,7 @@ function VistaPreviaNota(props) {
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Factura
+                                            Cuenta por cobrar
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">

@@ -1,22 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Badge, Button, Container, Table } from "react-bootstrap";
+import { Badge, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
-import EliminacionFisicaVentas from "../EliminacionFisica";
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";
-import "./ListNotasCargo.scss";
+import "./ListNotasPagarDevolucion.scss";
 import { estilos } from "../../../utils/tableStyled";
-//import EliminacionLogicaVentas from '../EliminacionLogica';
-//import ListProductosVentas from '../ListProductosVentas';
 import 'dayjs/locale/es'
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-import EliminacionFisicaNotas from '../EliminacionFisica';
-import EliminacionLogicaNotas from '../EliminacionLogica';
+import EliminacionFisicaNotasPagar from '../EliminacionFisica';
+import EliminacionLogicaNotasPagar from '../EliminacionLogica';
 
-function ListNotasCargo(props) {
+function ListNotasPagarDevolucion(props) {
     const { setRefreshCheckLogin, listNotas, history, location } = props;
 
     const enrutamiento = useNavigate();
@@ -43,19 +40,15 @@ function ListNotasCargo(props) {
         setShowModal(true);
     }
 
+
     // Para la modificacion de datos del pedido
     const modificaNotas = (id) => {
-        enrutamiento(`/ModificacionNotas/${id}`);
+        enrutamiento(`/ModificacionNotasPagar/${id}`);
     }
 
     // Para la modificacion de datos del pedido
     const vistaPreviaNotas = (id) => {
-        enrutamiento(`/VistaPreviaNotas/${id}`);
-    }
-
-    // Para la modificacion de datos del pedido
-    const registroCuentasCobrar = (folio) => {
-        enrutamiento(`/FacturasOV/${folio}`);
+        enrutamiento(`/VistaPreviaNotasPagar/${id}`);
     }
 
     const columns = [
@@ -67,7 +60,7 @@ function ListNotasCargo(props) {
             reorder: false
         },
         {
-            name: "CXC",
+            name: "CXP",
             selector: row => row.factura,
             sortable: false,
             center: true,
@@ -146,7 +139,7 @@ function ListNotasCargo(props) {
                                 className="editar"
                                 onClick={() => {
                                     eliminaLogicaNota(
-                                        <EliminacionLogicaNotas
+                                        <EliminacionLogicaNotasPagar
                                             datos={row}
                                             setShowModal={setShowModal}
                                             history={history}
@@ -204,7 +197,7 @@ function ListNotasCargo(props) {
                                 className="eliminar"
                                 onClick={() => {
                                     eliminaNota(
-                                        <EliminacionFisicaNotas
+                                        <EliminacionFisicaNotasPagar
                                             datos={row}
                                             setShowModal={setShowModal}
                                             history={history}
@@ -265,4 +258,4 @@ function ListNotasCargo(props) {
     );
 }
 
-export default ListNotasCargo;
+export default ListNotasPagarDevolucion;

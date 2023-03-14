@@ -124,6 +124,22 @@ export const ENDPOINTObtenerNoNotasCargo = "/notas/obtenerNoNotaCargo";
 export const ENDPOINTObtenerNoNotasDevolucion = "/notas/obtenerNoNotaDevolucion";
 export const ENDPOINTTotalNotas = "/notas/total";
 
+// Notas por pagar
+export const ENDPOINTRegistraNotaPagar = "/notasPagar/registro";
+export const ENDPOINTListarNotasPagar = "/notasPagar/listar";
+export const ENDPOINTListarNotasPagarPorTipo = "/notasPagar/listarPorTipo";
+export const ENDPOINTListarNotasPagarActivas = "/notasPagar/listarActivas";
+export const ENDPOINTObtenerNotasPagar = "/notasPagar/obtener";
+export const ENDPOINTObtenerDatosNotasPagar = "/notasPagar/obtenerDatosNota";
+export const ENDPOINTEliminarNotasPagar = "/notasPagar/eliminar";
+export const ENDPOINTActualizarNotasPagar = "/notasPagar/actualizar";
+export const ENDPOINTActualizarEstadoNotasPagar = "/notasPagar/actualizarEstado";
+export const ENDPOINTListarNotasPagarPaginacion = "/notasPagar/listarPaginando";
+export const ENDPOINTObtenerNoNotasPagarCredito = "/notasPagar/obtenerNoNotaCredito";
+export const ENDPOINTObtenerNoNotasPagarCargo = "/notasPagar/obtenerNoNotaCargo";
+export const ENDPOINTObtenerNoNotasPagarDevolucion = "/notasPagar/obtenerNoNotaDevolucion";
+export const ENDPOINTTotalNotasPagar = "/notasPagar/total";
+
 // Pedidos de venta
 export const ENDPOINTRegistraPedidoVenta = "/ventas/registro";
 export const ENDPOINTListarPedidoVenta = "/ventas/listar";

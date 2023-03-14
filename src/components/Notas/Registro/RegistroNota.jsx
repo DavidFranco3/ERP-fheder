@@ -453,7 +453,7 @@ function RegistroNota(props) {
                                 <Form.Group as={Row} controlId="formGridCliente">
                                     <Col sm="2">
                                         <Form.Label>
-                                            Factura
+                                            Cuenta por cobrar
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
