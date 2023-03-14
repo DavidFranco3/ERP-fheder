@@ -24,7 +24,6 @@ function Logs(props) {
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
-                enrutamiento("");
                 setRefreshCheckLogin(true);
             }
         }

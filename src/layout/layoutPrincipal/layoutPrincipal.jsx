@@ -77,7 +77,6 @@ function LayoutPrincipal(props) {
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
-                redirecciona("");
                 setRefreshCheckLogin(true);
             }
         }
