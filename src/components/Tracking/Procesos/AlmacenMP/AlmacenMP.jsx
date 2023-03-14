@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import { Col, Container, Row } from "react-bootstrap";
 import { listarAlmacenMP } from "../../../../api/almacenMP";
 import { map } from "lodash";
-import moment from "moment";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function Almacen(props) {
     const { ordenVenta } = props;
 
-    moment.locale("es");
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para almacenar el listado de materias primas
     const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
@@ -78,7 +81,7 @@ function Almacen(props) {
                                                                 {materiaPrima.um}
                                                             </td>
                                                             <td data-title="descripcion">
-                                                                {moment(materiaPrima.fecha).format('LL')}
+                                                                {dayjs(materiaPrima.fecha).format('LL')}
                                                             </td>
                                                             <td data-title="um">
                                                                 {materiaPrima.tipo}

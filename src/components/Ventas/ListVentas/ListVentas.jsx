@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Badge, Button, Container, Table } from "react-bootstrap";
-import { map } from "lodash";
+import { Badge, Container } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import EliminacionFisicaVentas from "../EliminacionFisica";
-import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye } from "@fortawesome/free-solid-svg-icons";

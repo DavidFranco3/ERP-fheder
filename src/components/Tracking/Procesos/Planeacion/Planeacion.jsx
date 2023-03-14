@@ -1,12 +1,11 @@
-import { useState, useEffect, Suspense } from 'react';
-import { Row, Col, Container, Spinner, Badge } from "react-bootstrap"
+import { useState, useEffect } from 'react';
+import { Row, Col, Container, Badge } from "react-bootstrap"
 import { map } from "lodash";
-import { withRouter } from "../../../../utils/withRouter";
 import "./Planeacion.scss"
 import { listarRequerimiento } from "../../../../api/requerimientosPlaneacion";
 import { getSucursal } from '../../../../api/auth';
 
-function Compras(props) {
+function Planeacion(props) {
     const { ordenVenta } = props;
 
     // Para almacenar la lista completa de clientes
@@ -480,4 +479,4 @@ function formatModelRequerimientos(data) {
     return dataTemp;
 }
 
-export default withRouter(Compras);
+export default Planeacion;

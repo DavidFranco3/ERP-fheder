@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Row, Col, Container } from "react-bootstrap"
 import { obtenerDatosPedidoVenta } from "../../../../api/pedidoVenta";
-import moment from "moment";
+import 'dayjs/locale/es';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 import NombreCliente from "../../ListTracking/NombreCliente";
 import { map } from "lodash";
 import "./OrdenVenta.scss"
@@ -9,6 +11,9 @@ import "./OrdenVenta.scss"
 function OrdenVenta(props) {
     const { ordenVenta } = props;
     // console.log(ordenVenta)
+
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Almacena los datos de la orden de venta
     const [datosOrdenVenta, setDatosOrdenVenta] = useState(null);
@@ -42,10 +47,10 @@ function OrdenVenta(props) {
                                     Cliente: <NombreCliente folio={datosOrdenVenta.cliente} />
                                 </Col>
                                 <Col>
-                                    Fecha de solicitud: {moment(datosOrdenVenta.fechaElaboracion).format("LL")}
+                                    Fecha de solicitud: {dayjs(datosOrdenVenta.fechaElaboracion).format("LL")}
                                 </Col>
                                 <Col>
-                                    Fecha de entrega: {moment(datosOrdenVenta.fechaEntrega).format("LL")}
+                                    Fecha de entrega: {dayjs(datosOrdenVenta.fechaEntrega).format("LL")}
                                 </Col>
                                 <Col>
                                     Productos a elaborar: {datosOrdenVenta.productos.length}

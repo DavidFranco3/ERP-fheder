@@ -8,9 +8,15 @@ import { listarRequisiciones } from "../../../../api/requisicion";
 import moment from "moment";
 import Proveedor from "../../../Compras/ListCompras/ProveedoresenCompras";
 import { getSucursal } from '../../../../api/auth';
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 function Compras(props) {
     const { ordenVenta, location, history } = props;
+
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para almacenar la lista completa de clientes
     const [listRequisicion, setListRequisicion] = useState(null);
@@ -114,7 +120,7 @@ function Compras(props) {
                                                                                 {requisicion.folio}
                                                                             </td>
                                                                             <td data-title="um">
-                                                                                {moment(requisicion.fechaElaboracion).format('LL')}
+                                                                                {dayjs(requisicion.fechaElaboracion).format('LL')}
                                                                             </td>
                                                                             <td data-title="descripcion">
                                                                                 {requisicion.solicitante}

@@ -3,11 +3,16 @@ import { Row, Col, Container, Spinner, Badge } from "react-bootstrap"
 import "./Calidad.scss";
 import { map } from "lodash";
 import { listarInspeccion } from "../../../../api/inspeccionMaterial";
-import moment from "moment";
+import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { getSucursal } from '../../../../api/auth';
 
 function Calidad(props) {
     const { ordenVenta } = props;
+
+    dayjs.locale('es') // use Spanish locale globally
+    dayjs.extend(localizedFormat)
 
     // Para almacenar la lista completa de clientes
     const [listCalidad, setListCalidad] = useState(null);
@@ -87,7 +92,7 @@ function Calidad(props) {
                                                                         {calidad.folio}
                                                                     </td>
                                                                     <td data-title="um">
-                                                                        {moment(calidad.fecha).format('LL')}
+                                                                        {dayjs(calidad.fecha).format('LL')}
                                                                     </td>
                                                                     <td data-title="descripcion">
                                                                         {calidad.lote}
