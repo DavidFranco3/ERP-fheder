@@ -78,6 +78,8 @@ function RegistraLiberacionProductoProceso(props) {
         setShowModal(true);
     }
 
+    const [direcciones, setDirecciones] = useState([]);
+
     // Para definir el enrutamiento
     const enrutamiento = useNavigate();
 
@@ -375,6 +377,7 @@ function RegistraLiberacionProductoProceso(props) {
                                                                 formData={formDataClientes}
                                                                 setFormData={setFormDataClientes}
                                                                 setShowModal={setShowModal}
+                                                                setDirecciones={setDirecciones}
                                                             />)
                                                     }}
                                                 />

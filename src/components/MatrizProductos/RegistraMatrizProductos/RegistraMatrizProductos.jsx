@@ -137,6 +137,8 @@ function RegistraMatrizProductos(props) {
         setShowModal(true);
     }
 
+    const [direcciones, setDirecciones] = useState([]);
+
     useEffect(() => {
         // Para obtener el listado de materias primas
         try {
@@ -418,6 +420,7 @@ function RegistraMatrizProductos(props) {
                                                                     formData={dataCliente}
                                                                     setFormData={setDataCliente}
                                                                     setShowModal={setShowModal}
+                                                                    setDirecciones={setDirecciones}
                                                                 />)
                                                         }}
                                                     />

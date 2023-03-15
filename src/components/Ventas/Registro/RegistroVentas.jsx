@@ -385,6 +385,8 @@ function RegistroVentas(props) {
 
     const [fechaEntrega, setFechaEntrega] = useState(fecha);
 
+    const [direcciones, setDirecciones] = useState([]);
+
     return (
         <>
             <Alert>
@@ -441,6 +443,7 @@ function RegistroVentas(props) {
                                                             formData={formData}
                                                             setFormData={setFormData}
                                                             setShowModal={setShowModal}
+                                                            setDirecciones={setDirecciones}
                                                         />)
                                                 }}
                                             />
@@ -564,13 +567,15 @@ function RegistroVentas(props) {
                                     </Col>
                                     <Col sm="4">
                                         <Form.Control
-                                            as="textarea"
-                                            type="text"
-                                            placeholder="Lugar de entrega"
-                                            style={{ height: '100px' }}
+                                            as="select"
+                                            defaultValue={formData.lugarEntrega}
                                             name="lugarEntrega"
-                                            defaultValue={formData.lugarEntrega == "" ? "" : formData.lugarEntrega}
-                                        />
+                                        >
+                                            <option>Elige una opción</option>
+                                            {map(direcciones, (direccion, index) => (
+                                                <option key={index} value={direccion.calle + ", " + direccion.numeroExterior + ", " + direccion.colonia + ", " + direccion.municipio + ", " + direccion.estado}>{direccion.calle + ", " + direccion.numeroExterior + ", " + direccion.colonia + ", " + direccion.municipio + ", " + direccion.estado}</option>
+                                            ))}
+                                        </Form.Control>
                                     </Col>
                                 </Form.Group>
                             </Row>

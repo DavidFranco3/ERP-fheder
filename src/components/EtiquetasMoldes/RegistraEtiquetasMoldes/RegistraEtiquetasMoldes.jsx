@@ -102,6 +102,8 @@ function RegistraEtiquetasMoldes(props) {
         setFormDataCliente({ ...formDataCliente, [e.target.name]: e.target.value })
     }
 
+    const [direcciones, setDirecciones] = useState([]);
+
     return (
         <>
             <Container fluid>
@@ -223,6 +225,7 @@ function RegistraEtiquetasMoldes(props) {
                                                         formData={formDataCliente}
                                                         setFormData={setFormDataCliente}
                                                         setShowModal={setShowModal2}
+                                                        setDirecciones={setDirecciones}
                                                     />)
                                             }}
                                         />

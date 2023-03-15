@@ -76,6 +76,8 @@ function ModificaLiberacionProductoProceso(props) {
         setShowModal(true);
     }
 
+    const [direcciones, setDirecciones] = useState([]);
+
     // Para almacenar el listado de maquinas
     const [listMaquinas, setListMaquinas] = useState(null);
 
@@ -374,6 +376,7 @@ function ModificaLiberacionProductoProceso(props) {
                                                                 formData={formDataClientes}
                                                                 setFormData={setFormDataClientes}
                                                                 setShowModal={setShowModal}
+                                                                setDirecciones={setDirecciones}
                                                             />)
                                                     }}
                                                 />

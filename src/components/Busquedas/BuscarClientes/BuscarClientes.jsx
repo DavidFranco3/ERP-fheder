@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
 function BuscarClientes(props) {
-    const { setFormData, formData, setShowModal, listClientes } = props;
+    const { setFormData, setDirecciones, setShowModal, listClientes } = props;
 
     // Cancelar y cerrar el formulario
     const cancelarBusqueda = () => {
@@ -16,7 +16,7 @@ function BuscarClientes(props) {
     }
 
     // Gestionar el socio seleccionado
-    const clienteElegido = ({ id, nombre, calle, numeroExterior, colonia, municipio, estado }) => {
+    const clienteElegido = ({ id, nombre, calle, numeroExterior, colonia, municipio, estado, domiciliosEntrega }) => {
         // Almacena id, ficha y nombre del socio elegido
         const dataTemp = {
             cliente: id,
@@ -25,6 +25,7 @@ function BuscarClientes(props) {
         }
 
         setFormData(dataTemp);
+        setDirecciones(domiciliosEntrega);
         cancelarBusqueda();
     }
 

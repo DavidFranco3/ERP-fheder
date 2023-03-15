@@ -14,7 +14,7 @@ import AnimacionLoading from '../../assets/json/loading.json';
 import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function BuscarCliente(props) {
-    const { setFormData, formData, setShowModal, setRefreshCheckLogin, location, history } = props;
+    const { setFormData, setDirecciones, formData, setShowModal, setRefreshCheckLogin, location, history } = props;
 
     const cierreAutomatico = () => {
         if (getTokenApi()) {
@@ -76,8 +76,8 @@ function BuscarCliente(props) {
                                     location={location}
                                     history={history}
                                     setRefreshCheckLogin={setRefreshCheckLogin}
-                                    formData={formData}
                                     setFormData={setFormData}
+                                    setDirecciones={setDirecciones}
                                 />
                             </Suspense>
                         </>
@@ -114,6 +114,7 @@ function formatModelClientes(data) {
             correo: data.correo,
             foto: data.foto,
             estadoCliente: data.estadoCliente,
+            domiciliosEntrega: data.domiciliosEntrega,
             fechaActualizacion: data.updatedAt
         });
     });

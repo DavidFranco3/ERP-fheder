@@ -7,7 +7,7 @@ import {
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import "./ModificacionVentas.scss";
 import { map } from "lodash";
-import { listarClientes } from "../../../api/clientes";
+import { listarClientes, obtenerCliente } from "../../../api/clientes";
 import { toast } from "react-toastify";
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -133,6 +133,18 @@ function ModificacionVentas(props) {
         })
     }, []);
 
+    const [direcciones, setDirecciones] = useState([]);
+
+    useEffect(() => {
+        //
+        obtenerCliente(informacionPedido.cliente).then(response => {
+            const { data } = response;
+            setDirecciones(data.domiciliosEntrega);
+        }).catch(e => {
+            console.log(e)
+        })
+    }, [informacionPedido.cliente]);
+
     const [totalUnitario, setTotalUnitario] = useState(0);
 
     const calcularTotalUnitario = () => {
@@ -256,7 +268,7 @@ function ModificacionVentas(props) {
                 incoterms: informacionPedido.incoterms,
                 moneda: "M.N.",
                 numeroPedido: informacionPedido.numeroPedido,
-                lugarEntrega: formData.lugarEntrega == "" ? informacionPedido.lugarEntrega : formData.lugarEntrega,
+                lugarEntrega: informacionPedido.lugarEntrega,
                 cotizacion: linkCotizacion,
                 ordenCompra: linkOrdenCompra,
                 total: totalSinIVA,
@@ -444,6 +456,7 @@ function ModificacionVentas(props) {
                                                             formData={formData}
                                                             setFormData={setFormData}
                                                             setShowModal={setShowModal}
+                                                            setDirecciones={setDirecciones}
                                                         />)
                                                 }}
                                             />
@@ -565,14 +578,16 @@ function ModificacionVentas(props) {
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                        <Form.Control
-                                            as="textarea" rows={3}
-                                            type="text"
-                                            placeholder="Lugar de entrega"
-                                            style={{ height: '100px' }}
+                                    <Form.Control
+                                            as="select"
+                                            defaultValue={informacionPedido.lugarEntrega}
                                             name="lugarEntrega"
-                                            defaultValue={formData.lugarEntrega == "" ? informacionPedido.lugarEntrega : formData.lugarEntrega}
-                                        />
+                                        >
+                                            <option>Elige una opción</option>
+                                            {map(direcciones, (direccion, index) => (
+                                                <option key={index} value={direccion.calle + ", " + direccion.numeroExterior + ", " + direccion.colonia + ", " + direccion.municipio + ", " + direccion.estado} selected={direccion.calle + ", " + direccion.numeroExterior + ", " + direccion.colonia + ", " + direccion.municipio + ", " + direccion.estado == informacionPedido.lugarEntrega}>{direccion.calle + ", " + direccion.numeroExterior + ", " + direccion.colonia + ", " + direccion.municipio + ", " + direccion.estado}</option>
+                                            ))}
+                                        </Form.Control>
                                     </Col>
                                 </Form.Group>
                             </Row>

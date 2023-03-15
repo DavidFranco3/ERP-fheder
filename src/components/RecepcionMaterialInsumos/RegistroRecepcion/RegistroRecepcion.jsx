@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
-import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
-import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import { listarClientes } from "../../../api/clientes";
 import { registraRecepcion, obtenerNumeroRecepcion } from "../../../api/recepcionMaterialInsumos";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,8 +10,6 @@ import { faCirclePlus, faX, faArrowCircleLeft, faSearch, faPenToSquare, faTrashC
 import "./RegistroRecepcion.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
-import { LogRegistroPlaneacion } from "../../Planeacion/Gestion/GestionPlaneacion";
 import { LogRegistroAlmacenes } from '../../Almacenes/Gestion/GestionAlmacenes';
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";

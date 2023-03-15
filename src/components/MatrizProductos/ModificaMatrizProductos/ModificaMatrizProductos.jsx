@@ -148,6 +148,8 @@ function ModificaMatrizProductos(props) {
         setShowModal(true);
     }
 
+    const [direcciones, setDirecciones] = useState([]);
+
     // Para guardar los datos del producto
     const [informacionProducto, setInformacionProducto] = useState(null);
 
@@ -468,6 +470,7 @@ function ModificaMatrizProductos(props) {
                                                                                 formData={dataCliente}
                                                                                 setFormData={setDataCliente}
                                                                                 setShowModal={setShowModal}
+                                                                                setDirecciones={setDirecciones}
                                                                             />)
                                                                     }}
                                                                 />
