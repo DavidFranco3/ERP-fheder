@@ -152,6 +152,7 @@ export const ENDPOINTActualizarEstadoPedidoVenta = "/ventas/actualizarEstado";
 export const ENDPOINTListarPedidoVentaPaginacion = "/ventas/listarPaginando";
 export const ENDPOINTObtenerNoPedidoVenta = "/ventas/obtenerNoVenta";
 export const ENDPOINTTotalPedidoVenta = "/ventas/total";
+export const ENDPOINTListarProductosOV = "/ventas/listarProductosOVActivas";
 
 // Facturas
 export const ENDPOINTRegistraFactura = "/facturas/registro";

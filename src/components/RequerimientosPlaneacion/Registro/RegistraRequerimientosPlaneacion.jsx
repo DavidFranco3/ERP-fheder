@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOV from "../../../page/BuscarOV";
+import BuscarProductosOV from '../../../page/BuscarProductosOV';
 import { useNavigate } from "react-router-dom";
 import "./RegistraRequerimientosPlaneacion.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -107,7 +108,7 @@ function RegistraRequerimientosPlaneacion(props) {
         }
         // Para buscar el producto en la matriz de productos
         try {
-            obtenerPorNoInternoMatrizProducto(producto.length == 1 ? idProducto : temp[0]).then(response => {
+            obtenerPorNoInternoMatrizProducto(formDataVenta.numeroInterno).then(response => {
                 const { data } = response;
                 // console.log(data)
                 // initialData
@@ -124,7 +125,7 @@ function RegistraRequerimientosPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [producto.length == 1 ? producto : formData.materiaPrima]);
+    }, [formDataVenta.numeroInterno]);
 
     const [unidadMedida, setUnidadMedida] = useState("Piezas");
 
@@ -740,10 +741,8 @@ function RegistraRequerimientosPlaneacion(props) {
                                                 icon={faSearch}
                                                 onClick={() => {
                                                     buscarOV(
-                                                        <BuscarOV
+                                                        <BuscarProductosOV
                                                             setFormData={setFormDataVenta}
-                                                            setProducto={setProducto}
-                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
                                                             setShowModal={setShowModal}
                                                         />)
                                                 }}
@@ -819,35 +818,11 @@ function RegistraRequerimientosPlaneacion(props) {
                                         <Form.Label>
                                             Producto
                                         </Form.Label>
-                                        {producto.length == 1 ? (
-                                            <>
-                                                <Form.Control
-                                                    type="text"
-                                                    defaultValue={formDataPlaneacion.descripcion}
-                                                    name="materiaPrima"
-                                                />
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Form.Control as="select"
-                                                    onChange={(e) => {
-                                                        handleMateriaPrima(e.target.value)
-                                                    }}
-                                                    defaultValue={formData.materiaPrima}
-                                                    name="materiaPrima"
-                                                >
-                                                    <option>Elige una opción</option>
-                                                    {map(producto, (productos, index) => (
-                                                        <option
-                                                            key={index}
-                                                            value={productos?.ID + "/" + productos?.item}
-                                                        >
-                                                            {productos?.item}
-                                                        </option>
-                                                    ))}
-                                                </Form.Control>
-                                            </>
-                                        )}
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={formDataPlaneacion.descripcion}
+                                            name="materiaPrima"
+                                        />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -1622,6 +1597,8 @@ function initialFormDataVenta() {
         ordenVenta: "",
         cantidadRequerida: "",
         cantidadProducirVenta: "",
+        producto: "",
+        numeroInterno: "",
         cliente: ""
     }
 }

@@ -3,15 +3,15 @@ import { Row, Col, Container, Form, Button, Spinner } from "react-bootstrap"
 import 'dayjs/locale/es'
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-import "./BuscarOrdenVenta.scss"
+import "./BuscarProductosOrdenVenta.scss"
 import styled from 'styled-components';
 import DataTable from 'react-data-table-component';
 import { estilos } from "../../../utils/tableStyled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
-function BuscarOrdenVenta(props) {
-    const { setProducto, setFormData, setOrdenVentaPrincipal, setShowModal, listVentas } = props;
+function BuscarProductosOrdenVenta(props) {
+    const { setFormData, setShowModal, listProductos } = props;
 
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
@@ -22,19 +22,15 @@ function BuscarOrdenVenta(props) {
     }
 
     // Gestionar el socio seleccionado
-    const ventaElegida = ({ folio, productos, cliente, nombreCliente, fechaElaboracion, fechaEntrega }) => {
+    const ventaElegida = ({ ordenVenta, item, ID, cantidad }) => {
         // Almacena id, ficha y nombre del socio elegido
         const dataTemp = {
-            ordenVenta: folio,
-            cliente: cliente,
-            nombreCliente: nombreCliente,
-            fechaPedido: fechaElaboracion,
-            fechaEntrega: fechaEntrega,
-            cantidadRequerida: productos.reduce((amount, item) => (amount + parseInt(item.cantidad)), 0),
-            cantidadProducirVenta: productos.reduce((amount, item) => (amount + parseInt(item.cantidad)), 0)
+            ordenVenta: ordenVenta,
+            cantidadRequerida: cantidad,
+            cantidadProducirVenta: cantidad,
+            producto: item,
+            numeroInterno: ID,
         }
-        setProducto(productos)
-        setOrdenVentaPrincipal(folio)
         setFormData(dataTemp);
         cancelarBusqueda();
     }
@@ -42,28 +38,21 @@ function BuscarOrdenVenta(props) {
     const columns = [
         {
             name: 'Orden de venta',
-            selector: row => row.folio,
+            selector: row => row.ordenVenta,
             sortable: false,
             center: true,
             reorder: false
         },
         {
-            name: 'Cliente',
-            selector: row => row.nombreCliente,
+            name: 'Producto',
+            selector: row => row.item,
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: "Cantidad",
-            selector: row => row.productos.reduce((amount, item) => (amount + parseInt(item.cantidad)), 0),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
-            name: "Fecha de pedido",
-            selector: row => dayjs(row.fechaPedido).format('LL'),
+            selector: row => row.cantidad,
             sortable: false,
             center: true,
             reorder: false
@@ -109,7 +98,7 @@ function BuscarOrdenVenta(props) {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRows(listVentas);
+            setRows(listProductos);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
@@ -139,8 +128,8 @@ function BuscarOrdenVenta(props) {
         justify-content: center;
     `;
 
-    const filteredItems = listVentas.filter(
-        item => item.nombreCliente && item.nombreCliente.toLowerCase().includes(filterText.toLowerCase())
+    const filteredItems = listProductos.filter(
+        item => item.item && item.item.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const subHeaderComponentMemo = useMemo(() => {
@@ -212,4 +201,4 @@ function BuscarOrdenVenta(props) {
     );
 }
 
-export default BuscarOrdenVenta;
+export default BuscarProductosOrdenVenta;

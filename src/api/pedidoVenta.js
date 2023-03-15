@@ -10,7 +10,8 @@ import {
     ENDPOINTObtenerNoPedidoVenta,
     ENDPOINTActualizarEstadoPedidoVenta,
     ENDPOINTObtenerDatosPedidoVenta,
-    ENDPOINTTotalPedidoVenta
+    ENDPOINTTotalPedidoVenta,
+    ENDPOINTListarProductosOV
 } from "./endpoints";
 import axios from 'axios';
 import {getTokenApi} from "./auth";
@@ -85,6 +86,18 @@ export async function listarPedidosVenta(sucursal) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarPedidoVenta +`/?sucursal=${sucursal}`, config);
+}
+
+// Para listar todos los pedidos
+export async function listarProductosOV(sucursal) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarProductosOV +`/?sucursal=${sucursal}`, config);
 }
 
 // Para listar todos los pedidos

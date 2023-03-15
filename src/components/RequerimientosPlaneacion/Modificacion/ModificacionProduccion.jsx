@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOV from "../../../page/BuscarOV";
+import BuscarProductosOV from '../../../page/BuscarProductosOV';
 import { useNavigate, useParams } from "react-router-dom";
 import "./ModificacionProduccion.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -753,8 +754,6 @@ function ModificacionProduccion(props) {
                                                     buscarOV(
                                                         <BuscarOV
                                                             setFormData={setFormDataVenta}
-                                                            setProducto={setProducto}
-                                                            setOrdenVentaPrincipal={setOrdenVentaPrincipal}
                                                             setShowModal={setShowModal}
                                                         />)
                                                 }}
@@ -830,35 +829,11 @@ function ModificacionProduccion(props) {
                                         <Form.Label>
                                             Producto
                                         </Form.Label>
-                                        {producto.length == 1 ? (
-                                            <>
-                                                <Form.Control
-                                                    type="text"
-                                                    defaultValue={formDataPlaneacion.descripcion}
-                                                    name="materiaPrima"
-                                                />
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Form.Control as="select"
-                                                    onChange={(e) => {
-                                                        handleMateriaPrima(e.target.value)
-                                                    }}
-                                                    defaultValue={informacionRequerimiento.producto}
-                                                    name="materiaPrima"
-                                                >
-                                                    <option>Elige una opción</option>
-                                                    {map(producto, (productos, index) => (
-                                                        <option
-                                                            key={index}
-                                                            value={productos?.ID + "/" + productos?.item} selected={productos?.item == temp[1]}
-                                                        >
-                                                            {productos?.item}
-                                                        </option>
-                                                    ))}
-                                                </Form.Control>
-                                            </>
-                                        )}
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={formDataPlaneacion.descripcion}
+                                            name="materiaPrima"
+                                        />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -1552,6 +1527,8 @@ function initialFormDataVenta() {
         ordenVenta: "",
         cantidadRequerida: "",
         cantidadProducirVenta: "",
+        producto: "",
+        numeroInterno: "",
         cliente: ""
     }
 }
