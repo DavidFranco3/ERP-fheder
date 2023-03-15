@@ -30,7 +30,8 @@ function BuscarOrdenVenta(props) {
             nombreCliente: nombreCliente,
             fechaPedido: fechaElaboracion,
             fechaEntrega: fechaEntrega,
-            cantidadRequerida: productos.reduce((amount, item) => (amount + parseInt(item.cantidad)), 0)
+            cantidadRequerida: productos.reduce((amount, item) => (amount + parseInt(item.cantidad)), 0),
+            cantidadProducirVenta: productos.reduce((amount, item) => (amount + parseInt(item.cantidad)), 0)
         }
         setProducto(productos)
         setOrdenVentaPrincipal(folio)

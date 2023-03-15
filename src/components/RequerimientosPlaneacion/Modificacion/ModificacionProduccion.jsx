@@ -575,7 +575,6 @@ function ModificacionProduccion(props) {
             //setCargaProductos(initialFormDataProductos)
             document.getElementById("ordenVenta").value = ""
             document.getElementById("cantidadPedidaOV").value = ""
-            document.getElementById("cantidadProducirOV").value = ""
             setFormDataVenta(initialFormDataVenta);
         }
     }
@@ -585,7 +584,6 @@ function ModificacionProduccion(props) {
         //setCargaProductos(initialFormDataProductos)
         document.getElementById("ordenVenta").value = ""
         document.getElementById("cantidadPedidaOV").value = ""
-        document.getElementById("cantidadProducirOV").value = ""
         setFormDataVenta(initialFormDataVenta);
     }
 
@@ -633,6 +631,7 @@ function ModificacionProduccion(props) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
         setFormDataPlaneacion({ ...formDataPlaneacion, [e.target.name]: e.target.value })
         setInformacionRequerimiento({ ...informacionRequerimiento, [e.target.name]: e.target.value })
+        setFormDataVenta ({...formDataVenta, [e.target.name]: e.target.value})
     }
 
     useEffect(() => {
@@ -659,6 +658,12 @@ function ModificacionProduccion(props) {
     }, [informacionRequerimiento.producto]);
 
     const temp = informacionRequerimiento.producto.split("/");
+
+    const [cantidadProducir, setCantidadProducir] = useState(0);
+
+    useEffect(() => {
+        setCantidadProducir(formDataVenta.cantidadProducirVenta)
+    }, [formDataVenta.cantidadProducirVenta]);
 
     return (
         <>
@@ -766,6 +771,7 @@ function ModificacionProduccion(props) {
                                             type="number"
                                             placeholder="Cantidad a producir"
                                             name="cantidadProducirVenta"
+                                            value={cantidadProducir}
                                         />
                                     </Form.Group>
 
@@ -805,19 +811,6 @@ function ModificacionProduccion(props) {
                                 </Row>
 
                                 <Row className="mb-3">
-                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
-                                        <Form.Label align="center">
-                                            Semana
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="number"
-                                            min="0"
-                                            placeholder="Semana"
-                                            name="semana"
-                                            defaultValue={informacionRequerimiento.semana}
-                                        />
-                                    </Form.Group>
-
                                     <Form.Group as={Col} controlId="formGridMateriaPrima" className="producto">
                                         <Form.Label>
                                             Producto
@@ -875,6 +868,18 @@ function ModificacionProduccion(props) {
                                             onChange={e => setAlmacenProducto(e.target.value)}
                                             placeholder="Almacen producto terminado"
                                             name="almacenPT"
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label align="center">
+                                            Semana
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder="Semana"
+                                            name="semana"
+                                            defaultValue={informacionRequerimiento.semana}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1633,6 +1638,7 @@ function initialFormDataVenta() {
     return {
        ordenVenta: "",
        cantidadRequerida: "",
+       cantidadProducirVenta: "",
        cliente: ""
     }
 }

@@ -39,8 +39,8 @@ function RegistraRequerimientosPlaneacion(props) {
     // Para almacenar la informacion del formulario
     const [formData, setFormData] = useState(initialFormData());
 
-     // Para almacenar la informacion del formulario
-     const [formDataVenta, setFormDataVenta] = useState(initialFormDataVenta());
+    // Para almacenar la informacion del formulario
+    const [formDataVenta, setFormDataVenta] = useState(initialFormDataVenta());
 
     // Para almacenar la informacion del formulario
     const [formDataPlaneacion, setFormDataPlaneacion] = useState(initialFormDataPlaneacionInitial());
@@ -182,7 +182,7 @@ function RegistraRequerimientosPlaneacion(props) {
             console.log(e)
         }
     }, [formDataPlaneacion.opcion3]);
-    
+
     let cantidadTotalEntrada = 0;
 
     let cantidadTotalSalida = 0;
@@ -195,21 +195,21 @@ function RegistraRequerimientosPlaneacion(props) {
         try {
             obtenerDatosArticulo(formDataPlaneacion.id).then(response => {
                 const { data } = response;
-               
+
                 map(data, (articulos, index) => {
-                    
-                    const {estado, cantidadExistencia, tipo} = articulos
-                    
+
+                    const { estado, cantidadExistencia, tipo } = articulos
+
                     if (estado == "true") {
                         console.log("entro al primer if")
                         if (tipo == "Entrada") {
-                        console.log("entro al segundo if")
+                            console.log("entro al segundo if")
                             cantidadTotalEntrada += parseFloat(cantidadExistencia);
                             console.log(cantidadTotalEntrada)
                         } else if (tipo == "Salida") {
                             console.log("el estado del producto es false")
                             cantidadTotalSalida += parseFloat(cantidadExistencia);
-                            }
+                        }
                     }
                     setAlmacenProducto(cantidadTotalEntrada - cantidadTotalSalida)
                 })
@@ -229,20 +229,20 @@ function RegistraRequerimientosPlaneacion(props) {
         try {
             obtenerDatosArticulo(formDataPlaneacion.idMaterial).then(response => {
                 const { data } = response;
-               
+
                 map(data, (articulos, index) => {
-                    
-                    const {estado, cantidadExistencia, tipo} = articulos
-                    
+
+                    const { estado, cantidadExistencia, tipo } = articulos
+
                     if (estado == "true") {
                         console.log("entro al primer if")
                         if (tipo == "Entrada") {
-                        console.log("entro al segundo if")
+                            console.log("entro al segundo if")
                             cantidadTotalEntradaMaterial += parseFloat(cantidadExistencia);
                         } else if (tipo == "Salida") {
                             console.log("el estado del producto es false")
                             cantidadTotalSalidaMaterial += parseFloat(cantidadExistencia);
-                            }
+                        }
                     }
                     setCantidadProductoAlmacen(cantidadTotalEntradaMaterial - cantidadTotalSalidaMaterial)
                 })
@@ -262,20 +262,20 @@ function RegistraRequerimientosPlaneacion(props) {
         try {
             obtenerDatosArticulo(formDataPlaneacion.idPigmento).then(response => {
                 const { data } = response;
-               
+
                 map(data, (articulos, index) => {
-                    
-                    const {estado, cantidadExistencia, tipo} = articulos
-                    
+
+                    const { estado, cantidadExistencia, tipo } = articulos
+
                     if (estado == "true") {
                         console.log("entro al primer if")
                         if (tipo == "Entrada") {
-                        console.log("entro al segundo if")
+                            console.log("entro al segundo if")
                             cantidadTotalEntradaPigmento += parseFloat(cantidadExistencia);
                         } else if (tipo == "Salida") {
                             console.log("el estado del producto es false")
                             cantidadTotalSalidaPigmento += parseFloat(cantidadExistencia);
-                            }
+                        }
                     }
                     setCantidadMBAlmacen(cantidadTotalEntradaPigmento - cantidadTotalSalidaPigmento)
                 })
@@ -295,20 +295,20 @@ function RegistraRequerimientosPlaneacion(props) {
         try {
             obtenerDatosArticulo(formDataPlaneacion.idEmpaque).then(response => {
                 const { data } = response;
-               
+
                 map(data, (articulos, index) => {
-                    
-                    const {estado, cantidadExistencia, tipo} = articulos
-                    
+
+                    const { estado, cantidadExistencia, tipo } = articulos
+
                     if (estado == "true") {
                         console.log("entro al primer if")
                         if (tipo == "Entrada") {
-                        console.log("entro al segundo if")
+                            console.log("entro al segundo if")
                             cantidadTotalEntradaEmpaque += parseFloat(cantidadExistencia);
                         } else if (tipo == "Salida") {
                             console.log("el estado del producto es false")
                             cantidadTotalSalidaEmpaque += parseFloat(cantidadExistencia);
-                            }
+                        }
                     }
                     setCantidadEmpaquesAlmacen(cantidadTotalEntradaEmpaque - cantidadTotalSalidaEmpaque)
                 })
@@ -430,124 +430,119 @@ function RegistraRequerimientosPlaneacion(props) {
 
     const onSubmit = e => {
         e.preventDefault();
+        //console.log("Continuar")
+        setLoading(true)
 
-        if (!formData.semana) {
-            toast.warning("Completa el formulario");
-        } else {
-            //console.log("Continuar")
-            setLoading(true)
+        const temp = formData.materiaPrima.split("/")
 
-            const temp = formData.materiaPrima.split("/")
-
-            // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-            obtenerNumeroRequerimiento().then(response => {
-                const { data } = response;
-                const dataTemp = {
-                    item: item,
-                    folio: data.noRequerimiento,
-                    sucursal: getSucursal(),
-                    requerimiento: {
-                        semana: formData.semana,
-                        producto: formDataPlaneacion.id,
-                        nombreProducto: formDataPlaneacion.descripcion,
-                        um: formDataPlaneacion.um,
-                        ov: ordenVentaPrincipal,
-                        almacenProductoTerminado: almacenProducto,
-                        ordenVenta: listOVCargadas,
-                        nombreProveedor: formDataPlaneacion.nombreProveedor,
-                        totalProducir: totalProducir,
-                    },
-                    planeacion: {
-                        numeroMolde: formDataPlaneacion.noMolde,
-                        numeroCavidades: formDataPlaneacion.cavMolde,
-                        opcionesMaquinaria: {
-                            1: {
-                                numeroMaquina1: numeroMaquina1,
-                                maquina1: nombreMaquina1,
-                                ciclo1: formDataPlaneacion.tiempoCiclo1,
-                                pieza1: piezasTurno1,
-                                bolsa1: formDataPlaneacion.noPiezasxEmpaque,
-                            },
-                            2: {
-                                numeroMaquina2: numeroMaquina2,
-                                maquina2: nombreMaquina2,
-                                ciclo2: formDataPlaneacion.tiempoCiclo2,
-                                pieza2: piezasTurno2,
-                                bolsa2: formDataPlaneacion.noPiezasxEmpaque,
-                            },
-                            3: {
-                                numeroMaquina3: numeroMaquina3,
-                                maquina3: nombreMaquina3,
-                                ciclo3: formDataPlaneacion.tiempoCiclo3,
-                                pieza3: piezasTurno3,
-                                bolsa3: formDataPlaneacion.noPiezasxEmpaque,
-                            },
+        // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
+        obtenerNumeroRequerimiento().then(response => {
+            const { data } = response;
+            const dataTemp = {
+                item: item,
+                folio: data.noRequerimiento,
+                sucursal: getSucursal(),
+                requerimiento: {
+                    semana: semana,
+                    producto: formDataPlaneacion.id,
+                    nombreProducto: formDataPlaneacion.descripcion,
+                    um: formDataPlaneacion.um,
+                    ov: ordenVentaPrincipal,
+                    almacenProductoTerminado: almacenProducto,
+                    ordenVenta: listOVCargadas,
+                    nombreProveedor: formDataPlaneacion.nombreProveedor,
+                    totalProducir: totalProducir,
+                },
+                planeacion: {
+                    numeroMolde: formDataPlaneacion.noMolde,
+                    numeroCavidades: formDataPlaneacion.cavMolde,
+                    opcionesMaquinaria: {
+                        1: {
+                            numeroMaquina1: numeroMaquina1,
+                            maquina1: nombreMaquina1,
+                            ciclo1: formDataPlaneacion.tiempoCiclo1,
+                            pieza1: piezasTurno1,
+                            bolsa1: formDataPlaneacion.noPiezasxEmpaque,
+                        },
+                        2: {
+                            numeroMaquina2: numeroMaquina2,
+                            maquina2: nombreMaquina2,
+                            ciclo2: formDataPlaneacion.tiempoCiclo2,
+                            pieza2: piezasTurno2,
+                            bolsa2: formDataPlaneacion.noPiezasxEmpaque,
+                        },
+                        3: {
+                            numeroMaquina3: numeroMaquina3,
+                            maquina3: nombreMaquina3,
+                            ciclo3: formDataPlaneacion.tiempoCiclo3,
+                            pieza3: piezasTurno3,
+                            bolsa3: formDataPlaneacion.noPiezasxEmpaque,
                         },
                     },
-                    bom: {
-                        material: formDataPlaneacion.descripcionMP,
-                        idMaterial: formDataPlaneacion.idMaterial,
-                        folioMaterial: formDataPlaneacion.folioMaterial,
-                        precioMaterial: formDataPlaneacion.precioMaterial,
-                        umMaterial: formDataPlaneacion.umMaterial,
-                        molido: formDataPlaneacion.porcentajeMolido,
-                        pesoPieza: formDataPlaneacion.pesoPiezas,
-                        pesoColada: formDataPlaneacion.pesoColada,
-                        kgMaterial: kgMaterial,
-                        idPigmento: formDataPlaneacion.idPigmento,
-                        folioPigmento: formDataPlaneacion.folioPigmento,
-                        precioPigmento: formDataPlaneacion.precioPigmento,
-                        umPigmento: formDataPlaneacion.umPigmento,
-                        pigmento: formDataPlaneacion.descripcionPigmento,
-                        aplicacion: formDataPlaneacion.aplicacionGxKG,
-                        pigMb: pigMB,
-                        materialxTurno: materialTurno,
-                        merma: formDataPlaneacion.porcentajeScrap,
-                        idEmpaque: formDataPlaneacion.idEmpaque,
-                        folioEmpaque: formDataPlaneacion.folioEmpaque,
-                        precioEmpaque: formDataPlaneacion.precioEmpaque,
-                        umEmpaque: formDataPlaneacion.umEmpaque,
-                        empaque: formDataPlaneacion.descripcionBolsa,
-                        bolsasCajasUtilizar: bolsasCajasUtilizar
-                    },
-                    datosRequisicion: {
-                        material: formDataPlaneacion.descripcionMP,
-                        kgMaterial: kgMaterial,
-                        almacenMP: cantidadProductoAlmacen,
-                        cantidadSugerida: Number(kgMaterial) - Number(cantidadProductoAlmacen),
-                        cantidadPedir: cantidadPedir,
+                },
+                bom: {
+                    material: formDataPlaneacion.descripcionMP,
+                    idMaterial: formDataPlaneacion.idMaterial,
+                    folioMaterial: formDataPlaneacion.folioMaterial,
+                    precioMaterial: formDataPlaneacion.precioMaterial,
+                    umMaterial: formDataPlaneacion.umMaterial,
+                    molido: formDataPlaneacion.porcentajeMolido,
+                    pesoPieza: formDataPlaneacion.pesoPiezas,
+                    pesoColada: formDataPlaneacion.pesoColada,
+                    kgMaterial: kgMaterial,
+                    idPigmento: formDataPlaneacion.idPigmento,
+                    folioPigmento: formDataPlaneacion.folioPigmento,
+                    precioPigmento: formDataPlaneacion.precioPigmento,
+                    umPigmento: formDataPlaneacion.umPigmento,
+                    pigmento: formDataPlaneacion.descripcionPigmento,
+                    aplicacion: formDataPlaneacion.aplicacionGxKG,
+                    pigMb: pigMB,
+                    materialxTurno: materialTurno,
+                    merma: formDataPlaneacion.porcentajeScrap,
+                    idEmpaque: formDataPlaneacion.idEmpaque,
+                    folioEmpaque: formDataPlaneacion.folioEmpaque,
+                    precioEmpaque: formDataPlaneacion.precioEmpaque,
+                    umEmpaque: formDataPlaneacion.umEmpaque,
+                    empaque: formDataPlaneacion.descripcionBolsa,
+                    bolsasCajasUtilizar: bolsasCajasUtilizar
+                },
+                datosRequisicion: {
+                    material: formDataPlaneacion.descripcionMP,
+                    kgMaterial: kgMaterial,
+                    almacenMP: cantidadProductoAlmacen,
+                    cantidadSugerida: Number(kgMaterial) - Number(cantidadProductoAlmacen),
+                    cantidadPedir: cantidadPedir,
 
-                        pigmentoMB: formDataPlaneacion.descripcionPigmento,
-                        kgPigMB: pigMB,
-                        MbAlmacen: cantidadMBAlmacen,
-                        cantidadSugeridaMB: Number(pigMB) - Number(cantidadMBAlmacen),
-                        cantidadPedirMB: cantidadPedirMB,
+                    pigmentoMB: formDataPlaneacion.descripcionPigmento,
+                    kgPigMB: pigMB,
+                    MbAlmacen: cantidadMBAlmacen,
+                    cantidadSugeridaMB: Number(pigMB) - Number(cantidadMBAlmacen),
+                    cantidadPedirMB: cantidadPedirMB,
 
-                        empaque: formDataPlaneacion.descripcionBolsa,
-                        empaquesNecesarios: bolsasCajasUtilizar,
-                        empaquesAlmacen: cantidadEmpaquesAlmacen,
-                        cantidadSugeridaEmpaques: Number(bolsasCajasUtilizar) - Number(cantidadEmpaquesAlmacen),
-                        cantidadPedirEmpaques: cantidadPedirEmpaques
-                    },
-                    estado: "true"
-                }
-                // console.log(dataTemp)
-                // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
-                LogsInformativos("Se ha registrado una nueva planeación con folio " + dataTemp.folio, dataTemp)
-                // Modificar el pedido creado recientemente
-                registraRequerimiento(dataTemp).then(response => {
-                    const { data: { mensaje, datos } } = response;
-                    // console.log(response)
-                    toast.success(mensaje)
-                    setLoading(false)
-                    rutaRegreso()
-                }).catch(e => {
-                    console.log(e)
-                })
+                    empaque: formDataPlaneacion.descripcionBolsa,
+                    empaquesNecesarios: bolsasCajasUtilizar,
+                    empaquesAlmacen: cantidadEmpaquesAlmacen,
+                    cantidadSugeridaEmpaques: Number(bolsasCajasUtilizar) - Number(cantidadEmpaquesAlmacen),
+                    cantidadPedirEmpaques: cantidadPedirEmpaques
+                },
+                estado: "true"
+            }
+            // console.log(dataTemp)
+            // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
+            LogsInformativos("Se ha registrado una nueva planeación con folio " + dataTemp.folio, dataTemp)
+            // Modificar el pedido creado recientemente
+            registraRequerimiento(dataTemp).then(response => {
+                const { data: { mensaje, datos } } = response;
+                // console.log(response)
+                toast.success(mensaje)
+                setLoading(false)
+                rutaRegreso()
             }).catch(e => {
                 console.log(e)
             })
-        }
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     const [listOVCargadas, setListOVCargadas] = useState([]);
@@ -579,9 +574,11 @@ function RegistraRequerimientosPlaneacion(props) {
             document.getElementById("cantidadPedidaOV").value = ""
             document.getElementById("cantidadProducirOV").value = ""
 
-            setFormDataVenta(initialFormDataVenta);
+            setFormDataVenta(initialFormDataVenta());
         }
     }
+
+    console.log(formDataVenta);
 
     // Para limpiar el formulario de detalles de producto
     const cancelarCargaOV = () => {
@@ -590,7 +587,7 @@ function RegistraRequerimientosPlaneacion(props) {
         document.getElementById("cantidadPedidaOV").value = ""
         document.getElementById("cantidadProducirOV").value = ""
 
-        setFormDataVenta(initialFormDataVenta);
+        setFormDataVenta(initialFormDataVenta());
     }
 
     // Para eliminar productos del listado
@@ -641,7 +638,23 @@ function RegistraRequerimientosPlaneacion(props) {
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
         setFormDataPlaneacion({ ...formDataPlaneacion, [e.target.name]: e.target.value })
+        setFormDataVenta({ ...formDataVenta, [e.target.name]: e.target.value });
     }
+
+    const [cantidadProducir, setCantidadProducir] = useState(0);
+
+    useEffect(() => {
+        setCantidadProducir(formDataVenta.cantidadProducirVenta)
+    }, [formDataVenta.cantidadProducirVenta]);
+
+    const hoy = new Date();
+    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
+    const fecha = (hoy.getMonth() + 1) > 9 && hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+        : (hoy.getMonth() + 1) < 10 && hoy.getDate() > 9 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
+            : (hoy.getMonth() + 1) < 10 && hoy.getDate() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
+                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+
+    const [semana, setSemana] = useState(fecha);
 
     return (
         <>
@@ -749,6 +762,7 @@ function RegistraRequerimientosPlaneacion(props) {
                                             type="number"
                                             placeholder="Cantidad a producir"
                                             name="cantidadProducirVenta"
+                                            value={cantidadProducir}
                                         />
                                     </Form.Group>
 
@@ -788,19 +802,6 @@ function RegistraRequerimientosPlaneacion(props) {
                                 </Row>
 
                                 <Row className="mb-3">
-                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
-                                        <Form.Label align="center">
-                                            Semana
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="number"
-                                            min="0"
-                                            placeholder="Semana"
-                                            name="semana"
-                                            defaultValue={formData.semana}
-                                        />
-                                    </Form.Group>
-
                                     <Form.Group as={Col} controlId="formGridMateriaPrima" className="producto">
                                         <Form.Label>
                                             Producto
@@ -858,6 +859,19 @@ function RegistraRequerimientosPlaneacion(props) {
                                             onChange={e => setAlmacenProducto(e.target.value)}
                                             placeholder="Almacen producto terminado"
                                             name="almacenPT"
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label align="center">
+                                            Semana
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder="Semana"
+                                            name="semana"
+                                            value={semana}
+                                            onChange={e => setSemana(e.target.value)}
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1694,9 +1708,10 @@ function initialFormData() {
 
 function initialFormDataVenta() {
     return {
-       ordenVenta: "",
-       cantidadRequerida: "",
-       cliente: ""
+        ordenVenta: "",
+        cantidadRequerida: "",
+        cantidadProducirVenta: "",
+        cliente: ""
     }
 }
 
