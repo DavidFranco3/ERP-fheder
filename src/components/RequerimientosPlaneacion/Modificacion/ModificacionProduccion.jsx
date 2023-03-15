@@ -11,7 +11,7 @@ import { map } from "lodash";
 import { listarAlmacenPT, obtenerDatosAlmacenPT } from "../../../api/almacenPT";
 import { obtenerRequerimiento, actualizaRequerimiento } from "../../../api/requerimientosPlaneacion";
 import { toast } from "react-toastify";
-import { obtenerMaquina } from "../../../api/maquinas";
+import { obtenerMaquina, listarMaquina } from "../../../api/maquinas";
 import { obtenerDatosMP } from "../../../api/almacenMP";
 import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
@@ -33,6 +33,34 @@ function ModificacionProduccion(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
+
+    // Para almacenar el listado de maquinas
+    const [listMaquinas, setListMaquinas] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarMaquina(getSucursal()).then(response => {
+                const { data } = response;
+                // console.log(data)
+
+                if (!listMaquinas && data) {
+                    setListMaquinas(formatModelMaquinas(data));
+                } else {
+                    const datosMaquinas = formatModelMaquinas(data);
+                    setListMaquinas(datosMaquinas);
+                }
+            }).catch(e => {
+                //console.log(e)
+                if (e.message === 'Network Error') {
+                    //console.log("No hay internet")
+                    toast.error("Conexión al servidor no disponible");
+                }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
 
     const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
 
@@ -443,6 +471,7 @@ function ModificacionProduccion(props) {
             setLoading(true)
 
             const temp = informacionRequerimiento.producto.split("/");
+            const temp2 = informacionRequerimiento.noMaquina.split("/");
 
             const dataTemp = {
                 requerimiento: {
@@ -461,26 +490,12 @@ function ModificacionProduccion(props) {
                     numeroCavidades: formDataPlaneacion.cavMolde,
                     opcionesMaquinaria: {
                         1: {
-                            numeroMaquina1: numeroMaquina1,
-                            maquina1: nombreMaquina1,
+                            numeroMaquina1: temp2[0],
+                            maquina1: temp[1],
                             ciclo1: formDataPlaneacion.tiempoCiclo1,
                             pieza1: piezasTurno1,
                             bolsa1: formDataPlaneacion.noPiezasxEmpaque,
-                        },
-                        2: {
-                            numeroMaquina2: numeroMaquina2,
-                            maquina2: nombreMaquina2,
-                            ciclo2: formDataPlaneacion.tiempoCiclo2,
-                            pieza2: piezasTurno2,
-                            bolsa2: formDataPlaneacion.noPiezasxEmpaque,
-                        },
-                        3: {
-                            numeroMaquina3: numeroMaquina3,
-                            maquina3: nombreMaquina3,
-                            ciclo3: formDataPlaneacion.tiempoCiclo3,
-                            pieza3: piezasTurno3,
-                            bolsa3: formDataPlaneacion.noPiezasxEmpaque,
-                        },
+                        }
                     },
                 },
                 bom: {
@@ -631,7 +646,7 @@ function ModificacionProduccion(props) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
         setFormDataPlaneacion({ ...formDataPlaneacion, [e.target.name]: e.target.value })
         setInformacionRequerimiento({ ...informacionRequerimiento, [e.target.name]: e.target.value })
-        setFormDataVenta ({...formDataVenta, [e.target.name]: e.target.value})
+        setFormDataVenta({ ...formDataVenta, [e.target.name]: e.target.value })
     }
 
     useEffect(() => {
@@ -994,12 +1009,6 @@ function ModificacionProduccion(props) {
                                 </Row>
 
                                 <Row className="mb-3">
-                                    <Col></Col>
-                                    <Col>
-                                        <Form.Label align="center">
-                                            No. Maquina
-                                        </Form.Label>
-                                    </Col>
                                     <Col>
                                         <Form.Label align="center">
                                             Maquina
@@ -1024,24 +1033,18 @@ function ModificacionProduccion(props) {
 
                                 <Row className="mb-3">
                                     <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                        <Col sm={2}>
-                                            <Form.Label align="center">
-                                                Opcion 1
-                                            </Form.Label>
-                                        </Col>
                                         <Col>
                                             <Form.Control
-                                                type="text"
-                                                name="numeroMaquina1"
-                                                defaultValue={numeroMaquina1}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="maquina1"
-                                                defaultValue={nombreMaquina1}
-                                            />
+                                                as="select"
+                                                defaultValue={informacionRequerimiento.noMaquina}
+                                                placeholder="Numero de maquina"
+                                                name="noMaquina"
+                                            >
+                                                <option>Elige una opción</option>
+                                                {map(listMaquinas, (maquina, index) => (
+                                                    <option value={maquina?.numeroMaquina + "/" + maquina?.marca} selected={maquina?.numeroMaquina + "/" + maquina?.marca == informacionRequerimiento.noMaquina}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                ))}
+                                            </Form.Control>
                                         </Col>
                                         <Col>
                                             <Form.Control
@@ -1061,96 +1064,6 @@ function ModificacionProduccion(props) {
                                             <Form.Control
                                                 type="text"
                                                 name="bolsa1"
-                                                defaultValue={formDataPlaneacion.noPiezasxEmpaque}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <Row className="mb-3">
-                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                        <Col sm={2}>
-                                            <Form.Label align="center">
-                                                Opcion 2
-                                            </Form.Label>
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="numeroMaquina2"
-                                                defaultValue={numeroMaquina2}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="maquina2"
-                                                defaultValue={nombreMaquina2}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="ciclo2"
-                                                defaultValue={formDataPlaneacion.tiempoCiclo2}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="pieza2"
-                                                value={piezasTurno2.toFixed(2)}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="bolsa2"
-                                                defaultValue={formDataPlaneacion.noPiezasxEmpaque}
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <Row className="mb-3">
-                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                        <Col sm={2}>
-                                            <Form.Label align="center">
-                                                Opcion 3
-                                            </Form.Label>
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="numeroMaquina3"
-                                                defaultValue={numeroMaquina3}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="maquina3"
-                                                defaultValue={nombreMaquina3}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="ciclo3"
-                                                defaultValue={formDataPlaneacion.tiempoCiclo3}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="pieza3"
-                                                value={piezasTurno3.toFixed(2)}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="bolsa3"
                                                 defaultValue={formDataPlaneacion.noPiezasxEmpaque}
                                             />
                                         </Col>
@@ -1636,10 +1549,10 @@ function initialFormDataPlaneacion(data) {
 
 function initialFormDataVenta() {
     return {
-       ordenVenta: "",
-       cantidadRequerida: "",
-       cantidadProducirVenta: "",
-       cliente: ""
+        ordenVenta: "",
+        cantidadRequerida: "",
+        cantidadProducirVenta: "",
+        cliente: ""
     }
 }
 
@@ -1767,6 +1680,7 @@ function initialValues() {
         empaque: "",
         bolsasCajasUtilizar: "",
         cantidadPedir: "",
+        noMaquina: ""
     }
 }
 
@@ -1792,16 +1706,7 @@ function valoresAlmacenados(data) {
         ciclo1: planeacion.opcionesMaquinaria[0][1].ciclo1,
         pieza1: planeacion.opcionesMaquinaria[0][1].pieza1,
         bolsa1: planeacion.opcionesMaquinaria[0][1].bolsa1,
-        numeroMaquina2: planeacion.opcionesMaquinaria[0][2].numeroMaquina2,
-        maquina2: planeacion.opcionesMaquinaria[0][2].maquina2,
-        ciclo2: planeacion.opcionesMaquinaria[0][2].ciclo2,
-        pieza2: planeacion.opcionesMaquinaria[0][2].pieza2,
-        bolsa2: planeacion.opcionesMaquinaria[0][2].bolsa2,
-        numeroMaquina3: planeacion.opcionesMaquinaria[0][3].numeroMaquina3,
-        maquina3: planeacion.opcionesMaquinaria[0][3].maquina3,
-        ciclo3: planeacion.opcionesMaquinaria[0][3].ciclo3,
-        pieza3: planeacion.opcionesMaquinaria[0][3].pieza3,
-        bolsa3: planeacion.opcionesMaquinaria[0][3].bolsa3,
+        noMaquina: planeacion.opcionesMaquinaria[0][1].numeroMaquina1 + "/" + planeacion.opcionesMaquinaria[0][1].maquina1,
         bom: bom,
         material: bom.material,
         molido: bom.molido,
@@ -1865,6 +1770,24 @@ function formatModelMatrizProductos(data) {
             materialEmpaque: data.materialEmpaque,
             opcionMaquinaria: data.opcionMaquinaria,
             estado: data.estado,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelMaquinas(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            numeroMaquina: data.numeroMaquina,
+            marca: data.marca,
+            tonelaje: data.tonelaje,
+            lugar: data.lugar,
+            status: data.status,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });
