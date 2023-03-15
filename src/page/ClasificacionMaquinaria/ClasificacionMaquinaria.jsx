@@ -13,6 +13,7 @@ import BasicModal from "../../components/Modal/BasicModal";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function ClasificacionMaquinaria(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -23,35 +24,44 @@ function ClasificacionMaquinaria(props) {
         enrutamiento("/DashboardConfiguracion")
     }
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Recuperación de la razón social seleccionada
     const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
 
-    useEffect(() => {
+    const cargarRazonSocial = () => {
         if (getSucursal()) {
             setRazonSocialElegida(getSucursal)
         } else {
             setRazonSocialElegida("Sin Selección")
         }
+    }
+
+    useEffect(() => {
+        cargarRazonSocial();
     }, []);
     // Termina recuperación de la razón social recuperada
 
     // Para almacenar los usuarios
     const [listClasificacionMaquinaria, setListClasificacionMaquinaria] = useState(null);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         try {
             listarClasificacionMaquinaria(getSucursal()).then(response => {
                 const { data } = response;
@@ -70,6 +80,10 @@ function ClasificacionMaquinaria(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, [location]);
 
     // Para hacer uso del modal
@@ -83,7 +97,6 @@ function ClasificacionMaquinaria(props) {
         setContentModal(content);
         setShowModal(true);
     }
-
 
     return (
         <>
@@ -160,7 +173,7 @@ function ClasificacionMaquinaria(props) {
                             }
                         </>
                     )}
-                    
+
             <BasicModal show={showModal} setShow={setShowModal} title={titulosModal}>
                 {contentModal}
             </BasicModal>

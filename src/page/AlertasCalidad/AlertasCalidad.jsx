@@ -16,8 +16,7 @@ import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSi
 function AlertasCalidad(props) {
     const { location, history, setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
                 LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
@@ -27,18 +26,27 @@ function AlertasCalidad(props) {
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Recuperación de la razón social seleccionada
     const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
 
-    useEffect(() => {
+    const cargarRazonSocial = () => {
         if (getSucursal()) {
             setRazonSocialElegida(getSucursal)
         } else {
             setRazonSocialElegida("Sin Selección")
         }
+    }
+
+    useEffect(() => {
+        cargarRazonSocial();
     }, []);
     // Termina recuperación de la razón social recuperada
 
@@ -57,7 +65,7 @@ function AlertasCalidad(props) {
     // Para almacenar la lista de pedidos de venta
     const [listAlertasCalidad, setListAlertasCalidad] = useState(null);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         try {
             listarAlertasCalidad(getSucursal()).then(response => {
                 const { data } = response;
@@ -76,6 +84,10 @@ function AlertasCalidad(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, [location]);
 
     return (

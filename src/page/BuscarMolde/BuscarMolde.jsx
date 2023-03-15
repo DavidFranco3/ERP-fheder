@@ -10,27 +10,33 @@ import "./BuscarMolde.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function BuscarMolde(props) {
     const { setFormData, formData, setShowModal, setRefreshCheckLogin, location, history } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Almacena los datos de la orden de venta
     const [listMoldes, setListMoldes] = useState(null);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         try {
             listarEtiquetaMoldeActiva(getSucursal()).then(response => {
                 const { data } = response;
@@ -47,6 +53,10 @@ function BuscarMolde(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, [location]);
 
     return (

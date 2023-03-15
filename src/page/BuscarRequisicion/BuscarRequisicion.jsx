@@ -12,27 +12,33 @@ import { obtenerUsuario } from "../../api/usuarios";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import BuscarRequisiciones from '../../components/Busquedas/BuscarRequisiciones';
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function BuscarRequisicion(props) {
     const { setFormData, formData, productosRequisicion, setProductosRequisicion, setShowModal, setRefreshCheckLogin, location, history } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Almacena los datos de la orden de venta
     const [listRequisiciones, setListRequisiciones] = useState(null);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         try {
             listarRequisicionesActivas(getSucursal()).then(response => {
                 const { data } = response;
@@ -51,6 +57,10 @@ function BuscarRequisicion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, [location]);
 
     return (

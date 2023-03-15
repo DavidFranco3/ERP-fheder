@@ -11,27 +11,33 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/a
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import BuscarRecepciones from '../../components/Busquedas/BuscarRecepciones';
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function BuscarRecepcion(props) {
     const { setFormData, formData, productosRecepcion, setProductosRecepcion, setShowModal, setRefreshCheckLogin, location, history } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Almacena los datos de la orden de venta
     const [listRecepciones, setListRecepciones] = useState(null);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         try {
             listarRecepcionActiva(getSucursal()).then(response => {
                 const { data } = response;
@@ -50,6 +56,10 @@ function BuscarRecepcion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, [location]);
 
     return (

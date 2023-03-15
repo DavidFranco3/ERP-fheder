@@ -38,7 +38,7 @@ function LayoutPrincipal(props) {
     // Para almacenar las sucursales registradas
     const [sucursalesRegistradas, setSucursalesRegistradas] = useState(null);
 
-    useEffect(() => {
+    const cargarListaSucursales = () => {
         try {
             listarRazonSocialActiva().then(response => {
                 const { data } = response;
@@ -48,8 +48,12 @@ function LayoutPrincipal(props) {
                 setSucursalesRegistradas(dataTemp);
             })
         } catch (e) {
-
+            console.log(e);
         }
+    }
+
+    useEffect(() => {
+        cargarListaSucursales();
     }, []);
 
     // Almacena la razón social, si ya fue elegida
@@ -63,14 +67,17 @@ function LayoutPrincipal(props) {
         window.location.reload()
     }
 
-    useEffect(() => {
+    const cargarSucursalElegida = () => {
         if (getSucursal()) {
             setSucursalElegida(getSucursal)
         }
+    }
+
+    useEffect(() => {
+        cargarSucursalElegida();
     }, []);
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
                 LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
@@ -80,6 +87,11 @@ function LayoutPrincipal(props) {
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

@@ -11,27 +11,33 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal, getAlmacen } from 
 import { obtenerUsuario } from "../../api/usuarios";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function BuscarArticuloAlmacen(props) {
     const { setFormData, formData, setShowModal, setRefreshCheckLogin, location, history, setRegistroAnterior, registroAnterior, setCantidadExistencia } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Almacena los datos de la orden de venta
     const [listArticulos, setListArticulos] = useState(null);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         try {
             listarRegistrosGeneralesAlmacen(getSucursal()).then(response => {
                 const { data } = response;
@@ -50,6 +56,10 @@ function BuscarArticuloAlmacen(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, [location]);
 
     return (

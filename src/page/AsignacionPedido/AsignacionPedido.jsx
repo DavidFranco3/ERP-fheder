@@ -29,8 +29,7 @@ function AsignacionPedido(props) {
         setShowModal(true);
     }
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
                 LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
@@ -40,25 +39,34 @@ function AsignacionPedido(props) {
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Recuperación de la razón social seleccionada
     const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
 
-    useEffect(() => {
+    const cargarRazonSocial = () => {
         if (getSucursal()) {
             setRazonSocialElegida(getSucursal)
         } else {
             setRazonSocialElegida("Sin Selección")
         }
+    }
+
+    useEffect(() => {
+        cargarRazonSocial();
     }, []);
     // Termina recuperación de la razón social recuperada
 
     // Para almacenar el listado de objetos en el almacen de pt
     const [listAsignacionPedido, setListAsignacionPedido] = useState(null);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         try {
             listarAsignacionPedidos(getSucursal()).then(response => {
                 const { data } = response;
@@ -77,6 +85,10 @@ function AsignacionPedido(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, [location]);
 
     // Para definir el enrutamiento

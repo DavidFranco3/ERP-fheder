@@ -11,8 +11,7 @@ import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSi
 function AcusesRecibo(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
                 LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
@@ -22,6 +21,11 @@ function AcusesRecibo(props) {
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

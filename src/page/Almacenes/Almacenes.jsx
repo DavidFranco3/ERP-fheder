@@ -22,8 +22,7 @@ function Almacenes(props) {
     // Para definir el enrutamiento
     const enrutamiento = useNavigate();
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
                 LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
@@ -33,24 +32,33 @@ function Almacenes(props) {
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Para almacenar las sucursales registradas
     const [almacenesRegistrados, setAlmacenesRegistrados] = useState(null);
 
-    useEffect(() => {
-        try {
-            listarAlmacenes(getSucursal()).then(response => {
-                const { data } = response;
-                //console.log(data)
-                const dataTemp = formatModelGestionAlmacen(data);
-                //console.log(data)
-                setAlmacenesRegistrados(dataTemp);
-            })
-        } catch (e) {
+   const cargarListaAlmacenes = () => {
+    try {
+        listarAlmacenes(getSucursal()).then(response => {
+            const { data } = response;
+            //console.log(data)
+            const dataTemp = formatModelGestionAlmacen(data);
+            //console.log(data)
+            setAlmacenesRegistrados(dataTemp);
+        })
+    } catch (e) {
 
-        }
+    }
+    }
+
+    useEffect(() => {
+        cargarListaAlmacenes();
     }, []);
 
     // Almacena la razón social, si ya fue elegida
@@ -64,10 +72,14 @@ function Almacenes(props) {
         window.location.reload()
     }
 
-    useEffect(() => {
+    const guardarAlmacenElegido = () => {
         if (getAlmacen()) {
             setAlmacenElegido(getAlmacen)
         }
+    }
+
+    useEffect(() => {
+        guardarAlmacenElegido();
     }, []);
 
     // Para hacer uso del modal
@@ -86,19 +98,23 @@ function Almacenes(props) {
     // Recuperación de la razón social seleccionada
     const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
 
-    useEffect(() => {
+    const cargarRazonSocial = () => {
         if (getSucursal()) {
             setRazonSocialElegida(getSucursal)
         } else {
             setRazonSocialElegida("Sin Selección")
         }
+    }
+
+    useEffect(() => {
+        cargarRazonSocial();
     }, []);
     // Termina recuperación de la razón social recuperada
 
     // Almacenar el listado de materias primas registradas
     const [listAlmacenes, setListAlmacenes] = useState(null);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         try {
             listarRegistrosAlmacen(getSucursal(), getAlmacen()).then(response => {
                 const { data } = response;
@@ -117,6 +133,10 @@ function Almacenes(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, [location]);
 
     const rutaRegreso = () => {
