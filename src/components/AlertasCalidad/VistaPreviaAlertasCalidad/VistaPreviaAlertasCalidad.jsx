@@ -7,7 +7,7 @@ import DropzoneDeshabilitado from "../../DropzoneDeshabilitado";
 import { toast } from "react-toastify";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from "../../../api/auth";
 import { actualizaAlertasCalidad, obtenerAlertasCalidad } from "../../../api/alertasCalidad";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import "./VistaPreviaAlertasCalidad.scss";
 import LogoPDF from "../../../assets/png/pdf.png";
@@ -22,21 +22,34 @@ function VistaPreviaAlertasCalidad(props) {
     // Para definir el enrutamiento
     const enrutamiento = useNavigate();
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    // Define la ruta de registro
+    const rutaRegreso = () => {
+        enrutamiento("/AlertasCalidad")
+    }
+
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     const params = useParams();
     const { id } = params
+
+    // Para guardar los datos del formulario
+    const [formData, setFormData] = useState(initialFormDataInitial());
 
     useEffect(() => {
         //
@@ -44,286 +57,10 @@ function VistaPreviaAlertasCalidad(props) {
             const { data } = response;
             //console.log(data)
             setFormData(initialFormData(data))
-            // setFechaCreacion(fechaElaboracion)
-            setLinkCondicionCorrecta1(data.condicionCorrecta.imagen1);
-            setLinkCondicionCorrecta2(data.condicionCorrecta.imagen2);
-            setLinkCondicionCorrecta3(data.condicionCorrecta.imagen3);
-            setLinkCondicionCorrecta4(data.condicionCorrecta.imagen4);
-
-            setLinkCondicionIncorrecta1(data.condicionIncorrecta.imagen1);
-            setLinkCondicionIncorrecta2(data.condicionIncorrecta.imagen2);
-            setLinkCondicionIncorrecta3(data.condicionIncorrecta.imagen3);
-            setLinkCondicionIncorrecta4(data.condicionIncorrecta.imagen4);
-
-            setLinkListaFirmas(data.listaFirmas);
         }).catch(e => {
             console.log(e)
         })
     }, []);
-
-    // Para almacenar la foto de perfil del usuario
-    const [condicionCorrecta1, setCondicionCorrecta1] = useState(null);
-
-    const [linkCondicionCorrecta1, setLinkCondicionCorrecta1] = useState("");
-
-    useEffect(() => {
-        try {
-            if (condicionCorrecta1) {
-                subeArchivosCloudinary(condicionCorrecta1, "alertasCalidad").then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { secure_url } = data;
-                    setLinkCondicionCorrecta1(secure_url)
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-        } catch (e) {
-            console.log(e)
-
-        }
-    }, [condicionCorrecta1]);
-
-    const [condicionCorrecta2, setCondicionCorrecta2] = useState(null);
-
-    const [linkCondicionCorrecta2, setLinkCondicionCorrecta2] = useState("");
-
-    useEffect(() => {
-        try {
-            if (condicionCorrecta2) {
-                subeArchivosCloudinary(condicionCorrecta2, "alertasCalidad").then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { secure_url } = data;
-                    setLinkCondicionCorrecta2(secure_url)
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-        } catch (e) {
-            console.log(e)
-
-        }
-    }, [condicionCorrecta2]);
-
-    const [condicionCorrecta3, setCondicionCorrecta3] = useState(null);
-
-    const [linkCondicionCorrecta3, setLinkCondicionCorrecta3] = useState("");
-
-    useEffect(() => {
-        try {
-            if (condicionCorrecta3) {
-                subeArchivosCloudinary(condicionCorrecta3, "alertasCalidad").then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { secure_url } = data;
-                    setLinkCondicionCorrecta3(secure_url)
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-        } catch (e) {
-            console.log(e)
-
-        }
-    }, [condicionCorrecta3]);
-
-    const [condicionCorrecta4, setCondicionCorrecta4] = useState(null);
-
-    const [linkCondicionCorrecta4, setLinkCondicionCorrecta4] = useState("");
-
-    useEffect(() => {
-        try {
-            if (condicionCorrecta4) {
-                subeArchivosCloudinary(condicionCorrecta4, "alertasCalidad").then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { secure_url } = data;
-                    setLinkCondicionCorrecta4(secure_url)
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-        } catch (e) {
-            console.log(e)
-
-        }
-    }, [condicionCorrecta4]);
-
-    const [condicionIncorrecta1, setCondicionIncorrecta1] = useState(null);
-
-    const [linkCondicionIncorrecta1, setLinkCondicionIncorrecta1] = useState("");
-
-    useEffect(() => {
-        try {
-            if (condicionIncorrecta1) {
-                subeArchivosCloudinary(condicionIncorrecta1, "alertasCalidad").then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { secure_url } = data;
-                    setLinkCondicionIncorrecta1(secure_url)
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-        } catch (e) {
-            console.log(e)
-
-        }
-    }, [condicionIncorrecta1]);
-
-    const [condicionIncorrecta2, setCondicionIncorrecta2] = useState(null);
-
-    const [linkCondicionIncorrecta2, setLinkCondicionIncorrecta2] = useState("");
-
-    useEffect(() => {
-        try {
-            if (condicionIncorrecta2) {
-                subeArchivosCloudinary(condicionIncorrecta2, "alertasCalidad").then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { secure_url } = data;
-                    setLinkCondicionIncorrecta2(secure_url)
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-        } catch (e) {
-            console.log(e)
-
-        }
-    }, [condicionIncorrecta2]);
-
-    const [condicionIncorrecta3, setCondicionIncorrecta3] = useState(null);
-
-    const [linkCondicionIncorrecta3, setLinkCondicionIncorrecta3] = useState("");
-
-    useEffect(() => {
-        try {
-            if (condicionIncorrecta3) {
-                subeArchivosCloudinary(condicionIncorrecta3, "alertasCalidad").then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { secure_url } = data;
-                    setLinkCondicionIncorrecta3(secure_url)
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-        } catch (e) {
-            console.log(e)
-
-        }
-    }, [condicionIncorrecta3]);
-
-    const [condicionIncorrecta4, setCondicionIncorrecta4] = useState(null);
-
-    const [linkCondicionIncorrecta4, setLinkCondicionIncorrecta4] = useState("");
-
-    useEffect(() => {
-        try {
-            if (condicionIncorrecta4) {
-                subeArchivosCloudinary(condicionIncorrecta4, "alertasCalidad").then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { secure_url } = data;
-                    setLinkCondicionIncorrecta4(secure_url)
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-        } catch (e) {
-            console.log(e)
-
-        }
-    }, [condicionIncorrecta4]);
-
-    const [listaFirmas, setListaFirmas] = useState(null);
-
-    const [linkListaFirmas, setLinkListaFirmas] = useState("");
-
-    useEffect(() => {
-        try {
-            if (listaFirmas) {
-                subeArchivosCloudinary(listaFirmas, "alertasCalidad").then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { secure_url } = data;
-                    setLinkListaFirmas(secure_url)
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-        } catch (e) {
-            console.log(e)
-
-        }
-    }, [listaFirmas]);
-
-    // Define la ruta de registro
-    const rutaRegreso = () => {
-        enrutamiento("/AlertasCalidad")
-    }
-
-    // Para controlar la animacion
-    const [loading, setLoading] = useState(false);
-
-    // Para guardar los datos del formulario
-    const [formData, setFormData] = useState(initialFormDataInitial());
-
-    const onSubmit = e => {
-        e.preventDefault();
-        console.log(e)
-
-        if (!formData.cliente || !formData.descripcionPieza || !formData.descripcionNoConformidad || !formData.cantidadPiezasCondicion || !formData.referencia || !formData.accionContencion || !formData.accionCorrectiva || !formData.autorizo || !formData.elaboro || !formData.observaciones || !formData.referenciaNoConformidad) {
-            toast.warning("Completa el formulario");
-        } else {
-            //console.log("Continuar")
-            setLoading(true);
-
-            const dataTemp = {
-                fecha: formData.fecha,
-                cliente: formData.cliente,
-                descripcionPieza: formData.descripcionPieza,
-                descripcionNoConformidad: formData.descripcionNoConformidad,
-                cantidadPiezasCondicion: formData.cantidadPiezasCondicion,
-                referencia: formData.referencia,
-                accionContencion: formData.accionContencion,
-                accionCorrectiva: formData.accionCorrectiva,
-                autorizo: formData.autorizo,
-                elaboro: formData.elaboro,
-                observaciones: formData.observaciones,
-                listaFirmas: linkListaFirmas,
-                referenciaNoConformidad: formData.referenciaNoConformidad,
-                condicionIncorrecta: {
-                    imagen1: linkCondicionIncorrecta1,
-                    imagen2: linkCondicionIncorrecta2,
-                    imagen3: linkCondicionIncorrecta3,
-                    imagen4: linkCondicionIncorrecta4,
-                },
-                condicionCorrecta: {
-                    imagen1: linkCondicionCorrecta1,
-                    imagen2: linkCondicionCorrecta2,
-                    imagen3: linkCondicionCorrecta3,
-                    imagen4: linkCondicionCorrecta4,
-                },
-            }
-            // console.log(dataTemp)
-
-            // Modificar el pedido creado recientemente
-            actualizaAlertasCalidad(id, dataTemp).then(response => {
-                const { data: { mensaje, datos } } = response;
-                // console.log(response)
-                toast.success(mensaje)
-                // Log acerca del registro inicial del tracking
-                LogsInformativos("Se han registrado la alerta de calidad con folio " + formData.folio, dataTemp)
-                // Registro inicial del tracking
-                rutaRegreso();
-            }).catch(e => {
-                console.log(e)
-            })
-        }
-    }
 
     const onChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -355,7 +92,7 @@ function VistaPreviaAlertasCalidad(props) {
             <Container fluid>
                 <br />
                 <div className="formularioDatos">
-                    <Form onChange={onChange} onSubmit={onSubmit}>
+                    <Form onChange={onChange}>
                         <div className="encabezado">
                             <Container fluid>
                                 <br />
@@ -590,7 +327,7 @@ function VistaPreviaAlertasCalidad(props) {
                                             <div className="subeFotoPerfil">
                                                 <div className="fotoPerfil">
                                                     <DropzoneDeshabilitado
-                                                        setImagen={setCondicionIncorrecta1} imagenBD={formData.imagenIncorrecta1}
+                                                        imagenBD={formData.imagenIncorrecta1}
                                                     />
                                                 </div>
                                             </div>
@@ -599,7 +336,7 @@ function VistaPreviaAlertasCalidad(props) {
                                             <div className="subeFotoPerfil">
                                                 <div className="fotoPerfil">
                                                     <DropzoneDeshabilitado
-                                                        setImagen={setCondicionIncorrecta2} imagenBD={formData.imagenIncorrecta2}
+                                                        imagenBD={formData.imagenIncorrecta2}
                                                     />
                                                 </div>
                                             </div>
@@ -608,7 +345,7 @@ function VistaPreviaAlertasCalidad(props) {
                                             <div className="subeFotoPerfil">
                                                 <div className="fotoPerfil">
                                                     <DropzoneDeshabilitado
-                                                        setImagen={setCondicionIncorrecta3} imagenBD={formData.imagenIncorrecta3}
+                                                        imagenBD={formData.imagenIncorrecta3}
                                                     />
                                                 </div>
                                             </div>
@@ -617,7 +354,7 @@ function VistaPreviaAlertasCalidad(props) {
                                             <div className="subeFotoPerfil">
                                                 <div className="fotoPerfil">
                                                     <DropzoneDeshabilitado
-                                                        setImagen={setCondicionIncorrecta4} imagenBD={formData.imagenIncorrecta4}
+                                                        imagenBD={formData.imagenIncorrecta4}
                                                     />
                                                 </div>
                                             </div>
@@ -644,7 +381,7 @@ function VistaPreviaAlertasCalidad(props) {
                                             <div className="subeFotoPerfil">
                                                 <div className="fotoPerfil">
                                                     <DropzoneDeshabilitado
-                                                        setImagen={setCondicionCorrecta1} imagenBD={formData.imagenCorrecta1}
+                                                        imagenBD={formData.imagenCorrecta1}
                                                     />
                                                 </div>
                                             </div>
@@ -653,7 +390,7 @@ function VistaPreviaAlertasCalidad(props) {
                                             <div className="subeFotoPerfil">
                                                 <div className="fotoPerfil">
                                                     <DropzoneDeshabilitado
-                                                        setImagen={setCondicionCorrecta2} imagenBD={formData.imagenCorrecta2}
+                                                        imagenBD={formData.imagenCorrecta2}
                                                     />
                                                 </div>
                                             </div>
@@ -662,7 +399,7 @@ function VistaPreviaAlertasCalidad(props) {
                                             <div className="subeFotoPerfil">
                                                 <div className="fotoPerfil">
                                                     <DropzoneDeshabilitado
-                                                        setImagen={setCondicionCorrecta3} imagenBD={formData.imagenCorrecta3}
+                                                        imagenBD={formData.imagenCorrecta3}
                                                     />
                                                 </div>
                                             </div>
@@ -671,7 +408,7 @@ function VistaPreviaAlertasCalidad(props) {
                                             <div className="subeFotoPerfil">
                                                 <div className="fotoPerfil">
                                                     <DropzoneDeshabilitado
-                                                        setImagen={setCondicionCorrecta4} imagenBD={formData.imagenCorrecta4}
+                                                        imagenBD={formData.imagenCorrecta4}
                                                     />
                                                 </div>
                                             </div>

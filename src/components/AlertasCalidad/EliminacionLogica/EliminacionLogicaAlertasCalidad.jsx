@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import queryString from "query-string";
 import "./EliminacionLogicaAlertasCalidad.scss";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
-import { eliminaDepartamento } from "../../../api/departamentos";
 import { toast } from "react-toastify";
 import { actualizaEstadoAlertasCalidad } from "../../../api/alertasCalidad";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";

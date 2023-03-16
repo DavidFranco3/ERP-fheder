@@ -7,7 +7,7 @@ import DropzoneFormularios from "../../DropzoneFormularios";
 import { toast } from "react-toastify";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from "../../../api/auth";
 import { registraAlertaCalidad, obtenerNoAlerta, obtenerItemAlertasCalidad } from "../../../api/alertasCalidad";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 
 function RegistraAlertasCalidad(props) {
@@ -15,16 +15,21 @@ function RegistraAlertasCalidad(props) {
     // Para definir el enrutamiento
     const enrutamiento = useNavigate();
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -33,7 +38,7 @@ function RegistraAlertasCalidad(props) {
 
     const [linkCondicionCorrecta1, setLinkCondicionCorrecta1] = useState("");
 
-    useEffect(() => {
+    const obtenerCondicionCorrecta1 = () => {
         try {
             if (condicionCorrecta1) {
                 subeArchivosCloudinary(condicionCorrecta1, "alertasCalidad").then(response => {
@@ -49,13 +54,17 @@ function RegistraAlertasCalidad(props) {
             console.log(e)
 
         }
+    }
+
+    useEffect(() => {
+        obtenerCondicionCorrecta1();
     }, [condicionCorrecta1]);
 
     const [condicionCorrecta2, setCondicionCorrecta2] = useState(null);
 
     const [linkCondicionCorrecta2, setLinkCondicionCorrecta2] = useState("");
 
-    useEffect(() => {
+    const obtenerCondicionCorrecta2 = () => {
         try {
             if (condicionCorrecta2) {
                 subeArchivosCloudinary(condicionCorrecta2, "alertasCalidad").then(response => {
@@ -71,13 +80,17 @@ function RegistraAlertasCalidad(props) {
             console.log(e)
 
         }
+    }
+
+    useEffect(() => {
+        obtenerCondicionCorrecta2();
     }, [condicionCorrecta2]);
 
     const [condicionCorrecta3, setCondicionCorrecta3] = useState(null);
 
     const [linkCondicionCorrecta3, setLinkCondicionCorrecta3] = useState("");
 
-    useEffect(() => {
+    const obtenerCondicionCorrecta3 = () => {
         try {
             if (condicionCorrecta3) {
                 subeArchivosCloudinary(condicionCorrecta3, "alertasCalidad").then(response => {
@@ -93,13 +106,17 @@ function RegistraAlertasCalidad(props) {
             console.log(e)
 
         }
+    }
+
+    useEffect(() => {
+        obtenerCondicionCorrecta3();
     }, [condicionCorrecta3]);
 
     const [condicionCorrecta4, setCondicionCorrecta4] = useState(null);
 
     const [linkCondicionCorrecta4, setLinkCondicionCorrecta4] = useState("");
 
-    useEffect(() => {
+    const obtenerCondicionCorrecta4 = () => {
         try {
             if (condicionCorrecta4) {
                 subeArchivosCloudinary(condicionCorrecta4, "alertasCalidad").then(response => {
@@ -115,13 +132,17 @@ function RegistraAlertasCalidad(props) {
             console.log(e)
 
         }
+    }
+
+    useEffect(() => {
+        obtenerCondicionCorrecta4();
     }, [condicionCorrecta4]);
 
     const [condicionIncorrecta1, setCondicionIncorrecta1] = useState(null);
 
     const [linkCondicionIncorrecta1, setLinkCondicionIncorrecta1] = useState("");
 
-    useEffect(() => {
+    const obtenerCondicionIncorrecta1 = () => {
         try {
             if (condicionIncorrecta1) {
                 subeArchivosCloudinary(condicionIncorrecta1, "alertasCalidad").then(response => {
@@ -137,20 +158,24 @@ function RegistraAlertasCalidad(props) {
             console.log(e)
 
         }
+    }
+
+    useEffect(() => {
+        obtenerCondicionIncorrecta1();
     }, [condicionIncorrecta1]);
 
     const [condicionIncorrecta2, setCondicionIncorrecta2] = useState(null);
 
     const [linkCondicionIncorrecta2, setLinkCondicionIncorrecta2] = useState("");
 
-    useEffect(() => {
+    const obtenerCondicionIncorrecta2 = () => {
         try {
             if (condicionIncorrecta2) {
                 subeArchivosCloudinary(condicionIncorrecta2, "alertasCalidad").then(response => {
                     const { data } = response;
                     // console.log(data)
                     const { secure_url } = data;
-                    setLinkCondicionIncorrecta2(secure_url)
+                    setLinkCondicionIncorrecta1(secure_url)
                 }).catch(e => {
                     console.log(e)
                 })
@@ -159,20 +184,24 @@ function RegistraAlertasCalidad(props) {
             console.log(e)
 
         }
+    }
+
+    useEffect(() => {
+        obtenerCondicionIncorrecta2();
     }, [condicionIncorrecta2]);
 
     const [condicionIncorrecta3, setCondicionIncorrecta3] = useState(null);
 
     const [linkCondicionIncorrecta3, setLinkCondicionIncorrecta3] = useState("");
 
-    useEffect(() => {
+    const obtenerCondicionIncorrecta3 = () => {
         try {
             if (condicionIncorrecta3) {
                 subeArchivosCloudinary(condicionIncorrecta3, "alertasCalidad").then(response => {
                     const { data } = response;
                     // console.log(data)
                     const { secure_url } = data;
-                    setLinkCondicionIncorrecta3(secure_url)
+                    setLinkCondicionIncorrecta1(secure_url)
                 }).catch(e => {
                     console.log(e)
                 })
@@ -181,20 +210,24 @@ function RegistraAlertasCalidad(props) {
             console.log(e)
 
         }
+    }
+
+    useEffect(() => {
+        obtenerCondicionIncorrecta3();
     }, [condicionIncorrecta3]);
 
     const [condicionIncorrecta4, setCondicionIncorrecta4] = useState(null);
 
     const [linkCondicionIncorrecta4, setLinkCondicionIncorrecta4] = useState("");
 
-    useEffect(() => {
+    const obtenerCondicionIncorrecta4 = () => {
         try {
             if (condicionIncorrecta4) {
                 subeArchivosCloudinary(condicionIncorrecta4, "alertasCalidad").then(response => {
                     const { data } = response;
                     // console.log(data)
                     const { secure_url } = data;
-                    setLinkCondicionIncorrecta4(secure_url)
+                    setLinkCondicionIncorrecta1(secure_url)
                 }).catch(e => {
                     console.log(e)
                 })
@@ -203,13 +236,17 @@ function RegistraAlertasCalidad(props) {
             console.log(e)
 
         }
+    }
+
+    useEffect(() => {
+        obtenerCondicionIncorrecta4();
     }, [condicionIncorrecta4]);
 
     const [listaFirmas, setListaFirmas] = useState(null);
 
     const [linkListaFirmas, setLinkListaFirmas] = useState("");
 
-    useEffect(() => {
+    const obtenerListaFirmas = () => {
         try {
             if (listaFirmas) {
                 subeArchivosCloudinary(listaFirmas, "alertasCalidad").then(response => {
@@ -225,6 +262,10 @@ function RegistraAlertasCalidad(props) {
             console.log(e)
 
         }
+    }
+
+    useEffect(() => {
+        obtenerListaFirmas();
     }, [listaFirmas]);
 
     // Define la ruta de registro
@@ -241,7 +282,7 @@ function RegistraAlertasCalidad(props) {
     // Para almacenar el folio actual
     const [folioActual, setFolioActual] = useState("");
 
-    useEffect(() => {
+    const obtenerFolio = () => {
         try {
             obtenerNoAlerta().then(response => {
                 const { data } = response;
@@ -254,12 +295,16 @@ function RegistraAlertasCalidad(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+       obtenerFolio();
     }, []);
 
     // Para almacenar el folio actual
     const [itemActual, setItemActual] = useState("");
 
-    useEffect(() => {
+    const obtenerItem = () => {
         try {
             obtenerItemAlertasCalidad().then(response => {
                 const { data } = response;
@@ -272,6 +317,10 @@ function RegistraAlertasCalidad(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerItem();
     }, []);
 
     const onSubmit = e => {

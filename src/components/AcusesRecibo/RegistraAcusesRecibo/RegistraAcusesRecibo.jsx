@@ -3,9 +3,10 @@ import { Alert, Button, Col, Row, Form, Container, Badge } from "react-bootstrap
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi } from "../../../api/auth";
+import { LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistraAcusesRecibo(props) {
-const {setRefreshCheckLogin} = props;
+    const { setRefreshCheckLogin } = props;
     // Para la animacion del spinner
     const [loading, setLoading] = useState(false);
 
@@ -17,16 +18,21 @@ const {setRefreshCheckLogin} = props;
         enrutamiento("/Acuses_de_Recibos")
     }
 
-     // Cerrado de sesión automatico
-     useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

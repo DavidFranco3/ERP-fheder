@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { eliminaUsuario } from "../../../api/usuarios";
+import { useState } from 'react';
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";

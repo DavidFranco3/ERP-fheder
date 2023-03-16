@@ -12,7 +12,6 @@ import { toast } from "react-toastify";
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { obtenerRazonSocialPorNombre } from "../../../api/razonesSociales";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
@@ -723,7 +722,6 @@ function VistaPrevia(props) {
         const pdf = pdfMake.createPdf(docDefinition);
 
         pdf.download(`${folio}.pdf`);
-
     }
 
     return (
