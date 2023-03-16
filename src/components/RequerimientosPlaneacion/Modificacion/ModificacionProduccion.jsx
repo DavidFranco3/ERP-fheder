@@ -898,9 +898,9 @@ function ModificacionProduccion(props) {
                                     <tbody>
                                         {map(listOVCargadas, (ordenVenta, index) => (
                                             <tr key={index}>
-                                                <th scope="row">
+                                                <td scope="row">
                                                     {index + 1}
-                                                </th>
+                                                </td>
                                                 <td data-title="ordenVenta">
                                                     {ordenVenta.ordenVenta}
                                                 </td>

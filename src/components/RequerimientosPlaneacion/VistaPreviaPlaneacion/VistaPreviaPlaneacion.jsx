@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Button, Col, Row, Form, Container, Image, Badge, Spinner } from "react-bootstrap";
+import { Alert, Button, Col, Row, Form, Container, Badge, Image, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
-import BuscarOV from "../../../page/BuscarOV";
 import { useNavigate, useParams } from "react-router-dom";
 import "./VistaPreviaPlaneacion.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,7 +10,7 @@ import { map } from "lodash";
 import { listarAlmacenPT, obtenerDatosAlmacenPT } from "../../../api/almacenPT";
 import { obtenerRequerimiento, actualizaRequerimiento } from "../../../api/requerimientosPlaneacion";
 import { toast } from "react-toastify";
-import { obtenerMaquina } from "../../../api/maquinas";
+import { obtenerMaquina, listarMaquina } from "../../../api/maquinas";
 import { obtenerDatosMP } from "../../../api/almacenMP";
 import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
@@ -22,9 +21,6 @@ import Regreso from "../../../assets/png/back.png";
 
 function VistaPreviaPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
-
-    const descargaPDF = async () => {
-    }
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -38,6 +34,34 @@ function VistaPreviaPlaneacion(props) {
         }
     }, []);
     // Termina cerrado de sesión automatico
+
+    // Para almacenar el listado de maquinas
+    const [listMaquinas, setListMaquinas] = useState(null);
+
+    useEffect(() => {
+        try {
+            listarMaquina(getSucursal()).then(response => {
+                const { data } = response;
+                // console.log(data)
+
+                if (!listMaquinas && data) {
+                    setListMaquinas(formatModelMaquinas(data));
+                } else {
+                    const datosMaquinas = formatModelMaquinas(data);
+                    setListMaquinas(datosMaquinas);
+                }
+            }).catch(e => {
+                //console.log(e)
+                if (e.message === 'Network Error') {
+                    //console.log("No hay internet")
+                    toast.error("Conexión al servidor no disponible");
+                }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }, []);
+
 
     const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
 
@@ -448,6 +472,7 @@ function VistaPreviaPlaneacion(props) {
             setLoading(true)
 
             const temp = informacionRequerimiento.producto.split("/");
+            const temp2 = informacionRequerimiento.noMaquina.split("/");
 
             const dataTemp = {
                 requerimiento: {
@@ -466,26 +491,12 @@ function VistaPreviaPlaneacion(props) {
                     numeroCavidades: formDataPlaneacion.cavMolde,
                     opcionesMaquinaria: {
                         1: {
-                            numeroMaquina1: numeroMaquina1,
-                            maquina1: nombreMaquina1,
+                            numeroMaquina1: temp2[0],
+                            maquina1: temp[1],
                             ciclo1: formDataPlaneacion.tiempoCiclo1,
                             pieza1: piezasTurno1,
                             bolsa1: formDataPlaneacion.noPiezasxEmpaque,
-                        },
-                        2: {
-                            numeroMaquina2: numeroMaquina2,
-                            maquina2: nombreMaquina2,
-                            ciclo2: formDataPlaneacion.tiempoCiclo2,
-                            pieza2: piezasTurno2,
-                            bolsa2: formDataPlaneacion.noPiezasxEmpaque,
-                        },
-                        3: {
-                            numeroMaquina3: numeroMaquina3,
-                            maquina3: nombreMaquina3,
-                            ciclo3: formDataPlaneacion.tiempoCiclo3,
-                            pieza3: piezasTurno3,
-                            bolsa3: formDataPlaneacion.noPiezasxEmpaque,
-                        },
+                        }
                     },
                 },
                 bom: {
@@ -580,7 +591,6 @@ function VistaPreviaPlaneacion(props) {
             //setCargaProductos(initialFormDataProductos)
             document.getElementById("ordenVenta").value = ""
             document.getElementById("cantidadPedidaOV").value = ""
-            document.getElementById("cantidadProducirOV").value = ""
             setFormDataVenta(initialFormDataVenta);
         }
     }
@@ -590,7 +600,6 @@ function VistaPreviaPlaneacion(props) {
         //setCargaProductos(initialFormDataProductos)
         document.getElementById("ordenVenta").value = ""
         document.getElementById("cantidadPedidaOV").value = ""
-        document.getElementById("cantidadProducirOV").value = ""
         setFormDataVenta(initialFormDataVenta);
     }
 
@@ -623,6 +632,7 @@ function VistaPreviaPlaneacion(props) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
         setFormDataPlaneacion({ ...formDataPlaneacion, [e.target.name]: e.target.value })
         setInformacionRequerimiento({ ...informacionRequerimiento, [e.target.name]: e.target.value })
+        setFormDataVenta({ ...formDataVenta, [e.target.name]: e.target.value })
     }
 
     useEffect(() => {
@@ -650,13 +660,23 @@ function VistaPreviaPlaneacion(props) {
 
     const temp = informacionRequerimiento.producto.split("/");
 
+    const [cantidadProducir, setCantidadProducir] = useState(0);
+
+    useEffect(() => {
+        setCantidadProducir(formDataVenta.cantidadProducirVenta)
+    }, [formDataVenta.cantidadProducirVenta]);
+
+    const descargaPDF = async () => {
+
+    }
+
     return (
         <>
             <Alert>
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Detalles de la planeación
+                            Modificar planeación
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
@@ -676,7 +696,6 @@ function VistaPreviaPlaneacion(props) {
             <br />
 
             <Container fluid>
-                <br/>
                 <div className="formularioDatos">
                     <Form onChange={onChange} onSubmit={onSubmit}>
 
@@ -690,55 +709,16 @@ function VistaPreviaPlaneacion(props) {
                                 </div>
 
                                 <Row className="mb-3">
-                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
-                                        <Form.Label align="center">
-                                            Semana
-                                        </Form.Label>
-                                        <Form.Control
-                                            type="number"
-                                            min="0"
-                                            placeholder="Semana"
-                                            name="semana"
-                                            defaultValue={informacionRequerimiento.semana}
-                                            disabled
-                                        />
-                                    </Form.Group>
-
                                     <Form.Group as={Col} controlId="formGridMateriaPrima" className="producto">
                                         <Form.Label>
                                             Producto
                                         </Form.Label>
-                                        {producto.length == 1 ? (
-                                            <>
-                                                <Form.Control
-                                                    type="text"
-                                                    defaultValue={formDataPlaneacion.descripcion}
-                                                    name="materiaPrima"
-                                                    disabled
-                                                />
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Form.Control as="select"
-                                                    onChange={(e) => {
-                                                        handleMateriaPrima(e.target.value)
-                                                    }}
-                                                    defaultValue={formData.materiaPrima}
-                                                    name="materiaPrima"
-                                                    disabled
-                                                >
-                                                    <option>Elige una opción</option>
-                                                    {map(producto, (productos, index) => (
-                                                        <option
-                                                            key={index}
-                                                            value={productos?.ID + "/" + productos?.item} selected={productos?.item == temp[1]}
-                                                        >
-                                                            {productos?.item}
-                                                        </option>
-                                                    ))}
-                                                </Form.Control>
-                                            </>
-                                        )}
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={formDataPlaneacion.descripcion}
+                                            name="materiaPrima"
+                                            disabled
+                                        />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formHorizontalProducto">
@@ -767,6 +747,19 @@ function VistaPreviaPlaneacion(props) {
                                             disabled
                                         />
                                     </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label align="center">
+                                            Semana
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder="Semana"
+                                            name="semana"
+                                            defaultValue={informacionRequerimiento.semana}
+                                            disabled
+                                        />
+                                    </Form.Group>
                                 </Row>
 
                                 <hr />
@@ -792,9 +785,9 @@ function VistaPreviaPlaneacion(props) {
                                     <tbody>
                                         {map(listOVCargadas, (ordenVenta, index) => (
                                             <tr key={index}>
-                                                <th scope="row">
+                                                <td scope="row">
                                                     {index + 1}
-                                                </th>
+                                                </td>
                                                 <td data-title="ordenVenta">
                                                     {ordenVenta.ordenVenta}
                                                 </td>
@@ -869,12 +862,6 @@ function VistaPreviaPlaneacion(props) {
                                 </Row>
 
                                 <Row className="mb-3">
-                                    <Col></Col>
-                                    <Col>
-                                        <Form.Label align="center">
-                                            No. Maquina
-                                        </Form.Label>
-                                    </Col>
                                     <Col>
                                         <Form.Label align="center">
                                             Maquina
@@ -899,26 +886,19 @@ function VistaPreviaPlaneacion(props) {
 
                                 <Row className="mb-3">
                                     <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                        <Col sm={2}>
-                                            <Form.Label align="center">
-                                                Opcion 1
-                                            </Form.Label>
-                                        </Col>
                                         <Col>
                                             <Form.Control
-                                                type="text"
-                                                name="numeroMaquina1"
-                                                defaultValue={numeroMaquina1}
+                                                as="select"
+                                                defaultValue={informacionRequerimiento.noMaquina}
+                                                placeholder="Numero de maquina"
+                                                name="noMaquina"
                                                 disabled
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="maquina1"
-                                                defaultValue={nombreMaquina1}
-                                                disabled
-                                            />
+                                            >
+                                                <option>Elige una opción</option>
+                                                {map(listMaquinas, (maquina, index) => (
+                                                    <option value={maquina?.numeroMaquina + "/" + maquina?.marca} selected={maquina?.numeroMaquina + "/" + maquina?.marca == informacionRequerimiento.noMaquina}>{maquina?.numeroMaquina + "-" + maquina?.marca}</option>
+                                                ))}
+                                            </Form.Control>
                                         </Col>
                                         <Col>
                                             <Form.Control
@@ -940,106 +920,6 @@ function VistaPreviaPlaneacion(props) {
                                             <Form.Control
                                                 type="text"
                                                 name="bolsa1"
-                                                defaultValue={formDataPlaneacion.noPiezasxEmpaque}
-                                                disabled
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <Row className="mb-3">
-                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                        <Col sm={2}>
-                                            <Form.Label align="center">
-                                                Opcion 2
-                                            </Form.Label>
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="numeroMaquina2"
-                                                defaultValue={numeroMaquina2}
-                                                disabled
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="maquina2"
-                                                defaultValue={nombreMaquina2}
-                                                disabled
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="ciclo2"
-                                                defaultValue={formDataPlaneacion.tiempoCiclo2}
-                                                disabled
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="pieza2"
-                                                value={piezasTurno2.toFixed(2)}
-                                                disabled
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="bolsa2"
-                                                defaultValue={formDataPlaneacion.noPiezasxEmpaque}
-                                                disabled
-                                            />
-                                        </Col>
-                                    </Form.Group>
-                                </Row>
-
-                                <Row className="mb-3">
-                                    <Form.Group as={Row} controlId="formHorizontalNoInterno">
-                                        <Col sm={2}>
-                                            <Form.Label align="center">
-                                                Opcion 3
-                                            </Form.Label>
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="numeroMaquina3"
-                                                defaultValue={numeroMaquina3}
-                                                disabled
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="maquina3"
-                                                defaultValue={nombreMaquina3}
-                                                disabled
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="ciclo3"
-                                                defaultValue={formDataPlaneacion.tiempoCiclo3}
-                                                disabled
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="pieza3"
-                                                value={piezasTurno3.toFixed(2)}
-                                                disabled
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Control
-                                                type="text"
-                                                name="bolsa3"
                                                 defaultValue={formDataPlaneacion.noPiezasxEmpaque}
                                                 disabled
                                             />
@@ -1445,8 +1325,6 @@ function VistaPreviaPlaneacion(props) {
                             </Container>
                         </div>
 
-                        <br />
-
                         <div className="botones">
                             <Form.Group as={Row} className="botones">
                                 <Row>
@@ -1549,9 +1427,12 @@ function initialFormDataPlaneacion(data) {
 
 function initialFormDataVenta() {
     return {
-       ordenVenta: "",
-       cantidadRequerida: "",
-       cliente: ""
+        ordenVenta: "",
+        cantidadRequerida: "",
+        cantidadProducirVenta: "",
+        producto: "",
+        numeroInterno: "",
+        cliente: ""
     }
 }
 
@@ -1679,6 +1560,7 @@ function initialValues() {
         empaque: "",
         bolsasCajasUtilizar: "",
         cantidadPedir: "",
+        noMaquina: ""
     }
 }
 
@@ -1704,16 +1586,7 @@ function valoresAlmacenados(data) {
         ciclo1: planeacion.opcionesMaquinaria[0][1].ciclo1,
         pieza1: planeacion.opcionesMaquinaria[0][1].pieza1,
         bolsa1: planeacion.opcionesMaquinaria[0][1].bolsa1,
-        numeroMaquina2: planeacion.opcionesMaquinaria[0][2].numeroMaquina2,
-        maquina2: planeacion.opcionesMaquinaria[0][2].maquina2,
-        ciclo2: planeacion.opcionesMaquinaria[0][2].ciclo2,
-        pieza2: planeacion.opcionesMaquinaria[0][2].pieza2,
-        bolsa2: planeacion.opcionesMaquinaria[0][2].bolsa2,
-        numeroMaquina3: planeacion.opcionesMaquinaria[0][3].numeroMaquina3,
-        maquina3: planeacion.opcionesMaquinaria[0][3].maquina3,
-        ciclo3: planeacion.opcionesMaquinaria[0][3].ciclo3,
-        pieza3: planeacion.opcionesMaquinaria[0][3].pieza3,
-        bolsa3: planeacion.opcionesMaquinaria[0][3].bolsa3,
+        noMaquina: planeacion.opcionesMaquinaria[0][1].numeroMaquina1 + "/" + planeacion.opcionesMaquinaria[0][1].maquina1,
         bom: bom,
         material: bom.material,
         molido: bom.molido,
@@ -1777,6 +1650,24 @@ function formatModelMatrizProductos(data) {
             materialEmpaque: data.materialEmpaque,
             opcionMaquinaria: data.opcionMaquinaria,
             estado: data.estado,
+            fechaRegistro: data.createdAt,
+            fechaActualizacion: data.updatedAt
+        });
+    });
+    return dataTemp;
+}
+
+function formatModelMaquinas(data) {
+    //console.log(data)
+    const dataTemp = []
+    data.forEach(data => {
+        dataTemp.push({
+            id: data._id,
+            numeroMaquina: data.numeroMaquina,
+            marca: data.marca,
+            tonelaje: data.tonelaje,
+            lugar: data.lugar,
+            status: data.status,
             fechaRegistro: data.createdAt,
             fechaActualizacion: data.updatedAt
         });
