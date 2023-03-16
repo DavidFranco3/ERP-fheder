@@ -5,6 +5,7 @@ import { faPrint } from "@fortawesome/free-solid-svg-icons";
 import { useHistory, withRouter } from "react-router-dom";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 import { toast } from "react-toastify";
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function ListaVerificacionMantenimientos(props) {
     const { setRefreshCheckLogin } = props;
@@ -22,16 +23,21 @@ function ListaVerificacionMantenimientos(props) {
         enrutamiento.push("/VerificacionMantenimientos")
     }
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

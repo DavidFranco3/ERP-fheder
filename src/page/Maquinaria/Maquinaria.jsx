@@ -8,20 +8,26 @@ import BasicModal from "../../components/Modal/BasicModal";
 import RegistrarMaquinaria from "../../components/Maquinaria/RegistraMaquinaria";
 import { getSucursal, getTokenApi, isExpiredToken, logoutApi } from '../../api/auth';
 import { toast } from "react-toastify";
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function Maquinaria(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

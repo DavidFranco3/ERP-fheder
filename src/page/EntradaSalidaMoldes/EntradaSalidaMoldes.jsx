@@ -11,8 +11,7 @@ import { toast } from "react-toastify";
 function EntradaSalidaMoldes(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
                 toast.warning("Sesión expirada");
@@ -21,6 +20,11 @@ function EntradaSalidaMoldes(props) {
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

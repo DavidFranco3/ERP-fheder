@@ -8,6 +8,7 @@ import { withRouter } from "../../utils/withRouter";
 import BasicModal from "../../components/Modal/BasicModal";
 import ListFactura from "../../components/Facturacion/ListFacturacion";
 import RegistroFactura from "../../components/Facturacion/Registro";
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function Facturacion(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -29,16 +30,21 @@ function Facturacion(props) {
         setShowModal(true);
     }
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

@@ -10,20 +10,26 @@ import AnimacionLoading from '../../assets/json/loading.json';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { toast } from "react-toastify";
 import ListCalidad from '../../components/StatusMaterial/ListStatusCalidad';
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function StatusMaterial(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

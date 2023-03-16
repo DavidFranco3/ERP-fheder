@@ -12,20 +12,26 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/a
 import { toast } from "react-toastify";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function Mes(props) {
     const { setRefreshCheckLogin, location, history } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -44,7 +50,7 @@ function Mes(props) {
     // Para almacenar la lista de las integraciones de ventas y gastos
     const [listMeses, setListMeses] = useState(null);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         try {
             listarMeses(getSucursal()).then(response => {
                 const { data } = response;
@@ -61,6 +67,10 @@ function Mes(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, [location]);
 
     // Para definir el enrutamiento

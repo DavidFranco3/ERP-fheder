@@ -11,6 +11,7 @@ import "./CuentasProveedores.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function CuentasProveedores(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -20,32 +21,41 @@ function CuentasProveedores(props) {
     // Para almacenar la lista de pedidos de venta
     const [listCuentas, setListCuentas] = useState(null);
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Recuperación de la razón social seleccionada
     const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
 
-    useEffect(() => {
+    const cargarRazonSocial = () => {
         if (getSucursal()) {
             setRazonSocialElegida(getSucursal)
         } else {
             setRazonSocialElegida("Sin Selección")
         }
+    }
+
+    useEffect(() => {
+        cargarRazonSocial();
     }, []);
     // Termina recuperación de la razón social recuperada
 
-    useEffect(() => {
+    const cargarDatos = () => {
         try {
             listarCuentaProveedor(getSucursal()).then(response => {
                 const { data } = response;
@@ -64,12 +74,11 @@ function CuentasProveedores(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [location]);
-
-    // Para ir hacia la ruta de registro del pedido de venta
-    const rutaRegistroFacturas = () => {
-        enrutamiento("/RegistroFacturas")
     }
+
+    useEffect(() => {
+        cargarDatos();
+    }, [location]);
 
     const rutaRegreso = () => {
         enrutamiento("/DashboardCuentasPorPagar")

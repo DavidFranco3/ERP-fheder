@@ -12,6 +12,7 @@ import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
 import { listarInventarioMaquina } from "../../api/inventarioMaquinas";
 import ListInventarioMaquina from '../../components/InventarioMaquinas/ListInventarioMaquina';
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function InventarioMaquinas(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -31,16 +32,21 @@ function InventarioMaquinas(props) {
         setShowModal(true);
     }
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -51,19 +57,23 @@ function InventarioMaquinas(props) {
     // Recuperación de la razón social seleccionada
     const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
 
-    useEffect(() => {
+    const cargarRazonSocial = () => {
         if (getSucursal()) {
             setRazonSocialElegida(getSucursal)
         } else {
             setRazonSocialElegida("Sin Selección")
         }
+    }
+
+    useEffect(() => {
+        cargarRazonSocial();
     }, []);
     // Termina recuperación de la razón social recuperada
 
     // Para almacenar la lista de pedidos de venta
     const [listInventarios, setListInventarios] = useState(null);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         try {
             listarInventarioMaquina(getSucursal()).then(response => {
                 const { data } = response;
@@ -82,6 +92,10 @@ function InventarioMaquinas(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, [location]);
 
     return (

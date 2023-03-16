@@ -10,8 +10,7 @@ import { withRouter } from "../../utils/withRouter";
 function Embarque(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
                 toast.warning("Sesión expirada");
@@ -20,6 +19,11 @@ function Embarque(props) {
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

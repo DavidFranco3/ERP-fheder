@@ -17,6 +17,7 @@ import AnimacionLoading from '../../assets/json/loading.json';
 import 'dayjs/locale/es'
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function ProgramaProduccion(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -36,7 +37,7 @@ function ProgramaProduccion(props) {
     const [fechaInicial, setFechaInicial] = useState("");
     const [fechaFinal, setFechaFinal] = useState("");
 
-    useEffect(() => {
+    const cargarDatosSemana = () => {
         try {
             obtenerDatosSemana(semana).then(response => {
                 const { data } = response;
@@ -49,6 +50,10 @@ function ProgramaProduccion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosSemana();
     }, [location]);
 
     // Define la ruta de registro
@@ -56,23 +61,28 @@ function ProgramaProduccion(props) {
         enrutamiento(`/RegistroProgramaProduccion/${semana}`);
     }
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Para almacenar la lista de pedidos de venta
     const [listProgramaProduccion, setListProgramaProduccion] = useState(null);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         try {
             listarProgramaPorSemana(getSucursal(), semana).then(response => {
                 const { data } = response;
@@ -89,6 +99,10 @@ function ProgramaProduccion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, [location]);
 
     const rutaRegreso = () => {

@@ -11,6 +11,7 @@ import "./RequerimientosPlaneacion.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import Lottie from 'react-lottie-player';
 import AnimacionLoading from '../../assets/json/loading.json';
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function RequerimientosPlaneacion(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -23,35 +24,44 @@ function RequerimientosPlaneacion(props) {
         enrutamiento("/RegistraRequerimientosPlaneacion")
     }
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Recuperación de la razón social seleccionada
     const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
 
-    useEffect(() => {
+    const cargarRazonSocial = () => {
         if (getSucursal()) {
             setRazonSocialElegida(getSucursal)
         } else {
             setRazonSocialElegida("Sin Selección")
         }
+    }
+
+    useEffect(() => {
+        cargarRazonSocial();
     }, []);
     // Termina recuperación de la razón social recuperada
 
     // Para almacenar la lista de pedidos de venta
     const [listRequerimientosPlaneacion, setListRequerimientosPlaneacion] = useState(null);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         try {
             listarRequerimiento(getSucursal()).then(response => {
                 const { data } = response;
@@ -68,6 +78,10 @@ function RequerimientosPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, [location]);
 
     const rutaRegreso = () => {

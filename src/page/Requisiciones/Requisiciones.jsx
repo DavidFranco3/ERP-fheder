@@ -11,6 +11,7 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/a
 import { obtenerUsuario } from "../../api/usuarios";
 import { listarRequisiciones } from "../../api/requisicion";
 import ListRequisiciones from '../../components/Requisiciones/ListRequisiciones';
+import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSistema";
 
 function Requisiciones(props) {
     const { setRefreshCheckLogin, location, history } = props;
@@ -25,19 +26,23 @@ function Requisiciones(props) {
     // Recuperación de la razón social seleccionada
     const [razonSocialElegida, setRazonSocialElegida] = useState("Sin Selección");
 
-    useEffect(() => {
+    const cargarRazonSocial = () => {
         if (getSucursal()) {
             setRazonSocialElegida(getSucursal)
         } else {
             setRazonSocialElegida("Sin Selección")
         }
+    }
+
+    useEffect(() => {
+        cargarRazonSocial();
     }, []);
     // Termina recuperación de la razón social recuperada
 
     // Para almacenar el listado de compras realizadas
     const [listRequisiciones, setListRequisiciones] = useState(null);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         try {
             listarRequisiciones(getSucursal()).then(response => {
                 const { data } = response;
@@ -54,18 +59,27 @@ function Requisiciones(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, [location]);
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
