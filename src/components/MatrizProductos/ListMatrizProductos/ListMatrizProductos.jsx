@@ -24,8 +24,8 @@ function ListMatrizProductos(props) {
     dayjs.extend(localizedFormat)
 
     // Para ir hacia la ruta de modificacion
-    const rutaModificaProductos = (id) => {
-        enrutamiento(`Modifica-Matriz-Productos/${id}`)
+    const rutaModificaProductos = (producto) => {
+        enrutamiento(`/Modifica-Matriz-Productos/${producto}`)
     }
 
     // Para definir la ruta de la vista detallada de productos en la matriz de productos

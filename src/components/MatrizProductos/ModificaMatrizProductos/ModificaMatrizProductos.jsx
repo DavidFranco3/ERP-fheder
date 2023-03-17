@@ -805,7 +805,7 @@ function ModificaMatrizProductos(props) {
                                                             <div className="flex items-center mb-1">
                                                                 <Form.Control
                                                                     type="text"
-                                                                    defaultValue={dataProveedor.nombreProveedor == "" ? temp[2] : dataProveedor.nombreProveedor}
+                                                                    defaultValue={dataProveedor.nombreProveedor == "" ? temp[1] : dataProveedor.nombreProveedor}
                                                                     placeholder="Buscar proveedor"
                                                                     name="proveedor"
                                                                 />
