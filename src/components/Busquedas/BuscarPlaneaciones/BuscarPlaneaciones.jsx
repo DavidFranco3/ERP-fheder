@@ -85,13 +85,16 @@ function BuscarPlaneaciones(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listRequerimientos);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -101,8 +104,6 @@ function BuscarPlaneaciones(props) {
 
     const [filterText, setFilterText] = useState("");
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
-
-
 
     // Defino barra de busqueda
     const ClearButton = styled(Button)` 
@@ -118,7 +119,7 @@ function BuscarPlaneaciones(props) {
         justify-content: center;
     `;
 
-    const filteredItems = listRequerimientos.filter(
+    const filteredItems = rows.filter(
         item => item.requerimiento.nombreProducto && item.requerimiento.nombreProducto.toLowerCase().includes(filterText.toLowerCase())
     );
 

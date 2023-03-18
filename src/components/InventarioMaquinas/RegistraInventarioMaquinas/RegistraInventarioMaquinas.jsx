@@ -43,7 +43,7 @@ function RegistraInventarioMaquinas(props) {
     // Para almacenar el folio actual
     const [itemActual, setItemActual] = useState("");
 
-    useEffect(() => {
+    const obtenerItem = () => {
         try {
             obtenerItemInventarioMaquina().then(response => {
                 const { data } = response;
@@ -56,6 +56,10 @@ function RegistraInventarioMaquinas(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerItem();
     }, []);
 
     const onSubmit = (e) => {

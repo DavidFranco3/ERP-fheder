@@ -11,7 +11,7 @@ function ListProductosCuentasPagar(props) {
     // Almacena los datos de la orden de venta
     const [datosOrdenCompra, setDatosOrdenCompra] = useState(null);
 
-    useEffect(() => {
+    const cargarDatosCompra = () => {
         try {
             obtenerDatosCuentasPagar(folio).then(response => {
                 const { data } = response;
@@ -23,6 +23,10 @@ function ListProductosCuentasPagar(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosCompra();
     }, []);
 
 

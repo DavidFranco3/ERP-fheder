@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { obtenerFolioActualEvaluacionProveedores, registraEvaluacionProveedores, obtenerItemEvaluacionProveedor } from "../../../api/evaluacionProveedores";
 import { toast } from "react-toastify";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { useNavigate } from "react-router-dom";
@@ -22,16 +22,21 @@ function RegistraProveedores(props) {
 
     const enrutamiento = useNavigate();
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -62,7 +67,7 @@ function RegistraProveedores(props) {
     // Para almacenar el folio actual
     const [folioActual, setFolioActual] = useState("");
 
-    useEffect(() => {
+    const obtenerFolio = () => {
         try {
             obtenerFolioActualEvaluacionProveedores().then(response => {
                 const { data } = response;
@@ -75,6 +80,10 @@ function RegistraProveedores(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerFolio();
     }, []);
 
 

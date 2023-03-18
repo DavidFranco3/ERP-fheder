@@ -37,41 +37,6 @@ function RegistraAsignacionPedido(props) {
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
-    const [ordenVenta, setOrdenVenta] = useState("");
-    const [idCliente, setIdCliente] = useState("");
-    const [nombreCliente, setNombreCliente] = useState("");
-    const [fechaPedido, setFechaPedido] = useState("");
-    const [fechaEntrega, setFechaEntrega] = useState("");
-
-    useEffect(() => {
-        try {
-
-            obtenerDatosPedidoVenta(formData.buscar).then(response => {
-                const { data } = response;
-                const { folio, cliente, fechaElaboracion, fechaEntrega } = data;
-                setOrdenVenta(folio)
-                setIdCliente(cliente)
-                setFechaPedido(fechaElaboracion)
-                setFechaEntrega(fechaEntrega)
-
-                obtenerCliente(cliente).then(response => {
-                    const { data } = response;
-                    const { nombre, apellidos } = data;
-                    setNombreCliente(nombre + " " + apellidos)
-
-                }).catch(e => {
-                    console.log(e)
-                })
-
-            }).catch(e => {
-                console.log(e)
-            })
-
-        } catch (e) {
-            console.log(e)
-        }
-    }, [formData.buscar]);
-
     // Para almacenar el listado de materias primas
     const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
 
@@ -81,7 +46,7 @@ function RegistraAsignacionPedido(props) {
         setShowModal2(true);
     }
 
-    useEffect(() => {
+    const obtenerListaMateriales = () => {
         try {
             listarRegistrosGeneralesAlmacen(getSucursal()).then(response => {
                 const { data } = response;
@@ -93,11 +58,15 @@ function RegistraAsignacionPedido(props) {
                     setListMateriasPrimas(datosProductos);
                 }
             }).catch(e => {
-                //console.log(e)
+                console.log(e)
             })
         } catch (e) {
-            //console.log(e)
+            console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerListaMateriales();
     }, []);
 
     // Para almacenar la materia prima seleccionada
@@ -150,7 +119,7 @@ function RegistraAsignacionPedido(props) {
                     const { data } = response;
 
                     toast.success(data.mensaje);
-                    LogsInformativos("Se ha registrado la asignacion de pedido " + ordenVenta, dataTemp)
+                    LogsInformativos("Se ha registrado la asignacion de pedido " + formDataVenta.ordenVenta, dataTemp)
                     setTimeout(() => {
                         setLoading(false)
                         history({

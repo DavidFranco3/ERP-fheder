@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import { useNavigate } from "react-router-dom";
@@ -41,30 +41,6 @@ function ModificaIdentificacionPT(props) {
     const cancelarRegistro = () => {
         setShowModal(false)
     }
-
-    // Para almacenar el listado de productos activos
-    const [listProduccion, setListProduccion] = useState(null);
-
-    // Para traer el listado de productos activos
-    useEffect(() => {
-        try {
-            listarProduccion(getSucursal()).then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProduccion && data) {
-                    setListProduccion(formatModelProduccion(data));
-                } else {
-                    const datosProduccion = formatModelProduccion(data);
-                    setListProduccion(datosProduccion);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);

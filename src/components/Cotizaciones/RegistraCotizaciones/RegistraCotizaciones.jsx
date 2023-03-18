@@ -6,22 +6,27 @@ import { listarClientes } from "../../../api/clientes";
 import { listarEvaluacionProveedores } from "../../../api/evaluacionProveedores";
 import { toast } from "react-toastify";
 import { map } from "lodash";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function RegistraCotizaciones(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -43,7 +48,7 @@ function RegistraCotizaciones(props) {
     const [folioCotizacion, setFolioCotizacion] = useState("");
     const [fechaCreacion, setFechaCreacion] = useState(new Date());
 
-    useEffect(() => {
+    const obtenerFolio = () => {
         try {
             obtenerNumeroCotizacion().then(response => {
                 const { data } = response;
@@ -56,6 +61,10 @@ function RegistraCotizaciones(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerFolio();
     }, []);
 
     // Para determinar si hay conexion con el servidor o a internet
@@ -64,8 +73,7 @@ function RegistraCotizaciones(props) {
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
 
-    // Obtener los clientes registrados
-    useEffect(() => {
+    const obtenerListaClientes = () => {
         try {
             listarClientes(getSucursal()).then(response => {
                 const { data } = response;
@@ -89,13 +97,17 @@ function RegistraCotizaciones(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // Obtener los clientes registrados
+    useEffect(() => {
+        obtenerListaClientes();
     }, []);
 
     // Para almacenar la lista completa de clientes
     const [listProveedores, setListProveedores] = useState(null);
 
-    // Obtener los clientes registrados
-    useEffect(() => {
+    const obtenerListaProveedores = () => {
         try {
             listarEvaluacionProveedores(getSucursal()).then(response => {
                 const { data } = response;
@@ -119,6 +131,11 @@ function RegistraCotizaciones(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // Obtener los clientes registrados
+    useEffect(() => {
+        obtenerListaProveedores();
     }, []);
 
     const onSubmit = e => {

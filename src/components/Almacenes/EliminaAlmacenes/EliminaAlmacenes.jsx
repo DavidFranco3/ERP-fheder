@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import "./EliminaAlmacenes.scss"
 import { Alert, Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import { eliminaAlmacenes } from "../../../api/almacenes";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
-import { useRouteMatch } from 'react-router-dom';
 
 function EliminaAlmacenes(props) {
     const { datos, setShowModal, location, history } = props;

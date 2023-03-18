@@ -82,13 +82,16 @@ function BuscarMoldes(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listMoldes);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -113,7 +116,7 @@ function BuscarMoldes(props) {
         justify-content: center;
     `;
 
-    const filteredItems = listMoldes.filter(
+    const filteredItems = rows.filter(
         item => item.noInterno && item.noInterno.toLowerCase().includes(filterText.toLowerCase()) || item.descripcion && item.descripcion.toLowerCase().includes(filterText.toLowerCase())
     );
 

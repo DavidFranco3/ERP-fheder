@@ -10,22 +10,27 @@ import { obtenerDatosProduccion } from "../../../api/produccion";
 import { obtenerCliente } from "../../../api/clientes";
 import { obtenerInspeccionPieza, actualizaInspeccionPieza } from "../../../api/inspeccionPieza";
 import { toast } from "react-toastify";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function ModificaInspeccionMaterial(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -67,7 +72,7 @@ function ModificaInspeccionMaterial(props) {
     // Para guardar el nombre del material
     const [material, setMaterial] = useState("");
 
-    useEffect(() => {
+    const cargarDatosProduccion = () => {
         try {
 
             obtenerDatosProduccion(formData.ordenProduccion).then(response => {
@@ -92,6 +97,10 @@ function ModificaInspeccionMaterial(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosProduccion();
     }, [formData.ordenProduccion]);
 
     // Para controlar la animacion
@@ -157,7 +166,7 @@ function ModificaInspeccionMaterial(props) {
     // Para Controlar la columna de decima revision
     const [revision101, setRevision101] = useState(0);
 
-    useEffect(() => {
+    const cargarDatosInspeccion = () => {
         try {
             obtenerInspeccionPieza(id).then(response => {
                 const { data } = response;
@@ -296,6 +305,10 @@ function ModificaInspeccionMaterial(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosInspeccion();
     }, []);
 
     const onSubmit = e => {
@@ -826,162 +839,242 @@ function ModificaInspeccionMaterial(props) {
 
     const [hora1, setHora1] = useState();
 
-    useEffect(() => {
+    const cargarRevision1 = () => {
         if (revision1 == 1) {
             setHora1(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision1();
     }, [revision1]);
 
     const [hora2, setHora2] = useState();
 
-    useEffect(() => {
+    const cargarRevision2 = () => {
         if (revision2 == 1) {
             setHora2(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision2();
     }, [revision2]);
 
     const [hora3, setHora3] = useState();
 
-    useEffect(() => {
+    const cargarRevision3 = () => {
         if (revision3 == 1) {
             setHora3(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision3();
     }, [revision3]);
 
     const [hora4, setHora4] = useState();
 
-    useEffect(() => {
+    const cargarRevision4 = () => {
         if (revision4 == 1) {
             setHora4(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision4();
     }, [revision4]);
 
     const [hora5, setHora5] = useState();
 
-    useEffect(() => {
+    const cargarRevision5 = () => {
         if (revision5 == 1) {
             setHora5(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision5();
     }, [revision5]);
 
     const [hora6, setHora6] = useState();
 
-    useEffect(() => {
+    const cargarRevision6 = () => {
         if (revision6 == 1) {
             setHora6(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision6();
     }, [revision6]);
 
     const [hora7, setHora7] = useState();
 
-    useEffect(() => {
+    const cargarRevision7 = () => {
         if (revision7 == 1) {
             setHora7(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision7();
     }, [revision7]);
 
     const [hora8, setHora8] = useState();
 
-    useEffect(() => {
+    const cargarRevision8 = () => {
         if (revision8 == 1) {
             setHora8(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision8();
     }, [revision8]);
 
     const [hora9, setHora9] = useState();
 
-    useEffect(() => {
+    const cargarRevision9 = () => {
         if (revision9 == 1) {
             setHora9(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision9();
     }, [revision9]);
 
     const [hora10, setHora10] = useState();
 
-    useEffect(() => {
+    const cargarRevision10 = () => {
         if (revision10 == 1) {
             setHora10(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision10();
     }, [revision10]);
 
     const [hora11, setHora11] = useState();
 
-    useEffect(() => {
+    const cargarRevision11 = () => {
         if (revision11 == 1) {
             setHora11(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision11();
     }, [revision11]);
 
     const [hora21, setHora21] = useState();
 
-    useEffect(() => {
+    const cargarRevision21 = () => {
         if (revision21 == 1) {
             setHora21(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision21();
     }, [revision21]);
 
     const [hora31, setHora31] = useState();
 
-    useEffect(() => {
+    const cargarRevision31 = () => {
         if (revision31 == 1) {
             setHora31(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision31();
     }, [revision31]);
 
     const [hora41, setHora41] = useState();
 
-    useEffect(() => {
+    const cargarRevision41 = () => {
         if (revision41 == 1) {
             setHora41(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision41();
     }, [revision41]);
 
     const [hora51, setHora51] = useState();
 
-    useEffect(() => {
+    const cargarRevision51 = () => {
         if (revision51 == 1) {
             setHora51(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision51();
     }, [revision51]);
 
     const [hora61, setHora61] = useState();
 
-    useEffect(() => {
+    const cargarRevision61 = () => {
         if (revision61 == 1) {
             setHora61(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision61();
     }, [revision61]);
 
     const [hora71, setHora71] = useState();
 
-    useEffect(() => {
+    const cargarRevision71 = () => {
         if (revision71 == 1) {
             setHora71(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision71();
     }, [revision71]);
 
     const [hora81, setHora81] = useState();
 
-    useEffect(() => {
+    const cargarRevision81 = () => {
         if (revision81 == 1) {
             setHora81(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision81();
     }, [revision81]);
 
     const [hora91, setHora91] = useState();
 
-    useEffect(() => {
+    const cargarRevision91 = () => {
         if (revision91 == 1) {
             setHora91(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision91();
     }, [revision91]);
 
     const [hora101, setHora101] = useState();
 
-    useEffect(() => {
+    const cargarRevision101 = () => {
         if (revision101 == 1) {
             setHora101(hoy.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }))
         }
+    }
+
+    useEffect(() => {
+        cargarRevision101();
     }, [revision101]);
 
     return (

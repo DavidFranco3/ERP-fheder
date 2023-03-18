@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { listarClientes } from "../../../api/clientes";
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { map } from "lodash";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import BuscarCliente from "../../../page/BuscarCliente";
 import BuscarProducto from "../../../page/BuscarProducto";
@@ -19,23 +19,28 @@ import { listarMaquina } from "../../../api/maquinas";
 function RegistraLiberacionProductoProceso(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Para almacenar el listado de maquinas
     const [listMaquinas, setListMaquinas] = useState(null);
 
-    useEffect(() => {
+    const cargarListaMaquinas = () => {
         try {
             listarMaquina(getSucursal()).then(response => {
                 const { data } = response;
@@ -57,6 +62,10 @@ function RegistraLiberacionProductoProceso(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarListaMaquinas();
     }, []);
 
     // Para hacer uso del modal
@@ -103,60 +112,6 @@ function RegistraLiberacionProductoProceso(props) {
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
-    // Para almacenar la lista completa de clientes
-    const [listClientes, setListClientes] = useState(null);
-
-    // Obtener los clientes registrados
-    useEffect(() => {
-        try {
-            listarClientes(getSucursal()).then(response => {
-                const { data } = response;
-
-                //console.log(data);
-
-                if (!listClientes && data) {
-                    setListClientes(formatModelClientes(data));
-                } else {
-                    const datosClientes = formatModelClientes(data);
-                    setListClientes(datosClientes);
-                }
-            }).catch(e => {
-                //console.log(e)
-                if (e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión a Internet no Disponible");
-                    setConexionInternet(false);
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
-    // Para almacenar el listado de productos activos
-    const [listProductosActivos, setListProductosActivos] = useState(null);
-
-    // Para traer el listado de productos activos
-    useEffect(() => {
-        try {
-            listarMatrizProductosActivos(getSucursal()).then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProductosActivos && data) {
-                    setListProductosActivos(formatModelMatrizProductos(data));
-                } else {
-                    const datosProductos = formatModelMatrizProductos(data);
-                    setListProductosActivos(datosProductos);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
     // Para almacenar la materia prima seleccionada
     const [productoSeleccionado, setProductoSeleccionado] = useState([]);
 
@@ -173,7 +128,7 @@ function RegistraLiberacionProductoProceso(props) {
     // Para almacenar el folio actual
     const [folioActual, setFolioActual] = useState("");
 
-    useEffect(() => {
+    const obtenerFolio = () => {
         try {
             obtenerNumeroLiberacionProducto().then(response => {
                 const { data } = response;
@@ -186,6 +141,10 @@ function RegistraLiberacionProductoProceso(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerFolio();
     }, []);
 
     const onSubmit = e => {

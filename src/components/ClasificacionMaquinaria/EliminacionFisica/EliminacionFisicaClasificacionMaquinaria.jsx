@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import "./EliminacionFisicaClasificacionMaquinaria.scss";
 import { Button, Col, Form, Row, Spinner, Container, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";
@@ -25,12 +25,7 @@ function EliminacionFisicaClasificacionMaquinaria(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        //console.log(formData);
-        //console.log(fotoUsuario)
-
         try {
-
-            // console.log(data.secure_url)
 
             setLoading(true);
 

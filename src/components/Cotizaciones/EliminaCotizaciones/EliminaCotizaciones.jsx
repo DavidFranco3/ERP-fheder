@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { eliminaCotizacion } from "../../../api/cotizaciones";
-import {Alert, Button, Col, Form, Row, Spinner} from "react-bootstrap";
-import {toast} from "react-toastify";
+import { Alert, Button, Col, Form, Row, Spinner } from "react-bootstrap";
+import { toast } from "react-toastify";
 import queryString from "query-string";
-import {listarClientes} from "../../../api/clientes";
-import {listarEvaluacionProveedores} from "../../../api/evaluacionProveedores";
-import {map} from "lodash";
-import {LogsInformativos} from "../../Logs/LogsSistema/LogsSistema";
+import { listarClientes } from "../../../api/clientes";
+import { listarEvaluacionProveedores } from "../../../api/evaluacionProveedores";
+import {getSucursal} from "../../../api/auth";
+import { map } from "lodash";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function EliminaCotizaciones(props) {
     const { datosCotizacion, location, history, setShowModal } = props;
@@ -16,27 +17,26 @@ function EliminaCotizaciones(props) {
 
     // Para controlar la animacion de carga
     const [loading, setLoading] = useState(false);
-    
+
     // Para cancelar la actualizacion
     const cancelarEliminacion = () => {
         setShowModal(false)
     }
-    
+
     // Para determinar si hay conexion con el servidor o a internet
     const [conexionInternet, setConexionInternet] = useState(true);
-    
+
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
 
-    // Obtener los clientes registrados
-    useEffect(() => {
+    const obtenerListaClientes = () => {
         try {
-            listarClientes().then(response => {
+            listarClientes(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
 
-                if(!listClientes && data) {
+                if (!listClientes && data) {
                     setListClientes(formatModelClientes(data));
                 } else {
                     const datosClientes = formatModelClientes(data);
@@ -44,7 +44,7 @@ function EliminaCotizaciones(props) {
                 }
             }).catch(e => {
                 //console.log(e)
-                if(e.message === 'Network Error') {
+                if (e.message === 'Network Error') {
                     //console.log("No hay internet")
                     toast.error("Conexión a Internet no Disponible");
                     setConexionInternet(false);
@@ -53,20 +53,24 @@ function EliminaCotizaciones(props) {
         } catch (e) {
             console.log(e)
         }
-    }, []);
-    
-    // Para almacenar la lista completa de clientes
-    const [listProveedores, setListProveedores] = useState(null);
+    }
 
     // Obtener los clientes registrados
     useEffect(() => {
+        obtenerListaClientes();
+    }, []);
+
+    // Para almacenar la lista completa de clientes
+    const [listProveedores, setListProveedores] = useState(null);
+
+    const obtenerListaProveedores = () => {
         try {
-            listarEvaluacionProveedores().then(response => {
+            listarEvaluacionProveedores(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
 
-                if(!listProveedores && data) {
+                if (!listProveedores && data) {
                     setListProveedores(formatModelProveedores(data));
                 } else {
                     const datosProveedores = formatModelProveedores(data);
@@ -74,7 +78,7 @@ function EliminaCotizaciones(props) {
                 }
             }).catch(e => {
                 //console.log(e)
-                if(e.message === 'Network Error') {
+                if (e.message === 'Network Error') {
                     //console.log("No hay internet")
                     toast.error("Conexión a Internet no Disponible");
                     setConexionInternet(false);
@@ -83,6 +87,11 @@ function EliminaCotizaciones(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // Obtener los clientes registrados
+    useEffect(() => {
+        obtenerListaProveedores();
     }, []);
 
     const onSubmit = (e) => {
@@ -108,12 +117,12 @@ function EliminaCotizaciones(props) {
     return (
         <>
             <Form onSubmit={onSubmit}>
-            <Alert variant="danger">
-                <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
-                <p className="mensaje">
-                    Esta acción eliminara del sistema la cotización.
-                </p>
-            </Alert>
+                <Alert variant="danger">
+                    <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
+                    <p className="mensaje">
+                        Esta acción eliminara del sistema la cotización.
+                    </p>
+                </Alert>
                 <Form.Group className="btnEliminar">
                     {/* Folio, cliente y vendedor */}
                     <Row className="mb-3">
@@ -126,36 +135,38 @@ function EliminaCotizaciones(props) {
                                 disabled
                             />
                         </Form.Group>
-                        <Form.Group as={Col} controlId="formGridCliente">
-                                        <Form.Label>
-                                            Cliente
-                                        </Form.Label>
-                                        <Form.Control as="select"
-                                                      value={cliente}
-                                                      name="cliente"
-                                                      disabled
-                                        >
-                                            <option>Elige una opción</option>
-                                            {map(listClientes, (cliente, index) => (
-                                                <option key={index} value={cliente?.id}>{cliente?.nombre}</option>
-                                            ))}
-                                        </Form.Control>
-                                    </Form.Group>
+                        <Form.Group
+                            as={Col} controlId="formGridCliente">
+                            <Form.Label>
+                                Cliente
+                            </Form.Label>
+                            <Form.Control
+                                as="select"
+                                value={cliente}
+                                name="cliente"
+                                disabled
+                            >
+                                <option>Elige una opción</option>
+                                {map(listClientes, (cliente, index) => (
+                                    <option key={index} value={cliente?.id} selected={cliente?.id == cliente}>{cliente?.nombre}</option>
+                                ))}
+                            </Form.Control>
+                        </Form.Group>
                         <Form.Group as={Col} controlId="formGridVendedor">
                             <Form.Label>
-                                            Vendedor
-                                        </Form.Label>
-                                        <Form.Control as="select"
-                                                      value={vendedor}
-                                                      name="proveedor"
-                                                      disabled
-                                        >
-                                            <option>Elige una opción</option>
-                                            {map(listProveedores, (proveedor, index) => (
-                                                <option key={index} value={proveedor?.id}>{proveedor?.nombre}</option>
-                                            ))}
-                                        </Form.Control>
-                                    </Form.Group>
+                                Vendedor
+                            </Form.Label>
+                            <Form.Control as="select"
+                                value={vendedor}
+                                name="proveedor"
+                                disabled
+                            >
+                                <option>Elige una opción</option>
+                                {map(listProveedores, (proveedor, index) => (
+                                    <option key={index} value={proveedor?.id} selected={proveedor?.id == vendedor}>{proveedor?.nombre}</option>
+                                ))}
+                            </Form.Control>
+                        </Form.Group>
                     </Row>
                     {/* Termina folio, cliente y vendedor*/}
                     <Form.Group as={Row} className="botones">

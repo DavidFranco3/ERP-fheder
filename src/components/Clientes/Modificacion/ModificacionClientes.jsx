@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import { listarDepartamento } from "../../../api/departamentos";
-import { actualizaUsuario, obtenerUsuario } from "../../../api/usuarios";
 import { toast } from "react-toastify";
-import { isCurpValid, isEmailValid, isRFCValid } from "../../../utils/validations";
-import Dropzone from "../../Dropzone";
 import { Button, Col, Form, Row, Spinner, Container, Alert, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { actualizaCliente, obtenerCliente, registraClientes } from "../../../api/clientes";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers, faArrowCircleLeft, faCirclePlus, faX } from "@fortawesome/free-solid-svg-icons";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
@@ -21,16 +17,21 @@ function ModificacionClientes(props) {
 
     const params = useParams();
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -55,7 +56,7 @@ function ModificacionClientes(props) {
 
     const [count, setCount] = useState(0);
 
-    useEffect(() => {
+    const obtenerDatos = () => {
         try {
             obtenerCliente(params.id).then(response => {
                 const { data } = response;
@@ -70,13 +71,17 @@ function ModificacionClientes(props) {
                 if (e.message == 'Network Error') {
                     //console.log("No hay internet")
                     toast.error("Conexión a Internet no Disponible");
-                    enrutamiento("/Clientes");
+                    regresaPagina();
                     setConexionInternet(false);
                 }
             })
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerDatos();
     }, []);
 
     // Para agregar productos al listado

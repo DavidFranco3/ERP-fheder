@@ -7,7 +7,7 @@ import DropzoneDeshabilitado from '../../DropzoneDeshabilitado';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { toast } from "react-toastify";
 import { actualizaNoConformidad, obtenerNoConformidad } from "../../../api/noConformidad";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import "./VistaPreviaNoConformidad.scss";
 import LogoPDF from "../../../assets/png/pdf.png";
@@ -19,23 +19,28 @@ function VistaPreviaNoConformidad(props) {
     const descargaPDF = async () => {
     }
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     const params = useParams();
     const { id } = params
 
-    useEffect(() => {
+    const cargarDatosNoConformidad = () => {
         //
         obtenerNoConformidad(id).then(response => {
             const { data } = response;
@@ -49,6 +54,10 @@ function VistaPreviaNoConformidad(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosNoConformidad();
     }, []);
 
     // Para guardar los datos del formulario
@@ -59,7 +68,7 @@ function VistaPreviaNoConformidad(props) {
 
     const [linkDiagrama, setLinkDiagrama] = useState("");
 
-    useEffect(() => {
+    const cargarDiagrama = () => {
         try {
             if (diagrama) {
                 subeArchivosCloudinary(diagrama, "noConformidad").then(response => {
@@ -73,8 +82,11 @@ function VistaPreviaNoConformidad(props) {
             }
         } catch (e) {
             console.log(e)
-
         }
+    }
+
+    useEffect(() => {
+        cargarDiagrama();
     }, [diagrama]);
 
     // Para almacenar la foto de perfil del usuario
@@ -82,7 +94,7 @@ function VistaPreviaNoConformidad(props) {
 
     const [linkEvidencia1, setLinkEvidencia1] = useState("");
 
-    useEffect(() => {
+    const cargarEvidencia1 = () => {
         try {
             if (evidencia1) {
                 subeArchivosCloudinary(evidencia1, "noConformidad").then(response => {
@@ -96,15 +108,18 @@ function VistaPreviaNoConformidad(props) {
             }
         } catch (e) {
             console.log(e)
-
         }
+    }
+
+    useEffect(() => {
+       cargarEvidencia1();
     }, [evidencia1]);
 
     const [evidencia2, setEvidencia2] = useState(null);
 
     const [linkEvidencia2, setLinkEvidencia2] = useState("");
 
-    useEffect(() => {
+    const cargarEvidencia2 = () => {
         try {
             if (evidencia2) {
                 subeArchivosCloudinary(evidencia2, "noConformidad").then(response => {
@@ -120,13 +135,17 @@ function VistaPreviaNoConformidad(props) {
             console.log(e)
 
         }
+    }
+
+    useEffect(() => {
+        cargarEvidencia2();
     }, [evidencia2]);
 
     const [evidencia3, setEvidencia3] = useState(null);
 
     const [linkEvidencia3, setLinkEvidencia3] = useState("");
 
-    useEffect(() => {
+    const cargarEvidencia3 = () => {
         try {
             if (evidencia3) {
                 subeArchivosCloudinary(evidencia3, "noConformidad").then(response => {
@@ -141,6 +160,10 @@ function VistaPreviaNoConformidad(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarEvidencia3();
     }, [evidencia3]);
 
     // Para definir el enrutamiento

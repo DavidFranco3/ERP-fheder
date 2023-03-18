@@ -6,7 +6,7 @@ import { actualizaOrdenCompra, obtenerDatosCompra } from "../../../api/compras";
 import { obtenerDatosRequisiciones } from "../../../api/requisicion";
 import { listarEvaluacionProveedores } from "../../../api/evaluacionProveedores";
 import { toast } from "react-toastify";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { listarPedidosVenta } from "../../../api/pedidoVenta";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
@@ -34,16 +34,21 @@ function ModificacionCompras(props) {
         enrutamiento("/Compras")
     }
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -97,8 +102,7 @@ function ModificacionCompras(props) {
 
     const [producto, setProducto] = useState([]);
 
-    // Recupera la información de la compra
-    useEffect(() => {
+    const obtenerDatos = () => {
         try {
             obtenerDatosCompra(folio).then(response => {
                 const { data } = response;
@@ -113,22 +117,31 @@ function ModificacionCompras(props) {
         } catch (e) {
             console.log(e)
         }
-    }, []);
+    }
 
     // Recupera la información de la compra
     useEffect(() => {
-        try {
-            obtenerDatosRequisiciones(formDataOC.requisicion).then(response => {
-                const { data } = response;
-                // console.log(data)
-                const { productosSolicitados } = data;
-                setProductosRequisicion(productosSolicitados)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
+        obtenerDatos();
+    }, []);
+
+   const obtenerDatosRequisicion = () => {
+    try {
+        obtenerDatosRequisiciones(formDataOC.requisicion).then(response => {
+            const { data } = response;
+            // console.log(data)
+            const { productosSolicitados } = data;
+            setProductosRequisicion(productosSolicitados)
+        }).catch(e => {
             console.log(e)
-        }
+        })
+    } catch (e) {
+        console.log(e)
+    }
+   }
+
+    // Recupera la información de la compra
+    useEffect(() => {
+        obtenerDatosRequisicion();
     }, [formDataOC.requisicion]);
 
 
@@ -138,28 +151,6 @@ function ModificacionCompras(props) {
 
     // Define la animación de carga
     const [loading, setLoading] = useState(false);
-
-    // Para almacenar el listado de proveedores
-    const [listProveedores, setListProveedores] = useState(null);
-
-    useEffect(() => {
-        try {
-            listarEvaluacionProveedores().then(response => {
-                const { data } = response;
-                // console.log(data)
-                if (!listarEvaluacionProveedores() && data) {
-                    setListProveedores(formatModelProveedores(data));
-                } else {
-                    const datosProveedores = formatModelProveedores(data);
-                    setListProveedores(datosProveedores);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData());
@@ -295,33 +286,6 @@ function ModificacionCompras(props) {
         }
     }
 
-    // Para almacenar el listado de ordenes de venta
-    const [listOrdenesVenta, setListOrdenesVenta] = useState(null);
-
-    useEffect(() => {
-        try {
-            listarPedidosVenta().then(response => {
-                const { data } = response;
-                // console.log(data);
-                if (!listOrdenesVenta && data) {
-                    setListOrdenesVenta(formatModelOrdenesVenta(data));
-                } else {
-                    const datosOV = formatModelOrdenesVenta(data);
-                    setListOrdenesVenta(datosOV);
-                }
-
-            }).catch((e) => {
-                //console.log(e)
-                if (e.message === "Network Error") {
-                    toast.error("Conexión a Internet no Disponible");
-                    // setConexionInternet(false);
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
     // Calcula el subtotal de la lista de artículos cargados
     const subTotal = listProductosCargados.reduce((amount, item) => (amount + parseInt(item.subtotal)), 0);
 
@@ -341,7 +305,7 @@ function ModificacionCompras(props) {
 
     const [productoCargado, setProductoCargado] = useState("");
 
-    useEffect(() => {
+    const cargarProductos = () => {
         setProductoCargado(formDataArticulos.descripcion)
         const dataTempProductos = productoCargado.split("/")
         const dataTemp = {
@@ -352,6 +316,10 @@ function ModificacionCompras(props) {
             referencia: dataTempProductos[6]
         }
         setFormDataArticulos(cargaFormDataArticulos(dataTemp))
+    }
+
+    useEffect(() => {
+        cargarProductos();
     }, [formDataArticulos.descripcion]);
 
     return (

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import {obtenerEvaluacionProveedores} from "../../../api/evaluacionProveedores";
-import {toast} from "react-toastify";
+import { obtenerEvaluacionProveedores } from "../../../api/evaluacionProveedores";
+import { toast } from "react-toastify";
 
 function Proveedor(props) {
     const { id } = props;
@@ -8,7 +8,7 @@ function Proveedor(props) {
     // Para almacenar el nombre del cliente
     const [nombreProveedor, setNombreProveedor] = useState("");
 
-    useEffect(() => {
+    const obtenerNombreProveedor = () => {
         //
         try {
             obtenerEvaluacionProveedores(id).then(response => {
@@ -18,7 +18,7 @@ function Proveedor(props) {
                 setNombreProveedor(nombre)
             }).catch(e => {
                 //console.log(e)
-                if(e.message === 'Network Error') {
+                if (e.message === 'Network Error') {
                     //console.log("No hay internet")
                     toast.error("Conexión al servidor no disponible");
                 }
@@ -26,7 +26,11 @@ function Proveedor(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [id]);
+    }
+
+    useEffect(() => {
+        obtenerNombreProveedor();
+    }, []);
 
     return (
         <>

@@ -5,7 +5,7 @@ import { actualizaEtiquetaMolido, obtenerEtiquetaMolido } from '../../../api/eti
 import { obtenerRazonSocialPorNombre } from "../../../api/razonesSociales";
 import queryString from "query-string";
 import { toast } from "react-toastify";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { useNavigate, useParams } from "react-router-dom";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,7 +27,7 @@ function VistaPreviaMaterialMolido(props) {
 
     const [formDataSucursal, setFormDataSucursal] = useState(initialFormDataSucursalInitial());
 
-    useEffect(() => {
+    const cargarDatosRazonSocial = () => {
         //
         obtenerRazonSocialPorNombre(getSucursal()).then(response => {
             const { data } = response;
@@ -36,18 +36,27 @@ function VistaPreviaMaterialMolido(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosRazonSocial();
     }, [getSucursal()]);
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -58,8 +67,8 @@ function VistaPreviaMaterialMolido(props) {
     const parametros = useParams()
     const { id } = parametros
 
-     // Define la ruta de registro
-     const rutaRegreso = () => {
+    // Define la ruta de registro
+    const rutaRegreso = () => {
         enrutamiento("/MaterialMolido")
     }
 
@@ -69,7 +78,7 @@ function VistaPreviaMaterialMolido(props) {
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+    const cargarDatosEtiqueta = () => {
         try {
             obtenerEtiquetaMolido(id).then(response => {
                 const { data } = response;
@@ -88,6 +97,10 @@ function VistaPreviaMaterialMolido(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosEtiqueta();
     }, []);
 
     const onSubmit = (e) => {
@@ -141,7 +154,7 @@ function VistaPreviaMaterialMolido(props) {
                                     border: [false, false, false, false],
                                     text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
                                     alignment: 'right',
-                                    margin: [ 5, 2, 10, 20 ]
+                                    margin: [5, 2, 10, 20]
                                 }
                             ]
                         ]
@@ -223,7 +236,7 @@ function VistaPreviaMaterialMolido(props) {
                                     text: `Turno:  ${formData.turno}`,
                                     colSpan: 2,
                                     bold: true,
-                                    fontSize: 9 
+                                    fontSize: 9
                                 },
                                 {
                                 }
@@ -296,8 +309,8 @@ function VistaPreviaMaterialMolido(props) {
             </Alert>
 
             <Container fluid>
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <div className="formularioDatos">
                     <Form onChange={onChange} onSubmit={onSubmit}>
                         <Row className="mb-3">
@@ -419,38 +432,38 @@ function VistaPreviaMaterialMolido(props) {
 
                         <br />
 
-                    <div className="botones">
-                        <Form.Group as={Row} className="botones">
-                            <Row>
-                                <Col>
-                                    <div
-                                        className="generacionPDF"
-                                    >
-                                        <Image
-                                            src={LogoPDF}
-                                            className="logoPDF"
-                                            onClick={() => {
-                                                descargaPDF()
-                                            }}
-                                        />
-                                    </div>
-                                </Col>
-                                <Col>
-                                    <div
-                                        className="regreso"
-                                    >
-                                        <Image
-                                            src={Regreso}
-                                            className="regresarVistaAnterior"
-                                            onClick={() => {
-                                                rutaRegreso()
-                                            }}
-                                        />
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Form.Group>
-                    </div>
+                        <div className="botones">
+                            <Form.Group as={Row} className="botones">
+                                <Row>
+                                    <Col>
+                                        <div
+                                            className="generacionPDF"
+                                        >
+                                            <Image
+                                                src={LogoPDF}
+                                                className="logoPDF"
+                                                onClick={() => {
+                                                    descargaPDF()
+                                                }}
+                                            />
+                                        </div>
+                                    </Col>
+                                    <Col>
+                                        <div
+                                            className="regreso"
+                                        >
+                                            <Image
+                                                src={Regreso}
+                                                className="regresarVistaAnterior"
+                                                onClick={() => {
+                                                    rutaRegreso()
+                                                }}
+                                            />
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Form.Group>
+                        </div>
 
                     </Form>
                 </div>

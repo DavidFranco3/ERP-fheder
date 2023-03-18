@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { eliminaEvaluacionProveedores } from "../../../api/evaluacionProveedores";
 import { toast } from "react-toastify";

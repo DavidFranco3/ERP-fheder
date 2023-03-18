@@ -8,7 +8,7 @@ import BasicModal from "../../Modal/BasicModal";
 import { obtenerInspeccion, actualizaInspeccion } from "../../../api/inspeccionMaterial";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { obtenerDatosRecepcion } from "../../../api/recepcionMaterialInsumos";
 import BuscarRecepcion from "../../../page/BuscarRecepcion";
 import { map } from "lodash";
@@ -18,16 +18,21 @@ import { obtenerMateriaPrimaPorFolio } from "../../../api/materiaPrima";
 function ModificaReporte(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -56,8 +61,7 @@ function ModificaReporte(props) {
     const parametros = useParams()
     const { id } = parametros
 
-    useEffect(() => {
-        //
+    const obtenerDatos = () => {
         obtenerInspeccion(id).then(response => {
             const { data } = response;
             //console.log(data)
@@ -78,9 +82,11 @@ function ModificaReporte(props) {
         }).catch(e => {
             console.log(e)
         })
-    }, []);
+    }
 
-    console.log(productosRecepcion);
+    useEffect(() => {
+        obtenerDatos();
+    }, []);
 
     // Define la ruta de registro
     const rutaRegreso = () => {
@@ -153,10 +159,7 @@ function ModificaReporte(props) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    console.log(formData.nombreDescripcion);
-
-    useEffect(() => {
-
+    const obtenerInformacion = () => {
         const temp = formData.nombreDescripcion.split("/");
         setFolioMaterial(temp[0]);
         setCantidad(temp[2]);
@@ -175,13 +178,16 @@ function ModificaReporte(props) {
         } catch (e) {
             console.log(e)
         }
+    }
 
+    useEffect(() => {
+        obtenerInformacion();
     }, [formData.nombreDescripcion]);
 
     // Para almacenar el listado de proveedores
     const [listUM, setListUM] = useState(null);
 
-    useEffect(() => {
+    const obtenerListaUM = () => {
         try {
             listarUM(getSucursal()).then(response => {
                 const { data } = response;
@@ -199,9 +205,11 @@ function ModificaReporte(props) {
         } catch (e) {
             console.log(e)
         }
-    }, []);
+    }
 
-    console.log(formData.etiqueta)
+    useEffect(() => {
+        obtenerListaUM();
+    }, []);
 
     return (
         <>

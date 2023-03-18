@@ -3,13 +3,12 @@ import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstr
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import BuscarOV from "../../../page/BuscarOV";
 import BasicModal from "../../Modal/BasicModal";
 import { obtenerNumeroInspeccion, registraInspeccion, obtenerItemInspeccion } from "../../../api/inspeccionMaterial";
 import { toast } from "react-toastify";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import BuscarRecepcion from "../../../page/BuscarRecepcion";
 import { map } from "lodash";
 import { listarUM } from "../../../api/unidadesMedida";
@@ -18,16 +17,21 @@ import { obtenerMateriaPrimaPorFolio } from "../../../api/materiaPrima";
 function RegistraReporte(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -50,7 +54,7 @@ function RegistraReporte(props) {
     // Para almacenar el folio actual
     const [folioActual, setFolioActual] = useState("");
 
-    useEffect(() => {
+    const obtenerFolio = () => {
         try {
             obtenerNumeroInspeccion().then(response => {
                 const { data } = response;
@@ -63,6 +67,10 @@ function RegistraReporte(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerFolio();
     }, []);
 
     // Define la ruta de registro
@@ -148,7 +156,7 @@ function RegistraReporte(props) {
     const [unidadMedida, setUnidadMedida] = useState("");
     const [tipoMaterial, setTipoMaterial] = useState("");
 
-    useEffect(() => {
+    const obtenerDatos = () => {
         const temp = formData.nombreDescripcion.split("/");
         setFolioMaterial(temp[0]);
         setNombreProducto(temp[1]);
@@ -168,13 +176,16 @@ function RegistraReporte(props) {
         } catch (e) {
             console.log(e)
         }
+    }
 
+    useEffect(() => {
+        obtenerDatos();
     }, [formData.nombreDescripcion]);
 
     // Para almacenar el listado de proveedores
     const [listUM, setListUM] = useState(null);
 
-    useEffect(() => {
+    const obtenerListaUM = () => {
         try {
             listarUM(getSucursal()).then(response => {
                 const { data } = response;
@@ -185,13 +196,16 @@ function RegistraReporte(props) {
                     const datosUM = formatModelUM(data);
                     setListUM(datosUM);
                 }
-
             }).catch(e => {
                 console.log(e)
             })
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerListaUM();
     }, []);
 
     const hoy = new Date();

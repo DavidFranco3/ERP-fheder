@@ -224,13 +224,16 @@ function ListCalidad(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listInspeccion);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -249,7 +252,7 @@ function ListCalidad(props) {
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
                     // actions={descargaCSV}
-                    data={listInspeccion}
+                    data={rows}
                     //expandableRows
                     //expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}

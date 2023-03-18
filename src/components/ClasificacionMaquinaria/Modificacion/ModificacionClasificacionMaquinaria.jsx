@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import "./ModificacionClasificacionMaquinaria.scss";
 import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
 import { toast } from "react-toastify";

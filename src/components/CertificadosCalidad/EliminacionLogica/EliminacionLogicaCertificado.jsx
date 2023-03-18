@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import queryString from "query-string";
 import "./EliminacionLogicaCertificado.scss";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
-import { eliminaDepartamento } from "../../../api/departamentos";
 import { toast } from "react-toastify";
 import { cambiaStatusCertificado } from "../../../api/certificadosCalidad";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -27,7 +26,6 @@ function EliminacionLogicaCertificado(props) {
         const dataTemp = {
             estado: estado === "false" ? "true" : "false"
         }
-        //console.log(dataTemp)
 
         try {
             cambiaStatusCertificado(id, dataTemp).then(response => {

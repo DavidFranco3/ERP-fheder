@@ -26,7 +26,7 @@ function RegistraMaquinas(props) {
     // Para almacenar el listado de proveedores
     const [listTipoMaquina, setListTipoMaquina] = useState(null);
 
-    useEffect(() => {
+    const cargarListaTipoMaquinas = () => {
         try {
             listarClasificacionMaquinaria(getSucursal()).then(response => {
                 const { data } = response;
@@ -44,12 +44,16 @@ function RegistraMaquinas(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarListaTipoMaquinas();
     }, []);
 
     // Para almacenar el listado de proveedores
     const [listSucursales, setListSucursales] = useState(null);
 
-    useEffect(() => {
+    const cargarListaSucursales = () => {
         try {
             listarSucursales(getSucursal()).then(response => {
                 const { data } = response;
@@ -67,6 +71,10 @@ function RegistraMaquinas(props) {
         } catch (e) {
             console.log(e)
         }
+    } 
+
+    useEffect(() => {
+        cargarListaSucursales();
     }, []);
 
     const onSubmit = (e) => {

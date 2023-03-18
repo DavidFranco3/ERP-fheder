@@ -13,7 +13,7 @@ import { listarMateriaPrima } from "../../../api/materiaPrima";
 import { toast } from "react-toastify";
 import { listarClientes } from "../../../api/clientes";
 import { listarMaquina, obtenerMaquina } from "../../../api/maquinas";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import BasicModal from "../../Modal/BasicModal";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { listarUM } from "../../../api/unidadesMedida";
@@ -25,23 +25,28 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 function VistaDetallada(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Para almacenar el listado de proveedores
     const [listUM, setListUM] = useState(null);
 
-    useEffect(() => {
+    const cargarListaUM = () => {
         try {
             listarUM(getSucursal()).then(response => {
                 const { data } = response;
@@ -59,6 +64,10 @@ function VistaDetallada(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarListaUM();
     }, []);
 
     // Para definir el enrutamiento
@@ -106,7 +115,7 @@ function VistaDetallada(props) {
         enrutamiento("/MatrizProductos")
     }
 
-    useEffect(() => {
+    const cargarDatosRazonSocial = () => {
         //
         obtenerRazonSocialPorNombre(getSucursal()).then(response => {
             const { data } = response;
@@ -115,11 +124,15 @@ function VistaDetallada(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosRazonSocial();
     }, [getSucursal()]);
 
     const [maquina1, setMaquina1] = useState("");
 
-    useEffect(() => {
+    const cargarMaquina1 = () => {
         //
         obtenerMaquina(formData.opcion1).then(response => {
             const { data } = response;
@@ -128,11 +141,15 @@ function VistaDetallada(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarMaquina1();
     }, [formData.opcion1]);
 
     const [maquina2, setMaquina2] = useState("");
 
-    useEffect(() => {
+    const cargarMaquina2 = () => {
         //
         obtenerMaquina(formData.opcion2).then(response => {
             const { data } = response;
@@ -141,11 +158,15 @@ function VistaDetallada(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarMaquina2();
     }, [formData.opcion2]);
 
     const [maquina3, setMaquina3] = useState("");
 
-    useEffect(() => {
+    const cargarMaquina3 = () => {
         //
         obtenerMaquina(formData.opcion3).then(response => {
             const { data } = response;
@@ -154,11 +175,15 @@ function VistaDetallada(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarMaquina3();
     }, [formData.opcion3]);
 
     const [maquina4, setMaquina4] = useState("");
 
-    useEffect(() => {
+    const cargarMaquina4 = () => {
         //
         obtenerMaquina(formData.opcion4).then(response => {
             const { data } = response;
@@ -167,11 +192,15 @@ function VistaDetallada(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarMaquina4();
     }, [formData.opcion4]);
 
     const [maquina5, setMaquina5] = useState("");
 
-    useEffect(() => {
+    const cargarMaquina5 = () => {
         //
         obtenerMaquina(formData.opcion5).then(response => {
             const { data } = response;
@@ -180,11 +209,15 @@ function VistaDetallada(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarMaquina5();
     }, [formData.opcion5]);
 
     const [maquina6, setMaquina6] = useState("");
 
-    useEffect(() => {
+    const cargarMaquina6 = () => {
         //
         obtenerMaquina(formData.opcion6).then(response => {
             const { data } = response;
@@ -193,6 +226,10 @@ function VistaDetallada(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarMaquina6();
     }, [formData.opcion6]);
 
     // Para hacer uso del modal
@@ -238,13 +275,11 @@ function VistaDetallada(props) {
     // Para guardar los datos del producto
     const [informacionProducto, setInformacionProducto] = useState(null);
 
-    useEffect(() => {
+    const cargarDatosProductos = () => {
         // Para buscar el producto en la matriz de productos
         try {
             obtenerMatrizProducto(producto).then(response => {
                 const { data } = response;
-                // console.log(data)
-                // initialData
 
                 if (!formData && data) {
                     setFormData(valoresAlmacenados(data));
@@ -254,50 +289,6 @@ function VistaDetallada(props) {
                 }
             }).catch(e => {
                 console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-
-        // Para obtener el listado de materias primas
-        try {
-            listarMateriaPrima().then(response => {
-                const { data } = response;
-                //console.log(data)
-                if (!listMateriasPrimas && data) {
-                    setListMateriasPrimas(formatModelMateriasPrimas(data));
-                } else {
-                    const datosProductos = formatModelMateriasPrimas(data);
-                    setListMateriasPrimas(datosProductos);
-                }
-            }).catch(e => {
-                //console.log(e)
-                if (e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión al servidor no disponible");
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-        // Para obtener el listado de clientes
-        try {
-            listarClientes().then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listClientes && data) {
-                    setListClientes(formatModelClientes(data));
-                } else {
-                    const datosProductos = formatModelClientes(data);
-                    setListClientes(datosProductos);
-                }
-            }).catch(e => {
-                //console.log(e)
-                if (e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión al servidor no disponible");
-                }
             })
         } catch (e) {
             console.log(e)
@@ -324,7 +315,10 @@ function VistaDetallada(props) {
         } catch (e) {
             console.log(e)
         }
+    }
 
+    useEffect(() => {
+        cargarDatosProductos();
     }, []);
 
     const onSubmit = e => {
@@ -494,7 +488,7 @@ function VistaDetallada(props) {
                                     border: [false, false, false, false],
                                     text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
                                     alignment: 'right',
-                                    margin: [ 5, 2, 10, 20 ]
+                                    margin: [5, 2, 10, 20]
                                 }
                             ]
                         ]

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Spinner } from "react-bootstrap";
 import "./ModificaMaterialMolido.scss";
 import { actualizaEtiquetaMolido, obtenerEtiquetaMolido } from '../../../api/etiquetaMolido'
@@ -12,7 +12,7 @@ function ModificaMaterialMolido(props) {
     const { id } = data;
 
     // Para guardar los datos del formulario
-    const [formData, setFormData] = useState(initialFormData());
+    const [formData, setFormData] = useState(valoresAlmacenados(data));
 
     // Cancelar y cerrar el formulario
     const cancelarRegistro = () => {
@@ -21,27 +21,6 @@ function ModificaMaterialMolido(props) {
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        try {
-            obtenerEtiquetaMolido(id).then(response => {
-                const { data } = response;
-                // console.log(data)
-                // initialData
-
-                if (!formData && data) {
-                    setFormData(valoresAlmacenados(data));
-                } else {
-                    const datosEtiqueta = valoresAlmacenados(data);
-                    setFormData(datosEtiqueta);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     const onSubmit = (e) => {
         e.preventDefault()

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button, Col, Form, Row, Spinner, Alert, Container, Badge } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { actualizaEvaluacionProveedores, obtenerEvaluacionProveedores } from "../../../api/evaluacionProveedores";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,16 +22,21 @@ function ModificaProveedores(props) {
     const params = useParams();
     const { id } = params;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -75,7 +80,7 @@ function ModificaProveedores(props) {
     // Para validar si hay conexion a internet o la api
     const [conexionInternet, setConexionInternet] = useState(true);
 
-    useEffect(() => {
+    const cargarDatosEvaluacion = () => {
         try {
             obtenerEvaluacionProveedores(id).then(response => {
                 const { data } = response;
@@ -97,6 +102,10 @@ function ModificaProveedores(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosEvaluacion();
     }, []);
 
     // Para agregar productos al listado

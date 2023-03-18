@@ -171,13 +171,16 @@ function ListDepartamentos(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listDepartamentos);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -294,7 +297,7 @@ function ListDepartamentos(props) {
                     //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}
-                    data={listDepartamentos}
+                    data={rows}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}

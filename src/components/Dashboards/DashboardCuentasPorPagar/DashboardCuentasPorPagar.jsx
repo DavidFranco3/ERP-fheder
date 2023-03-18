@@ -10,28 +10,32 @@ import { getTokenApi, isExpiredToken, logoutApi } from "../../../api/auth";
 import { toast } from "react-toastify";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
+import {  LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 
 function DashboardCuentasPorPagar(props) {
     const { setRefreshCheckLogin } = props;
 
     const enrutamiento = useNavigate();
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
-                enrutamiento("");
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Define las rutas
-
     const goTo = (ruta) => enrutamiento(ruta);
 
     const ItemCard = ({ path, logo, title }) => (

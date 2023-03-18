@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import "./RegistroEntradaSalida.scss"
-import { listarMateriaPrima } from "../../../api/materiaPrima";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
-import { map, size, values } from "lodash";
+import { map } from "lodash";
 import { obtenerItemAlmacen, obtenerFolioActualAlmacenes, registroInicialAlmacenes } from "../../../api/almacenes";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
@@ -12,11 +11,8 @@ import { obtenerDatosInspeccion } from "../../../api/inspeccionMaterial";
 import { obtenerDatosProduccion } from "../../../api/produccion";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { getSucursal, getAlmacen } from '../../../api/auth';
-import BuscarInsumos from '../../../page/BuscarInsumos';
 import BuscarMaterial from '../../../page/BuscarMaterial';
 import BuscarProducto from '../../../page/BuscarProducto';
-import BuscarEmpaque from '../../../page/BuscarEmpaque';
-import BuscarPigmento from '../../../page/BuscarPigmento';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import BasicModal from "../../Modal/BasicModal";
@@ -66,7 +62,7 @@ function RegistroEntradaSalida(props) {
     // Para almacenar el listado de proveedores
     const [listUM, setListUM] = useState(null);
 
-    useEffect(() => {
+    const obtenerListaUM = () => {
         try {
             listarUM(getSucursal()).then(response => {
                 const { data } = response;
@@ -84,6 +80,10 @@ function RegistroEntradaSalida(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerListaUM();
     }, []);
 
     // Para la eliminacion fisica de usuarios
@@ -110,8 +110,7 @@ function RegistroEntradaSalida(props) {
     // Para almacenar el listado de productos activos
     const [listProduccion, setListProduccion] = useState(null);
 
-    // Para traer el listado de productos activos
-    useEffect(() => {
+    const obtenerListaProduccion = () => {
         try {
             listarProduccion(getSucursal()).then(response => {
                 const { data } = response;
@@ -129,6 +128,11 @@ function RegistroEntradaSalida(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // Para traer el listado de productos activos
+    useEffect(() => {
+        obtenerListaProduccion();
     }, []);
 
     // Para cerrar el modal
@@ -139,7 +143,7 @@ function RegistroEntradaSalida(props) {
     // Para almacenar el folio actual
     const [itemActual, setItemActual] = useState("");
 
-    useEffect(() => {
+    const obtenerItem = () => {
         try {
             obtenerItemAlmacen().then(response => {
                 const { data } = response;
@@ -152,6 +156,10 @@ function RegistroEntradaSalida(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerItem();
     }, []);
 
     const onSubmit = (e) => {
@@ -227,7 +235,7 @@ function RegistroEntradaSalida(props) {
     // Para almacenar el lote 
     const [ordenVenta, setOrdenVenta] = useState("");
 
-    useEffect(() => {
+    const obtenerOV = () => {
         try {
 
             if (formData.tipoOperacion == "Entrada") {
@@ -251,6 +259,10 @@ function RegistroEntradaSalida(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+       obtenerOV();
     }, [formData.referencia, formData.tipoOperacion]);
 
     const temp = formData.articulo.split("/");

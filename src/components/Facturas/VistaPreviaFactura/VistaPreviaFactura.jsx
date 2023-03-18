@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import "./VistaPreviaFactura.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { obtenerRazonSocialPorNombre } from "../../../api/razonesSociales";
 import BasicModal from "../../Modal/BasicModal";
 import { obtenerCliente } from "../../../api/clientes";
@@ -36,7 +36,7 @@ function VistaPreviaFactura(props) {
 
     const [formDataSucursal, setFormDataSucursal] = useState(initialFormDataSucursalInitial());
 
-    useEffect(() => {
+    const cargarDatosRazonSocial = () => {
         //
         obtenerRazonSocialPorNombre(getSucursal()).then(response => {
             const { data } = response;
@@ -45,18 +45,27 @@ function VistaPreviaFactura(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosRazonSocial();
     }, [getSucursal()]);
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -87,7 +96,7 @@ function VistaPreviaFactura(props) {
     // Para guardar los datos del formulario
     const [formDataCliente, setFormDataCliente] = useState(initialFormDataClienteInitial());
 
-    useEffect(() => {
+    const cargarDatosFactura = () => {
         //
         obtenerFactura(id).then(response => {
             const { data } = response;
@@ -100,18 +109,26 @@ function VistaPreviaFactura(props) {
         }).catch(e => {
             console.log(e)
         })
-    }, []);
+    }
 
     useEffect(() => {
-        //
-        obtenerCliente(formDataVenta.cliente).then(response => {
-            const { data } = response;
-            //console.log(data)
-            setFormDataCliente(initialFormDataCliente(data));
-            //setListProductosCargados(data.productos);
-        }).catch(e => {
-            console.log(e)
-        })
+        cargarDatosFactura();
+    }, []);
+
+    const cargarDatosCliente = () => {
+//
+obtenerCliente(formDataVenta.cliente).then(response => {
+    const { data } = response;
+    //console.log(data)
+    setFormDataCliente(initialFormDataCliente(data));
+    //setListProductosCargados(data.productos);
+}).catch(e => {
+    console.log(e)
+})
+    }
+
+    useEffect(() => {
+        cargarDatosCliente();
     }, [formDataVenta.cliente]);
 
     // Para determinar el uso de la animacion de carga mientras se guarda el pedido
@@ -152,68 +169,11 @@ function VistaPreviaFactura(props) {
     }
 
     // Para almacenar la lista completa de clientes
-    const [listClientes, setListClientes] = useState(null);
-
-    // Obtener los clientes registrados
-    useEffect(() => {
-        try {
-            listarClientes().then(response => {
-                const { data } = response;
-
-                //console.log(data);
-
-                if (!listClientes && data) {
-                    setListClientes(formatModelClientes(data));
-                } else {
-                    const datosClientes = formatModelClientes(data);
-                    setListClientes(datosClientes);
-                }
-            }).catch(e => {
-                //console.log(e)
-                if (e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión a Internet no Disponible");
-                    setConexionInternet(false);
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
-    // Para almacenar la lista completa de clientes
     const [listProductosOV, setListProductosOV] = useState([]);
 
     const renglon = listProductosCargados.length + 1;
 
-    // Obten el listado de productos
-    // Para almacenar el listado de productos activos
-    const [listProductosActivos, setListProductosActivos] = useState(null);
-
-    // Para traer el listado de productos activos
-    useEffect(() => {
-        try {
-            listarMatrizProductosActivos().then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProductosActivos && data) {
-                    setListProductosActivos(formatModelMatrizProductos(data));
-                } else {
-                    const datosProductos = formatModelMatrizProductos(data);
-                    setListProductosActivos(datosProductos);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
     const [iva, setIva] = useState(0);
-
-    console.log(iva);
 
     // Para traer el listado de productos activos
     useEffect(() => {
@@ -390,19 +350,21 @@ function VistaPreviaFactura(props) {
 
     const [fechaVencimiento, setFechaVencimiento] = useState();
 
-    console.log(formDataVenta.fechaPedido);
+   const cargarFechas = () => {
+ //la fecha
+ const TuFecha = new Date(formDataVenta.fechaPedido);
+
+ //nueva fecha sumada
+ TuFecha.setDate(TuFecha.getDate() + parseInt(formDataCliente.diasCredito));
+ //formato de salida para la fecha
+ setFechaVencimiento((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
+     : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
+         : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
+             : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+   }
 
     useEffect(() => {
-        //la fecha
-        const TuFecha = new Date(formDataVenta.fechaPedido);
-
-        //nueva fecha sumada
-        TuFecha.setDate(TuFecha.getDate() + parseInt(formDataCliente.diasCredito));
-        //formato de salida para la fecha
-        setFechaVencimiento((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
-            : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
-                : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
-                    : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+       cargarFechas();
     }, [formDataVenta.fechaPedido, formDataCliente.diasCredito]);
 
     const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState();

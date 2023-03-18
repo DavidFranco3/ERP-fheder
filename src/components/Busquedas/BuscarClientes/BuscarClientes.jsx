@@ -82,13 +82,17 @@ function BuscarClientes(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listClientes);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -115,7 +119,7 @@ function BuscarClientes(props) {
     `;
 
 
-    const filteredItems = listClientes.filter(
+    const filteredItems = rows.filter(
         item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase()) || item.rfc && item.rfc.toLowerCase().includes(filterText.toLowerCase())
     );
 

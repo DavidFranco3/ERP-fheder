@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { deshabilitaUsuario } from "../../../api/usuarios";
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";

@@ -6,7 +6,7 @@ import { listarClientes } from "../../../api/clientes";
 import { listarEvaluacionProveedores } from "../../../api/evaluacionProveedores";
 import { toast } from "react-toastify";
 import { map } from "lodash";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 
 function ModificacionesCotizaciones(props) {
@@ -15,16 +15,21 @@ function ModificacionesCotizaciones(props) {
     const parametros = useParams()
     const { id } = parametros;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -42,9 +47,7 @@ function ModificacionesCotizaciones(props) {
     const [loading, setLoading] = useState(false);
 
     // Para almacenar los datos de la cotización
-    const [datosCotizacion, setDatosCotizacion] = useState(null);
     const [folioCotizacion, setFolioCotizacion] = useState("");
-    const [fechaCreacion, setFechaCreacion] = useState(new Date());
 
     // Para determinar si hay conexion con el servidor o a internet
     const [conexionInternet, setConexionInternet] = useState(true);
@@ -52,8 +55,7 @@ function ModificacionesCotizaciones(props) {
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
 
-    // Obtener los clientes registrados
-    useEffect(() => {
+    const obtenerListaClientes = () => {
         try {
             listarClientes(getSucursal()).then(response => {
                 const { data } = response;
@@ -77,13 +79,17 @@ function ModificacionesCotizaciones(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // Obtener los clientes registrados
+    useEffect(() => {
+        obtenerListaClientes();
     }, []);
 
     // Para almacenar la lista completa de clientes
     const [listProveedores, setListProveedores] = useState(null);
 
-    // Obtener los clientes registrados
-    useEffect(() => {
+    const obtenerListaProveedores = () => {
         try {
             listarEvaluacionProveedores(getSucursal()).then(response => {
                 const { data } = response;
@@ -107,21 +113,31 @@ function ModificacionesCotizaciones(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // Obtener los clientes registrados
+    useEffect(() => {
+        obtenerListaProveedores();
     }, []);
 
-    useEffect(() => {
+    const obtenerDatos = () => {
         try {
             obtenerCotizacion(id).then(response => {
                 const { data } = response;
-                const { _id, folio, createdAt } = data
-                setFolioCotizacion(folio)
+                setFormData(initialFormData(data));
             }).catch(e => {
-                //console.log(e)
+                console.log(e)
             })
         } catch (e) {
-            //console.log(e)
+            console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerDatos();
     }, []);
+
+    console.log(formData);
 
     const onSubmit = e => {
         e.preventDefault()
@@ -133,16 +149,10 @@ function ModificacionesCotizaciones(props) {
             //console.log(formData)
             setLoading(true)
             try {
-                obtenerNumeroCotizacion().then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { noCotizacion } = data;
                     const dataTemp = {
-                        folio: folioCotizacion,
                         fechaCreacion: formData.fecha,
-                        vendedor: formData.proveedor,
+                        vendedor: formData.vendedor,
                         cliente: formData.cliente,
-                        status: "true"
                     }
 
                     actualizaCotizacion(id, dataTemp).then(response => {
@@ -158,9 +168,6 @@ function ModificacionesCotizaciones(props) {
                             toast.error("Conexión al servidor no disponible");
                         }
                     })
-                }).catch(e => {
-                    console.log(e)
-                })
             } catch (e) {
                 console.log(e)
             }
@@ -182,7 +189,7 @@ function ModificacionesCotizaciones(props) {
                     </Col>
                     <Col xs={6} md={4}>
                         <h1>
-                            Folio: {folioCotizacion}
+                            Folio: {formData.folio}
                         </h1>
                     </Col>
                 </Row>
@@ -197,7 +204,7 @@ function ModificacionesCotizaciones(props) {
                                 <Form.Label>Fecha de creación</Form.Label>
                                 <Form.Control
                                     className="mb-3"
-                                    type="datetime-local"
+                                    type="date"
                                     placeholder="Fecha"
                                     value={formData.fecha}
                                     name="fecha"
@@ -208,13 +215,14 @@ function ModificacionesCotizaciones(props) {
                                 <Form.Label>
                                     Vendedor
                                 </Form.Label>
-                                <Form.Control as="select"
-                                    value={formData.proveedor}
+                                <Form.Control 
+                                as="select"
+                                    value={formData.vendedor}
                                     name="proveedor"
                                 >
                                     <option>Elige una opción</option>
                                     {map(listProveedores, (proveedor, index) => (
-                                        <option key={index} value={proveedor?.id}>{proveedor?.nombre}</option>
+                                        <option key={index} value={proveedor?.id} selected={proveedor?.id == formData.vendedor}>{proveedor?.nombre}</option>
                                     ))}
                                 </Form.Control>
                             </Form.Group>
@@ -225,13 +233,14 @@ function ModificacionesCotizaciones(props) {
                                 <Form.Label>
                                     Cliente
                                 </Form.Label>
-                                <Form.Control as="select"
+                                <Form.Control 
+                                as="select"
                                     value={formData.cliente}
                                     name="cliente"
                                 >
                                     <option>Elige una opción</option>
                                     {map(listClientes, (cliente, index) => (
-                                        <option key={index} value={cliente?.id}>{cliente?.nombre + " " + cliente.apellidos}</option>
+                                        <option key={index} value={cliente?.id} selected={cliente?.id == formData.cliente}>{cliente?.nombre + " " + cliente.apellidos}</option>
                                     ))}
                                 </Form.Control>
                             </Form.Group>
@@ -263,7 +272,6 @@ function ModificacionesCotizaciones(props) {
                                 </Col>
                             </Row>
                         </Form.Group>
-
                     </Form>
                 </div>
             </Container>
@@ -273,9 +281,19 @@ function ModificacionesCotizaciones(props) {
 
 function initialFormDataInicial() {
     return {
+        folio: "",
         vendedor: "",
         cliente: "",
-        status: ""
+        fecha: "",
+    }
+}
+
+function initialFormData(data) {
+    return {
+        folio: data.folio,
+        vendedor: data.vendedor,
+        cliente: data.cliente,
+        fecha: data.fechaCreacion
     }
 }
 

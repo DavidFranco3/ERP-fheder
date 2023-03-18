@@ -4,7 +4,7 @@ import { listarMateriaPrima } from "../../../api/materiaPrima";
 import { toast } from "react-toastify";
 import { listarClientes } from "../../../api/clientes";
 import { map } from "lodash";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { Alert, Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -14,25 +14,28 @@ import { listarMaquina } from "../../../api/maquinas";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarMaterial from '../../../page/BuscarMaterial';
 import BuscarCliente from '../../../page/BuscarCliente';
-import BuscarPigmento from '../../../page/BuscarPigmento';
 import BuscarProveedor from "../../../page/BuscarProveedor";
-import BuscarEmpaque from '../../../page/BuscarEmpaque';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { listarUM } from "../../../api/unidadesMedida";
 
 function RegistraMatrizProductos(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -42,7 +45,7 @@ function RegistraMatrizProductos(props) {
     // Para almacenar el listado de proveedores
     const [listUM, setListUM] = useState(null);
 
-    useEffect(() => {
+    const cargarListaUM = () => {
         try {
             listarUM(getSucursal()).then(response => {
                 const { data } = response;
@@ -60,6 +63,10 @@ function RegistraMatrizProductos(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarListaUM();
     }, []);
 
     // Para almacenar el listado de clientes
@@ -139,52 +146,7 @@ function RegistraMatrizProductos(props) {
 
     const [direcciones, setDirecciones] = useState([]);
 
-    useEffect(() => {
-        // Para obtener el listado de materias primas
-        try {
-            listarMateriaPrima().then(response => {
-                const { data } = response;
-                //console.log(data)
-                if (!listMateriasPrimas && data) {
-                    setListMateriasPrimas(formatModelMateriasPrimas(data));
-                } else {
-                    const datosProductos = formatModelMateriasPrimas(data);
-                    setListMateriasPrimas(datosProductos);
-                }
-            }).catch(e => {
-                //console.log(e)
-                if (e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión al servidor no disponible");
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-        // Para obtener el listado de clientes
-        try {
-            listarClientes().then(response => {
-                const { data } = response;
-                // console.log(data)
-                const tempClientes = []
-
-                if (!listClientes && data) {
-                    setListClientes(formatModelClientes(data));
-                } else {
-                    const datosProductos = formatModelClientes(data);
-                    setListClientes(datosProductos);
-                }
-            }).catch(e => {
-                //console.log(e)
-                if (e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión al servidor no disponible");
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-
+    const cargarDatosProductos = () => {
         try {
             listarMaquina(getSucursal()).then(response => {
                 const { data } = response;
@@ -206,6 +168,10 @@ function RegistraMatrizProductos(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosProductos();
     }, []);
 
     const onSubmit = e => {

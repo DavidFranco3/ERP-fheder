@@ -17,24 +17,28 @@ import LogoLista from "../../../assets/png/menus/hojaLiberacion.png";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
 import { toast } from "react-toastify";
 import { obtenerUsuario } from "../../../api/usuarios";
-import { LogGeneral } from "../../Logs/LogsSistema/LogsSistema";
+import { LogGeneral, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 
 function DashboardMantenimiento(props) {
     const { setRefreshCheckLogin } = props;
 
     const enrutamiento = useNavigate();
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
-                enrutamiento("");
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

@@ -25,12 +25,7 @@ function EliminacionFisicaGestionAlmacen(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        //console.log(formData);
-        //console.log(fotoUsuario)
-
         try {
-
-            // console.log(data.secure_url)
 
             setLoading(true);
 

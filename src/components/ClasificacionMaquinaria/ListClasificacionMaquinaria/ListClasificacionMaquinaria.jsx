@@ -187,13 +187,16 @@ function ListClasificacionMaquinaria(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listClasificacionMaquinaria);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+       cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -307,7 +310,7 @@ function ListClasificacionMaquinaria(props) {
                 <DataTable
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
-                    data={listClasificacionMaquinaria}
+                    data={rows}
                     //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}

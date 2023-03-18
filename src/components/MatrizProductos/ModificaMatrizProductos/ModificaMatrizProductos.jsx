@@ -5,43 +5,44 @@ import { Alert, Button, Col, Container, Form, Image, Row, Spinner } from "react-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeftLong, faArrowLeftRotate, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { map } from "lodash";
-import LogoPDF from "../../../assets/png/pdf.png";
-import Regreso from "../../../assets/png/back.png";
 import { actualizaProductosMatriz, obtenerMatrizProducto, registraMatrizProductos } from "../../../api/matrizProductos";
 import { listarMateriaPrima } from "../../../api/materiaPrima";
 import { toast } from "react-toastify";
 import { listarClientes } from "../../../api/clientes";
 import { listarMaquina } from "../../../api/maquinas";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarMaterial from '../../../page/BuscarMaterial';
 import BuscarCliente from '../../../page/BuscarCliente';
-import BuscarPigmento from '../../../page/BuscarPigmento';
 import BuscarProveedor from "../../../page/BuscarProveedor";
-import BuscarEmpaque from '../../../page/BuscarEmpaque';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { listarUM } from "../../../api/unidadesMedida";
 
 function ModificaMatrizProductos(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Para almacenar el listado de proveedores
     const [listUM, setListUM] = useState(null);
 
-    useEffect(() => {
+    const cargarListaUM = () => {
         try {
             listarUM(getSucursal()).then(response => {
                 const { data } = response;
@@ -59,6 +60,10 @@ function ModificaMatrizProductos(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarListaUM();
     }, []);
 
     // Para definir el enrutamiento
@@ -153,7 +158,7 @@ function ModificaMatrizProductos(props) {
     // Para guardar los datos del producto
     const [informacionProducto, setInformacionProducto] = useState(null);
 
-    useEffect(() => {
+    const cargarDatosProducto = () => {
         // Para buscar el producto en la matriz de productos
         try {
             obtenerMatrizProducto(producto).then(response => {
@@ -169,50 +174,6 @@ function ModificaMatrizProductos(props) {
                 }
             }).catch(e => {
                 console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-
-        // Para obtener el listado de materias primas
-        try {
-            listarMateriaPrima().then(response => {
-                const { data } = response;
-                //console.log(data)
-                if (!listMateriasPrimas && data) {
-                    setListMateriasPrimas(formatModelMateriasPrimas(data));
-                } else {
-                    const datosProductos = formatModelMateriasPrimas(data);
-                    setListMateriasPrimas(datosProductos);
-                }
-            }).catch(e => {
-                //console.log(e)
-                if (e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión al servidor no disponible");
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-        // Para obtener el listado de clientes
-        try {
-            listarClientes().then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listClientes && data) {
-                    setListClientes(formatModelClientes(data));
-                } else {
-                    const datosProductos = formatModelClientes(data);
-                    setListClientes(datosProductos);
-                }
-            }).catch(e => {
-                //console.log(e)
-                if (e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión al servidor no disponible");
-                }
             })
         } catch (e) {
             console.log(e)
@@ -239,7 +200,10 @@ function ModificaMatrizProductos(props) {
         } catch (e) {
             console.log(e)
         }
+    }
 
+    useEffect(() => {
+       cargarDatosProducto(); 
     }, []);
 
     const onSubmit = e => {

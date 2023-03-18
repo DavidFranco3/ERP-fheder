@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { eliminaUsuario } from "../../../api/usuarios";
+import { useState } from 'react';
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
@@ -8,9 +7,7 @@ import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function EliminacionFisicaCertificados(props) {
     const { datos, setShowModal, history } = props;
-    const { id, folio, noOrdenInterna, cliente, descripcion } = datos
-
-    //console.log(datosPedido)
+    const { id, folio, noOrdenInterna, cliente, descripcion } = datos;
 
     // Para cancelar la actualizacion
     const cancelarEliminacion = () => {

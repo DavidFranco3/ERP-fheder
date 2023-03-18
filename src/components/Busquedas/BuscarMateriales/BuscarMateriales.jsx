@@ -121,13 +121,16 @@ function BuscarMateriales(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listMateriales);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -152,7 +155,7 @@ function BuscarMateriales(props) {
         justify-content: center;
     `;
 
-    const filteredItems = listMateriales.filter(
+    const filteredItems = rows.filter(
         item => item.descripcion && item.descripcion.toLowerCase().includes(filterText.toLowerCase())
     );
 

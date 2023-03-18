@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button, Col, Form, Row, Spinner, Alert, Image, Container, Badge } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { actualizaEvaluacionProveedores, obtenerEvaluacionProveedores } from "../../../api/evaluacionProveedores";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,16 +29,21 @@ function VistaPreviaEvaluacionProveedores(props) {
     const params = useParams();
     const { id } = params;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -49,7 +54,7 @@ function VistaPreviaEvaluacionProveedores(props) {
 
     const [formDataSucursal, setFormDataSucursal] = useState(initialFormDataSucursalInitial());
 
-    useEffect(() => {
+    const cargarDatosRazonSocial = () => {
         //
         obtenerRazonSocialPorNombre(getSucursal()).then(response => {
             const { data } = response;
@@ -58,6 +63,10 @@ function VistaPreviaEvaluacionProveedores(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosRazonSocial();
     }, [getSucursal()]);
     // Para almacenar la informacion
     const [formData, setFormData] = useState(initialFormData());
@@ -95,7 +104,7 @@ function VistaPreviaEvaluacionProveedores(props) {
     // Para validar si hay conexion a internet o la api
     const [conexionInternet, setConexionInternet] = useState(true);
 
-    useEffect(() => {
+    const obtenerDatosEvaluacion = () => {
         try {
             obtenerEvaluacionProveedores(id).then(response => {
                 const { data } = response;
@@ -117,6 +126,10 @@ function VistaPreviaEvaluacionProveedores(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerDatosEvaluacion();
     }, []);
 
     // Para agregar productos al listado
@@ -265,28 +278,28 @@ function VistaPreviaEvaluacionProveedores(props) {
     const encabezados = () => {
         let newArray = [];
         if (formData.productoServicio == "Productos") {
-                newArray.push([
-                    {
-                        text: '#',
-                        fontSize: 9,
-                        bold: true,
-                    },
-                    {
-                        text: 'Folio',
-                        fontSize: 9,
-                        bold: true,
-                    },
-                    {
-                        text: 'Descripción',
-                        fontSize: 9,
-                        bold: true,
-                    },
-                    {
-                        text: 'UM',
-                        fontSize: 9,
-                        bold: true,
-                    },
-                ])
+            newArray.push([
+                {
+                    text: '#',
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: 'Folio',
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: 'Descripción',
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: 'UM',
+                    fontSize: 9,
+                    bold: true,
+                },
+            ])
         } else {
             newArray.push([
                 {
@@ -542,7 +555,7 @@ function VistaPreviaEvaluacionProveedores(props) {
                         widths: ['25%', '25%', '25%', '25%'],
                         heights: [10],
                         body:
-                        headers,
+                            headers,
                     }
                 },
                 {

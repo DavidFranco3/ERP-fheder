@@ -43,7 +43,7 @@ function RegistraEtiquetasMoldes(props) {
     // Para almacenar el folio actual
     const [folioActual, setFolioActual] = useState("");
 
-    useEffect(() => {
+    const obtenerFolio = () => {
         try {
             obtenerNoEtiqueta().then(response => {
                 const { data } = response;
@@ -56,6 +56,10 @@ function RegistraEtiquetasMoldes(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerFolio();
     }, []);
 
     const onSubmit = (e) => {

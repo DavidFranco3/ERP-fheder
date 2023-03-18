@@ -95,13 +95,16 @@ function BuscarProductosOrdenVenta(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listProductos);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -111,8 +114,6 @@ function BuscarProductosOrdenVenta(props) {
 
     const [filterText, setFilterText] = useState("");
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
-
-
 
     // Defino barra de busqueda
     const ClearButton = styled(Button)` 
@@ -128,7 +129,7 @@ function BuscarProductosOrdenVenta(props) {
         justify-content: center;
     `;
 
-    const filteredItems = listProductos.filter(
+    const filteredItems = rows.filter(
         item => item.item && item.item.toLowerCase().includes(filterText.toLowerCase())
     );
 

@@ -43,7 +43,7 @@ function RegistroIdentificacionPT(props) {
     // Para almacenar el folio actual
     const [folioActual, setFolioActual] = useState("");
 
-    useEffect(() => {
+    const obtenerFolio = () => {
         try {
             obtenerNoEtiquetaPT().then(response => {
                 const { data } = response;
@@ -56,30 +56,10 @@ function RegistroIdentificacionPT(props) {
         } catch (e) {
             console.log(e)
         }
-    }, []);
+    }
 
-    // Para almacenar el listado de productos activos
-    const [listProduccion, setListProduccion] = useState(null);
-
-    // Para traer el listado de productos activos
     useEffect(() => {
-        try {
-            listarProduccion(getSucursal()).then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProduccion && data) {
-                    setListProduccion(formatModelProduccion(data));
-                } else {
-                    const datosProduccion = formatModelProduccion(data);
-                    setListProduccion(datosProduccion);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
+        obtenerFolio();
     }, []);
 
     // Para controlar la animacion

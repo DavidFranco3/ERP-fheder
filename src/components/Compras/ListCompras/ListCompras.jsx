@@ -285,13 +285,16 @@ function ListCompras(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listCompras);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -306,7 +309,7 @@ function ListCompras(props) {
             <Container fluid>
                 <DataTable
                     columns={columns}
-                    data={listCompras}
+                    data={rows}
                     noDataComponent="No hay registros para mostrar"
                     expandableRows
                     expandableRowsComponent={ExpandedComponent}

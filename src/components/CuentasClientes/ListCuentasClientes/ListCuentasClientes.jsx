@@ -58,12 +58,16 @@ function ListCuentasClientes(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listCuentas);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -79,7 +83,7 @@ function ListCuentasClientes(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={listCuentas}
+                    data={rows}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}

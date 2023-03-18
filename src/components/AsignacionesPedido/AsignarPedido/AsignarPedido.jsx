@@ -20,7 +20,7 @@ function AsignarPedido(props) {
     // Para almacenar el listado de materias primas
     const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
 
-    useEffect(() => {
+    const obtenerListaMateriales = () => {
         try {
             listarRegistrosGeneralesAlmacen().then(response => {
                 const { data } = response;
@@ -32,11 +32,15 @@ function AsignarPedido(props) {
                     setListMateriasPrimas(datosProductos);
                 }
             }).catch(e => {
-                //console.log(e)
+                console.log(e)
             })
         } catch (e) {
-            //console.log(e)
+            console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerListaMateriales();
     }, []);
 
     const onSubmit = (e) => {

@@ -69,13 +69,16 @@ function BuscarDepartamentos(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listDepartamentos);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -102,7 +105,7 @@ function BuscarDepartamentos(props) {
         justify-content: center;
     `;
 
-    const filteredItems = listDepartamentos.filter(
+    const filteredItems = rows.filter(
         item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase())
     );
 

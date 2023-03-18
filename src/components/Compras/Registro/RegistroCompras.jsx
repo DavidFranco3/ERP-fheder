@@ -6,7 +6,7 @@ import "./RegistroCompras.scss"
 import { listarEvaluacionProveedores } from "../../../api/evaluacionProveedores";
 import { toast } from "react-toastify";
 import { obtenerNumeroOrdenCompra, registraOrdenCompra, obtenerItem } from "../../../api/compras";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { listarPedidosVenta } from "../../../api/pedidoVenta";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
@@ -23,16 +23,21 @@ function RegistroCompras(props) {
     // Para definir el uso de la animación
     const [loading, setLoading] = useState(false);
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -95,42 +100,15 @@ function RegistroCompras(props) {
         setShowModal(true);
     }
 
-    // Para almacenar el listado de ordenes de venta
-    const [listOrdenesVenta, setListOrdenesVenta] = useState(null);
-
     // Para almacenar la OV
     const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
 
     const [producto, setProducto] = useState([]);
 
-    useEffect(() => {
-        try {
-            listarPedidosVenta().then(response => {
-                const { data } = response;
-                // console.log(data);
-                if (!listOrdenesVenta && data) {
-                    setListOrdenesVenta(formatModelOrdenesVenta(data));
-                } else {
-                    const datosOV = formatModelOrdenesVenta(data);
-                    setListOrdenesVenta(datosOV);
-                }
-
-            }).catch((e) => {
-                //console.log(e)
-                if (e.message === "Network Error") {
-                    toast.error("Conexión a Internet no Disponible");
-                    // setConexionInternet(false);
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
     // Para almacenar el folio actual
     const [folioActual, setFolioActual] = useState("");
 
-    useEffect(() => {
+    const obtenerFolio = () => {
         try {
             obtenerNumeroOrdenCompra().then(response => {
                 const { data } = response;
@@ -143,12 +121,16 @@ function RegistroCompras(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerFolio();
     }, []);
 
     // Para almacenar el folio actual
     const [itemActual, setItemActual] = useState("");
 
-    useEffect(() => {
+    const obtenerItem = () => {
         try {
             obtenerItem().then(response => {
                 const { data } = response;
@@ -161,29 +143,10 @@ function RegistroCompras(props) {
         } catch (e) {
             console.log(e)
         }
-    }, []);
-
-    // Para almacenar el listado de proveedores
-    const [listProveedores, setListProveedores] = useState(null);
+    }
 
     useEffect(() => {
-        try {
-            listarEvaluacionProveedores().then(response => {
-                const { data } = response;
-                // console.log(data)
-                if (!listarEvaluacionProveedores() && data) {
-                    setListProveedores(formatModelProveedores(data));
-                } else {
-                    const datosProveedores = formatModelProveedores(data);
-                    setListProveedores(datosProveedores);
-                }
-
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
+        obtenerItem();
     }, []);
 
     // Para guardar los datos del formulario
@@ -331,7 +294,7 @@ function RegistroCompras(props) {
 
     const [productoCargado, setProductoCargado] = useState("");
 
-    useEffect(() => {
+    const cargarProductos = () => {
         setProductoCargado(formDataArticulos.descripcion)
         const dataTempProductos = productoCargado.split("/")
         const dataTemp = {
@@ -342,6 +305,10 @@ function RegistroCompras(props) {
             referencia: dataTempProductos[6]
         }
         setFormDataArticulos(cargaFormDataArticulos(dataTemp))
+    }
+
+    useEffect(() => {
+        cargarProductos();
     }, [formDataArticulos.descripcion]);
 
     // Calcula el subtotal de la lista de artículos cargados

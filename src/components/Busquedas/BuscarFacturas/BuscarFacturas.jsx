@@ -88,13 +88,16 @@ function BuscarFacturas(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
+const cargarDatos = () => {
+    const timeout = setTimeout(() => {
+        setRows(listFacturas);
+        setPending(false);
+    }, 0);
+    return () => clearTimeout(timeout);
+}
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            setRows(listFacturas);
-            setPending(false);
-        }, 0);
-        return () => clearTimeout(timeout);
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -121,7 +124,7 @@ function BuscarFacturas(props) {
         justify-content: center;
     `;
 
-    const filteredItems = listFacturas.filter(
+    const filteredItems = rows.filter(
         item => item.nombreCliente && item.nombreCliente.toLowerCase().includes(filterText.toLowerCase())
     );
 

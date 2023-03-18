@@ -39,7 +39,6 @@ import LiberacionProductoProceso from "../page/LiberacionProductoProceso";
 import FichaTecnica from "../page/FichaTecnica";
 import CertificadosCalidad from "../page/CertificadosCalidad";
 import AsignacionPedido from "../page/AsignacionPedido";
-import Mes from "../page/Mes";
 import Semana from "../page/Semana";
 import Maquinaria from "../page/Maquinaria";
 import Maquinas from "../page/Maquinas";
@@ -908,10 +907,6 @@ export default [
     {
         path: "/RecepcionMaterialInsumos",
         page: RecepcionMaterialInsumos
-    },
-    {
-        path: "/Mes",
-        page: Mes
     },
     {
         path: "/Semana",

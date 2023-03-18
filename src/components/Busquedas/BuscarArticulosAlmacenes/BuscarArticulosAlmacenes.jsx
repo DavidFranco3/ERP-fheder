@@ -83,13 +83,17 @@ function BuscarArticulosAlmacenes(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listArticulos);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -114,7 +118,7 @@ function BuscarArticulosAlmacenes(props) {
     const [filterText, setFilterText] = useState("");
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
 
-    const filteredItems = listArticulos.filter(
+    const filteredItems = rows.filter(
         item => item.nombreArticulo && item.nombreArticulo.toLowerCase().includes(filterText.toLowerCase())
     );
 

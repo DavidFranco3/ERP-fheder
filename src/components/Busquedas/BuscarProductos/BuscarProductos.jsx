@@ -94,13 +94,16 @@ function BuscarProductos(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listProductos);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -125,7 +128,7 @@ function BuscarProductos(props) {
         justify-content: center;
     `;
 
-    const filteredItems = listProductos.filter(
+    const filteredItems = rows.filter(
         item => item.descripcion && item.descripcion.toLowerCase().includes(filterText.toLowerCase())
     );
 

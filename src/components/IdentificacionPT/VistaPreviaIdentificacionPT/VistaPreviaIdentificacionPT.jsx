@@ -9,7 +9,7 @@ import { obtenerRazonSocialPorNombre } from "../../../api/razonesSociales";
 import { map } from "lodash";
 import { toast } from "react-toastify";
 import queryString from "query-string";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
@@ -30,7 +30,7 @@ function VistaPreviaIdentificacionPT(props) {
 
     const [formDataSucursal, setFormDataSucursal] = useState(initialFormDataSucursalInitial());
 
-    useEffect(() => {
+    const cargarDatosRazonSocial = () => {
         //
         obtenerRazonSocialPorNombre(getSucursal()).then(response => {
             const { data } = response;
@@ -39,18 +39,27 @@ function VistaPreviaIdentificacionPT(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosRazonSocial();
     }, [getSucursal()]);
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -72,7 +81,7 @@ function VistaPreviaIdentificacionPT(props) {
     // Para almacenar la informacion del formulario
     const [formDataProduccion, setFormDataProduccion] = useState(initialFormDataProduccionInitial());
 
-    useEffect(() => {
+    const cargarDatosEtiqueta = () => {
         //
         obtenerEtiquetaPT(id).then(response => {
             const { data } = response;
@@ -83,30 +92,10 @@ function VistaPreviaIdentificacionPT(props) {
         }).catch(e => {
             console.log(e)
         })
-    }, []);
+    }
 
-    // Para almacenar el listado de productos activos
-    const [listProduccion, setListProduccion] = useState(null);
-
-    // Para traer el listado de productos activos
     useEffect(() => {
-        try {
-            listarProduccion(getSucursal()).then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProduccion && data) {
-                    setListProduccion(formatModelProduccion(data));
-                } else {
-                    const datosProduccion = formatModelProduccion(data);
-                    setListProduccion(datosProduccion);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
+        cargarDatosEtiqueta();
     }, []);
 
     // Para controlar la animacion
@@ -184,7 +173,7 @@ function VistaPreviaIdentificacionPT(props) {
                                     border: [false, false, false, false],
                                     text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
                                     alignment: 'right',
-                                    margin: [ 5, 2, 10, 20 ]
+                                    margin: [5, 2, 10, 20]
                                 }
                             ]
                         ]
@@ -266,7 +255,7 @@ function VistaPreviaIdentificacionPT(props) {
                                     text: `Descripción del producto:  ${formDataProduccion.descripcionProducto}`,
                                     colSpan: 2,
                                     bold: true,
-                                    fontSize: 9 
+                                    fontSize: 9
                                 },
                                 {
                                 }
@@ -302,7 +291,7 @@ function VistaPreviaIdentificacionPT(props) {
                                     text: `Operador:  ${formData.operador}`,
                                     colSpan: 2,
                                     fontSize: 9,
-                                    bold: true 
+                                    bold: true
                                 },
                                 {
                                 },
@@ -320,7 +309,7 @@ function VistaPreviaIdentificacionPT(props) {
                                     text: `Supervisor:  ${formData.supervisor}`,
                                     colSpan: 2,
                                     fontSize: 9,
-                                    bold: true 
+                                    bold: true
                                 },
                                 {
                                 },

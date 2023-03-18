@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { registraCertificado, obtenerNumeroCertificado, obtenerItemCertificado } from "../../../api/certificadosCalidad";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import BuscarProduccion from "../../../page/BuscarProduccion";
 
 function RegistraReporte(props) {
@@ -19,16 +19,21 @@ function RegistraReporte(props) {
     // Para almacenar la informacion del formulario
     const [formDataProduccion, setFormDataProduccion] = useState(initialFormDataProduccion());
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -57,7 +62,7 @@ function RegistraReporte(props) {
 
     const [item, setItem] = useState("");
 
-    useEffect(() => {
+    const obtenerItem = ()=>{
         try {
             obtenerItemCertificado().then(response => {
                 const { data } = response;
@@ -70,6 +75,10 @@ function RegistraReporte(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerItem();
     }, []);
 
 

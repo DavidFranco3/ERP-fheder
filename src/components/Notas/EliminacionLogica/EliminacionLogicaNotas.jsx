@@ -23,7 +23,7 @@ function EliminacionLogicaNotas(props) {
     const [cliente, setCliente] = useState("");
     const [nombreCliente, setNombreCliente] = useState("");
 
-    useEffect(() => {
+    const cargarDatosFactura = () => {
         //
         obtenerDatosFactura(factura).then(response => {
             const { data } = response;
@@ -33,6 +33,10 @@ function EliminacionLogicaNotas(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosFactura();
     }, []);
 
     const onSubmit = e => {

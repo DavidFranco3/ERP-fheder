@@ -67,13 +67,16 @@ function ListLogs(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listLogs);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+       cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -88,7 +91,7 @@ function ListLogs(props) {
             <Container fluid>
                 <DataTable
                     columns={columns}
-                    data={listLogs}
+                    data={rows}
                     noDataComponent="No hay registros para mostrar"
                     progressPending={pending}
                     paginationComponentOptions={paginationComponentOptions}

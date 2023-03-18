@@ -12,7 +12,7 @@ function ListProductosCompras(props) {
     // Almacena los datos de la orden de venta
     const [datosOrdenCompra, setDatosOrdenCompra] = useState(null);
 
-    useEffect(() => {
+    const obtenerDatos = () => {
         try {
             obtenerDatosCompra(ordenCompra).then(response => {
                 const { data } = response;
@@ -24,6 +24,10 @@ function ListProductosCompras(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerDatos();
     }, []);
 
 

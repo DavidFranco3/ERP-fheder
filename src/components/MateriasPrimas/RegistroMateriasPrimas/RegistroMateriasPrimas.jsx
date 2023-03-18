@@ -29,7 +29,7 @@ function RegistroMateriasPrimas(props) {
     // Para almacenar el listado de proveedores
     const [listUM, setListUM] = useState(null);
 
-    useEffect(() => {
+    const cargarListaUM = () => {
         try {
             listarUM(getSucursal()).then(response => {
                 const { data } = response;
@@ -47,11 +47,15 @@ function RegistroMateriasPrimas(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarListaUM();
     }, []);
 
     const [listTipoMaterial, setListTipoMaterial] = useState(null);
 
-    useEffect(() => {
+    const cargarListaTipoMaterial = () => {
         try {
             listarClasificacionMaterial(getSucursal()).then(response => {
                 const { data } = response;
@@ -69,9 +73,13 @@ function RegistroMateriasPrimas(props) {
         } catch (e) {
             console.log(e)
         }
-    }, []);
+    }
 
     useEffect(() => {
+        cargarListaTipoMaterial();
+    }, []);
+
+    const obtenerFolio = () => {
         try {
             obtenerFolioActualMP().then(response => {
                 const { data } = response;
@@ -84,6 +92,10 @@ function RegistroMateriasPrimas(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerFolio();
     }, []);
 
 

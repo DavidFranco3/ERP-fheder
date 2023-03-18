@@ -15,7 +15,7 @@ function ModificaMaquinas(props) {
     const { id } = data;
 
     // Para almacenar los datos del formulario
-    const [formData, setFormData] = useState(initialFormData());
+    const [formData, setFormData] = useState(valoresAlmacenados(data));
 
     // Cancelar y cerrar el formulario
     const cancelarRegistro = () => {
@@ -28,7 +28,7 @@ function ModificaMaquinas(props) {
     // Para almacenar el listado de proveedores
     const [listTipoMaquina, setListTipoMaquina] = useState(null);
 
-    useEffect(() => {
+    const cargarListaTipoMaquinas = () => {
         try {
             listarClasificacionMaquinaria(getSucursal()).then(response => {
                 const { data } = response;
@@ -46,12 +46,16 @@ function ModificaMaquinas(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarListaTipoMaquinas();
     }, []);
 
     // Para almacenar el listado de proveedores
     const [listSucursales, setListSucursales] = useState(null);
 
-    useEffect(() => {
+    const cargarListaSucursales = () => {
         try {
             listarSucursales(getSucursal()).then(response => {
                 const { data } = response;
@@ -69,28 +73,10 @@ function ModificaMaquinas(props) {
         } catch (e) {
             console.log(e)
         }
-    }, []);
+    }
 
     useEffect(() => {
-        // Para buscar el producto en la matriz de productos
-        try {
-            obtenerMaquina(id).then(response => {
-                const { data } = response;
-                // console.log(data)
-                // initialData
-
-                if (!formData && data) {
-                    setFormData(valoresAlmacenados(data));
-                } else {
-                    const datosMaquinas = valoresAlmacenados(data);
-                    setFormData(datosMaquinas);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
+        cargarListaSucursales();
     }, []);
 
     const onSubmit = (e) => {

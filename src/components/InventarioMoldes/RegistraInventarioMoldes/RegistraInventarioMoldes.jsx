@@ -43,7 +43,7 @@ function RegistraInventarioMoldes(props) {
     // Para almacenar el folio actual
     const [itemActual, setItemActual] = useState("");
 
-    useEffect(() => {
+    const obtenerItem = () => {
         try {
             obtenerItemInventarioMolde().then(response => {
                 const { data } = response;
@@ -56,6 +56,10 @@ function RegistraInventarioMoldes(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerItem();
     }, []);
 
     const onSubmit = (e) => {

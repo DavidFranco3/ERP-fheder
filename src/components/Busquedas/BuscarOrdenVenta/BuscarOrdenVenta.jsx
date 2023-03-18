@@ -106,13 +106,16 @@ function BuscarOrdenVenta(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listVentas);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -139,7 +142,7 @@ function BuscarOrdenVenta(props) {
         justify-content: center;
     `;
 
-    const filteredItems = listVentas.filter(
+    const filteredItems = rows.filter(
         item => item.nombreCliente && item.nombreCliente.toLowerCase().includes(filterText.toLowerCase())
     );
 

@@ -85,13 +85,16 @@ function BuscarRequisiciones(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listRequisiciones);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -116,7 +119,7 @@ function BuscarRequisiciones(props) {
         justify-content: center;
     `;
 
-    const filteredItems = listRequisiciones.filter(
+    const filteredItems = rows.filter(
         item => item.folio && item.folio.toLowerCase().includes(filterText.toLowerCase())
     );
 

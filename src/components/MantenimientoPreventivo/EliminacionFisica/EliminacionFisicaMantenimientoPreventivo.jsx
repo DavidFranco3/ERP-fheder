@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import queryString from "query-string";
 import "./EliminacionFisicaMantenimientoPreventivo.scss";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";

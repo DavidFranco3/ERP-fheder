@@ -8,8 +8,7 @@ function ProductoAsignado(props) {
     // Para almacenar el nombre del cliente
     const [nombreCliente, setNombreCliente] = useState("");
 
-    useEffect(() => {
-        //
+    const obtenerNombreCliente = () => {
         try {
             obtenerCliente(id).then(response => {
                 const { data } = response;
@@ -26,7 +25,11 @@ function ProductoAsignado(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [id]);
+    }
+
+    useEffect(() => {
+        obtenerNombreCliente();
+    }, []);
 
     return (
         <>

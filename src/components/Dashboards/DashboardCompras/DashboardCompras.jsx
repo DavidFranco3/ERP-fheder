@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-
 import "./DashboardCompras.scss";
 import { Alert, Button, Col, Row, Card, Container, CardGroup, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,26 +9,30 @@ import LogoCompras from "../../../assets/png/menus/ordenCompra.png";
 import LogoRequisicion from "../../../assets/png/menus/requisiciones.png";
 import LogoRecepciones from "../../../assets/png/menus/recepcion.png"
 import LogoProveedores from "../../../assets/png/menus/proveedor.png";
-import LogoInsumos from "../../../assets/png/menus/insumos.png";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
 import { toast } from "react-toastify";
+import {  LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 
 function DashboardCompras(props) {
     const { setRefreshCheckLogin } = props;
 
     const enrutamiento = useNavigate();
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
-                enrutamiento("");
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

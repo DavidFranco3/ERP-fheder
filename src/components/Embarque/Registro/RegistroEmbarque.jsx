@@ -3,6 +3,7 @@ import { Alert, Button, Col, Row, Form, Container, Badge } from "react-bootstrap
 import { useNavigate } from "react-router-dom";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { toast } from "react-toastify";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 
 function RegistroEmbarque(props) {
     const { setRefreshCheckLogin } = props;
@@ -18,16 +19,21 @@ function RegistroEmbarque(props) {
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

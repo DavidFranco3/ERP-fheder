@@ -8,7 +8,7 @@ import { obtenerCliente } from '../../../api/clientes';
 import { actualizaEtiquetasPiezas, obtenerEtiquetasPiezas } from '../../../api/etiquetaPrimeraPieza';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import queryString from "query-string";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import BuscarMaquina from '../../../page/BuscarMaquina';
 import BuscarProducto from '../../../page/BuscarProducto';
 import { obtenerRazonSocialPorNombre } from "../../../api/razonesSociales";
@@ -33,7 +33,7 @@ function VistaPreviaPrimeraPieza(props) {
 
     const [formDataSucursal, setFormDataSucursal] = useState(initialFormDataSucursalInitial());
 
-    useEffect(() => {
+    const cargarDatosRazonSocial = () => {
         //
         obtenerRazonSocialPorNombre(getSucursal()).then(response => {
             const { data } = response;
@@ -42,18 +42,27 @@ function VistaPreviaPrimeraPieza(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosRazonSocial();
     }, [getSucursal()]);
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -78,8 +87,7 @@ function VistaPreviaPrimeraPieza(props) {
     // Para guardar los datos del formulario
     const [formDataProducto, setFormDataProducto] = useState(initialFormDataProductoInitial());
 
-
-    useEffect(() => {
+    const cargarDatosEtiquetas = () => {
         //
         obtenerEtiquetasPiezas(id).then(response => {
             const { data } = response;
@@ -91,6 +99,10 @@ function VistaPreviaPrimeraPieza(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosEtiquetas();
     }, []);
 
     // Para hacer uso del modal
@@ -112,30 +124,6 @@ function VistaPreviaPrimeraPieza(props) {
         setShowModal2(true);
     }
 
-    // Para almacenar el listado de productos activos
-    const [listProductosActivos, setListProductosActivos] = useState(null);
-
-    // Para traer el listado de productos activos
-    useEffect(() => {
-        try {
-            listarMatrizProductosActivos(getSucursal()).then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProductosActivos && data) {
-                    setListProductosActivos(formatModelMatrizProductos(data));
-                } else {
-                    const datosProductos = formatModelMatrizProductos(data);
-                    setListProductosActivos(datosProductos);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
     // Para almacenar la materia prima seleccionada
     const [productoSeleccionado, setProductoSeleccionado] = useState([]);
 
@@ -156,7 +144,7 @@ function VistaPreviaPrimeraPieza(props) {
 
     const [nombreCliente, setNombreCliente] = useState("");
 
-    useEffect(() => {
+    const cargarDatosClientes = () => {
         try {
             obtenerCliente(productoSeleccionado != "" ? productoSeleccionado?.cliente : formData.cliente).then(response => {
                 const { data } = response;
@@ -168,6 +156,10 @@ function VistaPreviaPrimeraPieza(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+       cargarDatosClientes();
     }, [formData.producto]);
 
     // Para controlar la animacion
@@ -226,7 +218,7 @@ function VistaPreviaPrimeraPieza(props) {
                                     border: [false, false, false, false],
                                     text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
                                     alignment: 'right',
-                                    margin: [ 5, 2, 10, 20 ]
+                                    margin: [5, 2, 10, 20]
                                 }
                             ]
                         ]
@@ -308,7 +300,7 @@ function VistaPreviaPrimeraPieza(props) {
                                     text: `Descripción del producto:  ${formDataProducto.nombreProducto}`,
                                     colSpan: 2,
                                     bold: true,
-                                    fontSize: 9 
+                                    fontSize: 9
                                 },
                                 {
                                 }
@@ -344,7 +336,7 @@ function VistaPreviaPrimeraPieza(props) {
                                     text: `Turno:  ${formData.turno}`,
                                     colSpan: 2,
                                     fontSize: 9,
-                                    bold: true 
+                                    bold: true
                                 },
                                 {
                                 },
@@ -362,7 +354,7 @@ function VistaPreviaPrimeraPieza(props) {
                                     text: `Supervisor:  ${formData.supervisor}`,
                                     colSpan: 2,
                                     fontSize: 9,
-                                    bold: true 
+                                    bold: true
                                 },
                                 {
                                 },

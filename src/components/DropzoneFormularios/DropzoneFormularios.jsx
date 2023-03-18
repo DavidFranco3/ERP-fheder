@@ -31,7 +31,7 @@ function DropzoneFormularios(props) {
         onDrop: onDropImagen,
     });
 
-    useEffect(() => {
+    const cargarImagen = () => {
         slide.map((file, key) => {
             const tempType = file.type.split("/");
             const type = tempType[0];
@@ -40,6 +40,10 @@ function DropzoneFormularios(props) {
             //console.log(Ext);
             //console.log(type);
         });
+    }
+
+    useEffect(() => {
+        cargarImagen();
     }, [slide]);
 
     const visualizarSlide1 = slide.map(file => (

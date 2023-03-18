@@ -89,13 +89,16 @@ function BuscarCompras(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listCompras);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -120,7 +123,7 @@ function BuscarCompras(props) {
         justify-content: center;
     `;
 
-    const filteredItems = listCompras.filter(
+    const filteredItems = rows.filter(
         item => item.nombreProveedor && item.nombreProveedor.toLowerCase().includes(filterText.toLowerCase())
     );
 

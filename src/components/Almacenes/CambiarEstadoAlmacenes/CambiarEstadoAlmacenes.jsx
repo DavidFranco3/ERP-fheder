@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import "./CambiarEstadoAlmacenes.scss"
 import { Alert, Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import { actualizaEstadoAlmacenes } from "../../../api/almacenes";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
-import { useRouteMatch } from 'react-router-dom';
 
 function CambiarEstadoAlmacenes(props) {
     const { datos, setShowModal, location, history } = props;

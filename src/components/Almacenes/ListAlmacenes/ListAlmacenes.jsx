@@ -179,13 +179,17 @@ function ListAlmacenMp(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listAlmacenes);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -225,7 +229,7 @@ function ListAlmacenMp(props) {
     `;
 
 
-    const filteredItems = listAlmacenes.filter(
+    const filteredItems = rows.filter(
         item => filterText == "" ? item.nombreArticulo.toLowerCase().includes(filterText.toLowerCase()) : item.nombreArticulo == filterText
     );
 
@@ -272,8 +276,7 @@ function ListAlmacenMp(props) {
 
     let cantidadTotalSalida = 0;
 
-
-    useEffect(() => {
+    const obtenerExistencias = () => {
         map(filteredItems, (articulos, index) => {
             const { estado, cantidadExistencia, tipo } = articulos
             if (estado == "true") {
@@ -286,6 +289,11 @@ function ListAlmacenMp(props) {
             setTotalEntrada(cantidadTotalEntrada)
             setTotalSalida(cantidadTotalSalida)
         })
+    }
+
+
+    useEffect(() => {
+        obtenerExistencias();
     }, [filteredItems]);
 
     return (

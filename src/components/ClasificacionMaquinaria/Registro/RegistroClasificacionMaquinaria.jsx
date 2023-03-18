@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import "./RegistroClasificacionMaquinaria.scss";
 import { Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
@@ -104,26 +104,26 @@ function RegistroClasificacionMaquinaria(props) {
                         </Row>
 
                         <Form.Group as={Row} className="botones">
-                                <Col>
-                                    <Button
-                                        type="submit"
-                                        variant="success"
-                                        className="registrar"
-                                    >
-                                        {!loading ? "Registrar" : <Spinner animation="border" />}
-                                    </Button>
-                                </Col>
-                                <Col>
-                                    <Button
-                                        variant="danger"
-                                        className="cancelar"
-                                        onClick={() => {
-                                            regresaPagina()
-                                        }}
-                                    >
-                                        Cancelar
-                                    </Button>
-                                </Col>
+                            <Col>
+                                <Button
+                                    type="submit"
+                                    variant="success"
+                                    className="registrar"
+                                >
+                                    {!loading ? "Registrar" : <Spinner animation="border" />}
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Button
+                                    variant="danger"
+                                    className="cancelar"
+                                    onClick={() => {
+                                        regresaPagina()
+                                    }}
+                                >
+                                    Cancelar
+                                </Button>
+                            </Col>
                         </Form.Group>
                     </Form>
                 </div>

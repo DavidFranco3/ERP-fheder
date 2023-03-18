@@ -9,7 +9,7 @@ import BasicModal from "../../Modal/BasicModal";
 import { obtenerInspeccion, actualizaInspeccion } from "../../../api/inspeccionMaterial";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { obtenerDatosRecepcion } from "../../../api/recepcionMaterialInsumos";
 import { obtenerRazonSocialPorNombre } from "../../../api/razonesSociales";
 import { map } from "lodash";
@@ -30,16 +30,21 @@ function VistaPreviaCalidad(props) {
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -68,8 +73,7 @@ function VistaPreviaCalidad(props) {
     const parametros = useParams()
     const { id } = parametros
 
-    useEffect(() => {
-        //
+    const obtenerDatos = () => {
         obtenerInspeccion(id).then(response => {
             const { data } = response;
             //console.log(data)
@@ -90,6 +94,10 @@ function VistaPreviaCalidad(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        obtenerDatos();
     }, []);
 
     console.log(productosRecepcion);
@@ -114,15 +122,19 @@ function VistaPreviaCalidad(props) {
 
     const [formDataSucursal, setFormDataSucursal] = useState(initialFormDataSucursalInitial());
 
+    const cargarRazonSocial = () => {
+//
+obtenerRazonSocialPorNombre(getSucursal()).then(response => {
+    const { data } = response;
+    //console.log(data)
+    setFormDataSucursal(initialFormDataSucursal(data));
+}).catch(e => {
+    console.log(e)
+})
+    }
+
     useEffect(() => {
-        //
-        obtenerRazonSocialPorNombre(getSucursal()).then(response => {
-            const { data } = response;
-            //console.log(data)
-            setFormDataSucursal(initialFormDataSucursal(data));
-        }).catch(e => {
-            console.log(e)
-        })
+        cargarRazonSocial();
     }, [getSucursal()]);
 
     const onSubmit = e => {
@@ -178,10 +190,7 @@ function VistaPreviaCalidad(props) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    console.log(formData.nombreDescripcion);
-
-    useEffect(() => {
-
+    const obtenerInformacion = () => {
         const temp = formData.nombreDescripcion.split("/");
         setFolioMaterial(temp[0]);
         setCantidad(temp[2]);
@@ -200,13 +209,16 @@ function VistaPreviaCalidad(props) {
         } catch (e) {
             console.log(e)
         }
+    }
 
+    useEffect(() => {
+        obtenerInformacion();
     }, [formData.nombreDescripcion]);
 
     // Para almacenar el listado de proveedores
     const [listUM, setListUM] = useState(null);
 
-    useEffect(() => {
+    const obtenerListaUM = () => {
         try {
             listarUM(getSucursal()).then(response => {
                 const { data } = response;
@@ -224,6 +236,10 @@ function VistaPreviaCalidad(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+       obtenerListaUM();
     }, []);
 
     const descargaPDF = async () => {

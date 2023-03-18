@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import "./ModificaFacturas.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
@@ -27,16 +27,21 @@ function ModificaFacturas(props) {
     const params = useParams();
     const { id } = params
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -67,7 +72,7 @@ function ModificaFacturas(props) {
     // Para guardar los datos del formulario
     const [formDataCliente, setFormDataCliente] = useState(initialFormDataClienteInitial());
 
-    useEffect(() => {
+    const cargarDatosFactura = () => {
         //
         obtenerFactura(id).then(response => {
             const { data } = response;
@@ -80,9 +85,13 @@ function ModificaFacturas(props) {
         }).catch(e => {
             console.log(e)
         })
-    }, []);
+    }
 
     useEffect(() => {
+        cargarDatosFactura();
+    }, []);
+
+    const cargarDatosClientes = () => {
         //
         obtenerCliente(formDataVenta.cliente).then(response => {
             const { data } = response;
@@ -92,6 +101,10 @@ function ModificaFacturas(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosClientes();
     }, [formDataVenta.cliente]);
 
     // Para determinar el uso de la animacion de carga mientras se guarda el pedido
@@ -132,64 +145,9 @@ function ModificaFacturas(props) {
     }
 
     // Para almacenar la lista completa de clientes
-    const [listClientes, setListClientes] = useState(null);
-
-    // Obtener los clientes registrados
-    useEffect(() => {
-        try {
-            listarClientes().then(response => {
-                const { data } = response;
-
-                //console.log(data);
-
-                if (!listClientes && data) {
-                    setListClientes(formatModelClientes(data));
-                } else {
-                    const datosClientes = formatModelClientes(data);
-                    setListClientes(datosClientes);
-                }
-            }).catch(e => {
-                //console.log(e)
-                if (e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión a Internet no Disponible");
-                    setConexionInternet(false);
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
-    // Para almacenar la lista completa de clientes
     const [listProductosOV, setListProductosOV] = useState([]);
 
     const renglon = listProductosCargados.length + 1;
-
-    // Obten el listado de productos
-    // Para almacenar el listado de productos activos
-    const [listProductosActivos, setListProductosActivos] = useState(null);
-
-    // Para traer el listado de productos activos
-    useEffect(() => {
-        try {
-            listarMatrizProductosActivos().then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProductosActivos && data) {
-                    setListProductosActivos(formatModelMatrizProductos(data));
-                } else {
-                    const datosProductos = formatModelMatrizProductos(data);
-                    setListProductosActivos(datosProductos);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     const [iva, setIva] = useState(0);
 
@@ -370,19 +328,21 @@ function ModificaFacturas(props) {
 
     const [fechaVencimiento, setFechaVencimiento] = useState();
 
-    console.log(formDataVenta.fechaPedido);
+    const cargarFechas = () => {
+//la fecha
+const TuFecha = new Date(formDataVenta.fechaPedido);
+
+//nueva fecha sumada
+TuFecha.setDate(TuFecha.getDate() + parseInt(formDataCliente.diasCredito));
+//formato de salida para la fecha
+setFechaVencimiento((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
+    : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
+        : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
+            : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+    }
 
     useEffect(() => {
-        //la fecha
-        const TuFecha = new Date(formDataVenta.fechaPedido);
-
-        //nueva fecha sumada
-        TuFecha.setDate(TuFecha.getDate() + parseInt(formDataCliente.diasCredito));
-        //formato de salida para la fecha
-        setFechaVencimiento((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
-            : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
-                : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
-                    : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+        cargarFechas();
     }, [formDataVenta.fechaPedido, formDataCliente.diasCredito]);
 
     const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState();
@@ -449,15 +409,15 @@ function ModificaFacturas(props) {
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                    <div className="flex items-center mb-1">
-                                        <Form.Control
-                                            type="text"
-                                            defaultValue={formDataVenta.ordenVenta}
-                                            placeholder="Orden de venta"
-                                            name="ordenVenta"
-                                            disabled
-                                        />
-                                        <FontAwesomeIcon
+                                        <div className="flex items-center mb-1">
+                                            <Form.Control
+                                                type="text"
+                                                defaultValue={formDataVenta.ordenVenta}
+                                                placeholder="Orden de venta"
+                                                name="ordenVenta"
+                                                disabled
+                                            />
+                                            <FontAwesomeIcon
                                                 className="cursor-pointer py-2 -ml-6"
                                                 title="Buscar entre las ventas"
                                                 icon={faSearch}

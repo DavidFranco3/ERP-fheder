@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Alert, Button, Col, Row, Form, Container, Spinner } from "react-bootstrap";
 import "./ModificaInventarioMaquinas.scss";
 import { actualizaInventarioMaquina } from '../../../api/inventarioMaquinas';

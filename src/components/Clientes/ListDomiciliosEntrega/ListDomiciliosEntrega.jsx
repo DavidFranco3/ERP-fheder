@@ -12,7 +12,7 @@ function ListDomiciliosEntrega(props) {
     // Almacena los datos de la orden de venta
     const [datosDirecciones, setDatosDirecciones] = useState(null);
 
-    useEffect(() => {
+    const obtenerDatos = () => {
         try {
             obtenerCliente(id).then(response => {
                 const { data } = response;
@@ -24,6 +24,10 @@ function ListDomiciliosEntrega(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+       obtenerDatos();
     }, []);
 
     console.log(datosDirecciones);

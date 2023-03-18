@@ -86,13 +86,16 @@ function BuscarInspeccionCalidad(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listCalidad);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -118,7 +121,7 @@ function BuscarInspeccionCalidad(props) {
     `;
 
 
-    const filteredItems = listCalidad.filter(
+    const filteredItems = rows.filter(
         item => item.folio && item.folio.toLowerCase().includes(filterText.toLowerCase())
     );
 

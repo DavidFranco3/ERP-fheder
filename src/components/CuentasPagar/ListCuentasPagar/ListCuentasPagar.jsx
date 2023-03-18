@@ -13,9 +13,6 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import ListProductosCuentasPagar from '../ListProductosCuentasPagar';
 import EliminacionFisicaCuentasPagar from '../EliminacionFisica';
 import EliminacionLogicaCuentasPagar from '../EliminacionLogica';
-/*import EliminacionLogicaFacturas from '../EliminacionLogica';
-import EliminacionFisicaFacturas from '../EliminacionFisica';
-import ListProductosFacturas from '../ListProductosFacturas';*/
 
 function ListCuentasPagar(props) {
     const { setRefreshCheckLogin, listCuentasPagar, history, location } = props;
@@ -213,12 +210,16 @@ function ListCuentasPagar(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listCuentasPagar);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -234,7 +235,7 @@ function ListCuentasPagar(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={listCuentasPagar}
+                    data={rows}
                     expandableRows
                     expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}

@@ -9,12 +9,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownLong, faCircleInfo, faPenToSquare, faTrashCan, faEye, faSearch, faArrowCircleLeft, faX, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import "./CuentasPagarOC.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import BasicModal from "../../Modal/BasicModal";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { obtenerDatosCompra } from "../../../api/compras";
 import { obtenerProveedores } from "../../../api/proveedores";
-import {LogCuentaRegistro, LogCuentaActualizacion} from '../../CuentasProveedores/Gestion/GestionCuentasProveedores';
+import { LogCuentaRegistro, LogCuentaActualizacion } from '../../CuentasProveedores/Gestion/GestionCuentasProveedores';
 
 function CuentasPagarOC(props) {
     const { history, setRefreshCheckLogin, location } = props;
@@ -22,16 +22,21 @@ function CuentasPagarOC(props) {
     const params = useParams();
     const { ordenCompra } = params
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -62,7 +67,7 @@ function CuentasPagarOC(props) {
     // Para guardar los datos del formulario
     const [formDataProveedor, setFormDataProveedor] = useState(initialFormDataProveedorInitial());
 
-    useEffect(() => {
+    const cargarDatosCompra = () => {
         //
         obtenerDatosCompra(ordenCompra).then(response => {
             const { data } = response;
@@ -72,9 +77,13 @@ function CuentasPagarOC(props) {
         }).catch(e => {
             console.log(e)
         })
-    }, []);
+    }
 
     useEffect(() => {
+        cargarDatosCompra();
+    }, []);
+
+    const cargarProveedores = () => {
         //
         obtenerProveedores(formDataCompra.proveedor).then(response => {
             const { data } = response;
@@ -84,6 +93,10 @@ function CuentasPagarOC(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarProveedores();
     }, [formDataCompra.proveedor]);
 
     // Para determinar el uso de la animacion de carga mientras se guarda el pedido
@@ -119,7 +132,7 @@ function CuentasPagarOC(props) {
     // Para almacenar el folio actual
     const [folioActual, setFolioActual] = useState("");
 
-    useEffect(() => {
+    const obtenerFolio = () => {
         try {
             obtenerNumeroCuentasPagar().then(response => {
                 const { data } = response;
@@ -132,67 +145,16 @@ function CuentasPagarOC(props) {
         } catch (e) {
             console.log(e)
         }
-    }, []);
+    }
 
-    // Para almacenar la lista completa de clientes
-    const [listClientes, setListClientes] = useState(null);
-
-    // Obtener los clientes registrados
     useEffect(() => {
-        try {
-            listarClientes().then(response => {
-                const { data } = response;
-
-                //console.log(data);
-
-                if (!listClientes && data) {
-                    setListClientes(formatModelClientes(data));
-                } else {
-                    const datosClientes = formatModelClientes(data);
-                    setListClientes(datosClientes);
-                }
-            }).catch(e => {
-                //console.log(e)
-                if (e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión a Internet no Disponible");
-                    setConexionInternet(false);
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
+        obtenerFolio();
     }, []);
 
     // Para almacenar la lista completa de clientes
     const [listProductosOV, setListProductosOV] = useState([]);
 
     const renglon = listProductosCargados.length + 1;
-
-    // Obten el listado de productos
-    // Para almacenar el listado de productos activos
-    const [listProductosActivos, setListProductosActivos] = useState(null);
-
-    // Para traer el listado de productos activos
-    useEffect(() => {
-        try {
-            listarMatrizProductosActivos().then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProductosActivos && data) {
-                    setListProductosActivos(formatModelMatrizProductos(data));
-                } else {
-                    const datosProductos = formatModelMatrizProductos(data);
-                    setListProductosActivos(datosProductos);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     const [iva, setIva] = useState(0);
 
@@ -377,7 +339,7 @@ function CuentasPagarOC(props) {
 
     const [fechaVencimiento, setFechaVencimiento] = useState();
 
-    useEffect(() => {
+    const obtenerFechas = () => {
         //la fecha
         const TuFecha = new Date(formDataCompra.fechaPedido);
 
@@ -388,8 +350,12 @@ function CuentasPagarOC(props) {
             : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
                 : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
                     : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+    }
+
+    useEffect(() => {
+        obtenerFechas();
     }, [formDataCompra.fechaPedido, formDataProveedor.diasCredito]);
-     
+
 
     return (
         <>
@@ -453,13 +419,13 @@ function CuentasPagarOC(props) {
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                            <Form.Control
-                                                type="text"
-                                                defaultValue={ordenCompra}
-                                                placeholder="Orden de compra"
-                                                name="ordenCompra"
-                                                disabled
-                                            />
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={ordenCompra}
+                                            placeholder="Orden de compra"
+                                            name="ordenCompra"
+                                            disabled
+                                        />
                                     </Col>
                                 </Form.Group>
                             </Row>

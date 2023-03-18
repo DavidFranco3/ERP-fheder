@@ -49,30 +49,6 @@ function RegistraReporte(props) {
         setShowModal2(true);
     }
 
-    // Para almacenar el listado de productos activos
-    const [listProductosActivos, setListProductosActivos] = useState(null);
-
-    // Para traer el listado de productos activos
-    useEffect(() => {
-        try {
-            listarMatrizProductosActivos(getSucursal()).then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProductosActivos && data) {
-                    setListProductosActivos(formatModelMatrizProductos(data));
-                } else {
-                    const datosProductos = formatModelMatrizProductos(data);
-                    setListProductosActivos(datosProductos);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
     // Para almacenar la materia prima seleccionada
     const [productoSeleccionado, setProductoSeleccionado] = useState([]);
 
@@ -93,7 +69,7 @@ function RegistraReporte(props) {
 
     const [nombreCliente, setNombreCliente] = useState("");
 
-    useEffect(() => {
+    const cargarDatosCliente = () => {
         try {
             obtenerCliente(productoSeleccionado?.cliente).then(response => {
                 const { data } = response;
@@ -105,6 +81,10 @@ function RegistraReporte(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosCliente();
     }, [formData.producto]);
 
     // Para controlar la animacion

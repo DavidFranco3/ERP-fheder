@@ -8,7 +8,7 @@ import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../ap
 import { toast } from "react-toastify";
 import { actualizaEstadoFichasTecnicas, actualizaFichasTecnicas, obtenerFichasTecnicas } from "../../../api/fichasTecnicas";
 import { map } from "lodash";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import LogoPDF from "../../../assets/png/pdf.png";
 import Regreso from "../../../assets/png/back.png";
 
@@ -17,20 +17,25 @@ function VistaPreviaFichasTecnicas(props) {
 
     const descargaPDF = async () => {
     }
-    
+
     // Para definir el enrutamiento
     const enrutamiento = useNavigate();
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -41,7 +46,7 @@ function VistaPreviaFichasTecnicas(props) {
     const [formData, setFormData] = useState(initialFormDataInitial());
     const [listFichasCargadas, setListFichasCargadas] = useState([]);
 
-    useEffect(() => {
+    const cargarDatosFichas = () => {
         //
         obtenerFichasTecnicas(id).then(response => {
             const { data } = response;
@@ -52,6 +57,10 @@ function VistaPreviaFichasTecnicas(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosFichas();
     }, []);
 
     // Define la ruta de registro
@@ -305,7 +314,7 @@ function VistaPreviaFichasTecnicas(props) {
                             </table>
                         </div>
 
-                        <br/>
+                        <br />
 
                         <div className="botones">
                             <Form.Group as={Row} className="botones">
@@ -331,7 +340,7 @@ function VistaPreviaFichasTecnicas(props) {
                                                 src={Regreso}
                                                 className="regresarVistaAnterior"
                                                 onClick={() => {
-                                                   rutaRegreso()
+                                                    rutaRegreso()
                                                 }}
                                             />
                                         </div>

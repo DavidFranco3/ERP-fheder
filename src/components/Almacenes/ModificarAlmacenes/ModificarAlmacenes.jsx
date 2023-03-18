@@ -12,8 +12,6 @@ import { obtenerDatosInspeccion } from "../../../api/inspeccionMaterial";
 import { obtenerDatosProduccion } from "../../../api/produccion";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { getSucursal, getAlmacen } from '../../../api/auth';
-import BuscarEmpaque from '../../../page/BuscarArticuloAlmacen';
-import BuscarInsumos from '../../../page/BuscarInsumos';
 import BuscarMaterial from '../../../page/BuscarMaterial';
 import BuscarProducto from '../../../page/BuscarProducto';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -74,7 +72,7 @@ function ModificarAlmacenes(props) {
     // Para almacenar el listado de proveedores
     const [listUM, setListUM] = useState(null);
 
-    useEffect(() => {
+    const obtenerListaUM = () => {
         try {
             listarUM(getSucursal()).then(response => {
                 const { data } = response;
@@ -92,13 +90,16 @@ function ModificarAlmacenes(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerListaUM();
     }, []);
 
     // Para almacenar el listado de productos activos
     const [listProduccion, setListProduccion] = useState(null);
 
-    // Para traer el listado de productos activos
-    useEffect(() => {
+    const obtenerlistaProduccion = () => {
         try {
             listarProduccion(getSucursal()).then(response => {
                 const { data } = response;
@@ -116,6 +117,11 @@ function ModificarAlmacenes(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // Para traer el listado de productos activos
+    useEffect(() => {
+        obtenerlistaProduccion();
     }, []);
 
     // Para cerrar el modal
@@ -187,7 +193,7 @@ function ModificarAlmacenes(props) {
     // Para almacenar el lote 
     const [ordenVenta, setOrdenVenta] = useState("");
 
-    useEffect(() => {
+    const obtenerOV = () => {
         try {
 
             if (formData.tipoOperacion == "Entrada") {
@@ -211,6 +217,10 @@ function ModificarAlmacenes(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerOV();
     }, [formData.referencia, formData.tipoOperacion]);
 
     const temp = formData.articulo.split("/")

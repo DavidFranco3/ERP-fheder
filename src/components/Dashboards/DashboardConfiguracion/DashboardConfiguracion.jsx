@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-
 import "./DashboardConfiguracion.scss";
 import { Alert, Button, Col, Row, Card, Container, CardGroup, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,23 +13,28 @@ import LogoClasificacionMateriales from "../../../assets/png/menus/clasificacion
 import LogoClasificacionMaquinaria from "../../../assets/png/menus/maquinas.png";
 import { getTokenApi, isExpiredToken, logoutApi, obtenidusuarioLogueado } from "../../../api/auth";
 import { toast } from "react-toastify";
+import {  LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 
 function DashboardConfiguracion(props) {
     const { setRefreshCheckLogin } = props;
 
     const enrutamiento = useNavigate();
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
-                enrutamiento("");
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

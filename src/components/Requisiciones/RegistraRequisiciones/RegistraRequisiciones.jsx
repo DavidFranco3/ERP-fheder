@@ -11,7 +11,6 @@ import { obtenerUsuario } from "../../../api/usuarios";
 import BuscarDepartamento from '../../../page/BuscarDepartamento';
 import BasicModal from "../../Modal/BasicModal";
 import BuscarMaterial from '../../../page/BuscarMaterial';
-import BuscarInsumos from '../../../page/BuscarInsumos';
 import BuscarOV from '../../../page/BuscarOV';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
@@ -503,7 +502,7 @@ function RegistraRequisiciones(props) {
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarInsumo(
-                                                    <BuscarInsumos
+                                                    <BuscarMaterial
                                                         formData={formDataArticulos}
                                                         setFormData={setFormDataArticulos}
                                                         setShowModal={setShowModal}

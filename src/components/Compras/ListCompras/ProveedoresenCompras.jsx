@@ -7,18 +7,21 @@ function ProveedoresenCompras(props) {
     // Almacenar el nombre del proveedor
     const [nombreProveedor, setNombreProveedor] = useState("");
 
-    useEffect(() => {
-        try {
-            obtenerProveedores(id).then(response => {
-                const { data } = response;
-                const { nombre } = data;
-                setNombreProveedor(nombre)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
+const obtenerNombreProveedor = () => {
+    try {
+        obtenerProveedores(id).then(response => {
+            const { data } = response;
+            const { nombre } = data;
+            setNombreProveedor(nombre)
+        })
+    } catch (e) {
+        console.log(e)
+    }
+}
 
+    useEffect(() => {
+        obtenerNombreProveedor();
+    }, []);
 
     return (
         <>

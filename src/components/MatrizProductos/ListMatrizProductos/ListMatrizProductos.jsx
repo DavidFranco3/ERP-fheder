@@ -211,12 +211,16 @@ function ListMatrizProductos(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listProductos);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -230,7 +234,7 @@ function ListMatrizProductos(props) {
             <Container fluid>
                 <DataTable
                     columns={columns}
-                    data={listProductos}
+                    data={rows}
                     noDataComponent="No hay registros para mostrar"
                     progressPending={pending}
                     paginationComponentOptions={paginationComponentOptions}
