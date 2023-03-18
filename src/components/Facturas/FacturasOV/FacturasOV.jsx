@@ -81,7 +81,7 @@ function FacturasOV(props) {
     }
 
     useEffect(() => {
-        obtenerDatosPedidoVenta();
+        cargarDatosPedido();
     }, []);
 
     const cargarDatosCliente = () => {
