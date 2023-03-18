@@ -12,7 +12,7 @@ function ListProductosRequisicion(props) {
     // Almacena los datos de la orden de venta
     const [datosRequisicion, setDatosRequisicion] = useState(null);
 
-    useEffect(() => {
+    const cargardatosRequisicion = () => {
         try {
             obtenerDatosRequisiciones(requisicion).then(response => {
                 const { data } = response;
@@ -24,6 +24,10 @@ function ListProductosRequisicion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargardatosRequisicion();
     }, []);
 
 

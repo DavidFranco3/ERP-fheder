@@ -11,8 +11,7 @@ function Planeacion(props) {
     // Para almacenar la lista completa de clientes
     const [listPlaneaciones, setListPlaneaciones] = useState(null);
 
-    // Obtener los clientes registrados
-    useEffect(() => {
+    const cargarListaPlaneaciones = () => {
         try {
             listarRequerimiento(getSucursal()).then(response => {
                 const { data } = response;
@@ -31,6 +30,11 @@ function Planeacion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // Obtener los clientes registrados
+    useEffect(() => {
+       cargarListaPlaneaciones();
     }, []);
 
     console.log(listPlaneaciones)

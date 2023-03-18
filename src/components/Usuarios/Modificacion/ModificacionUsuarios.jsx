@@ -10,8 +10,8 @@ import { map } from "lodash";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { getSucursal } from '../../../api/auth';
-import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
+import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
+import { LogsInformativos, LogsInformativosLogout } from '../../Logs/LogsSistema/LogsSistema';
 
 function ModificacionUsuarios(props) {
     const { setRefreshCheckLogin } = props;
@@ -19,6 +19,24 @@ function ModificacionUsuarios(props) {
     const enrutamiento = useNavigate();
 
     const params = useParams();
+
+    const cierreAutomatico = () => {
+        if (getTokenApi()) {
+            if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
+                toast.warning("Sesión expirada");
+                toast.success("Sesión cerrada por seguridad");
+                logoutApi();
+                setRefreshCheckLogin(true);
+            }
+        }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
+    }, []);
+    // Termina cerrado de sesión automatico
 
     //console.log(params)
 
@@ -48,7 +66,7 @@ function ModificacionUsuarios(props) {
     // Para el icono de cargando del boton
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+    const cargarListaDepartamento = () => {
         try {
             listarDepartamento(getSucursal()).then(response => {
                 const { data } = response;
@@ -58,11 +76,15 @@ function ModificacionUsuarios(props) {
                 setDepartamentosregistrados(dataTemp);
             })
         } catch (e) {
-
+            console.log(e);
         }
-    }, []);
+    }
 
     useEffect(() => {
+        cargarListaDepartamento();
+    }, []);
+
+    const cargarDatosUsuarios = () => {
         try {
             obtenerUsuario(params.id).then(response => {
                 const { data } = response;
@@ -81,6 +103,10 @@ function ModificacionUsuarios(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosUsuarios();
     }, []);
 
 

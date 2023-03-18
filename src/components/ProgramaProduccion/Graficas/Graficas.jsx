@@ -16,7 +16,7 @@ function Graficas(props) {
     const [lotes, setLotes] = useState([]);
     const [cantidadRechazada, setCantidadRechazada] = useState([]);
 
-    useEffect(() => {
+    const cargarDatosProduccion = () => {
         let auxOP = [], auxProducir = [];
         map(listProgramaProduccion, (ordenes, index) => {
             auxOP.push(ordenes.folioOP);
@@ -24,9 +24,9 @@ function Graficas(props) {
         })
         setOrdenesProduccion(auxOP.reverse());
         setCantidadProducir(auxProducir.reverse());
-    }, []);
+    }
 
-    useEffect(() => {
+    const cargarDatosResultados = () => {
         try {
             let auxRes = [].reverse();
             map(listProgramaProduccion.reverse(), (ordenes, index) => {
@@ -41,9 +41,9 @@ function Graficas(props) {
         } catch (e) {
             console.log(e)
         }
-    }, []);
+    }
 
-    useEffect(() => {
+    const cargarDatosCertificado = () => {
         try {
             let auxRes = [], auxRec = [];
             map(listProgramaProduccion, (ordenes, index) => {
@@ -60,9 +60,13 @@ function Graficas(props) {
         } catch (e) {
             console.log(e)
         }
-    }, []);
+    }
 
-    console.log(cantidadRechazada);
+    useEffect(() => {
+        cargarDatosProduccion();
+        cargarDatosResultados();
+        cargarDatosCertificado();
+    }, []);
 
     const data = {
         labels: ordenesProduccion,

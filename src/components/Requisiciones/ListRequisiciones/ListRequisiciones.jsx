@@ -203,13 +203,16 @@ function ListRequisiciones(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listRequisiciones);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -225,7 +228,7 @@ function ListRequisiciones(props) {
                 <DataTable
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
-                    data={listRequisiciones}
+                    data={rows}
                     expandableRows
                     expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}

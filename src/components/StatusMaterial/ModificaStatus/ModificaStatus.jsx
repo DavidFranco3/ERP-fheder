@@ -3,27 +3,31 @@ import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstr
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
-import BuscarInspeccionCalidad from "../BuscarInspeccionCalidad";
 import BasicModal from "../../Modal/BasicModal";
 import { obtenerStatusMaterial, actualizaStatusMaterial } from "../../../api/statusMaterial";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
+import { LogsInformativos, LogsInformativosLogout } from '../../Logs/LogsSistema/LogsSistema';
 import BuscarCalidad from '../../../page/BuscarCalidad/BuscarCalidad';
 
 function ModificaStatus(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -41,17 +45,21 @@ function ModificaStatus(props) {
     const params = useParams();
     const { id } = params
 
+    const cargarDatosStatus = () => {
+//
+obtenerStatusMaterial(id).then(response => {
+    const { data } = response;
+    //console.log(data)
+    setFormData(valoresAlmacenados(data));
+    setFormDataCalidad(initialFormDataCalidad(data));
+    // setFechaCreacion(fechaElaboracion)
+}).catch(e => {
+    console.log(e)
+})
+    }
+
     useEffect(() => {
-        //
-        obtenerStatusMaterial(id).then(response => {
-            const { data } = response;
-            //console.log(data)
-            setFormData(valoresAlmacenados(data));
-            setFormDataCalidad(initialFormDataCalidad(data));
-            // setFechaCreacion(fechaElaboracion)
-        }).catch(e => {
-            console.log(e)
-        })
+        cargarDatosStatus();
     }, []);
 
     // Para hacer uso del modal

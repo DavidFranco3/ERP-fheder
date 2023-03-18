@@ -18,21 +18,26 @@ import BuscarPlaneacion from '../../../page/BuscarPlaneacion';
 import { obtenerMaquina } from "../../../api/maquinas";
 import { obtenerRequerimiento } from "../../../api/requerimientosPlaneacion";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 
 function ProduccionPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -62,7 +67,7 @@ function ProduccionPlaneacion(props) {
     // Para almacenar el folio actual
     const [folioActual, setFolioActual] = useState("");
 
-    useEffect(() => {
+    const obtenerFolio = () => {
         try {
             obtenerNumeroProduccion().then(response => {
                 const { data } = response;
@@ -75,9 +80,13 @@ function ProduccionPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
-    }, []);
+    }
 
     useEffect(() => {
+        obtenerFolio();
+    }, []);
+
+    const cargarDatosRequerimiento = () => {
         // Para buscar el producto en la matriz de productos
         try {
             obtenerRequerimiento(id).then(response => {
@@ -97,9 +106,13 @@ function ProduccionPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [id]);
+    }
 
     useEffect(() => {
+        cargarDatosRequerimiento();
+    }, [id]);
+
+    const cargarDatosProducto = () => {
         // Para buscar el producto en la matriz de productos
         try {
             obtenerMatrizProducto(formDataPlaneacion.producto).then(response => {
@@ -119,13 +132,17 @@ function ProduccionPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosProducto();
     }, [formDataPlaneacion.producto]);
 
     const [numeroMaquina1, setNumeroMaquina1] = useState("");
 
     const [nombreMaquina1, setNombreMaquina1] = useState("");
 
-    useEffect(() => {
+    const cargarMaquina1 = () => {
         // Para buscar el producto en la matriz de productos
         try {
             obtenerMaquina(formDataProduccion.opcion1).then(response => {
@@ -138,13 +155,17 @@ function ProduccionPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarMaquina1();
     }, [formDataProduccion.opcion1]);
 
     const [numeroMaquina2, setNumeroMaquina2] = useState("");
 
     const [nombreMaquina2, setNombreMaquina2] = useState("");
 
-    useEffect(() => {
+    const cargarMaquina2 = () => {
         // Para buscar el producto en la matriz de productos
         try {
             obtenerMaquina(formDataProduccion.opcion2).then(response => {
@@ -157,13 +178,17 @@ function ProduccionPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarMaquina2();
     }, [formDataProduccion.opcion2]);
 
     const [numeroMaquina3, setNumeroMaquina3] = useState("");
 
     const [nombreMaquina3, setNombreMaquina3] = useState("");
 
-    useEffect(() => {
+    const cargarMaquina3 = () => {
         // Para buscar el producto en la matriz de productos
         try {
             obtenerMaquina(formDataProduccion.opcion3).then(response => {
@@ -176,6 +201,10 @@ function ProduccionPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarMaquina3();
     }, [formDataProduccion.opcion3]);
 
     // Para la eliminacion fisica de usuarios
@@ -202,30 +231,6 @@ function ProduccionPlaneacion(props) {
 
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
-
-    // Para almacenar el listado de productos activos
-    const [listProductosActivos, setListProductosActivos] = useState(null);
-
-    // Para traer el listado de productos activos
-    useEffect(() => {
-        try {
-            listarMatrizProductosActivos().then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProductosActivos && data) {
-                    setListProductosActivos(formatModelMatrizProductos(data));
-                } else {
-                    const datosProductos = formatModelMatrizProductos(data);
-                    setListProductosActivos(datosProductos);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     // Para almacenar la materia prima seleccionada
     const [producto, setProducto] = useState([]);
@@ -254,23 +259,6 @@ function ProduccionPlaneacion(props) {
             bolsasCajasUtilizar: temp[13]
         })
     }
-
-    const [nombreCliente, setNombreCliente] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerCliente(producto.cliente).then(response => {
-                const { data } = response;
-                const { nombre, apellidos } = data;
-                setNombreCliente(nombre + " " + apellidos)
-
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, [producto.cliente]);
 
     const onSubmit = e => {
         e.preventDefault();

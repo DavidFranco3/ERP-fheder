@@ -26,25 +26,25 @@ function ModificacionSemana(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-            setLoading(true)
-            // Realiza registro de la aportación
-            const dataTemp = {
-                fechaInicial: fechaInicio,
-                fechaFinal: fechaFinal
-            }
+        setLoading(true)
+        // Realiza registro de la aportación
+        const dataTemp = {
+            fechaInicial: fechaInicio,
+            fechaFinal: fechaFinal
+        }
 
-            actualizaSemana(id, dataTemp).then(response => {
-                const { data } = response;
-                LogsInformativos("Se a modificado la semana " + folio, dataTemp);
-                toast.success(data.mensaje);
-                setLoading(false)
-                history({
-                    search: queryString.stringify(""),
-                });
-                setShowModal(false)
-            }).catch(e => {
-                console.log(e)
-            })
+        actualizaSemana(id, dataTemp).then(response => {
+            const { data } = response;
+            LogsInformativos("Se a modificado la semana " + folio, dataTemp);
+            toast.success(data.mensaje);
+            setLoading(false)
+            history({
+                search: queryString.stringify(""),
+            });
+            setShowModal(false)
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     const onChange = e => {
@@ -55,7 +55,7 @@ function ModificacionSemana(props) {
 
     const [fechaFinal, setFechaFinal] = useState();
 
-    useEffect(() => {
+    const cargarFecha = () => {
         //la fecha
         const TuFecha = new Date(fechaInicio);
 
@@ -63,9 +63,13 @@ function ModificacionSemana(props) {
         TuFecha.setDate(TuFecha.getDate() + 6);
         //formato de salida para la fecha
         setFechaFinal((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
-        : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
-            : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
-                : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+            : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
+                : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
+                    : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+    }
+
+    useEffect(() => {
+        cargarFecha();
     }, [fechaInicio]);
 
 

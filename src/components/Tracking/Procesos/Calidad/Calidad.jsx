@@ -17,8 +17,7 @@ function Calidad(props) {
     // Para almacenar la lista completa de clientes
     const [listCalidad, setListCalidad] = useState(null);
 
-    // Obtener los clientes registrados
-    useEffect(() => {
+    const cargarListaCalidad = () => {
         try {
             listarInspeccion(getSucursal()).then(response => {
                 const { data } = response;
@@ -37,6 +36,11 @@ function Calidad(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // Obtener los clientes registrados
+    useEffect(() => {
+        cargarListaCalidad();
     }, []);
 
     return (

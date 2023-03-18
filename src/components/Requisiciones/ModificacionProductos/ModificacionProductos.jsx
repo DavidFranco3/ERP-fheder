@@ -1,13 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button, Col, Form, Row, Container, Spinner } from "react-bootstrap";
-import { toast } from "react-toastify";
-import queryString from "query-string";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 
 function ModificacionProductos(props) {
-    const { datos, setShowModal, history, setListProductosCargados, listProductosCargados } = props;
-
-    console.log(listProductosCargados);
+    const { datos, setShowModal, listProductosCargados } = props;
 
     // Para guardar los datos del formulario
     const [formData, setFormData] = useState(initialFormData(datos));

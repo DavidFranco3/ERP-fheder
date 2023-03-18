@@ -23,7 +23,7 @@ function RegistraSemana(props) {
     // Para almacenar el folio actual
     const [folioActual, setFolioActual] = useState("");
 
-    useEffect(() => {
+    const obtenerFolio = () => {
         try {
             obtenerNumeroSemana().then(response => {
                 const { data } = response;
@@ -36,6 +36,10 @@ function RegistraSemana(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerFolio();
     }, []);
 
     // Para controlar la animacion
@@ -44,36 +48,36 @@ function RegistraSemana(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-            setLoading(true)
-            // Realiza registro de la aportación
-            obtenerNumeroSemana().then(response => {
+        setLoading(true)
+        // Realiza registro de la aportación
+        obtenerNumeroSemana().then(response => {
+            const { data } = response;
+            const { noSemana } = data;
+
+            const dataTemp = {
+                folio: noSemana,
+                fechaInicial: fechaInicio,
+                fechaFinal: fechaFinal,
+                sucursal: getSucursal(),
+                estado: "true"
+            }
+
+            registraSemana(dataTemp).then(response => {
                 const { data } = response;
-                const { noSemana } = data;
-
-                const dataTemp = {
-                    folio: noSemana,
-                    fechaInicial: fechaInicio,
-                    fechaFinal: fechaFinal,
-                    sucursal: getSucursal(),
-                    estado: "true"
-                }
-
-                registraSemana(dataTemp).then(response => {
-                    const { data } = response;
-                    LogsInformativos("Se a registrado una nueva semana " + dataTemp.folio, dataTemp)
-                    toast.success(data.mensaje);
-                    setLoading(false)
-                    history({
-                        search: queryString.stringify(""),
-                    });
-                    setShowModal(false)
-                }).catch(e => {
-                    console.log(e)
-                })
-
+                LogsInformativos("Se a registrado una nueva semana " + dataTemp.folio, dataTemp)
+                toast.success(data.mensaje);
+                setLoading(false)
+                history({
+                    search: queryString.stringify(""),
+                });
+                setShowModal(false)
             }).catch(e => {
                 console.log(e)
             })
+
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     const onChange = e => {
@@ -91,7 +95,7 @@ function RegistraSemana(props) {
 
     const [fechaFinal, setFechaFinal] = useState();
 
-    useEffect(() => {
+    const cargarFecha = () => {
         //la fecha
         const TuFecha = new Date(fechaInicio);
 
@@ -99,9 +103,13 @@ function RegistraSemana(props) {
         TuFecha.setDate(TuFecha.getDate() + 6);
         //formato de salida para la fecha
         setFechaFinal((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
-        : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
-            : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
-                : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+            : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() > 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate()
+                : (TuFecha.getMonth() + 1) < 10 && TuFecha.getDate() < 10 ? TuFecha.getFullYear() + '-' + "0" + (TuFecha.getMonth() + 1) + '-' + "0" + TuFecha.getDate()
+                    : TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+    }
+
+    useEffect(() => {
+        cargarFecha();
     }, [fechaInicio]);
 
     return (

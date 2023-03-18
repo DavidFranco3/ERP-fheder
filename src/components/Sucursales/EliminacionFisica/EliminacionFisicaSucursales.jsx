@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import "./EliminacionFisicaSucursales.scss";
 import { Button, Col, Form, Row, Spinner, Container, Alert } from "react-bootstrap";
 import { toast } from "react-toastify";

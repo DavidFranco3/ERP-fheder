@@ -21,8 +21,7 @@ function NuevoRegistro(props) {
     // Para almacenar el listado de productos activos
     const [listProductosActivos, setListProductosActivos] = useState(null);
 
-    // Para traer el listado de productos activos
-    useEffect(() => {
+    const cargarListaProductos = () => {
         try {
             listarMatrizProductosActivos(getSucursal()).then(response => {
                 const { data } = response;
@@ -40,13 +39,17 @@ function NuevoRegistro(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // Para traer el listado de productos activos
+    useEffect(() => {
+        cargarListaProductos();
     }, []);
 
     // Para almacenar el listado de productos activos
     const [listProduccion, setListProduccion] = useState(null);
 
-    // Para traer el listado de productos activos
-    useEffect(() => {
+    const cargarListaProduccion = () => {
         try {
             listarProduccion(getSucursal()).then(response => {
                 const { data } = response;
@@ -64,6 +67,11 @@ function NuevoRegistro(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // Para traer el listado de productos activos
+    useEffect(() => {
+        cargarListaProduccion();
     }, []);
 
     // Para controlar la animacion
@@ -79,7 +87,7 @@ function NuevoRegistro(props) {
         // console.log(temp)
 
         // console.log(dataTemp)
-        
+
     }
 
     const addItems = () => {
@@ -168,7 +176,7 @@ function NuevoRegistro(props) {
                                         {map(listProduccion, (produccion, index) => (
                                             <option
                                                 key={index}
-                                                value={produccion.folio +"/"+ produccion.generalidades.ordenVenta}
+                                                value={produccion.folio + "/" + produccion.generalidades.ordenVenta}
                                             >
                                                 {produccion.folio}
                                             </option>

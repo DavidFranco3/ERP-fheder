@@ -18,7 +18,7 @@ function OrdenVenta(props) {
     // Almacena los datos de la orden de venta
     const [datosOrdenVenta, setDatosOrdenVenta] = useState(null);
 
-    useEffect(() => {
+    const cargarDatosOV = () => {
         try {
             obtenerDatosPedidoVenta(ordenVenta).then(response => {
                 const { data } = response;
@@ -30,8 +30,11 @@ function OrdenVenta(props) {
         } catch (e) {
             console.log(e);
         }
-    }, []);
+    }
 
+    useEffect(() => {
+        cargarDatosOV();
+    }, []);
 
     return (
         <>

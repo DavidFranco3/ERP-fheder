@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { map } from "lodash";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import LogoPDF from "../../../assets/png/pdf.png";
 import Regreso from "../../../assets/png/back.png";
 import pdfMake from "pdfmake/build/pdfmake";
@@ -29,7 +29,7 @@ function VistaPreviaReporte(props) {
 
     const [formDataSucursal, setFormDataSucursal] = useState(initialFormDataSucursalInitial());
 
-    useEffect(() => {
+    const cargarDatosRazonSocial = () => {
         //
         obtenerRazonSocialPorNombre(getSucursal()).then(response => {
             const { data } = response;
@@ -38,18 +38,27 @@ function VistaPreviaReporte(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosRazonSocial();
     }, [getSucursal()]);
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -218,7 +227,7 @@ function VistaPreviaReporte(props) {
                                     border: [false, false, false, false],
                                     text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
                                     alignment: 'right',
-                                    margin: [ 5, 2, 10, 20 ]
+                                    margin: [5, 2, 10, 20]
                                 }
                             ]
                         ]
@@ -300,7 +309,7 @@ function VistaPreviaReporte(props) {
                                     text: `Supervisor:  ${formData.supervisor}`,
                                     colSpan: 2,
                                     bold: true,
-                                    fontSize: 9 
+                                    fontSize: 9
                                 },
                                 {
                                 }
@@ -619,7 +628,7 @@ function VistaPreviaReporte(props) {
                             </Form.Group>
                         </Row>
 
-                        <br/>
+                        <br />
 
                         <div className="botones">
                             <Form.Group as={Row} className="botones">

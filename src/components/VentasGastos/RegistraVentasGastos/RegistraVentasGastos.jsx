@@ -20,8 +20,7 @@ function RegistraVentasGastos(props) {
     // Para almacenar la lista completa de clientes
     const [listClientes, setListClientes] = useState(null);
 
-    // Obtener los clientes registrados
-    useEffect(() => {
+    const cargarListaclientes = () => {
         try {
             listarClientes(getSucursal()).then(response => {
                 const { data } = response;
@@ -45,12 +44,17 @@ function RegistraVentasGastos(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // Obtener los clientes registrados
+    useEffect(() => {
+        cargarListaclientes();
     }, []);
 
     // Para almacenar el folio actual
     const [facturaActual, setFacturaActual] = useState("");
 
-    useEffect(() => {
+    const obtenerFolio = () => {
         try {
             obtenerFacturaIntegracion().then(response => {
                 const { data } = response;
@@ -63,6 +67,10 @@ function RegistraVentasGastos(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerFolio();
     }, []);
 
     // Cancelar y cerrar el formulario

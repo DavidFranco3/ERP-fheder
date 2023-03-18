@@ -10,7 +10,7 @@ import { map } from "lodash";
 import { registraRazonSocial } from "../../../api/razonesSociales";
 import queryString from "query-string";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
@@ -20,16 +20,21 @@ function RegistroRazonesSociales(props) {
 
     const enrutamiento = useNavigate();
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

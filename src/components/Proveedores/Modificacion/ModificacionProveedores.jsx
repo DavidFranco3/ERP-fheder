@@ -9,7 +9,7 @@ import { Button, Col, Form, Row, Spinner, Container, Alert } from "react-bootstr
 import { map } from "lodash";
 import { actualizaProveedores, obtenerProveedores, registraProveedores } from "../../../api/proveedores";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUsers, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
@@ -21,16 +21,21 @@ function ModificacionProveedores(props) {
 
     const params = useParams();
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -51,7 +56,7 @@ function ModificacionProveedores(props) {
     // Para el icono de cargando del boton
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+    const cargarDatosProveedores = () => {
         try {
             obtenerProveedores(params.id).then(response => {
                 const { data } = response;
@@ -71,6 +76,10 @@ function ModificacionProveedores(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosProveedores();
     }, []);
 
 

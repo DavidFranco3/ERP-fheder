@@ -9,7 +9,7 @@ import { faSearch, faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import "./VistaPreviaNotaPagar.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { actualizaNotasPagar, obtenerNotasPagar } from "../../../api/notasPagar";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { obtenerRazonSocialPorNombre } from "../../../api/razonesSociales";
 import BasicModal from "../../Modal/BasicModal";
@@ -31,7 +31,7 @@ function VistaPreviaNotaPagar(props) {
 
     const [formDataSucursal, setFormDataSucursal] = useState(initialFormDataSucursalInitial());
 
-    useEffect(() => {
+    const cargarDatosRazonSocial = () => {
         //
         obtenerRazonSocialPorNombre(getSucursal()).then(response => {
             const { data } = response;
@@ -40,21 +40,30 @@ function VistaPreviaNotaPagar(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosRazonSocial();
     }, [getSucursal()]);
 
     const parametros = useParams();
     const { id } = parametros
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -82,7 +91,7 @@ function VistaPreviaNotaPagar(props) {
     // Para guardar los datos del formulario
     const [formDataFactura, setFormDataFactura] = useState(initialFormDataFacturaInitial());
 
-    useEffect(() => {
+    const cargarDatosNotas = () => {
         //
         obtenerNotasPagar(id).then(response => {
             const { data } = response;
@@ -92,6 +101,10 @@ function VistaPreviaNotaPagar(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosNotas();
     }, []);
 
     // Para determinar el uso de la animacion de carga mientras se guarda el pedido
@@ -132,122 +145,9 @@ function VistaPreviaNotaPagar(props) {
     }
 
     // Para almacenar la lista completa de clientes
-    const [listClientes, setListClientes] = useState(null);
-
-    // Obtener los clientes registrados
-    useEffect(() => {
-        try {
-            listarClientes().then(response => {
-                const { data } = response;
-
-                //console.log(data);
-
-                if (!listClientes && data) {
-                    setListClientes(formatModelClientes(data));
-                } else {
-                    const datosClientes = formatModelClientes(data);
-                    setListClientes(datosClientes);
-                }
-            }).catch(e => {
-                //console.log(e)
-                if (e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión a Internet no Disponible");
-                    setConexionInternet(false);
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
-    // Para almacenar la lista completa de clientes
     const [listProductosOV, setListProductosOV] = useState([]);
 
     const renglon = listProductosCargados.length + 1;
-
-    // Obten el listado de productos
-    // Para almacenar el listado de productos activos
-    const [listProductosActivos, setListProductosActivos] = useState(null);
-
-    // Para traer el listado de productos activos
-    useEffect(() => {
-        try {
-            listarMatrizProductosActivos().then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProductosActivos && data) {
-                    setListProductosActivos(formatModelMatrizProductos(data));
-                } else {
-                    const datosProductos = formatModelMatrizProductos(data);
-                    setListProductosActivos(datosProductos);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
-    // Generación de PDF
-    const generaPDF = () => {
-        // console.log("Genera PDF")
-    }
-
-    // Para almacenar la foto de perfil del usuario
-    const [pdfCotizacion, setPdfCotizacion] = useState(null);
-    console.log(pdfCotizacion)
-
-    useEffect(() => {
-        setPdfCotizacion(formData.cotizacion)
-    }, [formData.cotizacion]);
-
-    // Para almacenar la foto de perfil del usuario
-    const [pdfOrdenCompra, setPdfOrdenCompra] = useState(null);
-
-    // Para almacenar el folio actual
-    const [linkOrdenCompra, setlinkOrdenCompra] = useState("");
-
-    useEffect(() => {
-        try {
-            if (setPdfOrdenCompra) {
-                subeArchivosCloudinary(setPdfOrdenCompra, "ventas").then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { secure_url } = data;
-                    setlinkOrdenCompra(secure_url)
-
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-        } catch (e) {
-            console.log(e)
-        }
-    }, [setPdfOrdenCompra]);
-
-    // Para almacenar el folio actual
-    const [linkCotizacion, setlinkCotizacion] = useState("");
-
-    useEffect(() => {
-        try {
-            if (pdfCotizacion) {
-                subeArchivosCloudinary(pdfCotizacion, "ventas").then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { secure_url } = data;
-                    setlinkCotizacion(secure_url)
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-        } catch (e) {
-            console.log(e)
-
-        }
-    }, [pdfCotizacion]);
 
     const onSubmit = e => {
         e.preventDefault();
@@ -402,8 +302,6 @@ function VistaPreviaNotaPagar(props) {
 
     const [fechaEntrega, setFechaEntrega] = useState(fecha);
 
-    console.log(formDataFactura)
-
     // Calcula el total con iva de la lista de productos seleccionados
     const total = parseFloat(formData.totalSinIVA) + (parseFloat(formData.totalSinIVA) * parseFloat(formData.iva));
 
@@ -421,7 +319,7 @@ function VistaPreviaNotaPagar(props) {
                                     border: [false, false, false, false],
                                     text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
                                     alignment: 'right',
-                                    margin: [ 5, 2, 10, 20 ]
+                                    margin: [5, 2, 10, 20]
                                 }
                             ]
                         ]
@@ -597,13 +495,13 @@ function VistaPreviaNotaPagar(props) {
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                            <Form.Control
-                                                type="text"
-                                                defaultValue={formDataFactura.factura}
-                                                placeholder="Buscar factura"
-                                                name="factura"
-                                                disabled
-                                            />
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={formDataFactura.factura}
+                                            placeholder="Buscar factura"
+                                            name="factura"
+                                            disabled
+                                        />
                                     </Col>
                                 </Form.Group>
                             </Row>

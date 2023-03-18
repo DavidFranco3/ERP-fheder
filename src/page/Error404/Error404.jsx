@@ -7,10 +7,8 @@ import { LogsInformativosLogout } from "../../components/Logs/LogsSistema/LogsSi
 function Error404(props) {
     const { setRefreshCheckLogin } = props;
 
-    console.log("error 404")
-
     // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
                 LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
@@ -20,6 +18,11 @@ function Error404(props) {
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 

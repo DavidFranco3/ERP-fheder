@@ -225,13 +225,16 @@ function ListIntegracionVentasGastos(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listIntegraciones);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -276,7 +279,7 @@ function ListIntegracionVentasGastos(props) {
                 <DataTable
                     columns={columns}
                     // actions={descargaCSV}
-                    data={listIntegraciones}
+                    data={rows}
                     noDataComponent="No hay registros para mostrar"
                     // expandableRows
                     // expandableRowsComponent={ExpandedComponent}

@@ -232,13 +232,16 @@ function ListProgramaProduccion(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listProgramaProduccion);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -283,8 +286,6 @@ function ListProgramaProduccion(props) {
 
     const [filterText, setFilterText] = useState("");
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
-
-
 
     // Defino barra de busqueda
     const ClearButton = styled(Button)` 
@@ -352,7 +353,7 @@ function ListProgramaProduccion(props) {
                 <DataTable
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
-                    data={listProgramaProduccion}
+                    data={rows}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}
                     progressPending={pending}

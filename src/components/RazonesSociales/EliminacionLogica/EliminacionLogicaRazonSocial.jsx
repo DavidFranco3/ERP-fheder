@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { deshabilitaUsuario } from "../../../api/usuarios";
 import { toast } from "react-toastify";
 import queryString from "query-string";

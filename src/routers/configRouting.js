@@ -7,7 +7,6 @@ import Compras from "../page/Compras";
 import Embarque from "../page/Embarque";
 import Facturacion from "../page/Facturacion";
 import Logistica from "../page/Logistica";
-import Planeacion from "../page/Planeacion";
 import Produccion from "../page/Produccion";
 import Ventas from "../page/Ventas";
 import Usuarios from "../page/Usuarios";
@@ -163,10 +162,6 @@ import ModificacionLogistica from "../components/Logistica/Modificacion";
 import RegistroRecepcion from "../components/RecepcionMaterialInsumos/RegistroRecepcion";
 import ModificacionRecepcion from "../components/RecepcionMaterialInsumos/ModificaRecepcion";
 import VistaPreviaRecepcion from "../components/RecepcionMaterialInsumos/VistaPreviaRecepcion";
-
-// Rutas para planeación
-import RegistroPlaneacion from "../components/Planeacion/Registro";
-import ModificacionPlaneacion from "../components/Planeacion/Modificacion";
 
 // Rutas para las ventas
 import RegistroVentas from "../components/Ventas/Registro";
@@ -617,14 +612,6 @@ export default [
         page: VistaPreviaRecepcion
     },
     {
-        path: "/RegistroPlaneacion",
-        page: RegistroPlaneacion
-    },
-    {
-        path: "/ModificacionPlaneacion/:folio",
-        page: ModificacionPlaneacion
-    },
-    {
         path: "/Pedido-de-Venta",
         page: RegistroVentas
     },
@@ -883,10 +870,6 @@ export default [
     {
         path: "/CertificadosCalidad",
         page: CertificadosCalidad
-    },
-    {
-        path: "/Planeacion",
-        page: Planeacion
     },
     {
         path: "/Cotizaciones",

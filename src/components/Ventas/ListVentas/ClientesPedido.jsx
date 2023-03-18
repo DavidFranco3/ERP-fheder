@@ -8,7 +8,7 @@ function ClientesPedido(props) {
     // Para almacenar el nombre del cliente
     const [nombreCliente, setNombreCliente] = useState("");
 
-    useEffect(() => {
+    const cargarNombreCliente = () => {
         //
         try {
             obtenerCliente(id).then(response => {
@@ -26,6 +26,10 @@ function ClientesPedido(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarNombreCliente();
     }, [id]);
 
     return (

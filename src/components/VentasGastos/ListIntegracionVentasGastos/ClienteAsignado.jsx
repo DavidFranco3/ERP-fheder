@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { obtenerCliente } from "../../../api/clientes";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 function ProductoAsignado(props) {
     const { id } = props;
@@ -8,7 +8,7 @@ function ProductoAsignado(props) {
     // Para almacenar el nombre del cliente
     const [nombreCliente, setNombreCliente] = useState("");
 
-    useEffect(() => {
+    const cargarNombreCliente = () => {
         //
         try {
             obtenerCliente(id).then(response => {
@@ -18,7 +18,7 @@ function ProductoAsignado(props) {
                 setNombreCliente(nombre + " " + apellidos)
             }).catch(e => {
                 //console.log(e)
-                if(e.message === 'Network Error') {
+                if (e.message === 'Network Error') {
                     //console.log("No hay internet")
                     toast.error("Conexión al servidor no disponible");
                 }
@@ -26,7 +26,11 @@ function ProductoAsignado(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [id]);
+    }
+
+    useEffect(() => {
+        cargarNombreCliente();
+    }, []);
 
     return (
         <>

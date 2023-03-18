@@ -10,7 +10,7 @@ import { map } from "lodash";
 import { listarClientes, obtenerCliente } from "../../../api/clientes";
 import { toast } from "react-toastify";
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,16 +25,21 @@ import ModificacionProductos from '../ModificacionProductos';
 function ModificacionVentas(props) {
     const { history, setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -102,7 +107,7 @@ function ModificacionVentas(props) {
 
     const [lugarEntregaInicial, setlugarEntregaInicial] = useState(initialValues);
 
-    useEffect(() => {
+    const cargarDatosPedido = () => {
         //
         obtenerDatosPedidoVenta(folio).then(response => {
             const { data } = response;
@@ -131,11 +136,15 @@ function ModificacionVentas(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosPedido();
     }, []);
 
     const [direcciones, setDirecciones] = useState([]);
 
-    useEffect(() => {
+    const cargarDirecciones = () => {
         //
         obtenerCliente(informacionPedido.cliente).then(response => {
             const { data } = response;
@@ -143,6 +152,10 @@ function ModificacionVentas(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDirecciones();
     }, [informacionPedido.cliente]);
 
     const [totalUnitario, setTotalUnitario] = useState(0);
@@ -154,86 +167,10 @@ function ModificacionVentas(props) {
         setTotalUnitario(total);
     }
 
-
-    // Termina almacenaje de información para su modificación
-
-    // Obtener los clientes registrados
-    useEffect(() => {
-        try {
-            listarClientes().then(response => {
-                const { data } = response;
-
-                //console.log(data);
-
-                if (!listClientes && data) {
-                    setListClientes(formatModelClientes(data));
-                } else {
-                    const datosClientes = formatModelClientes(data);
-                    setListClientes(datosClientes);
-                }
-            }).catch(e => {
-                //console.log(e)
-                if (e.message === 'Network Error') {
-                    //console.log("No hay internet")
-                    toast.error("Conexión a Internet no Disponible");
-                    setConexionInternet(false);
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
-    // Obten el listado de productos
-    // Para almacenar el listado de productos activos
-    const [listProductosActivos, setListProductosActivos] = useState(null);
-
-
-    // Para almacenar el folio actual
-    const [linkOrdenCompra, setlinkOrdenCompra] = useState("");
-    // Para traer el listado de productos activos
-    useEffect(() => {
-        try {
-            listarMatrizProductosActivos().then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProductosActivos && data) {
-                    setListProductosActivos(formatModelMatrizProductos(data));
-                } else {
-                    const datosProductos = formatModelMatrizProductos(data);
-                    setListProductosActivos(datosProductos);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
-    useEffect(() => {
-        try {
-            if (informacionPedido.ordenCompra) {
-                subeArchivosCloudinary(informacionPedido.ordenCompra, "ventas").then(response => {
-                    const { data } = response;
-                    // console.log(data)
-                    const { secure_url } = data;
-                    setlinkOrdenCompra(secure_url)
-
-                }).catch(e => {
-                    console.log(e)
-                })
-            }
-        } catch (e) {
-            console.log(e)
-        }
-    }, [informacionPedido.ordenCompra]);
-
     // Para almacenar el folio actual
     const [linkCotizacion, setlinkCotizacion] = useState("");
 
-    useEffect(() => {
+    const cargarLink = () => {
         try {
             if (pdfCotizacion) {
                 subeArchivosCloudinary(pdfCotizacion, "ventas").then(response => {
@@ -247,8 +184,11 @@ function ModificacionVentas(props) {
             }
         } catch (e) {
             console.log(e)
-
         }
+    }
+
+    useEffect(() => {
+        cargarLink();
     }, [pdfCotizacion]);
 
     const onSubmit = e => {
@@ -270,7 +210,6 @@ function ModificacionVentas(props) {
                 numeroPedido: informacionPedido.numeroPedido,
                 lugarEntrega: informacionPedido.lugarEntrega,
                 cotizacion: linkCotizacion,
-                ordenCompra: linkOrdenCompra,
                 total: totalSinIVA,
                 especificaciones: informacionPedido.especificaciones,
                 productos: listProductosCargados,
@@ -578,7 +517,7 @@ function ModificacionVentas(props) {
                                         </Form.Label>
                                     </Col>
                                     <Col sm="4">
-                                    <Form.Control
+                                        <Form.Control
                                             as="select"
                                             defaultValue={informacionPedido.lugarEntrega}
                                             name="lugarEntrega"

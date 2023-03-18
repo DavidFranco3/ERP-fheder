@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import {obtenerCliente} from "../../../api/clientes";
-import {toast} from "react-toastify";
+import { obtenerCliente } from "../../../api/clientes";
+import { toast } from "react-toastify";
 
 function Cliente(props) {
     const { id } = props;
@@ -8,17 +8,17 @@ function Cliente(props) {
     // Para almacenar el nombre del cliente
     const [nombreCliente, setNombreCliente] = useState("");
 
-    useEffect(() => {
+    const obtenerNombreCliente = () => {
         //
         try {
             obtenerCliente(id).then(response => {
                 const { data } = response;
                 // console.log(data)
-                const { nombre} = data;
+                const { nombre } = data;
                 setNombreCliente(nombre)
             }).catch(e => {
                 //console.log(e)
-                if(e.message === 'Network Error') {
+                if (e.message === 'Network Error') {
                     //console.log("No hay internet")
                     toast.error("Conexión al servidor no disponible");
                 }
@@ -26,7 +26,11 @@ function Cliente(props) {
         } catch (e) {
             console.log(e)
         }
-    }, [id]);
+    }
+
+    useEffect(() => {
+        obtenerNombreCliente();
+    }, []);
 
     return (
         <>

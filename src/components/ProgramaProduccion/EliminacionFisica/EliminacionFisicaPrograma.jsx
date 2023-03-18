@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
-import { eliminaUsuario } from "../../../api/usuarios";
+import { useState } from 'react';
 import { toast } from "react-toastify";
 import queryString from "query-string";
 import { Button, Col, Form, Row, Spinner, Alert } from "react-bootstrap";
 import { eliminaPrograma } from "../../../api/programaProduccion";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { LogTrackingEliminacion } from "../../Tracking/Gestion/GestionTracking";
 
 function EliminacionFisicaPrograma(props) {
     const { datos, setShowModal, history } = props;

@@ -3,12 +3,11 @@ import { Alert, Button, Col, Form, Row, Container, Image, Spinner } from "react-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
-import BuscarInspeccionCalidad from "../BuscarInspeccionCalidad";
 import BasicModal from "../../Modal/BasicModal";
 import { obtenerStatusMaterial, actualizaStatusMaterial } from "../../../api/statusMaterial";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
+import { LogsInformativos, LogsInformativosLogout } from '../../Logs/LogsSistema/LogsSistema';
 import { obtenerRazonSocialPorNombre } from "../../../api/razonesSociales";
 import "./VistaPreviaStatus.scss";
 import LogoPDF from "../../../assets/png/pdf.png";
@@ -26,16 +25,21 @@ function VistaPreviaStatus(props) {
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -53,7 +57,7 @@ function VistaPreviaStatus(props) {
     const params = useParams();
     const { id } = params
 
-    useEffect(() => {
+    const cargarDatosStatus = () => {
         //
         obtenerStatusMaterial(id).then(response => {
             const { data } = response;
@@ -64,6 +68,10 @@ function VistaPreviaStatus(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosStatus();
     }, []);
 
     // Para hacer uso del modal
@@ -112,15 +120,19 @@ function VistaPreviaStatus(props) {
 
     const [formDataSucursal, setFormDataSucursal] = useState(initialFormDataSucursalInitial());
 
+    const cargarDatosRazonSocial = () => {
+ //
+ obtenerRazonSocialPorNombre(getSucursal()).then(response => {
+    const { data } = response;
+    //console.log(data)
+    setFormDataSucursal(initialFormDataSucursal(data));
+}).catch(e => {
+    console.log(e)
+})
+    }
+
     useEffect(() => {
-        //
-        obtenerRazonSocialPorNombre(getSucursal()).then(response => {
-            const { data } = response;
-            //console.log(data)
-            setFormDataSucursal(initialFormDataSucursal(data));
-        }).catch(e => {
-            console.log(e)
-        })
+       cargarDatosRazonSocial();
     }, [getSucursal()]);
 
     const onSubmit = e => {
@@ -308,7 +320,7 @@ function VistaPreviaStatus(props) {
                     },
                     {
                     },
-                    {   
+                    {
                     },
                     {
                     }

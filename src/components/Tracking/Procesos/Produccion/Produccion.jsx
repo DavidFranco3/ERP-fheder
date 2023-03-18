@@ -12,8 +12,7 @@ function Produccion(props) {
     // Para almacenar la lista completa de clientes
     const [listProducciones, setListProducciones] = useState(null);
 
-    // Obtener los clientes registrados
-    useEffect(() => {
+    const cargarListaProudcciones = () => {
         try {
             listarProduccion(getSucursal()).then(response => {
                 const { data } = response;
@@ -32,9 +31,12 @@ function Produccion(props) {
         } catch (e) {
             console.log(e)
         }
-    }, []);
+    }
 
-    console.log(listProducciones)
+    // Obtener los clientes registrados
+    useEffect(() => {
+        cargarListaProudcciones();
+    }, []);
 
     return (
         <>

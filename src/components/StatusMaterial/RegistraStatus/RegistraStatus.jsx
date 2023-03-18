@@ -3,27 +3,31 @@ import { Alert, Button, Col, Form, Row, Container, Spinner } from "react-bootstr
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import BuscarInspeccionCalidad from "../BuscarInspeccionCalidad";
 import BasicModal from "../../Modal/BasicModal";
 import { registraStatusMaterial, obtenerNumeroStatusMaterial, obtenerItemStatusMaterial } from "../../../api/statusMaterial";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
+import { LogsInformativos, LogsInformativosLogout } from '../../Logs/LogsSistema/LogsSistema';
 import BuscarCalidad from '../../../page/BuscarCalidad/BuscarCalidad';
 
 function RegistraStatus(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -85,7 +89,7 @@ function RegistraStatus(props) {
     // Para guardar los datos del formulario
     const [formDataCalidad, setFormDataCalidad] = useState(initialFormDataCalidad());
 
-    useEffect(() => {
+    const obtenerItem = () => {
         try {
             obtenerItemStatusMaterial().then(response => {
                 const { data } = response;
@@ -98,6 +102,10 @@ function RegistraStatus(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerItem();
     }, []);
 
     const onSubmit = e => {

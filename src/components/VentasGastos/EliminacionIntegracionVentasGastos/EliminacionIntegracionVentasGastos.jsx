@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState  } from 'react';
 import { eliminaIntegraciones } from "../../../api/integracionVentasGastos";
 import { toast } from "react-toastify";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";

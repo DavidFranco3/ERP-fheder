@@ -220,12 +220,16 @@ function ListNotasPagarDevolucion(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listNotas);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     const paginationComponentOptions = {
@@ -241,7 +245,7 @@ function ListNotasPagarDevolucion(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={listNotas}
+                    data={rows}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}

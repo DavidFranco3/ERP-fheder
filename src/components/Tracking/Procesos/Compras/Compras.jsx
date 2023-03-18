@@ -21,8 +21,7 @@ function Compras(props) {
     // Para almacenar la lista completa de clientes
     const [listRequisicion, setListRequisicion] = useState(null);
 
-    // Obtener los clientes registrados
-    useEffect(() => {
+    const cargarListaRequisiciones = () => {
         try {
             listarRequisiciones(getSucursal()).then(response => {
                 const { data } = response;
@@ -41,13 +40,17 @@ function Compras(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // Obtener los clientes registrados
+    useEffect(() => {
+       cargarListaRequisiciones();
     }, []);
 
     // Para almacenar la lista completa de clientes
     const [listCompras, setListCompras] = useState(null);
 
-    // Obtener los clientes registrados
-    useEffect(() => {
+    const cargarListaCompras = () => {
         try {
             listarOrdenesCompra().then(response => {
                 const { data } = response;
@@ -66,6 +69,11 @@ function Compras(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // Obtener los clientes registrados
+    useEffect(() => {
+        cargarListaCompras();
     }, []);
 
     return (

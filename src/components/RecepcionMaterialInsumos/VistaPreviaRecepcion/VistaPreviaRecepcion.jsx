@@ -14,7 +14,6 @@ import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { obtenerDatosCompra } from "../../../api/compras"
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
-import { LogRegistroPlaneacion } from "../../Planeacion/Gestion/GestionPlaneacion";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOC from '../../../page/BuscarOC';

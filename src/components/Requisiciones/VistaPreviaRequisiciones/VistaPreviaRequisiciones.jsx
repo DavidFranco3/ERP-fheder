@@ -11,7 +11,7 @@ import { obtenerRazonSocialPorNombre } from "../../../api/razonesSociales";
 import { toast } from "react-toastify";
 import BasicModal from "../../Modal/BasicModal";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
+import { LogsInformativos, LogsInformativosLogout } from '../../Logs/LogsSistema/LogsSistema';
 import LogoPDF from "../../../assets/png/pdf.png";
 import Regreso from "../../../assets/png/back.png";
 import 'dayjs/locale/es'
@@ -27,16 +27,21 @@ function VistaPreviaRequisiciones(props) {
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -70,7 +75,7 @@ function VistaPreviaRequisiciones(props) {
 
     const [formDataSucursal, setFormDataSucursal] = useState(initialFormDataSucursalInitial());
 
-    useEffect(() => {
+    const cargarDatosRazonSocial = () => {
         //
         obtenerRazonSocialPorNombre(getSucursal()).then(response => {
             const { data } = response;
@@ -79,6 +84,10 @@ function VistaPreviaRequisiciones(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosRazonSocial();
     }, [getSucursal()]);
 
     // Para almacenar la OV
@@ -126,7 +135,7 @@ function VistaPreviaRequisiciones(props) {
         setShowModal(true);
     }
 
-    useEffect(() => {
+    const cargarDatosRequisicion = () => {
         //
         obtenerRequisiciones(id).then(response => {
             const { data } = response;
@@ -137,33 +146,10 @@ function VistaPreviaRequisiciones(props) {
         }).catch(e => {
             console.log(e)
         })
-    }, []);
-
-    // Para almacenar el listado de ordenes de venta
-    const [listOrdenesVenta, setListOrdenesVenta] = useState(null);
+    }
 
     useEffect(() => {
-        try {
-            listarPedidosVenta().then(response => {
-                const { data } = response;
-                // console.log(data);
-                if (!listOrdenesVenta && data) {
-                    setListOrdenesVenta(formatModelOrdenesVenta(data));
-                } else {
-                    const datosOV = formatModelOrdenesVenta(data);
-                    setListOrdenesVenta(datosOV);
-                }
-
-            }).catch((e) => {
-                //console.log(e)
-                if (e.message === "Network Error") {
-                    toast.error("Conexión a Internet no Disponible");
-                    // setConexionInternet(false);
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
+        cargarDatosRequisicion();
     }, []);
 
     // Para agregar productos al listado
@@ -217,24 +203,6 @@ function VistaPreviaRequisiciones(props) {
         setListProductosCargados([...newArray]);
     }
     // Termina gestión de los articulos cargados
-
-    // Para almacenar el folio actual
-    const [folioActual, setFolioActual] = useState("");
-
-    useEffect(() => {
-        try {
-            obtenerNumeroRequisicion().then(response => {
-                const { data } = response;
-                console.log(data)
-                const { noRequisicion } = data;
-                setFolioActual(noRequisicion)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
 
     const onSubmit = (e) => {
         e.preventDefault()

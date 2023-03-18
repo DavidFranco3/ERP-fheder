@@ -23,7 +23,7 @@ function EliminacionLogicaNotasPagar(props) {
     const [proveedor, setProveedor] = useState("");
     const [nombreProveedor, setNombreProveedor] = useState("");
 
-    useEffect(() => {
+    const cargarDatosCuentas = () => {
         //
         obtenerDatosCuentasPagar(factura).then(response => {
             const { data } = response;
@@ -33,6 +33,10 @@ function EliminacionLogicaNotasPagar(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    useEffect(() => {
+        cargarDatosCuentas();
     }, []);
 
     const onSubmit = e => {

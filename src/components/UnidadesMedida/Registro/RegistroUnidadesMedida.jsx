@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import "./RegistroUnidadesMedida.scss";
 import { toast } from "react-toastify";

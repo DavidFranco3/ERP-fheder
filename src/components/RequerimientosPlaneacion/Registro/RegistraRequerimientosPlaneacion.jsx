@@ -16,29 +16,34 @@ import { toast } from "react-toastify";
 import { LogTrackingActualizacion } from "../../Tracking/Gestion/GestionTracking";
 import { obtenerMaquina, listarMaquina } from "../../../api/maquinas";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
+import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { obtenerDatosArticulo } from '../../../api/almacenes';
 
 function RegistraRequerimientosPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
     // Para almacenar el listado de maquinas
     const [listMaquinas, setListMaquinas] = useState(null);
 
-    useEffect(() => {
+    const cargarListaMaquinas = () => {
         try {
             listarMaquina(getSucursal()).then(response => {
                 const { data } = response;
@@ -60,6 +65,10 @@ function RegistraRequerimientosPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarListaMaquinas();
     }, []);
 
     const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
@@ -82,30 +91,7 @@ function RegistraRequerimientosPlaneacion(props) {
     // Para almacenar la cantidad en el almacen de materia prima
     const [cantidadEmpaquesAlmacen, setCantidadEmpaquesAlmacen] = useState(0);
 
-    const [producto, setProducto] = useState([]);
-
-    useEffect(() => {
-        // Para buscar el producto en la matriz de productos
-        try {
-            obtenerDatosMP(formDataPlaneacion.idMaterial).then(response => {
-                const { data } = response;
-                setCantidadProductoAlmacen(data.cantidadExistencia)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, [formDataPlaneacion.idMaterial]);
-
-    useEffect(() => {
-        const temp = formData.materiaPrima.split("/");
-        let idProducto = "";
-        if (producto.length == 1) {
-            map(producto, (datosProducto, index) => {
-                idProducto = datosProducto.ID
-            })
-        }
+    const cargarDatosProducto = () => {
         // Para buscar el producto en la matriz de productos
         try {
             obtenerPorNoInternoMatrizProducto(formDataVenta.numeroInterno).then(response => {
@@ -125,91 +111,11 @@ function RegistraRequerimientosPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosProducto();
     }, [formDataVenta.numeroInterno]);
-
-    const [unidadMedida, setUnidadMedida] = useState("Piezas");
-
-    const [cantidad, setCantidad] = useState("0");
-
-    useEffect(() => {
-        const temp = formData.materiaPrima.split("/");
-        let idProducto = "";
-        if (producto.length == 1) {
-            map(producto, (datosProducto, index) => {
-                idProducto = datosProducto.ID
-            })
-        }
-        // Para buscar el producto en la matriz de productos
-        try {
-            obtenerDatosAlmacenPT(producto.length == 1 ? idProducto : temp[0]).then(response => {
-                const { data } = response;
-                setUnidadMedida(data.um);
-                setCantidad(data.existenciasTotales)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, [producto.length == 1 ? producto : formData.materiaPrima]);
-
-
-    const [numeroMaquina1, setNumeroMaquina1] = useState("");
-
-    const [nombreMaquina1, setNombreMaquina1] = useState("");
-
-    useEffect(() => {
-        // Para buscar el producto en la matriz de productos
-        try {
-            obtenerMaquina(formDataPlaneacion.opcion1).then(response => {
-                const { data } = response;
-                setNumeroMaquina1(data.numeroMaquina);
-                setNombreMaquina1(data.marca)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, [formDataPlaneacion.opcion1]);
-
-    const [numeroMaquina2, setNumeroMaquina2] = useState("");
-
-    const [nombreMaquina2, setNombreMaquina2] = useState("");
-
-    useEffect(() => {
-        // Para buscar el producto en la matriz de productos
-        try {
-            obtenerMaquina(formDataPlaneacion.opcion2).then(response => {
-                const { data } = response;
-                setNumeroMaquina2(data.numeroMaquina);
-                setNombreMaquina2(data.marca)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, [formDataPlaneacion.opcion2]);
-
-    const [numeroMaquina3, setNumeroMaquina3] = useState("");
-
-    const [nombreMaquina3, setNombreMaquina3] = useState("");
-
-    useEffect(() => {
-        // Para buscar el producto en la matriz de productos
-        try {
-            obtenerMaquina(formDataPlaneacion.opcion3).then(response => {
-                const { data } = response;
-                setNumeroMaquina3(data.numeroMaquina);
-                setNombreMaquina3(data.marca)
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, [formDataPlaneacion.opcion3]);
 
     let cantidadTotalEntrada = 0;
 
@@ -217,9 +123,8 @@ function RegistraRequerimientosPlaneacion(props) {
 
     const [almacenProducto, setAlmacenProducto] = useState(0);
 
-    useEffect(() => {
+    const cargarDatosArticulos = () => {
         // Para buscar el producto en la matriz de productos
-        console.log(formDataPlaneacion.id)
         try {
             obtenerDatosArticulo(formDataPlaneacion.id).then(response => {
                 const { data } = response;
@@ -247,13 +152,17 @@ function RegistraRequerimientosPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosArticulos();
     }, [formDataPlaneacion.id]);
 
     let cantidadTotalEntradaMaterial = 0;
 
     let cantidadTotalSalidaMaterial = 0;
 
-    useEffect(() => {
+    const cargarDatosMaterial = () => {
         try {
             obtenerDatosArticulo(formDataPlaneacion.idMaterial).then(response => {
                 const { data } = response;
@@ -280,13 +189,17 @@ function RegistraRequerimientosPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosMaterial();
     }, [formDataPlaneacion.idMaterial]);
 
     let cantidadTotalEntradaPigmento = 0;
 
     let cantidadTotalSalidaPigmento = 0;
 
-    useEffect(() => {
+    const cargarDatosPigmento = () => {
         try {
             obtenerDatosArticulo(formDataPlaneacion.idPigmento).then(response => {
                 const { data } = response;
@@ -313,13 +226,17 @@ function RegistraRequerimientosPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosArticulos();
     }, [formDataPlaneacion.idPigmento]);
 
     let cantidadTotalEntradaEmpaque = 0;
 
     let cantidadTotalSalidaEmpaque = 0;
 
-    useEffect(() => {
+    const cargarDatosEmpaque = () => {
         try {
             obtenerDatosArticulo(formDataPlaneacion.idEmpaque).then(response => {
                 const { data } = response;
@@ -346,6 +263,10 @@ function RegistraRequerimientosPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+       cargarDatosEmpaque();
     }, [formDataPlaneacion.idEmpaque]);
 
     // Para hacer uso del modal
@@ -371,52 +292,6 @@ function RegistraRequerimientosPlaneacion(props) {
     // Para controlar la animacion
     const [loading, setLoading] = useState(false);
 
-    // Para almacenar el listado de productos activos
-    const [listProductosActivos, setListProductosActivos] = useState(null);
-
-    // Para traer el listado de productos activos
-    useEffect(() => {
-        try {
-            listarMatrizProductosActivos().then(response => {
-                const { data } = response;
-                // console.log(data)
-
-                if (!listProductosActivos && data) {
-                    setListProductosActivos(formatModelMatrizProductos(data));
-                } else {
-                    const datosProductos = formatModelMatrizProductos(data);
-                    setListProductosActivos(datosProductos);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
-    // Para almacenar el listado de materias primas
-    const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
-
-    useEffect(() => {
-        try {
-            listarAlmacenPT().then(response => {
-                const { data } = response;
-                // console.log(data)
-                if (!listMateriasPrimas && data) {
-                    setListMateriasPrimas(formatModelAlmacenPT(data));
-                } else {
-                    const datosProductos = formatModelAlmacenPT(data);
-                    setListMateriasPrimas(datosProductos);
-                }
-            }).catch(e => {
-                console.log(e)
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
     // Para almacenar la materia prima seleccionada
     const [almacenPT, setAlmacenPT] = useState([]);
 
@@ -441,7 +316,7 @@ function RegistraRequerimientosPlaneacion(props) {
 
     const [item, setItem] = useState("");
 
-    useEffect(() => {
+    const obtenerItem = () => {
         try {
             obtenerItemRequerimiento().then(response => {
                 const { data } = response;
@@ -454,6 +329,10 @@ function RegistraRequerimientosPlaneacion(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        obtenerItem();
     }, []);
 
     const onSubmit = e => {
@@ -633,20 +512,18 @@ function RegistraRequerimientosPlaneacion(props) {
 
     const [cantidadPedir, setCantidadPedir] = useState(0);
 
-    useEffect(() => {
-        setCantidadPedir(Number(kgMaterial) - Number(cantidadProductoAlmacen))
-    }, [formData.materiaPrima, formDataPlaneacion.idMaterial, totalProducir]);
-
     const [cantidadPedirMB, setCantidadPedirMB] = useState(0);
-
-    useEffect(() => {
-        setCantidadPedirMB(Number(pigMB) - Number(cantidadMBAlmacen))
-    }, [formData.materiaPrima, formDataPlaneacion.idMaterial, totalProducir]);
 
     const [cantidadPedirEmpaques, setCantidadPedirEmpaques] = useState(0);
 
-    useEffect(() => {
+    const calcularTotales = () => {
+        setCantidadPedir(Number(kgMaterial) - Number(cantidadProductoAlmacen))
+        setCantidadPedirMB(Number(pigMB) - Number(cantidadMBAlmacen))
         setCantidadPedirEmpaques(Number(bolsasCajasUtilizar) - Number(cantidadEmpaquesAlmacen))
+    }
+
+    useEffect(() => {
+        calcularTotales()
     }, [formData.materiaPrima, formDataPlaneacion.idMaterial, totalProducir]);
 
     const onChange = e => {
@@ -657,8 +534,12 @@ function RegistraRequerimientosPlaneacion(props) {
 
     const [cantidadProducir, setCantidadProducir] = useState(0);
 
-    useEffect(() => {
+    const cargarCantidadProducir = () => {
         setCantidadProducir(formDataVenta.cantidadProducirVenta)
+    }
+
+    useEffect(() => {
+        cargarCantidadProducir();
     }, [formDataVenta.cantidadProducirVenta]);
 
     const hoy = new Date();

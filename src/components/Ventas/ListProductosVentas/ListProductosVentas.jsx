@@ -12,7 +12,7 @@ function ListProductosVentas(props) {
     // Almacena los datos de la orden de venta
     const [datosOrdenVenta, setDatosOrdenVenta] = useState(null);
 
-    useEffect(() => {
+    const cargarDatosVentas = () => {
         try {
             obtenerDatosPedidoVenta(ordenVenta).then(response => {
                 const { data } = response;
@@ -24,6 +24,10 @@ function ListProductosVentas(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarDatosVentas();
     }, []);
 
 

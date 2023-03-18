@@ -1217,13 +1217,16 @@ function ListProgramaProduccionMaquinas(props) {
     const [pending, setPending] = useState(true);
     const [rows, setRows] = useState([]);
 
-
-    useEffect(() => {
+    const cargarDatos = () => {
         const timeout = setTimeout(() => {
             setRows(listProgramaProduccion);
             setPending(false);
         }, 0);
         return () => clearTimeout(timeout);
+    }
+
+    useEffect(() => {
+        cargarDatos();
     }, []);
 
     listProgramaProduccion.sort((x, y) => parseInt(x.ordenProduccion.noMaquina) - parseInt(y.ordenProduccion.noMaquina));
@@ -1339,7 +1342,7 @@ function ListProgramaProduccionMaquinas(props) {
                 <DataTable
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
-                    data={listProgramaProduccion}
+                    data={rows}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}
                     progressPending={pending}

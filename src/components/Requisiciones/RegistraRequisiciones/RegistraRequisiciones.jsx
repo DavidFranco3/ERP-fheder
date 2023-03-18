@@ -13,22 +13,27 @@ import BasicModal from "../../Modal/BasicModal";
 import BuscarMaterial from '../../../page/BuscarMaterial';
 import BuscarOV from '../../../page/BuscarOV';
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogsInformativos } from '../../Logs/LogsSistema/LogsSistema';
+import { LogsInformativos, LogsInformativosLogout } from '../../Logs/LogsSistema/LogsSistema';
 import ModificacionProductos from '../ModificacionProductos';
 
 function RegistraRequisiciones(props) {
     const { setRefreshCheckLogin } = props;
 
-    // Cerrado de sesión automatico
-    useEffect(() => {
+    const cierreAutomatico = () => {
         if (getTokenApi()) {
             if (isExpiredToken(getTokenApi())) {
+                LogsInformativosLogout("Sesión finalizada", setRefreshCheckLogin)
                 toast.warning("Sesión expirada");
                 toast.success("Sesión cerrada por seguridad");
                 logoutApi();
                 setRefreshCheckLogin(true);
             }
         }
+    }
+
+    // Cerrado de sesión automatico
+    useEffect(() => {
+        cierreAutomatico();
     }, []);
     // Termina cerrado de sesión automatico
 
@@ -110,33 +115,6 @@ function RegistraRequisiciones(props) {
         setShowModal(true);
     }
 
-    // Para almacenar el listado de ordenes de venta
-    const [listOrdenesVenta, setListOrdenesVenta] = useState(null);
-
-    useEffect(() => {
-        try {
-            listarPedidosVenta().then(response => {
-                const { data } = response;
-                // console.log(data);
-                if (!listOrdenesVenta && data) {
-                    setListOrdenesVenta(formatModelOrdenesVenta(data));
-                } else {
-                    const datosOV = formatModelOrdenesVenta(data);
-                    setListOrdenesVenta(datosOV);
-                }
-
-            }).catch((e) => {
-                //console.log(e)
-                if (e.message === "Network Error") {
-                    toast.error("Conexión a Internet no Disponible");
-                    // setConexionInternet(false);
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, []);
-
     // Para agregar productos al listado
     const addItems = () => {
         const folio = document.getElementById("folio").value
@@ -193,7 +171,7 @@ function RegistraRequisiciones(props) {
     // Para almacenar el folio actual
     const [folioActual, setFolioActual] = useState("");
 
-    useEffect(() => {
+    const obtenerFolio = () => {
         try {
             obtenerNumeroRequisicion().then(response => {
                 const { data } = response;
@@ -206,6 +184,10 @@ function RegistraRequisiciones(props) {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    useEffect(() => {
+       obtenerFolio();
     }, []);
 
     const onSubmit = (e) => {

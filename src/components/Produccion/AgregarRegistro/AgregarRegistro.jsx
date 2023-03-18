@@ -98,12 +98,16 @@ function AgregarRegistro(props) {
 
     const [pendienteSurtir, setPendienteSurtir] = useState(0);
 
-    useEffect(() => {
+    const calcularTotal = () => {
         const totalAcumulado = parseInt(formDataAlmacen.cantidadExistencia) + parseInt(registroAnterior);
         setAcumulado(totalAcumulado);
 
         const totalPendiente = parseFloat(kgMaterial) - parseInt(acumulado);
         setPendienteSurtir(totalPendiente);
+    }
+
+    useEffect(() => {
+        calcularTotal();
     }, [formDataAlmacen.cantidadExistencia, pendienteSurtir, acumulado]);
 
     const onChange = e => {

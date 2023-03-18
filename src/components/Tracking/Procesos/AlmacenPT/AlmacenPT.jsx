@@ -15,7 +15,7 @@ function Almacen(props) {
     // Para almacenar el listado de materias primas
     const [listMateriasPrimas, setListMateriasPrimas] = useState(null);
 
-    useEffect(() => {
+    const cargarListaMateriales = () => {
         try {
             listarAlmacenPT().then(response => {
                 const { data } = response;
@@ -27,11 +27,15 @@ function Almacen(props) {
                     setListMateriasPrimas(datosProductos);
                 }
             }).catch(e => {
-                //console.log(e)
+                console.log(e)
             })
         } catch (e) {
-            //console.log(e)
+            console.log(e)
         }
+    }
+
+    useEffect(() => {
+        cargarListaMateriales();
     }, []);
 
     return (
