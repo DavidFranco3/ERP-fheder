@@ -229,7 +229,7 @@ function ListAlmacenMp(props) {
     `;
 
 
-    const filteredItems = rows.filter(
+    const filteredItems = listAlmacenes.filter(
         item => filterText == "" ? item.nombreArticulo.toLowerCase().includes(filterText.toLowerCase()) : item.nombreArticulo == filterText
     );
 

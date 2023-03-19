@@ -119,7 +119,7 @@ function BuscarRequisiciones(props) {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listRequisiciones.filter(
         item => item.folio && item.folio.toLowerCase().includes(filterText.toLowerCase())
     );
 

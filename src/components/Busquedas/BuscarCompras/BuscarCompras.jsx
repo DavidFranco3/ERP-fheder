@@ -123,7 +123,7 @@ function BuscarCompras(props) {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listCompras.filter(
         item => item.nombreProveedor && item.nombreProveedor.toLowerCase().includes(filterText.toLowerCase())
     );
 

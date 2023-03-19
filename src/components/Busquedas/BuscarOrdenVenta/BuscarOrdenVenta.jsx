@@ -142,7 +142,7 @@ function BuscarOrdenVenta(props) {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listVentas.filter(
         item => item.nombreCliente && item.nombreCliente.toLowerCase().includes(filterText.toLowerCase())
     );
 

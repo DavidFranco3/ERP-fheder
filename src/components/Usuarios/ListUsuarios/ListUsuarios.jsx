@@ -331,7 +331,7 @@ function ListUsuarios(props) {
                 <DataTable
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
-                    data={rows}
+                    data={listUsuarios}
                     //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}

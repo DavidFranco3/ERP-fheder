@@ -310,7 +310,7 @@ function ListClasificacionMaquinaria(props) {
                 <DataTable
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
-                    data={rows}
+                    data={listClasificacionMaquinaria}
                     //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}

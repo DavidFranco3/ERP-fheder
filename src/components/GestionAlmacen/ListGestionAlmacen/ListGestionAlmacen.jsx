@@ -316,7 +316,7 @@ function ListGestionAlmacen(props) {
                 <DataTable
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
-                    data={rows}
+                    data={listGestionAlmacen}
                     //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}

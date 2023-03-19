@@ -205,7 +205,7 @@ function RegistraAlertasCalidad(props) {
                     const { data } = response;
                     // console.log(data)
                     const { secure_url } = data;
-                    setLinkCondicionIncorrecta1(secure_url)
+                    setLinkCondicionIncorrecta2(secure_url)
                 }).catch(e => {
                     console.log(e)
                 })
@@ -231,7 +231,7 @@ function RegistraAlertasCalidad(props) {
                     const { data } = response;
                     // console.log(data)
                     const { secure_url } = data;
-                    setLinkCondicionIncorrecta1(secure_url)
+                    setLinkCondicionIncorrecta3(secure_url)
                 }).catch(e => {
                     console.log(e)
                 })
@@ -257,7 +257,7 @@ function RegistraAlertasCalidad(props) {
                     const { data } = response;
                     // console.log(data)
                     const { secure_url } = data;
-                    setLinkCondicionIncorrecta1(secure_url)
+                    setLinkCondicionIncorrecta4(secure_url)
                 }).catch(e => {
                     console.log(e)
                 })

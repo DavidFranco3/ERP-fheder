@@ -128,7 +128,7 @@ function BuscarProductos(props) {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listProductos.filter(
         item => item.descripcion && item.descripcion.toLowerCase().includes(filterText.toLowerCase())
     );
 

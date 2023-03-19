@@ -241,7 +241,7 @@ function ListInventarioMolde(props) {
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
                     // actions={descargaCSV}
-                    data={rows}
+                    data={listInventarios}
                     // expandableRows
                     // expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}

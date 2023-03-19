@@ -119,7 +119,7 @@ function BuscarClientes(props) {
     `;
 
 
-    const filteredItems = rows.filter(
+    const filteredItems = listClientes.filter(
         item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase()) || item.rfc && item.rfc.toLowerCase().includes(filterText.toLowerCase())
     );
 

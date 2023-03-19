@@ -234,7 +234,7 @@ function ListAlertasCalidad(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={rows}
+                    data={listAlertasCalidad}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}

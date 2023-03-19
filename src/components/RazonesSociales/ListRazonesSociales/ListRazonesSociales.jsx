@@ -310,7 +310,7 @@ function ListRazonesSociales(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={rows}
+                    data={listRazonesSociales}
                     //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}

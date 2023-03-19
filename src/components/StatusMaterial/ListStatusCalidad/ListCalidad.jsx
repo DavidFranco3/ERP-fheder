@@ -238,7 +238,7 @@ function ListCalidad(props) {
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
                     // actions={descargaCSV}
-                    data={rows}
+                    data={listStatus}
                     //expandableRows
                     //expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}

@@ -118,7 +118,7 @@ function BuscarProveedores(props) {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listProveedores.filter(
         item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase())
     );
 

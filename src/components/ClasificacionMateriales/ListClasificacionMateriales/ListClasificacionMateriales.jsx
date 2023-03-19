@@ -308,7 +308,7 @@ function ListClasificacionMateriales(props) {
                 <DataTable
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
-                    data={rows}
+                    data={listClasificacionMateriales}
                     //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}

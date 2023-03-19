@@ -228,7 +228,7 @@ function ListRequisiciones(props) {
                 <DataTable
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
-                    data={rows}
+                    data={listRequisiciones}
                     expandableRows
                     expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}

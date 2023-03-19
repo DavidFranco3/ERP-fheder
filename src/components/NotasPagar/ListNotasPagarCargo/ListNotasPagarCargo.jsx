@@ -244,7 +244,7 @@ function ListNotasPagarCargo(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={rows}
+                    data={listNotas}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}

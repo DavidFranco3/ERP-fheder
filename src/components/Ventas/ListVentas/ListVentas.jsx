@@ -297,7 +297,7 @@ function ListVentas(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={rows}
+                    data={listPedidosVenta}
                     expandableRows
                     expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}

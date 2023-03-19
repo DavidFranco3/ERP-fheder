@@ -117,7 +117,7 @@ function BuscarProducciones(props) {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listProduccion.filter(
         item => item.generalidades.producto && item.generalidades.producto.toLowerCase().includes(filterText.toLowerCase())
     );
 

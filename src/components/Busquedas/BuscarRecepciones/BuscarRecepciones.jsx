@@ -113,7 +113,7 @@ function BuscarRecepciones(props) {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listRecepciones.filter(
         item => item.folio && item.folio.toLowerCase().includes(filterText.toLowerCase())
     );
 

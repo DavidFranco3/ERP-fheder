@@ -155,7 +155,7 @@ function BuscarMateriales(props) {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listMateriales.filter(
         item => item.descripcion && item.descripcion.toLowerCase().includes(filterText.toLowerCase())
     );
 

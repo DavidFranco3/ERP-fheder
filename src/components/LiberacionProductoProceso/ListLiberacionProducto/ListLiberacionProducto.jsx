@@ -258,7 +258,7 @@ function ListLiberacionProducto(props) {
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
                     // actions={descargaCSV}
-                    data={rows}
+                    data={listLiberacion}
                     //expandableRows
                     //expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}

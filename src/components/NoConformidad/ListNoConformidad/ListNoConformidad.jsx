@@ -241,7 +241,7 @@ function ListNoConformidad(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={rows}
+                    data={listNoConformidad}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}

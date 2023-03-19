@@ -1342,7 +1342,7 @@ function ListProgramaProduccionMaquinas(props) {
                 <DataTable
                     noDataComponent="No hay registros para mostrar"
                     columns={columns}
-                    data={rows}
+                    data={listProgramaProduccion}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}
                     progressPending={pending}

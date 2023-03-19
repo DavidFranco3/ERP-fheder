@@ -274,7 +274,7 @@ function ListMaquinas(props) {
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
                     // actions={descargaCSV}
-                    data={rows}
+                    data={listMaquinas}
                     //expandableRows
                     //expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}

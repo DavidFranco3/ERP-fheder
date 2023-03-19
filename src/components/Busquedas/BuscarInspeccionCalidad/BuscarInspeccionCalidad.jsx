@@ -121,7 +121,7 @@ function BuscarInspeccionCalidad(props) {
     `;
 
 
-    const filteredItems = rows.filter(
+    const filteredItems = listCalidad.filter(
         item => item.folio && item.folio.toLowerCase().includes(filterText.toLowerCase())
     );
 

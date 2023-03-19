@@ -257,7 +257,7 @@ function ListEtiquetasPrimeraPieza(props) {
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
                     // actions={descargaCSV}
-                    data={rows}
+                    data={listEtiquetas}
                     // expandableRows
                     // expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}

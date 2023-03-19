@@ -105,7 +105,7 @@ function BuscarDepartamentos(props) {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listDepartamentos.filter(
         item => item.nombre && item.nombre.toLowerCase().includes(filterText.toLowerCase())
     );
 

@@ -326,7 +326,7 @@ function ListClientes(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={rows}
+                    data={listClientes}
                     expandableRows
                     expandableRowsComponent={ExpandedComponent}
                     //actions={descargaCSV}

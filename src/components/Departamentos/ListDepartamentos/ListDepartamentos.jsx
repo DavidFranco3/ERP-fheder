@@ -297,7 +297,7 @@ function ListDepartamentos(props) {
                     //actions={descargaCSV}
                     //subHeader
                     //subHeaderComponent={subHeaderComponentMemo}
-                    data={rows}
+                    data={listDepartamentos}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}

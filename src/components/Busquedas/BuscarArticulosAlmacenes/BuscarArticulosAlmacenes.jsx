@@ -118,7 +118,7 @@ function BuscarArticulosAlmacenes(props) {
     const [filterText, setFilterText] = useState("");
     const [resetPaginationToogle, setResetPaginationToogle] = useState(false);
 
-    const filteredItems = rows.filter(
+    const filteredItems = listArticulos.filter(
         item => item.nombreArticulo && item.nombreArticulo.toLowerCase().includes(filterText.toLowerCase())
     );
 

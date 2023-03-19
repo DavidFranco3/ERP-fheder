@@ -127,7 +127,7 @@ function BuscarCuentasPagar(props) {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listCuentasPagar.filter(
         item => item.nombreProveedor && item.nombreProveedor.toLowerCase().includes(filterText.toLowerCase())
     );
 

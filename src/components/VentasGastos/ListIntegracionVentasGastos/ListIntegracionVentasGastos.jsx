@@ -279,7 +279,7 @@ function ListIntegracionVentasGastos(props) {
                 <DataTable
                     columns={columns}
                     // actions={descargaCSV}
-                    data={rows}
+                    data={listIntegraciones}
                     noDataComponent="No hay registros para mostrar"
                     // expandableRows
                     // expandableRowsComponent={ExpandedComponent}

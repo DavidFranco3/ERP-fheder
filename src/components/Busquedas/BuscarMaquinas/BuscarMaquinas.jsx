@@ -117,7 +117,7 @@ function BuscarMaquinas(props) {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listMaquinas.filter(
         item => item.numeroMaquina && item.numeroMaquina.toLowerCase().includes(filterText.toLowerCase())
     );
 

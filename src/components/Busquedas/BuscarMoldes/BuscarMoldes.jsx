@@ -116,7 +116,7 @@ function BuscarMoldes(props) {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listMoldes.filter(
         item => item.noInterno && item.noInterno.toLowerCase().includes(filterText.toLowerCase()) || item.descripcion && item.descripcion.toLowerCase().includes(filterText.toLowerCase())
     );
 

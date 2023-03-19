@@ -129,7 +129,7 @@ function BuscarProductosOrdenVenta(props) {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listProductos.filter(
         item => item.item && item.item.toLowerCase().includes(filterText.toLowerCase())
     );
 

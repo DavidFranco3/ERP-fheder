@@ -234,7 +234,7 @@ function ListMatrizProductos(props) {
             <Container fluid>
                 <DataTable
                     columns={columns}
-                    data={rows}
+                    data={listProductos}
                     noDataComponent="No hay registros para mostrar"
                     progressPending={pending}
                     paginationComponentOptions={paginationComponentOptions}

@@ -83,7 +83,7 @@ function ListCuentasProveedores(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={rows}
+                    data={listCuentas}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}

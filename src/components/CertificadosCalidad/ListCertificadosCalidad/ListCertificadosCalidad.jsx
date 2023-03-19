@@ -228,7 +228,7 @@ function ListCertificadosCalidad(props) {
                 <DataTable
                     columns={columns}
                     // actions={descargaCSV}
-                    data={rows}
+                    data={listCertificados}
                     noDataComponent="No hay registros para mostrar"
                     // expandableRows
                     // expandableRowsComponent={ExpandedComponent}

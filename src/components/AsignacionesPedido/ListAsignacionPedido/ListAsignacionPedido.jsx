@@ -278,7 +278,7 @@ function ListAsignacionPedido(props) {
             <Container fluid>
                 <DataTable
                     columns={columns}
-                    data={rows}
+                    data={listAsignacionPedido}
                     noDataComponent="No hay registros para mostrar"
                     progressPending={pending}
                     pagination

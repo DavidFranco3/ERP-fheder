@@ -235,7 +235,7 @@ function ListCuentasPagar(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={rows}
+                    data={listCuentasPagar}
                     expandableRows
                     expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}

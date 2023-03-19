@@ -309,7 +309,7 @@ function ListCompras(props) {
             <Container fluid>
                 <DataTable
                     columns={columns}
-                    data={rows}
+                    data={listCompras}
                     noDataComponent="No hay registros para mostrar"
                     expandableRows
                     expandableRowsComponent={ExpandedComponent}

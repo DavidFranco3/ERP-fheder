@@ -124,7 +124,7 @@ const cargarDatos = () => {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listFacturas.filter(
         item => item.nombreCliente && item.nombreCliente.toLowerCase().includes(filterText.toLowerCase())
     );
 

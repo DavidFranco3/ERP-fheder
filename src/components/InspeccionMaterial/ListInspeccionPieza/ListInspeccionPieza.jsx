@@ -243,7 +243,7 @@ function ListInspeccionPieza(props) {
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
                     // actions={descargaCSV}
-                    data={rows}
+                    data={listInspeccion}
                     // expandableRows
                     // expandableRowsComponent={ExpandedComponent}
                     progressPending={pending}

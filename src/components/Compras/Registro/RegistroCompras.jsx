@@ -130,7 +130,7 @@ function RegistroCompras(props) {
     // Para almacenar el folio actual
     const [itemActual, setItemActual] = useState("");
 
-    const obtenerItem = () => {
+    const obtenerItemCompra = () => {
         try {
             obtenerItem().then(response => {
                 const { data } = response;
@@ -146,7 +146,7 @@ function RegistroCompras(props) {
     }
 
     useEffect(() => {
-        obtenerItem();
+        obtenerItemCompra();
     }, []);
 
     // Para guardar los datos del formulario

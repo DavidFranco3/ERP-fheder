@@ -214,7 +214,7 @@ function ListCotizaciones(props) {
                 <DataTable
                     columns={columns}
                     noDataComponent="No hay registros para mostrar"
-                    data={rows}
+                    data={listCotizaciones}
                     progressPending={pending}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}

@@ -119,7 +119,7 @@ function BuscarPlaneaciones(props) {
         justify-content: center;
     `;
 
-    const filteredItems = rows.filter(
+    const filteredItems = listRequerimientos.filter(
         item => item.requerimiento.nombreProducto && item.requerimiento.nombreProducto.toLowerCase().includes(filterText.toLowerCase())
     );
 
