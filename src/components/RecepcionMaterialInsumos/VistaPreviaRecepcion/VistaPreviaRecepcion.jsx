@@ -3,8 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Alert, Button, Col, Container, Form, Row, Spinner, Image, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
-import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
-import BuscarProducto from '../../../page/BuscarProducto/BuscarProducto';
 import { listarClientes } from "../../../api/clientes";
 import { obtenerRecepcion, actualizaRecepcion } from "../../../api/recepcionMaterialInsumos";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,7 +11,6 @@ import "./VistaPreviaRecepcion.scss"
 import { listarMatrizProductosActivos } from "../../../api/matrizProductos";
 import { obtenerDatosCompra } from "../../../api/compras"
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import { LogTrackingRegistro } from "../../Tracking/Gestion/GestionTracking";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOC from '../../../page/BuscarOC';
