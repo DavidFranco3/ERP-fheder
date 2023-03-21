@@ -432,7 +432,7 @@ function VistaPreviaEvaluacionProveedores(props) {
                     style: 'tableExample',
                     table: {
                         widths: ['25%', '25%', '25%', '25%'],
-                        heights: [10, 10, 10, 10, 10, 30],
+                        heights: [10, 10, 10, 10, 10,10, 30],
                         headerRows: 1,
                         body: [
                             [
@@ -445,7 +445,43 @@ function VistaPreviaEvaluacionProveedores(props) {
                                 {
                                 },
                                 {
-                                    text: `Nombre:  ${proveedorSeleccionado.nombreProveedor}`,
+                                    text: `Nombre:  ${formData.nombre}`,
+                                    fontSize: 9,
+                                    colSpan: 2,
+                                    bold: true,
+                                },
+                                {
+                                }
+                            ],
+                            [
+                                {
+                                    text: `RFC:  ${formData.rfc}`,
+                                    fontSize: 9,
+                                    colSpan: 2,
+                                    bold: true
+                                },
+                                {
+                                },
+                                {
+                                    text: `Correo:  ${formData.correo}`,
+                                    fontSize: 9,
+                                    colSpan: 2,
+                                    bold: true,
+                                },
+                                {
+                                }
+                            ],
+                            [
+                                {
+                                    text: `Tipo de persona:  ${formData.tipoPersona}`,
+                                    fontSize: 9,
+                                    colSpan: 2,
+                                    bold: true
+                                },
+                                {
+                                },
+                                {
+                                    text: `Regimen fiscal:  ${formData.regimenFiscal}`,
                                     fontSize: 9,
                                     colSpan: 2,
                                     bold: true,
@@ -492,9 +528,9 @@ function VistaPreviaEvaluacionProveedores(props) {
                             [
                                 {
                                     text: [
-                                        'Teléfono: ',
+                                        'Teléfono celular: ',
                                         {
-                                            text: proveedorSeleccionado.telefonoProveedor,
+                                            text: formData.telefonoCelular,
                                             bold: true
                                         }
                                     ],
@@ -506,9 +542,9 @@ function VistaPreviaEvaluacionProveedores(props) {
                                 },
                                 {
                                     text: [
-                                        'Correo: ',
+                                        'Telefono fijo: ',
                                         {
-                                            text: proveedorSeleccionado.correoProveedor,
+                                            text: formData.telefonoFijo,
                                             bold: true
                                         }
                                     ],
@@ -538,6 +574,92 @@ function VistaPreviaEvaluacionProveedores(props) {
                                 }
                             ],
                             descripcion,
+                            [
+                                {
+                                    text: `Datos del domicilio`,
+                                    colSpan: 4,
+                                    bold: true,
+                                    fontSize: 12
+                                },
+                                {
+                                },
+                                {
+                                },
+                                {
+                                }
+                            ],
+                            [
+                                {
+                                    text: `Calle:  ${formData.calle}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                },
+                                {
+                                    text: `Numero exterior:  ${formData.numeroExterior}`,
+                                    colSpan: 2,
+                                    fontSize: 9,
+                                    bold: true
+                                },
+                                {
+                                }
+                            ],
+                            [
+                                {
+                                    text: `Numero interior:  ${formData.numeroInterior}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                },
+                                {
+                                    text: `Codigo postal:  ${formData.codigoPostal}`,
+                                    colSpan: 2,
+                                    fontSize: 9,
+                                    bold: true
+                                },
+                                {
+                                }
+                            ],
+                            [
+                                {
+                                    text: `Estado:  ${formData.estado}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                },
+                                {
+                                    text: `Municipio:  ${formData.municipio}`,
+                                    colSpan: 2,
+                                    fontSize: 9,
+                                    bold: true
+                                },
+                                {
+                                }
+                            ],
+                            [
+                                {
+                                    text: `Colonia:  ${formData.colonia}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                },
+                                {
+                                    text: `Pais:  ${formData.pais}`,
+                                    colSpan: 2,
+                                    fontSize: 9,
+                                    bold: true
+                                },
+                                {
+                                }
+                            ],
                         ]
                     }
                 },
@@ -579,7 +701,7 @@ function VistaPreviaEvaluacionProveedores(props) {
                 <Row>
                     <Col xs={12} md={8}>
                         <h1>
-                            Detalles de la evaluación del proveedor
+                            Detalles del proveedor
                         </h1>
                     </Col>
                     <Col xs={6} md={4}>
@@ -600,8 +722,7 @@ function VistaPreviaEvaluacionProveedores(props) {
                 <div className="formularioDatos">
                     <Form onSubmit={onSubmit} onChange={onChange}>
 
-                        {/* ID proveedor, nombre/servicio, tipo */}
-                        <Row className="mb-3">
+                    <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridFolio">
                                 <Form.Label>
                                     Folio
@@ -616,15 +737,124 @@ function VistaPreviaEvaluacionProveedores(props) {
                         </Row>
 
                         <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formGridNombre">
+                            <Form.Group as={Col} controlId="formHorizontalNombre">
                                 <Form.Label>
-                                    Nombre del proveedor
+                                    Nombre
                                 </Form.Label>
                                 <Form.Control
                                     type="text"
-                                    name="nombre"
                                     placeholder="Escribe el nombre"
-                                    defaultValue={proveedorSeleccionado.nombreProveedor}
+                                    name="nombre"
+                                    defaultValue={formData.nombre}
+                                    disabled
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridCorreo">
+                                <Form.Label>
+                                    Correo
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Correo electronico"
+                                    name="correo"
+                                    defaultValue={formData.correo}
+                                    disabled
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridCorreo">
+                                <Form.Label>
+                                    Tipo de persona
+                                </Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    placeholder="Tipo de persona"
+                                    name="tipoPersona"
+                                    defaultValue={formData.tipoPersona}
+                                    disabled
+                                >
+                                    <option>Elige una opción</option>
+                                    <option value="Fisica" selected={formData.tipoPersona === "Fisica"}>Fisica</option>
+                                    <option value="Moral" selected={formData.tipoPersona === "Moral"}>Moral</option>
+                                </Form.Control>
+                            </Form.Group>
+
+                            {
+                                formData.tipoPersona === "Moral" &&
+                                (
+                                    <>
+                                        <Form.Group as={Col} controlId="formGridEstado">
+                                            <Form.Label>
+                                                Regimen fiscal
+                                            </Form.Label>
+                                            <Form.Control
+                                                as="select"
+                                                defaultValue={formData.regimenFiscal}
+                                                name="regimenFiscal"
+                                                disabled
+                                            >
+                                                <option>Elige una opción</option>
+                                                <option value="601-General de Ley Personas Morales" selected={formData.regimenFiscal === "601-General de Ley Personas Morales"}>601-General de Ley Personas Morales</option>
+                                                <option value="603-Personas Morales con Fines no Lucrativos" selected={formData.regimenFiscal === "603-Personas Morales con Fines no Lucrativos"}>603-Personas Morales con Fines no Lucrativos</option>
+                                                <option value="607-Régimen de Enajenación o Adquisición de Bienes" selected={formData.regimenFiscal === "607-Régimen de Enajenación o Adquisición de Bienes"}>607-Régimen de Enajenación o Adquisición de Bienes</option>
+                                                <option value="609-Consolidación" selected={formData.regimenFiscal === "609-Consolidación"}>609-Consolidación</option>
+                                                <option value="620-Sociedades Cooperativas de Producción que optan por Diferir sus Ingresos" selected={formData.regimenFiscal === "620-Sociedades Cooperativas de Producción que optan por Diferir sus Ingresos"}>620-Sociedades Cooperativas de Producción que optan por Diferir sus Ingresos</option>
+                                                <option value="622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras" selected={formData.regimenFiscal === "622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras"}>622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras</option>
+                                                <option value="623-Opcional para Grupos de Sociedades" selected={formData.regimenFiscal === "623-Opcional para Grupos de Sociedades"}>623-Opcional para Grupos de Sociedades</option>
+                                                <option value="624-Coordinados" selected={formData.regimenFiscal === "624-Coordinado"}>624-Coordinados</option>
+                                                <option value="628-Hidrocarburos" selected={formData.regimenFiscal === "628-Hidrocarburos"}>628-Hidrocarburos</option>
+                                            </Form.Control>
+                                        </Form.Group>
+                                    </>
+                                )
+                            }
+
+
+                            {
+                                formData.tipoPersona === "Fisica" &&
+                                (
+                                    <>
+                                        <Form.Group as={Col} controlId="formGridEstado">
+                                            <Form.Label>
+                                                Regimen fiscal
+                                            </Form.Label>
+                                            <Form.Control
+                                                as="select"
+                                                defaultValue={formData.regimenFiscal}
+                                                name="regimenFiscal"
+                                                disabled
+                                            >
+                                                <option>Elige una opción</option>
+                                                <option value="605-Sueldos y Salarios e Ingresos Asimilados a Salarios" selected={formData.regimenFiscal === "605-Sueldos y Salarios e Ingresos Asimilados a Salarios"}>605-Sueldos y Salarios e Ingresos Asimilados a Salarios</option>
+                                                <option value="606-Arrendamiento" selected={formData.regimenFiscal === "606-Arrendamiento"}>606-Arrendamiento</option>
+                                                <option value="608-Demás ingresos" selected={formData.regimenFiscal === "608-Demás ingresos"}>608-Demás ingresos</option>
+                                                <option value="611-Ingresos por Dividendos (socios y accionistas)" selected={formData.regimenFiscal === "611-Ingresos por Dividendos (socios y accionistas)"}>611-Ingresos por Dividendos (socios y accionistas)</option>
+                                                <option value="612-Personas Físicas con Actividades Empresariales y Profesionales" selected={formData.regimenFiscal === "612-Personas Físicas con Actividades Empresariales y Profesionales"}>612-Personas Físicas con Actividades Empresariales y Profesionales</option>
+                                                <option value="614-Ingresos por intereses" selected={formData.regimenFiscal === "614-Ingresos por intereses"}>614-Ingresos por intereses</option>
+                                                <option value="615-Régimen de los ingresos por obtención de premios" selected={formData.regimenFiscal === "615-Régimen de los ingresos por obtención de premios"}>615-Régimen de los ingresos por obtención de premios</option>
+                                                <option value="616-Sin obligaciones fiscales" selected={formData.regimenFiscal === "616-Sin obligaciones fiscales"}>616-Sin obligaciones fiscales</option>
+                                                <option value="621-Incorporación Fiscal" selected={formData.regimenFiscal === "621-Incorporación Fiscal"}>621-Incorporación Fiscal</option>
+                                                <option value="622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras" selected={formData.regimenFiscal === "622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras"}>622-Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras</option>
+                                                <option value="629-De los Regímenes Fiscales Preferentes y de las Empresas Multinacionales" selected={formData.regimenFiscal === "629-De los Regímenes Fiscales Preferentes y de las Empresas Multinacionales"}>629-De los Regímenes Fiscales Preferentes y de las Empresas Multinacionales</option>
+                                                <option value="630-Enajenación de acciones en bolsa de valores" selected={formData.regimenFiscal === "630-Enajenación de acciones en bolsa de valores"}>630-Enajenación de acciones en bolsa de valores</option>
+                                            </Form.Control>
+                                        </Form.Group>
+                                    </>
+                                )
+                            }
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formHorizontalRFC">
+                                <Form.Label>
+                                    RFC
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Escribe el rfc"
+                                    name="rfc"
+                                    defaultValue={formData.rfc}
                                     disabled
                                 />
                             </Form.Group>
@@ -641,10 +871,7 @@ function VistaPreviaEvaluacionProveedores(props) {
                                     disabled
                                 />
                             </Form.Group>
-                        </Row>
 
-                        {/* Producto o servicio */}
-                        <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridPersonalContacto">
                                 <Form.Label>
                                     Personal de contacto
@@ -653,7 +880,7 @@ function VistaPreviaEvaluacionProveedores(props) {
                                     type="text"
                                     name="personalContacto"
                                     placeholder="Escribe el personal de contacto"
-                                    defaultValue={proveedorSeleccionado.personalContacto}
+                                    defaultValue={formData.personalContacto}
                                     disabled
                                 />
                             </Form.Group>
@@ -671,40 +898,38 @@ function VistaPreviaEvaluacionProveedores(props) {
                                     disabled
                                 />
                             </Form.Group>
-
                         </Row>
+
                         {/* Personal de contacto, telefono, Email */}
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridTelefono">
                                 <Form.Label>
-                                    Telefono
+                                    Telefono celular
                                 </Form.Label>
                                 <Form.Control
                                     type="number"
                                     min="0"
-                                    name="telefonoProveedor"
+                                    name="telefonoCelular"
                                     placeholder="Escribe el telefono"
-                                    defaultValue={proveedorSeleccionado.telefonoProveedor}
+                                    defaultValue={formData.telefonoCelular}
                                     disabled
                                 />
                             </Form.Group>
 
-                            <Form.Group as={Col} controlId="formGridCorreo">
+                            <Form.Group as={Col} controlId="formGridTelefono">
                                 <Form.Label>
-                                    Correo
+                                    Telefono Fijo
                                 </Form.Label>
                                 <Form.Control
-                                    type="text"
-                                    name="correo"
-                                    placeholder="Escribe el correo"
-                                    defaultValue={proveedorSeleccionado.correoProveedor}
+                                    type="number"
+                                    min="0"
+                                    name="telefonoFijo"
+                                    placeholder="Escribe el telefono"
+                                    defaultValue={formData.telefonoFijo}
                                     disabled
                                 />
                             </Form.Group>
 
-                        </Row>
-                        {/* Tiempo credito, tiempo respuesta, Lugar de recoleccion */}
-                        <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridTiempoRespuesta">
                                 <Form.Label>
                                     Tiempo de respuesta
@@ -734,6 +959,150 @@ function VistaPreviaEvaluacionProveedores(props) {
                         </Row>
 
                         <Row className="mb-3">
+                            <Form.Label align="center">
+                                Datos del domicilio
+                            </Form.Label>
+                            <Form.Group as={Col} controlId="formHorizontalCalle">
+                                <Form.Label>
+                                    Calle
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Escribe la calle"
+                                    name="calle"
+                                    defaultValue={formData.calle}
+                                    disabled
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridNumeroExterior">
+                                <Form.Label>
+                                    Numero exterior
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Numero exterior"
+                                    name="numeroExterior"
+                                    defaultValue={formData.numeroExterior}
+                                    disabled
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridNumeroInterior">
+                                <Form.Label>
+                                    Numero interior
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Numero interior"
+                                    name="numeroInterior"
+                                    defaultValue={formData.numeroInterior}
+                                    disabled
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridNumeroInterior">
+                                <Form.Label>
+                                    Codigo postal
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Codigo postal"
+                                    name="codigoPostal"
+                                    defaultValue={formData.codigoPostal}
+                                    disabled
+                                />
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Col} controlId="formGridEstado">
+                                <Form.Label>
+                                    Estado
+                                </Form.Label>
+                                <Form.Control as="select"
+                                    defaultValue={formData.estado}
+                                    name="estado"
+                                    disabled
+                                >
+                                    <option>Elige una opción</option>
+                                    <option value="Aguascalientes" selected={formData.estado === "Aguascalientes"}>Aguascalientes</option>
+                                    <option value="Baja California" selected={formData.estado === "Baja California"}>Baja California</option>
+                                    <option value="Baja California Sur" selected={formData.estado === "Baja California Sur"}>Baja California Sur</option>
+                                    <option value="Campeche" selected={formData.estado === "Campeche"}>Campeche</option>
+                                    <option value="Chiapas" selected={formData.estado === "Chiapas"}>Chiapas</option>
+                                    <option value="Chihuahua" selected={formData.estado === "Chihuahua"}>Chihuahua</option>
+                                    <option value="CDMX" selected={formData.estado === "CDMX"}>Ciudad de México</option>
+                                    <option value="Coahuila" selected={formData.estado === "Coahuila"}>Coahuila</option>
+                                    <option value="Colima" selected={formData.estado === "Colima"}>Colima</option>
+                                    <option value="Durango" selected={formData.estado === "Durango"}>Durango</option>
+                                    <option value="Estado de México" selected={formData.estado === "Estado de México"}>Estado de México</option>
+                                    <option value="Guanajuato" selected={formData.estado === "Guanajuato"}>Guanajuato</option>
+                                    <option value="Guerrero" selected={formData.estado === "Guerrero"}>Guerrero</option>
+                                    <option value="Hidalgo" selected={formData.estado === "Hidalgo"}>Hidalgo</option>
+                                    <option value="Jalisco" selected={formData.estado === "Jalisco"}>Jalisco</option>
+                                    <option value="Michoacán" selected={formData.estado === "Michoacán"}>Michoacán</option>
+                                    <option value="Morelos" selected={formData.estado === "Morelos"}>Morelos</option>
+                                    <option value="Nayarit" selected={formData.estado === "Nayarit"}>Nayarit</option>
+                                    <option value="Nuevo León" selected={formData.estado === "Nuevo León"}>Nuevo León</option>
+                                    <option value="Oaxaca" selected={formData.estado === "Oaxaca"}>Oaxaca</option>
+                                    <option value="Puebla" selected={formData.estado === "Puebla"}>Puebla</option>
+                                    <option value="Querétaro" selected={formData.estado === "Querétaro"}>Querétaro</option>
+                                    <option value="Quintana Roo" selected={formData.estado === "Quintana Roo"}>Quintana Roo</option>
+                                    <option value="San Luis Potosí" selected={formData.estado === "San Luis Potosí"}>San Luis Potosí</option>
+                                    <option value="Sinaloa" selected={formData.estado === "Sinaloa"}>Sinaloa</option>
+                                    <option value="Sonora" selected={formData.estado === "Sonora"}>Sonora</option>
+                                    <option value="Tabasco" selected={formData.estado === "Tabasco"}>Tabasco</option>
+                                    <option value="Tamaulipas" selected={formData.estado === "Tamaulipas"}>Tamaulipas</option>
+                                    <option value="Tlaxcala" selected={formData.estado === "Tlaxcala"}>Tlaxcala</option>
+                                    <option value="Veracruz" selected={formData.estado === "Veracruz"}>Veracruz</option>
+                                    <option value="Yucatán" selected={formData.estado === "Yucatán"}>Yucatán</option>
+                                    <option value="Zacatecas" selected={formData.estado === "Zacatecas"}>Zacatecas</option>
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridMunicipio">
+                                <Form.Label>
+                                    Municipio
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Municipio"
+                                    name="municipio"
+                                    defaultValue={formData.municipio}
+                                    disabled
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridColonia">
+                                <Form.Label>
+                                    Colonia
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Colonia"
+                                    name="colonia"
+                                    defaultValue={formData.colonia}
+                                    disabled
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="formGridColonia">
+                                <Form.Label>
+                                    Pais
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Pais"
+                                    name="pais"
+                                    defaultValue={formData.pais}
+                                    disabled
+                                />
+                            </Form.Group>
+                        </Row>
+                        {/**/}
+
+                        <Row className="mb-3">
                             <Form.Group as={Row} controlId="formHorizontalNoInterno">
                                 <Col align="left" sm={3}>
                                     <Form.Label>
@@ -747,8 +1116,8 @@ function VistaPreviaEvaluacionProveedores(props) {
                                         label="Productos"
                                         name="productoServicio"
                                         id="productos"
-                                        checked={formData.productoServicio == "Productos"}
                                         defaultValue={formData.productoServicio}
+                                        checked={formData.productoServicio=="Productos"}
                                         disabled
                                     />
                                 </Col>
@@ -761,8 +1130,8 @@ function VistaPreviaEvaluacionProveedores(props) {
                                         label="Servicio"
                                         name="productoServicio"
                                         id="Servicios"
-                                        checked={formData.productoServicio == "Servicio"}
                                         defaultValue={formData.productoServicio}
+                                        checked={formData.productoServicio=="Servicio"}
                                         disabled
                                     />
                                 </Col>
@@ -820,9 +1189,9 @@ function VistaPreviaEvaluacionProveedores(props) {
                                             <tbody>
                                                 {map(listProductosCargados, (producto, index) => (
                                                     <tr key={index}>
-                                                        <th scope="row">
+                                                        <td scope="row">
                                                             {index + 1}
-                                                        </th>
+                                                        </td>
                                                         <td data-title="Folio">
                                                             {producto.folio}
                                                         </td>
@@ -845,7 +1214,10 @@ function VistaPreviaEvaluacionProveedores(props) {
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridComentarios">
                                 <Form.Label>Comentarios</Form.Label>
-                                <Form.Control as="textarea" rows={3}
+                                <Form.Control
+                                    as="textarea"
+                                    rows={3}
+                                    style={{ height: '100px' }}
                                     type="text"
                                     placeholder="Escribe los comentarios"
                                     name="comentarios"
@@ -853,7 +1225,6 @@ function VistaPreviaEvaluacionProveedores(props) {
                                     disabled
                                 />
                             </Form.Group>
-
                         </Row>
 
                         {/* Botones de envio del formulario */}
@@ -934,33 +1305,59 @@ function initialFormData(data) {
     return {
         folio: "",
         nombre: "",
+        tipoPersona: "",
+        rfc: "",
+        regimenFiscal: "",
         productoServicio: "",
+        telefonoCelular: "",
+        telefonoFijo: "",
+        tiempoCredito: "",
         categoria: "",
         personalContacto: "",
         telefono: "",
         correo: "",
-        tiempoCredito: "",
         tiempoRespuesta: "",
         lugarRecoleccion: "",
         servicioProporcionado: "",
         horario: "",
+        calle: "",
+        numeroExterior: "",
+        numeroInterior: "",
+        colonia: "",
+        municipio: "",
+        estado: "",
+        pais: "",
+        codigoPostal: "",
         comentarios: ""
     }
 }
 
 function initialFormDataFinal(data) {
-    const { folio, nombre, tipo, productoServicio, servicioProporcionado, categoria, personalContacto, telefono, correo, tiempoCredito, tiempoRespuesta, lugarRecoleccion, horario, comentarios } = data;
+    const { folio, rfc, tipoPersona, telefonoCelular, telefonoFijo, direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais, codigoPostal }, regimenFiscal, nombre, diasCredito, tipo, productoServicio, servicioProporcionado, categoria, personalContacto, telefono, correo, tiempoCredito, tiempoRespuesta, lugarRecoleccion, horario, comentarios } = data;
 
     return {
         folio: folio,
         nombre: nombre,
+        tipoPersona: tipoPersona,
+        rfc: rfc,
+        regimenFiscal: regimenFiscal,
+        tiempoCredito: diasCredito,
+        telefonoCelular: telefonoCelular,
+        telefonoFijo: telefonoFijo,
         servicioProporcionado: servicioProporcionado,
         productoServicio: productoServicio,
         categoria: categoria,
         personalContacto: personalContacto,
         telefono: telefono,
+        calle: calle,
+        numeroExterior: numeroExterior,
+        numeroInterior: numeroInterior,
+        colonia: colonia,
+        municipio: municipio,
+        estado: estado,
+        pais: pais,
+        codigoPostal: codigoPostal,
         correo: correo,
-        tiempoCredito: tiempoCredito,
         tiempoRespuesta: tiempoRespuesta,
         lugarRecoleccion: lugarRecoleccion,
         horario: horario,

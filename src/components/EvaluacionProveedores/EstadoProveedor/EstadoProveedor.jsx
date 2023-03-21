@@ -7,7 +7,7 @@ import queryString from "query-string";
 
 function EstadoProveedor(props) {
     const { dataProveedor, history, setShowModal } = props;
-    const { id, folio, nombre, telefono, correo, estado } = dataProveedor;
+    const { id, folio, nombre, telefonoCelular, correo, estadoProveedor } = dataProveedor;
 
     const [loading, setLoading] = useState(false);
 
@@ -17,13 +17,13 @@ function EstadoProveedor(props) {
 
         try {
             const dataTemp = {
-                estado: estado === "true" ? "false" : "true"
+                estadoProveedor: estadoProveedor === "true" ? "false" : "true"
             }
 
             deshabilitaEvaluacionProveedores(id, dataTemp).then(response => {
                 const { data } = response;
                 toast.success(data.mensaje)
-                LogsInformativos("Se ha cancelado la evaluación del proveedor con folio " + folio, dataTemp)
+                LogsInformativos("El estado del proveedor " + folio + " fue actualizado", dataTemp)
                 history({
                     search: queryString.stringify(""),
                 });
@@ -43,13 +43,13 @@ function EstadoProveedor(props) {
     return (
         <>
             <Form onSubmit={onSubmit}>
-                {estado == "true" ?
+                {estadoProveedor == "true" ?
                     (
                         <>
                             <Alert variant="danger">
                                 <Alert.Heading>Atención! Acción destructiva!</Alert.Heading>
                                 <p className="mensaje">
-                                    Esta acción cancelara la evaluación del proveedor.
+                                    Esta acción deshabilitara en el sistema al proveedor.
                                 </p>
                             </Alert>
                         </>
@@ -100,7 +100,7 @@ function EstadoProveedor(props) {
                         <Form.Control
                             type="text"
                             name="telefono"
-                            defaultValue={telefono}
+                            defaultValue={telefonoCelular}
                             disabled
                         />
                     </Form.Group>

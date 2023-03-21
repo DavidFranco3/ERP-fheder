@@ -511,6 +511,7 @@ export const ENDPOINTTotalCotizaciones = "/cotizacion/total"
 // Evaluacion de proveedores
 export const ENDPOINTRegistroEvaluacionProveedores = "/evaluacionProveedores/registro";
 export const ENDPOINTListarEvaluacionProveedores = "/evaluacionProveedores/listar";
+export const ENDPOINTListarEvaluacionProveedoresActivos = "/evaluacionProveedores/listarActivos";
 export const ENDPOINTListarPaginandoEvaluacionProveedores = "/evaluacionProveedores/listarPaginando";
 export const ENDPOINTObtenerEvaluacionProveedores = "/evaluacionProveedores/obtener";
 export const ENDPOINTEliminarEvaluacionProveedores = "/evaluacionProveedores/eliminar";

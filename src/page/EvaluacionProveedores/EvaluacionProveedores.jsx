@@ -81,7 +81,7 @@ function EvaluacionProveedores(props) {
     }, [location]);
 
     const rutaRegreso = () => {
-        enrutamiento("/DashboardCompras")
+        enrutamiento("/DashboardCatalogos")
     }
 
     // Ir hacia ruta de registro
@@ -109,7 +109,7 @@ function EvaluacionProveedores(props) {
                                 <Row>
                                     <Col xs={12} md={8}>
                                         <h1>
-                                            Evaluación de proveedores
+                                            Proveedores
                                         </h1>
                                     </Col>
                                     <Col xs={6} md={4}>
@@ -164,6 +164,7 @@ function EvaluacionProveedores(props) {
 function formatModelProveedores(data) {
     const dataTemp = []
     data.forEach(data => {
+        const { direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais } } = data;
         dataTemp.push({
             id: data._id,
             item: data.item,
@@ -173,14 +174,22 @@ function formatModelProveedores(data) {
             productoServicio: data.productoServicio,
             categoria: data.categoria,
             personalContacto: data.personalContacto,
-            telefono: data.telefono,
+            telefonoCelular: data.telefonoCelular,
+            telefonoFijo: data.telefonoFijo,
             correo: data.correo,
-            tiempoCredito: data.tiempoCredito,
+            diasCredito: data.diasCredito,
             tiempoRespuesta: data.tiempoRespuesta,
             lugarRecoleccion: data.lugarRecoleccion,
             horario: data.horario,
             comentarios: data.comentarios,
-            estado: data.estado,
+            calle: calle,
+            numeroExterior: numeroExterior,
+            numeroInterior: numeroInterior,
+            colonia: colonia,
+            municipio: municipio,
+            estado: estado,
+            pais: pais,
+            estadoProveedor: data.estadoProveedor,
             fechaCreacion: data.createdAt,
             fechaActualizacion: data.updatedAt
         });

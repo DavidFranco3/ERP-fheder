@@ -5,7 +5,7 @@ import { faCirclePlus, faArrowCircleLeft } from "@fortawesome/free-solid-svg-ico
 import { withRouter } from "../../utils/withRouter";
 import { toast } from "react-toastify";
 import BuscarClientes from '../../components/Busquedas/BuscarClientes';
-import { listarProveedoresActivos } from "../../api/proveedores";
+import { listarEvaluacionProveedoresActivos } from "../../api/evaluacionProveedores";
 import "./BuscarProveedor.scss"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../api/auth";
 import { obtenerUsuario } from "../../api/usuarios";
@@ -40,7 +40,7 @@ function BuscarProveedor(props) {
 
     const cargarDatos = () => {
         try {
-            listarProveedoresActivos(getSucursal()).then(response => {
+            listarEvaluacionProveedoresActivos(getSucursal()).then(response => {
                 const { data } = response;
 
                 //console.log(data);
@@ -100,12 +100,21 @@ function formatModelProveedores(data) {
         const { direccion: { calle, numeroExterior, numeroInterior, colonia, municipio, estado, pais } } = data;
         dataTemp.push({
             id: data._id,
+            item: data.item,
+            folio: data.folio,
             nombre: data.nombre,
-            apellidos: data.apellidos,
-            sucursal: data.sucursal,
-            rfc: data.rfc,
-            telefonoCelular: data.telefonoCelular,
+            tipo: data.tipo,
+            productoServicio: data.productoServicio,
+            categoria: data.categoria,
             personalContacto: data.personalContacto,
+            telefonoCelular: data.telefonoCelular,
+            telefonoFijo: data.telefonoFijo,
+            correo: data.correo,
+            diasCredito: data.diasCredito,
+            tiempoRespuesta: data.tiempoRespuesta,
+            lugarRecoleccion: data.lugarRecoleccion,
+            horario: data.horario,
+            comentarios: data.comentarios,
             calle: calle,
             numeroExterior: numeroExterior,
             numeroInterior: numeroInterior,
@@ -113,9 +122,8 @@ function formatModelProveedores(data) {
             municipio: municipio,
             estado: estado,
             pais: pais,
-            correo: data.correo,
-            foto: data.foto,
             estadoProveedor: data.estadoProveedor,
+            fechaCreacion: data.createdAt,
             fechaActualizacion: data.updatedAt
         });
     });

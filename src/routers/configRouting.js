@@ -11,7 +11,6 @@ import Produccion from "../page/Produccion";
 import Ventas from "../page/Ventas";
 import Usuarios from "../page/Usuarios";
 import Clientes from "../page/Clientes";
-import Proveedores from "../page/Proveedores";
 import RazonesSociales from "../page/RazonesSociales";
 import UnidadesMedida from "../page/UnidadesMedida";
 import Departamentos from "../page/Departamentos";
@@ -123,10 +122,6 @@ import ModificacionUsuarios from "../components/Usuarios/Modificacion";
 // Rutas para los clientes
 import RegistroClientes from "../components/Clientes/Registro";
 import ModificacionClientes from "../components/Clientes/Modificacion";
-
-// Rutas para los proveedores
-import RegistroProveedores from "../components/Proveedores/Registro";
-import ModificacionProveedores from "../components/Proveedores/Modificacion";
 
 // Rutas para las evaluaciones de proveedores
 import RegistroEvaluacionProveedores from "../components/EvaluacionProveedores/RegistraProveedores";
@@ -476,10 +471,6 @@ export default [
         page: RegistroClientes
     },
     {
-        path: "/RegistroProveedores",
-        page: RegistroProveedores
-    },
-    {
         path: "/RegistroEvaluacionProveedores",
         page: RegistroEvaluacionProveedores
     },
@@ -510,10 +501,6 @@ export default [
     {
         path: "/VistaPreviaEvaluacionProveedores/:id",
         page: VistaPreviaEvaluacionProveedores
-    },
-    {
-        path: "/ModificacionProveedores/:id",
-        page: ModificacionProveedores
     },
     {
         path: "/ModificacionRazonesSociales/:id",
@@ -830,10 +817,6 @@ export default [
     {
         path: "/Clientes",
         page: Clientes
-    },
-    {
-        path: "/Proveedores",
-        page: Proveedores
     },
     {
         path: "/RazonesSociales",

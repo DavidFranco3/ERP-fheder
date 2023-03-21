@@ -9,6 +9,7 @@ import {
     ENDPOINTDeshabilitarEvaluacionProveedores,
     ENDPOINTActualizarEvaluacionProveedores,
     ENDPOINTObtenerItemEvaluacionProveedor,
+    ENDPOINTListarEvaluacionProveedoresActivos,
     ENDPOINTTotalEvaluacionProveedores
 } from "./endpoints";
 import axios from 'axios';
@@ -86,6 +87,18 @@ export async function listarEvaluacionProveedores(sucursal) {
         }
     };
     return await axios.get(API_HOST + ENDPOINTListarEvaluacionProveedores +`/?sucursal=${sucursal}`, config);
+}
+
+// Para listar todos los proveedores
+export async function listarEvaluacionProveedoresActivos(sucursal) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarEvaluacionProveedoresActivos +`/?sucursal=${sucursal}`, config);
 }
 
 // Lista los proveedores paginandolos

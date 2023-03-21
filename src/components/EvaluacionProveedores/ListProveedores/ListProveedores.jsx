@@ -35,7 +35,14 @@ function ListProveedores(props) {
 
     //Para cambiar el status del proveedor
     const deshabilitandoProveedor = (content) => {
-        setTitulosModal("Cancelando la evaluacion del proveedor");
+        setTitulosModal("Deshabilitar proveedor");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    //Para cambiar el status del proveedor
+    const habilitandoProveedor = (content) => {
+        setTitulosModal("Habilitar proveedor");
         setContentModal(content);
         setShowModal(true);
     }
@@ -85,7 +92,7 @@ function ListProveedores(props) {
         },
         {
             name: 'Telefono',
-            selector: row => row.telefono,
+            selector: row => row.telefonoCelular,
             sortable: false,
             center: true,
             reorder: false
@@ -99,7 +106,7 @@ function ListProveedores(props) {
         },
         {
             name: 'Tiempo credito',
-            selector: row => row.tiempoCredito + " dias",
+            selector: row => row.diasCredito + " dias",
             sortable: false,
             center: true,
             reorder: false
@@ -141,7 +148,7 @@ function ListProveedores(props) {
         },
         {
             name: 'Estado',
-            selector: row => row.estado === "true" ?
+            selector: row => row.estadoProveedor === "true" ?
                 (
                     <>
                         <Badge
@@ -169,8 +176,17 @@ function ListProveedores(props) {
                             bg="danger"
                             title="Habilitar"
                             className="editarProveedor"
+                            onClick={() => {
+                                habilitandoProveedor(
+                                    <EstadoProveedor
+                                        dataProveedor={row}
+                                        setShowModal={setShowModal}
+                                        history={history}
+                                    />
+                                )
+                            }}
                         >
-                            Cancelada
+                           Deshabilitado
                         </Badge>
                     </>
                 ),
@@ -190,7 +206,7 @@ function ListProveedores(props) {
             center: true,
             reorder: false,
             selector: row => (
-                row.estado === "true" ?
+                row.estadoProveedor === "true" ?
                     (
                         <>
                             <Badge

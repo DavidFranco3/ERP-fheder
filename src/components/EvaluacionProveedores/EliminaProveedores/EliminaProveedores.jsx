@@ -7,7 +7,7 @@ import queryString from "query-string";
 
 function EliminaProveedores(props) {
     const { dataProveedor, history, setShowModal } = props;
-    const { id, folio, nombre, telefono, correo } = dataProveedor;
+    const { id, folio, nombre, telefonoCelular, correo } = dataProveedor;
 
     const [loading, setLoading] = useState(false);
 
@@ -85,7 +85,7 @@ function EliminaProveedores(props) {
                         <Form.Control
                             type="text"
                             name="telefono"
-                            defaultValue={telefono}
+                            defaultValue={telefonoCelular}
                             disabled
                         />
                     </Form.Group>

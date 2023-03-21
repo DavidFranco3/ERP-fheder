@@ -113,7 +113,7 @@ function DashboardCatalogos(props) {
                     title={'Usuarios'}
                 />
                 <ItemCard
-                    path={'/Proveedores'}
+                    path={'/EvaluacionProveedores'}
                     logo={LogoProveedores}
                     title={'Proveedores'}
                 />
