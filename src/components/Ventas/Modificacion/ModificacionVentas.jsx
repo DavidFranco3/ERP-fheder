@@ -524,7 +524,7 @@ function ModificacionVentas(props) {
                                         >
                                             <option>Elige una opción</option>
                                             {map(direcciones, (direccion, index) => (
-                                                <option key={index} value={direccion.calle + ", " + direccion.numeroExterior + ", " + direccion.colonia + ", " + direccion.municipio + ", " + direccion.estado} selected={direccion.calle + ", " + direccion.numeroExterior + ", " + direccion.colonia + ", " + direccion.municipio + ", " + direccion.estado == informacionPedido.lugarEntrega}>{direccion.calle + ", " + direccion.numeroExterior + ", " + direccion.colonia + ", " + direccion.municipio + ", " + direccion.estado}</option>
+                                                <option key={index} value={direccion.direccion} selected={direccion.direccion == informacionPedido.lugarEntrega}>{direccion.direccion}</option>
                                             ))}
                                         </Form.Control>
                                     </Col>

@@ -30,10 +30,6 @@ function ListDomiciliosEntrega(props) {
        obtenerDatos();
     }, []);
 
-    console.log(datosDirecciones);
-    console.log(id);
-
-
     return (
         <>
             {
@@ -48,15 +44,7 @@ function ListDomiciliosEntrega(props) {
                                 >
                                     <thead>
                                         <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Calle</th>
-                                            <th scope="col"># Exterior</th>
-                                            <th scope="col"># Interior</th>
-                                            <th scope="col">C.P.</th>
-                                            <th scope="col">Estado</th>
-                                            <th scope="col">Municipio</th>
-                                            <th scope="col">Colonia</th>
-                                            <th scope="col">País</th>
+                                            <th scope="col">Dirección</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -65,32 +53,8 @@ function ListDomiciliosEntrega(props) {
                                                 {datosDirecciones._id == id ? (
                                                     <>
                                                         <tr key={index}>
-                                                            <td scope="row">
-                                                                {index + 1}
-                                                            </td>
-                                                            <td data-title="Calle">
-                                                                {direccion.calle}
-                                                            </td>
-                                                            <td data-title="Numero exterior">
-                                                                {direccion.numeroExterior}
-                                                            </td>
-                                                            <td data-title="Numero interior">
-                                                                {direccion.numeroInterior}
-                                                            </td>
-                                                            <td data-title="Codigo postal">
-                                                                {direccion.codigoPostal}
-                                                            </td>
-                                                            <td data-title="Estado">
-                                                                {direccion.estado}
-                                                            </td>
-                                                            <td data-title="municpio">
-                                                                {direccion.municipio}
-                                                            </td>
-                                                            <td data-title="Colonia">
-                                                                {direccion.colonia}
-                                                            </td>
                                                             <td data-title="Pais">
-                                                                {direccion.pais}
+                                                                {direccion.direccion}
                                                             </td>
                                                         </tr>
                                                     </>

@@ -497,7 +497,7 @@ function RegistroVentas(props) {
                                         >
                                             <option>Elige una opción</option>
                                             {map(direcciones, (direccion, index) => (
-                                                <option key={index} value={direccion.calle + ", " + direccion.numeroExterior + ", " + direccion.colonia + ", " + direccion.municipio + ", " + direccion.estado}>{direccion.calle + ", " + direccion.numeroExterior + ", " + direccion.colonia + ", " + direccion.municipio + ", " + direccion.estado}</option>
+                                                <option key={index} value={direccion.direccion}>{direccion.direccion}</option>
                                             ))}
                                         </Form.Control>
                                     </Col>

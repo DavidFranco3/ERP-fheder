@@ -86,29 +86,14 @@ function ModificacionClientes(props) {
 
     // Para agregar productos al listado
     const addItems = () => {
-        const calle = document.getElementById("calle").value
-        const numeroExterior = document.getElementById("numeroExterior").value
-        const numeroInterior = document.getElementById("numeroInterior").value
-        const codigoPostal = document.getElementById("codigoPostal").value
-        const estado = document.getElementById("estado").value
-        const municipio = document.getElementById("municipio").value
-        const colonia = document.getElementById("colonia").value
-        const pais = document.getElementById("pais").value
+        const direccion = document.getElementById("direccion").value
 
-        if (!calle || !numeroExterior || !numeroInterior || !codigoPostal || !estado || !municipio || !colonia || !pais) {
+        if (!direccion) {
             toast.warning("Completa la informacion de la dirección");
         } else {
 
             const dataTemp = {
-                item: count,
-                calle: calle,
-                numeroExterior: numeroExterior,
-                numeroInterior: numeroInterior,
-                codigoPostal: codigoPostal,
-                estado: estado,
-                municipio: municipio,
-                colonia: colonia,
-                pais: pais
+                direccion: direccion
             }
             // console.log(dataTemp)
 
@@ -116,44 +101,20 @@ function ModificacionClientes(props) {
                 [...listDireccionesEntrega, dataTemp]
             );
 
-            // Actualizacion del tracking
-            //LogTrackingActualizacion(referencia, "En orden de compra", "3")
-
-            //setCargaProductos(initialFormDataProductos)
-            //setFormDataArticulos(initialFormDataArticulos)
-            document.getElementById("calle").value = ""
-            document.getElementById("numeroExterior").value = ""
-            document.getElementById("numeroInterior").value = ""
-            document.getElementById("codigoPostal").value = ""
-            document.getElementById("estado").value = "Elige..."
-            document.getElementById("municipio").value = ""
-            document.getElementById("colonia").value = ""
-            document.getElementById("pais").value = ""
-            //setCargaProductos(initialFormDataProductos)
-            //document.getElementById("cantidad").value = "0"
+            document.getElementById("direccion").value = ""
 
         }
     }
 
     // Para limpiar el formulario de detalles de producto
     const cancelarCargaProducto = () => {
-        //setCargaProductos(initialFormDataProductos)
-        //setFormDataArticulos(initialFormDataArticulos)
-        document.getElementById("calle").value = ""
-        document.getElementById("numeroExterior").value = ""
-        document.getElementById("numeroInterior").value = ""
-        document.getElementById("codigoPostal").value = ""
-        document.getElementById("estado").value = "Elige..."
-        document.getElementById("municipio").value = ""
-        document.getElementById("colonia").value = ""
-        document.getElementById("pais").value = ""
-        //setCargaProductos(initialFormDataProductos)
+        document.getElementById("direccion").value = ""
     }
 
     // Para eliminar productos del listado
     const removeItem = (direccion) => {
         let newArray = listDireccionesEntrega;
-        newArray.splice(newArray.findIndex(a => a.item === direccion.item), 1);
+        newArray.splice(newArray.findIndex(a => a.direccion === direccion.direccion), 1);
         setListDireccionesEntrega([...newArray]);
     }
 
@@ -567,137 +528,14 @@ function ModificacionClientes(props) {
 
                             <Form.Group as={Col}>
                                 <Form.Label>
-                                    ITEM
+                                    Dirección
                                 </Form.Label>
                                 <Form.Control
-                                    id="item"
-                                    type="text"
-                                    placeholder="Escribe el ITEM"
-                                    name="ITEM"
-                                    disabled
-                                    value={renglon}
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col}>
-                                <Form.Label>
-                                    Calle
-                                </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    id="calle"
-                                    placeholder='Calle'
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col}>
-                                <Form.Label>
-                                    # Exterior
-                                </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    id="numeroExterior"
-                                    placeholder="# Exterior"
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col}>
-                                <Form.Label>
-                                    # Interior
-                                </Form.Label>
-                                <Form.Control
-                                    id="numeroInterior"
-                                    type="text"
-                                    placeholder="# Interior"
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col}>
-                                <Form.Label>
-                                    C.P.
-                                </Form.Label>
-                                <Form.Control
-                                    id="codigoPostal"
-                                    type="text"
-                                    placeholder="Codigo postal"
-
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col}>
-                                <Form.Label>
-                                    Estado
-                                </Form.Label>
-                                <Form.Control
-                                    as="select"
-                                    id="estado"
-                                >
-                                    <option>Elige...</option>
-                                    <option value="Aguascalientes">Aguascalientes</option>
-                                    <option value="Baja California">Baja California</option>
-                                    <option value="Baja California Sur">Baja California Sur</option>
-                                    <option value="Campeche">Campeche</option>
-                                    <option value="Chiapas">Chiapas</option>
-                                    <option value="Chihuahua">Chihuahua</option>
-                                    <option value="CDMX">Ciudad de México</option>
-                                    <option value="Coahuila">Coahuila</option>
-                                    <option value="Colima">Colima</option>
-                                    <option value="Durango">Durango</option>
-                                    <option value="Estado de México">Estado de México</option>
-                                    <option value="Guanajuato">Guanajuato</option>
-                                    <option value="Guerrero">Guerrero</option>
-                                    <option value="Hidalgo">Hidalgo</option>
-                                    <option value="Jalisco">Jalisco</option>
-                                    <option value="Michoacán">Michoacán</option>
-                                    <option value="Morelos">Morelos</option>
-                                    <option value="Nayarit">Nayarit</option>
-                                    <option value="Nuevo León">Nuevo León</option>
-                                    <option value="Oaxaca">Oaxaca</option>
-                                    <option value="Puebla">Puebla</option>
-                                    <option value="Querétaro">Querétaro</option>
-                                    <option value="Quintana Roo">Quintana Roo</option>
-                                    <option value="San Luis Potosí">San Luis Potosí</option>
-                                    <option value="Sinaloa">Sinaloa</option>
-                                    <option value="Sonora">Sonora</option>
-                                    <option value="Tabasco">Tabasco</option>
-                                    <option value="Tamaulipas">Tamaulipas</option>
-                                    <option value="Tlaxcala">Tlaxcala</option>
-                                    <option value="Veracruz">Veracruz</option>
-                                    <option value="Yucatán">Yucatán</option>
-                                    <option value="Zacatecas">Zacatecas</option>
-                                </Form.Control>
-                            </Form.Group>
-
-                            <Form.Group as={Col}>
-                                <Form.Label>
-                                    Municipio
-                                </Form.Label>
-                                <Form.Control
-                                    id="municipio"
-                                    placeholder="Municpio"
-                                    type="text"
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col}>
-                                <Form.Label>
-                                    Colonia
-                                </Form.Label>
-                                <Form.Control
-                                    id="colonia"
-                                    placeholder="Colonia"
-                                    type="text"
-                                />
-                            </Form.Group>
-
-                            <Form.Group as={Col}>
-                                <Form.Label>
-                                    Pais
-                                </Form.Label>
-                                <Form.Control
-                                    id="pais"
-                                    placeholder="Pais"
-                                    type="text"
+                                    id="direccion"
+                                    as="textarea"
+                                    name="direccion"
+                                    placeholder="Escribe los detalles ...."
+                                    style={{ height: '100px' }}
                                 />
                             </Form.Group>
 
@@ -750,15 +588,7 @@ function ModificacionClientes(props) {
                         >
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Calle</th>
-                                    <th scope="col"># Exterior</th>
-                                    <th scope="col"># Interior</th>
-                                    <th scope="col">C.P.</th>
-                                    <th scope="col">Estado</th>
-                                    <th scope="col">Municipio</th>
-                                    <th scope="col">Colonia</th>
-                                    <th scope="col">País</th>
+                                    <th scope="col">Dirección</th>
                                     <th scope="col">Eliminar</th>
                                 </tr>
                             </thead>
@@ -767,32 +597,8 @@ function ModificacionClientes(props) {
                             <tbody>
                                 {map(listDireccionesEntrega, (direccion, index) => (
                                     <tr key={index}>
-                                        <td scope="row">
-                                            {index + 1}
-                                        </td>
                                         <td data-title="Calle">
-                                            {direccion.calle}
-                                        </td>
-                                        <td data-title="Numero exterior">
-                                            {direccion.numeroExterior}
-                                        </td>
-                                        <td data-title="Numero interior">
-                                            {direccion.numeroInterior}
-                                        </td>
-                                        <td data-title="Codigo postal">
-                                            {direccion.codigoPostal}
-                                        </td>
-                                        <td data-title="Estado">
-                                            {direccion.estado}
-                                        </td>
-                                        <td data-title="municpio">
-                                            {direccion.municipio}
-                                        </td>
-                                        <td data-title="Colonia">
-                                            {direccion.colonia}
-                                        </td>
-                                        <td data-title="Pais">
-                                            {direccion.pais}
+                                            {direccion.direccion}
                                         </td>
                                         <td data-title="Eliminar">
                                             <div
