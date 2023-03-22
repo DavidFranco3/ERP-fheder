@@ -1361,24 +1361,18 @@ function VistaPreviaPlaneacion(props) {
                     style: 'tableExample',
                     table: {
                         widths: ['25%', '25%', '25%', '25%'],
-                        heights: [10, 10, 10],
+                        heights: [10, 10, 10, 10, 10, 10, 30],
                         headerRows: 1,
                         body: [
                             [
                                 {
                                     text: `Fecha inicial:  ${dayjs(informacionRequerimiento.fechaInicio).format('LL')}`,
                                     fontSize: 9,
-                                    colSpan: 4,
+                                    colSpan: 2,
                                     bold: true
                                 },
                                 {
                                 },
-                                {
-                                },
-                                {
-                                }
-                            ],
-                            [
                                 {
                                     text: `Día 1-Turno 1:  ${informacionRequerimiento.estadoLT1 == "false" ? "No disponible" : dayjs(informacionRequerimiento.lunesT1).format('LL')}`,
                                     colSpan: 2,
@@ -1386,43 +1380,45 @@ function VistaPreviaPlaneacion(props) {
                                     fontSize: 9
                                 },
                                 {
-                                },
+                                }
+                            ],
+                            [
                                 {
                                     text: `Día 1-Turno 2:  ${informacionRequerimiento.estadoLT2 == "false" ? "No disponible" : dayjs(informacionRequerimiento.lunesT2).format('LL')}`,
                                     colSpan: 2,
                                     bold: true,
-                                    fontSize: 9
+                                    fontSize: 9 
                                 },
                                 {
-                                }
-                            ],
-                            [
+                                },
                                 {
                                     text: `Día 2-Turno 1:  ${informacionRequerimiento.estadoMT1 == "false" ? "No disponible" : dayjs(informacionRequerimiento.martesT1).format('LL')}`,
                                     colSpan: 2,
                                     bold: true,
-                                    fontSize: 9
-                                },
-                                {
-                                },
-                                {
-                                    text: `Día 2-Turno 2:  ${informacionRequerimiento.estadoMT2 == "false" ? "No disponible" : dayjs(informacionRequerimiento.martesT2).format('LL')}`,
-                                    colSpan: 2,
-                                    bold: true,
-                                    fontSize: 9
+                                    fontSize: 9 
                                 },
                                 {
                                 }
                             ],
                             [
                                 {
-                                    text: `Día 3-Turno 1:  ${informacionRequerimiento.estadoMIT1 == "false" ? "No disponible" : dayjs(informacionRequerimiento.miercolesT1).format('LL')}`,
+                                    text: `Día 2-Turno 2:  ${informacionRequerimiento.estadoMT2 == "false" ? "No disponible" : dayjs(informacionRequerimiento.martesT2).format('LL')}`,
                                     colSpan: 2,
                                     bold: true,
-                                    fontSize: 9
+                                    fontSize: 9 
                                 },
                                 {
                                 },
+                                {
+                                    text: `Día 3-Turno 1:  ${informacionRequerimiento.estadoMIT1 == "false" ? "No disponible" : dayjs(informacionRequerimiento.miercolesT1).format('LL')}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9  
+                                },
+                                {
+                                }
+                            ],
+                            [
                                 {
                                     text: `Día 3-Turno 2:  ${informacionRequerimiento.estadoMIT2 == "false" ? "No disponible" : dayjs(informacionRequerimiento.miercolesT2).format('LL')}`,
                                     colSpan: 2,
@@ -1430,17 +1426,17 @@ function VistaPreviaPlaneacion(props) {
                                     fontSize: 9
                                 },
                                 {
-                                }
-                            ],
-                            [
+                                },
                                 {
                                     text: `Día 4-Turno 1:  ${informacionRequerimiento.estadoJT1 == "false" ? "No disponible" : dayjs(informacionRequerimiento.juevesT1).format('LL')}`,
                                     colSpan: 2,
                                     bold: true,
-                                    fontSize: 9
+                                    fontSize: 9  
                                 },
                                 {
-                                },
+                                }
+                            ],
+                            [
                                 {
                                     text: `Día 4-Turno 2:  ${informacionRequerimiento.estadoJT2 == "false" ? "No disponible" : dayjs(informacionRequerimiento.juevesT2).format('LL')}`,
                                     colSpan: 2,
@@ -1448,29 +1444,37 @@ function VistaPreviaPlaneacion(props) {
                                     fontSize: 9
                                 },
                                 {
-                                }
-                            ],
-                            [
+                                },
                                 {
                                     text: `Día 5-Turno 1:  ${informacionRequerimiento.estadoVT1 == "false" ? "No disponible" : dayjs(informacionRequerimiento.viernesT1).format('LL')}`,
                                     colSpan: 2,
                                     bold: true,
-                                    fontSize: 9
-                                },
-                                {
-                                },
-                                {
-                                    text: `Día 5-Turno 2:  ${informacionRequerimiento.estadoVT2 == "false" ? "No disponible" : dayjs(informacionRequerimiento.viernesT2).format('LL')}`,
-                                    colSpan: 2,
-                                    bold: true,
-                                    fontSize: 9
+                                    fontSize: 9 
                                 },
                                 {
                                 }
                             ],
                             [
                                 {
+                                    text: `Día 5-Turno 2:  ${informacionRequerimiento.estadoVT2 == "false" ? "No disponible" : dayjs(informacionRequerimiento.viernesT2).format('LL')}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9 
+                                },
+                                {
+                                },
+                                {
                                     text: `Día 6-Turno 1:  ${informacionRequerimiento.estadoST1 == "false" ? "No disponible" : dayjs(informacionRequerimiento.sabadoT1).format('LL')}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9  
+                                },
+                                {
+                                }
+                            ],
+                            [
+                                {
+                                    text: `Observaciones:  ${informacionRequerimiento.observaciones}`,
                                     colSpan: 4,
                                     bold: true,
                                     fontSize: 9

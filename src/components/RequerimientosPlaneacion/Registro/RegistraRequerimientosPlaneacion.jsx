@@ -402,12 +402,15 @@ function RegistraRequerimientosPlaneacion(props) {
     const onSubmit = e => {
         e.preventDefault();
         //console.log("Continuar")
-        setLoading(true)
 
         const temp = formData.noMaquina.split("/")
 
+        if (!formData.noMaquina) {
+            toast.warning("Selecciona una maquina")
+        } else {
         // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
         obtenerNumeroRequerimiento().then(response => {
+            setLoading(true)
             const { data } = response;
             const dataTemp = {
                 item: item,
@@ -536,6 +539,7 @@ function RegistraRequerimientosPlaneacion(props) {
         }).catch(e => {
             console.log(e)
         })
+    }
     }
 
     const [listOVCargadas, setListOVCargadas] = useState([]);
