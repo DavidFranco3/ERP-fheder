@@ -28,7 +28,6 @@ import AcusesRecibo from "../page/AcusesRecibo";
 import Devoluciones from "../page/Devoluciones";
 import MatrizProductos from "../page/MatrizProductos";
 import Tracking from "../page/Tracking";
-import StatusMaterial from "../page/StatusMaterial";
 import EtiquetaPrimeraPieza from "../page/EtiquetaPrimeraPieza";
 import InspeccionPieza from "../page/InspeccionMaterial";
 import AlertasCalidad from "../page/AlertasCalidad";
@@ -179,11 +178,6 @@ import ModificacionAcusesRecibo from "../components/AcusesRecibo/ModificaAcusesR
 
 // Rutas para devoluciones
 import RegistroDevoluciones from "../components/Devoluciones/RegistraDevoluciones";
-
-// Rutas para status de material
-import RegistroStatusMaterial from "../components/StatusMaterial/RegistraStatus";
-import ModificaStatusMaterial from "../components/StatusMaterial/ModificaStatus";
-import VistaPreviaStatus from "../components/StatusMaterial/VistaPreviaStatus";
 
 // Rutas para la inspeccion de material
 import RegistroInspeccionPieza from "../components/InspeccionMaterial/RegistraInspeccionMaterial";
@@ -373,18 +367,6 @@ export default [
     {
         path: "/RegistraDevoluciones",
         page: RegistroDevoluciones
-    },
-    {
-        path: "/RegistroStatusMaterial",
-        page: RegistroStatusMaterial
-    },
-    {
-        path: "/ModificaStatusMaterial/:id",
-        page: ModificaStatusMaterial
-    },
-    {
-        path: "/VistaPreviaStatus/:id",
-        page: VistaPreviaStatus
     },
     {
         path: "/RegistraAcusesRecibo",
@@ -681,10 +663,6 @@ export default [
     {
         path: "/LiberacionProductoProceso",
         page: LiberacionProductoProceso
-    },
-    {
-        path: "/StatusMaterial",
-        page: StatusMaterial
     },
     {
         path: "/UnidadesMedida",

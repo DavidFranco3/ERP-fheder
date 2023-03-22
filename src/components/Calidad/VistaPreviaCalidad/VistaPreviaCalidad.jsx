@@ -123,14 +123,14 @@ function VistaPreviaCalidad(props) {
     const [formDataSucursal, setFormDataSucursal] = useState(initialFormDataSucursalInitial());
 
     const cargarRazonSocial = () => {
-//
-obtenerRazonSocialPorNombre(getSucursal()).then(response => {
-    const { data } = response;
-    //console.log(data)
-    setFormDataSucursal(initialFormDataSucursal(data));
-}).catch(e => {
-    console.log(e)
-})
+        //
+        obtenerRazonSocialPorNombre(getSucursal()).then(response => {
+            const { data } = response;
+            //console.log(data)
+            setFormDataSucursal(initialFormDataSucursal(data));
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     useEffect(() => {
@@ -239,8 +239,186 @@ obtenerRazonSocialPorNombre(getSucursal()).then(response => {
     }
 
     useEffect(() => {
-       obtenerListaUM();
+        obtenerListaUM();
     }, []);
+
+    const dataPrincipal = () => {
+        let newArray = [];
+
+        if (formData.etiqueta === "Aceptado") {
+
+            newArray = [
+                [
+                    {
+                        text: `Turno:  ${formData.turno}`,
+                        fontSize: 9,
+                        colSpan: 2,
+                        bold: true,
+                    },
+                    {
+                    },
+                    {
+                        text: `Nombre del ${formData.propiedad}:  ${formData.nombreExterno}`,
+                        fontSize: 9,
+                        bold: true,
+                        colSpan: 2
+                    },
+                    {
+                    }
+                ],
+                [
+                    {
+                        text: '',
+                        fontSize: 9,
+                        colSpan: 4,
+                        bold: true,
+                        border: [false, false, false, false],
+                    },
+                    {
+                    },
+                    {
+                    },
+                    {
+                    }
+                ],
+            ]
+        } else if (formData.etiqueta === "Material Sospechoso") {
+            newArray = [
+                [
+                    {
+                        text: `Auditor:  ${formData.auditor}`,
+                        fontSize: 9,
+                        colSpan: 2,
+                        bold: true,
+                    },
+                    {
+                    },
+                    {
+                        text: `Turno:  ${formData.turno}`,
+                        fontSize: 9,
+                        colSpan: 2,
+                        bold: true,
+                    },
+                    {
+                    }
+                ],
+                [
+                    {
+                        text: `Condición:  ${formData.condicion}`,
+                        fontSize: 9,
+                        colSpan: 4,
+                        bold: true,
+                    },
+                    {
+                    },
+                    {
+                    },
+                    {
+                    }
+                ],
+            ]
+        } else if (formData.etiqueta == "No Conforme") {
+            newArray = [
+                [
+                    {
+                        text: `Rechazo:  ${formData.rechazo}`,
+                        fontSize: 9,
+                        colSpan: 2,
+                        bold: true,
+                    },
+                    {
+                    },
+                    {
+                        text: `Nombre del ${formData.propiedad}:  ${formData.nombreExterno}`,
+                        fontSize: 9,
+                        colSpan: 2,
+                        bold: true,
+                    },
+                    {
+                    }
+                ],
+                [
+                    {
+                        text: `Turno:  ${formData.turno}`,
+                        fontSize: 9,
+                        colSpan: 2,
+                        bold: true,
+                    },
+                    {
+                    },
+                    {
+                        text: `Auditor:  ${formData.auditor}`,
+                        fontSize: 9,
+                        colSpan: 2,
+                        bold: true,
+                    },
+                    {
+                    }
+                ],
+                [
+                    {
+                        text: `Supervisor:  ${formData.supervisor}`,
+                        fontSize: 9,
+                        colSpan: 2,
+                        bold: true,
+                    },
+                    {
+                    },
+                    {
+                        text: `Descripción del defecto:  ${formData.descripcionDefecto}`,
+                        fontSize: 9,
+                        colSpan: 2,
+                        bold: true,
+                    },
+                    {
+                    }
+                ],
+            ]
+        }
+        return newArray;
+    };
+
+    const list = dataPrincipal();
+
+    const disposicionMaterial = () => {
+        let newArray = [];
+        if (formData.etiqueta == "No Conforme") {
+            newArray = [
+                [
+                    {
+                        text: `Tipo de rechazo:  ${formData.tipoRechazo}`,
+                        fontSize: 9,
+                        bold: true,
+                    },
+                    {
+                        text: `Corección:  ${formData.correccion}`,
+                        fontSize: 9,
+                        bold: true,
+                    },
+                ],
+            ]
+        } else {
+            newArray = [
+                [
+                    {
+                        text: '',
+                        fontSize: 9,
+                        bold: true,
+                        border: [false, false, false, false],
+                    },
+                    {
+                        text: '',
+                        fontSize: 9,
+                        bold: true,
+                        border: [false, false, false, false],
+                    },
+                ],
+            ]
+        }
+        return newArray;
+    };
+
+    const list2 = disposicionMaterial();
 
     const descargaPDF = async () => {
 
@@ -256,7 +434,7 @@ obtenerRazonSocialPorNombre(getSucursal()).then(response => {
                                     border: [false, false, false, false],
                                     text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
                                     alignment: 'right',
-                                    margin: [ 5, 2, 10, 20 ]
+                                    margin: [5, 2, 10, 20]
                                 }
                             ]
                         ]
@@ -505,6 +683,39 @@ obtenerRazonSocialPorNombre(getSucursal()).then(response => {
                                 }
                             ],
                         ]
+                    }
+                },
+                {
+                    alignment: 'center',
+                    text: `Deatalles de la etiqueta ${formData.etiqueta}`,
+                    style: 'header',
+                    fontSize: 23,
+                    bold: true,
+                    margin: [0, 10],
+                },
+                {
+                    margin: [0, 0, 0, 10],
+                    table: {
+                        widths: ['25%', '25%', '25%', '25%'],
+                        heights: [10, 10, 10, 10, 10],
+                        headerRows: 1,
+                        body: list,
+                    }
+                },
+                {
+                    alignment: 'center',
+                    text: `${formData.etiqueta === "No Conforme" ? "Disposicion del material" : ""}`,
+                    style: 'header',
+                    fontSize: 23,
+                    bold: true,
+                    margin: [0, 10],
+                },
+                {
+                    margin: [0, 0, 0, 10],
+                    table: {
+                        widths: ['50%', '50%'],
+                        heights: [10],
+                        body: list2,
                     }
                 },
             ],
@@ -988,6 +1199,342 @@ obtenerRazonSocialPorNombre(getSucursal()).then(response => {
                                         )
                                 }
 
+                                {
+                                    formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no" &&
+                                    (
+                                        <>
+                                            <Row className="mb-3">
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Nombre del {formData.propiedad}
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe el cliente o proveedor"
+                                                        name="nombreExterno"
+                                                        defaultValue={formData.nombreExterno}
+                                                        disabled
+                                                    />
+                                                </Form.Group>
+
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Turno
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        as="select"
+                                                        placeholder="Escribe el turno"
+                                                        name="turno"
+                                                        defaultValue={formData.turno}
+                                                        disabled
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        <option value="1" selected={formData.turno == "1"}>1</option>
+                                                        <option value="2" selected={formData.turno == "2"}>2</option>
+                                                    </Form.Control>
+                                                </Form.Group>
+                                            </Row>
+                                        </>
+                                    )
+                                }
+
+                                {
+                                    formData.etiqueta === "Material Sospechoso" &&
+                                    (
+                                        <>
+                                            <Row className="mb-3">
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Turno
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        as="select"
+                                                        placeholder="Escribe el turno"
+                                                        name="turno"
+                                                        defaultValue={formData.turno}
+                                                        disabled
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        <option value="1" selected={formData.turno == "1"}>1</option>
+                                                        <option value="2" selected={formData.turno == "2"}>2</option>
+                                                    </Form.Control>
+                                                </Form.Group>
+
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Nombre del auditor
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe el nombre del auditor"
+                                                        name="auditor"
+                                                        defaultValue={formData.auditor}
+                                                        disabled
+                                                    />
+                                                </Form.Group>
+                                            </Row>
+
+                                            <Row className="mb-3">
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Condición
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        as="textarea"
+                                                        placeholder="Condición"
+                                                        name="condicion"
+                                                        defaultValue={formData.condicion}
+                                                        disabled
+                                                    />
+                                                </Form.Group>
+                                            </Row>
+                                        </>
+                                    )
+                                }
+
+                                {
+                                    formData.etiqueta === "No Conforme" &&
+                                    (
+                                        <>
+                                            <Row className="mb-3">
+                                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                                    <Col sm={2}>
+                                                        <Form.Label>
+                                                            Rechazo
+                                                        </Form.Label>
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                        <Form.Check
+                                                            value="interno"
+                                                            type="radio"
+                                                            label="Interno"
+                                                            name="rechazo"
+                                                            id="interno"
+                                                            defaultValue={formData.rechazo}
+                                                            checked={formData.rechazo == "interno"}
+                                                            disabled
+                                                        />
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                        <Form.Check
+                                                            value="externo"
+                                                            type="radio"
+                                                            label="Externo"
+                                                            name="rechazo"
+                                                            id="externo"
+                                                            defaultValue={formData.rechazo}
+                                                            checked={formData.rechazo == "externo"}
+                                                            disabled
+                                                        />
+                                                    </Col>
+                                                </Form.Group>
+                                            </Row>
+
+                                            <Row className="mb-3">
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Nombre del {formData.propiedad}
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe el cliente o proveedor"
+                                                        name="nombreExterno"
+                                                        defaultValue={formData.nombreExterno}
+                                                        disabled
+                                                    />
+                                                </Form.Group>
+
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Turno
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        as="select"
+                                                        placeholder="Escribe el turno"
+                                                        name="turno"
+                                                        defaultValue={formData.turno}
+                                                        disabled
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        <option value="1" selected={formData.turno == "1"}>1</option>
+                                                        <option value="2" selected={formData.turno == "2"}>2</option>
+                                                    </Form.Control>
+                                                </Form.Group>
+                                            </Row>
+
+                                            <Row className="mb-3">
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Auditor
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe el nombre del auditor"
+                                                        name="auditor"
+                                                        defaultValue={formData.auditor}
+                                                        disabled
+                                                    />
+                                                </Form.Group>
+
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Supervisor
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe el nombre del supervisor"
+                                                        name="supervisor"
+                                                        defaultValue={formData.supervisor}
+                                                        disabled
+                                                    />
+                                                </Form.Group>
+                                            </Row>
+
+                                            <Row className="mb-3">
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Descripción del defecto
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe la descripción del defecto"
+                                                        name="descripcionDefecto"
+                                                        defaultValue={formData.descripcionDefecto}
+                                                        disabled
+                                                    />
+                                                </Form.Group>
+
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Cantidad no conforme
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe la cantidad"
+                                                        name="cantidadNoConforme"
+                                                        defaultValue={formData.cantidadNoConforme}
+                                                        disabled
+                                                    />
+                                                </Form.Group>
+                                            </Row>
+
+                                            <div className="datosGenerales">
+                                                <Container fluid>
+                                                    <br />
+                                                    <div className="tituloSeccion">
+                                                        <h4>
+                                                            Disposicion del material
+                                                        </h4>
+                                                    </div>
+
+                                                    <br />
+
+                                                    <Row className="mb-3">
+                                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                                            <Col sm={2}>
+                                                                <Form.Label>
+                                                                    Rechazo
+                                                                </Form.Label>
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                                <Form.Check
+                                                                    value="moler"
+                                                                    type="radio"
+                                                                    label="Moler"
+                                                                    name="tipoRechazo"
+                                                                    id="moler"
+                                                                    defaultValue={formData.tipoRechazo}
+                                                                    checked={formData.tipoRechazo == "moler"}
+                                                                    disabled
+                                                                />
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                                <Form.Check
+                                                                    value="retrabajar"
+                                                                    type="radio"
+                                                                    label="Retrabajar"
+                                                                    name="tipoRechazo"
+                                                                    id="retrabajar"
+                                                                    defaultValue={formData.tipoRechazo}
+                                                                    checked={formData.tipoRechazo == "retrabajar"}
+                                                                    disabled
+                                                                />
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                                <Form.Check
+                                                                    value="consecion"
+                                                                    type="radio"
+                                                                    label="Conseción"
+                                                                    name="tipoRechazo"
+                                                                    id="consecion"
+                                                                    defaultValue={formData.tipoRechazo}
+                                                                    checked={formData.tipoRechazo == "consecion"}
+                                                                    disabled
+                                                                />
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                                <Form.Check
+                                                                    value="otro"
+                                                                    type="radio"
+                                                                    label="Otro"
+                                                                    name="tipoRechazo"
+                                                                    id="otro"
+                                                                    defaultValue={formData.tipoRechazo}
+                                                                    checked={formData.tipoRechazo == "otro"}
+                                                                    disabled
+                                                                />
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                                <Form.Check
+                                                                    value="re-inspeccion"
+                                                                    type="radio"
+                                                                    label="Reinspección"
+                                                                    name="tipoRechazo"
+                                                                    id="reinspeccion"
+                                                                    defaultValue={formData.tipoRechazo}
+                                                                    checked={formData.tipoRechazo == "re-inspeccion"}
+                                                                    disabled
+                                                                />
+                                                            </Col>
+                                                        </Form.Group>
+                                                    </Row>
+
+                                                    <Row className="mb-3">
+                                                        <Form.Group as={Row} controlId="formGridCantidad" className="cantidad">
+                                                            <Col sm="2">
+                                                                <Form.Label>
+                                                                    Corrección
+                                                                </Form.Label>
+                                                            </Col>
+                                                            <Col sm="9">
+                                                                <Form.Control
+                                                                    type="text"
+                                                                    placeholder="Escribe la correccion"
+                                                                    name="correccion"
+                                                                    defaultValue={formData.correccion}
+                                                                    disabled
+                                                                />
+                                                            </Col>
+                                                        </Form.Group>
+                                                    </Row>
+                                                </Container>
+                                            </div>
+                                        </>
+                                    )
+                                }
+
+                                <br />
+
                                 <Row ClassName="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
@@ -1003,6 +1550,8 @@ obtenerRazonSocialPorNombre(getSucursal()).then(response => {
                                     </Form.Group>
                                 </Row>
                             </Container>
+
+                            <br />
                         </div>
 
                         <br />
@@ -1101,6 +1650,16 @@ function initialFormData() {
         empaqueDañado: "",
         resultadoFinalInspeccion: "",
         etiqueta: "",
+        rechazo: "",
+        nombreExterno: "",
+        turno: "",
+        auditor: "",
+        supervisor: "",
+        descripcionDefecto: "",
+        cantidadNoConforme: "",
+        tipoRechazo: "",
+        correccion: "",
+        condicion: "",
         observaciones: "",
     }
 }
@@ -1118,7 +1677,7 @@ function initialFormDataRecepcion(data) {
 }
 
 function valoresAlmacenados(data) {
-    const { folio, ordenVenta, fecha, nombre, lote, cantidad, propiedad, unidadMedida, etiqueta, tipoMaterial, nombreRecibio, estadoMateriaPrima, contaminacion, presentaHumedad, certificadoCalidad, empaqueDañado, resultadoFinalInspeccion, observaciones } = data;
+    const { folio, ordenVenta, fecha, nombre, lote, cantidad, propiedad, unidadMedida, etiqueta, tipoMaterial, nombreRecibio, estadoMateriaPrima, contaminacion, presentaHumedad, certificadoCalidad, empaqueDañado, resultadoFinalInspeccion, observaciones, rechazo, nombreExterno, turno, auditor, supervisor, descripcionDefecto, cantidadNoConforme, tipoRechazo, correccion, condicion } = data;
     return {
         folio: folio,
         ordenVenta: ordenVenta,
@@ -1136,6 +1695,16 @@ function valoresAlmacenados(data) {
         certificadoCalidad: certificadoCalidad,
         empaqueDañado: empaqueDañado,
         etiqueta: etiqueta,
+        rechazo: rechazo,
+        nombreExterno: nombreExterno,
+        turno: turno,
+        auditor: auditor,
+        supervisor: supervisor,
+        descripcionDefecto: descripcionDefecto,
+        cantidadNoConforme: cantidadNoConforme,
+        tipoRechazo: tipoRechazo,
+        correccion: correccion,
+        condicion: condicion,
         resultadoFinalInspeccion: resultadoFinalInspeccion,
         observaciones: observaciones,
     }

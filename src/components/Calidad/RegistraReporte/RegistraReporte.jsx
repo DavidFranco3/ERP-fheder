@@ -118,6 +118,16 @@ function RegistraReporte(props) {
                 presentaHumedad: formData.presentaHumedad,
                 certificadoCalidad: formData.certificadoCalidad,
                 empaqueDañado: formData.empaqueDañado,
+                rechazo: formData.rechazo,
+                nombreExterno: formData.nombreExterno,
+                turno: formData.turno,
+                auditor: formData.auditor,
+                supervisor: formData.supervisor,
+                descripcionDefecto: formData.descripcionDefecto,
+                cantidadNoConforme: formData.cantidadNoConforme,
+                tipoRechazo: formData.tipoRechazo,
+                correccion: formData.correccion,
+                condicion: formData.condicion,
                 etiqueta: formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no" ? "Aceptado" : formData.etiqueta,
                 resultadoFinalInspeccion: formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no" ? "Ok" : "no Ok",
                 observaciones: formData.observaciones,
@@ -677,6 +687,316 @@ function RegistraReporte(props) {
                                         )
                                 }
 
+                                {
+                                    formData.contaminacion == "no" && formData.presentaHumedad == "no" && formData.certificadoCalidad == "no" && formData.empaqueDañado == "no" &&
+                                    (
+                                        <>
+                                            <Row className="mb-3">
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Nombre del {formData.propiedad}
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe el cliente o proveedor"
+                                                        name="nombreExterno"
+                                                        defaultValue={formData.nombreExterno}
+                                                    />
+                                                </Form.Group>
+
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Turno
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        as="select"
+                                                        placeholder="Escribe el turno"
+                                                        name="turno"
+                                                        defaultValue={formData.turno}
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                    </Form.Control>
+                                                </Form.Group>
+                                            </Row>
+                                        </>
+                                    )
+                                }
+
+                                {
+                                    formData.etiqueta === "Material Sospechoso" &&
+                                    (
+                                        <>
+                                            <Row className="mb-3">
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Turno
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        as="select"
+                                                        placeholder="Escribe el turno"
+                                                        name="turno"
+                                                        defaultValue={formData.turno}
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                    </Form.Control>
+                                                </Form.Group>
+
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Nombre del auditor
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe el nombre del auditor"
+                                                        name="auditor"
+                                                        defaultValue={formData.auditor}
+                                                    />
+                                                </Form.Group>
+                                            </Row>
+
+                                            <Row className="mb-3">
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Condición
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        as="textarea"
+                                                        placeholder="Condición"
+                                                        name="condicion"
+                                                        defaultValue={formData.condicion}
+                                                    />
+                                                </Form.Group>
+                                            </Row>
+                                        </>
+                                    )
+                                }
+
+                                {
+                                    formData.etiqueta === "No Conforme" &&
+                                    (
+                                        <>
+                                            <Row className="mb-3">
+                                                <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                                    <Col sm={2}>
+                                                        <Form.Label>
+                                                            Rechazo
+                                                        </Form.Label>
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                        <Form.Check
+                                                            value="interno"
+                                                            type="radio"
+                                                            label="Interno"
+                                                            name="rechazo"
+                                                            id="interno"
+                                                            defaultValue={formData.rechazo}
+                                                        />
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                    </Col>
+                                                    <Col sm={1}>
+                                                        <Form.Check
+                                                            value="externo"
+                                                            type="radio"
+                                                            label="Externo"
+                                                            name="rechazo"
+                                                            id="externo"
+                                                            defaultValue={formData.rechazo}
+                                                        />
+                                                    </Col>
+                                                </Form.Group>
+                                            </Row>
+
+                                            <Row className="mb-3">
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Nombre del {formData.propiedad}
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe el cliente o proveedor"
+                                                        name="nombreExterno"
+                                                        defaultValue={formData.nombreExterno}
+                                                    />
+                                                </Form.Group>
+
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Turno
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        as="select"
+                                                        placeholder="Escribe el turno"
+                                                        name="turno"
+                                                        defaultValue={formData.turno}
+                                                    >
+                                                        <option>Elige una opción</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                    </Form.Control>
+                                                </Form.Group>
+                                            </Row>
+
+                                            <Row className="mb-3">
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Auditor
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe el nombre del auditor"
+                                                        name="auditor"
+                                                        defaultValue={formData.auditor}
+                                                    />
+                                                </Form.Group>
+
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Supervisor
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe el nombre del supervisor"
+                                                        name="supervisor"
+                                                        defaultValue={formData.supervisor}
+                                                    />
+                                                </Form.Group>
+                                            </Row>
+
+                                            <Row className="mb-3">
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Descripción del defecto
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe la descripción del defecto"
+                                                        name="descripcionDefecto"
+                                                        defaultValue={formData.descripcionDefecto}
+                                                    />
+                                                </Form.Group>
+
+                                                <Form.Group as={Col} controlId="formGridCantidad" className="cantidad">
+                                                    <Form.Label>
+                                                        Cantidad no conforme
+                                                    </Form.Label>
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Escribe la cantidad"
+                                                        name="cantidadNoConforme"
+                                                        defaultValue={formData.cantidadNoConforme}
+                                                    />
+                                                </Form.Group>
+                                            </Row>
+
+                                            <div className="datosGenerales">
+                                                <Container fluid>
+                                                    <br />
+                                                    <div className="tituloSeccion">
+                                                        <h4>
+                                                            Disposicion del material
+                                                        </h4>
+                                                    </div>
+
+                                                    <br />
+
+                                                    <Row className="mb-3">
+                                                        <Form.Group as={Row} controlId="formHorizontalNoInterno">
+                                                            <Col sm={2}>
+                                                                <Form.Label>
+                                                                    Rechazo
+                                                                </Form.Label>
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                                <Form.Check
+                                                                    value="moler"
+                                                                    type="radio"
+                                                                    label="Moler"
+                                                                    name="tipoRechazo"
+                                                                    id="moler"
+                                                                    defaultValue={formData.tipoRechazo}
+                                                                />
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                                <Form.Check
+                                                                    value="retrabajar"
+                                                                    type="radio"
+                                                                    label="Retrabajar"
+                                                                    name="tipoRechazo"
+                                                                    id="retrabajar"
+                                                                    defaultValue={formData.tipoRechazo}
+                                                                />
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                                <Form.Check
+                                                                    value="consecion"
+                                                                    type="radio"
+                                                                    label="Conseción"
+                                                                    name="tipoRechazo"
+                                                                    id="consecion"
+                                                                    defaultValue={formData.tipoRechazo}
+                                                                />
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                                <Form.Check
+                                                                    value="otro"
+                                                                    type="radio"
+                                                                    label="Otro"
+                                                                    name="tipoRechazo"
+                                                                    id="otro"
+                                                                    defaultValue={formData.tipoRechazo}
+                                                                />
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                            </Col>
+                                                            <Col sm={1}>
+                                                                <Form.Check
+                                                                    value="re-inspeccion"
+                                                                    type="radio"
+                                                                    label="Reinspección"
+                                                                    name="tipoRechazo"
+                                                                    id="reinspeccion"
+                                                                    defaultValue={formData.tipoRechazo}
+                                                                />
+                                                            </Col>
+                                                        </Form.Group>
+                                                    </Row>
+
+                                                    <Row className="mb-3">
+                                                        <Form.Group as={Row} controlId="formGridCantidad" className="cantidad">
+                                                            <Col sm="2">
+                                                                <Form.Label>
+                                                                    Corrección
+                                                                </Form.Label>
+                                                            </Col>
+                                                            <Col sm="9">
+                                                                <Form.Control
+                                                                    type="text"
+                                                                    placeholder="Escribe la correccion"
+                                                                    name="correccion"
+                                                                    defaultValue={formData.correccion}
+                                                                />
+                                                            </Col>
+                                                        </Form.Group>
+                                                    </Row>
+                                                </Container>
+                                            </div>
+                                        </>
+                                    )
+                                }
+
+                                <br />
+
                                 <Row ClassName="mb-3">
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
@@ -691,6 +1011,8 @@ function RegistraReporte(props) {
                                     </Form.Group>
                                 </Row>
                             </Container>
+
+                            <br />
                         </div>
 
                         <Form.Group as={Row} className="botones">
@@ -765,6 +1087,16 @@ function initialFormData() {
         certificadoCalidad: "",
         empaqueDañado: "",
         etiqueta: "",
+        rechazo: "",
+        nombreExterno: "",
+        turno: "",
+        auditor: "",
+        supervisor: "",
+        descripcionDefecto: "",
+        cantidadNoConforme: "",
+        tipoRechazo: "",
+        correccion: "",
+        condicion: "",
         resultadoInspeccion: "",
         observaciones: "",
     }

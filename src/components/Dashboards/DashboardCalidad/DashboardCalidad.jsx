@@ -84,16 +84,11 @@ function DashboardCalidad(props) {
                     </Col>
                 </Row>
             </Alert>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-4 gap-4">
                 <ItemCard
                     path={'/Calidad'}
                     logo={LogoCalidad}
                     title={'Inspeccion de calidad de material'}
-                />
-                <ItemCard
-                    path={'/StatusMaterial'}
-                    logo={LogoIdentificacion}
-                    title={'Identificación de estatus de material'}
                 />
                 <ItemCard
                     path={'/InspeccionPieza'}
