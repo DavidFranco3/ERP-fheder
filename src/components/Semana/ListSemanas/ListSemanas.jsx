@@ -51,7 +51,7 @@ function ListSemanas(props) {
 
     // Para abrir en una pestaña nueva el pdf de la vista
     const irProgramaProduccion = (folio) => {
-        enrutamiento(`/ProgramaProduccion/${folio}`);
+        enrutamiento(`/RequerimientosPlaneacion/${folio}`);
     }
 
     const columns = [

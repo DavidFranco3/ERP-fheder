@@ -2,12 +2,10 @@
 import Dashboard from "../page/Dashboard";
 import Tiquets from "../page/Tiquets";
 import RecepcionMaterialInsumos from "../page/RecepcionMaterialInsumos";
-import ProgramaProduccion from "../page/ProgramaProduccion";
 import Compras from "../page/Compras";
 import Embarque from "../page/Embarque";
 import Facturacion from "../page/Facturacion";
 import Logistica from "../page/Logistica";
-import Produccion from "../page/Produccion";
 import Ventas from "../page/Ventas";
 import Usuarios from "../page/Usuarios";
 import Clientes from "../page/Clientes";
@@ -77,11 +75,6 @@ import DashboardConfiguracion from "../components/Dashboards/DashboardConfigurac
 import DashboardFinanzas from "../components/Dashboards/DashboardFinanzas";
 import DashboardCuentasPorCobrar from "../components/Dashboards/DashboardCuentasPorCobrar";
 import DashboardCuentasPorPagar from "../components/Dashboards/DashboardCuentasPorPagar";
-
-// Rutas para el programa de producción
-import RegistraProgramaProduccion from "../components/ProgramaProduccion/Registro";
-import ModificaProgramaProduccion from "../components/ProgramaProduccion/Modificacion";
-import VistaPreviaProgramaProduccion from "../components/ProgramaProduccion/VistaPreviaProgramaProduccion";
 
 // Rutas para la matriz de productos
 import ModificaMatrizProductos from "../components/MatrizProductos/ModificaMatrizProductos";
@@ -161,12 +154,6 @@ import VistaPreviaRecepcion from "../components/RecepcionMaterialInsumos/VistaPr
 import RegistroVentas from "../components/Ventas/Registro";
 import ModificacionVentas from "../components/Ventas/Modificacion";
 import VistaPreviaVentas from "../components/Ventas/VistaPrevia";
-
-// Rutas para producción
-import RegistroProduccion from "../components/Produccion/Registro";
-import ModificacionProduccion from "../components/Produccion/Modificacion";
-import ProduccionPlaneacion from "../components/Produccion/ProduccionPlaneacion";
-import VistaPreviaProduccion from "../components/Produccion/VistaPreviaProduccion";
 
 // Rutas para rechazos
 import RegistroRechazos from "../components/Rechazos/RegistraRechazos";
@@ -309,7 +296,7 @@ export default [
         page: CuentasPagarOC
     },
     {
-        path: "/RegistraRequerimientosPlaneacion",
+        path: "/RegistraRequerimientosPlaneacion/:semana",
         page: RegistraRequerimientosPlaneacion
     },
     {
@@ -497,18 +484,6 @@ export default [
         page: RegistroTiquets
     },
     {
-        path: "/RegistroProgramaProduccion/:semana",
-        page: RegistraProgramaProduccion
-    },
-    {
-        path: "/ModificaProgramaProduccion/:id",
-        page: ModificaProgramaProduccion
-    },
-    {
-        path: "/VistaPreviaProgramaProduccion/:id",
-        page: VistaPreviaProgramaProduccion
-    },
-    {
         path: "/ModificacionTiquets",
         page: ModificacionTiquets
     },
@@ -595,22 +570,6 @@ export default [
     {
         path: "/ModificacionPedido",
         page: ModificacionVentas
-    },
-    {
-        path: "/RegistroProduccion",
-        page: RegistroProduccion
-    },
-    {
-        path: "/ModificacionProduccion/:id",
-        page: ModificacionProduccion
-    },
-    {
-        path: "/VistaPreviaProduccion/:id",
-        page: VistaPreviaProduccion
-    },
-    {
-        path: "/ProduccionPlaneacion/:id",
-        page: ProduccionPlaneacion
     },
     {
         path: "/RegistroRequisicion",
@@ -825,20 +784,12 @@ export default [
         page: Logistica
     },
     {
-        path: "/ProgramaProduccion/:semana",
-        page: ProgramaProduccion
-    },
-    {
         path: "/CertificadosCalidad",
         page: CertificadosCalidad
     },
     {
         path: "/Cotizaciones",
         page: Cotizaciones
-    },
-    {
-        path: "/Produccion",
-        page: Produccion
     },
     {
         path: "/Ventas",
@@ -949,7 +900,7 @@ export default [
         page: DashboardMantenimiento
     },
     {
-        path: "/RequerimientosPlaneacion",
+        path: "/RequerimientosPlaneacion/:semana",
         page: RequerimientosPlaneacion
     },
     {

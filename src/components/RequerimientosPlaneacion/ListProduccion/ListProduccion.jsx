@@ -169,33 +169,6 @@ function ListProduccion(props) {
             reorder: false
         },
         {
-            name: "Orden producción",
-            selector: row => (
-                row.estado === "true" ?
-                    (
-                        <>
-                            <Badge
-                                bg="primary"
-                                title="Generar una orden de produción"
-                                className="editar"
-                                onClick={() => {
-                                    produccionPlaneacion(row.id)
-                                }}
-                            >
-                                Generar
-                            </Badge>
-                        </>
-                    )
-                    :
-                    (
-                        "No disponible"
-                    )
-            ),
-            sortable: false,
-            center: true,
-            reorder: false
-        },
-        {
             name: "Ultima modificacion",
             selector: row => dayjs(row.fechaActualizacion).format('LL'),
             sortable: false,

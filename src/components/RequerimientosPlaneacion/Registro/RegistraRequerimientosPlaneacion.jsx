@@ -3,7 +3,7 @@ import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOV from "../../../page/BuscarOV";
 import BuscarProductosOV from '../../../page/BuscarProductosOV';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./RegistraRequerimientosPlaneacion.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -18,6 +18,9 @@ import { obtenerMaquina, listarMaquina } from "../../../api/maquinas";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
 import { obtenerDatosArticulo } from '../../../api/almacenes';
+import AgregarResultado from "../AgregarResultado";
+import AgregarRegistro from "../AgregarRegistro";
+import { obtenerDatosSemana } from "../../../api/semana";
 
 function RegistraRequerimientosPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
@@ -33,6 +36,9 @@ function RegistraRequerimientosPlaneacion(props) {
             }
         }
     }
+
+    const params = useParams();
+    const { semana } = params;
 
     // Cerrado de sesión automatico
     useEffect(() => {
@@ -71,6 +77,26 @@ function RegistraRequerimientosPlaneacion(props) {
         cargarListaMaquinas();
     }, []);
 
+    const [fechaInicial, setFechaInicial] = useState("");
+
+    const cargarDatosSemana = () => {
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerDatosSemana(semana).then(response => {
+                const { data } = response;
+                setFechaInicial(data.fechaInicial)
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    useEffect(() => {
+        cargarDatosSemana();
+    }, []);
+
     const [ordenVentaPrincipal, setOrdenVentaPrincipal] = useState("");
 
     // Para almacenar la informacion del formulario
@@ -90,6 +116,42 @@ function RegistraRequerimientosPlaneacion(props) {
 
     // Para almacenar la cantidad en el almacen de materia prima
     const [cantidadEmpaquesAlmacen, setCantidadEmpaquesAlmacen] = useState(0);
+
+    const [listResultados, setListResultados] = useState([]);
+
+    const [listRegistros, setListRegistros] = useState([]);
+
+    const [registroAnterior, setRegistroAnterior] = useState(0);
+
+    const [registroAnteriorMaterial, setRegistroAnteriorMaterial] = useState(0);
+
+    // Para eliminar productos del listado
+    const removeItemResultado = (resultado) => {
+        let newArray = listResultados;
+        newArray.splice(newArray.findIndex(a => a.acumulado === resultado.acumulado), 1);
+        setListResultados([...newArray]);
+    }
+
+    // Para eliminar productos del listado
+    const removeItemRegistro = (registro) => {
+        let newArray = listRegistros;
+        newArray.splice(newArray.findIndex(a => a.acumulado === registro.acumulado), 1);
+        setListRegistros([...newArray]);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const agregarResultado = (content) => {
+        setTitulosModal("Agregar resultado");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const agregarRegistro = (content) => {
+        setTitulosModal("Agregar registro");
+        setContentModal(content);
+        setShowModal(true);
+    }
 
     const cargarDatosProducto = () => {
         // Para buscar el producto en la matriz de productos
@@ -229,7 +291,7 @@ function RegistraRequerimientosPlaneacion(props) {
     }
 
     useEffect(() => {
-        cargarDatosArticulos();
+        cargarDatosPigmento();
     }, [formDataPlaneacion.idPigmento]);
 
     let cantidadTotalEntradaEmpaque = 0;
@@ -266,7 +328,7 @@ function RegistraRequerimientosPlaneacion(props) {
     }
 
     useEffect(() => {
-       cargarDatosEmpaque();
+        cargarDatosEmpaque();
     }, [formDataPlaneacion.idEmpaque]);
 
     // Para hacer uso del modal
@@ -286,7 +348,7 @@ function RegistraRequerimientosPlaneacion(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento("/RequerimientosPlaneacion")
+        enrutamiento(`/RequerimientosPlaneacion/${semana}`)
     }
 
     // Para controlar la animacion
@@ -335,6 +397,8 @@ function RegistraRequerimientosPlaneacion(props) {
         obtenerItem();
     }, []);
 
+    console.log(formDataVenta.numeroInterno)
+
     const onSubmit = e => {
         e.preventDefault();
         //console.log("Continuar")
@@ -349,16 +413,22 @@ function RegistraRequerimientosPlaneacion(props) {
                 item: item,
                 folio: data.noRequerimiento,
                 sucursal: getSucursal(),
+                semana: semana,
+                acumulado: registroAnterior,
+                acumuladoMaterial: registroAnteriorMaterial,
                 requerimiento: {
                     semana: semana,
                     producto: formDataPlaneacion.id,
                     nombreProducto: formDataPlaneacion.descripcion,
+                    numeroInterno: listOVCargadas[0].numeroInterno,
                     um: formDataPlaneacion.um,
-                    ov: ordenVentaPrincipal,
+                    ov: listOVCargadas[0].ordenVenta,
                     almacenProductoTerminado: almacenProducto,
                     ordenVenta: listOVCargadas,
                     nombreProveedor: formDataPlaneacion.nombreProveedor,
                     totalProducir: totalProducir,
+                    cliente: formDataPlaneacion.cliente,
+                    nombreCliente: formDataPlaneacion.nombreCliente,
                 },
                 planeacion: {
                     numeroMolde: formDataPlaneacion.noMolde,
@@ -397,7 +467,9 @@ function RegistraRequerimientosPlaneacion(props) {
                     precioEmpaque: formDataPlaneacion.precioEmpaque,
                     umEmpaque: formDataPlaneacion.umEmpaque,
                     empaque: formDataPlaneacion.descripcionBolsa,
-                    bolsasCajasUtilizar: bolsasCajasUtilizar
+                    bolsasCajasUtilizar: bolsasCajasUtilizar,
+                    notas: formData.notasImportantes,
+                    elaboro: formData.elaboro,
                 },
                 datosRequisicion: {
                     material: formDataPlaneacion.descripcionMP,
@@ -418,6 +490,34 @@ function RegistraRequerimientosPlaneacion(props) {
                     cantidadSugeridaEmpaques: Number(bolsasCajasUtilizar) - Number(cantidadEmpaquesAlmacen),
                     cantidadPedirEmpaques: cantidadPedirEmpaques
                 },
+                programa: {
+                    fechaInicio: fechaInicial,
+                    lunesT1: lunesT1,
+                    estadoLT1: "false",
+                    lunesT2: lunesT2,
+                    estadoLT2: "false",
+                    martesT1: martesT1,
+                    estadoMT1: "false",
+                    martesT2: martesT2,
+                    estadoMT2: "false",
+                    miercolesT1: miercolesT1,
+                    estadoMIT1: "false",
+                    miercolesT2: miercolesT2,
+                    estadoMIT2: "false",
+                    juevesT1: juevesT1,
+                    estadoJT1: "false",
+                    juevesT2: juevesT2,
+                    estadoJT2: "false",
+                    viernesT1: viernesT1,
+                    estadoVT1: "false",
+                    viernesT2: viernesT2,
+                    estadoVT2: "false",
+                    sabadoT1: sabadoT1,
+                    estadoST1: "false",
+                },
+                resultados: listResultados,
+                materiaPrima: listRegistros,
+                observaciones: formData.observaciones,
                 estado: "true"
             }
             // console.log(dataTemp)
@@ -442,6 +542,7 @@ function RegistraRequerimientosPlaneacion(props) {
 
     const addItemsOV = () => {
         const ordenVenta = document.getElementById("ordenVenta").value
+        const numeroInterno = formDataVenta.numeroInterno
         const cantidadPedidaOV = document.getElementById("cantidadPedidaOV").value
         const cantidadProducirOV = document.getElementById("cantidadProducirOV").value
 
@@ -452,6 +553,7 @@ function RegistraRequerimientosPlaneacion(props) {
                 ordenVenta: ordenVenta,
                 cantidadPedidaOV: cantidadPedidaOV,
                 cantidadProducirOV: cantidadProducirOV,
+                numeroInterno: numeroInterno
             }
             // console.log(dataTemp)
 
@@ -464,6 +566,7 @@ function RegistraRequerimientosPlaneacion(props) {
 
             //setCargaProductos(initialFormDataProductos)
             document.getElementById("ordenVenta").value = ""
+
             document.getElementById("cantidadPedidaOV").value = ""
             document.getElementById("cantidadProducirOV").value = ""
 
@@ -542,14 +645,97 @@ function RegistraRequerimientosPlaneacion(props) {
         cargarCantidadProducir();
     }, [formDataVenta.cantidadProducirVenta]);
 
-    const hoy = new Date();
-    // const fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear() + " " + hora;
-    const fecha = (hoy.getMonth() + 1) > 9 && hoy.getDate() < 10 ? hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
-        : (hoy.getMonth() + 1) < 10 && hoy.getDate() > 9 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + hoy.getDate()
-            : (hoy.getMonth() + 1) < 10 && hoy.getDate() < 10 ? hoy.getFullYear() + '-' + "0" + (hoy.getMonth() + 1) + '-' + "0" + hoy.getDate()
-                : hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+    const [lunesT1, setLunesT1] = useState();
 
-    const [semana, setSemana] = useState(fecha);
+    const [lunesT2, setLunesT2] = useState();
+
+    useEffect(() => {
+        //la fecha
+        const TuFecha = new Date(fechaInicial);
+
+        //nueva fecha sumada
+        TuFecha.setDate(TuFecha.getDate() + 1);
+        //formato de salida para la fecha
+        setLunesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+
+        setLunesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+    }, [fechaInicial]);
+
+    const [martesT1, setMartesT1] = useState();
+
+    const [martesT2, setMartesT2] = useState();
+
+    useEffect(() => {
+        //la fecha
+        const TuFecha = new Date(fechaInicial);
+
+        //nueva fecha sumada
+        TuFecha.setDate(TuFecha.getDate() + 2);
+        //formato de salida para la fecha
+        setMartesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+
+        setMartesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+    }, [fechaInicial]);
+
+    const [miercolesT1, setMiercolesT1] = useState();
+
+    const [miercolesT2, setMiercolesT2] = useState();
+
+    useEffect(() => {
+        //la fecha
+        const TuFecha = new Date(fechaInicial);
+
+        //nueva fecha sumada
+        TuFecha.setDate(TuFecha.getDate() + 3);
+        //formato de salida para la fecha
+        setMiercolesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+
+        setMiercolesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+    }, [fechaInicial]);
+
+    const [juevesT1, setJuevesT1] = useState();
+
+    const [juevesT2, setJuevesT2] = useState();
+
+    useEffect(() => {
+        //la fecha
+        const TuFecha = new Date(fechaInicial);
+
+        //nueva fecha sumada
+        TuFecha.setDate(TuFecha.getDate() + 4);
+        //formato de salida para la fecha
+        setJuevesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+
+        setJuevesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+    }, [fechaInicial]);
+
+    const [viernesT1, setViernesT1] = useState();
+
+    const [viernesT2, setViernesT2] = useState();
+
+    useEffect(() => {
+        //la fecha
+        const TuFecha = new Date(fechaInicial);
+
+        //nueva fecha sumada
+        TuFecha.setDate(TuFecha.getDate() + 5);
+        //formato de salida para la fecha
+        setViernesT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+
+        setViernesT2(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+    }, [fechaInicial]);
+
+    const [sabadoT1, setSabadoT1] = useState();
+
+    useEffect(() => {
+        //la fecha
+        const TuFecha = new Date(fechaInicial);
+
+        //nueva fecha sumada
+        TuFecha.setDate(TuFecha.getDate() + 6);
+        //formato de salida para la fecha
+        setSabadoT1(TuFecha.getFullYear() + '-' + (TuFecha.getMonth() + 1) + '-' + TuFecha.getDate());
+    }, [fechaInicial]);
 
     return (
         <>
@@ -733,14 +919,26 @@ function RegistraRequerimientosPlaneacion(props) {
 
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
+                                            Cliente
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Nombre cliente"
+                                            name="nombreCliente"
+                                            value={formDataPlaneacion.nombreCliente}
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label align="center">
                                             Semana
                                         </Form.Label>
                                         <Form.Control
-                                            type="date"
+                                            type="text"
                                             placeholder="Semana"
                                             name="semana"
                                             value={semana}
-                                            onChange={e => setSemana(e.target.value)}
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1075,6 +1273,32 @@ function RegistraRequerimientosPlaneacion(props) {
                                         />
                                     </Form.Group>
                                 </Row>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Notas importantes
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Notas importantes"
+                                            name="notasImportantes"
+                                            defaultValue={formData.notasImportantes}
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Elaboro
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Elaboro"
+                                            name="elaboro"
+                                            defaultValue={formData.elaboro}
+                                        />
+                                    </Form.Group>
+                                </Row>
                             </Container>
                         </div>
 
@@ -1300,6 +1524,258 @@ function RegistraRequerimientosPlaneacion(props) {
 
                         <br />
 
+                        <div className="datosResultado">
+                            <Container fluid>
+                                <br />
+                                <div className="tituloSeccion">
+                                    <h4>
+                                        Resultados
+                                    </h4>
+                                </div>
+                                <Row className="mb-3">
+                                    <Col align="right">
+                                        <Button
+                                            variant="success"
+                                            title="Agregar un resultado"
+                                            className="agregar"
+                                            onClick={() => {
+                                                agregarResultado(
+                                                    <AgregarResultado
+                                                        setListResultados={setListResultados}
+                                                        listResultados={listResultados}
+                                                        registroAnterior={registroAnterior}
+                                                        setRegistroAnterior={setRegistroAnterior}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        >
+                                            Agregar resultado
+                                        </Button>
+                                    </Col>
+                                </Row>
+
+                                <hr />
+
+                                {/* Listado de productos  */}
+                                <div className="tablaProductos">
+
+                                    {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
+                                    {/* Inicia tabla informativa  */}
+                                    <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
+                                        <h4>Listado de resultados agregados</h4>
+                                    </Badge>
+                                    <br />
+                                    <hr />
+                                    <table className="responsive-tableRegistroVentas"
+                                    >
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ITEM</th>
+                                                <th scope="col">Fecha</th>
+                                                <th scope="col">Acumulado</th>
+                                                <th scope="col">Turno</th>
+                                                <th scope="col">Piezas defectuosas</th>
+                                                <th scope="col">Operador</th>
+                                                <th scope="col">Eficiencia</th>
+                                                <th scope="col">Ciclo</th>
+                                                <th scope="col">Cantidad fabricada</th>
+                                                <th scope="col">Observaciones</th>
+                                                <th scope="col">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                        </tfoot>
+                                        <tbody>
+                                            {map(listResultados, (resultado, index) => (
+                                                <tr key={index}>
+                                                    <th scope="row">
+                                                        {index + 1}
+                                                    </th>
+                                                    <td data-title="Material">
+                                                        {resultado.fecha}
+                                                    </td>
+                                                    <td data-title="Descripcion">
+                                                        {resultado.acumulado}
+                                                    </td>
+                                                    <td data-title="UM">
+                                                        {resultado.turno}
+                                                    </td>
+                                                    <td data-title="Descripción">
+                                                        {resultado.piezasDefectuosas}
+                                                    </td>
+                                                    <td data-title="Orden de compra">
+                                                        {resultado.operador}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {resultado.eficiencia}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {resultado.ciclo}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {resultado.cantidadFabricada}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {resultado.observaciones}
+                                                    </td>
+                                                    <td data-title="Eliminar">
+                                                        <div
+                                                            className="eliminarProductoListado"
+                                                            title="Eliminar el resultado"
+                                                            onClick={() => {
+                                                                removeItemResultado(resultado)
+                                                            }}
+                                                        >
+                                                            ❌
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </Container>
+                        </div>
+
+                        <br />
+
+                        <div className="datosBOM">
+                            <Container fluid>
+                                <br />
+                                <div className="tituloSeccion">
+                                    <h4>
+                                        Materia prima
+                                    </h4>
+                                </div>
+                                <Row className="mb-3">
+                                    <Col align="right">
+                                        <Button
+                                            variant="success"
+                                            title="Agregar un registro"
+                                            className="agregar"
+                                            onClick={() => {
+                                                agregarRegistro(
+                                                    <AgregarRegistro
+                                                        listRegistros={listRegistros}
+                                                        setListRegistros={setListRegistros}
+                                                        registroAnterior={registroAnteriorMaterial}
+                                                        setRegistroAnterior={setRegistroAnteriorMaterial}
+                                                        kgMaterial={kgMaterial}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        >
+                                            Agregar registro
+                                        </Button>
+                                    </Col>
+                                </Row>
+
+                                <hr />
+
+                                {/* Listado de productos  */}
+                                <div className="tablaProductos">
+
+                                    {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
+                                    {/* Inicia tabla informativa  */}
+                                    <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
+                                        <h4>Listado de registros de materia prima agregados</h4>
+                                    </Badge>
+                                    <br />
+                                    <hr />
+                                    <table className="responsive-tableRegistroVentas"
+                                    >
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ITEM</th>
+                                                <th scope="col">Fecha</th>
+                                                <th scope="col">Cantidad surtida</th>
+                                                <th scope="col">Acumulado</th>
+                                                <th scope="col">Material</th>
+                                                <th scope="col">Pendiente de surtir</th>
+                                                <th scope="col">Virgen/Molido</th>
+                                                <th scope="col">Surtio</th>
+                                                <th scope="col">Recibio</th>
+                                                <th scope="col">Observaciones</th>
+                                                <th scope="col">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                        </tfoot>
+                                        <tbody>
+                                            {map(listRegistros, (registro, index) => (
+                                                <tr key={index}>
+                                                    <th scope="row">
+                                                        {index + 1}
+                                                    </th>
+                                                    <td data-title="Material">
+                                                        {registro.fecha}
+                                                    </td>
+                                                    <td data-title="Descripcion">
+                                                        {registro.cantidadSurtida}
+                                                    </td>
+                                                    <td data-title="Descripcion">
+                                                        {registro.acumulado}
+                                                    </td>
+                                                    <td data-title="UM">
+                                                        {registro.material}
+                                                    </td>
+                                                    <td data-title="Descripción">
+                                                        {registro.pendienteSurtir}
+                                                    </td>
+                                                    <td data-title="Orden de compra">
+                                                        {registro.virgenMolido}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {registro.surtio}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {registro.recibio}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {registro.observaciones}
+                                                    </td>
+                                                    <td data-title="Eliminar">
+                                                        <div
+                                                            className="eliminarProductoListado"
+                                                            title="Eliminar el registro"
+                                                            onClick={() => {
+                                                                removeItemRegistro(registro)
+                                                            }}
+                                                        >
+                                                            ❌
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </Container>
+                        </div>
+
+                        <br />
+
+                        <div className="observaciones">
+                            <Container fluid>
+                                <br />
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Observaciones
+                                        </Form.Label>
+                                        <Form.Control
+                                            as="textarea"
+                                            placeholder="Observaciones"
+                                            name="observaciones"
+                                            defaultValue={formData.observaciones}
+                                        />
+                                    </Form.Group>
+                                </Row>
+                            </Container>
+                        </div>
+
+                        <br />
+
                         <Form.Group as={Row} className="botones">
                             <Col>
                                 <Button
@@ -1343,6 +1819,8 @@ function initialFormDataPlaneacion(data) {
     return {
         id: data._id,
         noInterno: data.noInterno,
+        cliente: data.cliente,
+        nombreCliente: data.nombreCliente,
         um: data.um,
         cliente: data.cliente,
         noMolde: data.datosMolde.noMolde,
@@ -1395,6 +1873,8 @@ function initialFormDataPlaneacion(data) {
 
 function initialFormDataPlaneacionInitial() {
     return {
+        cliente: "",
+        nombreCliente: "",
         noInterno: "",
         um: "",
         cliente: "",
@@ -1470,6 +1950,9 @@ function initialFormData() {
         kgMaterial: "",
         kgPIGMB: "",
         noMaquina: "",
+        elaboro: "",
+        notasImportantes: "",
+        observaciones: ""
     }
 }
 

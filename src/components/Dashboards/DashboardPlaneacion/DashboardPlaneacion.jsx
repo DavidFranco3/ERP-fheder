@@ -84,21 +84,11 @@ function DashboardPlaneacion(props) {
                     </Col>
                 </Row>
             </Alert>
-            <div className="grid grid-cols-4 gap-4">
-                <ItemCard
-                    path={'/RequerimientosPlaneacion'}
-                    logo={LogoRequerimientos}
-                    title={'Planeación'}
-                />
-                <ItemCard
-                    path={'/Produccion'}
-                    logo={LogoProduccion}
-                    title={'Ordenes de producción'}
-                />
+            <div className="grid grid-cols-2 gap-2">
                 <ItemCard
                     path={'/Semana'}
                     logo={LogoMes}
-                    title={'Programa de producción'}
+                    title={'Planeación'}
                 />
                 <ItemCard
                     path={'/AsignacionPedido'}

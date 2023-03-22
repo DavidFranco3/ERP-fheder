@@ -8,7 +8,7 @@ import { registraCertificado, obtenerNumeroCertificado, obtenerItemCertificado }
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
-import BuscarProduccion from "../../../page/BuscarProduccion";
+import BuscarPlaneacion from '../../../page/BuscarPlaneacion';
 
 function RegistraReporte(props) {
     const { setRefreshCheckLogin } = props;
@@ -44,7 +44,7 @@ function RegistraReporte(props) {
 
     // Para la eliminacion fisica de usuarios
     const buscarProduccion = (content) => {
-        setTitulosModal("Buscar producción");
+        setTitulosModal("Buscar planeación");
         setContentModal(content);
         setShowModal(true);
     }
@@ -335,7 +335,7 @@ function RegistraReporte(props) {
                                                     icon={faSearch}
                                                     onClick={() => {
                                                         buscarProduccion(
-                                                            <BuscarProduccion
+                                                            <BuscarPlaneacion
                                                                 setFormData={setFormDataProduccion}
                                                                 formData={formDataProduccion}
                                                                 setShowModal={setShowModal}

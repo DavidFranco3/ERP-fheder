@@ -35,6 +35,16 @@ function BuscarPlaneaciones(props) {
 
             opcionesMaquinaria: planeacion.opcionesMaquinaria,
             folioPlaneacion: folio,
+
+            nombreProducto: requerimiento.nombreProducto,
+            descripcionProducto: requerimiento.nombreProducto,
+            numeroParte: requerimiento.numeroInterno,
+            ordenInterna: folio,
+            ordenProduccion: folio,
+            cliente: requerimiento.nombreCliente,
+            numeroParte: requerimiento.noInterno,
+            folioPlaneacion: folio,
+            cantidadProducir: requerimiento.totalProducir
         }
         setFormData(dataTemp);
         cancelarBusqueda();

@@ -12,6 +12,18 @@ ENDPOINTActualizarEstadoRequerimiento,
 ENDPOINTActualizarRequerimiento,
 ENDPOINTObtenerDatosRequerimiento,
 ENDPOINTTotalRequerimiento,
+ENDPOINTListarRequerimientoPorSemana,
+ENDPOINTHabilitarPlaneacionLunesT1,
+ENDPOINTHabilitarPlaneacionLunesT2,
+ENDPOINTHabilitarPlaneacionMartesT1,
+ENDPOINTHabilitarPlaneacionMartesT2,
+ENDPOINTHabilitarPlaneacionMiercolesT1,
+ENDPOINTHabilitarPlaneacionMiercolesT2,
+ENDPOINTHabilitarPlaneacionJuevesT1,
+ENDPOINTHabilitarPlaneacionJuevesT2,
+ENDPOINTHabilitarPlaneacionViernesT1,
+ENDPOINTHabilitarPlaneacionViernesT2,
+ENDPOINTHabilitarPlaneacionSabadoT1,
 } from "./endpoints";
 import axios from 'axios';
 import { getTokenApi } from "./auth";
@@ -103,6 +115,18 @@ export async function listarRequerimiento(sucursal) {
 }
 
 // Para listar todas las órdenes de compra
+export async function listarRequerimientoPorSemana(sucursal, semana) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+    return await axios.get(API_HOST + ENDPOINTListarRequerimientoPorSemana +`/?sucursal=${sucursal}&&semana=${semana}`, config);
+}
+
+// Para listar todas las órdenes de compra
 export async function listarRequerimientoActivo(sucursal) {
     const config = {
         headers: {
@@ -150,6 +174,149 @@ export async function cambiaStatusRequerimiento(id, data) {
     };
 
     return await axios.put(API_HOST + ENDPOINTActualizarEstadoRequerimiento + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaLunesT1(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarPlaneacionLunesT1 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaLunesT2(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarPlaneacionLunesT2 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaMartesT1(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarPlaneacionMartesT1 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaMartesT2(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarPlaneacionMartesT2 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaMiercolesT1(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarPlaneacionMiercolesT1 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaMiercolesT2(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarPlaneacionMiercolesT2 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaJuevesT1(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarPlaneacionJuevesT1 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaJuevesT2(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarPlaneacionJuevesT2 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaViernesT1(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarPlaneacionViernesT1 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaViernesT2(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarPlaneacionViernesT2 + `/${id}`, data, config);
+}
+
+// Actualiza estado de una orden de compra
+export async function habilitaSabadoT1(id, data) {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenApi()}`
+        }
+    };
+
+    return await axios.put(API_HOST + ENDPOINTHabilitarPlaneacionSabadoT1 + `/${id}`, data, config);
 }
 
 // Modifica datos de una orden de compra

@@ -100,6 +100,10 @@ function VistaPreviaPlaneacion(props) {
     // Para almacenar la informacion del formulario
     const [formDataVenta, setFormDataVenta] = useState(initialFormDataVenta());
 
+    const [listResultados, setListResultados] = useState([]);
+
+    const [listRegistros, setListRegistros] = useState([]);
+
     // Para almacenar la informacion del formulario
     const [formDataPlaneacion, setFormDataPlaneacion] = useState(initialFormDataPlaneacionInitial());
 
@@ -125,6 +129,8 @@ function VistaPreviaPlaneacion(props) {
             setCantidadPedir(data.datosRequisicion.cantidadPedir);
             setCantidadPedirMB(data.datosRequisicion.cantidadPedirMB);
             setCantidadPedirEmpaques(data.datosRequisicion.cantidadPedirEmpaques);
+            setListResultados(data.resultados);
+            setListRegistros(data.materiaPrima);
 
             // setFechaCreacion(fechaElaboracion)
         }).catch(e => {
@@ -154,7 +160,7 @@ function VistaPreviaPlaneacion(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento("/RequerimientosPlaneacion")
+        enrutamiento(`/RequerimientosPlaneacion/${informacionRequerimiento.semana}`)
     }
 
     // Para controlar la animacion
@@ -428,10 +434,8 @@ function VistaPreviaPlaneacion(props) {
             }
             // console.log(dataTemp)
             // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
-            obtenerRequerimiento(id).then(response => {
-                const { data: { _id, folio } } = response;
                 // Modificar el pedido creado recientemente
-                actualizaRequerimiento(_id, dataTemp).then(response => {
+                actualizaRequerimiento(id, dataTemp).then(response => {
                     const { data: { mensaje, datos } } = response;
 
                     LogsInformativos("Se a modificado la planeación " + datos.folio, dataTemp);
@@ -442,9 +446,6 @@ function VistaPreviaPlaneacion(props) {
                 }).catch(e => {
                     console.log(e)
                 })
-            }).catch(e => {
-                console.log(e)
-            })
         }
 
     }
@@ -588,6 +589,126 @@ function VistaPreviaPlaneacion(props) {
 
     const list = dataPrincipal();
 
+    const dataResultados = () => {
+        let newArray = [];
+        listResultados.map((detalle, index) => {
+            newArray.push([
+                {
+                    text: index + 1,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.fecha,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.acumulado,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.turno,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.piezasDefectuosas,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.operador,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.eficiencia,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.ciclo,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.cantidadFabricada,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.observaciones,
+                    fontSize: 9,
+                    bold: true,
+                },
+            ])
+        });
+        return newArray;
+    };
+
+    const list2 = dataResultados();
+
+    const dataRegistros = () => {
+        let newArray = [];
+        listRegistros.map((detalle, index) => {
+            newArray.push([
+                {
+                    text: index + 1,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.fecha,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.acumulado,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.material,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.pendienteSurtir,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.virgenMolido,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.surtio,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.recibio,
+                    fontSize: 9,
+                    bold: true,
+                },
+                {
+                    text: detalle.observaciones,
+                    fontSize: 9,
+                    colSpan: 2,
+                    bold: true,
+                },
+                {
+                },
+            ])
+        });
+        return newArray;
+    };
+
+    const list3 = dataRegistros();
+
     const descargaPDF = async () => {
 
         const docDefinition = {
@@ -700,13 +821,17 @@ function VistaPreviaPlaneacion(props) {
                             [
                                 {
                                     text: `Semana:  ${dayjs(informacionRequerimiento.semana).format("LL")}`,
-                                    colSpan: 4,
+                                    colSpan: 2,
                                     fontSize: 9,
                                     bold: true
                                 },
                                 {
                                 },
                                 {
+                                    text: `Cliente:  ${formDataPlaneacion.nombreCliente}`,
+                                    colSpan: 2,
+                                    fontSize: 9,
+                                    bold: true
                                 },
                                 {
                                 }
@@ -934,6 +1059,24 @@ function VistaPreviaPlaneacion(props) {
                                     bold: true
                                 }
                             ],
+                            [
+                                {
+                                    text: `Notas importantes:  ${informacionRequerimiento.notasImportantes}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                },
+                                {
+                                    text: `Elaboro:  ${informacionRequerimiento.elaboro}`,
+                                    colSpan: 2,
+                                    fontSize: 9,
+                                    bold: true
+                                },
+                                {
+                                }
+                            ],
                         ]
                     }
                 },
@@ -1048,6 +1191,297 @@ function VistaPreviaPlaneacion(props) {
                                     bold: true,
                                 }
                             ],
+                        ],
+                    },
+                    pageBreak: 'after',
+                },
+                {
+                    alignment: 'center',
+                    text: 'Listado de resultados agregados',
+                    style: 'tableExample',
+                    fontSize: 11,
+                    bold: true,
+                    margin: [0, 10],
+                },
+                {
+                    style: 'tableExample',
+                    table: {
+                        widths: ['10%', '10%', '10%', '10%', '10%', '10%', '10%', '10%', '10%', '10%'],
+                        heights: [10],
+                        body: [
+                            [
+                                {
+                                    text: '# ',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Fecha',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Acumulado',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Turno',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Piezas defectuosas',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Operador',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Eficiencia',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Ciclo',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Cantidad fabricada',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Observaciones',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                            ],
+                        ],
+                    }
+                },
+                {
+                    style: 'tableExample',
+                    table: {
+                        widths: ['10%', '10%', '10%', '10%', '10%', '10%', '10%', '10%', '10%', '10%'],
+                        heights: [10],
+                        body:
+                            list2,
+                    }
+                },
+                {
+                    alignment: 'center',
+                    text: 'Listado de registros de materia prima agregados',
+                    style: 'tableExample',
+                    fontSize: 11,
+                    bold: true,
+                    margin: [0, 10],
+                },
+                {
+                    style: 'tableExample',
+                    table: {
+                        widths: ['10%', '10%', '10%', '10%', '10%', '10%', '10%', '10%', '10%', '10%'],
+                        heights: [10],
+                        body: [
+                            [
+                                {
+                                    text: '# ',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Fecha',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Acumulado',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Material',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Pendiente de surtir',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Virgen/Molido',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Surtio',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Recibio',
+                                    fontSize: 9,
+                                    bold: true,
+                                },
+                                {
+                                    text: 'Observaciones',
+                                    fontSize: 9,
+                                    colSpan: 2,
+                                    bold: true,
+                                },
+                                {
+                                },
+                            ],
+                        ],
+                    }
+                },
+                {
+                    style: 'tableExample',
+                    table: {
+                        widths: ['10%', '10%', '10%', '10%', '10%', '10%', '10%', '10%', '10%', '10%'],
+                        heights: [10],
+                        body:
+                            list3,
+                    }
+                },
+                {
+                    alignment: 'center',
+                    text: 'Fechas del programa de producción',
+                    style: 'header',
+                    fontSize: 23,
+                    bold: true,
+                    margin: [0, 10],
+                },
+                {
+                    style: 'tableExample',
+                    table: {
+                        widths: ['25%', '25%', '25%', '25%'],
+                        heights: [10, 10, 10],
+                        headerRows: 1,
+                        body: [
+                            [
+                                {
+                                    text: `Fecha inicial:  ${dayjs(informacionRequerimiento.fechaInicio).format('LL')}`,
+                                    fontSize: 9,
+                                    colSpan: 4,
+                                    bold: true
+                                },
+                                {
+                                },
+                                {
+                                },
+                                {
+                                }
+                            ],
+                            [
+                                {
+                                    text: `Día 1-Turno 1:  ${informacionRequerimiento.estadoLT1 == "false" ? "No disponible" : dayjs(informacionRequerimiento.lunesT1).format('LL')}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                },
+                                {
+                                    text: `Día 1-Turno 2:  ${informacionRequerimiento.estadoLT2 == "false" ? "No disponible" : dayjs(informacionRequerimiento.lunesT2).format('LL')}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                }
+                            ],
+                            [
+                                {
+                                    text: `Día 2-Turno 1:  ${informacionRequerimiento.estadoMT1 == "false" ? "No disponible" : dayjs(informacionRequerimiento.martesT1).format('LL')}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                },
+                                {
+                                    text: `Día 2-Turno 2:  ${informacionRequerimiento.estadoMT2 == "false" ? "No disponible" : dayjs(informacionRequerimiento.martesT2).format('LL')}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                }
+                            ],
+                            [
+                                {
+                                    text: `Día 3-Turno 1:  ${informacionRequerimiento.estadoMIT1 == "false" ? "No disponible" : dayjs(informacionRequerimiento.miercolesT1).format('LL')}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                },
+                                {
+                                    text: `Día 3-Turno 2:  ${informacionRequerimiento.estadoMIT2 == "false" ? "No disponible" : dayjs(informacionRequerimiento.miercolesT2).format('LL')}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                }
+                            ],
+                            [
+                                {
+                                    text: `Día 4-Turno 1:  ${informacionRequerimiento.estadoJT1 == "false" ? "No disponible" : dayjs(informacionRequerimiento.juevesT1).format('LL')}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                },
+                                {
+                                    text: `Día 4-Turno 2:  ${informacionRequerimiento.estadoJT2 == "false" ? "No disponible" : dayjs(informacionRequerimiento.juevesT2).format('LL')}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                }
+                            ],
+                            [
+                                {
+                                    text: `Día 5-Turno 1:  ${informacionRequerimiento.estadoVT1 == "false" ? "No disponible" : dayjs(informacionRequerimiento.viernesT1).format('LL')}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                },
+                                {
+                                    text: `Día 5-Turno 2:  ${informacionRequerimiento.estadoVT2 == "false" ? "No disponible" : dayjs(informacionRequerimiento.viernesT2).format('LL')}`,
+                                    colSpan: 2,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                }
+                            ],
+                            [
+                                {
+                                    text: `Día 6-Turno 1:  ${informacionRequerimiento.estadoST1 == "false" ? "No disponible" : dayjs(informacionRequerimiento.sabadoT1).format('LL')}`,
+                                    colSpan: 4,
+                                    bold: true,
+                                    fontSize: 9
+                                },
+                                {
+                                },
+                                {
+                                },
+                                {
+                                }
+                            ],
                         ]
                     }
                 },
@@ -1139,10 +1573,23 @@ function VistaPreviaPlaneacion(props) {
 
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
+                                            Cliente
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Nombre cliente"
+                                            name="nombreCliente"
+                                            value={formDataPlaneacion.nombreCliente}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label align="center">
                                             Semana
                                         </Form.Label>
                                         <Form.Control
-                                            type="date"
+                                            type="text"
                                             placeholder="Semana"
                                             name="semana"
                                             defaultValue={informacionRequerimiento.semana}
@@ -1488,6 +1935,34 @@ function VistaPreviaPlaneacion(props) {
                                         />
                                     </Form.Group>
                                 </Row>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Notas importantes
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Notas importantes"
+                                            name="notasImportantes"
+                                            defaultValue={informacionRequerimiento.notasImportantes}
+                                            disabled
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Elaboro
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Elaboro"
+                                            name="elaboro"
+                                            defaultValue={informacionRequerimiento.elaboro}
+                                            disabled
+                                        />
+                                    </Form.Group>
+                                </Row>
                             </Container>
                         </div>
 
@@ -1714,6 +2189,190 @@ function VistaPreviaPlaneacion(props) {
                             </Container>
                         </div>
 
+                        <br />
+
+                        <div className="datosResultado">
+                            <Container fluid>
+                                <br />
+                                <div className="tituloSeccion">
+                                    <h4>
+                                        Resultados
+                                    </h4>
+                                </div>
+
+                                <hr />
+
+                                {/* Listado de productos  */}
+                                <div className="tablaProductos">
+
+                                    {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
+                                    {/* Inicia tabla informativa  */}
+                                    <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
+                                        <h4>Listado de resultados agregados</h4>
+                                    </Badge>
+                                    <br />
+                                    <hr />
+                                    <table className="responsive-tableRegistroVentas"
+                                    >
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ITEM</th>
+                                                <th scope="col">Fecha</th>
+                                                <th scope="col">Acumulado</th>
+                                                <th scope="col">Turno</th>
+                                                <th scope="col">Piezas defectuosas</th>
+                                                <th scope="col">Operador</th>
+                                                <th scope="col">Eficiencia</th>
+                                                <th scope="col">Ciclo</th>
+                                                <th scope="col">Cantidad fabricada</th>
+                                                <th scope="col">Observaciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                        </tfoot>
+                                        <tbody>
+                                            {map(listResultados, (resultado, index) => (
+                                                <tr key={index}>
+                                                    <th scope="row">
+                                                        {index + 1}
+                                                    </th>
+                                                    <td data-title="Material">
+                                                        {resultado.fecha}
+                                                    </td>
+                                                    <td data-title="Descripcion">
+                                                        {resultado.acumulado}
+                                                    </td>
+                                                    <td data-title="UM">
+                                                        {resultado.turno}
+                                                    </td>
+                                                    <td data-title="Descripción">
+                                                        {resultado.piezasDefectuosas}
+                                                    </td>
+                                                    <td data-title="Orden de compra">
+                                                        {resultado.operador}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {resultado.eficiencia}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {resultado.ciclo}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {resultado.cantidadFabricada}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {resultado.observaciones}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </Container>
+                        </div>
+
+                        <br />
+
+                        <div className="datosBOM">
+                            <Container fluid>
+                                <br />
+                                <div className="tituloSeccion">
+                                    <h4>
+                                        Materia prima
+                                    </h4>
+                                </div>
+
+                                <hr />
+
+                                {/* Listado de productos  */}
+                                <div className="tablaProductos">
+
+                                    {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
+                                    {/* Inicia tabla informativa  */}
+                                    <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
+                                        <h4>Listado de registros de materia prima agregados</h4>
+                                    </Badge>
+                                    <br />
+                                    <hr />
+                                    <table className="responsive-tableRegistroVentas"
+                                    >
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ITEM</th>
+                                                <th scope="col">Fecha</th>
+                                                <th scope="col">Acumulado</th>
+                                                <th scope="col">Material</th>
+                                                <th scope="col">Pendiente de surtir</th>
+                                                <th scope="col">Virgen/Molido</th>
+                                                <th scope="col">Surtio</th>
+                                                <th scope="col">Recibio</th>
+                                                <th scope="col">Observaciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                        </tfoot>
+                                        <tbody>
+                                            {map(listRegistros, (registro, index) => (
+                                                <tr key={index}>
+                                                    <th scope="row">
+                                                        {index + 1}
+                                                    </th>
+                                                    <td data-title="Material">
+                                                        {registro.fecha}
+                                                    </td>
+                                                    <td data-title="Descripcion">
+                                                        {registro.acumulado}
+                                                    </td>
+                                                    <td data-title="UM">
+                                                        {registro.material}
+                                                    </td>
+                                                    <td data-title="Descripción">
+                                                        {registro.pendienteSurtir}
+                                                    </td>
+                                                    <td data-title="Orden de compra">
+                                                        {registro.virgenMolido}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {registro.surtio}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {registro.recibio}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {registro.observaciones}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </Container>
+                        </div>
+
+                        <br />
+
+                        <div className="observaciones">
+                            <Container fluid>
+                                <br />
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Observaciones
+                                        </Form.Label>
+                                        <Form.Control
+                                            as="textarea"
+                                            placeholder="Observaciones"
+                                            name="observaciones"
+                                            defaultValue={informacionRequerimiento.observaciones}
+                                            disabled
+                                        />
+                                    </Form.Group>
+                                </Row>
+                            </Container>
+                        </div>
+
+                        <br />
+
                         <div className="botones">
                             <Form.Group as={Row} className="botones">
                                 <Row>
@@ -1793,6 +2452,8 @@ function initialFormDataSucursal(data) {
 
 function initialFormDataPlaneacion(data) {
     return {
+        cliente: data.cliente,
+        nombreCliente: data.nombreCliente,
         id: data._id,
         noInterno: data.noInterno,
         cliente: data.cliente,
@@ -1857,6 +2518,8 @@ function initialFormDataVenta() {
 
 function initialFormDataPlaneacionInitial() {
     return {
+        cliente: "",
+        nombreCliente: "",
         noInterno: "",
         cliente: "",
         noMolde: "",
@@ -1979,13 +2642,39 @@ function initialValues() {
         empaque: "",
         bolsasCajasUtilizar: "",
         cantidadPedir: "",
-        noMaquina: ""
+        noMaquina: "",
+        elaboro: "",
+        notasImportantes: "",
+        observaciones: "",
+        fechaInicio: "",
+        lunesT1: "",
+        estadoLT1: "",
+        lunesT2: "",
+        estadoLT2: "",
+        martesT1: "",
+        estadoMT1: "",
+        martesT2: "",
+        estadoMT2: "",
+        miercolesT1: "",
+        estadoMIT1: "",
+        miercolesT2: "",
+        estadoMIT2: "",
+        juevesT1: "",
+        estadoJT1: "",
+        juevesT2: "",
+        estadoJT2: "",
+        viernesT1: "",
+        estadoVT1: "",
+        viernesT2: "",
+        estadoVT2: "",
+        sabadoT1: "",
+        estadoST1: ""
     }
 }
 
 // Valores almacenados
 function valoresAlmacenados(data) {
-    const { folio, requerimiento, planeacion, bom, datosRequisicion } = data;
+    const { folio, requerimiento, planeacion, bom, datosRequisicion, observaciones, programa } = data;
 
     return {
         folio: folio,
@@ -2005,7 +2694,7 @@ function valoresAlmacenados(data) {
         ciclo1: planeacion.opcionesMaquinaria[0][1].ciclo1,
         pieza1: planeacion.opcionesMaquinaria[0][1].pieza1,
         bolsa1: planeacion.opcionesMaquinaria[0][1].bolsa1,
-        noMaquina: planeacion.opcionesMaquinaria[0][1].numeroMaquina1 + "-" + planeacion.opcionesMaquinaria[0][1].maquina1,
+        noMaquina: planeacion.opcionesMaquinaria[0][1].numeroMaquina1 + "/" + planeacion.opcionesMaquinaria[0][1].maquina1,
         bom: bom,
         material: bom.material,
         molido: bom.molido,
@@ -2021,6 +2710,32 @@ function valoresAlmacenados(data) {
         bolsasCajasUtilizar: bom.bolsasCajasUtilizar,
         datosRequisicion: datosRequisicion,
         cantidadPedir: datosRequisicion.cantidadPedir,
+        elaboro: bom.elaboro,
+        notasImportantes: bom.notas,
+        observaciones: observaciones,
+        fechaInicio: programa.fechaInicio,
+        lunesT1: programa.lunesT1,
+        estadoLT1: programa.estadoLT1,
+        lunesT2: programa.lunesT2,
+        estadoLT2: programa.estadoLT2,
+        martesT1: programa.martesT1,
+        estadoMT1: programa.estadoMT1,
+        martesT2: programa.martesT2,
+        estadoMT2: programa.estadoMT2,
+        miercolesT1: programa.miercolesT1,
+        estadoMIT1: programa.estadoMIT1,
+        miercolesT2: programa.miercolesT2,
+        estadoMIT2: programa.estadoMIT2,
+        juevesT1: programa.juevesT1,
+        estadoJT1: programa.estadoJT1,
+        juevesT2: programa.juevesT2,
+        estadoJT2: programa.estadoJT2,
+        viernesT1: programa.viernesT1,
+        estadoVT1: programa.estadoVT1,
+        viernesT2: programa.viernesT2,
+        estadoVT2: programa.estadoVT2,
+        sabadoT1: programa.sabadoT1,
+        estadoST1: programa.estadoST1,
     }
 }
 
@@ -2093,5 +2808,6 @@ function formatModelMaquinas(data) {
     });
     return dataTemp;
 }
+
 
 export default VistaPreviaPlaneacion;

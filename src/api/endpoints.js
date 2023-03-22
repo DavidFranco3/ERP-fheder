@@ -639,6 +639,7 @@ export const ENDPOINTTotalOVCompras = "/compras/totalOV";
 //Requerimientos y planeacion
 export const ENDPOINTRegistroRequerimiento = "/requerimientosPlaneacion/registro";
 export const ENDPOINTListarRequerimiento = "/requerimientosPlaneacion/listar";
+export const ENDPOINTListarRequerimientoPorSemana = "/requerimientosPlaneacion/listarPorSemana";
 export const ENDPOINTListarRequerimientoActivo = "/requerimientosPlaneacion/listarActivas";
 export const ENDPOINTListarPaginandoRequerimiento = "/requerimientosPlaneacion/listarPaginando";
 export const ENDPOINTObtenerRequerimiento = "/requerimientosPlaneacion/obtener";
@@ -649,6 +650,17 @@ export const ENDPOINTActualizarEstadoRequerimiento = "/requerimientosPlaneacion/
 export const ENDPOINTActualizarRequerimiento = "/requerimientosPlaneacion/actualizar";
 export const ENDPOINTObtenerDatosRequerimiento = "/requerimientosPlaneacion/obtenerDatosRequerimiento";
 export const ENDPOINTTotalRequerimiento = "/requerimientosPlaneacion/total";
+export const ENDPOINTHabilitarPlaneacionLunesT1 = "/requerimientosPlaneacion/actualizarEstadoLT1";
+export const ENDPOINTHabilitarPlaneacionLunesT2 = "/requerimientosPlaneacion/actualizarEstadoLT2";
+export const ENDPOINTHabilitarPlaneacionMartesT1 = "/requerimientosPlaneacion/actualizarEstadoMT1";
+export const ENDPOINTHabilitarPlaneacionMartesT2 = "/requerimientosPlaneacion/actualizarEstadoMT2";
+export const ENDPOINTHabilitarPlaneacionMiercolesT1 = "/requerimientosPlaneacion/actualizarEstadoMIT1";
+export const ENDPOINTHabilitarPlaneacionMiercolesT2 = "/requerimientosPlaneacion/actualizarEstadoMIT2";
+export const ENDPOINTHabilitarPlaneacionJuevesT1 = "/requerimientosPlaneacion/actualizarEstadoJT1";
+export const ENDPOINTHabilitarPlaneacionJuevesT2 = "/requerimientosPlaneacion/actualizarEstadoJT2";
+export const ENDPOINTHabilitarPlaneacionViernesT1 = "/requerimientosPlaneacion/actualizarEstadoVT1";
+export const ENDPOINTHabilitarPlaneacionViernesT2 = "/requerimientosPlaneacion/actualizarEstadoVT2";
+export const ENDPOINTHabilitarPlaneacionSabadoT1 = "/requerimientosPlaneacion/actualizarEstadoST1";
 
 //Programa de produccion
 export const ENDPOINTRegistroPrograma = "/programaProduccion/registro";

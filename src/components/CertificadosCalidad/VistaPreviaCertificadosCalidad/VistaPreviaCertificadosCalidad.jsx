@@ -7,8 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { obtenerCertificado, actualizaCertificado } from "../../../api/certificadosCalidad";
 import { toast } from "react-toastify";
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
-import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
-import BuscarProduccion from "../../../page/BuscarProduccion";
+import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema"
 import "./VistaPreviaCertificadosCalidad.scss";
 import LogoPDF from "../../../assets/png/pdf.png";
 import Regreso from "../../../assets/png/back.png";

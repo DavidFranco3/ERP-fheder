@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { getSucursal } from "../../../api/auth";
 import { LogsInformativos } from "../../Logs/LogsSistema/LogsSistema";
 import queryString from "query-string";
-import BuscarProduccion from '../../../page/BuscarProduccion';
+import BuscarPlaneacion from '../../../page/BuscarPlaneacion';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
@@ -24,7 +24,7 @@ function RegistroIdentificacionPT(props) {
 
     // Para la eliminacion fisica de usuarios
     const buscarOP = (content) => {
-        setTitulosModal("Buscar Orden de producción");
+        setTitulosModal("Buscar planeación");
         setContentModal(content);
         setShowModal2(true);
     }
@@ -186,7 +186,7 @@ function RegistroIdentificacionPT(props) {
                                             icon={faSearch}
                                             onClick={() => {
                                                 buscarOP(
-                                                    <BuscarProduccion
+                                                    <BuscarPlaneacion
                                                         formData={formDataProduccion}
                                                         setFormData={setFormDataProduccion}
                                                         setShowModal={setShowModal2}

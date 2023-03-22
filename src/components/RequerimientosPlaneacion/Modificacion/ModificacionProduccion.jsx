@@ -18,6 +18,8 @@ import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta"
 import { getTokenApi, isExpiredToken, logoutApi, getSucursal } from "../../../api/auth";
 import { LogsInformativos, LogsInformativosLogout } from '../../Logs/LogsSistema/LogsSistema';
 import { obtenerDatosArticulo } from '../../../api/almacenes';
+import AgregarResultado from "../AgregarResultado";
+import AgregarRegistro from "../AgregarRegistro";
 
 function ModificacionProduccion(props) {
     const { setRefreshCheckLogin } = props;
@@ -87,6 +89,28 @@ function ModificacionProduccion(props) {
     // Para almacenar la informacion del formulario
     const [formDataPlaneacion, setFormDataPlaneacion] = useState(initialFormDataPlaneacionInitial());
 
+    const [listResultados, setListResultados] = useState([]);
+
+    const [listRegistros, setListRegistros] = useState([]);
+
+    const [registroAnterior, setRegistroAnterior] = useState(0);
+
+    const [registroAnteriorMaterial, setRegistroAnteriorMaterial] = useState(0);
+
+    // Para la eliminacion fisica de usuarios
+    const agregarResultado = (content) => {
+        setTitulosModal("Agregar resultado");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
+    // Para la eliminacion fisica de usuarios
+    const agregarRegistro = (content) => {
+        setTitulosModal("Agregar registro");
+        setContentModal(content);
+        setShowModal(true);
+    }
+
     const params = useParams();
     const { id } = params
 
@@ -109,6 +133,11 @@ function ModificacionProduccion(props) {
             setCantidadPedir(data.datosRequisicion.cantidadPedir);
             setCantidadPedirMB(data.datosRequisicion.cantidadPedirMB);
             setCantidadPedirEmpaques(data.datosRequisicion.cantidadPedirEmpaques);
+
+            setRegistroAnterior(data.acumulado);
+            setRegistroAnteriorMaterial(data.acumuladoMaterial);
+            setListResultados(data.resultados);
+            setListRegistros(data.materiaPrima);
 
             // setFechaCreacion(fechaElaboracion)
         }).catch(e => {
@@ -137,7 +166,7 @@ function ModificacionProduccion(props) {
 
     // Define la ruta de registro
     const rutaRegreso = () => {
-        enrutamiento("/RequerimientosPlaneacion")
+        enrutamiento(`/RequerimientosPlaneacion/${informacionRequerimiento.semana}`)
     }
 
     // Para controlar la animacion
@@ -159,34 +188,34 @@ function ModificacionProduccion(props) {
     const [almacenProducto, setAlmacenProducto] = useState(0);
 
     const cargarDatosArticulos = () => {
-// Para buscar el producto en la matriz de productos
-try {
-    obtenerDatosArticulo(formDataPlaneacion.id).then(response => {
-        const { data } = response;
+        // Para buscar el producto en la matriz de productos
+        try {
+            obtenerDatosArticulo(formDataPlaneacion.id).then(response => {
+                const { data } = response;
 
-        map(data, (articulos, index) => {
+                map(data, (articulos, index) => {
 
-            const { estado, cantidadExistencia, tipo } = articulos
+                    const { estado, cantidadExistencia, tipo } = articulos
 
-            if (estado == "true") {
-                console.log("entro al primer if")
-                if (tipo == "Entrada") {
-                    console.log("entro al segundo if")
-                    cantidadTotalEntrada += parseFloat(cantidadExistencia);
-                    console.log(cantidadTotalEntrada)
-                } else if (tipo == "Salida") {
-                    console.log("el estado del producto es false")
-                    cantidadTotalSalida += parseFloat(cantidadExistencia);
-                }
-            }
-            setAlmacenProducto(cantidadTotalEntrada - cantidadTotalSalida)
-        })
-    }).catch(e => {
-        console.log(e)
-    })
-} catch (e) {
-    console.log(e)
-}
+                    if (estado == "true") {
+                        console.log("entro al primer if")
+                        if (tipo == "Entrada") {
+                            console.log("entro al segundo if")
+                            cantidadTotalEntrada += parseFloat(cantidadExistencia);
+                            console.log(cantidadTotalEntrada)
+                        } else if (tipo == "Salida") {
+                            console.log("el estado del producto es false")
+                            cantidadTotalSalida += parseFloat(cantidadExistencia);
+                        }
+                    }
+                    setAlmacenProducto(cantidadTotalEntrada - cantidadTotalSalida)
+                })
+            }).catch(e => {
+                console.log(e)
+            })
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     useEffect(() => {
@@ -326,7 +355,19 @@ try {
         })
     }
 
-    console.log(informacionRequerimiento.producto)
+    // Para eliminar productos del listado
+    const removeItemResultado = (resultado) => {
+        let newArray = listResultados;
+        newArray.splice(newArray.findIndex(a => a.acumulado === resultado.acumulado), 1);
+        setListResultados([...newArray]);
+    }
+
+    // Para eliminar productos del listado
+    const removeItemRegistro = (registro) => {
+        let newArray = listRegistros;
+        newArray.splice(newArray.findIndex(a => a.acumulado === registro.acumulado), 1);
+        setListRegistros([...newArray]);
+    }
 
     const onSubmit = e => {
         e.preventDefault();
@@ -341,16 +382,22 @@ try {
             const temp2 = informacionRequerimiento.noMaquina.split("/");
 
             const dataTemp = {
+                acumulado: registroAnterior,
+                acumuladoMaterial: registroAnteriorMaterial,
                 requerimiento: {
                     semana: informacionRequerimiento.semana,
                     producto: temp[0],
                     nombreProducto: temp[1],
+                    numeroInterno: listOVCargadas[0].numeroInterno,
                     um: formDataPlaneacion.um,
-                    ov: ordenVentaPrincipal,
+                    ov: listOVCargadas[0].ordenVenta,
                     almacenProductoTerminado: almacenProducto,
                     ordenVenta: listOVCargadas,
                     nombreProveedor: temp[2],
                     totalProducir: totalProducir,
+                    cliente: formDataPlaneacion.cliente,
+                    nombreCliente: formDataPlaneacion.nombreCliente,
+
                 },
                 planeacion: {
                     numeroMolde: formDataPlaneacion.noMolde,
@@ -389,7 +436,9 @@ try {
                     precioEmpaque: formDataPlaneacion.precioEmpaque,
                     umEmpaque: formDataPlaneacion.umEmpaque,
                     empaque: formDataPlaneacion.descripcionBolsa,
-                    bolsasCajasUtilizar: bolsasCajasUtilizar
+                    bolsasCajasUtilizar: bolsasCajasUtilizar,
+                    notas: informacionRequerimiento.notasImportantes,
+                    elaboro: informacionRequerimiento.elaboro,
                 },
                 datosRequisicion: {
                     material: formDataPlaneacion.descripcionMP,
@@ -410,7 +459,9 @@ try {
                     cantidadSugeridaEmpaques: Number(bolsasCajasUtilizar) - Number(cantidadEmpaquesAlmacen),
                     cantidadPedirEmpaques: cantidadPedirEmpaques
                 },
-                estado: "true"
+                resultados: listResultados,
+                materiaPrima: listRegistros,
+                observaciones: informacionRequerimiento.observaciones,
             }
             // console.log(dataTemp)
             // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
@@ -437,6 +488,7 @@ try {
 
     const addItemsOV = () => {
         const ordenVenta = document.getElementById("ordenVenta").value
+        const numeroInterno = formDataVenta.numeroInterno
         const cantidadPedidaOV = document.getElementById("cantidadPedidaOV").value
         const cantidadProducirOV = document.getElementById("cantidadProducirOV").value
 
@@ -447,6 +499,7 @@ try {
                 ordenVenta: ordenVenta,
                 cantidadPedidaOV: cantidadPedidaOV,
                 cantidadProducirOV: cantidadProducirOV,
+                numeroInterno: numeroInterno
             }
             // console.log(dataTemp)
 
@@ -732,13 +785,26 @@ try {
 
                                     <Form.Group as={Col} controlId="formHorizontalNoInterno">
                                         <Form.Label align="center">
+                                            Cliente
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Nombre cliente"
+                                            name="nombreCliente"
+                                            value={formDataPlaneacion.nombreCliente}
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalNoInterno">
+                                        <Form.Label align="center">
                                             Semana
                                         </Form.Label>
                                         <Form.Control
-                                            type="date"
+                                            type="text"
                                             placeholder="Semana"
                                             name="semana"
                                             defaultValue={informacionRequerimiento.semana}
+                                            disabled
                                         />
                                     </Form.Group>
                                 </Row>
@@ -1074,6 +1140,32 @@ try {
                                         />
                                     </Form.Group>
                                 </Row>
+
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Notas importantes
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Notas importantes"
+                                            name="notasImportantes"
+                                            defaultValue={informacionRequerimiento.notasImportantes}
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Elaboro
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Elaboro"
+                                            name="elaboro"
+                                            defaultValue={informacionRequerimiento.elaboro}
+                                        />
+                                    </Form.Group>
+                                </Row>
                             </Container>
                         </div>
 
@@ -1299,6 +1391,254 @@ try {
 
                         <br />
 
+                        <div className="datosResultado">
+                            <Container fluid>
+                                <br />
+                                <div className="tituloSeccion">
+                                    <h4>
+                                        Resultados
+                                    </h4>
+                                </div>
+                                <Row className="mb-3">
+                                    <Col align="right">
+                                        <Button
+                                            variant="success"
+                                            title="Agregar un resultado"
+                                            className="agregar"
+                                            onClick={() => {
+                                                agregarResultado(
+                                                    <AgregarResultado
+                                                        setListResultados={setListResultados}
+                                                        listResultados={listResultados}
+                                                        registroAnterior={registroAnterior}
+                                                        setRegistroAnterior={setRegistroAnterior}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        >
+                                            Agregar resultado
+                                        </Button>
+                                    </Col>
+                                </Row>
+
+                                <hr />
+
+                                {/* Listado de productos  */}
+                                <div className="tablaProductos">
+
+                                    {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
+                                    {/* Inicia tabla informativa  */}
+                                    <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
+                                        <h4>Listado de resultados agregados</h4>
+                                    </Badge>
+                                    <br />
+                                    <hr />
+                                    <table className="responsive-tableRegistroVentas"
+                                    >
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ITEM</th>
+                                                <th scope="col">Fecha</th>
+                                                <th scope="col">Acumulado</th>
+                                                <th scope="col">Turno</th>
+                                                <th scope="col">Piezas defectuosas</th>
+                                                <th scope="col">Operador</th>
+                                                <th scope="col">Eficiencia</th>
+                                                <th scope="col">Ciclo</th>
+                                                <th scope="col">Cantidad fabricada</th>
+                                                <th scope="col">Observaciones</th>
+                                                <th scope="col">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                        </tfoot>
+                                        <tbody>
+                                            {map(listResultados, (resultado, index) => (
+                                                <tr key={index}>
+                                                    <th scope="row">
+                                                        {index + 1}
+                                                    </th>
+                                                    <td data-title="Material">
+                                                        {resultado.fecha}
+                                                    </td>
+                                                    <td data-title="Descripcion">
+                                                        {resultado.acumulado}
+                                                    </td>
+                                                    <td data-title="UM">
+                                                        {resultado.turno}
+                                                    </td>
+                                                    <td data-title="Descripción">
+                                                        {resultado.piezasDefectuosas}
+                                                    </td>
+                                                    <td data-title="Orden de compra">
+                                                        {resultado.operador}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {resultado.eficiencia}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {resultado.ciclo}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {resultado.cantidadFabricada}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {resultado.observaciones}
+                                                    </td>
+                                                    <td data-title="Eliminar">
+                                                        <div
+                                                            className="eliminarProductoListado"
+                                                            title="Eliminar el resultado"
+                                                            onClick={() => {
+                                                                removeItemResultado(resultado)
+                                                            }}
+                                                        >
+                                                            ❌
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </Container>
+                        </div>
+
+                        <br />
+
+                        <div className="datosBOM">
+                            <Container fluid>
+                                <br />
+                                <div className="tituloSeccion">
+                                    <h4>
+                                        Materia prima
+                                    </h4>
+                                </div>
+                                <Row className="mb-3">
+                                    <Col align="right">
+                                        <Button
+                                            variant="success"
+                                            title="Agregar un registro"
+                                            className="agregar"
+                                            onClick={() => {
+                                                agregarRegistro(
+                                                    <AgregarRegistro
+                                                        listRegistros={listRegistros}
+                                                        setListRegistros={setListRegistros}
+                                                        registroAnterior={registroAnteriorMaterial}
+                                                        setRegistroAnterior={setRegistroAnteriorMaterial}
+                                                        kgMaterial={kgMaterial}
+                                                        setShowModal={setShowModal}
+                                                    />)
+                                            }}
+                                        >
+                                            Agregar registro
+                                        </Button>
+                                    </Col>
+                                </Row>
+
+                                <hr />
+
+                                {/* Listado de productos  */}
+                                <div className="tablaProductos">
+
+                                    {/* ID, item, cantidad, um, descripcion, orden de compra, observaciones */}
+                                    {/* Inicia tabla informativa  */}
+                                    <Badge bg="secondary" className="tituloListadoProductosSeleccionados">
+                                        <h4>Listado de registros de materia prima agregados</h4>
+                                    </Badge>
+                                    <br />
+                                    <hr />
+                                    <table className="responsive-tableRegistroVentas"
+                                    >
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ITEM</th>
+                                                <th scope="col">Fecha</th>
+                                                <th scope="col">Acumulado</th>
+                                                <th scope="col">Material</th>
+                                                <th scope="col">Pendiente de surtir</th>
+                                                <th scope="col">Virgen/Molido</th>
+                                                <th scope="col">Surtio</th>
+                                                <th scope="col">Recibio</th>
+                                                <th scope="col">Observaciones</th>
+                                                <th scope="col">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                        </tfoot>
+                                        <tbody>
+                                            {map(listRegistros, (registro, index) => (
+                                                <tr key={index}>
+                                                    <th scope="row">
+                                                        {index + 1}
+                                                    </th>
+                                                    <td data-title="Material">
+                                                        {registro.fecha}
+                                                    </td>
+                                                    <td data-title="Descripcion">
+                                                        {registro.acumulado}
+                                                    </td>
+                                                    <td data-title="UM">
+                                                        {registro.material}
+                                                    </td>
+                                                    <td data-title="Descripción">
+                                                        {registro.pendienteSurtir}
+                                                    </td>
+                                                    <td data-title="Orden de compra">
+                                                        {registro.virgenMolido}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {registro.surtio}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {registro.recibio}
+                                                    </td>
+                                                    <td data-title="Observaciones">
+                                                        {registro.observaciones}
+                                                    </td>
+                                                    <td data-title="Eliminar">
+                                                        <div
+                                                            className="eliminarProductoListado"
+                                                            title="Eliminar el registro"
+                                                            onClick={() => {
+                                                                removeItemRegistro(registro)
+                                                            }}
+                                                        >
+                                                            ❌
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </Container>
+                        </div>
+
+                        <br />
+
+                        <div className="observaciones">
+                            <Container fluid>
+                                <br />
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} controlId="formHorizontalProducto">
+                                        <Form.Label align="center">
+                                            Observaciones
+                                        </Form.Label>
+                                        <Form.Control
+                                            as="textarea"
+                                            placeholder="Observaciones"
+                                            name="observaciones"
+                                            defaultValue={informacionRequerimiento.observaciones}
+                                        />
+                                    </Form.Group>
+                                </Row>
+                            </Container>
+                        </div>
+
+                        <br />
+
                         <Form.Group as={Row} className="botones">
                             <Col>
                                 <Button
@@ -1340,6 +1680,8 @@ try {
 
 function initialFormDataPlaneacion(data) {
     return {
+        cliente: data.cliente,
+        nombreCliente: data.nombreCliente,
         id: data._id,
         noInterno: data.noInterno,
         cliente: data.cliente,
@@ -1387,7 +1729,8 @@ function initialFormDataPlaneacion(data) {
         opcion5: data.opcionMaquinaria[0][5].opcion5,
         tiempoCiclo5: data.opcionMaquinaria[0][5].tiempoCiclo5,
         opcion6: data.opcionMaquinaria[0][6].opcion6,
-        tiempoCiclo6: data.opcionMaquinaria[0][6].tiempoCiclo6
+        tiempoCiclo6: data.opcionMaquinaria[0][6].tiempoCiclo6,
+        numeroInterno: data.numeroInterno,
     }
 }
 
@@ -1404,6 +1747,8 @@ function initialFormDataVenta() {
 
 function initialFormDataPlaneacionInitial() {
     return {
+        cliente: "",
+        nombreCliente: "",
         noInterno: "",
         cliente: "",
         noMolde: "",
@@ -1449,7 +1794,8 @@ function initialFormDataPlaneacionInitial() {
         opcion5: "",
         tiempoCiclo5: "",
         opcion6: "",
-        tiempoCiclo6: ""
+        tiempoCiclo6: "",
+        numeroInterno: ""
     }
 }
 
@@ -1526,16 +1872,21 @@ function initialValues() {
         empaque: "",
         bolsasCajasUtilizar: "",
         cantidadPedir: "",
-        noMaquina: ""
+        noMaquina: "",
+        elaboro: "",
+        notasImportantes: "",
+        observaciones: "",
+        numeroInterno: "",
     }
 }
 
 // Valores almacenados
 function valoresAlmacenados(data) {
-    const { folio, requerimiento, planeacion, bom, datosRequisicion } = data;
+    const { folio, requerimiento, planeacion, bom, datosRequisicion, observaciones } = data;
 
     return {
         folio: folio,
+        numeroInterno: requerimiento.numeroInterno,
         requerimiento: requerimiento,
         semana: requerimiento.semana,
         producto: requerimiento.producto + "/" + requerimiento.nombreProducto + "/" + requerimiento.nombreProveedor,
@@ -1568,6 +1919,9 @@ function valoresAlmacenados(data) {
         bolsasCajasUtilizar: bom.bolsasCajasUtilizar,
         datosRequisicion: datosRequisicion,
         cantidadPedir: datosRequisicion.cantidadPedir,
+        elaboro: bom.elaboro,
+        notasImportantes: bom.notas,
+        observaciones: observaciones
     }
 }
 
