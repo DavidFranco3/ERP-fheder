@@ -198,14 +198,14 @@ function ListProgramaProduccionMaquinas(props) {
     const columns = [
         {
             name: '# MAQ',
-            selector: row => row.planeacion.opcionesMaquinaria[0][1].numeroMaquina1,
+            selector: row => row.planeacion.opcionesMaquinaria.numeroMaquina,
             sortable: false,
             center: true,
             reorder: false
         },
         {
             name: 'MAQ',
-            selector: row => row.planeacion.opcionesMaquinaria[0][1].maquina1,
+            selector: row => row.planeacion.opcionesMaquinaria.maquina,
             sortable: false,
             center: true,
             reorder: false
@@ -1222,7 +1222,7 @@ function ListProgramaProduccionMaquinas(props) {
         cargarDatos();
     }, []);
 
-    listProgramaProduccion.sort((x, y) => parseInt(x.ordenProduccion.noMaquina) - parseInt(y.ordenProduccion.noMaquina));
+    listProgramaProduccion.sort((x, y) => parseInt(x.planeacion.opcionesMaquinaria.maquina) - parseInt(y.planeacion.opcionesMaquinaria.maquina));
 
     const paginationComponentOptions = {
         rowsPerPageText: 'Filas por página',

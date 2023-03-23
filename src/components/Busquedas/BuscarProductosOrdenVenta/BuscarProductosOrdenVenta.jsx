@@ -13,6 +13,24 @@ import { faArrowDownLong, faCircleCheck } from "@fortawesome/free-solid-svg-icon
 function BuscarProductosOrdenVenta(props) {
     const { setFormData, setShowModal, listProductos } = props;
 
+    const listProdctosOVSinDuplicados = listProductos.reduce((acumulador, valorActual) => {
+        const elementoYaExiste = acumulador.find(elemento => elemento.ID == valorActual.ID && elemento.ordenVenta == valorActual.ordenVenta);
+        if (elementoYaExiste) {
+          return acumulador.map((elemento) => {
+            if (elemento.ID == valorActual.ID && elemento.ordenVenta == valorActual.ordenVenta) {
+              return {
+                ...elemento,
+                cantidad: parseFloat(elemento.cantidad) + parseFloat(valorActual.cantidad)
+              }
+            }
+      
+            return elemento;
+          });
+        }
+      
+        return [...acumulador, valorActual];
+      }, []);
+
     dayjs.locale('es') // use Spanish locale globally
     dayjs.extend(localizedFormat)
 
@@ -129,7 +147,7 @@ function BuscarProductosOrdenVenta(props) {
         justify-content: center;
     `;
 
-    const filteredItems = listProductos.filter(
+    const filteredItems = listProdctosOVSinDuplicados.filter(
         item => item.item && item.item.toLowerCase().includes(filterText.toLowerCase())
     );
 

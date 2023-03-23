@@ -21,6 +21,7 @@ import { obtenerDatosArticulo } from '../../../api/almacenes';
 import AgregarResultado from "../AgregarResultado";
 import AgregarRegistro from "../AgregarRegistro";
 import { obtenerDatosSemana } from "../../../api/semana";
+import { LogPedidoActualizacion } from "../../Ventas/Gestion/GestionPedidoVenta"
 
 function RegistraRequerimientosPlaneacion(props) {
     const { setRefreshCheckLogin } = props;
@@ -408,138 +409,138 @@ function RegistraRequerimientosPlaneacion(props) {
         if (!formData.noMaquina) {
             toast.warning("Selecciona una maquina")
         } else {
-        // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
-        obtenerNumeroRequerimiento().then(response => {
+
+            const temp = formData.noMaquina.split("/")
             setLoading(true)
-            const { data } = response;
-            const dataTemp = {
-                item: item,
-                folio: data.noRequerimiento,
-                sucursal: getSucursal(),
-                semana: semana,
-                acumulado: registroAnterior,
-                acumuladoMaterial: registroAnteriorMaterial,
-                requerimiento: {
+            // Obtener el id del pedido de venta para registrar los demas datos del pedido y el tracking
+            obtenerNumeroRequerimiento().then(response => {
+                const { data } = response;
+                const dataTemp = {
+                    item: item,
+                    folio: data.noRequerimiento,
+                    sucursal: getSucursal(),
                     semana: semana,
-                    producto: formDataPlaneacion.id,
-                    nombreProducto: formDataPlaneacion.descripcion,
-                    numeroInterno: listOVCargadas[0].numeroInterno,
-                    um: formDataPlaneacion.um,
-                    ov: listOVCargadas[0].ordenVenta,
-                    almacenProductoTerminado: almacenProducto,
-                    ordenVenta: listOVCargadas,
-                    nombreProveedor: formDataPlaneacion.nombreProveedor,
-                    totalProducir: totalProducir,
-                    cliente: formDataPlaneacion.cliente,
-                    nombreCliente: formDataPlaneacion.nombreCliente,
-                },
-                planeacion: {
-                    numeroMolde: formDataPlaneacion.noMolde,
-                    numeroCavidades: formDataPlaneacion.cavMolde,
-                    opcionesMaquinaria: {
-                        1: {
-                            numeroMaquina1: temp[0],
-                            maquina1: temp[1],
-                            ciclo1: formDataPlaneacion.tiempoCiclo1,
-                            pieza1: piezasTurno1,
-                            bolsa1: formDataPlaneacion.noPiezasxEmpaque,
-                        }
+                    acumulado: registroAnterior,
+                    acumuladoMaterial: registroAnteriorMaterial,
+                    requerimiento: {
+                        semana: semana,
+                        producto: formDataPlaneacion.id,
+                        nombreProducto: formDataPlaneacion.descripcion,
+                        numeroInterno: listOVCargadas[0].numeroInterno,
+                        um: formDataPlaneacion.um,
+                        ov: listOVCargadas[0].ordenVenta,
+                        almacenProductoTerminado: almacenProducto,
+                        ordenVenta: listOVCargadas,
+                        nombreProveedor: formDataPlaneacion.nombreProveedor,
+                        totalProducir: totalProducir,
+                        cliente: formDataPlaneacion.cliente,
+                        nombreCliente: formDataPlaneacion.nombreCliente,
                     },
-                },
-                bom: {
-                    material: formDataPlaneacion.descripcionMP,
-                    idMaterial: formDataPlaneacion.idMaterial,
-                    folioMaterial: formDataPlaneacion.folioMaterial,
-                    precioMaterial: formDataPlaneacion.precioMaterial,
-                    umMaterial: formDataPlaneacion.umMaterial,
-                    molido: formDataPlaneacion.porcentajeMolido,
-                    pesoPieza: formDataPlaneacion.pesoPiezas,
-                    pesoColada: formDataPlaneacion.pesoColada,
-                    kgMaterial: kgMaterial,
-                    idPigmento: formDataPlaneacion.idPigmento,
-                    folioPigmento: formDataPlaneacion.folioPigmento,
-                    precioPigmento: formDataPlaneacion.precioPigmento,
-                    umPigmento: formDataPlaneacion.umPigmento,
-                    pigmento: formDataPlaneacion.descripcionPigmento,
-                    aplicacion: formDataPlaneacion.aplicacionGxKG,
-                    pigMb: pigMB,
-                    materialxTurno: materialTurno,
-                    merma: formDataPlaneacion.porcentajeScrap,
-                    idEmpaque: formDataPlaneacion.idEmpaque,
-                    folioEmpaque: formDataPlaneacion.folioEmpaque,
-                    precioEmpaque: formDataPlaneacion.precioEmpaque,
-                    umEmpaque: formDataPlaneacion.umEmpaque,
-                    empaque: formDataPlaneacion.descripcionBolsa,
-                    bolsasCajasUtilizar: bolsasCajasUtilizar,
-                    notas: formData.notasImportantes,
-                    elaboro: formData.elaboro,
-                },
-                datosRequisicion: {
-                    material: formDataPlaneacion.descripcionMP,
-                    kgMaterial: kgMaterial,
-                    almacenMP: cantidadProductoAlmacen,
-                    cantidadSugerida: Number(kgMaterial) - Number(cantidadProductoAlmacen),
-                    cantidadPedir: cantidadPedir,
+                    planeacion: {
+                        numeroMolde: formDataPlaneacion.noMolde,
+                        numeroCavidades: formDataPlaneacion.cavMolde,
+                        opcionesMaquinaria: {
+                            numeroMaquina: temp[0],
+                            maquina: temp[1],
+                            ciclo: formDataPlaneacion.tiempoCiclo1,
+                            pieza: piezasTurno1,
+                            bolsa: formDataPlaneacion.noPiezasxEmpaque,
+                        },
+                    },
+                    bom: {
+                        material: formDataPlaneacion.descripcionMP,
+                        idMaterial: formDataPlaneacion.idMaterial,
+                        folioMaterial: formDataPlaneacion.folioMaterial,
+                        precioMaterial: formDataPlaneacion.precioMaterial,
+                        umMaterial: formDataPlaneacion.umMaterial,
+                        molido: formDataPlaneacion.porcentajeMolido,
+                        pesoPieza: formDataPlaneacion.pesoPiezas,
+                        pesoColada: formDataPlaneacion.pesoColada,
+                        kgMaterial: kgMaterial,
+                        idPigmento: formDataPlaneacion.idPigmento,
+                        folioPigmento: formDataPlaneacion.folioPigmento,
+                        precioPigmento: formDataPlaneacion.precioPigmento,
+                        umPigmento: formDataPlaneacion.umPigmento,
+                        pigmento: formDataPlaneacion.descripcionPigmento,
+                        aplicacion: formDataPlaneacion.aplicacionGxKG,
+                        pigMb: pigMB,
+                        materialxTurno: materialTurno,
+                        merma: formDataPlaneacion.porcentajeScrap,
+                        idEmpaque: formDataPlaneacion.idEmpaque,
+                        folioEmpaque: formDataPlaneacion.folioEmpaque,
+                        precioEmpaque: formDataPlaneacion.precioEmpaque,
+                        umEmpaque: formDataPlaneacion.umEmpaque,
+                        empaque: formDataPlaneacion.descripcionBolsa,
+                        bolsasCajasUtilizar: bolsasCajasUtilizar,
+                        notas: formData.notasImportantes,
+                        elaboro: formData.elaboro,
+                    },
+                    datosRequisicion: {
+                        material: formDataPlaneacion.descripcionMP,
+                        kgMaterial: kgMaterial,
+                        almacenMP: cantidadProductoAlmacen,
+                        cantidadSugerida: Number(kgMaterial) - Number(cantidadProductoAlmacen),
+                        cantidadPedir: cantidadPedir,
 
-                    pigmentoMB: formDataPlaneacion.descripcionPigmento,
-                    kgPigMB: pigMB,
-                    MbAlmacen: cantidadMBAlmacen,
-                    cantidadSugeridaMB: Number(pigMB) - Number(cantidadMBAlmacen),
-                    cantidadPedirMB: cantidadPedirMB,
+                        pigmentoMB: formDataPlaneacion.descripcionPigmento,
+                        kgPigMB: pigMB,
+                        MbAlmacen: cantidadMBAlmacen,
+                        cantidadSugeridaMB: Number(pigMB) - Number(cantidadMBAlmacen),
+                        cantidadPedirMB: cantidadPedirMB,
 
-                    empaque: formDataPlaneacion.descripcionBolsa,
-                    empaquesNecesarios: bolsasCajasUtilizar,
-                    empaquesAlmacen: cantidadEmpaquesAlmacen,
-                    cantidadSugeridaEmpaques: Number(bolsasCajasUtilizar) - Number(cantidadEmpaquesAlmacen),
-                    cantidadPedirEmpaques: cantidadPedirEmpaques
-                },
-                programa: {
-                    fechaInicio: fechaInicial,
-                    lunesT1: lunesT1,
-                    estadoLT1: "false",
-                    lunesT2: lunesT2,
-                    estadoLT2: "false",
-                    martesT1: martesT1,
-                    estadoMT1: "false",
-                    martesT2: martesT2,
-                    estadoMT2: "false",
-                    miercolesT1: miercolesT1,
-                    estadoMIT1: "false",
-                    miercolesT2: miercolesT2,
-                    estadoMIT2: "false",
-                    juevesT1: juevesT1,
-                    estadoJT1: "false",
-                    juevesT2: juevesT2,
-                    estadoJT2: "false",
-                    viernesT1: viernesT1,
-                    estadoVT1: "false",
-                    viernesT2: viernesT2,
-                    estadoVT2: "false",
-                    sabadoT1: sabadoT1,
-                    estadoST1: "false",
-                },
-                resultados: listResultados,
-                materiaPrima: listRegistros,
-                observaciones: formData.observaciones,
-                estado: "true"
-            }
-            // console.log(dataTemp)
-            // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
-            LogsInformativos("Se ha registrado una nueva planeación con folio " + dataTemp.folio, dataTemp)
-            // Modificar el pedido creado recientemente
-            registraRequerimiento(dataTemp).then(response => {
-                const { data: { mensaje, datos } } = response;
-                // console.log(response)
-                toast.success(mensaje)
-                setLoading(false)
-                rutaRegreso()
+                        empaque: formDataPlaneacion.descripcionBolsa,
+                        empaquesNecesarios: bolsasCajasUtilizar,
+                        empaquesAlmacen: cantidadEmpaquesAlmacen,
+                        cantidadSugeridaEmpaques: Number(bolsasCajasUtilizar) - Number(cantidadEmpaquesAlmacen),
+                        cantidadPedirEmpaques: cantidadPedirEmpaques
+                    },
+                    programa: {
+                        fechaInicio: fechaInicial,
+                        lunesT1: lunesT1,
+                        estadoLT1: "false",
+                        lunesT2: lunesT2,
+                        estadoLT2: "false",
+                        martesT1: martesT1,
+                        estadoMT1: "false",
+                        martesT2: martesT2,
+                        estadoMT2: "false",
+                        miercolesT1: miercolesT1,
+                        estadoMIT1: "false",
+                        miercolesT2: miercolesT2,
+                        estadoMIT2: "false",
+                        juevesT1: juevesT1,
+                        estadoJT1: "false",
+                        juevesT2: juevesT2,
+                        estadoJT2: "false",
+                        viernesT1: viernesT1,
+                        estadoVT1: "false",
+                        viernesT2: viernesT2,
+                        estadoVT2: "false",
+                        sabadoT1: sabadoT1,
+                        estadoST1: "false",
+                    },
+                    resultados: listResultados,
+                    materiaPrima: listRegistros,
+                    observaciones: formData.observaciones,
+                    estado: "true"
+                }
+                // console.log(dataTemp)
+                // Registro de la gestión de la planeación -- LogRegistroPlaneacion(ordenVenta, productos
+                LogsInformativos("Se ha registrado una nueva planeación con folio " + dataTemp.folio, dataTemp)
+                // Modificar el pedido creado recientemente
+                registraRequerimiento(dataTemp).then(response => {
+                    const { data: { mensaje, datos } } = response;
+                    // console.log(response)
+                    toast.success(mensaje)
+                    setLoading(false)
+                    rutaRegreso()
+                }).catch(e => {
+                    console.log(e)
+                })
             }).catch(e => {
                 console.log(e)
             })
-        }).catch(e => {
-            console.log(e)
-        })
-    }
+        }
     }
 
     const [listOVCargadas, setListOVCargadas] = useState([]);
@@ -567,6 +568,7 @@ function RegistraRequerimientosPlaneacion(props) {
 
             // Actualizacion del tracking
             LogTrackingActualizacion(ordenVenta, "En planeación", "2")
+            LogPedidoActualizacion(formDataPlaneacion.id, numeroInterno, formDataPlaneacion.descripcion, cantidadProducirOV, formDataPlaneacion.um, ordenVenta)
 
             //setCargaProductos(initialFormDataProductos)
             document.getElementById("ordenVenta").value = ""

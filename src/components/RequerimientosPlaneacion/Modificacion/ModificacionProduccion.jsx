@@ -372,7 +372,7 @@ function ModificacionProduccion(props) {
     const onSubmit = e => {
         e.preventDefault();
 
-        if (!informacionRequerimiento.semana) {
+        if (!informacionRequerimiento.noMaquina) {
             toast.warning("Completa el formulario");
         } else {
             //console.log("Continuar")
@@ -403,13 +403,11 @@ function ModificacionProduccion(props) {
                     numeroMolde: formDataPlaneacion.noMolde,
                     numeroCavidades: formDataPlaneacion.cavMolde,
                     opcionesMaquinaria: {
-                        1: {
-                            numeroMaquina1: temp2[0],
-                            maquina1: temp[1],
-                            ciclo1: formDataPlaneacion.tiempoCiclo1,
-                            pieza1: piezasTurno1,
-                            bolsa1: formDataPlaneacion.noPiezasxEmpaque,
-                        }
+                        numeroMaquina: temp2[0],
+                        maquina: temp[1],
+                        ciclo: formDataPlaneacion.tiempoCiclo1,
+                        pieza: piezasTurno1,
+                        bolsa: formDataPlaneacion.noPiezasxEmpaque
                     },
                 },
                 bom: {
@@ -1898,12 +1896,12 @@ function valoresAlmacenados(data) {
         numeroMolde: planeacion.numeroMolde,
         numeroCavidades: planeacion.numeroCavidades,
         opcionesMaquinaria: planeacion.opcionesMaquiaria,
-        numeroMaquina1: planeacion.opcionesMaquinaria[0][1].numeroMaquina1,
-        maquina1: planeacion.opcionesMaquinaria[0][1].maquina1,
-        ciclo1: planeacion.opcionesMaquinaria[0][1].ciclo1,
-        pieza1: planeacion.opcionesMaquinaria[0][1].pieza1,
-        bolsa1: planeacion.opcionesMaquinaria[0][1].bolsa1,
-        noMaquina: planeacion.opcionesMaquinaria[0][1].numeroMaquina1 + "/" + planeacion.opcionesMaquinaria[0][1].maquina1,
+        numeroMaquina1: planeacion.opcionesMaquinaria.numeroMaquina,
+        maquina1: planeacion.opcionesMaquinaria.maquina,
+        ciclo1: planeacion.opcionesMaquinaria.ciclo,
+        pieza1: planeacion.opcionesMaquinaria.pieza,
+        bolsa1: planeacion.opcionesMaquinaria.bolsa,
+        noMaquina: planeacion.opcionesMaquinaria.numeroMaquina + "/" + planeacion.opcionesMaquinaria.maquina,
         bom: bom,
         material: bom.material,
         molido: bom.molido,
