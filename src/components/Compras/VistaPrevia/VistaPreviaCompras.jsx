@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Alert, Badge, Button, Col, Form, Row, Spinner, Image, Container } from "react-bootstrap";
+import { Alert, Badge, Button, Col, Form, Row, Table, Spinner, Image, Container } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { map } from "lodash";
 import "./VistaPreviaCompras.scss";
@@ -781,7 +781,7 @@ function VistaPreviaCompras(props) {
                     <br />
                     <hr />
                     {/* Inicia tabla informativa del listado de articulos */}
-                    <table className="responsive-tableRegistroVentas"
+                    <Table className="responsive-tableRegistroVentas"
                     >
                         <thead>
                             <tr>
@@ -837,7 +837,7 @@ function VistaPreviaCompras(props) {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </Table>
                     {/* Termina tabla informativa del listado de articulos */}
 
                     {/* Inicia tabla definida con totales */}

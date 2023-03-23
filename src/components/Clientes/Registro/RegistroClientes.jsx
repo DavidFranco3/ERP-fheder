@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Button, Col, Form, Row, Spinner, Container, Alert, Badge } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner, Container, Alert, Badge, Table } from "react-bootstrap";
 import { map } from "lodash";
 import { registraClientes } from "../../../api/clientes";
 import { LogsInformativos, LogsInformativosLogout } from "../../Logs/LogsSistema/LogsSistema";
@@ -546,7 +546,7 @@ function RegistroClientes(props) {
                         <br />
                         <hr />
                         {/* Inicia tabla informativa del listado de articulos */}
-                        <table className="responsive-tableRegistroVentas"
+                        <Table className="responsive-tableRegistroVentas"
                         >
                             <thead>
                                 <tr>
@@ -576,7 +576,7 @@ function RegistroClientes(props) {
                                     </tr>
                                 ))}
                             </tbody>
-                        </table>
+                        </Table>
 
                         <Form.Group as={Row} className="botones">
                             <Row>

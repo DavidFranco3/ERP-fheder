@@ -1,5 +1,5 @@
 import { useState, useEffect, Suspense } from 'react';
-import { Row, Col, Container, Spinner, Badge } from "react-bootstrap"
+import { Row, Col, Container, Spinner, Badge, Table } from "react-bootstrap"
 import { map } from "lodash";
 import { withRouter } from "../../../../utils/withRouter";
 import "./Compras.scss"
@@ -97,7 +97,7 @@ function Compras(props) {
                             </Row>
 
                             <Container fluid className="contenidoTablaPlaneacion">
-                                <table className="responsive-tableTrackingOV"
+                                <Table className="responsive-tableTrackingOV"
                                 >
                                     <thead>
                                         <tr>
@@ -160,7 +160,7 @@ function Compras(props) {
                                             </>
                                         ))}
                                     </tbody>
-                                </table>
+                                </Table>
                             </Container>
                         </>
                     )
@@ -185,7 +185,7 @@ function Compras(props) {
                             </Row>
 
                             <Container fluid className="contenidoTablaPlaneacion">
-                                <table className="responsive-tableTrackingOV"
+                                <Table className="responsive-tableTrackingOV"
                                 >
                                     <thead>
                                         <tr>
@@ -236,7 +236,7 @@ function Compras(props) {
                                             </>
                                         ))}
                                     </tbody>
-                                </table>
+                                </Table>
                             </Container>
                         </>
                     )
@@ -261,7 +261,7 @@ function Compras(props) {
                             </Row>
 
                             <Container fluid className="contenidoTablaPlaneacion">
-                                <table className="responsive-tableTrackingOV"
+                                <Table className="responsive-tableTrackingOV"
                                 >
                                     <thead>
                                         <tr>
@@ -361,7 +361,7 @@ function Compras(props) {
                                             </>
                                         ))}
                                     </tbody>
-                                </table>
+                                </Table>
                             </Container>
                         </>
                     )
@@ -386,7 +386,7 @@ function Compras(props) {
                             </Row>
 
                             <Container fluid className="contenidoTablaPlaneacion">
-                                <table className="responsive-tableTrackingOV"
+                                <Table className="responsive-tableTrackingOV"
                                 >
                                     <thead>
                                         <tr>
@@ -453,7 +453,7 @@ function Compras(props) {
                                             </>
                                         ))}
                                     </tbody>
-                                </table>
+                                </Table>
                             </Container>
                         </>
                     )

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Button, Col, Row, Form, Container, Badge } from "react-bootstrap";
+import { Alert, Button, Col, Row, Form, Container, Badge, Table } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import { useNavigate } from "react-router-dom";
 import "./RegistroCarpetasProceso.scss";
@@ -386,7 +386,7 @@ function RegistroCarpetasProceso(props) {
                                 </Row>
 
                                 <Col sm="8">
-                                    <table className="responsive-tableRegistroVentas"
+                                    <Table className="responsive-tableRegistroVentas"
                                     >
                                         <thead>
                                             <tr>
@@ -403,7 +403,7 @@ function RegistroCarpetasProceso(props) {
 
                                         </tbody>
 
-                                    </table>
+                                    </Table>
                                 </Col>
                             </Container>
                         </div>
@@ -440,7 +440,7 @@ function RegistroCarpetasProceso(props) {
                                 </Row>
 
                                 <Col sm="8">
-                                    <table className="responsive-tableRegistroVentas"
+                                    <Table className="responsive-tableRegistroVentas"
                                     >
                                         <thead>
                                             <tr>
@@ -457,7 +457,7 @@ function RegistroCarpetasProceso(props) {
 
                                         </tbody>
 
-                                    </table>
+                                    </Table>
                                 </Col>
                             </Container>
                         </div>
@@ -492,7 +492,7 @@ function RegistroCarpetasProceso(props) {
                                 </Row>
 
                                 <Col sm="8">
-                                    <table className="responsive-tableRegistroVentas"
+                                    <Table className="responsive-tableRegistroVentas"
                                     >
                                         <thead>
                                             <tr>
@@ -508,7 +508,7 @@ function RegistroCarpetasProceso(props) {
 
                                         </tbody>
 
-                                    </table>
+                                    </Table>
                                 </Col>
                             </Container>
                         </div>

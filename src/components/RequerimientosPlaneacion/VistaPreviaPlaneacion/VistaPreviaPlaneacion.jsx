@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Button, Col, Row, Form, Container, Badge, Image, Spinner } from "react-bootstrap";
+import { Alert, Table, Button, Col, Row, Form, Container, Badge, Image, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import { useNavigate, useParams } from "react-router-dom";
 import "./VistaPreviaPlaneacion.scss";
@@ -1610,7 +1610,7 @@ function VistaPreviaPlaneacion(props) {
                                 <br />
                                 <hr />
                                 {/* Inicia tabla informativa del listado de articulos */}
-                                <table className="responsive-tableRegistroVentas"
+                                <Table className="responsive-tableRegistroVentas"
                                 >
                                     <thead>
                                         <tr>
@@ -1640,7 +1640,7 @@ function VistaPreviaPlaneacion(props) {
                                             </tr>
                                         ))}
                                     </tbody>
-                                </table>
+                                </Table>
 
                                 <Row className="mb-3">
 
@@ -2216,7 +2216,7 @@ function VistaPreviaPlaneacion(props) {
                                     </Badge>
                                     <br />
                                     <hr />
-                                    <table className="responsive-tableRegistroVentas"
+                                    <Table className="responsive-tableRegistroVentas"
                                     >
                                         <thead>
                                             <tr>
@@ -2270,7 +2270,7 @@ function VistaPreviaPlaneacion(props) {
                                                 </tr>
                                             ))}
                                         </tbody>
-                                    </table>
+                                    </Table>
                                 </div>
                             </Container>
                         </div>
@@ -2298,7 +2298,7 @@ function VistaPreviaPlaneacion(props) {
                                     </Badge>
                                     <br />
                                     <hr />
-                                    <table className="responsive-tableRegistroVentas"
+                                    <Table className="responsive-tableRegistroVentas"
                                     >
                                         <thead>
                                             <tr>
@@ -2348,7 +2348,7 @@ function VistaPreviaPlaneacion(props) {
                                                 </tr>
                                             ))}
                                         </tbody>
-                                    </table>
+                                    </Table>
                                 </div>
                             </Container>
                         </div>

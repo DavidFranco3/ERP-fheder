@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Row, Col, Container, Badge } from "react-bootstrap"
+import { Row, Col, Container, Badge, Table } from "react-bootstrap"
 import { map } from "lodash";
 import "./Planeacion.scss"
 import { listarRequerimiento } from "../../../../api/requerimientosPlaneacion";
@@ -60,7 +60,7 @@ function Planeacion(props) {
                             </Row>
 
                             <Container fluid className="contenidoTablaPlaneacion">
-                                <table className="responsive-tableTrackingOV"
+                                <Table className="responsive-tableTrackingOV"
                                 >
                                     <thead>
                                         <tr>
@@ -107,7 +107,7 @@ function Planeacion(props) {
                                             </>
                                         ))}
                                     </tbody>
-                                </table>
+                                </Table>
                             </Container>
                         </>
                     )
@@ -132,7 +132,7 @@ function Planeacion(props) {
                             </Row>
 
                             <Container fluid className="contenidoTablaPlaneacion">
-                                <table className="responsive-tableTrackingOV"
+                                <Table className="responsive-tableTrackingOV"
                                 >
                                     <thead>
                                         <tr>
@@ -162,9 +162,9 @@ function Planeacion(props) {
                                                                     <>
 
                                                                         <tr key={planeacion.bom.material}>
-                                                                            <th>
+                                                                            <td>
                                                                                 {index + 1}
-                                                                            </th>
+                                                                            </td>
                                                                             <td data-title="cantidad">
                                                                                 {planeacion.bom.material}
                                                                             </td>
@@ -217,7 +217,7 @@ function Planeacion(props) {
                                             </>
                                         ))}
                                     </tbody>
-                                </table>
+                                </Table>
                             </Container>
                         </>
                     )
@@ -242,7 +242,7 @@ function Planeacion(props) {
                             </Row>
 
                             <Container fluid className="contenidoTablaPlaneacion">
-                                <table className="responsive-tableTrackingOV"
+                                <Table className="responsive-tableTrackingOV"
                                 >
                                     <thead>
                                         <tr>
@@ -263,21 +263,21 @@ function Planeacion(props) {
                                                                 (
                                                                     <>
 
-                                                                        <tr key={planeacion.planeacion.opcionesMaquinaria[0][1].numeroMaquina1}>
+                                                                        <tr key={planeacion.planeacion.opcionesMaquinaria.numeroMaquina}>
                                                                             <td data-title="cantidad">
-                                                                                {planeacion.planeacion.opcionesMaquinaria[0][1].numeroMaquina1}
+                                                                                {planeacion.planeacion.opcionesMaquinaria.numeroMaquina}
                                                                             </td>
                                                                             <td data-title="um">
-                                                                                {planeacion.planeacion.opcionesMaquinaria[0][1].maquina1}
+                                                                                {planeacion.planeacion.opcionesMaquinaria.maquina}
                                                                             </td>
                                                                             <td data-title="descripcion">
-                                                                                {planeacion.planeacion.opcionesMaquinaria[0][1].ciclo1}
+                                                                                {planeacion.planeacion.opcionesMaquinaria.ciclo}
                                                                             </td>
                                                                             <td data-title="descripcion">
-                                                                                {planeacion.planeacion.opcionesMaquinaria[0][1].pieza1}
+                                                                                {planeacion.planeacion.opcionesMaquinaria.pieza}
                                                                             </td>
                                                                             <td data-title="descripcion">
-                                                                                {planeacion.planeacion.opcionesMaquinaria[0][1].bolsa1}
+                                                                                {planeacion.planeacion.opcionesMaquinaria.bolsa}
                                                                             </td>
                                                                         </tr>
                                                                     </>
@@ -295,7 +295,7 @@ function Planeacion(props) {
                                             </>
                                         ))}
                                     </tbody>
-                                </table>
+                                </Table>
                             </Container>
                         </>
                     )

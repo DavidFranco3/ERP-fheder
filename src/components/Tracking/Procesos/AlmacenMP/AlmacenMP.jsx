@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Table } from "react-bootstrap";
 import { listarAlmacenMP } from "../../../../api/almacenMP";
 import { map } from "lodash";
 import 'dayjs/locale/es'
@@ -50,7 +50,7 @@ function Almacen(props) {
             </Row>
 
             <Container fluid className="contenidoInformativo">
-                <table className="responsive-tableTrackingOV"
+                <Table className="responsive-tableTrackingOV"
                 >
                     <thead>
                         <tr>
@@ -117,7 +117,7 @@ function Almacen(props) {
                             </>
                         ))}
                     </tbody>}
-                </table>
+                </Table>
             </Container>
         </>
     );

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Row, Col, Container, Badge } from "react-bootstrap"
+import { Row, Col, Container, Table, Badge } from "react-bootstrap"
 import { obtenerDatosPedidoVenta } from "../../../api/pedidoVenta";
 import moment from "moment";
 import { map } from "lodash";
@@ -41,7 +41,7 @@ function ListProductosVentas(props) {
                                 <Badge bg="secondary" className="tituloFormularioDetalles">
                                     <h4>Detalles de los productos de la venta</h4>
                                 </Badge>
-                                <table className="responsive-tableTrackingOV"
+                                <Table className="responsive-tableTrackingOV"
                                 >
                                     <thead>
                                         <tr>
@@ -91,7 +91,7 @@ function ListProductosVentas(props) {
                                             </>
                                         ))}
                                     </tbody>
-                                </table>
+                                </Table>
                             </Container>
 
 

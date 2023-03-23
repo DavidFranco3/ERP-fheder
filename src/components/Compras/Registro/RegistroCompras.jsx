@@ -656,7 +656,7 @@ function RegistroCompras(props) {
                     <br />
                     <hr />
                     {/* Inicia tabla informativa del listado de articulos */}
-                    <table className="responsive-tableRegistroVentas"
+                    <Table className="responsive-tableRegistroVentas"
                     >
                         <thead>
                             <tr>
@@ -741,7 +741,7 @@ function RegistroCompras(props) {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </Table>
                     {/* Termina tabla informativa del listado de articulos */}
 
                     {/* Inicia tabla definida con totales */}

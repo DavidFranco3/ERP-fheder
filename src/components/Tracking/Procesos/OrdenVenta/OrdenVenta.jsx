@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Row, Col, Container } from "react-bootstrap"
+import { Row, Col, Container, Table } from "react-bootstrap"
 import { obtenerDatosPedidoVenta } from "../../../../api/pedidoVenta";
 import 'dayjs/locale/es';
 import dayjs from 'dayjs';
@@ -72,7 +72,7 @@ function OrdenVenta(props) {
                             </Row>
 
                             <Container fluid className="tablaProductos">
-                                <table className="responsive-tableTrackingOV"
+                                <Table className="responsive-tableTrackingOV"
                                 >
                                     <thead>
                                         <tr>
@@ -92,7 +92,7 @@ function OrdenVenta(props) {
                                                                 {index + 1}
                                                             </td>
                                                             <td>
-                                                                {datos.descripcion}
+                                                                {datos.item}
                                                             </td>
                                                             <td>
                                                                 {datos.cantidad}
@@ -106,7 +106,7 @@ function OrdenVenta(props) {
                                             </>
                                         ))}
                                     </tbody>
-                                </table>
+                                </Table>
                             </Container>
 
 

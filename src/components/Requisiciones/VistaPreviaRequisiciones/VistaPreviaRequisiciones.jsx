@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Alert, Button, Col, Row, Form, Container, Image, Badge, Spinner } from "react-bootstrap";
+import { Alert, Button, Col, Table, Row, Form, Container, Image, Badge, Spinner } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -741,7 +741,7 @@ function VistaPreviaRequisiciones(props) {
                     <br />
                     <hr />
                     {/* Inicia tabla informativa del listado de articulos */}
-                    <table className="responsive-tableRegistroVentas"
+                    <Table className="responsive-tableRegistroVentas"
                     >
                         <thead>
                             <tr>
@@ -803,7 +803,7 @@ function VistaPreviaRequisiciones(props) {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </Table>
                     {/* Termina tabla informativa del listado de articulos */}
 
                     <Row>

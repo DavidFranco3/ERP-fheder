@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
+import { Alert, Table, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import BuscarOV from "../../../page/BuscarOV";
 import BuscarProductosOV from '../../../page/BuscarProductosOV';
@@ -815,7 +815,7 @@ function ModificacionProduccion(props) {
                                 <br />
                                 <hr />
                                 {/* Inicia tabla informativa del listado de articulos */}
-                                <table className="responsive-tableRegistroVentas"
+                                <Table className="responsive-tableRegistroVentas"
                                 >
                                     <thead>
                                         <tr>
@@ -857,7 +857,7 @@ function ModificacionProduccion(props) {
                                             </tr>
                                         ))}
                                     </tbody>
-                                </table>
+                                </Table>
 
                                 <Row className="mb-3">
 
@@ -1431,7 +1431,7 @@ function ModificacionProduccion(props) {
                                     </Badge>
                                     <br />
                                     <hr />
-                                    <table className="responsive-tableRegistroVentas"
+                                    <Table className="responsive-tableRegistroVentas"
                                     >
                                         <thead>
                                             <tr>
@@ -1497,7 +1497,7 @@ function ModificacionProduccion(props) {
                                                 </tr>
                                             ))}
                                         </tbody>
-                                    </table>
+                                    </Table>
                                 </div>
                             </Container>
                         </div>
@@ -1547,7 +1547,7 @@ function ModificacionProduccion(props) {
                                     </Badge>
                                     <br />
                                     <hr />
-                                    <table className="responsive-tableRegistroVentas"
+                                    <Table className="responsive-tableRegistroVentas"
                                     >
                                         <thead>
                                             <tr>
@@ -1609,7 +1609,7 @@ function ModificacionProduccion(props) {
                                                 </tr>
                                             ))}
                                         </tbody>
-                                    </table>
+                                    </Table>
                                 </div>
                             </Container>
                         </div>

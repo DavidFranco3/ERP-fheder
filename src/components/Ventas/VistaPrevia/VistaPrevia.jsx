@@ -4,7 +4,7 @@ import {
     actualizaPedidoVenta,
     obtenerDatosPedidoVenta
 } from "../../../api/pedidoVenta";
-import { Alert, Button, Col, Container, Form, Row, Image, Spinner, Badge } from "react-bootstrap";
+import { Alert, Table, Button, Col, Container, Form, Row, Image, Spinner, Badge } from "react-bootstrap";
 import "./VistaPrevia.scss";
 import { map } from "lodash";
 import { listarClientes } from "../../../api/clientes";
@@ -937,7 +937,7 @@ function VistaPrevia(props) {
                             </Badge>
                             <br />
                             <hr />
-                            <table className="responsive-tableRegistroVentas"
+                            <Table className="responsive-tableRegistroVentas"
                             >
                                 <thead>
                                     <tr>
@@ -985,7 +985,7 @@ function VistaPrevia(props) {
                                         </tr>
                                     ))}
                                 </tbody>
-                            </table>
+                            </Table>
 
                             {/* Inicia tabla definida con totales */}
                             <Row>

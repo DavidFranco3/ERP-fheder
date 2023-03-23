@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
+import { Alert, Button, Col, Container, Form, Row, Spinner, Badge, Table } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
 import { listarClientes } from "../../../api/clientes";
@@ -596,7 +596,7 @@ setFechaVencimiento((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? Tu
                             </Badge>
                             <br />
                             <hr />
-                            <table className="responsive-tableRegistroVentas"
+                            <Table className="responsive-tableRegistroVentas"
                             >
                                 <thead>
                                     <tr>
@@ -644,7 +644,7 @@ setFechaVencimiento((TuFecha.getMonth() + 1) > 10 && TuFecha.getDate() < 10 ? Tu
                                         </tr>
                                     ))}
                                 </tbody>
-                            </table>
+                            </Table>
                             {/* Termina tabla informativa */}
 
                             <Row>

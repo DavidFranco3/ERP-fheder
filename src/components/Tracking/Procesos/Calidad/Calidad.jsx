@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Row, Col, Container, Spinner, Badge } from "react-bootstrap"
+import { Row, Col, Container, Spinner, Badge, Table } from "react-bootstrap"
 import "./Calidad.scss";
 import { map } from "lodash";
 import { listarInspeccion } from "../../../../api/inspeccionMaterial";
@@ -64,7 +64,7 @@ function Calidad(props) {
                             </Row>
 
                             <Container fluid className="contenidoTablaPlaneacion">
-                                <table className="responsive-tableTrackingOV"
+                                <Table className="responsive-tableTrackingOV"
                                 >
                                     <thead>
                                         <tr>
@@ -135,7 +135,7 @@ function Calidad(props) {
                                             </>
                                         ))}
                                     </tbody>
-                                </table>
+                                </Table>
                             </Container>
                         </>
                     )

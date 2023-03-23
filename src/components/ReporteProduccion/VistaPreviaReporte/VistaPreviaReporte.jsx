@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, Button, Col, Row, Form, Container, Badge, Image, Spinner } from "react-bootstrap";
+import { Alert, Button, Col, Row, Form, Table, Container, Badge, Image, Spinner } from "react-bootstrap";
 import BasicModal from "../../Modal/BasicModal";
 import { useNavigate, useParams } from "react-router-dom";
 import "./VistaPreviaReporte.scss";
@@ -540,7 +540,7 @@ function VistaPreviaReporte(props) {
 
                         <br />
 
-                        <table className="responsive-tableRegistroVentas"
+                        <Table className="responsive-tableRegistroVentas"
                         >
                             <thead>
                                 <tr>
@@ -586,7 +586,7 @@ function VistaPreviaReporte(props) {
                                     </tr>
                                 ))}
                             </tbody>
-                        </table>
+                        </Table>
 
                         <br />
 

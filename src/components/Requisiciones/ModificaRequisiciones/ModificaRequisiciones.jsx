@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Alert, Button, Col, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
+import { Alert, Button, Col, Table, Row, Form, Container, Badge, Spinner } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faX, faArrowCircleLeft, faSearch, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
@@ -632,7 +632,7 @@ function ModificaRequisiciones(props) {
                     <br />
                     <hr />
                     {/* Inicia tabla informativa del listado de articulos */}
-                    <table className="responsive-tableRegistroVentas"
+                    <Table className="responsive-tableRegistroVentas"
                     >
                         <thead>
                             <tr>
@@ -723,7 +723,7 @@ function ModificaRequisiciones(props) {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </Table>
                     {/* Termina tabla informativa del listado de articulos */}
 
                     <Row>

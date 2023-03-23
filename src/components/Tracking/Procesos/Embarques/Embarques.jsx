@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {Col, Container, Row} from "react-bootstrap";
+import {Col, Container, Row, Table } from "react-bootstrap";
 
 function Embarques(props) {
     const { ordenVenta } = props;
@@ -12,7 +12,7 @@ function Embarques(props) {
                 </Col>
             </Row>
             <Container fluid className="contenidoInformativo">
-                <table className="responsive-tableTrackingOV"
+                <Table className="responsive-tableTrackingOV"
                 >
                     <thead>
                     <tr>
@@ -28,7 +28,7 @@ function Embarques(props) {
                     </thead>
                     <tbody>
                     </tbody>
-                </table>
+                </Table>
             </Container>
         </>
     );

@@ -4,7 +4,7 @@ import {
     actualizaPedidoVenta,
     obtenerDatosPedidoVenta
 } from "../../../api/pedidoVenta";
-import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
+import { Alert, Button, Table, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import "./ModificacionVentas.scss";
 import { map } from "lodash";
 import { listarClientes, obtenerCliente } from "../../../api/clientes";
@@ -732,7 +732,7 @@ function ModificacionVentas(props) {
                             </Badge>
                             <br />
                             <hr />
-                            <table className="responsive-tableRegistroVentas"
+                            <Table className="responsive-tableRegistroVentas"
                             >
                                 <thead>
                                     <tr>
@@ -809,7 +809,7 @@ function ModificacionVentas(props) {
                                         </tr>
                                     ))}
                                 </tbody>
-                            </table>
+                            </Table>
 
                             {/* Inicia tabla definida con totales */}
                             <Row>

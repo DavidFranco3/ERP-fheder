@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import { Alert, Button, Col, Container, Form, Row, Image, Spinner, Badge } from "react-bootstrap";
+import { Alert, Button, Col, Container, Form, Row, Image, Spinner, Badge, Table } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
 import { listarClientes } from "../../../api/clientes";
@@ -956,7 +956,7 @@ function VistaPreviaCuentasPagar(props) {
                             </Badge>
                             <br />
                             <hr />
-                            <table className="responsive-tableRegistroVentas"
+                            <Table className="responsive-tableRegistroVentas"
                             >
                                 <thead>
                                     <tr>
@@ -1012,7 +1012,7 @@ function VistaPreviaCuentasPagar(props) {
                                         </tr>
                                     ))}
                                 </tbody>
-                            </table>
+                            </Table>
                             {/* Termina tabla informativa */}
 
                             <Row>

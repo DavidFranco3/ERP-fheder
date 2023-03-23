@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Alert, Badge, Button, Col, Form, Row, Spinner, Container } from "react-bootstrap";
+import { Alert, Badge, Button, Col, Form, Row, Spinner, Container, Table } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { map } from "lodash";
 import { actualizaOrdenCompra, obtenerDatosCompra } from "../../../api/compras";
@@ -644,7 +644,7 @@ function ModificacionCompras(props) {
                     <br />
                     <hr />
                     {/* Inicia tabla informativa del listado de articulos */}
-                    <table className="responsive-tableRegistroVentas"
+                    <Table className="responsive-tableRegistroVentas"
                     >
                         <thead>
                             <tr>
@@ -729,7 +729,7 @@ function ModificacionCompras(props) {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </Table>
                     {/* Termina tabla informativa del listado de articulos */}
 
                     {/* Inicia tabla definida con totales */}

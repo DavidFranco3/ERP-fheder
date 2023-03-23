@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Alert, Button, Col, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
+import { Alert, Button, Col, Table, Container, Form, Row, Spinner, Badge } from "react-bootstrap";
 import { map } from "lodash";
 import { toast } from "react-toastify";
 import BuscarCliente from '../../../page/BuscarCliente/BuscarCliente';
@@ -704,7 +704,7 @@ function RegistroVentas(props) {
                             </Badge>
                             <br />
                             <hr />
-                            <table className="responsive-tableRegistroVentas"
+                            <Table className="responsive-tableRegistroVentas"
                             >
                                 <thead>
                                     <tr>
@@ -781,7 +781,7 @@ function RegistroVentas(props) {
                                         </tr>
                                     ))}
                                 </tbody>
-                            </table>
+                            </Table>
                             {/* Termina tabla informativa */}
 
                             {/* Inicia tabla definida con totales */}

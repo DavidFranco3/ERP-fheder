@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Col, Row, Container, Badge } from "react-bootstrap";
+import { Col, Row, Container, Badge, Table } from "react-bootstrap";
 import { map } from "lodash";
 import "./Produccion.scss"
 import { listarProduccion } from "../../../../api/produccion";
@@ -53,7 +53,7 @@ function Produccion(props) {
                             </Row>
 
                             <Container fluid className="contenidoTablaPlaneacion">
-                                <table className="responsive-tableTrackingOV"
+                                <Table className="responsive-tableTrackingOV"
                                 >
                                     <thead>
                                         <tr>
@@ -121,7 +121,7 @@ function Produccion(props) {
                                             </>
                                         ))}
                                     </tbody>
-                                </table>
+                                </Table>
                             </Container>
                         </>
                     )
@@ -146,7 +146,7 @@ function Produccion(props) {
                             </Row>
 
                             <Container fluid className="contenidoTablaPlaneacion">
-                                <table className="responsive-tableTrackingOV"
+                                <Table className="responsive-tableTrackingOV"
                                 >
                                     <thead>
                                         <tr>
@@ -218,7 +218,7 @@ function Produccion(props) {
                                             </>
                                         ))}
                                     </tbody>
-                                </table>
+                                </Table>
                             </Container>
                         </>
                     )

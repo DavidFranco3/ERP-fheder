@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Button, Col, Form, Row, Spinner, Container, Alert, Badge } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner, Container, Alert, Badge, Table } from "react-bootstrap";
 import { map } from "lodash";
 import { actualizaCliente, obtenerCliente, registraClientes } from "../../../api/clientes";
 import { subeArchivosCloudinary } from "../../../api/cloudinary";
@@ -584,7 +584,7 @@ function ModificacionClientes(props) {
                         <br />
                         <hr />
                         {/* Inicia tabla informativa del listado de articulos */}
-                        <table className="responsive-tableRegistroVentas"
+                        <Table className="responsive-tableRegistroVentas"
                         >
                             <thead>
                                 <tr>
@@ -614,7 +614,7 @@ function ModificacionClientes(props) {
                                     </tr>
                                 ))}
                             </tbody>
-                        </table>
+                        </Table>
 
                         <Form.Group as={Row} className="botones">
                             <Row>
